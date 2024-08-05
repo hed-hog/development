@@ -1,0 +1,117 @@
+import { HTMLAttributes, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router-dom'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/custom/button'
+import { PasswordInput } from '@/components/custom/password-input'
+import { cn } from '@/lib/utils'
+import { useApp } from '../../../hooks/use-app'
+
+interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
+
+const formSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'Por favor digite o seu e-mail' })
+    .email({ message: 'Endereço de e-mail inválido' }),
+  password: z
+    .string()
+    .min(1, {
+      message: 'Por favor digite a sua senha',
+    })
+    .min(6, {
+      message: 'A senha deve ter pelo menos 6 caracteres',
+    }),
+})
+
+export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const navigate = useNavigate()
+  const { login } = useApp()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  function onSubmit({ email, password }: z.infer<typeof formSchema>) {
+    console.log('onSubmit', email, password)
+    setIsLoading(true)
+    login(email, password)
+      .then(() => {
+        console.log('login then')
+        navigate('/')
+      })
+      .finally(() => {
+        console.log('login finally')
+        setIsLoading(false)
+      })
+  }
+
+  return (
+    <div className={cn('grid gap-6', className)} {...props}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className='grid gap-2'>
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <FormLabel>E-mail</FormLabel>
+                  <FormControl>
+                    <Input
+                      tabIndex={0}
+                      autoFocus={true}
+                      placeholder='name@example.com'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <div className='flex items-center justify-between'>
+                    <FormLabel>Senha</FormLabel>
+                    <Link
+                      to='/forgot-password'
+                      className='text-sm font-medium text-muted-foreground hover:opacity-75'
+                      tabIndex={2}
+                    >
+                      Esqueceu a senha?
+                    </Link>
+                  </div>
+                  <FormControl>
+                    <PasswordInput placeholder='********' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className='mt-2' loading={isLoading} type='submit'>
+              Entrar
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </div>
+  )
+}

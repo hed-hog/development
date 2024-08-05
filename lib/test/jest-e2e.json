@@ -1,0 +1,19 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@hadsys/hadsys-auth/(.*)": "<rootDir>/../libs/hadsys-auth/src/$1",
+    "@hadsys/hadsys-auth": "<rootDir>/../libs/hadsys-auth/src",
+    "@hadsys/auth/(.*)": "<rootDir>/../libs/auth/src/$1",
+    "@hadsys/auth": "<rootDir>/../libs/auth/src"
+  }
+}

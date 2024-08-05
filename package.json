@@ -1,0 +1,17 @@
+{
+  "name": "hadsys",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "concurrently \"cd api && npm run start:dev\" \"cd web && npm run dev\" \"node index.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "chalk": "^5.3.0",
+    "concurrently": "^8.2.2",
+    "net": "^1.0.2"
+  }
+}
