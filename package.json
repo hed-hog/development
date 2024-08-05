@@ -4,7 +4,8 @@
 	"type": "module",
 	"scripts": {
 		"start": "concurrently \"cd api && npm run start:dev\" \"cd web && npm run dev\" \"node index.js\"",
-		"preinstall": "cd api && npm install && cd ../web && npm install && cd ../lib && npm install"
+		"preinstall": "cd api && npm install && cd ../web && npm install && cd ../lib && npm install",
+		"uninstall": "npx rimraf api/node_modules api/package-lock.json web/node_modules web/package-lock.json lib/node_modules lib/package-lock.json node_modules package-lock.json"
 	},
 	"keywords": [],
 	"author": "",
