@@ -166,6 +166,25 @@ export class Migrate1720396740915 implements MigrationInterface {
       `,
     );
 
+    await queryRunner.createTable(new Table({
+      name: 'multifactors',
+      columns: [
+        idColumn(),
+        {
+          name: 'name',
+          type: 'varchar',
+        },
+        timestampColumn(),
+        timestampColumn('updated_at'),
+      ],
+    }));
+
+    await queryRunner.query(`
+      INSERT INTO multifactors (name) VALUES
+      ('Email'),
+      ('Applicativo');
+    `);
+
     await queryRunner.createTable(
       new Table({
         name: 'users',
@@ -184,9 +203,14 @@ export class Migrate1720396740915 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'invites',
+            name: 'multifactor_id',
             type: 'int',
-            default: 0,
+            isNullable: true,
+          },
+          {
+            name: 'code',
+            type: 'varchar',
+            isNullable: true,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
@@ -194,12 +218,22 @@ export class Migrate1720396740915 implements MigrationInterface {
       }),
     );
 
-    const password = await bcrypt.hash(`amhjcg==`, 12);
+    await queryRunner.createForeignKeys('users', [
+      new TableForeignKey({
+        columnNames: ['multifactor_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'multifactors',
+        name: 'fk_users_to_multifactors_on_multifactor_id',
+        onDelete: 'Cascade',
+      }),
+    ]);
+
+    const password = await bcrypt.hash(`root`, 12);
 
     await queryRunner.query(
       `
-        INSERT INTO users (name, email, password, invites) VALUES
-        ('João Rangel', 'joaohcrangel@gmail.com', '${password}', 100);
+        INSERT INTO users (name, email, password) VALUES
+        ('Administrador', 'root@hcode.com.br', '${password}');
       `,
     );
 

@@ -29,6 +29,24 @@
       ],
       "@hadsys/auth/*": [
         "libs/auth/src/*"
+      ],
+      "@hadsy/file": [
+        "libs/file/src"
+      ],
+      "@hadsy/file/*": [
+        "libs/file/src/*"
+      ],
+      "@hadsys/file": [
+        "libs/file/src"
+      ],
+      "@hadsys/file/*": [
+        "libs/file/src/*"
+      ],
+      "@hadsys/prisma": [
+        "libs/prisma/src"
+      ],
+      "@hadsys/prisma/*": [
+        "libs/prisma/src/*"
       ]
     }
   }

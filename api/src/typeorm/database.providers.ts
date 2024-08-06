@@ -24,6 +24,14 @@ if (!process.env.DB_DATABASE) {
   throw new Error('DB_DATABASE not defined on .env file');
 }
 
+console.log({
+  host: String(process.env.DB_HOST),
+  port: Number(process.env.DB_PORT),
+  username: String(process.env.DB_USERNAME),
+  password: String(process.env.DB_PASSWORD),
+  database: String(process.env.DB_DATABASE)
+})
+
 const opts: DataSourceOptions = {
   type: 'postgres',
   host: String(process.env.DB_HOST),

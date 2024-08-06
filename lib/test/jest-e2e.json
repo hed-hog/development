@@ -14,6 +14,12 @@
     "@hadsys/hadsys-auth/(.*)": "<rootDir>/../libs/hadsys-auth/src/$1",
     "@hadsys/hadsys-auth": "<rootDir>/../libs/hadsys-auth/src",
     "@hadsys/auth/(.*)": "<rootDir>/../libs/auth/src/$1",
-    "@hadsys/auth": "<rootDir>/../libs/auth/src"
+    "@hadsys/auth": "<rootDir>/../libs/auth/src",
+    "@hadsy/file/(.*)": "<rootDir>/../libs/file/src/$1",
+    "@hadsy/file": "<rootDir>/../libs/file/src",
+    "@hadsys/file/(.*)": "<rootDir>/../libs/file/src/$1",
+    "@hadsys/file": "<rootDir>/../libs/file/src",
+    "@hadsys/prisma/(.*)": "<rootDir>/../libs/prisma/src/$1",
+    "@hadsys/prisma": "<rootDir>/../libs/prisma/src"
   }
 }
