@@ -14,8 +14,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post()
+  @Post('send')
   async testMail() {
-    return this.mailService.send();
+    return this.mailService.send({
+      to: 'anthonyribeiro1910@gmail.com',
+      subject: 'Testando email 2',
+      body: 'Testando 123',
+    });
   }
 }

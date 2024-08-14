@@ -31,7 +31,7 @@ export class AuthService {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  async loginWithEmailAndPassword(email: string, password: string) {
+  /*async loginWithEmailAndPassword(email: string, password: string) {
     const user = await this.prisma.users.findFirst({
       where: {
         email,
@@ -153,5 +153,5 @@ export class AuthService {
 
   verify(id: number) {
     return this.prisma.user.findUnique({ where: { id } });
-  }
+  }*/
 }

@@ -1,0 +1,13 @@
+{
+    "name": "mail",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "description": "",
+    "peerDependencies": {
+        "hcode-core": "^0.1.485"
+    }
+}

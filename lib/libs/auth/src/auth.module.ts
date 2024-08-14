@@ -5,6 +5,7 @@ import { PrismaModule } from 'hadsys-prisma';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -15,12 +16,14 @@ import { AuthGuard } from './auth.guard';
         signOptions: { expiresIn: '30d' },
       }
     },
-  })],
-  controllers: [AuthController, PrismaModule],
-  providers: [AuthService, {
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-  }],
+  }), PrismaModule],
+  controllers: [AuthController],
+  providers: [
+    AuthService, {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
   exports: [AuthService],
 })
 export class AuthModule { }

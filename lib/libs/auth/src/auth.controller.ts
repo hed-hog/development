@@ -12,7 +12,7 @@ export class AuthController {
 
   constructor(private readonly service: AuthService) { }
 
-  @Get('verify')
+  /*@Get('verify')
   async verify(@User() { id }: UserType) {
     return this.service.verify(id);
   }
@@ -32,5 +32,5 @@ export class AuthController {
   @Post('forget')
   async forget(@Body() { email }: ForgetDTO) {
     return this.service.forget({ email })
-  }
+  }*/
 }
