@@ -33,23 +33,80 @@ export class MailService {
 
     async createRawEmail(mail: Mail) {
 
-        const messageParts = [
-            `From: ${mail.from}`,
-            `To: ${mail.to}`,
-            `Subject: ${mail.subject}`,
-            'Content-Type: text/plain; charset="UTF-8"',
-            '',
-            mail.body,
-        ];
+        if (mail.attachments instanceof Array && mail.attachments?.length) {
 
-        const message = messageParts.join('\n');
-        const encodedMessage = Buffer.from(message)
-            .toString('base64')
-            .replace(/\+/g, '-')
-            .replace(/\//g, '_')
-            .replace(/=+$/, '');
+            const mailContent = mimemessage.factory({
+                contentType: 'multipart/mixed',
+                body: [],
+            });
 
-        return encodedMessage;
+            mailContent.header('From', mail.from);
+            mailContent.header('To', mail.to);
+            mailContent.header('Subject', mail.subject);
+
+            const alternateEntity = mimemessage.factory({
+                contentType: 'multipart/alternate',
+                body: [],
+            });
+
+            const htmlEntity = mimemessage.factory({
+                contentType: 'text/html;charset=utf-8',
+                body: mail.body,
+            });
+
+            alternateEntity.body.push(htmlEntity);
+
+            mailContent.body.push(alternateEntity);
+
+            await Promise.all(mail.attachments.map(async (attachment) => {
+
+                const attachmentEntity = mimemessage.factory({
+                    contentType: attachment.contentType,
+                    contentTransferEncoding: 'base64',
+                    body: attachment.content
+                        .toString('base64')
+                        .replace(/([^\0]{76})/g, '$1\n'),
+                });
+
+                attachmentEntity.header(
+                    'Content-Disposition',
+                    `attachment; filename="${attachment.filename}"`,
+                );
+
+                mailContent.body.push(attachmentEntity);
+
+            }));
+
+            const messageString = mailContent.toString();
+            const encodedMessage = Buffer.from(messageString)
+                .toString('base64')
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+
+            return encodedMessage;
+
+        } else {
+
+            const messageParts = [
+                `From: ${mail.from}`,
+                `To: ${mail.to instanceof Array ? mail.to.join(',') : mail.to}`,
+                `Subject: ${mail.subject}`,
+                'Content-Type: text/plain; charset="UTF-8"',
+                '',
+                mail.body,
+            ];
+
+            const message = messageParts.join('\n');
+            const encodedMessage = Buffer.from(message)
+                .toString('base64')
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+
+            return encodedMessage;
+
+        }
 
     }
 
