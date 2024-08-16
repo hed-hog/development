@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { IconChevronDown, IconMenu2 } from '@tabler/icons-react'
+import { IconChevronDown, IconMenu2, IconX } from '@tabler/icons-react'
 import { Button, buttonVariants } from './custom/button'
 import {
   Collapsible,
@@ -23,11 +23,10 @@ import {
 } from './ui/tooltip'
 import { cn } from '@/lib/utils'
 import useCheckActiveNav from '@/hooks/use-check-active-nav'
-import { SideLink } from '@/data/sidelinks'
 
 interface NavProps extends React.HTMLAttributes<HTMLDivElement> {
   isCollapsed: boolean
-  links: SideLink[]
+  links: any[]
   closeNav: () => void
 }
 
@@ -43,7 +42,7 @@ export default function Nav({
     setIsNavVisible(!isNavVisible)
   }
 
-  const renderLink = ({ sub, ...rest }: SideLink) => {
+  const renderLink = ({ sub, ...rest }: any) => {
     const key = `${rest.title}-${rest.href}`
     if (isCollapsed && sub)
       return (
@@ -74,7 +73,8 @@ export default function Nav({
         variant='ghost'
         size='icon'
       >
-        <IconMenu2 />
+        {!isNavVisible && <IconMenu2 />}
+        {isNavVisible && <IconX />}
       </Button>
       <div
         data-collapsed={isCollapsed}
@@ -94,7 +94,7 @@ export default function Nav({
   )
 }
 
-interface NavLinkProps extends SideLink {
+interface NavLinkProps {
   title: string
   icon: JSX.Element
   label: string
