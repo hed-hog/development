@@ -260,8 +260,7 @@ export class MailService {
                 },
                 ReplyToAddresses: mail.replyTo,
                 Source: from,
-                SourceArn:
-                    'arn:aws:ses:us-east-1:281955153417:identity/noreply@hcode.com.br',
+                // SourceArn: 'arn:aws:ses:us-east-1:281955153417:identity/noreply@hcode.com.br',
             };
 
             return ses.sendEmail(params).promise();
