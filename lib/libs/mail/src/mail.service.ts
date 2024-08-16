@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Mail, MAIL_MODULE_OPTIONS, MailConfig } from './mail.consts';
+import { Mail, MAIL_MODULE_OPTIONS } from './mail.consts';
 import { SES } from 'aws-sdk';
 import * as mimemessage from 'mimemessage';
 import { MailConfigurationTypeEnum } from './enums/mail-configuration-type.enum';
 import { MailModuleOptions } from './interfaces/mail-module-options.interface';
 import { google } from 'googleapis';
-import * as nodemailer from 'nodemailer';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 
@@ -260,7 +259,6 @@ export class MailService {
                 },
                 ReplyToAddresses: mail.replyTo,
                 Source: from,
-                // SourceArn: 'arn:aws:ses:us-east-1:281955153417:identity/noreply@hcode.com.br',
             };
 
             return ses.sendEmail(params).promise();
