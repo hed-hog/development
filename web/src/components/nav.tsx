@@ -1,5 +1,6 @@
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { IconChevronDown } from '@tabler/icons-react'
+import { IconChevronDown, IconMenu2 } from '@tabler/icons-react'
 import { Button, buttonVariants } from './custom/button'
 import {
   Collapsible,
@@ -36,6 +37,12 @@ export default function Nav({
   className,
   closeNav,
 }: NavProps) {
+  const [isNavVisible, setIsNavVisible] = useState(false)
+
+  const toggleNavVisibility = () => {
+    setIsNavVisible(!isNavVisible)
+  }
+
   const renderLink = ({ sub, ...rest }: SideLink) => {
     const key = `${rest.title}-${rest.href}`
     if (isCollapsed && sub)
@@ -58,25 +65,42 @@ export default function Nav({
 
     return <NavLink {...rest} key={key} closeNav={closeNav} />
   }
+
   return (
-    <div
-      data-collapsed={isCollapsed}
-      className={cn(
-        'group border-b bg-background py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none',
-        className
-      )}
-    >
-      <TooltipProvider delayDuration={0}>
-        <nav className='grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'>
-          {links.map(renderLink)}
-        </nav>
-      </TooltipProvider>
+    <div className={cn('relative', className)}>
+      <Button
+        onClick={toggleNavVisibility}
+        className='absolute left-0 top-4 z-50'
+        variant='ghost'
+        size='icon'
+      >
+        <IconMenu2 />
+      </Button>
+      <div
+        data-collapsed={isCollapsed}
+        className={cn(
+          'group border-b bg-background py-2 transition-[max-height,padding,width] duration-500 ease-in-out data-[collapsed=true]:py-2 md:border-none',
+          isNavVisible ? 'w-64' : 'w-4',
+          'fixed left-0 top-0 ml-6 mt-1 h-screen overflow-hidden'
+        )}
+      >
+        <TooltipProvider delayDuration={0}>
+          <nav className='grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'>
+            {links.map(renderLink)}
+          </nav>
+        </TooltipProvider>
+      </div>
     </div>
   )
 }
 
 interface NavLinkProps extends SideLink {
+  title: string
+  icon: JSX.Element
+  label: string
+  href: string
   subLink?: boolean
+  sub?: any[]
   closeNav: () => void
 }
 
@@ -146,7 +170,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
       </CollapsibleTrigger>
       <CollapsibleContent className='collapsibleDropdown' asChild>
         <ul>
-          {sub!.map((sublink) => (
+          {sub!.map((sublink: NavLinkProps) => (
             <li key={sublink.title} className='my-1 ml-8'>
               <NavLink {...sublink} subLink closeNav={closeNav} />
             </li>
