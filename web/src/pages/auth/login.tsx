@@ -1,9 +1,11 @@
 import { Card } from '@/components/ui/card'
+import { BlockView } from '@/features/views'
 import { UserAuthForm } from './components/user-auth-form'
 
 export default function SignIn2() {
   return (
     <>
+      <BlockView />
       <div className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8'>
           <div className='mb-4 flex items-center justify-center'>
@@ -24,7 +26,7 @@ export default function SignIn2() {
               <circle cx='9.5' cy='9.5' r='.5' fill='currentColor' />
               <circle cx='14.5' cy='14.5' r='.5' fill='currentColor' />
             </svg>
-            <h1 className='text-xl font-medium'>Hadsys</h1>
+            <h1 className='text-xl font-medium'>Hedhog</h1>
           </div>
           <Card className='p-6'>
             <div className='flex flex-col space-y-2 text-left'>

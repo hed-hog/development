@@ -8,18 +8,18 @@ export default function UnauthorisedError() {
       <div className='m-auto flex h-full w-full flex-col items-center justify-center gap-2'>
         <h1 className='text-[7rem] font-bold leading-tight'>401</h1>
         <span className='font-medium'>
-          Oops! You don't have permission to access this page.
+          Oops! Você não tem permissào para acessar essa página.
         </span>
         <p className='text-center text-muted-foreground'>
-          It looks like you tried to access a resource that requires proper
-          authentication. <br />
-          Please log in with the appropriate credentials.
+          Parece que você tentou acessar um recurso que requer autenticação.{' '}
+          <br />
+          Por favor, faça o login com suas credenciais.
         </p>
         <div className='mt-6 flex gap-4'>
           <Button variant='outline' onClick={() => navigate(-1)}>
-            Go Back
+            Voltar
           </Button>
-          <Button onClick={() => navigate('/')}>Back to Home</Button>
+          <Button onClick={() => navigate('/')}>Home</Button>
         </div>
       </div>
     </div>
