@@ -18,42 +18,18 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@hadsys/hadsys-auth": [
-        "libs/hadsys-auth/src"
-      ],
-      "@hadsys/hadsys-auth/*": [
-        "libs/hadsys-auth/src/*"
-      ],
-      "@hadsys/auth": [
-        "libs/auth/src"
-      ],
-      "@hadsys/auth/*": [
-        "libs/auth/src/*"
-      ],
-      "@hadsy/file": [
-        "libs/file/src"
-      ],
-      "@hadsy/file/*": [
-        "libs/file/src/*"
-      ],
-      "@hadsys/file": [
-        "libs/file/src"
-      ],
-      "@hadsys/file/*": [
-        "libs/file/src/*"
-      ],
-      "@hadsys/prisma": [
-        "libs/prisma/src"
-      ],
-      "@hadsys/prisma/*": [
-        "libs/prisma/src/*"
-      ],
-      "@hadsys/mail": [
-        "libs/mail/src"
-      ],
-      "@hadsys/mail/*": [
-        "libs/mail/src/*"
-      ]
+      "@hadsys/hadsys-auth": ["libs/hadsys-auth/src"],
+      "@hadsys/hadsys-auth/*": ["libs/hadsys-auth/src/*"],
+      "@hadsys/auth": ["libs/auth/src"],
+      "@hadsys/auth/*": ["libs/auth/src/*"],
+      "@hadsy/file": ["libs/file/src"],
+      "@hadsy/file/*": ["libs/file/src/*"],
+      "@hadsys/file": ["libs/file/src"],
+      "@hadsys/file/*": ["libs/file/src/*"],
+      "@hadsys/prisma": ["libs/prisma/src"],
+      "@hadsys/prisma/*": ["libs/prisma/src/*"],
+      "@hadsys/mail": ["libs/mail/src"],
+      "@hadsys/mail/*": ["libs/mail/src/*"]
     }
   }
 }

@@ -1,10 +1,10 @@
-import { createContext, ReactNode, useCallback, useEffect } from 'react'
+import { useToast } from '@/components/ui/use-toast'
+import useLocalStorage, { LocalStorageKeys } from '@/hooks/use-local-storage'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { useToast } from '../ui/use-toast'
-import useLocalStorage, {
-  LocalStorageKeys,
-} from '../../hooks/use-local-storage'
-import { decodeToken } from '../../lib/decodeToken'
+import { createContext, ReactNode, useCallback, useEffect } from 'react'
+import { Toaster } from 'sonner'
+import { decodeToken } from './decodeToken'
+import { QueryClientProvider } from './query-provider'
 
 const BASE_URL = 'http://localhost:3000'
 
@@ -32,8 +32,9 @@ export type AppProviderProps = {
   children: ReactNode
 }
 
-const AppProvider = ({ children }: AppProviderProps) => {
+export const AppProvider = ({ children }: AppProviderProps) => {
   const { toast } = useToast()
+
   const [token, setToken] = useLocalStorage({
     defaultValue: '',
     key: LocalStorageKeys.Token,
@@ -164,10 +165,9 @@ const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <>
       <AppContext.Provider value={{ login, user, request, logout }}>
-        {children}
+        <QueryClientProvider>{children}</QueryClientProvider>
+        <Toaster richColors />
       </AppContext.Provider>
     </>
   )
 }
-
-export default AppProvider

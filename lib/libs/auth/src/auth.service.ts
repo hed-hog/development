@@ -59,7 +59,7 @@ export class AuthService {
             id: user.id
           },
           data: {
-            code
+            code: String(code),
           }
         });
 
@@ -127,7 +127,7 @@ export class AuthService {
     const user = await this.prisma.users.findFirst({
       where: {
         id: data['id'],
-        code
+        code: String(code),
       }
     });
 
@@ -152,6 +152,6 @@ export class AuthService {
   }
 
   verify(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.users.findUnique({ where: { id } });
   }
 }
