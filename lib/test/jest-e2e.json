@@ -20,6 +20,8 @@
     "@hadsys/file/(.*)": "<rootDir>/../libs/file/src/$1",
     "@hadsys/file": "<rootDir>/../libs/file/src",
     "@hadsys/prisma/(.*)": "<rootDir>/../libs/prisma/src/$1",
-    "@hadsys/prisma": "<rootDir>/../libs/prisma/src"
+    "@hadsys/prisma": "<rootDir>/../libs/prisma/src",
+    "@hadsys/mail/(.*)": "<rootDir>/../libs/mail/src/$1",
+    "@hadsys/mail": "<rootDir>/../libs/mail/src"
   }
 }

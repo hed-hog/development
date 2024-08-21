@@ -47,6 +47,12 @@
       ],
       "@hadsys/prisma/*": [
         "libs/prisma/src/*"
+      ],
+      "@hadsys/mail": [
+        "libs/mail/src"
+      ],
+      "@hadsys/mail/*": [
+        "libs/mail/src/*"
       ]
     }
   }
