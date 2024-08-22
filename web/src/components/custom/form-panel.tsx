@@ -25,30 +25,41 @@ import { CalendarIcon } from 'lucide-react'
 import { ColorPicker } from './color-picker'
 import RichTextEditor from './rich-text-editor'
 import PickerSheet from './picker-sheet'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+import { Label } from '../ui/label'
+import { Checkbox } from '../ui/checkbox'
+import { Slider } from '../ui/slider'
 
-interface FormFieldOption {
+interface IFormFieldOption {
   value: string
   label: string
 }
 
-interface FormFieldProps {
+interface ISliderOption {
+  defaultValue: number[]
+  max: number
+  step: number
+}
+
+interface IFormFieldProps {
   name: string
-  label: string
+  label?: string
   type: string
   required?: boolean
   style?: CSSProperties
   description?: string
-  options?: FormFieldOption[] // Required for 'select' and 'multiselect'
+  options?: IFormFieldOption[] // Required for 'select' and 'multiselect'
+  sliderOptions?: ISliderOption
 }
 
-interface FormPanelProps {
+interface IFormPanelProps {
   title?: string
   titleStyle?: CSSProperties
   subtitle?: string
   subtitleStyle?: CSSProperties
   buttonText?: string
   buttonStyle?: CSSProperties
-  fields: FormFieldProps[]
+  fields: IFormFieldProps[]
   form: UseFormReturn<FieldValues>
   onSubmit: (data: any) => void
 }
@@ -63,8 +74,8 @@ export default function FormPanel({
   fields = [],
   form,
   onSubmit,
-}: FormPanelProps) {
-  const renderField = (field: FormFieldProps) => {
+}: IFormPanelProps) {
+  const renderField = (field: IFormFieldProps) => {
     const {
       label,
       type,
@@ -73,6 +84,11 @@ export default function FormPanel({
       description = '',
       name,
       options = [],
+      sliderOptions = {
+        defaultValue: [50],
+        max: 100,
+        step: 1,
+      },
     } = field
 
     return (
@@ -90,6 +106,44 @@ export default function FormPanel({
                 {type === 'color' && <ColorPicker />}
                 {(type === 'text' || type === 'file') && (
                   <Input required={required} type={type} {...field} />
+                )}
+                {type === 'radio' && (
+                  <RadioGroup defaultValue='comfortable'>
+                    {options.map((option) => (
+                      <div
+                        className='flex items-center space-x-2'
+                        key={option.label}
+                      >
+                        <RadioGroupItem
+                          value={option.value}
+                          id={option.value}
+                        />
+                        <Label htmlFor={option.value}>{option.label}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
+                {type === 'checkbox' &&
+                  options.map((option) => (
+                    <div
+                      className='flex items-center space-x-2'
+                      key={option.value}
+                    >
+                      <Checkbox id={option.value} />
+                      <Label
+                        htmlFor={option.value}
+                        className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  ))}
+                {type === 'range' && (
+                  <Slider
+                    defaultValue={sliderOptions.defaultValue}
+                    max={sliderOptions.max}
+                    step={sliderOptions.step}
+                  />
                 )}
                 {type === 'select' && (
                   <Select
@@ -120,7 +174,7 @@ export default function FormPanel({
                 )}
                 {type === 'datepicker' && (
                   <DatePicker
-                    label={label}
+                    label={String(label)}
                     icon={<CalendarIcon className='mr-2 h-4 w-4' />}
                     date={field.value ? new Date(field.value) : undefined}
                     onDateChange={(date) => field.onChange(date)}
@@ -130,7 +184,7 @@ export default function FormPanel({
                   <PickerSheet
                     onValueChange={() => {}}
                     options={options}
-                    title={label}
+                    title={String(label)}
                     buttonText='Salvar'
                   />
                 )}
