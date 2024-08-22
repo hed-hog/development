@@ -69,10 +69,6 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
     onValueChange(newSelectedValues)
   }
 
-  const handleValueChange = (values: string[]) => {
-    setSelectedValues(values)
-  }
-
   return (
     <Sheet>
       <SheetTrigger asChild className='h-15 w-full p-0'>
@@ -80,7 +76,8 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
           <MultiSelect
             options={options}
             defaultValue={[]}
-            onValueChange={handleValueChange}
+            value={defaultValue || []}
+            onChange={() => {}}
           />
         </Button>
       </SheetTrigger>

@@ -20,70 +20,113 @@ export default function MyForm() {
     { value: 'RJ', label: 'Rio de Janeiro' },
   ]
 
-  const fields = [
+  const fields: any[] = [
     {
       name: 'username',
-      label: 'Username',
+      label: {
+        text: 'Username',
+        style: { fontWeight: 'bold' },
+      },
+      element: {
+        style: { borderRadius: 25, borderColor: 'yellow' },
+      },
       type: 'text',
       required: true,
-      description: 'This is your public display name.',
+      description: {
+        text: 'This is your public display name.',
+        style: { color: 'gray' },
+      },
     },
     {
       name: 'email',
-      label: 'Email',
+      label: {
+        text: 'Email',
+        style: { fontWeight: 'bold' },
+      },
       type: 'text',
       required: true,
     },
     {
       name: 'birthdate',
-      label: 'Birthdate',
+      label: {
+        text: 'Birthdate',
+        style: { fontWeight: 'bold' },
+      },
+      calendar: {
+        style: { color: 'yellow' },
+      },
+      element: {
+        style: {
+          color: 'yellow',
+        },
+      },
       type: 'datepicker',
       required: true,
     },
     {
       name: 'country',
-      label: 'Country',
+      label: {
+        text: 'Country',
+        style: { fontWeight: 'bold' },
+      },
       type: 'select',
       required: true,
       options: countryOptionExample,
     },
     {
       name: 'color',
-      label: 'Color',
+      label: {
+        text: 'Color',
+        style: { fontWeight: 'bold' },
+      },
       type: 'color',
     },
     {
       name: 'description',
-      label: 'Description',
+      label: {
+        text: 'Description',
+        style: { fontWeight: 'bold' },
+      },
       type: 'richtext',
     },
     {
       name: 'city',
-      label: 'City',
+      label: {
+        text: 'City',
+        style: { fontWeight: 'bold' },
+      },
       type: 'multiselect',
       required: true,
       options: cityOptionExample,
     },
-    // {
-    //   name: 'cities',
-    //   label: 'Cities',
-    //   type: 'pickersheet',
-    //   options: cityOptionExample,
-    // },
+    {
+      name: 'cities',
+      label: {
+        text: 'Cities',
+        style: { fontWeight: 'bold' },
+      },
+      type: 'pickersheet',
+      options: cityOptionExample,
+    },
     {
       name: 'files',
-      label: 'Arquivos',
+      label: {
+        text: 'Arquivos',
+        style: { fontWeight: 'bold' },
+      },
       type: 'file',
     },
     {
       name: 'cidades',
-      label: 'Cidades',
+      label: {
+        text: 'Cidades',
+        style: { fontWeight: 'bold' },
+      },
       type: 'radio',
       options: cityOptionExample,
     },
     {
       name: 'terms',
-      // label: 'Aceite os termos de uso',
       type: 'checkbox',
       options: [
         {
@@ -93,8 +136,11 @@ export default function MyForm() {
       ],
     },
     {
-      label: 'Milhar',
       name: 'percentage',
+      label: {
+        text: 'Milhar',
+        style: { fontWeight: 'bold' },
+      },
       type: 'range',
       sliderOptions: {
         defaultValue: [500],
@@ -108,8 +154,14 @@ export default function MyForm() {
     <Card className='mx-auto w-[620px]'>
       <CardContent>
         <FormPanel
-          title='User Registration'
-          subtitle='Please fill in the form to register.'
+          title={{
+            text: 'User Registration',
+            style: { fontSize: '1.5rem', fontWeight: 'bold' },
+          }}
+          subtitle={{
+            text: 'Please fill in the form to register.',
+            style: { fontSize: '1rem', color: 'gray' },
+          }}
           fields={fields}
           form={form}
           onSubmit={onSubmit}

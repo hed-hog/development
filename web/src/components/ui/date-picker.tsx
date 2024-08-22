@@ -16,6 +16,9 @@ interface IDatePickerProps {
   date?: Date
   onDateChange?: (date: Date) => void
   style?: CSSProperties
+  calendar?: {
+    style?: CSSProperties
+  }
   className?: string
 }
 
@@ -25,6 +28,7 @@ export default function DatePicker({
   date,
   onDateChange,
   style,
+  calendar,
   className,
 }: IDatePickerProps) {
   const [open, setOpen] = useState(false)
@@ -45,8 +49,9 @@ export default function DatePicker({
           {date ? format(date, 'dd/MM/yyyy') : <span>{label}</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='p-0'>
+      <PopoverContent className='align-center flex justify-center p-0'>
         <Calendar
+          style={calendar?.style}
           mode='single'
           selected={date}
           onSelect={(date) => {

@@ -43,40 +43,56 @@ interface ISliderOption {
 
 interface IFormFieldProps {
   name: string
-  label?: string
-  labelClassName?: string
-  labelStyle?: string
-  type: string
-  containerClassName?: string
-  containerStyle?: CSSProperties
-  elementClassName?: string
-  elementStyle?: CSSProperties
+  label?: {
+    text?: string
+    className?: string
+    style?: CSSProperties
+  }
+  description?: {
+    text?: string
+    className?: string
+    style?: CSSProperties
+  }
+  container?: {
+    className?: string
+    style?: CSSProperties
+  }
+  calendar?: {
+    // only for datePicker
+    style?: CSSProperties
+  }
+  element?: {
+    className?: string
+    style?: CSSProperties
+  }
   required?: boolean
-  formStyle?: CSSProperties
-  description?: string
-  options?: IFormFieldOption[] // Required for 'select' and 'multiselect'
+  type: string
+  options?: IFormFieldOption[]
   sliderOptions?: ISliderOption
 }
 
 interface IFormPanelProps {
-  title?: string
-  titleStyle?: CSSProperties
-  subtitle?: string
-  subtitleStyle?: CSSProperties
-  buttonText?: string
-  buttonStyle?: CSSProperties
+  title?: {
+    text?: string
+    style?: CSSProperties
+  }
+  subtitle?: {
+    text?: string
+    style?: CSSProperties
+  }
+  button?: {
+    text?: string
+    style?: CSSProperties
+  }
   fields: IFormFieldProps[]
   form: UseFormReturn<FieldValues>
   onSubmit: (data: any) => void
 }
 
 export default function FormPanel({
-  title = '',
-  titleStyle = {},
-  subtitle = '',
-  subtitleStyle = {},
-  buttonText = 'Submit',
-  buttonStyle = {},
+  title = {},
+  subtitle = {},
+  button = {},
   fields = [],
   form,
   onSubmit,
@@ -84,17 +100,13 @@ export default function FormPanel({
   const renderField = (field: IFormFieldProps, index: number) => {
     const {
       label,
-      labelClassName = '',
-      labelStyle = {},
-      type,
+      description,
+      container = {},
+      element = {},
+      calendar = {},
       required,
-      formStyle = {},
-      description = '',
+      type,
       name,
-      elementClassName = '',
-      elementStyle = {},
-      containerClassName = '',
-      containerStyle = {},
       options = [],
       sliderOptions = {
         defaultValue: [50],
@@ -109,10 +121,10 @@ export default function FormPanel({
         name={name}
         key={index}
         render={({ field }) => (
-          <FormItem style={formStyle}>
-            {label && (
-              <FormLabel className={labelClassName} style={labelStyle}>
-                {label}
+          <FormItem style={container.style} className={container.className}>
+            {label?.text && (
+              <FormLabel style={label.style} className={label.className}>
+                {label.text}
               </FormLabel>
             )}
             <FormControl>
@@ -128,8 +140,8 @@ export default function FormPanel({
                 )}
                 {(type === 'text' || type === 'file') && (
                   <Input
-                    className={elementClassName}
-                    style={elementStyle}
+                    className={element.className}
+                    style={element.style}
                     required={required}
                     type={type}
                     value={field.value || ''}
@@ -144,15 +156,15 @@ export default function FormPanel({
                   >
                     {options.map((option) => (
                       <div
-                        className={`flex items-center space-x-2 ${containerClassName}`}
-                        style={containerStyle}
+                        className={`flex items-center space-x-2 ${container.className || ''}`}
+                        style={container.style}
                         key={option.label}
                       >
                         <RadioGroupItem
                           value={option.value}
                           id={option.value}
-                          className={elementClassName}
-                          style={elementStyle}
+                          className={element.className}
+                          style={element.style}
                         />
                         <Label htmlFor={option.value}>{option.label}</Label>
                       </div>
@@ -162,9 +174,9 @@ export default function FormPanel({
                 {type === 'checkbox' &&
                   options.map((option) => (
                     <div
-                      className={`flex items-center ${containerClassName} space-x-2`}
+                      className={`flex items-center space-x-2 ${container.className || ''}`}
                       key={option.value}
-                      style={containerStyle}
+                      style={container.style}
                     >
                       <Checkbox
                         checked={
@@ -182,12 +194,12 @@ export default function FormPanel({
                           field.onChange(newValue)
                         }}
                         id={option.value}
-                        className={elementClassName}
-                        style={elementStyle}
+                        className={element.className}
+                        style={element.style}
                       />
                       <Label
                         htmlFor={option.value}
-                        className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                        className='text-sm font-medium leading-none'
                       >
                         {option.label}
                       </Label>
@@ -196,12 +208,12 @@ export default function FormPanel({
 
                 {type === 'range' && (
                   <div
-                    className={`flex items-center ${containerClassName} space-x-2`}
-                    style={containerStyle}
+                    className={`flex items-center space-x-2 ${container.className || ''}`}
+                    style={container.style}
                   >
                     <Slider
-                      style={elementStyle}
-                      className={elementClassName}
+                      className={element.className}
+                      style={element.style}
                       defaultValue={sliderOptions.defaultValue}
                       max={sliderOptions.max}
                       step={sliderOptions.step}
@@ -218,17 +230,17 @@ export default function FormPanel({
                     onValueChange={(value) => field.onChange(value)}
                   >
                     <SelectTrigger className='w-full'>
-                      <SelectValue placeholder={label} />
+                      <SelectValue placeholder={label?.text} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup
-                        className={containerClassName}
-                        style={containerStyle}
+                        className={container.className}
+                        style={container.style}
                       >
                         {options.map((option, index) => (
                           <SelectItem
-                            style={elementStyle}
-                            className={elementClassName}
+                            style={element.style}
+                            className={element.className}
                             key={index}
                             value={option.value}
                           >
@@ -241,8 +253,8 @@ export default function FormPanel({
                 )}
                 {type === 'multiselect' && (
                   <MultiSelect
-                    className={elementClassName}
-                    style={elementStyle}
+                    className={element.className}
+                    style={element.style}
                     value={field.value || []}
                     onChange={field.onChange}
                     options={options}
@@ -250,9 +262,10 @@ export default function FormPanel({
                 )}
                 {type === 'datepicker' && (
                   <DatePicker
-                    className={elementClassName}
-                    style={elementStyle}
-                    label={String(label)}
+                    className={element.className}
+                    style={element.style}
+                    calendar={calendar}
+                    label={String(label?.text)}
                     icon={<CalendarIcon className='mr-2 h-4 w-4' />}
                     date={field.value ? new Date(field.value) : undefined}
                     onDateChange={(date) => field.onChange(date)}
@@ -262,13 +275,20 @@ export default function FormPanel({
                   <PickerSheet
                     onValueChange={() => {}}
                     options={options}
-                    title={String(label)}
+                    title={String(label?.text)}
                     buttonText='Salvar'
                   />
                 )}
               </>
             </FormControl>
-            {description && <FormDescription>{description}</FormDescription>}
+            {description?.text && (
+              <FormDescription
+                style={description.style}
+                className={description.className}
+              >
+                {description.text}
+              </FormDescription>
+            )}
             <FormMessage />
           </FormItem>
         )}
@@ -279,19 +299,19 @@ export default function FormPanel({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        {title && (
-          <h1 style={titleStyle} className='text-xl font-bold'>
-            {title}
+        {title.text && (
+          <h1 style={title.style} className='text-xl font-bold'>
+            {title.text}
           </h1>
         )}
-        {subtitle && (
-          <h3 style={subtitleStyle} className='text-lg'>
-            {subtitle}
+        {subtitle.text && (
+          <h3 style={subtitle.style} className='text-lg'>
+            {subtitle.text}
           </h3>
         )}
         {fields.map((field, index) => renderField(field, index))}
-        <Button type='submit' style={buttonStyle} className='w-full'>
-          {buttonText}
+        <Button type='submit' style={button.style} className='w-full'>
+          {button.text}
         </Button>
       </form>
     </Form>
