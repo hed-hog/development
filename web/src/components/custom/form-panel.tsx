@@ -81,14 +81,16 @@ export default function FormPanel({
         name={name}
         render={({ field }) => (
           <FormItem style={style}>
-            <FormLabel>{label}</FormLabel>
+            {label && <FormLabel>{label}</FormLabel>}
             <FormControl>
               <>
                 {type === 'richtext' && (
                   <RichTextEditor value='' onChange={() => {}} />
                 )}
                 {type === 'color' && <ColorPicker />}
-                {type === 'text' && <Input required={required} {...field} />}
+                {(type === 'text' || type === 'file') && (
+                  <Input required={required} type={type} {...field} />
+                )}
                 {type === 'select' && (
                   <Select
                     required={required}
@@ -118,7 +120,7 @@ export default function FormPanel({
                 )}
                 {type === 'datepicker' && (
                   <DatePicker
-                    label='Pick a date'
+                    label={label}
                     icon={<CalendarIcon className='mr-2 h-4 w-4' />}
                     date={field.value ? new Date(field.value) : undefined}
                     onDateChange={(date) => field.onChange(date)}
@@ -128,8 +130,7 @@ export default function FormPanel({
                   <PickerSheet
                     onValueChange={() => {}}
                     options={options}
-                    title='Escolha sua cidade'
-                    subtitle='Faça sua escolha'
+                    title={label}
                     buttonText='Salvar'
                   />
                 )}
