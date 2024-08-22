@@ -1,8 +1,11 @@
 {
   "name": "auth",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {},
+  "main": "dist/index.js",
+  "scripts": {
+    "prod": "git add . && git commit -m 'prepare' && git version patch && git push && npm run build && npm publish",
+    "build": "nest build"
+  },
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -10,6 +13,11 @@
   "peerDependencies": {
     "hadsys-prisma": "^0.0.2",
     "@nestjs/jwt": "^10.2.0",
-    "bcrypt": "^5.1.1"
-  }
+    "bcrypt": "^5.1.1",
+    "typeorm": "^0.3.20"
+  },
+  "files": [
+    "dist/**/*",
+    "migration/index.ts"
+  ]
 }
