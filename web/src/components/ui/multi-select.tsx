@@ -28,8 +28,36 @@ interface MultiSelectProps {
   value: string[]
   onChange: (value: string[]) => void
   placeholder?: string
-  className?: string
-  style?: React.CSSProperties
+  trigger?: {
+    // only for select and multiselect
+    className?: string
+    style?: React.CSSProperties
+  }
+  badge?: {
+    // only for multiselect
+    className?: string
+    style?: React.CSSProperties
+  }
+  actionButtons?: {
+    // only for multiselect
+    className?: string
+    style?: React.CSSProperties
+  }
+  items?: {
+    // only for multiselect
+    className?: string
+    style?: React.CSSProperties
+  }
+  search?: {
+    // only for multiselect
+    className?: string
+    style?: React.CSSProperties
+  }
+  checkbox?: {
+    // only for multiselect
+    className?: string
+    style?: React.CSSProperties
+  }
   defaultValue?: string[]
   animation?: number
 }
@@ -46,8 +74,12 @@ export const MultiSelect = React.forwardRef<
       placeholder = 'Select options',
       animation = 0,
       defaultValue = [],
-      className,
-      style,
+      trigger,
+      badge,
+      actionButtons,
+      items,
+      search,
+      checkbox,
       ...props
     },
     ref
@@ -91,9 +123,9 @@ export const MultiSelect = React.forwardRef<
             onClick={handleTogglePopover}
             className={cn(
               'flex h-auto min-h-10 w-full items-center justify-between rounded-md border bg-inherit p-1 hover:bg-inherit',
-              className
+              trigger?.className
             )}
-            style={style}
+            style={trigger?.style}
           >
             {value.length > 0 ? (
               <div className='flex w-full items-center justify-between'>
@@ -104,6 +136,7 @@ export const MultiSelect = React.forwardRef<
                       <Badge
                         key={val}
                         className={cn(
+                          badge?.className,
                           'mr-2 flex items-center text-sm',
                           animation ? 'animate-bounce' : ''
                         )}
@@ -135,7 +168,11 @@ export const MultiSelect = React.forwardRef<
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0' align='start'>
           <Command>
-            <CommandInput placeholder='Search...' />
+            <CommandInput
+              placeholder='Search...'
+              className={search?.className}
+              style={search?.style}
+            />
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
@@ -143,14 +180,18 @@ export const MultiSelect = React.forwardRef<
                   <CommandItem
                     key={option.value}
                     onSelect={() => toggleOption(option.value)}
+                    className={items?.className}
+                    style={items?.style}
                   >
                     <div
                       className={cn(
+                        checkbox?.className,
                         'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
                         value.includes(option.value)
                           ? 'bg-primary text-primary-foreground'
                           : 'opacity-50'
                       )}
+                      style={checkbox?.style}
                     >
                       <CheckIcon className='h-4 w-4' />
                     </div>
@@ -163,15 +204,17 @@ export const MultiSelect = React.forwardRef<
                 <div className='flex items-center justify-between'>
                   <CommandItem
                     onSelect={handleClear}
-                    className='flex-1 cursor-pointer justify-center'
+                    className={`${actionButtons?.className} flex-1 cursor-pointer justify-center`}
+                    style={actionButtons?.style}
                   >
-                    Clear
+                    Limpar
                   </CommandItem>
                   <CommandItem
                     onSelect={() => setIsPopoverOpen(false)}
-                    className='max-w-full flex-1 cursor-pointer justify-center'
+                    className={`${actionButtons?.className} max-w-full flex-1 cursor-pointer justify-center`}
+                    style={actionButtons?.style}
                   >
-                    Close
+                    Fechar
                   </CommandItem>
                 </div>
               </CommandGroup>

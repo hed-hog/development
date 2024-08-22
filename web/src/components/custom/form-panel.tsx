@@ -29,6 +29,7 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Label } from '../ui/label'
 import { Checkbox } from '../ui/checkbox'
 import { Slider } from '../ui/slider'
+import { PasswordInput } from './password-input'
 
 interface IFormFieldOption {
   value: string
@@ -64,6 +65,36 @@ interface IFormFieldProps {
   element?: {
     className?: string
     style?: CSSProperties
+  }
+  trigger?: {
+    // only for select and multiselect
+    className?: string
+    style?: CSSProperties
+  }
+  badge?: {
+    // only for multiselect
+    className?: string
+    style?: CSSProperties
+  }
+  actionButtons?: {
+    // only for multiselect
+    className?: string
+    style?: CSSProperties
+  }
+  items?: {
+    // only for multiselect
+    className?: string
+    style?: CSSProperties
+  }
+  search?: {
+    // only for multiselect
+    className?: string
+    style?: React.CSSProperties
+  }
+  checkbox?: {
+    // only for multiselect
+    className?: string
+    style?: React.CSSProperties
   }
   required?: boolean
   type: string
@@ -104,6 +135,10 @@ export default function FormPanel({
       container = {},
       element = {},
       calendar = {},
+      trigger = {},
+      badge = {},
+      actionButtons = {},
+      items = {},
       required,
       type,
       name,
@@ -133,6 +168,7 @@ export default function FormPanel({
                   <RichTextEditor
                     value={field.value}
                     onChange={field.onChange}
+                    className='bg-black'
                   />
                 )}
                 {type === 'color' && (
@@ -148,6 +184,15 @@ export default function FormPanel({
                     onChange={field.onChange}
                   />
                 )}
+                {type === 'password' && (
+                  <PasswordInput
+                    className={element.className}
+                    style={element.style}
+                    required={required}
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                  />
+                )}
                 {type === 'radio' && (
                   <RadioGroup
                     defaultValue='comfortable'
@@ -156,7 +201,7 @@ export default function FormPanel({
                   >
                     {options.map((option) => (
                       <div
-                        className={`flex items-center space-x-2 ${container.className || ''}`}
+                        className={`flex items-center space-x-2 ${container?.className}`}
                         style={container.style}
                         key={option.label}
                       >
@@ -166,7 +211,13 @@ export default function FormPanel({
                           className={element.className}
                           style={element.style}
                         />
-                        <Label htmlFor={option.value}>{option.label}</Label>
+                        <Label
+                          htmlFor={option.value}
+                          className={label?.className}
+                          style={label?.style}
+                        >
+                          {option.label}
+                        </Label>
                       </div>
                     ))}
                   </RadioGroup>
@@ -199,7 +250,8 @@ export default function FormPanel({
                       />
                       <Label
                         htmlFor={option.value}
-                        className='text-sm font-medium leading-none'
+                        className={`${label?.className} text-sm font-medium leading-none`}
+                        style={label?.style}
                       >
                         {option.label}
                       </Label>
@@ -229,7 +281,7 @@ export default function FormPanel({
                     value={field.value}
                     onValueChange={(value) => field.onChange(value)}
                   >
-                    <SelectTrigger className='w-full'>
+                    <SelectTrigger className='w-full' style={trigger.style}>
                       <SelectValue placeholder={label?.text} />
                     </SelectTrigger>
                     <SelectContent>
@@ -253,8 +305,10 @@ export default function FormPanel({
                 )}
                 {type === 'multiselect' && (
                   <MultiSelect
-                    className={element.className}
-                    style={element.style}
+                    actionButtons={actionButtons}
+                    badge={badge}
+                    items={items}
+                    trigger={trigger}
                     value={field.value || []}
                     onChange={field.onChange}
                     options={options}

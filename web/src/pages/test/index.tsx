@@ -28,7 +28,7 @@ export default function MyForm() {
         style: { fontWeight: 'bold' },
       },
       element: {
-        style: { borderRadius: 25, borderColor: 'yellow' },
+        style: { borderRadius: 25, borderColor: 'white' },
       },
       type: 'text',
       required: true,
@@ -53,11 +53,11 @@ export default function MyForm() {
         style: { fontWeight: 'bold' },
       },
       calendar: {
-        style: { color: 'yellow' },
+        style: { color: 'white' },
       },
       element: {
         style: {
-          color: 'yellow',
+          color: 'white',
         },
       },
       type: 'datepicker',
@@ -67,7 +67,13 @@ export default function MyForm() {
       name: 'country',
       label: {
         text: 'Country',
-        style: { fontWeight: 'bold' },
+        style: { fontWeight: 'bold', color: 'white' },
+      },
+      element: {
+        style: { color: 'white' },
+      },
+      trigger: {
+        style: { color: 'white' },
       },
       type: 'select',
       required: true,
@@ -95,6 +101,9 @@ export default function MyForm() {
         text: 'City',
         style: { fontWeight: 'bold' },
       },
+      badge: {
+        className: 'bg-red-500',
+      },
       type: 'multiselect',
       required: true,
       options: cityOptionExample,
@@ -120,9 +129,14 @@ export default function MyForm() {
       name: 'cidades',
       label: {
         text: 'Cidades',
-        style: { fontWeight: 'bold' },
+        style: { fontWeight: 'bold', color: 'white' },
       },
       type: 'radio',
+      element: {
+        style: {
+          backgroundColor: 'red',
+        },
+      },
       options: cityOptionExample,
     },
     {
@@ -134,6 +148,16 @@ export default function MyForm() {
           label: 'Aceite os termos de uso.',
         },
       ],
+      element: {
+        style: {
+          backgroundColor: 'green',
+        },
+      },
+      label: {
+        style: {
+          color: 'red',
+        },
+      },
     },
     {
       name: 'percentage',
@@ -141,11 +165,24 @@ export default function MyForm() {
         text: 'Milhar',
         style: { fontWeight: 'bold' },
       },
+      element: {
+        className: 'bg-red-500',
+      },
       type: 'range',
       sliderOptions: {
         defaultValue: [500],
         max: 1000,
         step: 100,
+      },
+    },
+    {
+      name: 'password',
+      label: {
+        text: 'Sua Senha',
+      },
+      type: 'password',
+      element: {
+        style: { color: 'yellow' },
       },
     },
   ]
@@ -156,7 +193,11 @@ export default function MyForm() {
         <FormPanel
           title={{
             text: 'User Registration',
-            style: { fontSize: '1.5rem', fontWeight: 'bold' },
+            style: {
+              fontSize: '1.5rem',
+              paddingTop: '1rem',
+              fontWeight: 'bold',
+            },
           }}
           subtitle={{
             text: 'Please fill in the form to register.',
