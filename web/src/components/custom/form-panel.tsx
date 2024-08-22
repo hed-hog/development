@@ -44,9 +44,15 @@ interface ISliderOption {
 interface IFormFieldProps {
   name: string
   label?: string
+  labelClassName?: string
+  labelStyle?: string
   type: string
+  containerClassName?: string
+  containerStyle?: CSSProperties
+  elementClassName?: string
+  elementStyle?: CSSProperties
   required?: boolean
-  style?: CSSProperties
+  formStyle?: CSSProperties
   description?: string
   options?: IFormFieldOption[] // Required for 'select' and 'multiselect'
   sliderOptions?: ISliderOption
@@ -78,11 +84,17 @@ export default function FormPanel({
   const renderField = (field: IFormFieldProps) => {
     const {
       label,
+      labelClassName = '',
+      labelStyle = {},
       type,
       required,
-      style = {},
+      formStyle = {},
       description = '',
       name,
+      elementClassName = '',
+      elementStyle = {},
+      containerClassName = '',
+      containerStyle = {},
       options = [],
       sliderOptions = {
         defaultValue: [50],
@@ -96,8 +108,12 @@ export default function FormPanel({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem style={style}>
-            {label && <FormLabel>{label}</FormLabel>}
+          <FormItem style={formStyle}>
+            {label && (
+              <FormLabel className={labelClassName} style={labelStyle}>
+                {label}
+              </FormLabel>
+            )}
             <FormControl>
               <>
                 {type === 'richtext' && (
@@ -105,18 +121,27 @@ export default function FormPanel({
                 )}
                 {type === 'color' && <ColorPicker />}
                 {(type === 'text' || type === 'file') && (
-                  <Input required={required} type={type} {...field} />
+                  <Input
+                    className={elementClassName}
+                    style={elementStyle}
+                    required={required}
+                    type={type}
+                    {...field}
+                  />
                 )}
                 {type === 'radio' && (
                   <RadioGroup defaultValue='comfortable'>
                     {options.map((option) => (
                       <div
-                        className='flex items-center space-x-2'
+                        className={`flex items-center space-x-2 ${containerClassName}`}
+                        style={containerStyle}
                         key={option.label}
                       >
                         <RadioGroupItem
                           value={option.value}
                           id={option.value}
+                          className={elementClassName}
+                          style={elementStyle}
                         />
                         <Label htmlFor={option.value}>{option.label}</Label>
                       </div>
@@ -126,10 +151,15 @@ export default function FormPanel({
                 {type === 'checkbox' &&
                   options.map((option) => (
                     <div
-                      className='flex items-center space-x-2'
+                      className={`flex items-center ${containerClassName} space-x-2`}
                       key={option.value}
+                      style={containerStyle}
                     >
-                      <Checkbox id={option.value} />
+                      <Checkbox
+                        id={option.value}
+                        className={elementClassName}
+                        style={elementStyle}
+                      />
                       <Label
                         htmlFor={option.value}
                         className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
@@ -140,6 +170,8 @@ export default function FormPanel({
                   ))}
                 {type === 'range' && (
                   <Slider
+                    style={elementStyle}
+                    className={elementClassName}
                     defaultValue={sliderOptions.defaultValue}
                     max={sliderOptions.max}
                     step={sliderOptions.step}
@@ -151,13 +183,21 @@ export default function FormPanel({
                     value={field.value}
                     onValueChange={(value) => field.onChange(value)}
                   >
-                    <SelectTrigger className='w-full' style={style}>
+                    <SelectTrigger className='w-full'>
                       <SelectValue placeholder={label} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectGroup>
+                      <SelectGroup
+                        className={containerClassName}
+                        style={containerStyle}
+                      >
                         {options.map((option, index) => (
-                          <SelectItem key={index} value={option.value}>
+                          <SelectItem
+                            style={elementStyle}
+                            className={elementClassName}
+                            key={index}
+                            value={option.value}
+                          >
                             {option.label}
                           </SelectItem>
                         ))}
@@ -167,6 +207,8 @@ export default function FormPanel({
                 )}
                 {type === 'multiselect' && (
                   <MultiSelect
+                    className={elementClassName}
+                    style={elementStyle}
                     options={options}
                     defaultValue={[]}
                     onValueChange={() => {}}
@@ -174,6 +216,8 @@ export default function FormPanel({
                 )}
                 {type === 'datepicker' && (
                   <DatePicker
+                    className={elementClassName}
+                    style={elementStyle}
                     label={String(label)}
                     icon={<CalendarIcon className='mr-2 h-4 w-4' />}
                     date={field.value ? new Date(field.value) : undefined}

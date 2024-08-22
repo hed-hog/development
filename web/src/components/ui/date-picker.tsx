@@ -16,6 +16,7 @@ interface IDatePickerProps {
   date?: Date
   onDateChange?: (date: Date) => void
   style?: CSSProperties
+  className?: string
 }
 
 export default function DatePicker({
@@ -24,6 +25,7 @@ export default function DatePicker({
   date,
   onDateChange,
   style,
+  className,
 }: IDatePickerProps) {
   const [open, setOpen] = useState(false)
 
@@ -35,7 +37,8 @@ export default function DatePicker({
           style={style}
           className={cn(
             'w-full justify-start text-left font-normal',
-            !date && 'text-muted-foreground'
+            !date && 'text-muted-foreground',
+            className
           )}
         >
           {icon}

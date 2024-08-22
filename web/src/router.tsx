@@ -23,6 +23,12 @@ const router = createBrowserRouter([
       Component: (await import('./pages/auth/otp')).default,
     }),
   },
+  {
+    path: '/form-example',
+    lazy: async () => ({
+      Component: (await import('./pages/test')).default,
+    }),
+  },
 
   // Main routes
   {
