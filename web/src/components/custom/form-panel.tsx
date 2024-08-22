@@ -22,6 +22,9 @@ import DatePicker from '../ui/date-picker'
 import { MultiSelect } from '../ui/multi-select'
 import { Button } from './button'
 import { CalendarIcon } from 'lucide-react'
+import { ColorPicker } from './color-picker'
+import RichTextEditor from './rich-text-editor'
+import PickerSheet from './picker-sheet'
 
 interface FormFieldOption {
   value: string
@@ -81,6 +84,10 @@ export default function FormPanel({
             <FormLabel>{label}</FormLabel>
             <FormControl>
               <>
+                {type === 'richtext' && (
+                  <RichTextEditor value='' onChange={() => {}} />
+                )}
+                {type === 'color' && <ColorPicker />}
                 {type === 'text' && <Input required={required} {...field} />}
                 {type === 'select' && (
                   <Select
@@ -115,6 +122,15 @@ export default function FormPanel({
                     icon={<CalendarIcon className='mr-2 h-4 w-4' />}
                     date={field.value ? new Date(field.value) : undefined}
                     onDateChange={(date) => field.onChange(date)}
+                  />
+                )}
+                {type === 'pickersheet' && (
+                  <PickerSheet
+                    onValueChange={() => {}}
+                    options={options}
+                    title='Escolha sua cidade'
+                    subtitle='Faça sua escolha'
+                    buttonText='Salvar'
                   />
                 )}
               </>
