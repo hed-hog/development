@@ -1,5 +1,3 @@
-'use client'
-
 import { Button } from '@/components/custom/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -10,19 +8,24 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import { Paintbrush } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
-export function ColorPicker() {
-  const [background, setBackground] = useState(
+interface ColorPickerProps {
+  value: string
+  onChange: (value: string) => void
+}
+
+export function ColorPicker({ value, onChange }: ColorPickerProps) {
+  const background =
+    value ||
     'linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)'
-  )
 
   return (
     <div
       className='preview flex h-full max-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all'
       style={{ background }}
     >
-      <GradientPicker background={background} setBackground={setBackground} />
+      <GradientPicker background={background} setBackground={onChange} />
     </div>
   )
 }

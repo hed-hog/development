@@ -16,8 +16,8 @@ export default function MyForm() {
   ]
 
   const cityOptionExample = [
-    { value: 'sp', label: 'São Paulo' },
-    { value: 'rj', label: 'Rio de Janeiro' },
+    { value: 'SP', label: 'São Paulo' },
+    { value: 'RJ', label: 'Rio de Janeiro' },
   ]
 
   const fields = [
@@ -64,12 +64,12 @@ export default function MyForm() {
       required: true,
       options: cityOptionExample,
     },
-    {
-      name: 'cities',
-      label: 'Cities',
-      type: 'pickersheet',
-      options: cityOptionExample,
-    },
+    // {
+    //   name: 'cities',
+    //   label: 'Cities',
+    //   type: 'pickersheet',
+    //   options: cityOptionExample,
+    // },
     {
       name: 'files',
       label: 'Arquivos',

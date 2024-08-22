@@ -81,7 +81,7 @@ export default function FormPanel({
   form,
   onSubmit,
 }: IFormPanelProps) {
-  const renderField = (field: IFormFieldProps) => {
+  const renderField = (field: IFormFieldProps, index: number) => {
     const {
       label,
       labelClassName = '',
@@ -107,6 +107,7 @@ export default function FormPanel({
       <FormField
         control={form.control}
         name={name}
+        key={index}
         render={({ field }) => (
           <FormItem style={formStyle}>
             {label && (
@@ -117,20 +118,30 @@ export default function FormPanel({
             <FormControl>
               <>
                 {type === 'richtext' && (
-                  <RichTextEditor value='' onChange={() => {}} />
+                  <RichTextEditor
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 )}
-                {type === 'color' && <ColorPicker />}
+                {type === 'color' && (
+                  <ColorPicker value={field.value} onChange={field.onChange} />
+                )}
                 {(type === 'text' || type === 'file') && (
                   <Input
                     className={elementClassName}
                     style={elementStyle}
                     required={required}
                     type={type}
-                    {...field}
+                    value={field.value || ''}
+                    onChange={field.onChange}
                   />
                 )}
                 {type === 'radio' && (
-                  <RadioGroup defaultValue='comfortable'>
+                  <RadioGroup
+                    defaultValue='comfortable'
+                    value={field.value}
+                    onChange={(value) => field.onChange(value)}
+                  >
                     {options.map((option) => (
                       <div
                         className={`flex items-center space-x-2 ${containerClassName}`}
@@ -156,6 +167,20 @@ export default function FormPanel({
                       style={containerStyle}
                     >
                       <Checkbox
+                        checked={
+                          Array.isArray(field.value)
+                            ? field.value.includes(option.value)
+                            : false
+                        }
+                        onCheckedChange={(checked) => {
+                          const newValue = checked
+                            ? [...(field.value || []), option.value]
+                            : (field.value || []).filter(
+                                (value: string) => value !== option.value
+                              )
+
+                          field.onChange(newValue)
+                        }}
                         id={option.value}
                         className={elementClassName}
                         style={elementStyle}
@@ -168,14 +193,23 @@ export default function FormPanel({
                       </Label>
                     </div>
                   ))}
+
                 {type === 'range' && (
-                  <Slider
-                    style={elementStyle}
-                    className={elementClassName}
-                    defaultValue={sliderOptions.defaultValue}
-                    max={sliderOptions.max}
-                    step={sliderOptions.step}
-                  />
+                  <div
+                    className={`flex items-center ${containerClassName} space-x-2`}
+                    style={containerStyle}
+                  >
+                    <Slider
+                      style={elementStyle}
+                      className={elementClassName}
+                      defaultValue={sliderOptions.defaultValue}
+                      max={sliderOptions.max}
+                      step={sliderOptions.step}
+                      value={field.value || sliderOptions.defaultValue}
+                      onValueChange={(value) => field.onChange(value)}
+                    />
+                    <Label>{field.value || sliderOptions.defaultValue}</Label>
+                  </div>
                 )}
                 {type === 'select' && (
                   <Select
@@ -209,9 +243,9 @@ export default function FormPanel({
                   <MultiSelect
                     className={elementClassName}
                     style={elementStyle}
+                    value={field.value || []}
+                    onChange={field.onChange}
                     options={options}
-                    defaultValue={[]}
-                    onValueChange={() => {}}
                   />
                 )}
                 {type === 'datepicker' && (
@@ -255,7 +289,7 @@ export default function FormPanel({
             {subtitle}
           </h3>
         )}
-        {fields.map((field) => renderField(field))}
+        {fields.map((field, index) => renderField(field, index))}
         <Button type='submit' style={buttonStyle} className='w-full'>
           {buttonText}
         </Button>
