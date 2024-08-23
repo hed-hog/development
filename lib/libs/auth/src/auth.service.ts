@@ -2,21 +2,21 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { ForgetDTO } from './dto/forget.dto';
-import { PrismaService } from 'hadsys-prisma';
+import { PrismaService } from '@hedhog/prisma';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { MultifactorType } from './enums/multifactor-type.enum';
 
 @Injectable()
 export class AuthService {
-
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwt: JwtService
-  ) { }
+    private readonly jwt: JwtService,
+  ) {}
 
   generateRandomString(length: number): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
@@ -50,17 +50,16 @@ export class AuthService {
     if (!user.multifactor_id) {
       return this.getToken(user);
     } else {
-
       if (user.multifactor_id === MultifactorType.EMAIL) {
         const code = this.generateRandomNumber();
 
         await this.prisma.users.update({
           where: {
-            id: user.id
+            id: user.id,
           },
           data: {
             code: String(code),
-          }
+          },
         });
 
         //Send email...
@@ -69,16 +68,14 @@ export class AuthService {
       return {
         token: this.jwt.sign({
           id: user.id,
-          mfa: user.multifactor_id
+          mfa: user.multifactor_id,
         }),
-        mfa: true
-      }
+        mfa: true,
+      };
     }
-
   }
 
   async getToken(user) {
-
     delete user.password;
 
     const payload = { user };
@@ -86,19 +83,17 @@ export class AuthService {
     return {
       token: this.jwt.sign(payload),
     };
-
   }
 
   async forget({ email }: ForgetDTO) {
-
     const user = await this.prisma.users.findFirst({
       where: {
-        email
+        email,
       },
       select: {
-        id: true
-      }
-    })
+        id: true,
+      },
+    });
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -108,17 +103,16 @@ export class AuthService {
 
     await this.prisma.users.update({
       where: {
-        id: user.id
+        id: user.id,
       },
       data: {
-        code
-      }
+        code,
+      },
     });
 
     //Send email...
 
     return true;
-
   }
 
   async otp({ token, code }: OtpDTO) {
@@ -128,7 +122,7 @@ export class AuthService {
       where: {
         id: data['id'],
         code: String(code),
-      }
+      },
     });
 
     if (!user) {
@@ -137,11 +131,11 @@ export class AuthService {
 
     await this.prisma.users.update({
       where: {
-        id: user.id
+        id: user.id,
       },
       data: {
-        code: null
-      }
+        code: null,
+      },
     });
 
     return this.getToken(user);

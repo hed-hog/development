@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaService } from './prisma/prisma.service';
-import { AuthModule } from '@hadsys/auth';
-import { MailModule } from '@app/mail';
-import { MailConfigurationTypeEnum } from '@app/mail/enums/mail-configuration-type.enum';
+import { AuthModule } from '@hedhog/auth';
+import { MailModule } from '@hedhog/mail';
+import { MailConfigurationTypeEnum } from '@hedhog/mail/enums/mail-configuration-type.enum';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from '@hedhog/prisma';
 
 @Module({
   imports: [
-    // AuthModule,
+    AuthModule,
+    PrismaModule,
     ConfigModule.forRoot(),
     MailModule.init({
       accessKeyId: process.env.ACCESS_KEY_ID,
@@ -21,11 +22,9 @@ import { ConfigModule } from '@nestjs/config';
       clientId: process.env.CLIENT_ID,
       refreshToken: process.env.REFRESH_TOKEN,
       mailConfigurationType: MailConfigurationTypeEnum.GMAIL,
-    })],
-  controllers: [AppController],
-  providers: [
-    AppService,
-    // PrismaService,
+    }),
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

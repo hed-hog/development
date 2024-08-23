@@ -36,7 +36,7 @@ async function waitForPorts() {
 
   console.clear();
   console.log(chalk.white('===================================='));
-  console.log(chalk.green('A aplicação Hadsys está em execução:'));
+  console.log(chalk.green('A aplicação HedHog está em execução:'));
   console.log(chalk.blue('API na porta http://localhost:3000'));
   console.log(chalk.red('Front-end na porta http://localhost:3100'));
 }

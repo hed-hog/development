@@ -30,6 +30,8 @@
     "prod:db": "kubectl port-forward service/postgres-service 15432:5432 -n ingress-basic"
   },
   "dependencies": {
+    "@hedhog/auth": "^0.0.3",
+    "@hedhog/prisma": "^0.0.2",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
@@ -94,9 +96,6 @@
       "<rootDir>/src/",
       "<rootDir>/libs/"
     ],
-    "moduleNameMapper": {
-      "^@hadsys/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
-      "^@hadsys/file(|/.*)$": "<rootDir>/libs/file/src/$1"
-    }
+    "moduleNameMapper": {}
   }
 }

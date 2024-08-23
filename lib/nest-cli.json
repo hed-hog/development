@@ -7,15 +7,6 @@
     "webpack": true
   },
   "projects": {
-    "hadsys-auth": {
-      "type": "library",
-      "root": "libs/hadsys-auth",
-      "entryFile": "index",
-      "sourceRoot": "libs/hadsys-auth/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/hadsys-auth/tsconfig.lib.json"
-      }
-    },
     "auth": {
       "type": "library",
       "root": "libs/auth",

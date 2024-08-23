@@ -1,23 +1,28 @@
 {
-  "name": "auth",
-  "version": "1.0.0",
+  "name": "@hedhog/auth",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "scripts": {
-    "prod": "git add . && git commit -m 'prepare' && git version patch && git push && npm run build && npm publish",
-    "build": "nest build"
+    "build": "tsc --project tsconfig.production.json && npm version patch",
+    "prod": "npm run build && npm publish --access public"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "description": "",
   "peerDependencies": {
-    "hadsys-prisma": "^0.0.2",
+    "@hedhog/prisma": "latest",
+    "@hedhog/utils": "latest",
     "@nestjs/jwt": "^10.2.0",
     "bcrypt": "^5.1.1",
     "typeorm": "^0.3.20"
   },
   "files": [
     "dist/**/*",
-    "migration/index.ts"
-  ]
+    "src/migration/**/*.ts"
+  ],
+  "devDependencies": {
+    "@hedhog/prisma": "^0.0.2",
+    "@hedhog/utils": "^0.0.2"
+  }
 }

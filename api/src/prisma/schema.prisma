@@ -7,6 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model migrations {
+  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+  timestamp BigInt
+  name      String @db.VarChar
+}
+
+model multifactors {
+  id         Int      @id(map: "PK_8e88fc38e04a53be42acb939e9c") @default(autoincrement())
+  name       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  users      users[]
+}
+
 model files {
   id         Int       @id(map: "PK_6c16b9093a142e0e7613b04a3d9") @default(autoincrement())
   name       String    @db.VarChar
@@ -16,12 +30,6 @@ model files {
   created_at DateTime  @default(now()) @db.Timestamp(6)
   updated_at DateTime  @default(now()) @db.Timestamp(6)
   persons    persons[]
-}
-
-model migrations {
-  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
-  timestamp BigInt
-  name      String @db.VarChar
 }
 
 model persons {
@@ -91,12 +99,4 @@ model visibilities {
   name       String   @db.VarChar
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-}
-
-model multifactors {
-  id         Int      @id(map: "PK_8e88fc38e04a53be42acb939e9c") @default(autoincrement())
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  users      users[]
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 import {
   IconAdjustmentsHorizontal,
   IconSortAscendingLetters,
@@ -28,7 +28,9 @@ export default function Page() {
       {/* ===== Top Heading ===== */}
       <Layout.Header>
         <div className='flex w-full items-center justify-between'>
-          <Search />
+          <Search value={''} placeholder={''} setValue={function (e: ChangeEvent<HTMLInputElement>): void {
+            throw new Error('Function not implemented.')
+          } } />
           <div className='flex items-center space-x-4'>
             <ThemeSwitch />
             <UserNav />

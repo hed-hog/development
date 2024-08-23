@@ -4,8 +4,7 @@ import {
   Table,
   TableForeignKey,
 } from 'typeorm';
-import { idColumn } from 'utils/idColumn';
-import { timestampColumn } from 'utils/timestampColumn';
+import { idColumn, timestampColumn } from '@hedhog/utils';
 import * as bcrypt from 'bcrypt';
 
 export class Migration implements MigrationInterface {
