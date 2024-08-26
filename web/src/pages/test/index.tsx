@@ -6,6 +6,7 @@ import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { RoleBasedAccessControl } from '@/components/custom/rbac-manager'
 import Grid from '@/components/custom/grid'
 import ListPanel from '@/components/custom/list-panel'
+import Tree from '@/components/custom/tree'
 
 export default function MyForm() {
   // form
@@ -258,6 +259,30 @@ export default function MyForm() {
     { id: '5', label: 'Item 5' },
   ]
 
+  // tree
+  const sampleData = [
+    {
+      id: '1',
+      title: 'Root Node',
+      children: [
+        {
+          id: '2',
+          title: 'Child Node 1',
+        },
+        {
+          id: '3',
+          title: 'Child Node 2',
+          children: [
+            {
+              id: '4',
+              title: 'Grandchild Node 1',
+            },
+          ],
+        },
+      ],
+    },
+  ]
+
   return (
     <>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
@@ -330,6 +355,10 @@ export default function MyForm() {
         ListPanel
       </h1>
       <ListPanel data={listPanelItems} />
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        Tree
+      </h1>
+      <Tree data={sampleData} />
     </>
   )
 }
