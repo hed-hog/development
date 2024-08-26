@@ -17,7 +17,7 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from '@/components/ui/pagination'
-import { Input } from '@/components/ui/input'
+import { Search } from '@/components/search'
 
 interface ITableViewProps {
   columns: Array<{
@@ -101,14 +101,13 @@ const TableView = ({
   }
 
   return (
-    <div>
+    <>
       {/* Search Input */}
-      <div className='mb-4'>
-        <Input
-          type='text'
+      <div className='relative my-4'>
+        <Search
           placeholder='Buscar...'
           value={searchTerm}
-          onChange={handleSearchChange}
+          setValue={handleSearchChange}
         />
       </div>
 
@@ -196,7 +195,7 @@ const TableView = ({
           </TableFooter>
         )}
       </Table>
-    </div>
+    </>
   )
 }
 
