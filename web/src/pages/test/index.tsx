@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { RoleBasedAccessControl } from '@/components/custom/rbac-manager'
+import Grid from '@/components/custom/grid'
 
 export default function MyForm() {
   // form
@@ -239,6 +240,14 @@ export default function MyForm() {
     { id: '3', name: 'Charlie', role: 'user' },
   ]
 
+  // grid
+  const items = Array.from({ length: 50 }, (_, index) => (
+    <div key={index} className='rounded border border-gray-300 p-4'>
+      <h3 className='text-lg font-semibold'>Item {index + 1}</h3>
+      <p>Descrição do item {index + 1}</p>
+    </div>
+  ))
+
   return (
     <>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
@@ -291,6 +300,22 @@ export default function MyForm() {
           <RoleBasedAccessControl users={users} />
         </CardContent>
       </Card>
+      <div className='p-6'>
+        <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+          Grid com Paginação
+        </h1>
+        <Grid
+          items={items}
+          columns={4}
+          columnsSm={2}
+          columnsMd={3}
+          columnsLg={4}
+          columnsXl={5}
+          gap={6}
+          padding={4}
+          itemsPerPageOptions={[10, 20, 30, 40]}
+        />
+      </div>
     </>
   )
 }
