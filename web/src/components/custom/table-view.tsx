@@ -9,7 +9,14 @@ import {
   TableCell,
   TableCaption,
 } from '@/components/ui/table'
-import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+} from '@/components/ui/pagination'
 
 interface ITableViewProps {
   columns: Array<{
@@ -44,10 +51,8 @@ const TableView = ({
 
   const handleSort = (columnKey: string) => {
     if (sortColumn === columnKey) {
-      // Toggle sort direction if the same column is clicked
       setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
     } else {
-      // Set new column to sort and default to ascending direction
       setSortColumn(columnKey)
       setSortDirection('asc')
     }
@@ -63,24 +68,20 @@ const TableView = ({
     })
   }, [data, sortColumn, sortDirection])
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+  const totalItems = sortedData.length
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page)
     }
   }
 
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(data.length / itemsPerPage)) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
-  const paginatedData = pagination
-    ? sortedData.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-      )
-    : sortedData
+  // Calcula os itens a serem exibidos na página atual
+  const paginatedData = sortedData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
 
   return (
     <Table>
@@ -136,28 +137,32 @@ const TableView = ({
             <TableCell
               colSpan={columns.length + (rowActions.length > 0 ? 1 : 0)}
             >
-              <div className='flex items-center justify-between'>
-                <button
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
-                  className='btn-pagination'
-                >
-                  <IconArrowLeft />
-                </button>
-                <span>
-                  Página {currentPage} de{' '}
-                  {Math.ceil(data.length / itemsPerPage)}
-                </span>
-                <button
-                  onClick={handleNextPage}
-                  disabled={
-                    currentPage === Math.ceil(data.length / itemsPerPage)
-                  }
-                  className='btn-pagination'
-                >
-                  <IconArrowRight />
-                </button>
-              </div>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    />
+                  </PaginationItem>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <PaginationItem key={index}>
+                      <PaginationLink
+                        isActive={currentPage === index + 1}
+                        onClick={() => handlePageChange(index + 1)}
+                      >
+                        {index + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  {totalPages > 1 && (
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      />
+                    </PaginationItem>
+                  )}
+                </PaginationContent>
+              </Pagination>
             </TableCell>
           </TableRow>
         </TableFooter>

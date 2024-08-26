@@ -126,7 +126,6 @@ const Grid: React.FC<GridProps> = ({
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
-                href='#'
                 onClick={(e) => {
                   e.preventDefault()
                   handlePageChange(Math.max(currentPage - 1, 1))
@@ -136,7 +135,6 @@ const Grid: React.FC<GridProps> = ({
             {Array.from({ length: totalPages }, (_, index) => (
               <PaginationItem key={index}>
                 <PaginationLink
-                  href='#'
                   onClick={(e) => {
                     e.preventDefault()
                     handlePageChange(index + 1)
@@ -149,7 +147,6 @@ const Grid: React.FC<GridProps> = ({
             ))}
             <PaginationItem>
               <PaginationNext
-                href='#'
                 onClick={(e) => {
                   e.preventDefault()
                   handlePageChange(Math.min(currentPage + 1, totalPages))
