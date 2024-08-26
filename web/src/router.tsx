@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     }),
   },
   {
-    path: '/form-example',
+    path: '/examples',
     lazy: async () => ({
       Component: (await import('./pages/test')).default,
     }),

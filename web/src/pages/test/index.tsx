@@ -2,8 +2,12 @@ import { useForm } from 'react-hook-form'
 import FormPanel from '@/components/custom/form-panel'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/custom/button'
+import TableView from '@/components/custom/table-view'
+import { IconEdit, IconTrash } from '@tabler/icons-react'
 
 export default function MyForm() {
+  // form
+
   const form = useForm()
 
   const onSubmit = (data: any) => {
@@ -187,31 +191,88 @@ export default function MyForm() {
     },
   ]
 
+  // table
+  const columns = [
+    { key: 'name', header: 'Nome' },
+    { key: 'email', header: 'Email' },
+    { key: 'role', header: 'Função' },
+  ]
+
+  const data = [
+    { name: 'João', email: 'joao@example.com', role: 'Admin' },
+    { name: 'Maria', email: 'maria@example.com', role: 'User' },
+    { name: 'João', email: 'joao@example.com', role: 'Admin' },
+    { name: 'Maria', email: 'maria@example.com', role: 'User' },
+    { name: 'João', email: 'joao@example.com', role: 'Admin' },
+    { name: 'Maria', email: 'maria@example.com', role: 'User' },
+    { name: 'João', email: 'joao@example.com', role: 'Admin' },
+    { name: 'Maria', email: 'maria@example.com', role: 'User' },
+    { name: 'João', email: 'joao@example.com', role: 'Admin' },
+    { name: 'Maria', email: 'maria@example.com', role: 'User' },
+  ]
+
+  const handleRowClick = (row: Record<string, any>) => {
+    console.log('Linha clicada:', row)
+  }
+
+  const rowActions = [
+    {
+      label: <IconEdit color='orange' />,
+      onClick: (row: Record<string, any>) => console.log('Editar', row),
+    },
+    {
+      label: <IconTrash color='#c4212e' />,
+      onClick: (row: Record<string, any>) => console.log('Excluir', row),
+    },
+  ]
+
   return (
-    <Card className='mx-auto w-[620px]'>
-      <CardContent>
-        <FormPanel
-          title={{
-            text: 'User Registration',
-            style: {
-              fontSize: '1.5rem',
-              paddingTop: '1rem',
-              fontWeight: 'bold',
-            },
-          }}
-          subtitle={{
-            text: 'Please fill in the form to register.',
-            style: { fontSize: '1rem', color: 'gray' },
-          }}
-          fields={fields}
-          form={form}
-          onSubmit={onSubmit}
-        />
-      </CardContent>
-      <CardFooter className='flex justify-between'>
-        <Button variant='outline'>Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
-    </Card>
+    <>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        FormPanel
+      </h1>
+      <Card className='mx-auto w-[620px]'>
+        <CardContent>
+          <FormPanel
+            title={{
+              text: 'User Registration',
+              style: {
+                fontSize: '1.5rem',
+                paddingTop: '1rem',
+                fontWeight: 'bold',
+              },
+            }}
+            subtitle={{
+              text: 'Please fill in the form to register.',
+              style: { fontSize: '1rem', color: 'gray' },
+            }}
+            fields={fields}
+            form={form}
+            onSubmit={onSubmit}
+          />
+        </CardContent>
+        <CardFooter className='flex justify-between'>
+          <Button variant='outline'>Cancel</Button>
+          <Button>Deploy</Button>
+        </CardFooter>
+      </Card>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        TableView
+      </h1>
+      <Card className='mx-auto w-[620px]'>
+        <CardContent>
+          <TableView
+            columns={columns}
+            data={data}
+            sortable
+            pagination
+            caption='Lista de Usuários'
+            onRowClick={handleRowClick}
+            rowActions={rowActions}
+            itemsPerPage={9}
+          />
+        </CardContent>
+      </Card>
+    </>
   )
 }
