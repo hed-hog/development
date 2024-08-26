@@ -278,7 +278,7 @@ export default function MyForm() {
             caption='Lista de Usuários'
             onRowClick={handleRowClick}
             rowActions={rowActions}
-            itemsPerPage={9}
+            itemsPerPage={4}
           />
         </CardContent>
       </Card>

@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import {
   Table,
   TableHeader,
@@ -9,7 +10,6 @@ import {
   TableCaption,
 } from '@/components/ui/table'
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
-import { useState } from 'react'
 
 interface ITableViewProps {
   columns: Array<{
@@ -38,11 +38,30 @@ const TableView = ({
   caption,
   itemsPerPage = 10,
 }: ITableViewProps) => {
+  const [sortColumn, setSortColumn] = useState<string | null>(null)
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+  const [currentPage, setCurrentPage] = useState(1)
+
   const handleSort = (columnKey: string) => {
-    console.log(columnKey)
+    if (sortColumn === columnKey) {
+      // Toggle sort direction if the same column is clicked
+      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+    } else {
+      // Set new column to sort and default to ascending direction
+      setSortColumn(columnKey)
+      setSortDirection('asc')
+    }
   }
 
-  const [currentPage, setCurrentPage] = useState(1)
+  // Sorting data
+  const sortedData = React.useMemo(() => {
+    if (!sortColumn) return data
+    return [...data].sort((a, b) => {
+      if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1
+      if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1
+      return 0
+    })
+  }, [data, sortColumn, sortDirection])
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -57,8 +76,11 @@ const TableView = ({
   }
 
   const paginatedData = pagination
-    ? data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-    : data
+    ? sortedData.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    : sortedData
 
   return (
     <Table>
@@ -71,7 +93,10 @@ const TableView = ({
               onClick={() => sortable && handleSort(col.key)}
               className={sortable ? 'cursor-pointer' : ''}
             >
-              {col.header} {sortable && '🔽'}
+              {col.header}{' '}
+              {sortable && sortColumn === col.key && (
+                <span>{sortDirection === 'asc' ? '🔼' : '🔽'}</span>
+              )}
             </TableHead>
           ))}
           {rowActions.length > 0 && <TableHead>Ações</TableHead>}

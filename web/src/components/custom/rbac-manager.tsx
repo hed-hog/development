@@ -62,6 +62,14 @@ export const RoleBasedAccessControl: React.FC<IRoleBasedAccessControlProps> = ({
     }
   }
 
+  const handleRoleChange = (userId: string, newRole: 'user' | 'admin') => {
+    // Atualizar o papel do usuário no estado
+    const updatedUsers = users.map((user) =>
+      user.id === userId ? { ...user, role: newRole } : user
+    )
+    setFilteredUsers(updatedUsers)
+  }
+
   return (
     <div className='p-4'>
       <div className='mb-4'>
@@ -107,12 +115,32 @@ export const RoleBasedAccessControl: React.FC<IRoleBasedAccessControlProps> = ({
       </div>
 
       <div className='mt-4'>
-        <h2 className='text-lg font-semibold'>Usuários e Papéis</h2>
+        <h2 className='text-lg font-semibold'>Usuários e Cargos</h2>
         <TableView
           data={filteredUsers.map((user) => ({
             id: user.id,
             name: user.name,
-            role: user.role.charAt(0).toUpperCase() + user.role.slice(1),
+            role: (
+              <Select
+                value={user.role}
+                onValueChange={(newRole) =>
+                  handleRoleChange(user.id, newRole as 'user' | 'admin')
+                }
+              >
+                <SelectTrigger className='w-full'>
+                  <SelectValue placeholder='Selecionar papel' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {roles.map((role) => (
+                      <SelectItem key={role} value={role}>
+                        {role.charAt(0).toUpperCase() + role.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            ),
           }))}
           columns={[
             { header: 'Usuário', key: 'name' },
