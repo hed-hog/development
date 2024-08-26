@@ -5,6 +5,7 @@ import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { RoleBasedAccessControl } from '@/components/custom/rbac-manager'
 import Grid from '@/components/custom/grid'
+import ListPanel from '@/components/custom/list-panel'
 
 export default function MyForm() {
   // form
@@ -248,6 +249,15 @@ export default function MyForm() {
     </div>
   ))
 
+  // listPanel
+  const listPanelItems = [
+    { id: '1', label: 'Item 1' },
+    { id: '2', label: 'Item 2' },
+    { id: '3', label: 'Item 3' },
+    { id: '4', label: 'Item 4' },
+    { id: '5', label: 'Item 5' },
+  ]
+
   return (
     <>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
@@ -316,6 +326,10 @@ export default function MyForm() {
           itemsPerPageOptions={[10, 20, 30, 40]}
         />
       </div>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        ListPanel
+      </h1>
+      <ListPanel data={listPanelItems} />
     </>
   )
 }
