@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form'
 import FormPanel from '@/components/custom/form-panel'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { Button } from '@/components/custom/button'
+import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
+import { RoleBasedAccessControl } from '@/components/custom/rbac-manager'
 
 export default function MyForm() {
   // form
@@ -226,6 +226,19 @@ export default function MyForm() {
     },
   ]
 
+  // role based access control
+  interface IUser {
+    id: string
+    name: string
+    role: 'user' | 'admin'
+  }
+
+  const users: IUser[] = [
+    { id: '1', name: 'Alice', role: 'user' },
+    { id: '2', name: 'Bob', role: 'admin' },
+    { id: '3', name: 'Charlie', role: 'user' },
+  ]
+
   return (
     <>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
@@ -251,10 +264,6 @@ export default function MyForm() {
             onSubmit={onSubmit}
           />
         </CardContent>
-        <CardFooter className='flex justify-between'>
-          <Button variant='outline'>Cancel</Button>
-          <Button>Deploy</Button>
-        </CardFooter>
       </Card>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
         TableView
@@ -271,6 +280,15 @@ export default function MyForm() {
             rowActions={rowActions}
             itemsPerPage={9}
           />
+        </CardContent>
+      </Card>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        RBAC Manager
+      </h1>
+      <Card className='mx-auto w-[620px]'>
+        <CardContent>
+          <h1 className='mb-6 text-2xl font-bold'>Gerenciamento de Acesso</h1>
+          <RoleBasedAccessControl users={users} />
         </CardContent>
       </Card>
     </>
