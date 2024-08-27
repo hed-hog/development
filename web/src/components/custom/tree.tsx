@@ -1,6 +1,7 @@
 import { useClickOutside } from '@/hooks/use-click-outside'
-import { IconChevronDown } from '@tabler/icons-react'
+import { IconCaretDownFilled } from '@tabler/icons-react'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 
 interface TreeNode {
   id: string
@@ -61,26 +62,8 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
     setContextMenu({ x: e.clientX, y: e.clientY })
   }
 
-  const handleMenuAction = (action: 'edit' | 'add' | 'remove') => {
+  const handleMenuAction = (action: 'add' | 'remove') => {
     switch (action) {
-      case 'edit':
-        console.log('edit')
-        const newTitle = prompt('Enter new title:', selectedNode?.title)
-        if (newTitle !== null) {
-          setSampleData((data) =>
-            data.map((item) =>
-              item.id === selectedNode?.id
-                ? { ...item, title: newTitle }
-                : {
-                    ...item,
-                    children: item.children
-                      ? removeNodeById(item.children, String(selectedNode?.id))
-                      : undefined,
-                  }
-            )
-          )
-        }
-        break
       case 'add':
         const newNodeTitle = prompt('Enter title for new node:')
         if (newNodeTitle !== null && selectedNode) {
@@ -117,31 +100,51 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
   }
 
   const renderTree = (nodes: TreeNode[]): JSX.Element[] => {
-    return nodes.map((node) => (
-      <div
-        key={node.id}
-        style={{
-          paddingLeft: 20,
-          cursor: 'pointer',
-        }}
-      >
-        {node.children && <IconChevronDown className='absolute' />}
+    return nodes.map((node) => {
+      const isExpanded = expandedKeys.has(node.id)
+      return (
         <div
-          className='relative'
-          onClick={() => toggleExpand(node.id)}
-          onContextMenu={(e) => handleContextMenu(e, node)}
+          key={node.id}
           style={{
-            paddingLeft: 30,
+            paddingLeft: 20,
             cursor: 'pointer',
           }}
         >
-          {node.title}
+          {node.children && Boolean(node.children.length) && (
+            <motion.div
+              initial={false}
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+              className='absolute'
+            >
+              <IconCaretDownFilled className='w-4' />
+            </motion.div>
+          )}
+          <div
+            className='relative'
+            onClick={() => toggleExpand(node.id)}
+            onContextMenu={(e) => handleContextMenu(e, node)}
+            style={{
+              paddingLeft: 20,
+              cursor: 'pointer',
+            }}
+          >
+            {node.title}
+          </div>
+          <motion.div
+            initial={false}
+            animate={{
+              height: isExpanded ? 'auto' : 0,
+              opacity: isExpanded ? 1 : 0,
+            }}
+            transition={{ duration: 0.3 }}
+            style={{ overflow: 'hidden' }}
+          >
+            {isExpanded && node.children && renderTree(node.children)}
+          </motion.div>
         </div>
-        {expandedKeys.has(node.id) &&
-          node.children &&
-          renderTree(node.children)}
-      </div>
-    ))
+      )
+    })
   }
 
   return (
@@ -150,9 +153,11 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
 
       {contextMenu !== null && (
         <div
+          ref={contextMenuRef}
           style={{
+            cursor: 'pointer',
             position: 'absolute',
-            top: `${contextMenu.y - 920}px`,
+            top: `${contextMenu.y - 900}px`,
             left: `${contextMenu.x}px`,
             border: '1px solid #ddd',
             borderRadius: 4,
@@ -160,7 +165,6 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
             backgroundColor: '#020817',
           }}
         >
-          <div onClick={() => handleMenuAction('edit')}>Edit</div>
           <div onClick={() => handleMenuAction('add')}>Add</div>
           <div onClick={() => handleMenuAction('remove')}>Remove</div>
         </div>
