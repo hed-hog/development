@@ -1,6 +1,14 @@
 import { useClickOutside } from '@/hooks/use-click-outside'
-import { IconChevronDown } from '@tabler/icons-react'
+import { IconCaretDownFilled } from '@tabler/icons-react'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from 'react-beautiful-dnd'
+import { GripVertical } from 'lucide-react'
 
 interface TreeNode {
   id: string
@@ -35,15 +43,18 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
     })
   }
 
-  const findNodeById = (nodes: TreeNode[], id: string): TreeNode | null => {
+  const findNodeById = (
+    nodes: TreeNode[],
+    id: string
+  ): { node: TreeNode | null; parent: TreeNode | null } => {
     for (const node of nodes) {
-      if (node.id === id) return node
+      if (node.id === id) return { node, parent: null }
       if (node.children) {
         const result = findNodeById(node.children, id)
-        if (result) return result
+        if (result.node) return { node: result.node, parent: node }
       }
     }
-    return null
+    return { node: null, parent: null }
   }
 
   const removeNodeById = (nodes: TreeNode[], id: string): TreeNode[] => {
@@ -55,32 +66,71 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
       }))
   }
 
+  const moveNode = (
+    nodes: TreeNode[],
+    sourceId: string,
+    destinationId: string
+  ): TreeNode[] => {
+    const { node: sourceNode } = findNodeById(nodes, sourceId)
+    const { node: destinationNode } = findNodeById(nodes, destinationId)
+
+    if (!sourceNode) return nodes
+
+    const removeSourceNode = (nodes: TreeNode[]): TreeNode[] => {
+      return nodes
+        .filter((node) => node.id !== sourceId)
+        .map((node) => ({
+          ...node,
+          children: node.children ? removeSourceNode(node.children) : undefined,
+        }))
+    }
+
+    const addNodeToParent = (
+      nodes: TreeNode[],
+      parentId: string
+    ): TreeNode[] => {
+      return nodes.map((node) => {
+        if (node.id === parentId) {
+          return {
+            ...node,
+            children: [...(node.children || []), sourceNode],
+          }
+        }
+        return {
+          ...node,
+          children: node.children
+            ? addNodeToParent(node.children, parentId)
+            : undefined,
+        }
+      })
+    }
+
+    if (!destinationNode) {
+      return removeSourceNode(nodes)
+    }
+
+    const updatedNodes = removeSourceNode(nodes)
+    return addNodeToParent(updatedNodes, destinationId)
+  }
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return
+
+    const sourceId = result.draggableId
+    const destinationId = result.destination.droppableId
+
+    const updatedData = moveNode(sampleData, sourceId, destinationId)
+    setSampleData(updatedData)
+  }
+
   const handleContextMenu = (e: React.MouseEvent, node: TreeNode) => {
     e.preventDefault()
     setSelectedNode(node)
     setContextMenu({ x: e.clientX, y: e.clientY })
   }
 
-  const handleMenuAction = (action: 'edit' | 'add' | 'remove') => {
+  const handleMenuAction = (action: 'add' | 'remove') => {
     switch (action) {
-      case 'edit':
-        console.log('edit')
-        const newTitle = prompt('Enter new title:', selectedNode?.title)
-        if (newTitle !== null) {
-          setSampleData((data) =>
-            data.map((item) =>
-              item.id === selectedNode?.id
-                ? { ...item, title: newTitle }
-                : {
-                    ...item,
-                    children: item.children
-                      ? removeNodeById(item.children, String(selectedNode?.id))
-                      : undefined,
-                  }
-            )
-          )
-        }
-        break
       case 'add':
         const newNodeTitle = prompt('Enter title for new node:')
         if (newNodeTitle !== null && selectedNode) {
@@ -116,43 +166,99 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
     setContextMenu(null)
   }
 
-  const renderTree = (nodes: TreeNode[]): JSX.Element[] => {
-    return nodes.map((node) => (
-      <div
-        key={node.id}
-        style={{
-          paddingLeft: 20,
-          cursor: 'pointer',
-        }}
-      >
-        {node.children && <IconChevronDown className='absolute' />}
-        <div
-          className='relative'
-          onClick={() => toggleExpand(node.id)}
-          onContextMenu={(e) => handleContextMenu(e, node)}
-          style={{
-            paddingLeft: 30,
-            cursor: 'pointer',
-          }}
-        >
-          {node.title}
-        </div>
-        {expandedKeys.has(node.id) &&
-          node.children &&
-          renderTree(node.children)}
-      </div>
-    ))
+  const renderTree = (nodes: TreeNode[], level = 0): JSX.Element[] => {
+    return nodes.map((node, index) => {
+      const isExpanded = expandedKeys.has(node.id)
+      return (
+        <Draggable key={node.id} draggableId={node.id} index={index}>
+          {(provided) => (
+            <div
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+              style={{
+                paddingLeft: 20 * (level + 1),
+                cursor: 'pointer',
+                ...provided.draggableProps.style,
+              }}
+              onContextMenu={(e) => handleContextMenu(e, node)}
+            >
+              <div className='absolute flex'>
+                <GripVertical
+                  className='absolute w-4'
+                  style={{
+                    left: Boolean(node.children?.length) ? -15 : -5,
+                    color: 'rgb(58 102 211)',
+                  }}
+                />
+                {node.children && Boolean(node.children.length) && (
+                  <motion.div
+                    initial={false}
+                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className='absolute'
+                  >
+                    <IconCaretDownFilled className='w-4' />
+                  </motion.div>
+                )}
+              </div>
+
+              <div
+                className='relative'
+                onClick={() => toggleExpand(node.id)}
+                style={{
+                  display: 'flex',
+                  paddingLeft: 20,
+                  cursor: 'pointer',
+                }}
+              >
+                {node.title}
+              </div>
+              <motion.div
+                initial={false}
+                animate={{
+                  height: isExpanded ? 'auto' : 0,
+                  opacity: isExpanded ? 1 : 0,
+                }}
+                transition={{ duration: 0.3 }}
+                style={{ overflow: 'hidden' }}
+              >
+                {isExpanded && node.children && (
+                  <Droppable droppableId={node.id} type='SUB_TREE'>
+                    {(provided) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {renderTree(node.children as TreeNode[], level + 1)}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                )}
+              </motion.div>
+            </div>
+          )}
+        </Draggable>
+      )
+    })
   }
 
   return (
-    <div style={{ position: 'relative' }}>
-      {renderTree(sampleData)}
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId='tree-root' type='TREE'>
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {renderTree(sampleData)}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
 
       {contextMenu !== null && (
         <div
+          ref={contextMenuRef}
           style={{
+            cursor: 'pointer',
             position: 'absolute',
-            top: `${contextMenu.y - 920}px`,
+            top: `${contextMenu.y - 900}px`,
             left: `${contextMenu.x}px`,
             border: '1px solid #ddd',
             borderRadius: 4,
@@ -160,12 +266,11 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
             backgroundColor: '#020817',
           }}
         >
-          <div onClick={() => handleMenuAction('edit')}>Edit</div>
           <div onClick={() => handleMenuAction('add')}>Add</div>
           <div onClick={() => handleMenuAction('remove')}>Remove</div>
         </div>
       )}
-    </div>
+    </DragDropContext>
   )
 }
 

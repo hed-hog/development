@@ -72,14 +72,14 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
   return (
     <Sheet>
       <SheetTrigger asChild className='h-15 w-full p-0'>
-        <Button variant='outline' className='h-15 w-full'>
+        <div className='h-15 w-full'>
           <MultiSelect
             options={options}
-            defaultValue={[]}
-            value={defaultValue || []}
-            onChange={() => {}}
+            value={selectedValues}
+            onChange={setSelectedValues} // Atualiza o estado diretamente
+            readOnly
           />
-        </Button>
+        </div>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
@@ -87,7 +87,7 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
           <SheetDescription style={subtitleStyle}>{subtitle}</SheetDescription>
         </SheetHeader>
 
-        <Command>
+        <Command style={{ maxHeight: '90%' }}>
           <CommandInput
             placeholder='Search...'
             onKeyDown={handleInputKeyDown}

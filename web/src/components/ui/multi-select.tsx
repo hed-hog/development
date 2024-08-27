@@ -27,6 +27,7 @@ interface MultiSelectProps {
   }[]
   value: string[]
   onChange: (value: string[]) => void
+  readOnly?: boolean
   placeholder?: string
   trigger?: {
     // only for select and multiselect
@@ -72,6 +73,7 @@ export const MultiSelect = React.forwardRef<
       value,
       onChange,
       placeholder = 'Select options',
+      readOnly,
       animation = 0,
       defaultValue = [],
       trigger,
@@ -143,13 +145,15 @@ export const MultiSelect = React.forwardRef<
                         style={{ animationDuration: `${animation}s` }}
                       >
                         {option?.label}
-                        <XCircle
-                          className='ml-2 h-4 w-4 cursor-pointer'
-                          onClick={(event) => {
-                            event.stopPropagation()
-                            toggleOption(val)
-                          }}
-                        />
+                        {!readOnly && (
+                          <XCircle
+                            className='ml-2 h-4 w-4 cursor-pointer'
+                            onClick={(event) => {
+                              event.stopPropagation()
+                              toggleOption(val)
+                            }}
+                          />
+                        )}
                       </Badge>
                     )
                   })}

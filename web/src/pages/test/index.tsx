@@ -7,6 +7,8 @@ import { RoleBasedAccessControl } from '@/components/custom/rbac-manager'
 import Grid from '@/components/custom/grid'
 import ListPanel from '@/components/custom/list-panel'
 import Tree from '@/components/custom/tree'
+import { useItems } from '@/features/users'
+import { usePagination } from '@/hooks/use-pagination'
 
 export default function MyForm() {
   // form
@@ -242,14 +244,6 @@ export default function MyForm() {
     { id: '3', name: 'Charlie', role: 'user' },
   ]
 
-  // grid
-  const items = Array.from({ length: 50 }, (_, index) => (
-    <div key={index} className='rounded border border-gray-300 p-4'>
-      <h3 className='text-lg font-semibold'>Item {index + 1}</h3>
-      <p>Descrição do item {index + 1}</p>
-    </div>
-  ))
-
   // listPanel
   const listPanelItems = [
     { id: '1', label: 'Item 1' },
@@ -282,6 +276,23 @@ export default function MyForm() {
       ],
     },
   ]
+
+  // grid
+  const {
+    startIndex,
+    endIndex,
+    currentPage,
+    itemsPerPage,
+    handlePageChange,
+    handleItemsPerPageChange,
+  } = usePagination()
+
+  const {
+    data: paginatedItems = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useItems(startIndex, endIndex)
 
   return (
     <>
@@ -340,15 +351,33 @@ export default function MyForm() {
           Grid com Paginação
         </h1>
         <Grid
-          items={items}
-          columns={4}
-          columnsSm={2}
-          columnsMd={3}
-          columnsLg={4}
-          columnsXl={5}
+          renderItem={(item: { id: number; title: string; body: string }) => (
+            <div
+              key={item.id}
+              className='h-52 rounded border border-gray-300 p-4'
+            >
+              <p>{item.body}</p>
+            </div>
+          )}
+          columns={{
+            default: 1,
+            sm: 2,
+            md: 3,
+            lg: 4,
+            xl: 5,
+          }}
           gap={6}
           padding={4}
           itemsPerPageOptions={[10, 20, 30, 40]}
+          totalItems={50}
+          paginatedItems={paginatedItems}
+          isLoading={isLoading}
+          isError={isError}
+          refetch={refetch}
+          handlePageChange={handlePageChange}
+          handleItemsPerPageChange={handleItemsPerPageChange}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
         />
       </div>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
