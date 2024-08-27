@@ -8,6 +8,7 @@ import {
   Draggable,
   DropResult,
 } from 'react-beautiful-dnd'
+import { GripVertical } from 'lucide-react'
 
 interface TreeNode {
   id: string
@@ -182,20 +183,31 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
               }}
               onContextMenu={(e) => handleContextMenu(e, node)}
             >
-              {node.children && Boolean(node.children.length) && (
-                <motion.div
-                  initial={false}
-                  animate={{ rotate: isExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className='absolute'
-                >
-                  <IconCaretDownFilled className='w-4' />
-                </motion.div>
-              )}
+              <div className='absolute flex'>
+                <GripVertical
+                  className='absolute w-4'
+                  style={{
+                    left: Boolean(node.children?.length) ? -15 : -5,
+                    color: 'rgb(58 102 211)',
+                  }}
+                />
+                {node.children && Boolean(node.children.length) && (
+                  <motion.div
+                    initial={false}
+                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className='absolute'
+                  >
+                    <IconCaretDownFilled className='w-4' />
+                  </motion.div>
+                )}
+              </div>
+
               <div
                 className='relative'
                 onClick={() => toggleExpand(node.id)}
                 style={{
+                  display: 'flex',
                   paddingLeft: 20,
                   cursor: 'pointer',
                 }}
