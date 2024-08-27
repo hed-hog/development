@@ -77,6 +77,7 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
             options={options}
             value={selectedValues}
             onChange={setSelectedValues} // Atualiza o estado diretamente
+            readOnly
           />
         </div>
       </SheetTrigger>
