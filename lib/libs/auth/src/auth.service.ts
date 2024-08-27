@@ -14,6 +14,12 @@ export class AuthService {
     private readonly jwt: JwtService,
   ) {}
 
+  async verifyToken(token: string) {
+    return this.jwt.verifyAsync(token, {
+      secret: String(process.env.JWT_SECRET),
+    });
+  }
+
   generateRandomString(length: number): string {
     const characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

@@ -13,20 +13,27 @@ import { useMemo } from 'react'
 interface ColorPickerProps {
   value: string
   onChange: (value: string) => void
+  variant?: 'default' | 'full'
 }
 
-export function ColorPicker({ value, onChange }: ColorPickerProps) {
+export function ColorPicker({
+  value,
+  onChange,
+  variant = 'default',
+}: ColorPickerProps) {
   const background =
     value ||
     'linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)'
 
-  return (
+  return variant === 'full' ? (
     <div
       className='preview flex h-full max-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all'
       style={{ background }}
     >
       <GradientPicker background={background} setBackground={onChange} />
     </div>
+  ) : (
+    <GradientPicker background={background} setBackground={onChange} />
   )
 }
 
@@ -85,7 +92,7 @@ export function GradientPicker({
         <Button
           variant={'outline'}
           className={cn(
-            'w-[220px] justify-start text-left font-normal',
+            'w-full justify-start text-left font-normal',
             !background && 'text-muted-foreground',
             className
           )}
@@ -105,7 +112,7 @@ export function GradientPicker({
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-64'>
+      <PopoverContent className='w-64' align='start'>
         <Tabs defaultValue={defaultTab} className='w-full'>
           <TabsList className='mb-4 w-full'>
             <TabsTrigger className='flex-1' value='solid'>
