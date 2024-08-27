@@ -15,9 +15,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 
-interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
-  items: React.ReactNode[] // Array de elementos a serem exibidos
+interface GridProps<T> extends React.HTMLAttributes<HTMLDivElement> {
+  renderItem: (item: T) => React.ReactNode // Função para renderizar cada item
   columns?: number // Colunas para o breakpoint padrão
   columnsSm?: number // Colunas para breakpoint sm
   columnsMd?: number // Colunas para breakpoint md
@@ -25,11 +26,22 @@ interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   columnsXl?: number // Colunas para breakpoint xl
   gap?: number
   padding?: number
+  paginatedItems: any[]
+  isLoading?: boolean
+  isError?: boolean
+  refetch: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<any, Error>>
   itemsPerPageOptions?: number[] // Opções para itens por página
+  totalItems: number // Total de itens para calcular o número de páginas
+  handlePageChange: (page: number) => void
+  handleItemsPerPageChange: (value: string) => void
+  currentPage: number
+  itemsPerPage: number
 }
 
-const Grid: React.FC<GridProps> = ({
-  items,
+const Grid = <T,>({
+  renderItem,
   columns = 1,
   columnsSm,
   columnsMd,
@@ -37,26 +49,24 @@ const Grid: React.FC<GridProps> = ({
   columnsXl,
   gap = 6,
   padding = 4,
-  itemsPerPageOptions = [20, 25, 50, 100],
+  itemsPerPageOptions = [10, 20, 30, 40],
+  paginatedItems,
+  isLoading,
+  isError,
+  refetch,
+  totalItems,
+  handlePageChange,
+  handleItemsPerPageChange,
+  currentPage,
+  itemsPerPage,
   className,
   ...props
-}) => {
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
-    itemsPerPageOptions[0]
-  )
-  const [currentPage, setCurrentPage] = useState<number>(1)
+}: GridProps<T>) => {
   const [gridColumns, setGridColumns] = useState<number>(columns)
-  const [totalPages, setTotalPages] = useState<number>(1)
 
-  const totalItems = items.length
   useEffect(() => {
-    setTotalPages(Math.ceil(totalItems / itemsPerPage))
-  }, [itemsPerPage, totalItems])
-
-  // Calcula os itens a serem exibidos na página atual
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const paginatedItems = items.slice(startIndex, endIndex)
+    refetch()
+  }, [currentPage, itemsPerPage, refetch])
 
   // Atualiza o número de colunas com base no tamanho da tela
   const updateColumnsBasedOnScreenSize = () => {
@@ -81,14 +91,10 @@ const Grid: React.FC<GridProps> = ({
     }
   }, [columns, columnsSm, columnsMd, columnsLg, columnsXl])
 
-  const handleItemsPerPageChange = (value: string) => {
-    setItemsPerPage(Number(value))
-    setCurrentPage(1) // Reseta para a primeira página ao alterar o número de itens por página
-  }
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error loading items</div>
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
 
   return (
     <div {...props} className={`p-${padding}`}>
@@ -100,7 +106,11 @@ const Grid: React.FC<GridProps> = ({
         }}
         className={className}
       >
-        {paginatedItems}
+        {paginatedItems.map((item: T, index: number) => (
+          <div key={index} className='item'>
+            {renderItem(item)}
+          </div>
+        ))}
       </div>
 
       <div className='mt-4 flex w-full items-center justify-between'>
