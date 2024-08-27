@@ -7,12 +7,13 @@
     "prod": "npm run build && npm publish --access public"
   },
   "keywords": [],
-  "author": "",
+  "author": "HedHog",
   "license": "MIT",
   "description": "",
   "peerDependencies": {
     "@hedhog/prisma": "latest",
     "@hedhog/utils": "latest",
+    "@hedhog/mail": "latest",
     "@nestjs/jwt": "^10.2.0",
     "bcrypt": "^5.1.1",
     "typeorm": "^0.3.20"
@@ -22,6 +23,7 @@
     "src/migration/**/*.ts"
   ],
   "devDependencies": {
+    "@hedhog/mail": "^0.0.3",
     "@hedhog/prisma": "^0.0.2",
     "@hedhog/utils": "^0.0.2"
   }

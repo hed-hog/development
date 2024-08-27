@@ -6,7 +6,7 @@ import Private from './private'
 export default function AppShell() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   return (
-    <Private>
+    <>
       <div className='relative h-full overflow-hidden bg-background'>
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         <main
@@ -16,6 +16,6 @@ export default function AppShell() {
           <Outlet />
         </main>
       </div>
-    </Private>
+    </>
   )
 }
