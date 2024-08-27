@@ -9,6 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
+    "dev": "npm run start:dev",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -95,7 +96,8 @@
       "^@hedhog/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
       "^@hedhog/file(|/.*)$": "<rootDir>/libs/file/src/$1",
       "^@hedhog/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
-      "^@hedhog/mail(|/.*)$": "<rootDir>/libs/mail/src/$1"
+      "^@hedhog/mail(|/.*)$": "<rootDir>/libs/mail/src/$1",
+      "^@hedhog/user(|/.*)$": "<rootDir>/libs/user/src/$1"
     }
   }
 }
