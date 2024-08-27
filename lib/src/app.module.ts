@@ -6,6 +6,7 @@ import { MailModule } from '@hedhog/mail';
 import { MailConfigurationTypeEnum } from '@hedhog/mail/enums/mail-configuration-type.enum';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@hedhog/prisma';
+import { UserModule } from '@hedhog/user';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PrismaModule } from '@hedhog/prisma';
       refreshToken: process.env.REFRESH_TOKEN,
       mailConfigurationType: MailConfigurationTypeEnum.GMAIL,
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
