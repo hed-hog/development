@@ -72,14 +72,14 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
   return (
     <Sheet>
       <SheetTrigger asChild className='h-15 w-full p-0'>
-        <Button variant='outline' className='h-15 w-full'>
+        <div className='h-15 w-full'>
           <MultiSelect
             options={options}
             defaultValue={[]}
             value={defaultValue || []}
             onChange={() => {}}
           />
-        </Button>
+        </div>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
