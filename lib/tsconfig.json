@@ -18,14 +18,36 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@hedhog/auth": ["libs/auth/src"],
-      "@hedhog/auth/*": ["libs/auth/src/*"],
-      "@hedhog/file": ["libs/file/src"],
-      "@hedhog/file/*": ["libs/file/src/*"],
-      "@hedhog/prisma": ["libs/prisma/src"],
-      "@hedhog/prisma/*": ["libs/prisma/src/*"],
-      "@hedhog/mail": ["libs/mail/src"],
-      "@hedhog/mail/*": ["libs/mail/src/*"]
+      "@hedhog/auth": [
+        "libs/auth/src"
+      ],
+      "@hedhog/auth/*": [
+        "libs/auth/src/*"
+      ],
+      "@hedhog/file": [
+        "libs/file/src"
+      ],
+      "@hedhog/file/*": [
+        "libs/file/src/*"
+      ],
+      "@hedhog/prisma": [
+        "libs/prisma/src"
+      ],
+      "@hedhog/prisma/*": [
+        "libs/prisma/src/*"
+      ],
+      "@hedhog/mail": [
+        "libs/mail/src"
+      ],
+      "@hedhog/mail/*": [
+        "libs/mail/src/*"
+      ],
+      "@hedhog/user": [
+        "libs/user/src"
+      ],
+      "@hedhog/user/*": [
+        "libs/user/src/*"
+      ]
     }
   }
 }

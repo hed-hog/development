@@ -19,8 +19,9 @@ import {
 } from '@/components/ui/command'
 import { Button } from '@/components/custom/button'
 import { Badge } from '@/components/ui/badge'
+import { IMultiSelectProps } from '@/types/form-panel'
 
-interface MultiSelectProps {
+interface MultiSelectProps extends Omit<IMultiSelectProps, 'type' | 'name'> {
   options: {
     label: string
     value: string
@@ -29,36 +30,6 @@ interface MultiSelectProps {
   onChange: (value: string[]) => void
   readOnly?: boolean
   placeholder?: string
-  trigger?: {
-    // only for select and multiselect
-    className?: string
-    style?: React.CSSProperties
-  }
-  badge?: {
-    // only for multiselect
-    className?: string
-    style?: React.CSSProperties
-  }
-  actionButtons?: {
-    // only for multiselect
-    className?: string
-    style?: React.CSSProperties
-  }
-  items?: {
-    // only for multiselect
-    className?: string
-    style?: React.CSSProperties
-  }
-  search?: {
-    // only for multiselect
-    className?: string
-    style?: React.CSSProperties
-  }
-  checkbox?: {
-    // only for multiselect
-    className?: string
-    style?: React.CSSProperties
-  }
   defaultValue?: string[]
   animation?: number
 }
@@ -76,7 +47,7 @@ export const MultiSelect = React.forwardRef<
       readOnly,
       animation = 0,
       defaultValue = [],
-      trigger,
+      input,
       badge,
       actionButtons,
       items,
@@ -125,9 +96,9 @@ export const MultiSelect = React.forwardRef<
             onClick={handleTogglePopover}
             className={cn(
               'flex h-auto min-h-10 w-full items-center justify-between rounded-md border bg-inherit p-1 hover:bg-inherit',
-              trigger?.className
+              input?.className
             )}
-            style={trigger?.style}
+            style={input?.style}
           >
             {value.length > 0 ? (
               <div className='flex w-full items-center justify-between'>

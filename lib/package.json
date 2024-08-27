@@ -96,7 +96,8 @@
       "^@hedhog/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
       "^@hedhog/file(|/.*)$": "<rootDir>/libs/file/src/$1",
       "^@hedhog/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
-      "^@hedhog/mail(|/.*)$": "<rootDir>/libs/mail/src/$1"
+      "^@hedhog/mail(|/.*)$": "<rootDir>/libs/mail/src/$1",
+      "^@hedhog/user(|/.*)$": "<rootDir>/libs/user/src/$1"
     }
   }
 }

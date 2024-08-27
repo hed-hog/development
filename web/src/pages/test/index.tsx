@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import FormPanel from '@/components/custom/form-panel'
 import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
@@ -9,13 +9,11 @@ import ListPanel from '@/components/custom/list-panel'
 import Tree from '@/components/custom/tree'
 import { useItems } from '@/features/users'
 import { usePagination } from '@/hooks/use-pagination'
+import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 
 export default function MyForm() {
   // form
-
-  const form = useForm()
-
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: IFormValues) => {
     console.log(data)
   }
 
@@ -29,14 +27,15 @@ export default function MyForm() {
     { value: 'RJ', label: 'Rio de Janeiro' },
   ]
 
-  const fields: any[] = [
+  const fields: IFormFieldProps[] = [
     {
       name: 'username',
+      defaultValue: 'Gabriel Lima',
       label: {
         text: 'Username',
         style: { fontWeight: 'bold' },
       },
-      element: {
+      input: {
         style: { borderRadius: 25, borderColor: 'white' },
       },
       type: 'text',
@@ -48,6 +47,7 @@ export default function MyForm() {
     },
     {
       name: 'email',
+      defaultValue: 'glima@hcode.com.br',
       label: {
         text: 'Email',
         style: { fontWeight: 'bold' },
@@ -64,7 +64,7 @@ export default function MyForm() {
       calendar: {
         style: { color: 'white' },
       },
-      element: {
+      input: {
         style: {
           color: 'white',
         },
@@ -78,11 +78,11 @@ export default function MyForm() {
         text: 'Country',
         style: { fontWeight: 'bold', color: 'white' },
       },
-      element: {
-        style: { color: 'white' },
+      input: {
+        style: { color: 'yellow' },
       },
-      trigger: {
-        style: { color: 'white' },
+      option: {
+        style: { color: 'red' },
       },
       type: 'select',
       required: true,
@@ -113,6 +113,19 @@ export default function MyForm() {
       badge: {
         className: 'bg-red-500',
       },
+      input: {
+        style: { backgroundColor: '#fff' },
+      },
+      actionButtons: {
+        style: {
+          backgroundColor: 'green',
+        },
+      },
+      items: {
+        style: {
+          backgroundColor: 'black',
+        },
+      },
       type: 'multiselect',
       required: true,
       options: cityOptionExample,
@@ -141,7 +154,7 @@ export default function MyForm() {
         style: { fontWeight: 'bold', color: 'white' },
       },
       type: 'radio',
-      element: {
+      input: {
         style: {
           backgroundColor: 'red',
         },
@@ -157,9 +170,14 @@ export default function MyForm() {
           label: 'Aceite os termos de uso.',
         },
       ],
-      element: {
+      input: {
         style: {
           backgroundColor: 'green',
+        },
+      },
+      container: {
+        style: {
+          backgroundColor: 'white',
         },
       },
       label: {
@@ -174,7 +192,7 @@ export default function MyForm() {
         text: 'Milhar',
         style: { fontWeight: 'bold' },
       },
-      element: {
+      input: {
         className: 'bg-red-500',
       },
       type: 'range',
@@ -190,11 +208,20 @@ export default function MyForm() {
         text: 'Sua Senha',
       },
       type: 'password',
-      element: {
+      input: {
         style: { color: 'yellow' },
       },
     },
   ]
+
+  const defaultValues = fields.reduce((acc, field) => {
+    if (field.defaultValue !== undefined) {
+      acc[field.name as keyof IFormValues] = field.defaultValue
+    }
+    return acc
+  }, {} as Partial<IFormValues>)
+
+  const form = useForm<FieldValues>({ defaultValues })
 
   // table
   const columns = [
