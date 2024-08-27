@@ -1,14 +1,16 @@
 package cmd
 
 import (
-	"fmt"
-	"os/exec"
 	"bufio"
-	"io/ioutil"
-	"strings"
+	"fmt"
+	"hadsys/color"
+	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
-	"regexp"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -19,13 +21,11 @@ var addCmd = &cobra.Command{
 	Long: `The "add" command add a module to the project.`,
 	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-			moduleName := args[0]
-			
-			if err := addModule(moduleName); err != nil {
-					fmt.Printf("Error creating project: %s\n", err)
-			} else {
-					fmt.Printf("New Hadsys project '%s' created successfully.\n", moduleName)
-			}
+		moduleName := args[0]
+		
+		if err := addModule(moduleName); err != nil {
+			fmt.Printf("Error creating project: %s\n", err)
+		}
 	},
 }
 
@@ -33,9 +33,124 @@ func init() {
 	rootCmd.AddCommand(addCmd)
 }
 
+func copyMigrationFiles(packageName string) error {
+
+	// Copiar os arquivos de migração
+	fmt.Println(color.Yellow("Copiando arquivos de migração..."))
+
+	// Obtenha o diretorio atual
+	currentDir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	// Verificando se existe o arquivo de migração
+	migrationFilePath := filepath.Join(currentDir, "node_modules", packageName, "src", "migration", "index.ts")
+
+	// Verfica se o arquivo de migração existe
+	if _, err := os.Stat(migrationFilePath); os.IsNotExist(err) {
+		fmt.Println(color.Red("Arquivo de migração não encontrado!"))
+		return fmt.Errorf("arquivo de migração não encontrado: %v", err)
+	} else {
+		fmt.Println(color.Green("Arquivo de migração encontrado!"))
+	}
+		
+	// Crie uma variavel string com o timestamp atual em segundos 
+	// Obtém o tempo atual
+	now := time.Now()
+
+	// Timestamp em milissegundos
+	timestampMillis := now.UnixNano() / int64(time.Millisecond)
+
+	timestamp := strconv.FormatInt(timestampMillis, 10)
+
+	// Path de destino
+	migrationDestPath := filepath.Join(currentDir, "src", "typeorm", "migrations", timestamp + "-migrate.ts")
+
+	// Copiar o arquivo de migração
+	err = copyFile(migrationFilePath, migrationDestPath)
+
+	if err != nil {
+		fmt.Println(color.Red("Falha ao copiar arquivo de migração!"))
+		return fmt.Errorf("falha ao copiar arquivo de migração: %v", err)
+	}
+
+	// Abre arquivo de destino com acesso de escrita
+	file, err := os.Open(migrationDestPath)
+	if err != nil {
+		return fmt.Errorf("erro ao abrir o arquivo: %v", err)
+	}
+	defer file.Close()
+
+	var lines []string
+	// Procura pela linha com conteudo: export class Migration
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		if strings.Contains(line, "export class Migration") {
+			line = strings.Replace(line, "Migration", "Migration" + timestamp, 1)	
+		}
+
+		lines = append(lines, line)
+	}
+
+	// Verifica erros na leitura do arquivo
+	if err := scanner.Err(); err != nil {
+		fmt.Println(color.Red("Erro ao ler o arquivo!"))
+		return fmt.Errorf("erro ao ler o arquivo: %v", err)
+	}
+
+	// Reabre o arquivo para escrita
+	file, err = os.Create(migrationDestPath)
+	if err != nil {
+		fmt.Println(color.Red("Erro ao abrir o arquivo para escrita!"))
+		return fmt.Errorf("erro ao abrir o arquivo para escrita: %v", err)
+	}
+	defer file.Close()
+
+	// Escreve o conteúdo de volta ao arquivo
+	writer := bufio.NewWriter(file)
+	for _, line := range lines {
+		_, err = writer.WriteString(line + "\n")
+		if err != nil {
+			fmt.Println(color.Red("Erro ao escrever no arquivo!"))
+			return fmt.Errorf("erro ao escrever no arquivo: %v", err)
+		}
+	}
+
+	writer.Flush()
+
+	fmt.Println(color.Green("Arquivos de migração copiados com sucesso!"))
+
+	return nil
+
+}
+
+func copyFile(sourcePath, destinationPath string) error {
+	sourceFile, err := os.Open(sourcePath)
+	if err != nil {
+		return fmt.Errorf("failed to open source file: %v", err)
+	}
+	defer sourceFile.Close()
+
+	destinationFile, err := os.Create(destinationPath)
+	if err != nil {
+		return fmt.Errorf("failed to create destination file: %v", err)
+	}
+	defer destinationFile.Close()
+
+	_, err = io.Copy(destinationFile, sourceFile)
+	if err != nil {
+		return fmt.Errorf("failed to copy file: %v", err)
+	}
+
+	return nil
+}
+
 func installNpmPackage(packageName string) error {
 
-	fmt.Println("Instalando pacote npm:", packageName)
+	fmt.Println(color.Blue("Instalando pacote npm: ") + " " + color.Yellow(packageName))
 	// Comando npm install
 	cmd := exec.Command("npm", "install", packageName)
 
@@ -51,12 +166,8 @@ func installNpmPackage(packageName string) error {
 
 func findModule(name string) (string, error) {
 
-	fmt.Println("Procurando módulo:", name)
-
 	// Definir o caminho relativo onde o arquivo deve estar
 	searchPath := fmt.Sprintf("node_modules/@hedhog/%s/dist/%s.module.js", name, name)
-
-	fmt.Println("Caminho de busca:", searchPath)
 
 	// Obter o diretório atual
 	currentDir, err := os.Getwd()
@@ -64,12 +175,8 @@ func findModule(name string) (string, error) {
 		return "", err
 	}
 
-	fmt.Println("Diretório atual:", currentDir)
-
 	// Construir o caminho completo
 	fullPath := filepath.Join(currentDir, searchPath)
-
-	fmt.Println("Caminho completo:", fullPath)
 
 	// Verificar se o arquivo existe
 	if _, err := os.Stat(fullPath); err == nil {
@@ -81,45 +188,90 @@ func findModule(name string) (string, error) {
 	}
 }
 
-func addModuleImports(filePath, moduleName string) error {
+// Formata um arquivo TypeScript
+func formatFile(filePath string) error {
 
-	// Ler o conteúdo do arquivo
-	content, err := ioutil.ReadFile(filePath)
+	// Comando npm run format
+	cmd := exec.Command("npm", "run", "format", filePath)
+
+	// Captura a saída do comando
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return err
+		return fmt.Errorf("falha ao executar npm run format: %v. Saída: %s", err, string(output))
 	}
 
-	// Converter o conteúdo para string
-	script := string(content)
+	fmt.Println(string(output))
+	return nil
 
-	// Expressão regular para encontrar o array de imports
-	importsRegex := regexp.MustCompile(`imports:\s*\[(.*?)\]`)
-	// Expressão regular para verificar se AuthModule já está presente
-	authModuleRegex := regexp.MustCompile(moduleName)
+}
 
-	// Encontrar a seção de imports
-	matches := importsRegex.FindStringSubmatch(script)
-	if len(matches) < 2 {
-		return fmt.Errorf("não foi possível encontrar a seção de imports no arquivo %s", filePath)
-	}
 
-	importsSection := matches[1]
+// Adiciona um módulo ao array de imports do decorador @Module
+func AddModuleToNestJS(filePath, moduleName string) error {	
 
-	// Verificar se AuthModule já está presente
-	if !authModuleRegex.MatchString(importsSection) {
-		// Adicionar AuthModule
-		newImportsSection := strings.TrimSpace(importsSection) + ",\n    " + moduleName
-		// Substituir no script original
-		script = strings.Replace(script, importsSection, newImportsSection, 1)
-	}
+	formatFile(filePath)
 
-	// Escrever o script modificado de volta ao arquivo
-	err = ioutil.WriteFile(filePath, []byte(script), 0644)
+	// Abrir o arquivo para leitura
+	file, err := os.Open(filePath)
 	if err != nil {
-		return fmt.Errorf("erro ao escrever no arquivo: %v", err)
+		return fmt.Errorf("erro ao abrir o arquivo: %v", err)
 	}
+	defer file.Close()
+
+	// Ler o conteúdo do arquivo linha por linha
+	var lines []string
+	moduleInserted := false
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		// Verifica se está no array de imports do @Module
+		if strings.Contains(line, "imports:") && !moduleInserted {
+			line = insertModuleInImports(line, moduleName)
+			moduleInserted = true
+		}
+
+		lines = append(lines, line)
+	}
+
+	// Verifica erros na leitura do arquivo
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("erro ao ler o arquivo: %v", err)
+	}
+
+	// Reabre o arquivo para escrita
+	file, err = os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("erro ao abrir o arquivo para escrita: %v", err)
+	}
+	defer file.Close()
+
+	// Escreve o conteúdo de volta ao arquivo
+	writer := bufio.NewWriter(file)
+	for _, line := range lines {
+		_, err = writer.WriteString(line + "\n")
+		if err != nil {
+			return fmt.Errorf("erro ao escrever no arquivo: %v", err)
+		}
+	}
+
+	writer.Flush()
 
 	return nil
+}
+
+// Função que insere o módulo no array de imports
+func insertModuleInImports(line, moduleName string) string {
+
+	line = strings.TrimSpace(line)
+	if strings.HasSuffix(line, "]") {
+		line = strings.TrimSuffix(line, "]") + ", " + moduleName + "]"
+	} else {
+		line += moduleName + ", "
+	}
+
+	return line
 }
 
 func addModule(name string) error {
@@ -127,9 +279,6 @@ func addModule(name string) error {
 	appModuleFileName := "app.module.ts"
 	appModuleFilePath := filepath.Join(".", "src", appModuleFileName)
 	newModule := strings.Title(name) + "Module"
-
-	fmt.Println("Adicionando módulo:", newModule)
-	fmt.Println("Arquivo de módulo:", appModuleFilePath)
 
 	if _, err := os.Stat(appModuleFilePath); os.IsNotExist(err) {
 		return fmt.Errorf("file %s not found", appModuleFilePath)
@@ -141,15 +290,13 @@ func addModule(name string) error {
 	if err != nil {
 		fmt.Println("Erro ao instalar o pacote:", err)
 	} else {
-		fmt.Println("Pacote instalado com sucesso!")
+		fmt.Println(color.Green("Pacote instalado com sucesso!"))
 	}
 
 	modulePath, findErr := findModule(name)
 	if findErr != nil {
 		return findErr
 	}
-
-	fmt.Println("Module Path: ", modulePath)
 
 	if modulePath == "" {
 		return fmt.Errorf("module %s not found", name)
@@ -172,16 +319,6 @@ func addModule(name string) error {
 		// Check if the module is already imported
 		if strings.Contains(line, newModule) && strings.Contains(line, "import") {
 			importFound = true
-		}
-
-		// Check if the module is already in the list of modules
-		if strings.Contains(line, newModule) && strings.Contains(line, "modules:") {
-			moduleFound = true
-		}
-
-		// Find the line with the list of modules and add the new module
-		if strings.Contains(line, "modules: [") && !moduleFound {
-			line = strings.TrimRight(line, "]") + ", " + newModule + "]"
 			moduleFound = true
 		}
 
@@ -193,21 +330,39 @@ func addModule(name string) error {
 		lines = append([]string{"import { " + newModule + " } from '" + packageName + "';"}, lines...)
 	}
 
-	// If the module was not found, add it to the list of modules
-	if !moduleFound {
-		
-		if err := addModuleImports(appModuleFilePath, newModule); err != nil {
-			return err
-		}
-
-	}
-
-	if err := scanner.Err(); err != nil {
+	err = os.WriteFile(appModuleFilePath, []byte(strings.Join(lines, "\n")), 0644)
+	if err != nil {
 		return err
 	}
 
-	// Write the updated content back to the file
-	return ioutil.WriteFile(appModuleFilePath, []byte(strings.Join(lines, "\n")), 0644)
+	// If the module was not found, add it to the list of modules
+	if !moduleFound {
+		
+		err := AddModuleToNestJS(appModuleFilePath, newModule)
+		if err != nil {
+			fmt.Println("Erro:", err)
+		} else {
+			fmt.Println(color.Green("Módulo adicionado com sucesso!"))
+		}
+
+		formatFile(appModuleFilePath)
+
+	}
+
+	err = copyMigrationFiles(packageName)
+	if err != nil {
+		fmt.Println(color.Red("Erro ao copiar arquivos de migração: " + err.Error()))
+	}
+
+	fmt.Println("************************************")
+	fmt.Println("")
+	fmt.Println(color.Blue("cd " + name))
+	fmt.Println("")
+	fmt.Println("Configure the database connection in the .env file")
+	fmt.Println("")
+	fmt.Println(color.Blue("npm run migration:run"))
+	fmt.Println("")
 
 	return nil
+
 }
