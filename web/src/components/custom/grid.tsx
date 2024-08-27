@@ -17,13 +17,17 @@ import {
 } from '@/components/ui/pagination'
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 
+interface IColumn {
+  default: number
+  sm: number
+  md: number
+  lg: number
+  xl: number
+}
+
 interface GridProps<T> extends React.HTMLAttributes<HTMLDivElement> {
   renderItem: (item: T) => React.ReactNode // Função para renderizar cada item
-  columns?: number // Colunas para o breakpoint padrão
-  columnsSm?: number // Colunas para breakpoint sm
-  columnsMd?: number // Colunas para breakpoint md
-  columnsLg?: number // Colunas para breakpoint lg
-  columnsXl?: number // Colunas para breakpoint xl
+  columns?: IColumn
   gap?: number
   padding?: number
   paginatedItems: any[]
@@ -42,11 +46,13 @@ interface GridProps<T> extends React.HTMLAttributes<HTMLDivElement> {
 
 const Grid = <T,>({
   renderItem,
-  columns = 1,
-  columnsSm,
-  columnsMd,
-  columnsLg,
-  columnsXl,
+  columns = {
+    default: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+  },
   gap = 6,
   padding = 4,
   itemsPerPageOptions = [10, 20, 30, 40],
@@ -62,7 +68,7 @@ const Grid = <T,>({
   className,
   ...props
 }: GridProps<T>) => {
-  const [gridColumns, setGridColumns] = useState<number>(columns)
+  const [gridColumns, setGridColumns] = useState<number>(columns.default)
 
   useEffect(() => {
     refetch()
@@ -71,13 +77,13 @@ const Grid = <T,>({
   // Atualiza o número de colunas com base no tamanho da tela
   const updateColumnsBasedOnScreenSize = () => {
     if (window.innerWidth >= 1280) {
-      setGridColumns(columnsXl || columns)
+      setGridColumns(columns.xl || columns.default)
     } else if (window.innerWidth >= 1024) {
-      setGridColumns(columnsLg || columns)
+      setGridColumns(columns.lg || columns.default)
     } else if (window.innerWidth >= 768) {
-      setGridColumns(columnsMd || columns)
+      setGridColumns(columns.md || columns.default)
     } else if (window.innerWidth >= 640) {
-      setGridColumns(columnsSm || columns)
+      setGridColumns(columns.sm || columns.default)
     } else {
       setGridColumns(1) // Coluna única para telas pequenas
     }
@@ -89,7 +95,7 @@ const Grid = <T,>({
     return () => {
       window.removeEventListener('resize', updateColumnsBasedOnScreenSize)
     }
-  }, [columns, columnsSm, columnsMd, columnsLg, columnsXl])
+  }, [columns])
 
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error loading items</div>

@@ -359,11 +359,13 @@ export default function MyForm() {
               <p>{item.body}</p>
             </div>
           )}
-          columns={4}
-          columnsSm={2}
-          columnsMd={3}
-          columnsLg={4}
-          columnsXl={5}
+          columns={{
+            default: 1,
+            sm: 2,
+            md: 3,
+            lg: 4,
+            xl: 5,
+          }}
           gap={6}
           padding={4}
           itemsPerPageOptions={[10, 20, 30, 40]}
