@@ -16,13 +16,11 @@ interface IUser {
   role: 'user' | 'admin'
 }
 
-interface IRoleBasedAccessControlProps {
+interface IPropertyTableProps {
   users: IUser[]
 }
 
-export const RoleBasedAccessControl: React.FC<IRoleBasedAccessControlProps> = ({
-  users,
-}) => {
+const PropertyTable: React.FC<IPropertyTableProps> = ({ users }) => {
   const roles = ['user', 'admin']
   const [selectedRole, setSelectedRole] = useState<'user' | 'admin' | null>(
     null
@@ -144,10 +142,12 @@ export const RoleBasedAccessControl: React.FC<IRoleBasedAccessControlProps> = ({
           }))}
           columns={[
             { header: 'Usuário', key: 'name' },
-            { header: 'Papel', key: 'role' },
+            { header: 'Cargo', key: 'role' },
           ]}
         />
       </div>
     </div>
   )
 }
+
+export default PropertyTable

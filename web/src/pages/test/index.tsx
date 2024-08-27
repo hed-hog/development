@@ -3,7 +3,7 @@ import FormPanel from '@/components/custom/form-panel'
 import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
-import { RoleBasedAccessControl } from '@/components/custom/rbac-manager'
+import PropertyTable from '@/components/custom/property-table'
 import Grid from '@/components/custom/grid'
 import ListPanel from '@/components/custom/list-panel'
 import Tree from '@/components/custom/tree'
@@ -365,12 +365,11 @@ export default function MyForm() {
         </CardContent>
       </Card>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        RBAC Manager
+        PropertyTable
       </h1>
       <Card className='mx-auto w-[620px]'>
         <CardContent>
-          <h1 className='mb-6 text-2xl font-bold'>Gerenciamento de Acesso</h1>
-          <RoleBasedAccessControl users={users} />
+          <PropertyTable users={users} />
         </CardContent>
       </Card>
       <div className='p-6'>
