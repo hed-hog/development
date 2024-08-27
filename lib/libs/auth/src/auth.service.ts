@@ -6,14 +6,12 @@ import { PrismaService } from '@hedhog/prisma';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { MultifactorType } from './enums/multifactor-type.enum';
-import { MailService } from '@hedhog/mail';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
-    private readonly mail: MailService,
   ) {}
 
   generateRandomString(length: number): string {
