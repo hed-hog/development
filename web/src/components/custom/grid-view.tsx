@@ -15,9 +15,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
-import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 
-interface IColumn {
+interface IResponsiveColumn {
   default: number
   sm: number
   md: number
@@ -25,28 +24,16 @@ interface IColumn {
   xl: number
 }
 
-interface GridProps<T> extends React.HTMLAttributes<HTMLDivElement> {
-  renderItem: (item: T) => React.ReactNode // Função para renderizar cada item
-  columns?: IColumn
+interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
+  responsiveColumns?: IResponsiveColumn
   gap?: number
   padding?: number
-  paginatedItems: any[]
-  isLoading?: boolean
-  isError?: boolean
-  refetch: (
-    options?: RefetchOptions
-  ) => Promise<QueryObserverResult<any, Error>>
-  itemsPerPageOptions?: number[] // Opções para itens por página
-  totalItems: number // Total de itens para calcular o número de páginas
-  handlePageChange: (page: number) => void
-  handleItemsPerPageChange: (value: string) => void
-  currentPage: number
-  itemsPerPage: number
+  data: React.ReactNode[]
+  itemsPerPage?: number[]
 }
 
-const Grid = <T,>({
-  renderItem,
-  columns = {
+const GridView = ({
+  responsiveColumns = {
     default: 1,
     sm: 2,
     md: 3,
@@ -55,35 +42,42 @@ const Grid = <T,>({
   },
   gap = 6,
   padding = 4,
-  itemsPerPageOptions = [10, 20, 30, 40],
-  paginatedItems,
-  isLoading,
-  isError,
-  refetch,
-  totalItems,
-  handlePageChange,
-  handleItemsPerPageChange,
-  currentPage,
-  itemsPerPage,
+  itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
+  data,
   className,
   ...props
-}: GridProps<T>) => {
-  const [gridColumns, setGridColumns] = useState<number>(columns.default)
+}: GridViewProps) => {
+  const [itemsPerPage, setItemsPerPage] = useState<number>(
+    itemsPerPageOptions[0]
+  )
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [gridColumns, setGridColumns] = useState<number>(
+    responsiveColumns.default
+  )
+  const [totalPages, setTotalPages] = useState<number>(
+    data.length / itemsPerPage
+  )
 
+  const totalItems = data.length
   useEffect(() => {
-    refetch()
-  }, [currentPage, itemsPerPage, refetch])
+    setTotalPages(Math.ceil(totalItems / itemsPerPage))
+  }, [itemsPerPage, totalItems])
+
+  // Calcula os itens a serem exibidos na página atual
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedItems = data.slice(startIndex, endIndex)
 
   // Atualiza o número de colunas com base no tamanho da tela
   const updateColumnsBasedOnScreenSize = () => {
     if (window.innerWidth >= 1280) {
-      setGridColumns(columns.xl || columns.default)
+      setGridColumns(responsiveColumns.xl || responsiveColumns.default)
     } else if (window.innerWidth >= 1024) {
-      setGridColumns(columns.lg || columns.default)
+      setGridColumns(responsiveColumns.lg || responsiveColumns.default)
     } else if (window.innerWidth >= 768) {
-      setGridColumns(columns.md || columns.default)
+      setGridColumns(responsiveColumns.md || responsiveColumns.default)
     } else if (window.innerWidth >= 640) {
-      setGridColumns(columns.sm || columns.default)
+      setGridColumns(responsiveColumns.sm || responsiveColumns.default)
     } else {
       setGridColumns(1) // Coluna única para telas pequenas
     }
@@ -95,12 +89,16 @@ const Grid = <T,>({
     return () => {
       window.removeEventListener('resize', updateColumnsBasedOnScreenSize)
     }
-  }, [columns])
+  }, [responsiveColumns])
 
-  if (isLoading) return <div>Loading...</div>
-  if (isError) return <div>Error loading items</div>
+  const handleItemsPerPageChange = (value: string) => {
+    setItemsPerPage(Number(value))
+    setCurrentPage(1) // Reseta para a primeira página ao alterar o número de itens por página
+  }
 
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
 
   return (
     <div {...props} className={`p-${padding}`}>
@@ -112,11 +110,7 @@ const Grid = <T,>({
         }}
         className={className}
       >
-        {paginatedItems.map((item: T, index: number) => (
-          <div key={index} className='item'>
-            {renderItem(item)}
-          </div>
-        ))}
+        {paginatedItems}
       </div>
 
       <div className='mt-4 flex w-full items-center justify-between'>
@@ -176,4 +170,4 @@ const Grid = <T,>({
   )
 }
 
-export default Grid
+export default GridView

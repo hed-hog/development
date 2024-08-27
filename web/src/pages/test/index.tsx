@@ -4,12 +4,10 @@ import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import PropertyTable from '@/components/custom/property-table'
-import Grid from '@/components/custom/grid'
 import ListPanel from '@/components/custom/list-panel'
 import Tree from '@/components/custom/tree'
-import { useItems } from '@/features/users'
-import { usePagination } from '@/hooks/use-pagination'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
+import GridView from '@/components/custom/grid-view'
 
 export default function MyForm() {
   // form
@@ -280,6 +278,14 @@ export default function MyForm() {
     { id: '5', label: 'Item 5' },
   ]
 
+  // grid
+  const gridItems = Array.from({ length: 50 }, (_, index) => (
+    <div key={index} className='rounded border border-gray-300 p-4'>
+      <h3 className='text-lg font-semibold'>Item {index + 1}</h3>
+      <p>Descrição do item {index + 1}</p>
+    </div>
+  ))
+
   // tree
   const sampleData = [
     {
@@ -303,23 +309,6 @@ export default function MyForm() {
       ],
     },
   ]
-
-  // grid
-  const {
-    startIndex,
-    endIndex,
-    currentPage,
-    itemsPerPage,
-    handlePageChange,
-    handleItemsPerPageChange,
-  } = usePagination()
-
-  const {
-    data: paginatedItems = [],
-    isLoading,
-    isError,
-    refetch,
-  } = useItems(startIndex, endIndex)
 
   return (
     <>
@@ -376,34 +365,18 @@ export default function MyForm() {
         <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
           Grid com Paginação
         </h1>
-        <Grid
-          renderItem={(item: { id: number; title: string; body: string }) => (
-            <div
-              key={item.id}
-              className='h-52 rounded border border-gray-300 p-4'
-            >
-              <p>{item.body}</p>
-            </div>
-          )}
-          columns={{
+        <GridView
+          responsiveColumns={{
             default: 1,
             sm: 2,
             md: 3,
             lg: 4,
             xl: 5,
           }}
+          data={gridItems}
           gap={6}
           padding={4}
-          itemsPerPageOptions={[10, 20, 30, 40]}
-          totalItems={50}
-          paginatedItems={paginatedItems}
-          isLoading={isLoading}
-          isError={isError}
-          refetch={refetch}
-          handlePageChange={handlePageChange}
-          handleItemsPerPageChange={handleItemsPerPageChange}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
+          itemsPerPage={[10, 20, 30, 40]}
         />
       </div>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
