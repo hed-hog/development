@@ -76,7 +76,7 @@ export default function FormPanel({
         name={name}
         key={index}
         render={({ field }) => (
-          <FormItem style={container.style} className={container.className}>
+          <FormItem className='flex flex-col'>
             {label?.text && (
               <FormLabel style={label.style} className={label.className}>
                 {label.text}
