@@ -51,8 +51,6 @@ func copyMigrationFiles(packageName string) error {
 	if _, err := os.Stat(migrationFilePath); os.IsNotExist(err) {
 		fmt.Println(color.Red("Arquivo de migração não encontrado!"))
 		return fmt.Errorf("arquivo de migração não encontrado: %v", err)
-	} else {
-		fmt.Println(color.Green("Arquivo de migração encontrado!"))
 	}
 		
 	// Crie uma variavel string com o timestamp atual em segundos 
@@ -150,7 +148,6 @@ func copyFile(sourcePath, destinationPath string) error {
 
 func installNpmPackage(packageName string) error {
 
-	fmt.Println(color.Blue("Instalando pacote npm: ") + " " + color.Yellow(packageName))
 	// Comando npm install
 	cmd := exec.Command("npm", "install", packageName)
 
@@ -286,6 +283,8 @@ func addModule(name string) error {
 
 	packageName := "@hedhog/" + name
 
+	fmt.Println(color.Cyan("Instalando o pacote: ") + color.Yellow(packageName))
+
 	err := installNpmPackage(packageName)
 	if err != nil {
 		fmt.Println("Erro ao instalar o pacote:", err)
@@ -337,6 +336,8 @@ func addModule(name string) error {
 
 	// If the module was not found, add it to the list of modules
 	if !moduleFound {
+
+		fmt.Println(color.Cyan("Adicionando módulo ao arquivo ") + color.Yellow(appModuleFileName))
 		
 		err := AddModuleToNestJS(appModuleFilePath, newModule)
 		if err != nil {
@@ -354,13 +355,12 @@ func addModule(name string) error {
 		fmt.Println(color.Red("Erro ao copiar arquivos de migração: " + err.Error()))
 	}
 
+	fmt.Println("")
 	fmt.Println("************************************")
 	fmt.Println("")
-	fmt.Println(color.Blue("cd " + name))
+	fmt.Println(color.Blue("npm run migrate:up"))
 	fmt.Println("")
-	fmt.Println("Configure the database connection in the .env file")
-	fmt.Println("")
-	fmt.Println(color.Blue("npm run migration:run"))
+	fmt.Println("************************************")
 	fmt.Println("")
 
 	return nil

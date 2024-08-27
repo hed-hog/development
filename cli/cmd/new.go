@@ -125,8 +125,6 @@ func createNewProject(name, repoURL string) error {
 
 	projectDir = filepath.Join(currentDir, projectDir)
 
-	fmt.Println("PATH: ", projectDir)
-
 	// Executando npm install no diretório do projeto
 	if err := executeCommand(projectDir, "npm", "install"); err != nil {
 		fmt.Println(color.Red("Failed to install dependencies."))
@@ -139,6 +137,17 @@ func createNewProject(name, repoURL string) error {
 			return fmt.Errorf("failed to add auth module: %w", err)
 	}
 
-	fmt.Println("New HedHog project created successfully.")
+	fmt.Println("")
+	fmt.Println("************************************")
+	fmt.Println("")
+	fmt.Println("Configure the database connection in the "+color.Yellow(".env")+" file")
+	fmt.Println("")
+	fmt.Println("cd " + color.Blue(name) + " && " + color.Blue("npm run migrate:up"))
+	fmt.Println("")
+	fmt.Println(color.Blue("npm run dev"))
+	fmt.Println("")
+	fmt.Println("************************************")
+	fmt.Println("")
+
 	return nil
 }
