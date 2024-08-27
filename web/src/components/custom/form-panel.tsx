@@ -1,5 +1,3 @@
-import { CSSProperties } from 'react'
-import { FieldValues, UseFormReturn } from 'react-hook-form'
 import {
   Form,
   FormControl,
@@ -30,95 +28,14 @@ import { Label } from '../ui/label'
 import { Checkbox } from '../ui/checkbox'
 import { Slider } from '../ui/slider'
 import { PasswordInput } from './password-input'
-
-interface IFormFieldOption {
-  value: string
-  label: string
-}
-
-interface ISliderOption {
-  defaultValue: number[]
-  max: number
-  step: number
-}
-
-interface IFormFieldProps {
-  name: string
-  label?: {
-    text?: string
-    className?: string
-    style?: CSSProperties
-  }
-  description?: {
-    text?: string
-    className?: string
-    style?: CSSProperties
-  }
-  container?: {
-    className?: string
-    style?: CSSProperties
-  }
-  calendar?: {
-    // only for datePicker
-    style?: CSSProperties
-  }
-  element?: {
-    className?: string
-    style?: CSSProperties
-  }
-  trigger?: {
-    // only for select and multiselect
-    className?: string
-    style?: CSSProperties
-  }
-  badge?: {
-    // only for multiselect
-    className?: string
-    style?: CSSProperties
-  }
-  actionButtons?: {
-    // only for multiselect
-    className?: string
-    style?: CSSProperties
-  }
-  items?: {
-    // only for multiselect
-    className?: string
-    style?: CSSProperties
-  }
-  search?: {
-    // only for multiselect
-    className?: string
-    style?: React.CSSProperties
-  }
-  checkbox?: {
-    // only for multiselect
-    className?: string
-    style?: React.CSSProperties
-  }
-  required?: boolean
-  type: string
-  options?: IFormFieldOption[]
-  sliderOptions?: ISliderOption
-}
-
-interface IFormPanelProps {
-  title?: {
-    text?: string
-    style?: CSSProperties
-  }
-  subtitle?: {
-    text?: string
-    style?: CSSProperties
-  }
-  button?: {
-    text?: string
-    style?: CSSProperties
-  }
-  fields: IFormFieldProps[]
-  form: UseFormReturn<FieldValues>
-  onSubmit: (data: any) => void
-}
+import {
+  ICalendarProps,
+  IFormFieldProps,
+  IFormPanelProps,
+  IMultiSelectProps,
+  ISelectProps,
+  ISliderProps,
+} from '@/types/form-panel'
 
 export default function FormPanel({
   title = {},
@@ -133,22 +50,25 @@ export default function FormPanel({
       label,
       description,
       container = {},
-      element = {},
-      calendar = {},
-      trigger = {},
-      badge = {},
-      actionButtons = {},
-      items = {},
+      input = {},
       required,
       type,
       name,
       options = [],
-      sliderOptions = {
-        defaultValue: [50],
-        max: 100,
-        step: 1,
-      },
     } = field
+
+    const { sliderOptions = { defaultValue: [50], max: 100, step: 1 } } =
+      field as ISliderProps
+
+    const { option = {} } = field as ISelectProps
+
+    const {
+      actionButtons = {},
+      badge = {},
+      items = {},
+    } = field as IMultiSelectProps
+
+    const { calendar = {} } = field as ICalendarProps
 
     return (
       <FormField
@@ -176,8 +96,8 @@ export default function FormPanel({
                 )}
                 {(type === 'text' || type === 'file') && (
                   <Input
-                    className={element.className}
-                    style={element.style}
+                    className={input.className}
+                    style={input.style}
                     required={required}
                     type={type}
                     value={field.value || ''}
@@ -186,8 +106,8 @@ export default function FormPanel({
                 )}
                 {type === 'password' && (
                   <PasswordInput
-                    className={element.className}
-                    style={element.style}
+                    className={input.className}
+                    style={input.style}
                     required={required}
                     value={field.value || ''}
                     onChange={field.onChange}
@@ -208,8 +128,8 @@ export default function FormPanel({
                         <RadioGroupItem
                           value={option.value}
                           id={option.value}
-                          className={element.className}
-                          style={element.style}
+                          className={input.className}
+                          style={input.style}
                         />
                         <Label
                           htmlFor={option.value}
@@ -225,7 +145,7 @@ export default function FormPanel({
                 {type === 'checkbox' &&
                   options.map((option) => (
                     <div
-                      className={`flex items-center space-x-2 ${container.className || ''}`}
+                      className={`flex items-center space-x-2 ${container.className}`}
                       key={option.value}
                       style={container.style}
                     >
@@ -245,8 +165,8 @@ export default function FormPanel({
                           field.onChange(newValue)
                         }}
                         id={option.value}
-                        className={element.className}
-                        style={element.style}
+                        className={input.className}
+                        style={input.style}
                       />
                       <Label
                         htmlFor={option.value}
@@ -260,12 +180,12 @@ export default function FormPanel({
 
                 {type === 'range' && (
                   <div
-                    className={`flex items-center space-x-2 ${container.className || ''}`}
+                    className={`flex items-center space-x-2 ${container.className}`}
                     style={container.style}
                   >
                     <Slider
-                      className={element.className}
-                      style={element.style}
+                      className={input.className}
+                      style={input.style}
                       defaultValue={sliderOptions.defaultValue}
                       max={sliderOptions.max}
                       step={sliderOptions.step}
@@ -281,7 +201,7 @@ export default function FormPanel({
                     value={field.value}
                     onValueChange={(value) => field.onChange(value)}
                   >
-                    <SelectTrigger className='w-full' style={trigger.style}>
+                    <SelectTrigger className='w-full' style={input.style}>
                       <SelectValue placeholder={label?.text} />
                     </SelectTrigger>
                     <SelectContent>
@@ -289,14 +209,14 @@ export default function FormPanel({
                         className={container.className}
                         style={container.style}
                       >
-                        {options.map((option, index) => (
+                        {options.map((opt, index) => (
                           <SelectItem
-                            style={element.style}
-                            className={element.className}
+                            style={option.style}
+                            className={option.className}
                             key={index}
-                            value={option.value}
+                            value={opt.value}
                           >
-                            {option.label}
+                            {opt.label}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -308,7 +228,7 @@ export default function FormPanel({
                     actionButtons={actionButtons}
                     badge={badge}
                     items={items}
-                    trigger={trigger}
+                    input={input}
                     value={field.value || []}
                     onChange={field.onChange}
                     options={options}
@@ -316,8 +236,8 @@ export default function FormPanel({
                 )}
                 {type === 'datepicker' && (
                   <DatePicker
-                    className={element.className}
-                    style={element.style}
+                    className={input.className}
+                    style={input.style}
                     calendar={calendar}
                     label={String(label?.text)}
                     icon={<CalendarIcon className='mr-2 h-4 w-4' />}
