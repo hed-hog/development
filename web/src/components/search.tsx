@@ -11,13 +11,13 @@ interface IProps {
 
 export function Search({ value, setValue, placeholder, icon }: IProps) {
   return (
-    <div className='relative w-fit'>
+    <div className='relative'>
       <Input
         value={value}
         onChange={setValue}
         type='search'
         placeholder={placeholder || 'Search...'}
-        className='md:w-[100px] lg:w-[300px]'
+        className='w-full'
       />
       {icon}
       {!icon && <IconSearch className='absolute right-1 top-1 w-5' />}
