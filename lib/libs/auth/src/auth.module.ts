@@ -5,7 +5,6 @@ import { PrismaModule } from '@hedhog/prisma';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
-import { MailModule } from '@hedhog/mail';
 
 @Module({
   imports: [
@@ -19,7 +18,6 @@ import { MailModule } from '@hedhog/mail';
       },
     }),
     PrismaModule,
-    MailModule,
   ],
   controllers: [AuthController],
   providers: [

@@ -6,15 +6,19 @@ import { PrismaService } from '@hedhog/prisma';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { MultifactorType } from './enums/multifactor-type.enum';
-import { MailService } from '@hedhog/mail';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
-    private readonly mail: MailService,
   ) {}
+
+  async verifyToken(token: string) {
+    return this.jwt.verifyAsync(token, {
+      secret: String(process.env.JWT_SECRET),
+    });
+  }
 
   generateRandomString(length: number): string {
     const characters =
