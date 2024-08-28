@@ -4,8 +4,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import PropertyTable from '@/components/custom/property-table'
-import ListPanel from '@/components/custom/list-panel'
-import Tree from '@/components/custom/tree'
+import ListView from '@/components/custom/list-view'
+import TreeView from '@/components/custom/tree-view'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 import GridView from '@/components/custom/grid-view'
 
@@ -33,9 +33,9 @@ export default function MyForm() {
         text: 'Username',
         style: { fontWeight: 'bold' },
       },
-      input: {
-        style: { borderRadius: 25, borderColor: 'white' },
-      },
+      // input: {
+      //   style: { borderRadius: 25, borderColor: 'white' },
+      // },
       type: 'text',
       required: true,
       description: {
@@ -59,14 +59,14 @@ export default function MyForm() {
         text: 'Birthdate',
         style: { fontWeight: 'bold' },
       },
-      calendar: {
-        style: { color: 'white' },
-      },
-      input: {
-        style: {
-          color: 'white',
-        },
-      },
+      // calendar: {
+      //   style: { color: 'white' },
+      // },
+      // input: {
+      //   style: {
+      //     color: 'white',
+      //   },
+      // },
       type: 'datepicker',
       required: true,
     },
@@ -76,12 +76,12 @@ export default function MyForm() {
         text: 'Country',
         style: { fontWeight: 'bold', color: 'white' },
       },
-      input: {
-        style: { color: 'yellow' },
-      },
-      option: {
-        style: { color: 'red' },
-      },
+      // input: {
+      //   style: { color: 'yellow' },
+      // },
+      // option: {
+      //   style: { color: 'red' },
+      // },
       type: 'select',
       required: true,
       options: countryOptionExample,
@@ -108,22 +108,22 @@ export default function MyForm() {
         text: 'City',
         style: { fontWeight: 'bold' },
       },
-      badge: {
-        className: 'bg-red-500',
-      },
-      input: {
-        style: { backgroundColor: '#fff' },
-      },
-      actionButtons: {
-        style: {
-          backgroundColor: 'green',
-        },
-      },
-      items: {
-        style: {
-          backgroundColor: 'black',
-        },
-      },
+      // badge: {
+      //   className: 'bg-red-500',
+      // },
+      // input: {
+      //   style: { backgroundColor: '#fff' },
+      // },
+      // actionButtons: {
+      //   style: {
+      //     backgroundColor: 'green',
+      //   },
+      // },
+      // items: {
+      //   style: {
+      //     backgroundColor: 'black',
+      //   },
+      // },
       type: 'multiselect',
       required: true,
       options: cityOptionExample,
@@ -152,11 +152,11 @@ export default function MyForm() {
         style: { fontWeight: 'bold', color: 'white' },
       },
       type: 'radio',
-      input: {
-        style: {
-          backgroundColor: 'red',
-        },
-      },
+      // input: {
+      //   style: {
+      //     backgroundColor: 'red',
+      //   },
+      // },
       options: cityOptionExample,
     },
     {
@@ -168,21 +168,21 @@ export default function MyForm() {
           label: 'Aceite os termos de uso.',
         },
       ],
-      input: {
-        style: {
-          backgroundColor: 'green',
-        },
-      },
-      container: {
-        style: {
-          backgroundColor: 'white',
-        },
-      },
-      label: {
-        style: {
-          color: 'red',
-        },
-      },
+      // input: {
+      //   style: {
+      //     backgroundColor: 'green',
+      //   },
+      // },
+      // container: {
+      //   style: {
+      //     backgroundColor: 'white',
+      //   },
+      // },
+      // label: {
+      //   style: {
+      //     color: 'red',
+      //   },
+      // },
     },
     {
       name: 'percentage',
@@ -190,9 +190,9 @@ export default function MyForm() {
         text: 'Milhar',
         style: { fontWeight: 'bold' },
       },
-      input: {
-        className: 'bg-red-500',
-      },
+      // input: {
+      //   className: 'bg-red-500',
+      // },
       type: 'range',
       sliderOptions: {
         defaultValue: [500],
@@ -206,9 +206,9 @@ export default function MyForm() {
         text: 'Sua Senha',
       },
       type: 'password',
-      input: {
-        style: { color: 'yellow' },
-      },
+      // input: {
+      //   style: { color: 'yellow' },
+      // },
     },
   ]
 
@@ -269,8 +269,8 @@ export default function MyForm() {
     { id: '3', name: 'Charlie', role: 'user' },
   ]
 
-  // listPanel
-  const listPanelItems = [
+  // ListView
+  const listViewItems = [
     { id: '1', label: 'Item 1' },
     { id: '2', label: 'Item 2' },
     { id: '3', label: 'Item 3' },
@@ -286,8 +286,8 @@ export default function MyForm() {
     </div>
   ))
 
-  // tree
-  const sampleData = [
+  // treeView
+  const treeData = [
     {
       id: '1',
       title: 'Root Node',
@@ -363,7 +363,7 @@ export default function MyForm() {
       </Card>
       <div className='p-6'>
         <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-          Grid com Paginação
+          GridView
         </h1>
         <GridView
           responsiveColumns={{
@@ -380,13 +380,13 @@ export default function MyForm() {
         />
       </div>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        ListPanel
+        ListView
       </h1>
-      <ListPanel data={listPanelItems} />
+      <ListView data={listViewItems} />
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        Tree
+        TreeView
       </h1>
-      <Tree data={sampleData} />
+      <TreeView data={treeData} />
     </>
   )
 }

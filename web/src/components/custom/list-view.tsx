@@ -22,11 +22,11 @@ interface ListItem {
   label: string
 }
 
-interface ListPanelProps {
+interface ListViewProps {
   data: Array<ListItem>
 }
 
-const ListPanel: React.FC<ListPanelProps> = ({ data }) => {
+const ListView: React.FC<ListViewProps> = ({ data }) => {
   const [items, setItems] = useState<ListItem[]>(data)
 
   const sensors = useSensors(
@@ -69,9 +69,9 @@ const ListPanel: React.FC<ListPanelProps> = ({ data }) => {
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {items.map((item) => (
               <SortableItem key={item.id} id={item.id}>
-                <div className='flex flex-row justify-between rounded-md border border-gray-200 p-4'>
+                <div className='flex flex-row rounded-md border border-gray-200 px-2 py-4'>
+                  <GripVertical className='mr-2 w-4' />
                   <span>{item.label}</span>
-                  <GripVertical />
                 </div>
               </SortableItem>
             ))}
@@ -82,4 +82,4 @@ const ListPanel: React.FC<ListPanelProps> = ({ data }) => {
   )
 }
 
-export default ListPanel
+export default ListView

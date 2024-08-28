@@ -188,7 +188,6 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
                   className='absolute w-4'
                   style={{
                     left: Boolean(node.children?.length) ? -15 : -5,
-                    color: 'rgb(58 102 211)',
                   }}
                 />
                 {node.children && Boolean(node.children.length) && (

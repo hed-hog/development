@@ -111,7 +111,7 @@ const TableView = ({
       </div>
 
       <Table>
-        {caption && <TableCaption>{caption}</TableCaption>}
+        {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
         <TableHeader>
           <TableRow>
             {columns.map((col) => (
@@ -160,9 +160,9 @@ const TableView = ({
         {pagination && (
           <TableCell
             colSpan={columns.length + (rowActions.length > 0 ? 1 : 0)}
-            className='px-0'
+            className='relative px-0'
           >
-            <Pagination className='ml-60 mr-0 w-fit'>
+            <Pagination className='absolute right-0 mb-6 w-fit'>
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
