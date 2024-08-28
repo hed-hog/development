@@ -164,9 +164,9 @@ const TableView = ({
         {pagination && (
           <TableCell
             colSpan={columns.length + (rowActions.length > 0 ? 1 : 0)}
-            className='relative px-0'
+            className='relative px-0 pb-12'
           >
-            <Pagination className='absolute right-0 mb-6 w-fit'>
+            <Pagination className='absolute right-0 w-fit'>
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious

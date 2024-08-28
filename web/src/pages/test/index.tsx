@@ -263,6 +263,8 @@ export default function MyForm() {
       name: 'John Doe',
       role: 'admin',
       isActive: true,
+      description: 'Sr. John',
+      date: new Date('2024-08-31'),
       color: '#ff0000',
     },
     {
@@ -270,12 +272,36 @@ export default function MyForm() {
       name: 'Jane Smith',
       role: 'user',
       isActive: false,
+      description: 'Sra. Jane',
+      date: new Date('2024-08-31'),
+      color: '#00ff00',
+    },
+    {
+      id: 3,
+      name: 'John Doe',
+      role: 'admin',
+      isActive: true,
+      description: 'Sr. John',
+      date: new Date('2024-08-31'),
+      color: '#ff0000',
+    },
+    {
+      id: 4,
+      name: 'Jane Smith',
+      role: 'user',
+      isActive: false,
+      description: 'Sra. Jane',
+      date: new Date('2024-08-31'),
       color: '#00ff00',
     },
   ]
 
   const propertyTableViewColumns = [
-    { header: 'Nome', key: 'name', type: 'text' },
+    {
+      header: 'Nome',
+      key: 'name',
+      type: 'text',
+    },
     {
       header: 'Cargo',
       key: 'role',
@@ -285,11 +311,23 @@ export default function MyForm() {
         { label: 'Admin', value: 'admin' },
       ],
     },
-    { header: 'Ativo', key: 'isActive', type: 'checkbox' },
-    { header: 'Cor Favorita', key: 'color', type: 'color' },
+    {
+      header: 'Ativo',
+      key: 'isActive',
+      type: 'checkbox',
+    },
+    {
+      header: 'Cor Favorita',
+      key: 'color',
+      type: 'color',
+    },
     { header: 'Descrição', key: 'description', type: 'text' },
     { header: 'Arquivo', key: 'file', type: 'file' },
-    { header: 'Date', key: 'date', type: 'datepicker' },
+    {
+      header: 'Date',
+      key: 'date',
+      type: 'datepicker',
+    },
   ]
 
   const handleSaveChanges = (updatedData: any) => {
@@ -389,6 +427,8 @@ export default function MyForm() {
             data={initialData}
             columns={propertyTableViewColumns}
             onSaveChanges={handleSaveChanges}
+            pagination
+            itemsPerPage={2}
           />
         </CardContent>
       </Card>

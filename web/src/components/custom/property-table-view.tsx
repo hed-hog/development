@@ -12,27 +12,38 @@ import { Input } from '@/components/ui/input'
 import { ColorPicker } from './color-picker'
 import { Checkbox } from '../ui/checkbox'
 import { Button } from './button'
-import { MultiSelect } from '../ui/multi-select'
 import DatePicker from '../ui/date-picker'
 import { CalendarIcon } from 'lucide-react'
-import { IFormFieldOption } from '@/types/form-panel'
+import {
+  ICalendarProps,
+  IFormFieldOption,
+  IFormFieldPropsBase,
+} from '@/types/form-panel'
 
-interface IPropertyTableViewColumn {
+interface IPropertyTableViewColumn
+  extends Omit<IFormFieldPropsBase, 'name' | 'type' | 'defaultValue'> {
   header: string
   key: string
   type: string
   options?: IFormFieldOption[]
+  calendar?: ICalendarProps
 }
 
 interface IPropertyTableViewProps {
-  data: any[] // Aceita qualquer tipo de dado
+  data: any[]
   columns: IPropertyTableViewColumn[]
+  pagination?: boolean
+  itemsPerPage?: number
+  caption?: string
   onSaveChanges: (updatedData: any[]) => void
 }
 
 const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
   data,
   columns,
+  pagination = true,
+  itemsPerPage = 10,
+  caption = '',
   onSaveChanges,
 }) => {
   const [editedData, setEditedData] = useState(data)
@@ -50,14 +61,19 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
     name: string,
     item: any,
     options: IFormFieldOption[] = [],
-    index: number
+    index: number,
+    column: IPropertyTableViewColumn
   ) => {
+    const { input = {}, label = {}, calendar = {}, container = {} } = column
+
     switch (type) {
       case 'text':
         return (
           <Input
             value={item[name] || ''}
             onChange={(e) => handleFieldChange(index, name, e.target.value)}
+            className={input.className}
+            style={input.style}
           />
         )
       case 'color':
@@ -74,6 +90,8 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
             onCheckedChange={(checked) =>
               handleFieldChange(index, name, checked)
             }
+            className={input.className}
+            style={input.style}
           />
         )
       case 'select':
@@ -82,14 +100,17 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
             value={item[name]}
             onValueChange={(value) => handleFieldChange(index, name, value)}
           >
-            <SelectTrigger className='w-full'>
-              <SelectValue placeholder='Selecionar opção' />
+            <SelectTrigger style={input.style}>
+              <SelectValue placeholder={label?.text} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent
+              className={container.className}
+              style={container.style}
+            >
               <SelectGroup>
-                {options.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                {options.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -97,20 +118,12 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
           </Select>
         )
 
-      case 'multiselect':
-        return (
-          <MultiSelect
-            value={item[name] || []}
-            onChange={(value) => handleFieldChange(index, name, value)}
-            options={options}
-          />
-        )
-
       case 'datepicker':
         return (
           <DatePicker
-            className='w-full'
-            style={{ width: '100%' }}
+            calendar={calendar}
+            className={`${input.className} w-full`}
+            style={{ width: '100%', ...input.style }}
             label={String()}
             icon={<CalendarIcon className='mr-2 h-4 w-4' />}
             date={item[name] ? new Date(item[name]) : undefined}
@@ -123,6 +136,8 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
           <Input
             type='file'
             onChange={(e) => handleFieldChange(index, name, e.target.files)}
+            className={input.className}
+            style={input.style}
           />
         )
       // Adicione mais casos conforme necessário
@@ -143,7 +158,8 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
                 column.key,
                 item,
                 column.options || [],
-                index
+                index,
+                column
               ),
             }),
             {}
@@ -154,6 +170,9 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
           key: column.key,
         }))}
         searchable={false}
+        pagination={pagination}
+        itemsPerPage={itemsPerPage}
+        caption={caption}
       />
       <Button
         onClick={() => onSaveChanges(editedData)}
