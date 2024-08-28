@@ -3,7 +3,7 @@ import FormPanel from '@/components/custom/form-panel'
 import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
-import PropertyTable from '@/components/custom/property-table'
+import PropertyTableView from '@/components/custom/property-table-view'
 import ListView from '@/components/custom/list-view'
 import TreeView from '@/components/custom/tree-view'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
@@ -257,17 +257,44 @@ export default function MyForm() {
   ]
 
   // role based access control
-  interface IUser {
-    id: string
-    name: string
-    role: 'user' | 'admin'
-  }
-
-  const users: IUser[] = [
-    { id: '1', name: 'Alice', role: 'user' },
-    { id: '2', name: 'Bob', role: 'admin' },
-    { id: '3', name: 'Charlie', role: 'user' },
+  const initialData = [
+    {
+      id: 1,
+      name: 'John Doe',
+      role: 'admin',
+      isActive: true,
+      color: '#ff0000',
+    },
+    {
+      id: 2,
+      name: 'Jane Smith',
+      role: 'user',
+      isActive: false,
+      color: '#00ff00',
+    },
   ]
+
+  const propertyTableViewColumns = [
+    { header: 'Nome', key: 'name', type: 'text' },
+    {
+      header: 'Cargo',
+      key: 'role',
+      type: 'select',
+      options: [
+        { label: 'User', value: 'user' },
+        { label: 'Admin', value: 'admin' },
+      ],
+    },
+    { header: 'Ativo', key: 'isActive', type: 'checkbox' },
+    { header: 'Cor Favorita', key: 'color', type: 'color' },
+    { header: 'Descrição', key: 'description', type: 'text' },
+    { header: 'Arquivo', key: 'file', type: 'file' },
+    { header: 'Date', key: 'date', type: 'datepicker' },
+  ]
+
+  const handleSaveChanges = (updatedData: any) => {
+    console.log('Dados atualizados:', updatedData)
+  }
 
   // ListView
   const listViewItems = [
@@ -354,11 +381,15 @@ export default function MyForm() {
         </CardContent>
       </Card>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        PropertyTable
+        PropertyTableView
       </h1>
-      <Card className='mx-auto w-[620px]'>
+      <Card className='mx-auto w-[900px]'>
         <CardContent>
-          <PropertyTable users={users} />
+          <PropertyTableView
+            data={initialData}
+            columns={propertyTableViewColumns}
+            onSaveChanges={handleSaveChanges}
+          />
         </CardContent>
       </Card>
       <div className='p-6'>

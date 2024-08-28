@@ -25,6 +25,7 @@ interface ITableViewProps {
   }>
   data: Array<Record<string, any>>
   sortable?: boolean
+  searchable?: boolean
   pagination?: boolean
   onRowClick?: (row: Record<string, any>) => void
   rowActions?: Array<{
@@ -39,6 +40,7 @@ const TableView = ({
   columns,
   data,
   sortable = false,
+  searchable = true,
   pagination = false,
   onRowClick,
   rowActions = [],
@@ -102,13 +104,15 @@ const TableView = ({
   return (
     <>
       {/* Search Input */}
-      <div className='relative my-4'>
-        <Search
-          placeholder='Buscar...'
-          value={searchTerm}
-          setValue={handleSearchChange}
-        />
-      </div>
+      {searchable && (
+        <div className='relative my-4'>
+          <Search
+            placeholder='Buscar...'
+            value={searchTerm}
+            setValue={handleSearchChange}
+          />
+        </div>
+      )}
 
       <Table>
         {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}

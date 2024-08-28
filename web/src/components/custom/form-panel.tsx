@@ -88,7 +88,6 @@ export default function FormPanel({
                   <RichTextEditor
                     value={field.value}
                     onChange={field.onChange}
-                    className='bg-black'
                   />
                 )}
                 {type === 'color' && (
