@@ -10,17 +10,25 @@ import { cn } from '@/lib/utils'
 import { Paintbrush } from 'lucide-react'
 import { useMemo } from 'react'
 
-interface ColorPickerProps {
+export type FieldProps = {
   value: string
   onChange: (value: string) => void
-  variant?: 'default' | 'full'
 }
 
-export function ColorPicker({
+export enum ColorPickerFieldVariant {
+  DEFAULT = 'default',
+  FULL = 'full',
+}
+
+export type ColorPickerFieldProps = {
+  variant?: ColorPickerFieldVariant
+} & FieldProps
+
+export function ColorPickerField({
   value,
   onChange,
-  variant = 'default',
-}: ColorPickerProps) {
+  variant = ColorPickerFieldVariant.DEFAULT,
+}: ColorPickerFieldProps) {
   const background =
     value ||
     'linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)'

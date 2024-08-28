@@ -9,7 +9,7 @@ import {
   SelectItem,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { ColorPicker } from './color-picker'
+import { ColorPicker } from './color-picker-field'
 import { Checkbox } from '../ui/checkbox'
 import { Button } from './button'
 import DatePicker from '../ui/date-picker'

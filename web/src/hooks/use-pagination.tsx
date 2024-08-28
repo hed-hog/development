@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface IPaginationHook {
   currentPage: number
@@ -13,8 +13,23 @@ export const usePagination = (): IPaginationHook => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [itemsPerPage, setItemsPerPage] = useState<number>(10)
 
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
+  const startIndex = useMemo(
+    () => (currentPage - 1) * itemsPerPage,
+    [currentPage, itemsPerPage]
+  )
+  const endIndex = useMemo(
+    () => startIndex + itemsPerPage,
+    [startIndex, itemsPerPage]
+  )
+
+  useEffect(() => {
+    console.log({
+      componente: 'usePagination',
+      currentPage,
+      startIndex,
+      endIndex,
+    }) // Debug para verificar a atualização do estado
+  }, [currentPage, startIndex, endIndex])
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)

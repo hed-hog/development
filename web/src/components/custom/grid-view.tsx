@@ -1,21 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-} from '@/components/ui/select'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination'
-import { usePagination } from '@/hooks/use-pagination'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 
 interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -43,29 +26,11 @@ const GridView = ({
   className,
   ...props
 }: GridViewProps) => {
-  const {
-    currentPage,
-    startIndex,
-    endIndex,
-    handleItemsPerPageChange,
-    handlePageChange,
-    itemsPerPage,
-  } = usePagination()
-
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
-  const [totalPages, setTotalPages] = useState<number>(
-    data.length / itemsPerPage
-  )
-
-  const totalItems = data.length
-  useEffect(() => {
-    setTotalPages(Math.ceil(totalItems / itemsPerPage))
-  }, [itemsPerPage, totalItems])
 
   const gridItems = (data ?? []).map(render)
-  const paginatedItems = gridItems.slice(startIndex, endIndex)
 
   // Atualiza o número de colunas com base no tamanho da tela
   const updateColumnsBasedOnScreenSize = () => {
@@ -100,61 +65,7 @@ const GridView = ({
         }}
         className={className}
       >
-        {paginatedItems}
-      </div>
-
-      <div className='mt-4 flex w-full items-center justify-between'>
-        <Select
-          value={itemsPerPage.toString()}
-          onValueChange={handleItemsPerPageChange}
-        >
-          <SelectTrigger className='w-80'>
-            <SelectValue placeholder={`Itens por página: ${itemsPerPage}`} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {itemsPerPageOptions.map((option) => (
-                <SelectItem key={option} value={option.toString()}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <Pagination className='mx-0 w-fit'>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={(e) => {
-                  e.preventDefault()
-                  handlePageChange(Math.max(currentPage - 1, 1))
-                }}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handlePageChange(index + 1)
-                  }}
-                  isActive={currentPage === index + 1}
-                >
-                  {index + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                onClick={(e) => {
-                  e.preventDefault()
-                  handlePageChange(Math.min(currentPage + 1, totalPages))
-                }}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        {gridItems}
       </div>
     </div>
   )

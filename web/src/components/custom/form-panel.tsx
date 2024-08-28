@@ -19,7 +19,7 @@ import {
 import DatePicker from '../ui/date-picker'
 import { MultiSelect } from '../ui/multi-select'
 import { Button } from './button'
-import { ColorPicker } from './color-picker'
+import { ColorPickerField } from './color-picker-field'
 import RichTextEditor from './rich-text-editor'
 import PickerSheet from './picker-sheet'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
@@ -90,7 +90,10 @@ export default function FormPanel({
                   />
                 )}
                 {type === 'color' && (
-                  <ColorPicker value={field.value} onChange={field.onChange} />
+                  <ColorPickerField
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 )}
                 {(type === 'text' || type === 'file') && (
                   <Input

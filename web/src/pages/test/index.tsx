@@ -461,6 +461,7 @@ export default function MyForm() {
         GridPanel
       </h1>
       <GridPanel
+        totalItems={100}
         render={(item: any) => (
           <div key={item.id} className='rounded border border-gray-300 p-4'>
             <h3 className='text-lg font-semibold'>{item.title}</h3>
