@@ -9,7 +9,7 @@ import {
   SelectItem,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { ColorPicker } from './color-picker-field'
+import { ColorPickerField } from './color-picker-field'
 import { Checkbox } from '../ui/checkbox'
 import { Button } from './button'
 import DatePicker from '../ui/date-picker'
@@ -59,7 +59,7 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
         )
       case 'color':
         return (
-          <ColorPicker
+          <ColorPickerField
             value={item[name]}
             onChange={(value) => handleFieldChange(index, name, value)}
           />
