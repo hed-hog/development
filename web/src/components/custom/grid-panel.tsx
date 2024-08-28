@@ -2,7 +2,6 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import GridView from '@/components/custom/grid-view' // Importa o GridView
-import { usePagination } from '@/hooks/use-pagination'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 
 interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,10 +13,8 @@ interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   render: (item: any, index: number) => JSX.Element
 }
 
-const fetchItems = async (endpoint: string, start: number, end: number) => {
-  const { data } = await axios.get(endpoint, {
-    params: { _start: start, _end: end },
-  })
+const fetchItems = async (endpoint: string) => {
+  const { data } = await axios.get(endpoint)
   return data
 }
 
@@ -37,11 +34,9 @@ const GridPanel = ({
   render,
   ...props
 }: GridPanelProps) => {
-  const { endIndex: end, startIndex: start } = usePagination()
-
   const { data } = useQuery({
-    queryKey: ['items', endpoint, start, end],
-    queryFn: () => fetchItems(endpoint, start, end),
+    queryKey: ['items', endpoint],
+    queryFn: () => fetchItems(endpoint),
     staleTime: 5000,
   })
 
