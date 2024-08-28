@@ -15,20 +15,15 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
-
-interface IResponsiveColumn {
-  default: number
-  sm: number
-  md: number
-  lg: number
-  xl: number
-}
+import { usePagination } from '@/hooks/use-pagination'
+import { IResponsiveColumn } from '@/types/responsive-columns'
 
 interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
   responsiveColumns?: IResponsiveColumn
   gap?: number
   padding?: number
-  data: React.ReactNode[]
+  data: any[]
+  render: (item: any, index: number) => JSX.Element
   itemsPerPage?: number[]
 }
 
@@ -43,14 +38,20 @@ const GridView = ({
   gap = 6,
   padding = 4,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
-  data,
+  data = [],
+  render,
   className,
   ...props
 }: GridViewProps) => {
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
-    itemsPerPageOptions[0]
-  )
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const {
+    currentPage,
+    startIndex,
+    endIndex,
+    handleItemsPerPageChange,
+    handlePageChange,
+    itemsPerPage,
+  } = usePagination()
+
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
@@ -63,10 +64,8 @@ const GridView = ({
     setTotalPages(Math.ceil(totalItems / itemsPerPage))
   }, [itemsPerPage, totalItems])
 
-  // Calcula os itens a serem exibidos na página atual
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const paginatedItems = data.slice(startIndex, endIndex)
+  const gridItems = (data ?? []).map(render)
+  const paginatedItems = gridItems.slice(startIndex, endIndex)
 
   // Atualiza o número de colunas com base no tamanho da tela
   const updateColumnsBasedOnScreenSize = () => {
@@ -90,15 +89,6 @@ const GridView = ({
       window.removeEventListener('resize', updateColumnsBasedOnScreenSize)
     }
   }, [responsiveColumns])
-
-  const handleItemsPerPageChange = (value: string) => {
-    setItemsPerPage(Number(value))
-    setCurrentPage(1) // Reseta para a primeira página ao alterar o número de itens por página
-  }
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
 
   return (
     <div {...props} className={`p-${padding}`}>

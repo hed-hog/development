@@ -8,6 +8,7 @@ import ListView from '@/components/custom/list-view'
 import TreeView from '@/components/custom/tree-view'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 import GridView from '@/components/custom/grid-view'
+import GridPanel from '@/components/custom/grid-panel'
 
 export default function MyForm() {
   // form
@@ -343,14 +344,6 @@ export default function MyForm() {
     { id: '5', label: 'Item 5' },
   ]
 
-  // grid
-  const gridItems = Array.from({ length: 50 }, (_, index) => (
-    <div key={index} className='rounded border border-gray-300 p-4'>
-      <h3 className='text-lg font-semibold'>Item {index + 1}</h3>
-      <p>Descrição do item {index + 1}</p>
-    </div>
-  ))
-
   // treeView
   const treeData = [
     {
@@ -444,7 +437,13 @@ export default function MyForm() {
             lg: 4,
             xl: 5,
           }}
-          data={gridItems}
+          data={Array.from({ length: 50 })}
+          render={(_: any, index: number) => (
+            <div key={index} className='rounded border border-gray-300 p-4'>
+              <h3 className='text-lg font-semibold'>Item {index + 1}</h3>
+              <p>Descrição do item {index + 1}</p>
+            </div>
+          )}
           gap={6}
           padding={4}
           itemsPerPage={[10, 20, 30, 40]}
@@ -458,6 +457,22 @@ export default function MyForm() {
         TreeView
       </h1>
       <TreeView data={treeData} />
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        GridPanel
+      </h1>
+      <GridPanel
+        render={(item: any) => (
+          <div key={item.id} className='rounded border border-gray-300 p-4'>
+            <h3 className='text-lg font-semibold'>{item.title}</h3>
+            <p>{item.body}</p>
+          </div>
+        )}
+        endpoint={'https://jsonplaceholder.typicode.com/posts'}
+        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+        gap={6}
+        padding={4}
+        itemsPerPage={[10, 20, 30, 40]}
+      />
     </>
   )
 }
