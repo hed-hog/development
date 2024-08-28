@@ -19,7 +19,6 @@ import {
 import DatePicker from '../ui/date-picker'
 import { MultiSelect } from '../ui/multi-select'
 import { Button } from './button'
-import { CalendarIcon } from 'lucide-react'
 import { ColorPicker } from './color-picker'
 import RichTextEditor from './rich-text-editor'
 import PickerSheet from './picker-sheet'
@@ -239,7 +238,6 @@ export default function FormPanel({
                     style={input.style}
                     calendar={calendar}
                     label={String(label?.text)}
-                    icon={<CalendarIcon className='mr-2 h-4 w-4' />}
                     date={field.value ? new Date(field.value) : undefined}
                     onDateChange={(date) => field.onChange(date)}
                   />

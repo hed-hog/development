@@ -13,30 +13,11 @@ import { ColorPicker } from './color-picker'
 import { Checkbox } from '../ui/checkbox'
 import { Button } from './button'
 import DatePicker from '../ui/date-picker'
-import { CalendarIcon } from 'lucide-react'
+import { IFormFieldOption } from '@/types/form-panel'
 import {
-  ICalendarProps,
-  IFormFieldOption,
-  IFormFieldPropsBase,
-} from '@/types/form-panel'
-
-interface IPropertyTableViewColumn
-  extends Omit<IFormFieldPropsBase, 'name' | 'type' | 'defaultValue'> {
-  header: string
-  key: string
-  type: string
-  options?: IFormFieldOption[]
-  calendar?: ICalendarProps
-}
-
-interface IPropertyTableViewProps {
-  data: any[]
-  columns: IPropertyTableViewColumn[]
-  pagination?: boolean
-  itemsPerPage?: number
-  caption?: string
-  onSaveChanges: (updatedData: any[]) => void
-}
+  IPropertyTableViewColumn,
+  IPropertyTableViewProps,
+} from '@/types/property-table'
 
 const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
   data,
@@ -124,8 +105,6 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
             calendar={calendar}
             className={`${input.className} w-full`}
             style={{ width: '100%', ...input.style }}
-            label={String()}
-            icon={<CalendarIcon className='mr-2 h-4 w-4' />}
             date={item[name] ? new Date(item[name]) : undefined}
             onDateChange={(date) => handleFieldChange(index, name, date)}
           />
