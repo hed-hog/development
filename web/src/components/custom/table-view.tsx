@@ -114,12 +114,12 @@ const TableView = ({
                 <TableRow key={index}>
                   {columns.map((col) => (
                     <TableCell key={`${col.key}-${index}`}>
-                      <Skeleton className='h-6 w-full' />
+                      <Skeleton className='h-8 w-full' />
                     </TableCell>
                   ))}
                   {rowActions.length > 0 && (
                     <TableCell>
-                      <Skeleton className='h-6 w-full' />
+                      <Skeleton className='h-8 w-full' />
                     </TableCell>
                   )}
                 </TableRow>

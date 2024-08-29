@@ -21,7 +21,6 @@ import { MultiSelect } from '../ui/multi-select'
 import { Button } from './button'
 import { ColorPickerField } from './color-picker-field'
 import { RichTextField } from './rich-text-field'
-import PickerSheet from './picker-sheet'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Label } from '../ui/label'
 import { Checkbox } from '../ui/checkbox'
@@ -35,6 +34,7 @@ import {
   ISelectProps,
   ISliderProps,
 } from '@/types/form-panel'
+import { SheetPickerField } from './sheet-picker-field'
 
 export default function FormPanel({
   title = {},
@@ -245,8 +245,8 @@ export default function FormPanel({
                     onDateChange={(date) => field.onChange(date)}
                   />
                 )}
-                {type === 'pickersheet' && (
-                  <PickerSheet
+                {type === 'sheetpicker' && (
+                  <SheetPickerField
                     onValueChange={() => {}}
                     options={options}
                     title={String(label?.text)}

@@ -136,7 +136,7 @@ export default function MyForm() {
         text: 'Cities',
         style: { fontWeight: 'bold' },
       },
-      type: 'pickersheet',
+      type: 'sheetpicker',
       options: cityOptionExample,
     },
     {

@@ -27,7 +27,7 @@ interface Option {
   value: string
 }
 
-interface PickerSheetProps {
+interface SheetPickerFieldProps {
   options: Option[]
   onValueChange: (value: string[]) => void
   placeholder?: string
@@ -40,7 +40,7 @@ interface PickerSheetProps {
   defaultValue?: string[]
 }
 
-const PickerSheet: React.FC<PickerSheetProps> = ({
+export const SheetPickerField: React.FC<SheetPickerFieldProps> = ({
   options,
   onValueChange,
   title,
@@ -132,5 +132,3 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
     </Sheet>
   )
 }
-
-export default PickerSheet
