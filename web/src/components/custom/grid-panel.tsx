@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import GridView from '@/components/custom/grid-view' // Importa o GridView
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import { usePagination } from '@/hooks/use-pagination'
@@ -14,7 +14,6 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from '../ui/pagination'
@@ -28,7 +27,6 @@ interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   endpoint: string
   itemsPerPage?: number[]
   render: (item: any, index: number) => JSX.Element
-  totalItems: number
 }
 
 const GridPanel = ({
@@ -45,17 +43,20 @@ const GridPanel = ({
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
   className,
   render,
-  totalItems,
   ...props
 }: GridPanelProps) => {
+  const totalItems = 100
+
   const {
     endIndex: end,
     startIndex: start,
     currentPage,
+    itemsPerPage,
+    totalPages,
     handleItemsPerPageChange,
     handlePageChange,
-    itemsPerPage,
-  } = usePagination()
+    renderPaginationButtons,
+  } = usePagination(totalItems)
 
   const { data, isLoading, refetch } = useFetch(
     endpoint,
@@ -63,14 +64,6 @@ const GridPanel = ({
     end,
     'grid-panel'
   )
-
-  const [totalPages, setTotalPages] = useState<number>(
-    totalItems / itemsPerPage
-  )
-
-  useEffect(() => {
-    setTotalPages(Math.ceil(totalItems / itemsPerPage))
-  }, [itemsPerPage, totalItems])
 
   useEffect(() => {
     refetch()
@@ -133,19 +126,7 @@ const GridPanel = ({
                 }}
               />
             </PaginationItem>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handlePageChange(index + 1)
-                  }}
-                  isActive={currentPage === index + 1}
-                >
-                  {index + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
+            {renderPaginationButtons(totalPages)}
             <PaginationItem>
               <PaginationNext
                 onClick={(e) => {

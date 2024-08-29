@@ -1,9 +1,8 @@
-import React, { useState, ChangeEvent, useEffect } from 'react'
+import { useEffect } from 'react'
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationPrevious,
   PaginationNext,
 } from '@/components/ui/pagination'
@@ -26,7 +25,6 @@ interface ITableViewProps {
   }>
   endpoint: string
   sortable?: boolean
-  searchable?: boolean
   onRowClick?: (row: Record<string, any>) => void
   rowActions?: Array<{
     label: string | JSX.Element
@@ -34,30 +32,29 @@ interface ITableViewProps {
   }>
   caption?: string
   itemsPerPage?: number[]
-  totalItems: number
 }
 
 const TablePanel = ({
   columns,
   endpoint,
   sortable = false,
-  searchable = true,
   onRowClick,
   rowActions = [],
   caption,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
-  totalItems,
 }: ITableViewProps) => {
-  const [searchTerm, setSearchTerm] = useState('')
+  const totalItems = 5000 // esse valor virá da API
 
   const {
     currentPage,
     itemsPerPage,
+    totalPages,
     startIndex: start,
     endIndex: end,
     handlePageChange,
     handleItemsPerPageChange,
-  } = usePagination()
+    renderPaginationButtons,
+  } = usePagination(totalItems)
 
   const { data, isLoading, refetch } = useFetch(
     endpoint,
@@ -66,31 +63,9 @@ const TablePanel = ({
     'table-panel'
   )
 
-  const [totalPages, setTotalPages] = useState<number>(
-    totalItems / itemsPerPage
-  )
-
-  useEffect(() => {
-    setTotalPages(Math.ceil(totalItems / itemsPerPage))
-  }, [itemsPerPage, totalItems])
-
   useEffect(() => {
     refetch()
   }, [currentPage, refetch])
-
-  // Filter data based on search term
-  const filteredData = React.useMemo(() => {
-    if (!searchTerm) return data
-    return data.filter((row: any) =>
-      columns.some((col) =>
-        row[col.key].toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    )
-  }, [data, searchTerm, columns])
-
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
-  }
 
   if (isLoading) {
     return (
@@ -101,6 +76,7 @@ const TablePanel = ({
         caption={caption}
         onRowClick={onRowClick}
         rowActions={rowActions}
+        isLoading={isLoading}
       />
     )
   }
@@ -114,6 +90,7 @@ const TablePanel = ({
         caption={caption}
         onRowClick={onRowClick}
         rowActions={rowActions}
+        isLoading={isLoading}
       />
       <div className='mt-4 flex w-full items-center justify-between'>
         <Select
@@ -144,19 +121,7 @@ const TablePanel = ({
                 }}
               />
             </PaginationItem>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handlePageChange(index + 1)
-                  }}
-                  isActive={currentPage === index + 1}
-                >
-                  {index + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
+            {renderPaginationButtons(totalPages)}
             <PaginationItem>
               <PaginationNext
                 onClick={(e) => {

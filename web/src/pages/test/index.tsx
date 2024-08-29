@@ -247,7 +247,6 @@ export default function MyForm() {
   const tablePanelColumns = [
     { key: 'id', header: 'ID' },
     { key: 'title', header: 'Título' },
-    { key: 'body', header: 'Corpo' },
   ]
 
   const handleRowClick = (row: Record<string, any>) => {
@@ -423,9 +422,8 @@ export default function MyForm() {
       <Card className='mx-auto w-[800px]'>
         <CardContent>
           <TablePanel
-            totalItems={100}
             columns={tablePanelColumns}
-            endpoint='https://jsonplaceholder.typicode.com/posts'
+            endpoint='https://jsonplaceholder.typicode.com/photos'
             sortable
             caption='Lista de Usuários'
             onRowClick={handleRowClick}
@@ -483,7 +481,6 @@ export default function MyForm() {
         GridPanel
       </h1>
       <GridPanel
-        totalItems={100}
         render={(item: any) => (
           <div key={item.id} className='rounded border border-gray-300 p-4'>
             <h3 className='text-lg font-semibold'>{item.title}</h3>

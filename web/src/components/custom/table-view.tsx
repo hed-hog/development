@@ -9,6 +9,7 @@ import {
   TableCaption,
 } from '@/components/ui/table'
 import { Search } from '@/components/search'
+import { Skeleton } from '../ui/skeleton'
 
 interface ITableViewProps {
   columns: Array<{
@@ -18,6 +19,7 @@ interface ITableViewProps {
   data: Array<Record<string, any>>
   sortable?: boolean
   searchable?: boolean
+  isLoading?: boolean
   pagination?: boolean
   onRowClick?: (row: Record<string, any>) => void
   rowActions?: Array<{
@@ -32,6 +34,7 @@ const TableView = ({
   data,
   sortable = false,
   searchable = true,
+  isLoading = false,
   onRowClick,
   rowActions = [],
   caption,
@@ -106,32 +109,47 @@ const TableView = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sortedData.map((row, rowIndex) => (
-            <TableRow
-              key={rowIndex}
-              onClick={() => onRowClick && onRowClick(row)}
-            >
-              {columns.map((col) => (
-                <TableCell key={col.key}>{row[col.key]}</TableCell>
-              ))}
-              {rowActions.length > 0 && (
-                <TableCell style={{ padding: '0.5rem 0' }}>
-                  {rowActions.map((action, actionIndex) => (
-                    <button
-                      key={actionIndex}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        action.onClick(row)
-                      }}
-                      className='btn-action'
-                    >
-                      {action.label}
-                    </button>
+          {isLoading
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <TableRow key={index}>
+                  {columns.map((col) => (
+                    <TableCell key={`${col.key}-${index}`}>
+                      <Skeleton className='h-6 w-full' />
+                    </TableCell>
                   ))}
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
+                  {rowActions.length > 0 && (
+                    <TableCell>
+                      <Skeleton className='h-6 w-full' />
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))
+            : sortedData.map((row, rowIndex) => (
+                <TableRow
+                  key={rowIndex}
+                  onClick={() => onRowClick && onRowClick(row)}
+                >
+                  {columns.map((col) => (
+                    <TableCell key={col.key}>{row[col.key]}</TableCell>
+                  ))}
+                  {rowActions.length > 0 && (
+                    <TableCell style={{ padding: '0.5rem 0' }}>
+                      {rowActions.map((action, actionIndex) => (
+                        <button
+                          key={actionIndex}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            action.onClick(row)
+                          }}
+                          className='btn-action'
+                        >
+                          {action.label}
+                        </button>
+                      ))}
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
         </TableBody>
       </Table>
     </>
