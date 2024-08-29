@@ -10,6 +10,7 @@ import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 import GridView from '@/components/custom/grid-view'
 import GridPanel from '@/components/custom/grid-panel'
 import TablePanel from '@/components/custom/table-panel'
+import PropertyTableView from '@/components/custom/property-table-view'
 
 export default function MyForm() {
   // form
@@ -338,6 +339,39 @@ export default function MyForm() {
     },
   ]
 
+  const propertyTableColumns = [
+    { key: 'name', header: 'Name', type: 'text' },
+    {
+      key: 'category',
+      header: 'Category',
+      type: 'select',
+      options: [
+        { label: 'Option 1', value: 'option1' },
+        { label: 'Option 2', value: 'option2' },
+      ],
+    },
+  ]
+
+  const propertyTableData = [
+    {
+      name: 'Item 1',
+      color: '#FF5733',
+      isActive: true,
+      category: 'option1',
+      date: '2024-08-01',
+      file: null,
+    },
+    {
+      name: 'Item 2',
+      color: '#33FF57',
+      isActive: false,
+      category: 'option2',
+      date: '2024-08-02',
+      file: null,
+    },
+    // Add more items as needed
+  ]
+
   const handleSaveChanges = (updatedData: any) => {
     console.log('Dados atualizados:', updatedData)
   }
@@ -432,6 +466,18 @@ export default function MyForm() {
         </CardContent>
       </Card>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        PropertyTableView
+      </h1>
+      <Card className='mx-auto w-[900px]'>
+        <CardContent>
+          <PropertyTableView
+            data={propertyTableData}
+            columns={propertyTableColumns}
+            onSaveChanges={handleSaveChanges}
+          />
+        </CardContent>
+      </Card>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
         EditableTableView
       </h1>
       <Card className='mx-auto w-[900px]'>
@@ -440,8 +486,6 @@ export default function MyForm() {
             data={initialData}
             columns={editableTableViewColumns}
             onSaveChanges={handleSaveChanges}
-            pagination
-            itemsPerPage={2}
           />
         </CardContent>
       </Card>

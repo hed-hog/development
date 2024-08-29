@@ -16,8 +16,6 @@ export interface IEditableTableViewColumn
 export interface IEditableTableViewProps {
   data: any[]
   columns: IEditableTableViewColumn[]
-  pagination?: boolean
-  itemsPerPage?: number
   caption?: string
   onSaveChanges: (updatedData: any[]) => void
 }

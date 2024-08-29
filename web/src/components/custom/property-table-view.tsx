@@ -14,14 +14,24 @@ import { Checkbox } from '../ui/checkbox'
 import { Button } from './button'
 import { DatePickerField } from '../ui/date-picker-field'
 import { IFormFieldOption } from '@/types/form-panel'
-import {
-  IEditableTableViewColumn,
-  IEditableTableViewProps,
-} from '@/types/editable-table-view'
 
-const EditableTableView: React.FC<IEditableTableViewProps> = ({
-  data,
+interface IPropertyTableColumn {
+  key: string
+  header: string
+  type: string
+  options?: IFormFieldOption[]
+}
+
+interface IPropertyTableProps {
+  columns: IPropertyTableColumn[]
+  data: Array<Record<string, any>>
+  caption?: string
+  onSaveChanges: (updatedData: any[]) => void
+}
+
+const PropertyTable: React.FC<IPropertyTableProps> = ({
   columns,
+  data,
   caption = '',
   onSaveChanges,
 }) => {
@@ -40,19 +50,14 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
     name: string,
     item: any,
     options: IFormFieldOption[] = [],
-    index: number,
-    column: IEditableTableViewColumn
+    index: number
   ) => {
-    const { input = {}, label = {}, calendar = {}, container = {} } = column
-
     switch (type) {
       case 'text':
         return (
           <Input
             value={item[name] || ''}
             onChange={(e) => handleFieldChange(index, name, e.target.value)}
-            className={input.className}
-            style={input.style}
           />
         )
       case 'color':
@@ -69,8 +74,6 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
             onCheckedChange={(checked) =>
               handleFieldChange(index, name, checked)
             }
-            className={input.className}
-            style={input.style}
           />
         )
       case 'select':
@@ -79,13 +82,10 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
             value={item[name]}
             onValueChange={(value) => handleFieldChange(index, name, value)}
           >
-            <SelectTrigger style={input.style}>
-              <SelectValue placeholder={label?.text} />
+            <SelectTrigger>
+              <SelectValue placeholder='Select an option' />
             </SelectTrigger>
-            <SelectContent
-              className={container.className}
-              style={container.style}
-            >
+            <SelectContent>
               <SelectGroup>
                 {options.map((opt) => (
                   <SelectItem key={opt.value} value={opt.value}>
@@ -96,56 +96,57 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
             </SelectContent>
           </Select>
         )
-
       case 'datepicker':
         return (
           <DatePickerField
-            calendar={calendar}
-            className={`${input.className} w-full`}
-            style={{ width: '100%', ...input.style }}
             date={item[name] ? new Date(item[name]) : undefined}
             onDateChange={(date) => handleFieldChange(index, name, date)}
           />
         )
-
       case 'file':
         return (
           <Input
             type='file'
             onChange={(e) => handleFieldChange(index, name, e.target.files)}
-            className={input.className}
-            style={input.style}
           />
         )
-      // Adicione mais casos conforme necessário
       default:
         return null
     }
   }
 
-  return (
-    <div className='flex flex-col'>
-      <TableView
-        data={editedData.map((item, index) =>
-          columns.reduce(
-            (acc, column) => ({
-              ...acc,
-              [column.key]: renderField(
+  // Prepare columns for TableView
+  const tableColumns = columns.map((column, index) => ({
+    header: column.header,
+    key: column.key,
+    // First column is non-editable
+    isEditable: index !== 0,
+  }))
+
+  const tableData = editedData.map((item, index) =>
+    columns.reduce(
+      (acc, column) => ({
+        ...acc,
+        [column.key]:
+          column.key === columns[0].key
+            ? item[column.key] // Fixed value for the first column
+            : renderField(
                 column.type,
                 column.key,
                 item,
                 column.options || [],
-                index,
-                column
+                index
               ),
-            }),
-            {}
-          )
-        )}
-        columns={columns.map((column) => ({
-          header: column.header,
-          key: column.key,
-        }))}
+      }),
+      {}
+    )
+  )
+
+  return (
+    <div className='flex flex-col'>
+      <TableView
+        data={tableData}
+        columns={tableColumns}
         searchable={false}
         caption={caption}
       />
@@ -159,4 +160,4 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
   )
 }
 
-export default EditableTableView
+export default PropertyTable
