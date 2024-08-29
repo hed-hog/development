@@ -38,6 +38,7 @@ interface SheetPickerFieldProps {
   buttonText?: string
   buttonStyle?: React.CSSProperties
   defaultValue?: string[]
+  required?: boolean
 }
 
 export const SheetPickerField: React.FC<SheetPickerFieldProps> = ({
@@ -50,6 +51,7 @@ export const SheetPickerField: React.FC<SheetPickerFieldProps> = ({
   buttonText = 'Save changes',
   buttonStyle,
   defaultValue = [],
+  required = false,
 }) => {
   const [selectedValues, setSelectedValues] =
     React.useState<string[]>(defaultValue)
@@ -74,6 +76,7 @@ export const SheetPickerField: React.FC<SheetPickerFieldProps> = ({
       <SheetTrigger asChild className='h-15 w-full p-0'>
         <div className='h-15 w-full'>
           <MultiSelect
+            required={required}
             options={options}
             value={selectedValues}
             onChange={setSelectedValues} // Atualiza o estado diretamente
