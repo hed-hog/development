@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -53,10 +53,6 @@ const ListView: React.FC<ListViewProps> = ({ data }) => {
       })
     }
   }
-
-  useEffect(() => {
-    console.log({ items })
-  }, [items])
 
   return (
     <Card className='w-full'>

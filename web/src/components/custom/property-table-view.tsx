@@ -1,24 +1,13 @@
 import React, { useState } from 'react'
 import TableView from '@/components/custom/table-view'
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-} from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { ColorPickerField } from './color-picker-field'
-import { Checkbox } from '../ui/checkbox'
 import { Button } from './button'
-import { DatePickerField } from '../ui/date-picker-field'
 import { IFormFieldOption } from '@/types/form-panel'
+import Field, { EnumFieldType } from './field'
 
 interface IPropertyTableColumn {
   key: string
   header: string
-  type: string
+  type: EnumFieldType
   options?: IFormFieldOption[]
 }
 
@@ -38,6 +27,10 @@ const PropertyTable: React.FC<IPropertyTableProps> = ({
   const [editedData, setEditedData] = useState(data)
 
   const handleFieldChange = (index: number, fieldName: string, value: any) => {
+    if (typeof value === 'object' && !(value instanceof Date)) {
+      value = value.target.value
+    }
+
     setEditedData((prevData) =>
       prevData.map((item, i) =>
         i === index ? { ...item, [fieldName]: value } : item
@@ -46,77 +39,25 @@ const PropertyTable: React.FC<IPropertyTableProps> = ({
   }
 
   const renderField = (
-    type: string,
+    type: EnumFieldType,
     name: string,
     item: any,
     options: IFormFieldOption[] = [],
     index: number
   ) => {
-    switch (type) {
-      case 'text':
-        return (
-          <Input
-            value={item[name] || ''}
-            onChange={(e) => handleFieldChange(index, name, e.target.value)}
-          />
-        )
-      case 'color':
-        return (
-          <ColorPickerField
-            value={item[name]}
-            onChange={(value) => handleFieldChange(index, name, value)}
-          />
-        )
-      case 'checkbox':
-        return (
-          <Checkbox
-            checked={item[name] || false}
-            onCheckedChange={(checked) =>
-              handleFieldChange(index, name, checked)
-            }
-          />
-        )
-      case 'select':
-        return (
-          <Select
-            value={item[name]}
-            onValueChange={(value) => handleFieldChange(index, name, value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder='Select an option' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {options.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        )
-      case 'datepicker':
-        return (
-          <DatePickerField
-            date={item[name] ? new Date(item[name]) : undefined}
-            onDateChange={(date) => handleFieldChange(index, name, date)}
-          />
-        )
-      case 'file':
-        return (
-          <Input
-            type='file'
-            onChange={(e) => handleFieldChange(index, name, e.target.files)}
-          />
-        )
-      default:
-        return null
-    }
+    return (
+      <Field
+        type={type}
+        value={item[name]}
+        onChange={(value: any) => handleFieldChange(index, name, value)}
+        options={options}
+        required={false}
+      />
+    )
   }
 
   // Prepare columns for TableView
-  const tableColumns = columns.map((column, index) => ({
+  const tableColumns = columns.slice(0, 2).map((column, index) => ({
     header: column.header,
     key: column.key,
     // First column is non-editable

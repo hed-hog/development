@@ -27,22 +27,23 @@ export interface ITextProps {
   style?: CSSProperties
 }
 
+export type FieldType =
+  | EnumFieldType.RICHTEXT
+  | EnumFieldType.COLOR
+  | EnumFieldType.RADIO
+  | EnumFieldType.CHECKBOX
+  | EnumFieldType.SELECT
+  | EnumFieldType.MULTISELECT
+  | EnumFieldType.SHEETPICKER
+  | EnumFieldType.TEXT
+  | EnumFieldType.DATEPICKER
+  | EnumFieldType.RANGE
+  | EnumFieldType.FILE
+  | EnumFieldType.PASSWORD
+
 export interface IFormFieldPropsBase {
   name: string
-  type:
-    | EnumFieldType.RICHTEXT
-    | EnumFieldType.COLOR
-    | EnumFieldType.RADIO
-    | EnumFieldType.CHECKBOX
-    | EnumFieldType.SELECT
-    | EnumFieldType.MULTISELECT
-    | EnumFieldType.SHEETPICKER
-    | EnumFieldType.TEXT
-    | EnumFieldType.DATEPICKER
-    | EnumFieldType.RANGE
-    | EnumFieldType.FILE
-    | EnumFieldType.PASSWORD
-
+  type: FieldType
   defaultValue?: any
   label?: ILabelProps
   description?: ILabelProps

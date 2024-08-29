@@ -37,9 +37,6 @@ export default function MyForm() {
         text: 'Username',
         style: { fontWeight: 'bold' },
       },
-      // input: {
-      //   style: { borderRadius: 25, borderColor: 'white' },
-      // },
       type: EnumFieldType.TEXT,
       required: true,
       description: {
@@ -63,14 +60,6 @@ export default function MyForm() {
         text: 'Birthdate',
         style: { fontWeight: 'bold' },
       },
-      // calendar: {
-      //   style: { color: 'white' },
-      // },
-      // input: {
-      //   style: {
-      //     color: 'white',
-      //   },
-      // },
       type: EnumFieldType.DATEPICKER,
       required: true,
     },
@@ -80,12 +69,6 @@ export default function MyForm() {
         text: 'Country',
         style: { fontWeight: 'bold', color: 'white' },
       },
-      // input: {
-      //   style: { color: 'yellow' },
-      // },
-      // option: {
-      //   style: { color: 'red' },
-      // },
       type: EnumFieldType.SELECT,
       required: true,
       options: countryOptionExample,
@@ -114,22 +97,6 @@ export default function MyForm() {
         text: 'City',
         style: { fontWeight: 'bold' },
       },
-      // badge: {
-      //   className: 'bg-red-500',
-      // },
-      // input: {
-      //   style: { backgroundColor: '#fff' },
-      // },
-      // actionButtons: {
-      //   style: {
-      //     backgroundColor: 'green',
-      //   },
-      // },
-      // items: {
-      //   style: {
-      //     backgroundColor: 'black',
-      //   },
-      // },
       type: EnumFieldType.MULTISELECT,
       required: true,
       options: cityOptionExample,
@@ -160,11 +127,6 @@ export default function MyForm() {
         style: { fontWeight: 'bold', color: 'white' },
       },
       type: EnumFieldType.RADIO,
-      // input: {
-      //   style: {
-      //     backgroundColor: 'red',
-      //   },
-      // },
       options: cityOptionExample,
       required: false,
     },
@@ -178,21 +140,6 @@ export default function MyForm() {
         },
       ],
       required: false,
-      // input: {
-      //   style: {
-      //     backgroundColor: 'green',
-      //   },
-      // },
-      // container: {
-      //   style: {
-      //     backgroundColor: 'white',
-      //   },
-      // },
-      // label: {
-      //   style: {
-      //     color: 'red',
-      //   },
-      // },
     },
     {
       name: 'percentage',
@@ -200,9 +147,6 @@ export default function MyForm() {
         text: 'Milhar',
         style: { fontWeight: 'bold' },
       },
-      // input: {
-      //   className: 'bg-red-500',
-      // },
       type: EnumFieldType.RANGE,
       required: false,
       sliderOptions: {
@@ -218,9 +162,6 @@ export default function MyForm() {
       },
       type: EnumFieldType.PASSWORD,
       required: true,
-      // input: {
-      //   style: { color: 'yellow' },
-      // },
     },
   ]
 
@@ -318,12 +259,12 @@ export default function MyForm() {
     {
       header: 'Nome',
       key: 'name',
-      type: 'text',
+      type: EnumFieldType.TEXT,
     },
     {
       header: 'Cargo',
       key: 'role',
-      type: 'select',
+      type: EnumFieldType.SELECT,
       options: [
         { label: 'User', value: 'user' },
         { label: 'Admin', value: 'admin' },
@@ -332,33 +273,40 @@ export default function MyForm() {
     {
       header: 'Ativo',
       key: 'isActive',
-      type: 'checkbox',
+      options: [
+        {
+          value: 'confirms',
+          label: 'Confirmar?',
+        },
+      ],
+      type: EnumFieldType.CHECKBOX,
     },
     {
       header: 'Cor Favorita',
       key: 'color',
-      type: 'color',
+      type: EnumFieldType.COLOR,
     },
-    { header: 'Descrição', key: 'description', type: 'text' },
-    { header: 'Arquivo', key: 'file', type: 'file' },
+    { header: 'Descrição', key: 'description', type: EnumFieldType.TEXT },
+    { header: 'Arquivo', key: 'file', type: EnumFieldType.FILE },
     {
       header: 'Date',
       key: 'date',
-      type: 'datepicker',
+      type: EnumFieldType.DATEPICKER,
     },
   ]
 
   const propertyTableColumns = [
-    { key: 'name', header: 'Name', type: 'text' },
+    { key: 'name', header: 'Nome', type: EnumFieldType.TEXT },
     {
       key: 'category',
-      header: 'Category',
-      type: 'select',
+      header: 'Categoria',
+      type: EnumFieldType.SELECT,
       options: [
         { label: 'Option 1', value: 'option1' },
         { label: 'Option 2', value: 'option2' },
       ],
     },
+    { key: 'name2', header: 'Nome', type: EnumFieldType.TEXT },
   ]
 
   const propertyTableData = [

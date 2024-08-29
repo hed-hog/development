@@ -20,6 +20,7 @@ import { MultiSelect } from '../ui/multi-select'
 import { DatePickerField } from '../ui/date-picker-field'
 import { SheetPickerField } from './sheet-picker-field'
 import { ChangeEventHandler, FormEventHandler } from 'react'
+import { CheckedState } from '@radix-ui/react-checkbox'
 
 export enum EnumFieldType {
   RICHTEXT = 'richtext',
@@ -128,31 +129,27 @@ export default function Field({
       )
 
     case EnumFieldType.CHECKBOX:
-      return options.map((option) => (
-        <div className={`flex items-center space-x-2`} key={option.value}>
-          <Checkbox
-            checked={
-              Array.isArray(value) ? value.includes(option.value) : false
-            }
-            onCheckedChange={(checked) => {
-              const newValue = checked
-                ? [...(value || []), option.value]
-                : (value || []).filter(
-                    (value: string) => value !== option.value
-                  )
+      return options.map((option) => {
+        const randomNum = String(Math.random() + option.value)
 
-              onChange(newValue)
-            }}
-            id={option.value}
-          />
-          <Label
-            htmlFor={option.value}
-            className={`text-sm font-medium leading-none`}
-          >
-            {option.label}
-          </Label>
-        </div>
-      ))
+        return (
+          <div className={`flex items-center space-x-2`} key={randomNum}>
+            <Checkbox
+              checked={value as CheckedState}
+              onCheckedChange={(checked) => {
+                onChange(checked as string)
+              }}
+              id={randomNum}
+            />
+            <Label
+              htmlFor={randomNum}
+              className={`text-sm font-medium leading-none`}
+            >
+              {option.label}
+            </Label>
+          </div>
+        )
+      })
 
     case EnumFieldType.RANGE:
       return (
