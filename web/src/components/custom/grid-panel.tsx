@@ -9,14 +9,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select'
+} from '@/components/ui/select'
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationNext,
   PaginationPrevious,
-} from '../ui/pagination'
+} from '@/components/ui/pagination'
 import { SkeletonCard } from './skeleton-card'
 import { useFetch } from '@/hooks/use-fetch'
 

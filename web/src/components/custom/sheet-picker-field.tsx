@@ -10,7 +10,7 @@ import {
   SheetFooter,
   SheetTrigger,
   SheetHeader,
-} from '../ui/sheet'
+} from '@/components/ui/sheet'
 import { CheckIcon } from 'lucide-react'
 import {
   Command,

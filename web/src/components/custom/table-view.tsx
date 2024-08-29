@@ -9,7 +9,7 @@ import {
   TableCaption,
 } from '@/components/ui/table'
 import { Search } from '@/components/search'
-import { Skeleton } from '../ui/skeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface ITableViewProps {
   columns: Array<{
