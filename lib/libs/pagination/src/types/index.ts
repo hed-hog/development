@@ -1,3 +1,5 @@
+import { PaginationOrderDirection } from '../decorator/pagination.decorator';
+
 export interface PaginatedResult<T> {
   data: T[];
   total: number;
@@ -11,9 +13,12 @@ export interface PaginatedResult<T> {
 export type PaginateOptions = {
   page?: number | string;
   pageSize?: number | string;
+  fields?: string[];
+  orderDirection?: PaginationOrderDirection;
+  orderField?: string;
 };
 
-export type PaginateFunction = <T, K>(
+export type PaginateFunction = <K, T>(
   model: any,
   args?: K,
   options?: PaginateOptions,

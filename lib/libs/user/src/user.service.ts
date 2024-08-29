@@ -1,32 +1,39 @@
-import { PaginateOptions, PaginationService } from '@hedhog/pagination';
+import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
+import { users, Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserService {
-  // private paginate: PaginateFunction;
-
   constructor(
     private readonly prismaService: PrismaService,
     private readonly paginationService: PaginationService,
-  ) {
-    // this.paginate = this.paginationService.paginate({
-    //   page: 1,
-    //   pageSize: 20,
-    // });
-  }
+  ) {}
 
   async list({
-    args,
-    paginateOptions,
-  }: {
-    args: any;
-    paginateOptions: PaginateOptions;
-  }) {
-    return this.paginationService.paginate();
+    page,
+    pageSize,
+    search,
+    orderDirection,
+    orderField,
+    fields,
+  }: PaginationDTO) {
+    return this.paginationService.getFn({
+      page,
+      pageSize,
+      fields,
+      orderDirection,
+      orderField,
+    })<Prisma.usersFindManyArgs, users>(this.prismaService.users, {
+      where: {
+        name: {
+          contains: search,
+        },
+      },
+    });
   }
 
   async get(userId: number) {

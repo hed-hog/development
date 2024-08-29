@@ -15,6 +15,7 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
+import { Pagination, PaginationDTO } from '@hedhog/pagination';
 
 @Controller('users')
 export class UserController {
@@ -22,15 +23,8 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async index(
-    @Query('page') page: number = 1,
-    @Query('pageSize') pageSize: number = 20,
-    @Body() args: any,
-  ) {
-    return this.userService.list({
-      args,
-      paginateOptions: { page, pageSize },
-    });
+  async index(@Pagination() pagination: PaginationDTO, @Body() args: any) {
+    return this.userService.list(pagination);
   }
 
   @UseGuards(AuthGuard)
