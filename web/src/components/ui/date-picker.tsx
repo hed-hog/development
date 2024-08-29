@@ -9,10 +9,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { CalendarIcon } from 'lucide-react'
 
 interface IDatePickerProps {
-  label: string
-  icon: JSX.Element
+  icon?: JSX.Element
+  label?: string
   date?: Date
   onDateChange?: (date: Date) => void
   style?: CSSProperties
@@ -45,7 +46,7 @@ export default function DatePicker({
             className
           )}
         >
-          {icon}
+          {icon || <CalendarIcon className='mr-2 h-4 w-4' />}
           {date ? format(date, 'dd/MM/yyyy') : <span>{label}</span>}
         </Button>
       </PopoverTrigger>

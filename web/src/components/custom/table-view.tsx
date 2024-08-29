@@ -3,7 +3,6 @@ import {
   Table,
   TableHeader,
   TableBody,
-  TableFooter,
   TableHead,
   TableRow,
   TableCell,
@@ -26,6 +25,7 @@ interface ITableViewProps {
   }>
   data: Array<Record<string, any>>
   sortable?: boolean
+  searchable?: boolean
   pagination?: boolean
   onRowClick?: (row: Record<string, any>) => void
   rowActions?: Array<{
@@ -40,6 +40,7 @@ const TableView = ({
   columns,
   data,
   sortable = false,
+  searchable = true,
   pagination = false,
   onRowClick,
   rowActions = [],
@@ -103,16 +104,18 @@ const TableView = ({
   return (
     <>
       {/* Search Input */}
-      <div className='relative my-4'>
-        <Search
-          placeholder='Buscar...'
-          value={searchTerm}
-          setValue={handleSearchChange}
-        />
-      </div>
+      {searchable && (
+        <div className='relative my-4'>
+          <Search
+            placeholder='Buscar...'
+            value={searchTerm}
+            setValue={handleSearchChange}
+          />
+        </div>
+      )}
 
       <Table>
-        {caption && <TableCaption>{caption}</TableCaption>}
+        {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
         <TableHeader>
           <TableRow>
             {columns.map((col) => (
@@ -159,40 +162,37 @@ const TableView = ({
           ))}
         </TableBody>
         {pagination && (
-          <TableFooter>
-            <TableRow>
-              <TableCell
-                colSpan={columns.length + (rowActions.length > 0 ? 1 : 0)}
-              >
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious
-                        onClick={() => handlePageChange(currentPage - 1)}
-                      />
-                    </PaginationItem>
-                    {Array.from({ length: totalPages }, (_, index) => (
-                      <PaginationItem key={index}>
-                        <PaginationLink
-                          isActive={currentPage === index + 1}
-                          onClick={() => handlePageChange(index + 1)}
-                        >
-                          {index + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    {totalPages > 1 && (
-                      <PaginationItem>
-                        <PaginationNext
-                          onClick={() => handlePageChange(currentPage + 1)}
-                        />
-                      </PaginationItem>
-                    )}
-                  </PaginationContent>
-                </Pagination>
-              </TableCell>
-            </TableRow>
-          </TableFooter>
+          <TableCell
+            colSpan={columns.length + (rowActions.length > 0 ? 1 : 0)}
+            className='relative px-0 pb-12'
+          >
+            <Pagination className='absolute right-0 w-fit'>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() => handlePageChange(currentPage - 1)}
+                  />
+                </PaginationItem>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      isActive={currentPage === index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                {totalPages > 1 && (
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
+          </TableCell>
         )}
       </Table>
     </>
