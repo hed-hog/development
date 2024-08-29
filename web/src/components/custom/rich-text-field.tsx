@@ -5,7 +5,7 @@ import { Bold, Strikethrough, Italic, List, ListOrdered } from 'lucide-react'
 import { Toggle } from '@/components/ui/toggle'
 import { Separator } from '@/components/ui/separator'
 
-const RichTextEditor = ({
+export const RichTextField = ({
   className,
   value,
   onChange,
@@ -90,5 +90,3 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
     </div>
   )
 }
-
-export default RichTextEditor

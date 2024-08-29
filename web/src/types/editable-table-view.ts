@@ -4,7 +4,7 @@ import {
   IFormFieldPropsBase,
 } from './form-panel'
 
-export interface IPropertyTableViewColumn
+export interface IEditableTableViewColumn
   extends Omit<IFormFieldPropsBase, 'name' | 'type' | 'defaultValue'> {
   header: string
   key: string
@@ -13,9 +13,9 @@ export interface IPropertyTableViewColumn
   calendar?: ICalendarProps
 }
 
-export interface IPropertyTableViewProps {
+export interface IEditableTableViewProps {
   data: any[]
-  columns: IPropertyTableViewColumn[]
+  columns: IEditableTableViewColumn[]
   pagination?: boolean
   itemsPerPage?: number
   caption?: string

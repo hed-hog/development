@@ -16,11 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select'
-import DatePicker from '../ui/date-picker'
+import { DatePickerField } from '../ui/date-picker-field'
 import { MultiSelect } from '../ui/multi-select'
 import { Button } from './button'
 import { ColorPickerField } from './color-picker-field'
-import RichTextEditor from './rich-text-editor'
+import { RichTextField } from './rich-text-field'
 import PickerSheet from './picker-sheet'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Label } from '../ui/label'
@@ -84,7 +84,7 @@ export default function FormPanel({
             <FormControl>
               <>
                 {type === 'richtext' && (
-                  <RichTextEditor
+                  <RichTextField
                     value={field.value}
                     onChange={field.onChange}
                   />
@@ -236,7 +236,7 @@ export default function FormPanel({
                   />
                 )}
                 {type === 'datepicker' && (
-                  <DatePicker
+                  <DatePickerField
                     className={input.className}
                     style={input.style}
                     calendar={calendar}

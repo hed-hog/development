@@ -3,7 +3,7 @@ import FormPanel from '@/components/custom/form-panel'
 import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
-import PropertyTableView from '@/components/custom/property-table-view'
+import EditableTableView from '@/components/custom/editable-table-view'
 import ListView from '@/components/custom/list-view'
 import TreeView from '@/components/custom/tree-view'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
@@ -297,7 +297,7 @@ export default function MyForm() {
     },
   ]
 
-  const propertyTableViewColumns = [
+  const editableTableViewColumns = [
     {
       header: 'Nome',
       key: 'name',
@@ -412,13 +412,13 @@ export default function MyForm() {
         </CardContent>
       </Card>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        PropertyTableView
+        EditableTableView
       </h1>
       <Card className='mx-auto w-[900px]'>
         <CardContent>
-          <PropertyTableView
+          <EditableTableView
             data={initialData}
-            columns={propertyTableViewColumns}
+            columns={editableTableViewColumns}
             onSaveChanges={handleSaveChanges}
             pagination
             itemsPerPage={2}

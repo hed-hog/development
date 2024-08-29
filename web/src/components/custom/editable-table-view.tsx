@@ -12,14 +12,14 @@ import { Input } from '@/components/ui/input'
 import { ColorPickerField } from './color-picker-field'
 import { Checkbox } from '../ui/checkbox'
 import { Button } from './button'
-import DatePicker from '../ui/date-picker'
+import { DatePickerField } from '../ui/date-picker-field'
 import { IFormFieldOption } from '@/types/form-panel'
 import {
-  IPropertyTableViewColumn,
-  IPropertyTableViewProps,
-} from '@/types/property-table'
+  IEditableTableViewColumn,
+  IEditableTableViewProps,
+} from '@/types/editable-table-view'
 
-const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
+const EditableTableView: React.FC<IEditableTableViewProps> = ({
   data,
   columns,
   pagination = true,
@@ -43,7 +43,7 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
     item: any,
     options: IFormFieldOption[] = [],
     index: number,
-    column: IPropertyTableViewColumn
+    column: IEditableTableViewColumn
   ) => {
     const { input = {}, label = {}, calendar = {}, container = {} } = column
 
@@ -101,7 +101,7 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
 
       case 'datepicker':
         return (
-          <DatePicker
+          <DatePickerField
             calendar={calendar}
             className={`${input.className} w-full`}
             style={{ width: '100%', ...input.style }}
@@ -163,4 +163,4 @@ const PropertyTableView: React.FC<IPropertyTableViewProps> = ({
   )
 }
 
-export default PropertyTableView
+export default EditableTableView

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/popover'
 import { CalendarIcon } from 'lucide-react'
 
-interface IDatePickerProps {
+interface IDatePickerFieldProps {
   icon?: JSX.Element
   label?: string
   date?: Date
@@ -23,7 +23,7 @@ interface IDatePickerProps {
   className?: string
 }
 
-export default function DatePicker({
+export function DatePickerField({
   label,
   icon,
   date,
@@ -31,7 +31,7 @@ export default function DatePicker({
   style,
   calendar,
   className,
-}: IDatePickerProps) {
+}: IDatePickerFieldProps) {
   const [open, setOpen] = useState(false)
 
   return (
