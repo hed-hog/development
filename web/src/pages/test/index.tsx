@@ -9,6 +9,7 @@ import TreeView from '@/components/custom/tree-view'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 import GridView from '@/components/custom/grid-view'
 import GridPanel from '@/components/custom/grid-panel'
+import TablePanel from '@/components/custom/table-panel'
 
 export default function MyForm() {
   // form
@@ -222,7 +223,7 @@ export default function MyForm() {
 
   const form = useForm<FieldValues>({ defaultValues })
 
-  // table
+  // table-view
   const columns = [
     { key: 'name', header: 'Nome' },
     { key: 'email', header: 'Email' },
@@ -240,6 +241,13 @@ export default function MyForm() {
     { name: 'Maria', email: 'maria@example.com', role: 'User' },
     { name: 'João', email: 'joao@example.com', role: 'Admin' },
     { name: 'Maria', email: 'maria@example.com', role: 'User' },
+  ]
+
+  // table-panel
+  const tablePanelColumns = [
+    { key: 'id', header: 'ID' },
+    { key: 'title', header: 'Título' },
+    { key: 'body', header: 'Corpo' },
   ]
 
   const handleRowClick = (row: Record<string, any>) => {
@@ -403,11 +411,25 @@ export default function MyForm() {
             columns={columns}
             data={data}
             sortable
-            pagination
             caption='Lista de Usuários'
             onRowClick={handleRowClick}
             rowActions={rowActions}
-            itemsPerPage={4}
+          />
+        </CardContent>
+      </Card>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        TablePanel
+      </h1>
+      <Card className='mx-auto w-[800px]'>
+        <CardContent>
+          <TablePanel
+            totalItems={100}
+            columns={tablePanelColumns}
+            endpoint='https://jsonplaceholder.typicode.com/posts'
+            sortable
+            caption='Lista de Usuários'
+            onRowClick={handleRowClick}
+            rowActions={rowActions}
           />
         </CardContent>
       </Card>
@@ -468,7 +490,7 @@ export default function MyForm() {
             <p>{item.body}</p>
           </div>
         )}
-        endpoint={'https://jsonplaceholder.typicode.com/posts'}
+        endpoint='https://jsonplaceholder.typicode.com/posts'
         responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
         gap={6}
         padding={4}

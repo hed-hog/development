@@ -8,14 +8,6 @@ import {
   TableCell,
   TableCaption,
 } from '@/components/ui/table'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-} from '@/components/ui/pagination'
 import { Search } from '@/components/search'
 
 interface ITableViewProps {
@@ -33,7 +25,6 @@ interface ITableViewProps {
     onClick: (row: Record<string, any>) => void
   }>
   caption?: string
-  itemsPerPage?: number
 }
 
 const TableView = ({
@@ -41,15 +32,12 @@ const TableView = ({
   data,
   sortable = false,
   searchable = true,
-  pagination = false,
   onRowClick,
   rowActions = [],
   caption,
-  itemsPerPage = 10,
 }: ITableViewProps) => {
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
-  const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSort = (columnKey: string) => {
@@ -81,24 +69,8 @@ const TableView = ({
     })
   }, [filteredData, sortColumn, sortDirection])
 
-  const totalItems = sortedData.length
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
-
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page)
-    }
-  }
-
-  // Calcula os itens a serem exibidos na página atual
-  const paginatedData = sortedData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  )
-
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
-    setCurrentPage(1) // Reseta para a primeira página ao alterar o termo de busca
   }
 
   return (
@@ -134,7 +106,7 @@ const TableView = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedData.map((row, rowIndex) => (
+          {sortedData.map((row, rowIndex) => (
             <TableRow
               key={rowIndex}
               onClick={() => onRowClick && onRowClick(row)}
@@ -143,7 +115,7 @@ const TableView = ({
                 <TableCell key={col.key}>{row[col.key]}</TableCell>
               ))}
               {rowActions.length > 0 && (
-                <TableCell>
+                <TableCell style={{ padding: '0.5rem 0' }}>
                   {rowActions.map((action, actionIndex) => (
                     <button
                       key={actionIndex}
@@ -161,39 +133,6 @@ const TableView = ({
             </TableRow>
           ))}
         </TableBody>
-        {pagination && (
-          <TableCell
-            colSpan={columns.length + (rowActions.length > 0 ? 1 : 0)}
-            className='relative px-0 pb-12'
-          >
-            <Pagination className='absolute right-0 w-fit'>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() => handlePageChange(currentPage - 1)}
-                  />
-                </PaginationItem>
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <PaginationItem key={index}>
-                    <PaginationLink
-                      isActive={currentPage === index + 1}
-                      onClick={() => handlePageChange(index + 1)}
-                    >
-                      {index + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-                {totalPages > 1 && (
-                  <PaginationItem>
-                    <PaginationNext
-                      onClick={() => handlePageChange(currentPage + 1)}
-                    />
-                  </PaginationItem>
-                )}
-              </PaginationContent>
-            </Pagination>
-          </TableCell>
-        )}
       </Table>
     </>
   )

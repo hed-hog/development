@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import GridView from '@/components/custom/grid-view' // Importa o GridView
-import { IResponsiveColumn } from '@/types/responsive-columns'
+import React, { useState, ChangeEvent, useEffect } from 'react'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+} from '@/components/ui/pagination'
 import { usePagination } from '@/hooks/use-pagination'
+import { useFetch } from '@/hooks/use-fetch'
+import TableView from './table-view'
 import {
   Select,
   SelectContent,
@@ -10,58 +18,52 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '../ui/pagination'
-import { SkeletonCard } from './skeleton-card'
-import { useFetch } from '@/hooks/use-fetch'
 
-interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
-  responsiveColumns?: IResponsiveColumn
-  gap?: number
-  padding?: number
+interface ITableViewProps {
+  columns: Array<{
+    key: string
+    header: string
+  }>
   endpoint: string
+  sortable?: boolean
+  searchable?: boolean
+  onRowClick?: (row: Record<string, any>) => void
+  rowActions?: Array<{
+    label: string | JSX.Element
+    onClick: (row: Record<string, any>) => void
+  }>
+  caption?: string
   itemsPerPage?: number[]
-  render: (item: any, index: number) => JSX.Element
   totalItems: number
 }
 
-const GridPanel = ({
-  responsiveColumns = {
-    default: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
-  },
-  gap = 6,
-  padding = 4,
+const TablePanel = ({
+  columns,
   endpoint,
+  sortable = false,
+  searchable = true,
+  onRowClick,
+  rowActions = [],
+  caption,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
-  className,
-  render,
   totalItems,
-  ...props
-}: GridPanelProps) => {
+}: ITableViewProps) => {
+  const [searchTerm, setSearchTerm] = useState('')
+
   const {
-    endIndex: end,
-    startIndex: start,
     currentPage,
-    handleItemsPerPageChange,
-    handlePageChange,
     itemsPerPage,
+    startIndex: start,
+    endIndex: end,
+    handlePageChange,
+    handleItemsPerPageChange,
   } = usePagination()
 
   const { data, isLoading, refetch } = useFetch(
     endpoint,
     start,
     end,
-    'grid-panel'
+    'table-panel'
   )
 
   const [totalPages, setTotalPages] = useState<number>(
@@ -76,34 +78,43 @@ const GridPanel = ({
     refetch()
   }, [currentPage, refetch])
 
+  // Filter data based on search term
+  const filteredData = React.useMemo(() => {
+    if (!searchTerm) return data
+    return data.filter((row: any) =>
+      columns.some((col) =>
+        row[col.key].toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    )
+  }, [data, searchTerm, columns])
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value)
+  }
+
   if (isLoading) {
     return (
-      <GridView
-        data={Array.from({ length: itemsPerPageOptions[0] })}
-        responsiveColumns={responsiveColumns}
-        gap={gap}
-        padding={padding}
-        render={() => <SkeletonCard />}
-        itemsPerPage={itemsPerPageOptions}
-        className={className}
-        {...props}
+      <TableView
+        columns={columns}
+        data={[]}
+        sortable={sortable}
+        caption={caption}
+        onRowClick={onRowClick}
+        rowActions={rowActions}
       />
     )
   }
 
   return (
     <>
-      <GridView
+      <TableView
+        columns={columns}
         data={data}
-        responsiveColumns={responsiveColumns}
-        gap={gap}
-        padding={padding}
-        render={render}
-        itemsPerPage={itemsPerPageOptions}
-        className={className}
-        {...props}
+        sortable={sortable}
+        caption={caption}
+        onRowClick={onRowClick}
+        rowActions={rowActions}
       />
-
       <div className='mt-4 flex w-full items-center justify-between'>
         <Select
           value={itemsPerPage.toString()}
@@ -161,4 +172,4 @@ const GridPanel = ({
   )
 }
 
-export default GridPanel
+export default TablePanel
