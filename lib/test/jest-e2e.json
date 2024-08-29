@@ -24,6 +24,8 @@
     "@hadsys/mail/(.*)": "<rootDir>/../libs/mail/src/$1",
     "@hadsys/mail": "<rootDir>/../libs/mail/src",
     "@hedhog/user/(.*)": "<rootDir>/../libs/user/src/$1",
-    "@hedhog/user": "<rootDir>/../libs/user/src"
+    "@hedhog/user": "<rootDir>/../libs/user/src",
+    "@hedhog/pagination/(.*)": "<rootDir>/../libs/pagination/src/$1",
+    "@hedhog/pagination": "<rootDir>/../libs/pagination/src"
   }
 }

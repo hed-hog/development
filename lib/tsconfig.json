@@ -47,6 +47,12 @@
       ],
       "@hedhog/user/*": [
         "libs/user/src/*"
+      ],
+      "@hedhog/pagination": [
+        "libs/pagination/src"
+      ],
+      "@hedhog/pagination/*": [
+        "libs/pagination/src/*"
       ]
     }
   }

@@ -1,15 +1,32 @@
+import { PaginateOptions, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { DeleteDTO } from './dto/delete.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  // private paginate: PaginateFunction;
 
-  async list() {
-    return this.prismaService.users.findMany();
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly paginationService: PaginationService,
+  ) {
+    // this.paginate = this.paginationService.paginate({
+    //   page: 1,
+    //   pageSize: 20,
+    // });
+  }
+
+  async list({
+    args,
+    paginateOptions,
+  }: {
+    args: any;
+    paginateOptions: PaginateOptions;
+  }) {
+    return this.paginationService.paginate();
   }
 
   async get(userId: number) {
@@ -24,10 +41,6 @@ export class UserService {
         password,
       },
     });
-    // .then((user) => user)
-    // .catch(() => {
-    //   return { msg: 'erro' };
-    // });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
@@ -49,7 +62,9 @@ export class UserService {
           },
         },
         name: {
-          startsWith: 'root@',
+          not: {
+            equals: 'root',
+          },
         },
       },
     });

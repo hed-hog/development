@@ -1,19 +1,20 @@
 import { AuthGuard } from '@hedhog/auth/auth.guard';
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
-  Post,
-  UseGuards,
-  Delete,
-  Body,
   Patch,
+  Post,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
 import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { DeleteDTO } from './dto/delete.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
@@ -21,8 +22,15 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async index() {
-    return this.userService.list();
+  async index(
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 20,
+    @Body() args: any,
+  ) {
+    return this.userService.list({
+      args,
+      paginateOptions: { page, pageSize },
+    });
   }
 
   @UseGuards(AuthGuard)
