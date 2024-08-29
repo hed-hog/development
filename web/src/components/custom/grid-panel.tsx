@@ -76,7 +76,7 @@ const GridPanel = ({
         responsiveColumns={responsiveColumns}
         gap={gap}
         padding={padding}
-        render={() => <SkeletonCard />}
+        render={() => <SkeletonCard key={Math.random()} />}
         itemsPerPage={itemsPerPageOptions}
         className={className}
         {...props}

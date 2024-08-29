@@ -26,6 +26,7 @@ export interface IEditableTableViewProps {
   columns: IEditableTableViewColumn[]
   caption?: string
   onSaveChanges: (updatedData: any[]) => void
+  isPropertyTable?: boolean // New prop
 }
 
 const EditableTableView: React.FC<IEditableTableViewProps> = ({
@@ -33,6 +34,7 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
   columns,
   caption = '',
   onSaveChanges,
+  isPropertyTable = false, // Default to false
 }) => {
   const [editedData, setEditedData] = useState(data)
 
@@ -55,28 +57,26 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
     index: number,
     column: IEditableTableViewColumn
   ) => {
-    const { label = {} } = column
-
     return (
       <Field
         type={type}
         value={item[name]}
         onChange={(value: any) => handleFieldChange(index, name, value)}
         options={options}
-        label={label}
+        label={column.label}
         required={false}
       />
     )
   }
 
-  return (
-    <div className='flex flex-col'>
-      <TableView
-        data={editedData.map((item, index) =>
-          columns.reduce(
-            (acc, column) => ({
-              ...acc,
-              [column.key]: renderField(
+  const tableData = editedData.map((item, index) =>
+    columns.reduce(
+      (acc, column) => ({
+        ...acc,
+        [column.key]:
+          isPropertyTable && column.key === columns[0].key
+            ? item[column.key] // Fixed value for the first column
+            : renderField(
                 column.type,
                 column.key,
                 item,
@@ -84,14 +84,26 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
                 index,
                 column
               ),
-            }),
-            {}
-          )
-        )}
-        columns={columns.map((column) => ({
-          header: column.header,
-          key: column.key,
-        }))}
+      }),
+      {}
+    )
+  )
+
+  const tableColumns = isPropertyTable
+    ? [
+        { header: columns[0].header, key: columns[0].key, isEditable: false },
+        { header: columns[1].header, key: columns[1].key, isEditable: true },
+      ]
+    : columns.map((column) => ({
+        header: column.header,
+        key: column.key,
+      }))
+
+  return (
+    <div className='flex flex-col'>
+      <TableView
+        data={tableData}
+        columns={tableColumns}
         searchable={false}
         caption={caption}
       />

@@ -10,7 +10,6 @@ import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 import GridView from '@/components/custom/grid-view'
 import GridPanel from '@/components/custom/grid-panel'
 import TablePanel from '@/components/custom/table-panel'
-import PropertyTableView from '@/components/custom/property-table-view'
 import { EnumFieldType } from '@/components/custom/field'
 
 export default function MyForm() {
@@ -306,27 +305,17 @@ export default function MyForm() {
         { label: 'Option 2', value: 'option2' },
       ],
     },
-    { key: 'name2', header: 'Nome', type: EnumFieldType.TEXT },
   ]
 
   const propertyTableData = [
     {
       name: 'Item 1',
-      color: '#FF5733',
-      isActive: true,
       category: 'option1',
-      date: '2024-08-01',
-      file: null,
     },
     {
       name: 'Item 2',
-      color: '#33FF57',
-      isActive: false,
       category: 'option2',
-      date: '2024-08-02',
-      file: null,
     },
-    // Add more items as needed
   ]
 
   const handleSaveChanges = (updatedData: any) => {
@@ -423,11 +412,12 @@ export default function MyForm() {
         </CardContent>
       </Card>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        PropertyTableView
+        EditableTableView (property version)
       </h1>
       <Card className='mx-auto w-[900px]'>
         <CardContent>
-          <PropertyTableView
+          <EditableTableView
+            isPropertyTable
             data={propertyTableData}
             columns={propertyTableColumns}
             onSaveChanges={handleSaveChanges}
@@ -435,7 +425,7 @@ export default function MyForm() {
         </CardContent>
       </Card>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        EditableTableView
+        EditableTableView (full version)
       </h1>
       <Card className='mx-auto w-[900px]'>
         <CardContent>
