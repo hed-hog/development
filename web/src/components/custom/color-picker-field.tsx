@@ -7,13 +7,9 @@ import {
 } from '@/components/ui/popover'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
+import { FieldProps } from '@/types/form-panel'
 import { Paintbrush } from 'lucide-react'
 import { useMemo } from 'react'
-
-export type FieldProps = {
-  value: string
-  onChange: (value: string) => void
-}
 
 export enum ColorPickerFieldVariant {
   DEFAULT = 'default',

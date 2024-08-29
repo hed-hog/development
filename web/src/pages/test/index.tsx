@@ -11,6 +11,7 @@ import GridView from '@/components/custom/grid-view'
 import GridPanel from '@/components/custom/grid-panel'
 import TablePanel from '@/components/custom/table-panel'
 import PropertyTableView from '@/components/custom/property-table-view'
+import { EnumFieldType } from '@/components/custom/field'
 
 export default function MyForm() {
   // form
@@ -39,7 +40,7 @@ export default function MyForm() {
       // input: {
       //   style: { borderRadius: 25, borderColor: 'white' },
       // },
-      type: 'text',
+      type: EnumFieldType.TEXT,
       required: true,
       description: {
         text: 'This is your public display name.',
@@ -53,7 +54,7 @@ export default function MyForm() {
         text: 'Email',
         style: { fontWeight: 'bold' },
       },
-      type: 'text',
+      type: EnumFieldType.TEXT,
       required: true,
     },
     {
@@ -70,7 +71,7 @@ export default function MyForm() {
       //     color: 'white',
       //   },
       // },
-      type: 'datepicker',
+      type: EnumFieldType.DATEPICKER,
       required: true,
     },
     {
@@ -85,7 +86,7 @@ export default function MyForm() {
       // option: {
       //   style: { color: 'red' },
       // },
-      type: 'select',
+      type: EnumFieldType.SELECT,
       required: true,
       options: countryOptionExample,
     },
@@ -95,7 +96,8 @@ export default function MyForm() {
         text: 'Color',
         style: { fontWeight: 'bold' },
       },
-      type: 'color',
+      type: EnumFieldType.COLOR,
+      required: true,
     },
     {
       name: 'description',
@@ -103,7 +105,8 @@ export default function MyForm() {
         text: 'Description',
         style: { fontWeight: 'bold' },
       },
-      type: 'richtext',
+      type: EnumFieldType.RICHTEXT,
+      required: false,
     },
     {
       name: 'city',
@@ -127,7 +130,7 @@ export default function MyForm() {
       //     backgroundColor: 'black',
       //   },
       // },
-      type: 'multiselect',
+      type: EnumFieldType.MULTISELECT,
       required: true,
       options: cityOptionExample,
     },
@@ -137,7 +140,8 @@ export default function MyForm() {
         text: 'Cities',
         style: { fontWeight: 'bold' },
       },
-      type: 'sheetpicker',
+      type: EnumFieldType.SHEETPICKER,
+      required: false,
       options: cityOptionExample,
     },
     {
@@ -146,7 +150,8 @@ export default function MyForm() {
         text: 'Arquivos',
         style: { fontWeight: 'bold' },
       },
-      type: 'file',
+      type: EnumFieldType.FILE,
+      required: false,
     },
     {
       name: 'cidades',
@@ -154,23 +159,25 @@ export default function MyForm() {
         text: 'Cidades',
         style: { fontWeight: 'bold', color: 'white' },
       },
-      type: 'radio',
+      type: EnumFieldType.RADIO,
       // input: {
       //   style: {
       //     backgroundColor: 'red',
       //   },
       // },
       options: cityOptionExample,
+      required: false,
     },
     {
       name: 'terms',
-      type: 'checkbox',
+      type: EnumFieldType.CHECKBOX,
       options: [
         {
           value: 'terms',
           label: 'Aceite os termos de uso.',
         },
       ],
+      required: false,
       // input: {
       //   style: {
       //     backgroundColor: 'green',
@@ -196,7 +203,8 @@ export default function MyForm() {
       // input: {
       //   className: 'bg-red-500',
       // },
-      type: 'range',
+      type: EnumFieldType.RANGE,
+      required: false,
       sliderOptions: {
         defaultValue: [500],
         max: 1000,
@@ -208,7 +216,8 @@ export default function MyForm() {
       label: {
         text: 'Sua Senha',
       },
-      type: 'password',
+      type: EnumFieldType.PASSWORD,
+      required: true,
       // input: {
       //   style: { color: 'yellow' },
       // },

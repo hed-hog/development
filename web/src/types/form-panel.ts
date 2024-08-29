@@ -1,3 +1,4 @@
+import { EnumFieldType } from '@/components/custom/field'
 import { CSSProperties } from 'react'
 import { FieldValues, UseFormReturn } from 'react-hook-form'
 
@@ -12,29 +13,42 @@ export interface ISliderOption {
   step: number
 }
 
+export interface IStylingProps {
+  className?: string
+  style?: CSSProperties
+}
+
+export interface ILabelProps extends IStylingProps {
+  text?: string
+}
+
+export interface ITextProps {
+  text?: string
+  style?: CSSProperties
+}
+
 export interface IFormFieldPropsBase {
   name: string
-  type: string
+  type:
+    | EnumFieldType.RICHTEXT
+    | EnumFieldType.COLOR
+    | EnumFieldType.RADIO
+    | EnumFieldType.CHECKBOX
+    | EnumFieldType.SELECT
+    | EnumFieldType.MULTISELECT
+    | EnumFieldType.SHEETPICKER
+    | EnumFieldType.TEXT
+    | EnumFieldType.DATEPICKER
+    | EnumFieldType.RANGE
+    | EnumFieldType.FILE
+    | EnumFieldType.PASSWORD
+
   defaultValue?: any
-  label?: {
-    text?: string
-    className?: string
-    style?: CSSProperties
-  }
-  description?: {
-    text?: string
-    className?: string
-    style?: CSSProperties
-  }
-  input?: {
-    className?: string
-    style?: CSSProperties
-  }
-  container?: {
-    className?: string
-    style?: CSSProperties
-  }
-  required?: boolean
+  label?: ILabelProps
+  description?: ILabelProps
+  input?: IStylingProps
+  container?: IStylingProps
+  required: boolean
   options?: IFormFieldOption[]
 }
 
@@ -43,56 +57,25 @@ export interface ISliderProps extends IFormFieldPropsBase {
 }
 
 export interface ICalendarProps extends IFormFieldPropsBase {
-  calendar?: {
-    // only for datePicker
-    style?: CSSProperties
-  }
+  calendar?: IStylingProps
 }
 
 export interface ISelectProps extends IFormFieldPropsBase {
-  option?: {
-    // only for select and multiselect
-    className?: string
-    style?: CSSProperties
-  }
+  option?: IStylingProps
 }
 
 export interface IMultiSelectProps extends IFormFieldPropsBase {
-  badge?: {
-    className?: string
-    style?: CSSProperties
-  }
-  actionButtons?: {
-    className?: string
-    style?: CSSProperties
-  }
-  items?: {
-    className?: string
-    style?: CSSProperties
-  }
-  search?: {
-    className?: string
-    style?: React.CSSProperties
-  }
-  checkbox?: {
-    className?: string
-    style?: React.CSSProperties
-  }
+  badge?: IStylingProps
+  actionButtons?: IStylingProps
+  items?: IStylingProps
+  search?: IStylingProps
+  checkbox?: IStylingProps
 }
 
 export interface IFormPanelProps {
-  title?: {
-    text?: string
-    style?: CSSProperties
-  }
-  subtitle?: {
-    text?: string
-    style?: CSSProperties
-  }
-  button?: {
-    text?: string
-    style?: CSSProperties
-  }
+  title?: ITextProps
+  subtitle?: ITextProps
+  button?: ITextProps
   fields: IFormFieldPropsBase[]
   form: UseFormReturn<FieldValues>
   onSubmit: (data: any) => void
@@ -112,6 +95,15 @@ export interface IFormValues {
   terms?: boolean
   percentage?: number
   password?: string
+}
+
+export type FieldProps = {
+  value: string
+  onChange: (value: string) => void
+  required: boolean
+  label?: ILabelProps
+  options?: IFormFieldOption[]
+  sliderOptions?: ISliderOption
 }
 
 export type IFormFieldProps =

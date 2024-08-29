@@ -13,11 +13,30 @@ import { ColorPickerField } from './color-picker-field'
 import { Checkbox } from '../ui/checkbox'
 import { Button } from './button'
 import { DatePickerField } from '../ui/date-picker-field'
-import { IFormFieldOption } from '@/types/form-panel'
 import {
-  IEditableTableViewColumn,
-  IEditableTableViewProps,
-} from '@/types/editable-table-view'
+  ICalendarProps,
+  IFormFieldOption,
+  IFormFieldPropsBase,
+} from '@/types/form-panel'
+
+export interface IEditableTableViewColumn
+  extends Omit<
+    IFormFieldPropsBase,
+    'name' | 'type' | 'defaultValue' | 'required'
+  > {
+  header: string
+  key: string
+  type: string
+  options?: IFormFieldOption[]
+  calendar?: ICalendarProps
+}
+
+export interface IEditableTableViewProps {
+  data: any[]
+  columns: IEditableTableViewColumn[]
+  caption?: string
+  onSaveChanges: (updatedData: any[]) => void
+}
 
 const EditableTableView: React.FC<IEditableTableViewProps> = ({
   data,
@@ -58,6 +77,7 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
       case 'color':
         return (
           <ColorPickerField
+            required={false}
             value={item[name]}
             onChange={(value) => handleFieldChange(index, name, value)}
           />
