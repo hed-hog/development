@@ -102,14 +102,18 @@ export default function Field({
         <Input
           required={required}
           type={type}
-          value={value}
+          value={value || ''}
           onChange={onChange}
         />
       )
 
     case EnumFieldType.PASSWORD:
       return (
-        <PasswordInput required={required} value={value} onChange={onChange} />
+        <PasswordInput
+          required={required}
+          value={value || ''}
+          onChange={onChange}
+        />
       )
 
     case EnumFieldType.RADIO:
@@ -209,7 +213,7 @@ export default function Field({
     case EnumFieldType.SHEETPICKER:
       return (
         <SheetPickerField
-          onValueChange={() => {}}
+          onValueChange={onChange}
           options={options}
           title={String(label?.text)}
           buttonText='Salvar'
