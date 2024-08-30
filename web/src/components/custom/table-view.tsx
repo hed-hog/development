@@ -20,10 +20,9 @@ interface ITableViewProps {
   sortable?: boolean
   searchable?: boolean
   isLoading?: boolean
-  pagination?: boolean
   onRowClick?: (row: Record<string, any>) => void
   rowActions?: Array<{
-    label: string | JSX.Element
+    label: (row: Record<string, any>) => string | JSX.Element
     onClick: (row: Record<string, any>) => void
   }>
   caption?: string
@@ -52,7 +51,7 @@ const TableView = ({
     }
   }
 
-  // Filter data based on search term
+  // Filtrar dados com base no termo de busca
   const filteredData = React.useMemo(() => {
     if (!searchTerm) return data
     return data.filter((row) =>
@@ -62,7 +61,7 @@ const TableView = ({
     )
   }, [data, searchTerm, columns])
 
-  // Sorting data
+  // Ordenar dados
   const sortedData = React.useMemo(() => {
     if (!sortColumn) return filteredData
     return [...filteredData].sort((a, b) => {
@@ -78,7 +77,7 @@ const TableView = ({
 
   return (
     <>
-      {/* Search Input */}
+      {/* Campo de Busca */}
       {searchable && (
         <div className='relative my-4'>
           <Search
@@ -142,7 +141,7 @@ const TableView = ({
                           }}
                           className='btn-action'
                         >
-                          {action.label}
+                          {action.label(row)}
                         </button>
                       ))}
                     </TableCell>

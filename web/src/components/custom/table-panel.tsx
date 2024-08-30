@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-interface ITableViewProps {
+interface ITablePanelProps {
   columns: Array<{
     key: string
     header: string
@@ -27,7 +27,7 @@ interface ITableViewProps {
   sortable?: boolean
   onRowClick?: (row: Record<string, any>) => void
   rowActions?: Array<{
-    label: string | JSX.Element
+    label: (row: Record<string, any>) => string | JSX.Element
     onClick: (row: Record<string, any>) => void
   }>
   caption?: string
@@ -42,8 +42,8 @@ const TablePanel = ({
   rowActions = [],
   caption,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
-}: ITableViewProps) => {
-  const totalItems = 5000 // esse valor virá da API
+}: ITablePanelProps) => {
+  const totalItems = 5000 // Esse valor virá da API
 
   const {
     currentPage,

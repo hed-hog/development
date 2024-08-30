@@ -206,11 +206,11 @@ export default function MyForm() {
 
   const rowActions = [
     {
-      label: <IconEdit color='orange' />,
+      label: () => <IconEdit color='orange' />,
       onClick: (row: Record<string, any>) => console.log('Editar', row),
     },
     {
-      label: <IconTrash color='#c4212e' />,
+      label: () => <IconTrash color='#c4212e' />,
       onClick: (row: Record<string, any>) => console.log('Excluir', row),
     },
   ]
@@ -486,7 +486,7 @@ export default function MyForm() {
         itemsPerPage={[10, 20, 30, 40]}
       />
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        PickerPanel (grid type)
+        PickerPanel (grid mode)
       </h1>
       <PickerPanel
         endpoint='https://jsonplaceholder.typicode.com/posts'
@@ -504,7 +504,7 @@ export default function MyForm() {
       />
 
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        PickerPanel (table type)
+        PickerPanel (table mode)
       </h1>
       <PickerPanel
         endpoint='https://jsonplaceholder.typicode.com/photos'
@@ -513,6 +513,7 @@ export default function MyForm() {
           { key: 'id', header: 'ID' },
           { key: 'title', header: 'Title' },
         ]}
+        sortable
       />
     </>
   )

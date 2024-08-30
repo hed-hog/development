@@ -82,7 +82,7 @@ export default function PickerPanel({
 
   const rowActions = [
     {
-      label: <Checkbox />,
+      label: (row: any) => <Checkbox checked={selectedIds.includes(row.id)} />,
       onClick: (row: any) => handleCheckboxChange(row.id),
     },
   ]
