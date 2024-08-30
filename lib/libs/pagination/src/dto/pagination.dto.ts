@@ -1,4 +1,5 @@
 import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { SortOrder } from '../enums/patination.enums';
 export class PaginationDTO {
   @IsOptional()
   @IsInt({ message: 'page must be an integer' })
@@ -18,8 +19,8 @@ export class PaginationDTO {
 
   @IsOptional()
   @IsString({ message: 'sortOrder must be a string' })
-  @IsEnum(['asc', 'desc'], { message: 'sortOrder must be asc or desc' })
-  sortOrder: 'asc' | 'desc';
+  @IsEnum(SortOrder, { message: 'sortOrder is not valid' })
+  sortOrder: SortOrder;
 
   @IsOptional()
   @IsString({ each: true, message: 'fields must be an array of strings' })

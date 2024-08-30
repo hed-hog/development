@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { SortOrder } from './enums/patination.enums';
 import {
   BaseModel,
   FindManyArgs,
@@ -67,7 +68,9 @@ export class PaginationService {
           return acc;
         }, {});
 
-        sortOrderCondition = { [field]: paginationParams.sortOrder || 'asc' };
+        sortOrderCondition = {
+          [field]: paginationParams.sortOrder || SortOrder.ASC,
+        };
       }
 
       const skip = page > 0 ? pageSize * (page - 1) : 0;
@@ -79,10 +82,6 @@ export class PaginationService {
         take: pageSize,
         skip,
       };
-
-      console.log('\n\n-- query ----------------------------------------\n\n');
-      console.log(query);
-      console.log('\n\n--------------------------------------------------');
 
       const [total, data] = await Promise.all([
         model.count({ where: whereCondition }),
@@ -111,15 +110,6 @@ export class PaginationService {
     }
   }
 
-  /**
-   * Extracts the field names from a model.
-   *
-   * @param model The model to extract the field names from.
-   * @returns The field names of the model.
-   * @example
-   * const fieldNames = this.extractFieldNames(model);
-   * console.log(fieldNames); // ['id', 'name', 'email']
-   */
   extractFieldNames(model: Record<string, any>): string[] {
     const fieldNames: string[] = [];
 

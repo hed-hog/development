@@ -1,3 +1,5 @@
+import { SortOrder } from 'aws-sdk/clients/acm';
+
 export interface PaginatedResult<T> {
   total: number;
   lastPage: number;
@@ -19,7 +21,7 @@ export interface PaginationParams {
   pageSize?: number;
   search?: string;
   field?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: SortOrder;
   fields?: string[];
 }
 
