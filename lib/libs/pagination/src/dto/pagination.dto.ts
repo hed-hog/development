@@ -1,11 +1,4 @@
-import {
-  IsEnum,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
 export class PaginationDTO {
   @IsOptional()
   @IsInt({ message: 'page must be an integer' })
@@ -23,9 +16,9 @@ export class PaginationDTO {
   @IsString({ message: 'field must be a string' })
   field: string;
 
-  @IsNotEmpty()
-  @IsString()
-  @IsEnum(['asc', 'desc'])
+  @IsOptional()
+  @IsString({ message: 'sortOrder must be a string' })
+  @IsEnum(['asc', 'desc'], { message: 'sortOrder must be asc or desc' })
   sortOrder: 'asc' | 'desc';
 
   @IsOptional()
