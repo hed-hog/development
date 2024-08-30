@@ -122,11 +122,31 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
     const updatedData = moveNode(sampleData, sourceId, destinationId)
     setSampleData(updatedData)
   }
-
   const handleContextMenu = (e: React.MouseEvent, node: TreeNode) => {
     e.preventDefault()
+    e.stopPropagation()
+
+    let el = e.target as HTMLElement
+    let x = 0
+    let y = 0
+
+    if (el) {
+      el = el.closest('div') as HTMLElement
+
+      if (el) {
+        x = el.offsetLeft + 50
+        y = el.offsetTop + el.clientHeight
+      } else {
+        x = e.clientX
+        y = e.clientY
+      }
+    } else {
+      x = e.clientX
+      y = e.clientY
+    }
+
     setSelectedNode(node)
-    setContextMenu({ x: e.clientX, y: e.clientY })
+    setContextMenu({ x, y })
   }
 
   const handleMenuAction = (action: 'add' | 'remove') => {
@@ -257,7 +277,7 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
           style={{
             cursor: 'pointer',
             position: 'absolute',
-            top: `${contextMenu.y - 900}px`,
+            top: `${contextMenu.y}px`,
             left: `${contextMenu.x}px`,
             border: '1px solid #ddd',
             borderRadius: 4,
