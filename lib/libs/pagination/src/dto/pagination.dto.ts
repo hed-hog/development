@@ -1,6 +1,4 @@
-import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
-import { PaginationOrderDirection } from '../decorator/pagination.decorator';
-
+import { IsInt, IsOptional, IsString, Min } from 'class-validator';
 export class PaginationDTO {
   @IsOptional()
   @IsInt()
@@ -15,8 +13,7 @@ export class PaginationDTO {
   orderField: string;
 
   @IsOptional()
-  @IsEnum(PaginationOrderDirection)
-  orderDirection: PaginationOrderDirection;
+  orderDirection: any;
 
   @IsOptional()
   @IsString()

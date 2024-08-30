@@ -1,4 +1,5 @@
 import { AuthGuard } from '@hedhog/auth/auth.guard';
+import { Pagination, PaginationParams } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -8,14 +9,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
-import { Pagination, PaginationDTO } from '@hedhog/pagination';
 
 @Controller('users')
 export class UserController {
@@ -23,8 +22,8 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async index(@Pagination() pagination: PaginationDTO, @Body() args: any) {
-    return this.userService.list(pagination);
+  async getUsers(@Pagination() paginationParams: PaginationParams) {
+    return this.userService.getUsers(paginationParams);
   }
 
   @UseGuards(AuthGuard)

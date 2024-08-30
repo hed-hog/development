@@ -1,10 +1,9 @@
-import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import { PaginationParams, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { users, Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -13,27 +12,11 @@ export class UserService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async list({
-    page,
-    pageSize,
-    search,
-    orderDirection,
-    orderField,
-    fields,
-  }: PaginationDTO) {
-    return this.paginationService.getFn({
-      page,
-      pageSize,
-      fields,
-      orderDirection,
-      orderField,
-    })<Prisma.usersFindManyArgs, users>(this.prismaService.users, {
-      where: {
-        name: {
-          contains: search,
-        },
-      },
-    });
+  async getUsers(paginationParams: PaginationParams) {
+    return this.paginationService.paginate(
+      this.prismaService.users,
+      paginationParams,
+    );
   }
 
   async get(userId: number) {
@@ -58,8 +41,6 @@ export class UserService {
   }
 
   async delete({ ids }: DeleteDTO) {
-    console.log(ids);
-
     return this.prismaService.users.deleteMany({
       where: {
         id: {
