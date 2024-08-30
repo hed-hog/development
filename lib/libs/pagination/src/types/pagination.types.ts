@@ -27,3 +27,13 @@ export type PaginateOptions = {
   page?: number | string;
   pageSize?: number | string;
 };
+
+export type BaseModel = {
+  findMany: (args: any) => Promise<any[]>;
+  count: (args: any) => Promise<number>;
+  fields?: Record<string, any>;
+};
+
+export type FindManyArgs<M> = M extends { findMany: (args: infer A) => any }
+  ? A
+  : never;

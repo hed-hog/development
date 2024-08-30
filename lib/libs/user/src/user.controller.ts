@@ -12,7 +12,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
 
@@ -52,7 +51,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Delete()
-  async delete(@Body() data: DeleteDTO) {
+  async delete(@Body() data: any) {
     return this.userService.delete(data);
   }
 }

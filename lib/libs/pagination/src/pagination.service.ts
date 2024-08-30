@@ -1,45 +1,20 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { PaginatedResult, PaginationParams } from './types/pagination.types';
+import {
+  BaseModel,
+  FindManyArgs,
+  PaginatedResult,
+  PaginationParams,
+} from './types/pagination.types';
 
 @Injectable()
 export class PaginationService {
   private readonly logger = new Logger(PaginationService.name);
 
-  constructor() {}
-
-  /**
-   * Paginates a model.
-   *
-   * @param model Model to paginate.
-   * @param paginationParams Pagination options.
-   * @returns Paginated result.
-   * @throws BadRequestException If pagination options are invalid.
-   * @throws InternalServerErrorException If there is an error while paginating.
-   * @throws NotFoundException If the model is not found.
-   * @throws UnauthorizedException If the user is not authorized.
-   * @throws ForbiddenException If the user is not allowed to access the model.
-   * @example
-   * const result = await this.paginationService.paginate(
-   *   model,
-   *   { page: 1, pageSize: 10 },
-   * );
-   * console.log(result);
-   *
-   * @example
-   * const result = await this.paginationService.paginate(
-   *   this.prismaService.users,
-   *   { page: 1, pageSize: 20 },
-   * );
-   * console.log(result);
-   */
-  async paginate<
-    T,
-    M extends {
-      findMany: Function;
-      count: Function;
-      fields: Record<string, any>;
-    },
-  >(model: M, paginationParams: PaginationParams): Promise<PaginatedResult<T>> {
+  async paginate<T, M extends BaseModel>(
+    model: M,
+    paginationParams: PaginationParams,
+    customQuery?: FindManyArgs<M>,
+  ): Promise<PaginatedResult<T>> {
     try {
       const page = Number(paginationParams.page || 1);
       const pageSize = Number(paginationParams.pageSize || 20);
@@ -50,8 +25,11 @@ export class PaginationService {
         );
       }
 
+      this.logger.debug({ customQuery });
+
       let whereCondition = undefined;
       let selectCondition = undefined;
+      let sortOrderCondition = {};
 
       const { search, field, fields } = paginationParams;
 
@@ -73,10 +51,6 @@ export class PaginationService {
         }
 
         whereCondition = { [field]: { contains: search, mode: 'insensitive' } };
-      }
-
-      if (fields) {
-        const fieldNames = this.extractFieldNames(model);
 
         const invalidFields = fields.filter(
           (field) => !fieldNames.includes(field),
@@ -92,18 +66,27 @@ export class PaginationService {
           acc[field] = true;
           return acc;
         }, {});
+
+        sortOrderCondition = { [field]: paginationParams.sortOrder || 'asc' };
       }
 
       const skip = page > 0 ? pageSize * (page - 1) : 0;
 
+      const query = {
+        select: selectCondition,
+        where: whereCondition,
+        orderBy: sortOrderCondition,
+        take: pageSize,
+        skip,
+      };
+
+      console.log('\n\n-- query ----------------------------------------\n\n');
+      console.log(query);
+      console.log('\n\n--------------------------------------------------');
+
       const [total, data] = await Promise.all([
         model.count({ where: whereCondition }),
-        model.findMany({
-          where: whereCondition,
-          take: pageSize,
-          skip,
-          select: selectCondition,
-        }),
+        model.findMany(query),
       ]);
 
       const lastPage = Math.ceil(total / pageSize);

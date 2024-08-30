@@ -8,19 +8,19 @@ import {
 } from 'class-validator';
 export class PaginationDTO {
   @IsOptional()
-  @IsInt()
+  @IsInt({ message: 'page must be an integer' })
   page: number;
 
   @IsOptional()
-  @IsInt()
+  @IsInt({ message: 'pageSize must be an integer' })
   pageSize: number;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'search must be a string' })
   search: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'field must be a string' })
   field: string;
 
   @IsNotEmpty()

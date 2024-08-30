@@ -8,8 +8,6 @@ export const Pagination = createParamDecorator(
     const { page, pageSize, search, field, sortOrder, fields } =
       request.body as PaginationDTO;
 
-    console.log({ page, pageSize, search, field, sortOrder, fields });
-
     return { page, pageSize, search, field, sortOrder, fields };
   },
 );

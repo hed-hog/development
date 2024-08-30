@@ -1,6 +1,6 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
@@ -16,26 +16,10 @@ export class UserService {
   ) {}
 
   async getUsers(paginationParams: PaginationDTO) {
-    // return this.paginationService.paginate(
-    //   this.prismaService.users,
-    //   paginationParams,
-    // );
-
-    return this.prismaService.users.findMany({
-      where: {
-        email: {
-          contains: '@yahoo.com',
-          mode: 'insensitive',
-        },
-      },
-      select: {
-        name: true,
-        email: true,
-      },
-      orderBy: {
-        name: 'asc',
-      },
-    });
+    return this.paginationService.paginate(
+      this.prismaService.users,
+      paginationParams,
+    );
   }
 
   async get(userId: number) {
@@ -67,13 +51,16 @@ export class UserService {
   }
 
   async delete({ ids }: DeleteDTO) {
+    if (ids == undefined || ids == null) {
+      throw new BadRequestException(
+        `You must select at least one user to delete.`,
+      );
+    }
+
     return this.prismaService.users.deleteMany({
       where: {
         id: {
           in: ids,
-          not: {
-            equals: 1,
-          },
         },
         email: {
           not: {
