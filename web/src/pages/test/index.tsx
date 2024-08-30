@@ -4,13 +4,14 @@ import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import EditableTableView from '@/components/custom/editable-table-view'
-import ListView from '@/components/custom/list-view'
+import DraggableListView from '@/components/custom/draggable-list-view'
 import TreeView from '@/components/custom/tree-view'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 import GridView from '@/components/custom/grid-view'
 import GridPanel from '@/components/custom/grid-panel'
 import TablePanel from '@/components/custom/table-panel'
 import { EnumFieldType } from '@/components/custom/field'
+import PickerPanel from '@/components/custom/picker-panel'
 
 export default function MyForm() {
   // form
@@ -322,8 +323,8 @@ export default function MyForm() {
     console.log('Dados atualizados:', updatedData)
   }
 
-  // ListView
-  const listViewItems = [
+  // DraggableListView
+  const draggableListViewItems = [
     { id: '1', label: 'Item 1' },
     { id: '2', label: 'Item 2' },
     { id: '3', label: 'Item 3' },
@@ -461,9 +462,9 @@ export default function MyForm() {
         />
       </div>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        ListView
+        DraggableListView
       </h1>
-      <ListView data={listViewItems} />
+      <DraggableListView data={draggableListViewItems} />
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
         TreeView
       </h1>
@@ -483,6 +484,19 @@ export default function MyForm() {
         gap={6}
         padding={4}
         itemsPerPage={[10, 20, 30, 40]}
+      />
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        PickerPanel (grid type)
+      </h1>
+      <PickerPanel
+        endpoint='https://jsonplaceholder.typicode.com/posts'
+        type='grid'
+        render={(item: any) => (
+          <div key={item.id}>
+            <h3 className='text-lg font-semibold'>{item.title}</h3>
+            <p>{item.body.slice(0, 50)}</p>
+          </div>
+        )}
       />
     </>
   )

@@ -97,7 +97,9 @@ const GridPanel = ({
         {...props}
       />
 
-      <div className='mt-4 flex w-full items-center justify-between'>
+      <div
+        className={`mt-4 flex w-full items-center justify-between px-${padding}`}
+      >
         <Select
           value={itemsPerPage.toString()}
           onValueChange={handleItemsPerPageChange}
