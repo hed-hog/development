@@ -106,6 +106,7 @@ export default function PickerPanel({
               sortable={sortable}
               itemsPerPage={[10, 20, 30, 40]} // Opções de itens por página
               rowActions={rowActions}
+              onRowClick={(row) => handleCheckboxChange(row.id)}
             />
           ) : (
             <GridPanel
