@@ -1,15 +1,14 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import { genSalt, hash } from 'bcrypt';
+import { SALT_ROUNDS } from './constants/user.constants';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class UserService {
-  private readonly SALT_ROUNDS = 10;
-
   constructor(
     private readonly prismaService: PrismaService,
     private readonly paginationService: PaginationService,
@@ -27,8 +26,8 @@ export class UserService {
   }
 
   async hashPassword(password: string): Promise<string> {
-    const salt = await bcrypt.genSalt(this.SALT_ROUNDS);
-    return bcrypt.hash(password, salt);
+    const salt = await genSalt(SALT_ROUNDS);
+    return hash(password, salt);
   }
 
   async create({ email, name, password }: CreateDTO) {

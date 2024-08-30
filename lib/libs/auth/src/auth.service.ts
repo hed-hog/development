@@ -1,7 +1,7 @@
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import { compare } from 'bcrypt';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
@@ -47,7 +47,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new NotFoundException('Invalid password');

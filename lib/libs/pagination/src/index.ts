@@ -1,3 +1,4 @@
+export * from './constants/pagination.constants';
 export * from './decorator/pagination.decorator';
 export * from './dto/pagination.dto';
 export * from './enums/patination.enums';

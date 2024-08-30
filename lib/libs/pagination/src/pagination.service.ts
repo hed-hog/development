@@ -1,4 +1,8 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from './constants/pagination.constants';
 import { SortOrder } from './enums/patination.enums';
 import {
   BaseModel,
@@ -17,8 +21,8 @@ export class PaginationService {
     customQuery?: FindManyArgs<M>,
   ): Promise<PaginatedResult<T>> {
     try {
-      const page = Number(paginationParams.page || 1);
-      const pageSize = Number(paginationParams.pageSize || 20);
+      const page = Number(paginationParams.page || DEFAULT_PAGE);
+      const pageSize = Number(paginationParams.pageSize || DEFAULT_PAGE_SIZE);
 
       if (page < 1 || pageSize < 1) {
         throw new BadRequestException(
