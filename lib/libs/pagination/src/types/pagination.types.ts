@@ -19,7 +19,10 @@ export interface PaginationParams {
   pageSize?: number;
   search?: string;
   field?: string;
+  sortOrder?: 'asc' | 'desc';
+  fields?: string[];
 }
+
 export type PaginateOptions = {
   page?: number | string;
   pageSize?: number | string;

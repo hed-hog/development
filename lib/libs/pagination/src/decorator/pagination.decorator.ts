@@ -1,14 +1,15 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { PaginationParams } from '../types/pagination.types';
+import { PaginationDTO } from '../dto/pagination.dto';
 
 export const Pagination = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): PaginationParams => {
+  (data: unknown, ctx: ExecutionContext): PaginationDTO => {
     const request = ctx.switchToHttp().getRequest();
 
-    console.log(data);
+    const { page, pageSize, search, field, sortOrder, fields } =
+      request.body as PaginationDTO;
 
-    const { page, pageSize, search, field } = request.body;
+    console.log({ page, pageSize, search, field, sortOrder, fields });
 
-    return { page, pageSize, search, field };
+    return { page, pageSize, search, field, sortOrder, fields };
   },
 );

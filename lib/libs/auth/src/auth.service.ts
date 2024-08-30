@@ -1,10 +1,10 @@
+import { PrismaService } from '@hedhog/prisma';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
-import { ForgetDTO } from './dto/forget.dto';
-import { PrismaService } from '@hedhog/prisma';
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 import { MultifactorType } from './enums/multifactor-type.enum';
 
 @Injectable()

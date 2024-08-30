@@ -4,6 +4,34 @@ import { PaginatedResult, PaginationParams } from './types/pagination.types';
 @Injectable()
 export class PaginationService {
   private readonly logger = new Logger(PaginationService.name);
+
+  constructor() {}
+
+  /**
+   * Paginates a model.
+   *
+   * @param model Model to paginate.
+   * @param paginationParams Pagination options.
+   * @returns Paginated result.
+   * @throws BadRequestException If pagination options are invalid.
+   * @throws InternalServerErrorException If there is an error while paginating.
+   * @throws NotFoundException If the model is not found.
+   * @throws UnauthorizedException If the user is not authorized.
+   * @throws ForbiddenException If the user is not allowed to access the model.
+   * @example
+   * const result = await this.paginationService.paginate(
+   *   model,
+   *   { page: 1, pageSize: 10 },
+   * );
+   * console.log(result);
+   *
+   * @example
+   * const result = await this.paginationService.paginate(
+   *   this.prismaService.users,
+   *   { page: 1, pageSize: 20 },
+   * );
+   * console.log(result);
+   */
   async paginate<
     T,
     M extends {
@@ -23,8 +51,9 @@ export class PaginationService {
       }
 
       let whereCondition = undefined;
+      let selectCondition = undefined;
 
-      const { search, field } = paginationParams;
+      const { search, field, fields } = paginationParams;
 
       if (search && field) {
         const fieldNames = this.extractFieldNames(model);
@@ -43,7 +72,26 @@ export class PaginationService {
           throw new BadRequestException('Search must be a string');
         }
 
-        whereCondition = { [field]: { contains: search } };
+        whereCondition = { [field]: { contains: search, mode: 'insensitive' } };
+      }
+
+      if (fields) {
+        const fieldNames = this.extractFieldNames(model);
+
+        const invalidFields = fields.filter(
+          (field) => !fieldNames.includes(field),
+        );
+
+        if (invalidFields.length > 0) {
+          throw new BadRequestException(
+            `Invalid fields: ${invalidFields.join(', ')}. Valid columns are: ${fieldNames.join(', ')}`,
+          );
+        }
+
+        selectCondition = fields.reduce((acc, field) => {
+          acc[field] = true;
+          return acc;
+        }, {});
       }
 
       const skip = page > 0 ? pageSize * (page - 1) : 0;
@@ -54,6 +102,7 @@ export class PaginationService {
           where: whereCondition,
           take: pageSize,
           skip,
+          select: selectCondition,
         }),
       ]);
 
@@ -79,6 +128,15 @@ export class PaginationService {
     }
   }
 
+  /**
+   * Extracts the field names from a model.
+   *
+   * @param model The model to extract the field names from.
+   * @returns The field names of the model.
+   * @example
+   * const fieldNames = this.extractFieldNames(model);
+   * console.log(fieldNames); // ['id', 'name', 'email']
+   */
   extractFieldNames(model: Record<string, any>): string[] {
     const fieldNames: string[] = [];
 

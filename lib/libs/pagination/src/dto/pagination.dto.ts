@@ -1,4 +1,11 @@
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 export class PaginationDTO {
   @IsOptional()
   @IsInt()
@@ -10,17 +17,19 @@ export class PaginationDTO {
 
   @IsOptional()
   @IsString()
-  orderField: string;
-
-  @IsOptional()
-  orderDirection: any;
-
-  @IsOptional()
-  @IsString()
   search: string;
 
   @IsOptional()
-  @IsString({ each: true })
+  @IsString()
+  field: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsEnum(['asc', 'desc'])
+  sortOrder: 'asc' | 'desc';
+
+  @IsOptional()
+  @IsString({ each: true, message: 'fields must be an array of strings' })
   @Min(1)
   fields: string[];
 }
