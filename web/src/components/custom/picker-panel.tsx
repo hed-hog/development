@@ -12,27 +12,44 @@ import {
 import TablePanel from './table-panel'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useDialog } from '@/hooks/use-dialog'
+import { IResponsiveColumn } from '@/types/responsive-columns'
 
 interface IPickerPanelProps {
   endpoint: string
   type: 'grid' | 'table'
+  responsiveColumns?: IResponsiveColumn
+  render?: (item: any) => JSX.Element // Função de renderização personalizada
+  itemsPerPage?: number[]
   title?: string
   subtitle?: string
+  gap?: number
   padding?: number
   columns?: Array<{
     key: string
     header: string
   }>
-  render: (item: any) => JSX.Element // Função de renderização personalizada
+  caption?: string
+  sortable?: boolean
 }
 
 export default function PickerPanel({
+  responsiveColumns = {
+    default: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+  },
   endpoint,
   type,
+  itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
   title = 'Picker Panel',
   subtitle = "Select items from the list below. Click save when you're done.",
   columns,
+  gap = 6,
   padding = 4,
+  caption = 'List of Items',
+  sortable,
   render,
 }: IPickerPanelProps) {
   const { isOpen, open, close } = useDialog()
@@ -58,14 +75,21 @@ export default function PickerPanel({
           checked={isChecked}
           onChange={() => handleCheckboxChange(item.id)}
         />
-        {render(item)}
+        {typeof render === 'function' && render(item)}
       </div>
     )
   }
 
+  const rowActions = [
+    {
+      label: <Checkbox />,
+      onClick: (row: any) => handleCheckboxChange(row.id),
+    },
+  ]
+
   return (
     <>
-      <Button variant='outline' onClick={open}>
+      <Button variant='outline' onClick={open} className='w-full'>
         Open Picker
       </Button>
       <Dialog open={isOpen} onOpenChange={close}>
@@ -78,20 +102,19 @@ export default function PickerPanel({
             <TablePanel
               columns={columns}
               endpoint={endpoint}
-              caption='List of Items'
+              caption={caption}
+              sortable={sortable}
+              itemsPerPage={[10, 20, 30, 40]} // Opções de itens por página
+              rowActions={rowActions}
             />
           ) : (
             <GridPanel
+              itemsPerPage={itemsPerPageOptions}
+              gap={gap}
               endpoint={endpoint}
               render={renderWithCheckbox}
               padding={padding}
-              responsiveColumns={{
-                default: 1,
-                sm: 1,
-                md: 2,
-                lg: 3,
-                xl: 4,
-              }}
+              responsiveColumns={responsiveColumns}
             />
           )}
           <DialogFooter className={`px-${padding}`}>

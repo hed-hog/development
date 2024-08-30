@@ -105,7 +105,6 @@ const TableView = ({
                 )}
               </TableHead>
             ))}
-            {rowActions.length > 0 && <TableHead>Ações</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>

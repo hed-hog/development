@@ -491,12 +491,28 @@ export default function MyForm() {
       <PickerPanel
         endpoint='https://jsonplaceholder.typicode.com/posts'
         type='grid'
+        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+        gap={6}
+        padding={4}
+        itemsPerPage={[10, 20, 30, 40]}
         render={(item: any) => (
           <div key={item.id}>
             <h3 className='text-lg font-semibold'>{item.title}</h3>
             <p>{item.body.slice(0, 50)}</p>
           </div>
         )}
+      />
+
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        PickerPanel (table type)
+      </h1>
+      <PickerPanel
+        endpoint='https://jsonplaceholder.typicode.com/photos'
+        type='table'
+        columns={[
+          { key: 'id', header: 'ID' },
+          { key: 'title', header: 'Title' },
+        ]}
       />
     </>
   )
