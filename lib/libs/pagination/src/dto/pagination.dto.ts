@@ -1,5 +1,5 @@
-import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
-import { SortOrder } from '../enums/patination.enums';
+import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
+import { PageOrderDirection } from '../enums/patination.enums';
 export class PaginationDTO {
   @IsOptional()
   @IsInt({ message: 'page must be an integer' })
@@ -15,15 +15,14 @@ export class PaginationDTO {
 
   @IsOptional()
   @IsString({ message: 'field must be a string' })
-  field: string;
+  sortField: string;
 
   @IsOptional()
   @IsString({ message: 'sortOrder must be a string' })
-  @IsEnum(SortOrder, { message: 'sortOrder is not valid' })
-  sortOrder: SortOrder;
+  @IsEnum(PageOrderDirection, { message: 'sortOrder is not valid' })
+  sortOrder: PageOrderDirection;
 
   @IsOptional()
-  @IsString({ each: true, message: 'fields must be an array of strings' })
-  @Min(1)
-  fields: string[];
+  @IsString({ message: 'fields must be a string' })
+  fields: string;
 }
