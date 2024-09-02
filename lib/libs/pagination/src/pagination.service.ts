@@ -3,8 +3,8 @@ import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
 } from './constants/pagination.constants';
-import { SortOrder } from './enums/patination.enums';
-import {
+import { PageOrderDirection } from './enums/patination.enums';
+import type {
   BaseModel,
   FindManyArgs,
   PaginatedResult,
@@ -23,6 +23,21 @@ export class PaginationService {
     try {
       const page = Number(paginationParams.page || DEFAULT_PAGE);
       const pageSize = Number(paginationParams.pageSize || DEFAULT_PAGE_SIZE);
+      const search = paginationParams.search || null;
+      const sortField = paginationParams.sortField || null;
+      const sortOrder = paginationParams.sortOrder || PageOrderDirection.Asc;
+      const fields = paginationParams.fields
+        ? paginationParams.fields.split(',')
+        : null;
+
+      this.logger.debug({
+        page,
+        pageSize,
+        search,
+        sortField,
+        sortOrder,
+        fields,
+      });
 
       if (page < 1 || pageSize < 1) {
         throw new BadRequestException(
@@ -30,65 +45,57 @@ export class PaginationService {
         );
       }
 
-      this.logger.debug({ customQuery });
-
-      let whereCondition = undefined;
       let selectCondition = undefined;
-      let sortOrderCondition = {};
+      let sortOrderCondition: any = {
+        id: paginationParams.sortOrder || PageOrderDirection.Asc,
+      };
 
-      const { search, field, fields } = paginationParams;
-
-      if (search && field) {
+      if (search && sortField) {
         const fieldNames = this.extractFieldNames(model);
 
-        if (!fieldNames.includes(field)) {
+        if (!fieldNames.includes(sortField)) {
           throw new BadRequestException(
-            `Invalid field: ${field}. Valid columns are: ${fieldNames.join(', ')}`,
+            `Invalid field: ${sortField}. Valid columns are: ${fieldNames.join(', ')}`,
           );
         }
 
-        if (typeof field !== 'string') {
+        if (typeof sortField !== 'string') {
           throw new BadRequestException('Field must be a string');
         }
+      }
 
-        if (typeof search !== 'string') {
-          throw new BadRequestException('Search must be a string');
-        }
+      if (sortField) {
+        sortOrderCondition = { [sortField]: sortOrder };
+      }
 
-        whereCondition = { [field]: { contains: search, mode: 'insensitive' } };
-
+      if (fields) {
+        const fieldNames = this.extractFieldNames(model);
         const invalidFields = fields.filter(
           (field) => !fieldNames.includes(field),
         );
-
         if (invalidFields.length > 0) {
           throw new BadRequestException(
             `Invalid fields: ${invalidFields.join(', ')}. Valid columns are: ${fieldNames.join(', ')}`,
           );
         }
-
         selectCondition = fields.reduce((acc, field) => {
           acc[field] = true;
           return acc;
         }, {});
-
-        sortOrderCondition = {
-          [field]: paginationParams.sortOrder || SortOrder.ASC,
-        };
       }
 
       const skip = page > 0 ? pageSize * (page - 1) : 0;
 
       const query = {
         select: selectCondition,
-        where: whereCondition,
+        where: customQuery?.where || {},
         orderBy: sortOrderCondition,
         take: pageSize,
         skip,
       };
 
       const [total, data] = await Promise.all([
-        model.count({ where: whereCondition }),
+        model.count({ where: customQuery?.where || {} }),
         model.findMany(query),
       ]);
 

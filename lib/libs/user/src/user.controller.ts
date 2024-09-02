@@ -1,5 +1,5 @@
 import { AuthGuard } from '@hedhog/auth/auth.guard';
-import { Pagination, PaginationDTO } from '@hedhog/pagination';
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -22,7 +22,8 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async getUsers(@Pagination() paginationParams: PaginationDTO) {
+  async getUsers(@Pagination() paginationParams) {
+    console.log({ paginationParams });
     return this.userService.getUsers(paginationParams);
   }
 

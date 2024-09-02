@@ -1,6 +1,6 @@
-import { SortOrder } from 'aws-sdk/clients/acm';
+import { PageOrderDirection } from '../enums/patination.enums';
 
-export interface PaginatedResult<T> {
+export type PaginatedResult<T> = {
   total: number;
   lastPage: number;
   currentPage: number;
@@ -8,7 +8,9 @@ export interface PaginatedResult<T> {
   prev: number | null;
   next: number | null;
   data: T[];
-}
+};
+
+export type PaginationType = string | number | PaginationParams;
 
 export type PaginateFunction = <K, T>(
   model: any,
@@ -16,14 +18,14 @@ export type PaginateFunction = <K, T>(
   options?: PaginateOptions,
 ) => Promise<PaginatedResult<T>>;
 
-export interface PaginationParams {
+export type PaginationParams = {
   page?: number;
   pageSize?: number;
   search?: string;
-  field?: string;
-  sortOrder?: SortOrder;
-  fields?: string[];
-}
+  sortField?: string;
+  sortOrder?: PageOrderDirection;
+  fields: string;
+};
 
 export type PaginateOptions = {
   page?: number | string;

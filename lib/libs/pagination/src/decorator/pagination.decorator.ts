@@ -1,20 +1,13 @@
-import {
-  BadRequestException,
-  createParamDecorator,
-  ExecutionContext,
-} from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '../constants/pagination.constants';
 import { PageOrderDirection, PaginationField } from '../enums/patination.enums';
 import { PaginationType } from '../types/pagination.types';
-import { validateOrReject } from 'class-validator';
-import { plainToInstance } from 'class-transformer';
-import { PaginationDTO } from '../dto/pagination.dto';
 
 export const Pagination = createParamDecorator(
-  async (data: PaginationField, ctx: ExecutionContext): PaginationType => {
+  (data: PaginationField, ctx: ExecutionContext): PaginationType => {
     const request = ctx.switchToHttp().getRequest();
 
     const defaultOptions: PaginationType = {
@@ -32,18 +25,38 @@ export const Pagination = createParamDecorator(
       ...(request.query || {}),
     };
 
-    // Converta os dados para o DTO
-    const paginationDto = plainToInstance(PaginationDTO, requestData);
+    const {
+      page = defaultOptions.page,
+      pageSize = defaultOptions.pageSize,
+      search = defaultOptions.search,
+      sortField = defaultOptions.sortField,
+      sortOrder = defaultOptions.sortOrder,
+      fields = defaultOptions.fields,
+    } = requestData;
 
-    // Valide o DTO e rejeite se houver erros
-    try {
-      await validateOrReject(paginationDto);
-    } catch (errors) {
-      throw new BadRequestException(errors);
-    }
+    const validSortOrder = Object.values(PageOrderDirection).includes(sortOrder)
+      ? sortOrder
+      : defaultOptions.sortOrder;
 
     if (data) {
-      return paginationDto[data];
+      switch (data) {
+        case PaginationField.Page:
+        case PaginationField.PageSize:
+          return requestData[data] ? +requestData[data] : defaultOptions[data];
+        case PaginationField.OrderDirection:
+          return requestData[data] || defaultOptions[data];
+        default:
+          return requestData[data];
+      }
     }
+
+    return {
+      page: +page,
+      pageSize: +pageSize,
+      search,
+      sortField,
+      sortOrder: validSortOrder,
+      fields,
+    };
   },
 );

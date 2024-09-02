@@ -15,9 +15,27 @@ export class UserService {
   ) {}
 
   async getUsers(paginationParams: PaginationDTO) {
+    const OR: any[] = [
+      {
+        name: { contains: paginationParams.search },
+      },
+      {
+        email: { contains: paginationParams.search },
+      },
+    ];
+
+    if (!isNaN(+paginationParams.search)) {
+      OR.push({ id: { equals: +paginationParams.search } });
+    }
+
     return this.paginationService.paginate(
       this.prismaService.users,
       paginationParams,
+      {
+        where: {
+          OR,
+        },
+      },
     );
   }
 
