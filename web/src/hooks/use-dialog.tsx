@@ -1,4 +1,3 @@
-// usePickerPanel.ts
 import { useState } from 'react'
 
 interface IUseDialogReturn {
