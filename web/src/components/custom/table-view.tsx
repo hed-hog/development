@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState } from 'react'
 import {
   Table,
   TableHeader,
@@ -8,7 +8,7 @@ import {
   TableCell,
   TableCaption,
 } from '@/components/ui/table'
-import { Search } from '@/components/search'
+import { Search } from '@/components/search-field'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface ITableViewProps {
@@ -71,10 +71,6 @@ const TableView = ({
     })
   }, [filteredData, sortColumn, sortDirection])
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
-  }
-
   return (
     <>
       {/* Campo de Busca */}
@@ -83,7 +79,7 @@ const TableView = ({
           <Search
             placeholder='Buscar...'
             value={searchTerm}
-            setValue={handleSearchChange}
+            onSearch={setSearchTerm}
           />
         </div>
       )}
