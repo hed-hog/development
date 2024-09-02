@@ -1,13 +1,20 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import {
+  BadRequestException,
+  createParamDecorator,
+  ExecutionContext,
+} from '@nestjs/common';
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '../constants/pagination.constants';
 import { PageOrderDirection, PaginationField } from '../enums/patination.enums';
 import { PaginationType } from '../types/pagination.types';
+import { validateOrReject } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+import { PaginationDTO } from '../dto/pagination.dto';
 
 export const Pagination = createParamDecorator(
-  (data: PaginationField, ctx: ExecutionContext): PaginationType => {
+  async (data: PaginationField, ctx: ExecutionContext): PaginationType => {
     const request = ctx.switchToHttp().getRequest();
 
     const defaultOptions: PaginationType = {
@@ -19,51 +26,24 @@ export const Pagination = createParamDecorator(
       fields: '',
     };
 
-    const requestData = request.body || request.query;
+    const requestData = {
+      ...defaultOptions,
+      ...(request.body || {}),
+      ...(request.query || {}),
+    };
 
-    const {
-      page = defaultOptions.page,
-      pageSize = defaultOptions.pageSize,
-      search = defaultOptions.search,
-      sortField = defaultOptions.sortField,
+    // Converta os dados para o DTO
+    const paginationDto = plainToInstance(PaginationDTO, requestData);
 
-      sortOrder = defaultOptions.sortOrder,
-      fields = defaultOptions.fields,
-    } = requestData;
-
-    if (data) {
-      switch (data) {
-        case PaginationField.Page:
-        case PaginationField.PageSize:
-          return requestData[data] ? +requestData[data] : defaultOptions[data];
-        case PaginationField.OrderDirection:
-          return requestData[data] || defaultOptions[data];
-        default:
-          return requestData[data];
-      }
+    // Valide o DTO e rejeite se houver erros
+    try {
+      await validateOrReject(paginationDto);
+    } catch (errors) {
+      throw new BadRequestException(errors);
     }
 
-    return {
-      page: +page,
-      pageSize: +pageSize,
-      search,
-      sortField,
-      sortOrder: sortOrder as PageOrderDirection,
-      fields,
-    };
+    if (data) {
+      return paginationDto[data];
+    }
   },
 );
-
-// import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-// import { PaginationDTO } from '../dto/pagination.dto';
-
-// export const Pagination = createParamDecorator(
-//   (data: unknown, ctx: ExecutionContext): PaginationDTO => {
-//     const request = ctx.switchToHttp().getRequest();
-
-//     const { page, pageSize, search, sortField, sortOrder, fields } =
-//       request.body as PaginationDTO;
-
-//     return { page, pageSize, search, sortField, sortOrder, fields };
-//   },
-// );
