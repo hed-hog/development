@@ -73,13 +73,25 @@ export default function PickerPanel({
       return updatedSelectedIds
     })
   }
+
   const handleSelectAll = (data: any[]) => {
     if (isAllSelected) {
+      // Se todos estão selecionados, limpa selectedIds e filteredData
       setSelectedIds([])
+      setFilteredData((prevData) =>
+        prevData.filter((item) => !data.some((d) => d.id === item.id))
+      )
     } else {
-      const allIds = data.map((item) => item.id)
-      setSelectedIds(allIds)
+      const newIds = new Set(data.map((item) => item.id))
+
+      setFilteredData((prevData) => [
+        ...prevData.filter((item) => !newIds.has(item.id)), // Remove itens antigos que estão sendo substituídos
+        ...data, // Adiciona novos itens
+      ])
+
+      setSelectedIds(data.map((item) => item.id))
     }
+
     setIsAllSelected(!isAllSelected)
   }
 
