@@ -41,34 +41,36 @@ export class PaginationService {
         id: paginationParams.sortOrder || PageOrderDirection.Asc,
       };
 
-      if (search && sortField) {
-        const fieldNames = this.extractFieldNames(model);
-
-        if (!fieldNames.includes(sortField)) {
+      if (sortField) {
+        const invalid = this.isInvalidField(sortField, model);
+        if (invalid) {
           throw new BadRequestException(
-            `Invalid field: ${sortField}. Valid columns are: ${fieldNames.join(', ')}`,
+            `Invalid field: ${sortField}. Valid columns are: ${this.extractFieldNames(
+              model,
+            ).join(', ')}`,
           );
         }
 
-        if (typeof sortField !== 'string') {
-          throw new BadRequestException('Field must be a string');
-        }
-      }
-
-      if (sortField) {
         sortOrderCondition = { [sortField]: sortOrder };
       }
 
+      if (search) {
+        if (typeof search !== 'string') {
+          throw new BadRequestException('Search must be a string');
+        }
+      }
+
       if (fields) {
-        const fieldNames = this.extractFieldNames(model);
-        const invalidFields = fields.filter(
-          (field) => !fieldNames.includes(field),
-        );
-        if (invalidFields.length > 0) {
+        const invalidFields = this.isInvalidFields(fields, model);
+
+        if (invalidFields) {
           throw new BadRequestException(
-            `Invalid fields: ${invalidFields.join(', ')}. Valid columns are: ${fieldNames.join(', ')}`,
+            `Invalid fields: ${sortField}. Valid columns are: ${this.extractFieldNames(
+              model,
+            ).join(', ')}`,
           );
         }
+
         selectCondition = fields.reduce((acc, field) => {
           acc[field] = true;
           return acc;
@@ -124,5 +126,13 @@ export class PaginationService {
     }
 
     return fieldNames;
+  }
+
+  isInvalidField(sortField: string, model: BaseModel): boolean {
+    return !model.fields[sortField];
+  }
+
+  isInvalidFields(fields: string[], model: BaseModel): boolean {
+    return !fields.every((field) => model.fields[field]);
   }
 }
