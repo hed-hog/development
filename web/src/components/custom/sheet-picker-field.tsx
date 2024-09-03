@@ -10,7 +10,7 @@ import {
   SheetFooter,
   SheetTrigger,
   SheetHeader,
-} from '../ui/sheet'
+} from '@/components/ui/sheet'
 import { CheckIcon } from 'lucide-react'
 import {
   Command,
@@ -27,7 +27,7 @@ interface Option {
   value: string
 }
 
-interface PickerSheetProps {
+interface SheetPickerFieldProps {
   options: Option[]
   onValueChange: (value: string[]) => void
   placeholder?: string
@@ -38,9 +38,10 @@ interface PickerSheetProps {
   buttonText?: string
   buttonStyle?: React.CSSProperties
   defaultValue?: string[]
+  required?: boolean
 }
 
-const PickerSheet: React.FC<PickerSheetProps> = ({
+export const SheetPickerField: React.FC<SheetPickerFieldProps> = ({
   options,
   onValueChange,
   title,
@@ -50,6 +51,7 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
   buttonText = 'Save changes',
   buttonStyle,
   defaultValue = [],
+  required = false,
 }) => {
   const [selectedValues, setSelectedValues] =
     React.useState<string[]>(defaultValue)
@@ -74,6 +76,7 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
       <SheetTrigger asChild className='h-15 w-full p-0'>
         <div className='h-15 w-full'>
           <MultiSelect
+            required={required}
             options={options}
             value={selectedValues}
             onChange={setSelectedValues} // Atualiza o estado diretamente
@@ -132,5 +135,3 @@ const PickerSheet: React.FC<PickerSheetProps> = ({
     </Sheet>
   )
 }
-
-export default PickerSheet

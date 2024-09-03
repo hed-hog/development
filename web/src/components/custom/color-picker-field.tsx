@@ -7,20 +7,24 @@ import {
 } from '@/components/ui/popover'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
+import { FieldProps } from '@/types/form-panel'
 import { Paintbrush } from 'lucide-react'
 import { useMemo } from 'react'
 
-interface ColorPickerProps {
-  value: string
-  onChange: (value: string) => void
-  variant?: 'default' | 'full'
+export enum ColorPickerFieldVariant {
+  DEFAULT = 'default',
+  FULL = 'full',
 }
 
-export function ColorPicker({
+export type ColorPickerFieldProps = {
+  variant?: ColorPickerFieldVariant
+} & FieldProps
+
+export function ColorPickerField({
   value,
   onChange,
-  variant = 'default',
-}: ColorPickerProps) {
+  variant = ColorPickerFieldVariant.DEFAULT,
+}: ColorPickerFieldProps) {
   const background =
     value ||
     'linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)'

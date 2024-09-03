@@ -1,34 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-} from '@/components/ui/select'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination'
-
-interface IResponsiveColumn {
-  default: number
-  sm: number
-  md: number
-  lg: number
-  xl: number
-}
+import { IResponsiveColumn } from '@/types/responsive-columns'
+import { Search } from '../search-field'
 
 interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
   responsiveColumns?: IResponsiveColumn
   gap?: number
   padding?: number
-  data: React.ReactNode[]
+  data: any[]
+  render: (item: any, index: number) => JSX.Element
   itemsPerPage?: number[]
 }
 
@@ -43,30 +22,18 @@ const GridView = ({
   gap = 6,
   padding = 4,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
-  data,
+  data = [],
+  render,
   className,
   ...props
 }: GridViewProps) => {
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
-    itemsPerPageOptions[0]
-  )
-  const [currentPage, setCurrentPage] = useState<number>(1)
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
-  const [totalPages, setTotalPages] = useState<number>(
-    data.length / itemsPerPage
-  )
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [filteredData, setFilteredData] = useState<any[]>(data)
 
-  const totalItems = data.length
-  useEffect(() => {
-    setTotalPages(Math.ceil(totalItems / itemsPerPage))
-  }, [itemsPerPage, totalItems])
-
-  // Calcula os itens a serem exibidos na página atual
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const paginatedItems = data.slice(startIndex, endIndex)
+  const gridItems = (filteredData ?? []).map(render)
 
   // Atualiza o número de colunas com base no tamanho da tela
   const updateColumnsBasedOnScreenSize = () => {
@@ -83,6 +50,19 @@ const GridView = ({
     }
   }
 
+  // Função para filtrar os dados com base no termo de pesquisa
+  const filterData = () => {
+    const lowercasedSearchTerm = searchTerm.toLowerCase()
+    const filtered = data.filter((item) => {
+      if (item) {
+        return Object.values(item).some((value) =>
+          String(value).toString().toLowerCase().includes(lowercasedSearchTerm)
+        )
+      }
+    })
+    setFilteredData(filtered)
+  }
+
   useEffect(() => {
     updateColumnsBasedOnScreenSize()
     window.addEventListener('resize', updateColumnsBasedOnScreenSize)
@@ -91,17 +71,20 @@ const GridView = ({
     }
   }, [responsiveColumns])
 
-  const handleItemsPerPageChange = (value: string) => {
-    setItemsPerPage(Number(value))
-    setCurrentPage(1) // Reseta para a primeira página ao alterar o número de itens por página
-  }
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
+  useEffect(() => {
+    filterData()
+  }, [searchTerm, data])
 
   return (
     <div {...props} className={`p-${padding}`}>
+      <div className='my-4'>
+        <Search
+          placeholder='Buscar...'
+          value={searchTerm}
+          onSearch={setSearchTerm}
+        />
+      </div>
+
       <div
         style={{
           display: 'grid',
@@ -110,61 +93,7 @@ const GridView = ({
         }}
         className={className}
       >
-        {paginatedItems}
-      </div>
-
-      <div className='mt-4 flex w-full items-center justify-between'>
-        <Select
-          value={itemsPerPage.toString()}
-          onValueChange={handleItemsPerPageChange}
-        >
-          <SelectTrigger className='w-80'>
-            <SelectValue placeholder={`Itens por página: ${itemsPerPage}`} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {itemsPerPageOptions.map((option) => (
-                <SelectItem key={option} value={option.toString()}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <Pagination className='mx-0 w-fit'>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={(e) => {
-                  e.preventDefault()
-                  handlePageChange(Math.max(currentPage - 1, 1))
-                }}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handlePageChange(index + 1)
-                  }}
-                  isActive={currentPage === index + 1}
-                >
-                  {index + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                onClick={(e) => {
-                  e.preventDefault()
-                  handlePageChange(Math.min(currentPage + 1, totalPages))
-                }}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        {gridItems}
       </div>
     </div>
   )
