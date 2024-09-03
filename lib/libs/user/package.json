@@ -14,6 +14,7 @@
   "peerDependencies": {
     "@prisma/client": "^5.17.0",
     "@hedhog/auth": "latest",
+    "@hedhog/pagination": "latest",
     "bcrypt": "^5.1.1"
   },
   "devDependencies": {

@@ -1,10 +1,17 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import {
+  BadRequestException,
+  createParamDecorator,
+  ExecutionContext,
+} from '@nestjs/common';
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '../constants/pagination.constants';
 import { PageOrderDirection, PaginationField } from '../enums/patination.enums';
 import { PaginationType } from '../types/pagination.types';
+import { plainToClass } from 'class-transformer';
+import { PaginationDTO } from '../dto/pagination.dto';
+import { validateSync } from 'class-validator';
 
 export const Pagination = createParamDecorator(
   (data: PaginationField, ctx: ExecutionContext): PaginationType => {
@@ -38,25 +45,40 @@ export const Pagination = createParamDecorator(
       ? sortOrder
       : defaultOptions.sortOrder;
 
-    if (data) {
-      switch (data) {
-        case PaginationField.Page:
-        case PaginationField.PageSize:
-          return requestData[data] ? +requestData[data] : defaultOptions[data];
-        case PaginationField.OrderDirection:
-          return requestData[data] || defaultOptions[data];
-        default:
-          return requestData[data];
-      }
-    }
-
-    return {
-      page: +page,
-      pageSize: +pageSize,
+    const finalData = {
+      page,
+      pageSize,
       search,
       sortField,
       sortOrder: validSortOrder,
       fields,
     };
+
+    const paginationDtoInstance = plainToClass(PaginationDTO, finalData);
+
+    const errors = validateSync(paginationDtoInstance);
+
+    if (errors.length > 0) {
+      throw new BadRequestException(
+        'Pagination data is not valid according to PaginationDto: ' +
+          errors
+            .map((error) => Object.values(error.constraints).join(', '))
+            .join(', '),
+      );
+    }
+
+    if (data) {
+      switch (data) {
+        case PaginationField.Page:
+        case PaginationField.PageSize:
+          return finalData[data] ? +finalData[data] : defaultOptions[data];
+        case PaginationField.SortOrder:
+          return validSortOrder || defaultOptions[data];
+        default:
+          return finalData[data];
+      }
+    }
+
+    return finalData;
   },
 );

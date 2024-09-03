@@ -23,7 +23,6 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get()
   async getUsers(@Pagination() paginationParams) {
-    console.log({ paginationParams });
     return this.userService.getUsers(paginationParams);
   }
 

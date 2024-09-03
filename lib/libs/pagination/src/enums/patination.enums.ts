@@ -6,7 +6,7 @@ export enum PageOrderDirection {
 export enum PaginationField {
   Page = 'page',
   PageSize = 'pageSize',
-  OrderField = 'orderField',
-  OrderDirection = 'orderDirection',
+  SortField = 'sortOrder',
+  SortOrder = 'sortOrder',
   Search = 'search',
 }

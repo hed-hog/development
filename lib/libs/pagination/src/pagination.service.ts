@@ -30,15 +30,6 @@ export class PaginationService {
         ? paginationParams.fields.split(',')
         : null;
 
-      this.logger.debug({
-        page,
-        pageSize,
-        search,
-        sortField,
-        sortOrder,
-        fields,
-      });
-
       if (page < 1 || pageSize < 1) {
         throw new BadRequestException(
           'Page and pageSize must be greater than 0',

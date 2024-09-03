@@ -17,10 +17,10 @@ export class UserService {
   async getUsers(paginationParams: PaginationDTO) {
     const OR: any[] = [
       {
-        name: { contains: paginationParams.search },
+        name: { contains: paginationParams.search, mode: 'insensitive' },
       },
       {
-        email: { contains: paginationParams.search },
+        email: { contains: paginationParams.search, mode: 'insensitive' },
       },
     ];
 

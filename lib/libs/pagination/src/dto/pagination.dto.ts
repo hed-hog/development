@@ -3,12 +3,12 @@ import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 import { PageOrderDirection } from '../enums/patination.enums';
 export class PaginationDTO {
   @IsOptional()
-  @Transform((value) => Number(value))
+  @Transform(({ value }) => Number(value))
   @IsInt({ message: 'page must be an integer' })
   page: number;
 
   @IsOptional()
-  @Transform((value) => Number(value))
+  @Transform(({ value }) => Number(value))
   @IsInt({ message: 'pageSize must be an integer' })
   pageSize: number;
 
