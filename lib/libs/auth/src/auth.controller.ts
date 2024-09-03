@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  forwardRef,
+  Get,
+  Inject,
+  Post,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { User } from './decorators/user.decorator';
@@ -9,7 +16,10 @@ import { User as UserType } from './types/user.type';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly service: AuthService) {}
+  constructor(
+    @Inject(forwardRef(() => AuthService))
+    private readonly service: AuthService,
+  ) {}
 
   @Get('verify')
   async verify(@User() { id }: UserType) {

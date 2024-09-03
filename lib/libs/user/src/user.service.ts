@@ -1,6 +1,11 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Inject,
+  forwardRef,
+} from '@nestjs/common';
 import { genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from './constants/user.constants';
 import { CreateDTO } from './dto/create.dto';
@@ -10,7 +15,9 @@ import { UpdateDTO } from './dto/update.dto';
 @Injectable()
 export class UserService {
   constructor(
+    @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
+    @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
   ) {}
 

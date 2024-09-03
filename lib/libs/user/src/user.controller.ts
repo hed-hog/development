@@ -1,4 +1,4 @@
-import { AuthGuard } from '@hedhog/auth/auth.guard';
+import { AuthGuard } from '@hedhog/auth';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -10,6 +10,8 @@ import {
   Patch,
   Post,
   UseGuards,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
@@ -18,7 +20,10 @@ import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Get()

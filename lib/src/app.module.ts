@@ -9,6 +9,7 @@ import { UserModule } from '@hedhog/user';
 @Module({
   imports: [
     AuthModule,
+    UserModule,
     PrismaModule,
     ConfigModule.forRoot(),
     // MailModule.init({
@@ -22,7 +23,6 @@ import { UserModule } from '@hedhog/user';
     //   refreshToken: process.env.REFRESH_TOKEN,
     //   mailConfigurationType: MailConfigurationTypeEnum.GMAIL,
     // }),
-    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -4,12 +4,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { UserModule } from '@hedhog/user';
 import { PrismaModule } from '@hedhog/prisma';
 
 @Module({
   imports: [
-    AuthModule,
     PrismaModule,
+    AuthModule,
+    UserModule,
     CacheModule.register(),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
   ],

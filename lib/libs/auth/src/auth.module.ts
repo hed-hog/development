@@ -1,23 +1,25 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { PrismaModule } from '@hedhog/prisma';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
-    JwtModule.registerAsync({
-      useFactory: () => {
-        return {
-          secret: String(process.env.JWT_SECRET),
-          global: true,
-          signOptions: { expiresIn: '30d' },
-        };
-      },
-    }),
-    PrismaModule,
+    forwardRef(() =>
+      JwtModule.registerAsync({
+        useFactory: () => {
+          return {
+            secret: String(process.env.JWT_SECRET),
+            global: true,
+            signOptions: { expiresIn: '30d' },
+          };
+        },
+      }),
+    ),
+    forwardRef(() => PrismaModule),
   ],
   controllers: [AuthController],
   providers: [

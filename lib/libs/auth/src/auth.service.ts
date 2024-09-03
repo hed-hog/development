@@ -1,5 +1,10 @@
 import { PrismaService } from '@hedhog/prisma';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { ForgetDTO } from './dto/forget.dto';
@@ -10,7 +15,9 @@ import { MultifactorType } from './enums/multifactor-type.enum';
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(forwardRef(() => PrismaService))
     private readonly prisma: PrismaService,
+    @Inject(forwardRef(() => JwtService))
     private readonly jwt: JwtService,
   ) {}
 

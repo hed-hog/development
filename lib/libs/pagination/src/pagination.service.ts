@@ -108,7 +108,7 @@ export class PaginationService {
         throw error;
       }
 
-      throw new BadRequestException(`Failed to paginate: ${error.message}`);
+      throw new BadRequestException(`Failed to paginate: ${error}`);
     }
   }
 
