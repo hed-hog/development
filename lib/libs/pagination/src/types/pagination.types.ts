@@ -3,7 +3,7 @@ import { PageOrderDirection } from '../enums/patination.enums';
 export type PaginatedResult<T> = {
   total: number;
   lastPage: number;
-  currentPage: number;
+  page: number;
   pageSize: number;
   prev: number | null;
   next: number | null;

@@ -414,6 +414,28 @@ export default function MyForm() {
   return (
     <>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        GridPanel
+      </h1>
+      <GridPanel
+        id={'grid-users'}
+        render={(item: any) => (
+          <div key={item.id} className='rounded border border-gray-300 p-4'>
+            <h3 className='text-lg font-semibold'>{item.name}</h3>
+            <p>{item.email}</p>
+          </div>
+        )}
+        url='/users'
+        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+        gap={6}
+        padding={4}
+        itemsPerPage={[10, 20, 30, 40]}
+      />
+    </>
+  )
+
+  return (
+    <>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
         FormPanel
       </h1>
       <Card className='mx-auto w-[620px]'>
@@ -458,8 +480,9 @@ export default function MyForm() {
       <Card className='mx-auto w-[800px]'>
         <CardContent>
           <TablePanel
+            id='table-users'
             columns={tablePanelColumns}
-            endpoint='https://jsonplaceholder.typicode.com/photos'
+            url='/users'
             sortable
             caption='Lista de Usuários'
             onRowClick={handleRowClick}
@@ -524,27 +547,12 @@ export default function MyForm() {
         TreeView
       </h1>
       <TreeView data={treeData} />
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        GridPanel
-      </h1>
-      <GridPanel
-        render={(item: any) => (
-          <div key={item.id} className='rounded border border-gray-300 p-4'>
-            <h3 className='text-lg font-semibold'>{item.name}</h3>
-            <p>{item.email}</p>
-          </div>
-        )}
-        endpoint='http://localhost:5000/users'
-        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-        gap={6}
-        padding={4}
-        itemsPerPage={[10, 20, 30, 40]}
-      />
+
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
         PickerPanel (grid mode)
       </h1>
       <PickerPanel
-        endpoint='http://localhost:5000/users'
+        url='/users'
         type='grid'
         responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
         gap={6}
@@ -562,7 +570,7 @@ export default function MyForm() {
         PickerPanel (table mode)
       </h1>
       <PickerPanel
-        endpoint='https://jsonplaceholder.typicode.com/photos'
+        url='/users'
         type='table'
         columns={[
           { key: 'name', header: 'Name' },

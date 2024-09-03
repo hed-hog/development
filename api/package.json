@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@hedhog/auth": "^0.0.8",
-    "@hedhog/pagination": "^0.0.2",
+    "@hedhog/pagination": "^0.0.6",
     "@hedhog/prisma": "^0.0.2",
     "@hedhog/user": "^0.0.7",
     "@nestjs/cache-manager": "^2.2.2",

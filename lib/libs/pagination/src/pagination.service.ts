@@ -105,7 +105,7 @@ export class PaginationService {
       return {
         total,
         lastPage,
-        currentPage: page,
+        page,
         pageSize,
         prev: page > 1 ? page - 1 : null,
         next: page < lastPage ? page + 1 : null,

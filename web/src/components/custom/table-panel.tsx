@@ -7,7 +7,7 @@ import {
   PaginationNext,
 } from '@/components/ui/pagination'
 import { usePagination } from '@/hooks/use-pagination'
-import { useFetch } from '@/hooks/use-fetch'
+import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import TableView from './table-view'
 import {
   Select,
@@ -19,11 +19,12 @@ import {
 } from '@/components/ui/select'
 
 interface ITablePanelProps {
+  id: string
   columns: Array<{
     key: string
     header: string
   }>
-  endpoint: string
+  url: string
   sortable?: boolean
   onRowClick?: (row: Record<string, any>) => void
   rowActions?: Array<{
@@ -40,8 +41,9 @@ interface ITablePanelProps {
 }
 
 const TablePanel = ({
+  id,
   columns,
-  endpoint,
+  url,
   sortable = false,
   onRowClick,
   rowActions = [],
@@ -53,27 +55,27 @@ const TablePanel = ({
   const totalItems = 5000 // Esse valor virá da API
 
   const {
-    currentPage,
-    itemsPerPage,
+    page,
+    pageSize,
     totalPages,
     handlePageChange,
-    handleItemsPerPageChange,
+    handlePageSizeChange,
     renderPaginationButtons,
   } = usePagination(totalItems)
 
-  const { data, isLoading, refetch } = useFetch(
-    endpoint,
-    currentPage,
-    itemsPerPage,
-    'table-panel'
-  )
+  const { data, isLoading, refetch } = usePaginationFetch({
+    url,
+    page,
+    pageSize,
+    queryKey: id,
+  })
 
   const [filterSelected, setFilterSelected] = useState<boolean>(false)
 
   useEffect(() => {
     if (setIsAllSelected) setIsAllSelected(false)
     refetch()
-  }, [currentPage, refetch])
+  }, [page, refetch])
 
   if (isLoading) {
     return (
@@ -107,11 +109,11 @@ const TablePanel = ({
       />
       <div className='mt-4 flex w-full items-center justify-between'>
         <Select
-          value={itemsPerPage.toString()}
-          onValueChange={handleItemsPerPageChange}
+          value={pageSize.toString()}
+          onValueChange={handlePageSizeChange}
         >
           <SelectTrigger className='w-80'>
-            <SelectValue placeholder={`Itens por página: ${itemsPerPage}`} />
+            <SelectValue placeholder={`Itens por página: ${pageSize}`} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -130,7 +132,7 @@ const TablePanel = ({
               <PaginationPrevious
                 onClick={(e) => {
                   e.preventDefault()
-                  handlePageChange(Math.max(currentPage - 1, 1))
+                  handlePageChange(Math.max(page - 1, 1))
                 }}
               />
             </PaginationItem>
@@ -139,7 +141,7 @@ const TablePanel = ({
               <PaginationNext
                 onClick={(e) => {
                   e.preventDefault()
-                  handlePageChange(Math.min(currentPage + 1, totalPages))
+                  handlePageChange(Math.min(page + 1, totalPages))
                 }}
               />
             </PaginationItem>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { IResponsiveColumn } from '@/types/responsive-columns'
-import { Search } from '../search-field'
 
 interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
   responsiveColumns?: IResponsiveColumn
@@ -30,10 +29,8 @@ const GridView = ({
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
-  const [searchTerm, setSearchTerm] = useState<string>('')
-  const [filteredData, setFilteredData] = useState<any[]>(data)
 
-  const gridItems = (filteredData ?? []).map(render)
+  const gridItems = (data ?? []).map(render)
 
   // Atualiza o número de colunas com base no tamanho da tela
   const updateColumnsBasedOnScreenSize = () => {
@@ -51,17 +48,6 @@ const GridView = ({
   }
 
   // Função para filtrar os dados com base no termo de pesquisa
-  const filterData = () => {
-    const lowercasedSearchTerm = searchTerm.toLowerCase()
-    const filtered = data.filter((item) => {
-      if (item) {
-        return Object.values(item).some((value) =>
-          String(value).toString().toLowerCase().includes(lowercasedSearchTerm)
-        )
-      }
-    })
-    setFilteredData(filtered)
-  }
 
   useEffect(() => {
     updateColumnsBasedOnScreenSize()
@@ -71,20 +57,8 @@ const GridView = ({
     }
   }, [responsiveColumns])
 
-  useEffect(() => {
-    filterData()
-  }, [searchTerm, data])
-
   return (
     <div {...props} className={`p-${padding}`}>
-      <div className='my-4'>
-        <Search
-          placeholder='Buscar...'
-          value={searchTerm}
-          onSearch={setSearchTerm}
-        />
-      </div>
-
       <div
         style={{
           display: 'grid',

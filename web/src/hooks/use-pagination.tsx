@@ -1,52 +1,47 @@
-import { PaginationItem, PaginationLink } from '@/components/ui/pagination'
-import { useEffect, useMemo, useState } from 'react'
+import {
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+} from '@/components/ui/pagination'
+import { useEffect, useState } from 'react'
 
-interface IPaginationHook {
-  currentPage: number
-  itemsPerPage: number
-  startIndex: number
-  endIndex: number
-  totalPages: number
-  handlePageChange: (page: number) => void
-  handleItemsPerPageChange: (value: string) => void
-  renderPaginationButtons: (totalPages: number) => JSX.Element[]
+type PaginationProps = {
+  page: number
+  pageSize: number
+  total: number
 }
 
-export const usePagination = (totalItems: number): IPaginationHook => {
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10)
+type IPaginationHook = {
+  totalPages: number
+  handlePageChange: (page: number) => void
+  handlePageSizeChange: (value: string) => void
+  renderPaginationButtons: (totalPages: number) => JSX.Element[]
+} & PaginationProps
 
-  const startIndex = useMemo(
-    () => (currentPage - 1) * itemsPerPage,
-    [currentPage, itemsPerPage]
-  )
-  const endIndex = useMemo(
-    () => startIndex + itemsPerPage,
-    [startIndex, itemsPerPage]
-  )
+export const usePagination = (props: PaginationProps): IPaginationHook => {
+  const [page, setPage] = useState<number>(props.page)
+  const [pageSize, setPageSize] = useState<number>(props.pageSize)
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
+    setPage(page)
   }
 
-  const handleItemsPerPageChange = (value: string) => {
-    setItemsPerPage(Number(value))
-    setCurrentPage(1) // Reset page to 1 when items per page changes
+  const handlePageSizeChange = (value: string) => {
+    setPageSize(Number(value))
+    setPage(1) // Reset page to 1 when items per page changes
   }
 
-  const [totalPages, setTotalPages] = useState<number>(
-    totalItems / itemsPerPage
-  )
+  const [totalPages, setTotalPages] = useState<number>(props.total / pageSize)
 
   useEffect(() => {
-    setTotalPages(Math.ceil(totalItems / itemsPerPage))
-  }, [itemsPerPage, totalItems])
+    setTotalPages(Math.ceil(props.total / pageSize))
+  }, [pageSize, props.total])
 
-  const MAX_BUTTONS = 10
+  const MAX_BUTTONS = 3
 
   const renderPaginationButtons = () => {
     const buttons = []
-    let startPage = Math.max(currentPage - Math.floor(MAX_BUTTONS / 2), 1)
+    let startPage = Math.max(page - Math.floor(MAX_BUTTONS / 2), 1)
     let endPage = Math.min(startPage + MAX_BUTTONS - 1, totalPages)
 
     if (endPage - startPage < MAX_BUTTONS - 1) {
@@ -61,10 +56,18 @@ export const usePagination = (totalItems: number): IPaginationHook => {
               e.preventDefault()
               handlePageChange(i)
             }}
-            isActive={currentPage === i}
+            isActive={page === i}
           >
             {i}
           </PaginationLink>
+        </PaginationItem>
+      )
+    }
+
+    if (endPage < totalPages) {
+      buttons.push(
+        <PaginationItem key='next'>
+          <PaginationEllipsis />
         </PaginationItem>
       )
     }
@@ -73,13 +76,10 @@ export const usePagination = (totalItems: number): IPaginationHook => {
   }
 
   return {
-    currentPage,
-    itemsPerPage,
-    startIndex,
-    endIndex,
+    ...props,
     totalPages,
     handlePageChange,
-    handleItemsPerPageChange,
+    handlePageSizeChange,
     renderPaginationButtons,
   }
 }

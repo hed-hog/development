@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { Search } from '@/components/search-field'
+import { SearchField } from '@/components/search-field'
 import ThemeSwitch from '@/components/theme-switch'
 import { UserNav } from '@/components/user-nav'
 
@@ -28,7 +28,7 @@ export default function Page() {
       {/* ===== Top Heading ===== */}
       <Layout.Header>
         <div className='flex w-full items-center justify-between'>
-          <Search />
+          <SearchField />
           <div className='flex items-center space-x-4'>
             <ThemeSwitch />
             <UserNav />

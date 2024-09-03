@@ -11,7 +11,7 @@ interface IProps {
   onSearch?: (value: string) => void
 }
 
-export function Search({
+export function SearchField({
   value = '',
   placeholder = 'Buscar...',
   icon,

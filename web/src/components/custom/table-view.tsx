@@ -8,7 +8,7 @@ import {
   TableCell,
   TableCaption,
 } from '@/components/ui/table'
-import { Search } from '@/components/search-field'
+import { SearchField } from '@/components/search-field'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Checkbox } from '../ui/checkbox'
 
@@ -80,7 +80,7 @@ const TableView = ({
       {/* Campo de Busca */}
       {searchable && (
         <div className='relative my-4'>
-          <Search
+          <SearchField
             placeholder='Buscar...'
             value={searchTerm}
             onSearch={setSearchTerm}

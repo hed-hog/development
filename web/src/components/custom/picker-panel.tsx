@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/card'
 
 interface IPickerPanelProps {
-  endpoint: string
+  url: string
   type: 'grid' | 'table'
   responsiveColumns?: IResponsiveColumn
   render?: (item: any) => JSX.Element // Função de renderização personalizada
@@ -39,7 +39,7 @@ export default function PickerPanel({
     lg: 4,
     xl: 5,
   },
-  endpoint,
+  url,
   type,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
   title = 'Picker Panel',
@@ -51,6 +51,7 @@ export default function PickerPanel({
   sortable,
   render,
 }: IPickerPanelProps) {
+  const id = `${url}-picker-panel`
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [isAllSelected, setIsAllSelected] = useState(false)
   const [filteredData, setFilteredData] = useState<any[]>([])
@@ -135,8 +136,9 @@ export default function PickerPanel({
         </CardHeader>
         {type === 'table' && columns && Boolean(columns?.length) ? (
           <TablePanel
+            id={id}
             columns={columns}
-            endpoint={endpoint}
+            url={url}
             caption={caption}
             sortable={sortable}
             itemsPerPage={[10, 20, 30, 40]} // Opções de itens por página
@@ -147,9 +149,10 @@ export default function PickerPanel({
           />
         ) : (
           <GridPanel
+            id={id}
             itemsPerPage={itemsPerPageOptions}
             gap={gap}
-            endpoint={endpoint}
+            url={url}
             render={renderWithCheckbox}
             padding={padding}
             responsiveColumns={responsiveColumns}
