@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   db:
     image: postgres
@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: hadsys
+      POSTGRES_DB: hedhog
     volumes:
       - ./data:/var/lib/postgresql/data
     ports:
