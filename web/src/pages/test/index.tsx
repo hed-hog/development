@@ -206,10 +206,12 @@ export default function MyForm() {
 
   const rowActions = [
     {
+      isCheckbox: false,
       label: () => <IconEdit color='orange' />,
       onClick: (row: Record<string, any>) => console.log('Editar', row),
     },
     {
+      isCheckbox: false,
       label: () => <IconTrash color='#c4212e' />,
       onClick: (row: Record<string, any>) => console.log('Excluir', row),
     },

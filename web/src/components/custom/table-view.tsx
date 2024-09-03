@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table'
 import { Search } from '@/components/search-field'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Checkbox } from '../ui/checkbox'
 
 interface ITableViewProps {
   columns: Array<{
@@ -24,6 +25,9 @@ interface ITableViewProps {
   rowActions?: Array<{
     label: (row: Record<string, any>) => string | JSX.Element
     onClick: (row: Record<string, any>) => void
+    isCheckbox?: boolean
+    isAllSelected?: boolean
+    handleSelectAll?: (data: any[]) => void
   }>
   caption?: string
 }
@@ -88,6 +92,18 @@ const TableView = ({
         {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
         <TableHeader>
           <TableRow>
+            {rowActions
+              .filter((action) => action.isCheckbox)
+              .map((action, actionIndex) => (
+                <TableHead key={actionIndex} className='p-0'>
+                  <Checkbox
+                    checked={action.isAllSelected}
+                    onCheckedChange={() => {
+                      if (action.handleSelectAll) action.handleSelectAll(data)
+                    }}
+                  />
+                </TableHead>
+              ))}
             {columns.map((col) => (
               <TableHead
                 key={col.key}
@@ -123,23 +139,44 @@ const TableView = ({
                   key={rowIndex}
                   onClick={() => onRowClick && onRowClick(row)}
                 >
+                  {rowActions.filter((action) => action.isCheckbox).length >
+                    0 && (
+                    <TableCell style={{ padding: '0.5rem 0' }}>
+                      {rowActions
+                        .filter((action) => action.isCheckbox)
+                        .map((action, actionIndex) => (
+                          <button
+                            key={actionIndex}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              action.onClick(row)
+                            }}
+                            className='btn-action'
+                          >
+                            {action.label(row)}
+                          </button>
+                        ))}
+                    </TableCell>
+                  )}
                   {columns.map((col) => (
                     <TableCell key={col.key}>{row[col.key]}</TableCell>
                   ))}
                   {rowActions.length > 0 && (
                     <TableCell style={{ padding: '0.5rem 0' }}>
-                      {rowActions.map((action, actionIndex) => (
-                        <button
-                          key={actionIndex}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            action.onClick(row)
-                          }}
-                          className='btn-action'
-                        >
-                          {action.label(row)}
-                        </button>
-                      ))}
+                      {rowActions
+                        .filter((action) => !action.isCheckbox)
+                        .map((action, actionIndex) => (
+                          <button
+                            key={actionIndex}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              action.onClick(row)
+                            }}
+                            className='btn-action'
+                          >
+                            {action.label(row)}
+                          </button>
+                        ))}
                     </TableCell>
                   )}
                 </TableRow>

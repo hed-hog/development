@@ -52,6 +52,7 @@ export default function PickerPanel({
   render,
 }: IPickerPanelProps) {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
+  const [isAllSelected, setIsAllSelected] = useState(false)
 
   const handleCheckboxChange = (id: number) => {
     setSelectedIds((prevSelectedIds) =>
@@ -59,6 +60,16 @@ export default function PickerPanel({
         ? prevSelectedIds.filter((selectedId) => selectedId !== id)
         : [...prevSelectedIds, id]
     )
+  }
+
+  const handleSelectAll = (data: any[]) => {
+    if (isAllSelected) {
+      setSelectedIds([])
+    } else {
+      const allIds = data.map((item) => item.id)
+      setSelectedIds(allIds)
+    }
+    setIsAllSelected(!isAllSelected)
   }
 
   const renderWithCheckbox = (item: any) => {
@@ -82,6 +93,9 @@ export default function PickerPanel({
     {
       label: (row: any) => <Checkbox checked={selectedIds.includes(row.id)} />,
       onClick: (row: any) => handleCheckboxChange(row.id),
+      isCheckbox: true,
+      isAllSelected: isAllSelected,
+      handleSelectAll: handleSelectAll,
     },
   ]
 

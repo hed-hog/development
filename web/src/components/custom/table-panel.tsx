@@ -29,6 +29,9 @@ interface ITablePanelProps {
   rowActions?: Array<{
     label: (row: Record<string, any>) => string | JSX.Element
     onClick: (row: Record<string, any>) => void
+    isCheckbox?: boolean
+    isAllSelected?: boolean
+    handleSelectAll?: (data: any[]) => void
   }>
   caption?: string
   itemsPerPage?: number[]
@@ -89,7 +92,12 @@ const TablePanel = ({
         sortable={sortable}
         caption={caption}
         onRowClick={onRowClick}
-        rowActions={rowActions}
+        rowActions={rowActions.map((action) => ({
+          ...action,
+          handleSelectAll: action.handleSelectAll
+            ? () => (action.handleSelectAll as any)(data)
+            : undefined,
+        }))}
         isLoading={isLoading}
       />
       <div className='mt-4 flex w-full items-center justify-between'>
