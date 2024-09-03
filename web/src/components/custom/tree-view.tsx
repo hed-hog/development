@@ -1,5 +1,5 @@
 import { useClickOutside } from '@/hooks/use-click-outside'
-import { IconCaretDownFilled } from '@tabler/icons-react'
+import { IconCaretDownFilled, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
@@ -122,11 +122,31 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
     const updatedData = moveNode(sampleData, sourceId, destinationId)
     setSampleData(updatedData)
   }
-
   const handleContextMenu = (e: React.MouseEvent, node: TreeNode) => {
     e.preventDefault()
+    e.stopPropagation()
+
+    let el = e.target as HTMLElement
+    let x = 0
+    let y = 0
+
+    if (el) {
+      el = el.closest('div') as HTMLElement
+
+      if (el) {
+        x = el.offsetLeft + 50
+        y = el.offsetTop + el.clientHeight
+      } else {
+        x = e.clientX
+        y = e.clientY
+      }
+    } else {
+      x = e.clientX
+      y = e.clientY
+    }
+
     setSelectedNode(node)
-    setContextMenu({ x: e.clientX, y: e.clientY })
+    setContextMenu({ x, y })
   }
 
   const handleMenuAction = (action: 'add' | 'remove') => {
@@ -257,7 +277,7 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
           style={{
             cursor: 'pointer',
             position: 'absolute',
-            top: `${contextMenu.y - 900}px`,
+            top: `${contextMenu.y}px`,
             left: `${contextMenu.x}px`,
             border: '1px solid #ddd',
             borderRadius: 4,
@@ -265,8 +285,20 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
             backgroundColor: '#020817',
           }}
         >
-          <div onClick={() => handleMenuAction('add')}>Add</div>
-          <div onClick={() => handleMenuAction('remove')}>Remove</div>
+          <div
+            className='relative flex w-32 cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+            onClick={() => handleMenuAction('add')}
+          >
+            <span>Add</span>
+            <IconPlus className='ml-auto w-[20px] text-muted-foreground' />
+          </div>
+          <div
+            className='relative flex w-32 cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+            onClick={() => handleMenuAction('remove')}
+          >
+            <span>Remove</span>
+            <IconTrash className='ml-auto w-[20px] text-muted-foreground' />
+          </div>
         </div>
       )}
     </DragDropContext>

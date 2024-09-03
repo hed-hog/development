@@ -3,11 +3,15 @@ import FormPanel from '@/components/custom/form-panel'
 import { Card, CardContent } from '@/components/ui/card'
 import TableView from '@/components/custom/table-view'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
-import PropertyTableView from '@/components/custom/property-table-view'
-import ListView from '@/components/custom/list-view'
+import EditableTableView from '@/components/custom/editable-table-view'
+import DraggableListView from '@/components/custom/draggable-list-view'
 import TreeView from '@/components/custom/tree-view'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 import GridView from '@/components/custom/grid-view'
+import GridPanel from '@/components/custom/grid-panel'
+import TablePanel from '@/components/custom/table-panel'
+import { EnumFieldType } from '@/components/custom/field'
+import PickerPanel from '@/components/custom/picker-panel'
 
 export default function MyForm() {
   // form
@@ -33,10 +37,7 @@ export default function MyForm() {
         text: 'Username',
         style: { fontWeight: 'bold' },
       },
-      // input: {
-      //   style: { borderRadius: 25, borderColor: 'white' },
-      // },
-      type: 'text',
+      type: EnumFieldType.TEXT,
       required: true,
       description: {
         text: 'This is your public display name.',
@@ -50,7 +51,7 @@ export default function MyForm() {
         text: 'Email',
         style: { fontWeight: 'bold' },
       },
-      type: 'text',
+      type: EnumFieldType.TEXT,
       required: true,
     },
     {
@@ -59,15 +60,7 @@ export default function MyForm() {
         text: 'Birthdate',
         style: { fontWeight: 'bold' },
       },
-      // calendar: {
-      //   style: { color: 'white' },
-      // },
-      // input: {
-      //   style: {
-      //     color: 'white',
-      //   },
-      // },
-      type: 'datepicker',
+      type: EnumFieldType.DATEPICKER,
       required: true,
     },
     {
@@ -76,13 +69,7 @@ export default function MyForm() {
         text: 'Country',
         style: { fontWeight: 'bold', color: 'white' },
       },
-      // input: {
-      //   style: { color: 'yellow' },
-      // },
-      // option: {
-      //   style: { color: 'red' },
-      // },
-      type: 'select',
+      type: EnumFieldType.SELECT,
       required: true,
       options: countryOptionExample,
     },
@@ -92,7 +79,8 @@ export default function MyForm() {
         text: 'Color',
         style: { fontWeight: 'bold' },
       },
-      type: 'color',
+      type: EnumFieldType.COLOR,
+      required: true,
     },
     {
       name: 'description',
@@ -100,7 +88,8 @@ export default function MyForm() {
         text: 'Description',
         style: { fontWeight: 'bold' },
       },
-      type: 'richtext',
+      type: EnumFieldType.RICHTEXT,
+      required: false,
     },
     {
       name: 'city',
@@ -108,23 +97,7 @@ export default function MyForm() {
         text: 'City',
         style: { fontWeight: 'bold' },
       },
-      // badge: {
-      //   className: 'bg-red-500',
-      // },
-      // input: {
-      //   style: { backgroundColor: '#fff' },
-      // },
-      // actionButtons: {
-      //   style: {
-      //     backgroundColor: 'green',
-      //   },
-      // },
-      // items: {
-      //   style: {
-      //     backgroundColor: 'black',
-      //   },
-      // },
-      type: 'multiselect',
+      type: EnumFieldType.MULTISELECT,
       required: true,
       options: cityOptionExample,
     },
@@ -134,7 +107,8 @@ export default function MyForm() {
         text: 'Cities',
         style: { fontWeight: 'bold' },
       },
-      type: 'pickersheet',
+      type: EnumFieldType.SHEETPICKER,
+      required: false,
       options: cityOptionExample,
     },
     {
@@ -143,7 +117,8 @@ export default function MyForm() {
         text: 'Arquivos',
         style: { fontWeight: 'bold' },
       },
-      type: 'file',
+      type: EnumFieldType.FILE,
+      required: false,
     },
     {
       name: 'cidades',
@@ -151,38 +126,20 @@ export default function MyForm() {
         text: 'Cidades',
         style: { fontWeight: 'bold', color: 'white' },
       },
-      type: 'radio',
-      // input: {
-      //   style: {
-      //     backgroundColor: 'red',
-      //   },
-      // },
+      type: EnumFieldType.RADIO,
       options: cityOptionExample,
+      required: false,
     },
     {
       name: 'terms',
-      type: 'checkbox',
+      type: EnumFieldType.CHECKBOX,
       options: [
         {
           value: 'terms',
           label: 'Aceite os termos de uso.',
         },
       ],
-      // input: {
-      //   style: {
-      //     backgroundColor: 'green',
-      //   },
-      // },
-      // container: {
-      //   style: {
-      //     backgroundColor: 'white',
-      //   },
-      // },
-      // label: {
-      //   style: {
-      //     color: 'red',
-      //   },
-      // },
+      required: false,
     },
     {
       name: 'percentage',
@@ -190,10 +147,8 @@ export default function MyForm() {
         text: 'Milhar',
         style: { fontWeight: 'bold' },
       },
-      // input: {
-      //   className: 'bg-red-500',
-      // },
-      type: 'range',
+      type: EnumFieldType.RANGE,
+      required: false,
       sliderOptions: {
         defaultValue: [500],
         max: 1000,
@@ -205,10 +160,8 @@ export default function MyForm() {
       label: {
         text: 'Sua Senha',
       },
-      type: 'password',
-      // input: {
-      //   style: { color: 'yellow' },
-      // },
+      type: EnumFieldType.PASSWORD,
+      required: true,
     },
   ]
 
@@ -221,7 +174,7 @@ export default function MyForm() {
 
   const form = useForm<FieldValues>({ defaultValues })
 
-  // table
+  // table-view
   const columns = [
     { key: 'name', header: 'Nome' },
     { key: 'email', header: 'Email' },
@@ -241,17 +194,25 @@ export default function MyForm() {
     { name: 'Maria', email: 'maria@example.com', role: 'User' },
   ]
 
+  // table-panel
+  const tablePanelColumns = [
+    { key: 'id', header: 'ID' },
+    { key: 'title', header: 'Título' },
+  ]
+
   const handleRowClick = (row: Record<string, any>) => {
     console.log('Linha clicada:', row)
   }
 
   const rowActions = [
     {
-      label: <IconEdit color='orange' />,
+      isCheckbox: false,
+      label: () => <IconEdit color='orange' />,
       onClick: (row: Record<string, any>) => console.log('Editar', row),
     },
     {
-      label: <IconTrash color='#c4212e' />,
+      isCheckbox: false,
+      label: () => <IconTrash color='#c4212e' />,
       onClick: (row: Record<string, any>) => console.log('Excluir', row),
     },
   ]
@@ -296,16 +257,16 @@ export default function MyForm() {
     },
   ]
 
-  const propertyTableViewColumns = [
+  const editableTableViewColumns = [
     {
       header: 'Nome',
       key: 'name',
-      type: 'text',
+      type: EnumFieldType.TEXT,
     },
     {
       header: 'Cargo',
       key: 'role',
-      type: 'select',
+      type: EnumFieldType.SELECT,
       options: [
         { label: 'User', value: 'user' },
         { label: 'Admin', value: 'admin' },
@@ -314,19 +275,102 @@ export default function MyForm() {
     {
       header: 'Ativo',
       key: 'isActive',
-      type: 'checkbox',
+      options: [
+        {
+          value: 'confirms',
+          label: 'Confirmar?',
+        },
+      ],
+      type: EnumFieldType.CHECKBOX,
     },
     {
       header: 'Cor Favorita',
       key: 'color',
-      type: 'color',
+      type: EnumFieldType.COLOR,
     },
-    { header: 'Descrição', key: 'description', type: 'text' },
-    { header: 'Arquivo', key: 'file', type: 'file' },
+    { header: 'Descrição', key: 'description', type: EnumFieldType.TEXT },
+    { header: 'Arquivo', key: 'file', type: EnumFieldType.FILE },
     {
       header: 'Date',
       key: 'date',
-      type: 'datepicker',
+      type: EnumFieldType.DATEPICKER,
+    },
+  ]
+
+  const propertyTableColumns = [
+    { key: 'name', header: 'Nome', type: EnumFieldType.TEXT },
+    {
+      key: 'category',
+      header: 'Categoria',
+      type: EnumFieldType.SELECT,
+      options: [
+        { label: 'Option 1', value: 'option1' },
+        { label: 'Option 2', value: 'option2' },
+      ],
+    },
+  ]
+
+  const propertyTableData = [
+    {
+      name: 'Item 1',
+      category: 'option1',
+    },
+    {
+      name: 'Item 2',
+      category: 'option2',
+    },
+  ]
+
+  const gridViewData = [
+    {
+      id: 1,
+      title: 'A New Era of Technology',
+      body: 'In this article, we explore the latest advancements in technology and their implications for the future. The pace of innovation is faster than ever, bringing new opportunities and challenges.',
+    },
+    {
+      id: 2,
+      title: 'The Benefits of a Healthy Lifestyle',
+      body: 'Adopting a healthy lifestyle can lead to improved physical and mental well-being. This article covers various tips on maintaining a balanced diet, regular exercise, and mental health practices.',
+    },
+    {
+      id: 3,
+      title: 'Understanding Quantum Computing',
+      body: 'Quantum computing represents a major leap forward in computational power. We delve into the principles of quantum mechanics and how they are applied to create powerful new types of computers.',
+    },
+    {
+      id: 4,
+      title: 'Exploring the Cosmos',
+      body: "The cosmos has fascinated humanity for centuries. This piece discusses the latest discoveries in space exploration and the ongoing quest to understand the universe's mysteries.",
+    },
+    {
+      id: 5,
+      title: 'The Evolution of Social Media',
+      body: 'Social media has transformed the way we communicate and interact. This article examines its evolution over the years and its impact on society and culture.',
+    },
+    {
+      id: 6,
+      title: 'The Rise of Remote Work',
+      body: 'Remote work has become increasingly popular, offering flexibility and new ways of working. We discuss the benefits and challenges of working from home and how to stay productive.',
+    },
+    {
+      id: 7,
+      title: 'Sustainable Living Practices',
+      body: 'Sustainable living is crucial for the health of our planet. This article provides practical advice on reducing your carbon footprint, conserving resources, and adopting eco-friendly habits.',
+    },
+    {
+      id: 8,
+      title: 'The Power of Artificial Intelligence',
+      body: 'Artificial intelligence is revolutionizing various industries. We explore its applications, potential benefits, and ethical considerations as AI continues to advance.',
+    },
+    {
+      id: 9,
+      title: 'Innovations in Healthcare',
+      body: 'Healthcare is rapidly evolving with new technologies and treatments. This article highlights recent innovations and their potential to improve patient outcomes and healthcare delivery.',
+    },
+    {
+      id: 10,
+      title: 'The Art of Mindfulness',
+      body: 'Mindfulness is a practice that helps individuals stay present and reduce stress. We delve into techniques for incorporating mindfulness into daily life and its benefits for mental health.',
     },
   ]
 
@@ -334,22 +378,14 @@ export default function MyForm() {
     console.log('Dados atualizados:', updatedData)
   }
 
-  // ListView
-  const listViewItems = [
+  // DraggableListView
+  const draggableListViewItems = [
     { id: '1', label: 'Item 1' },
     { id: '2', label: 'Item 2' },
     { id: '3', label: 'Item 3' },
     { id: '4', label: 'Item 4' },
     { id: '5', label: 'Item 5' },
   ]
-
-  // grid
-  const gridItems = Array.from({ length: 50 }, (_, index) => (
-    <div key={index} className='rounded border border-gray-300 p-4'>
-      <h3 className='text-lg font-semibold'>Item {index + 1}</h3>
-      <p>Descrição do item {index + 1}</p>
-    </div>
-  ))
 
   // treeView
   const treeData = [
@@ -410,25 +446,49 @@ export default function MyForm() {
             columns={columns}
             data={data}
             sortable
-            pagination
             caption='Lista de Usuários'
             onRowClick={handleRowClick}
             rowActions={rowActions}
-            itemsPerPage={4}
           />
         </CardContent>
       </Card>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        PropertyTableView
+        TablePanel
+      </h1>
+      <Card className='mx-auto w-[800px]'>
+        <CardContent>
+          <TablePanel
+            columns={tablePanelColumns}
+            endpoint='https://jsonplaceholder.typicode.com/photos'
+            sortable
+            caption='Lista de Usuários'
+            onRowClick={handleRowClick}
+            rowActions={rowActions}
+          />
+        </CardContent>
+      </Card>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        EditableTableView (property version)
       </h1>
       <Card className='mx-auto w-[900px]'>
         <CardContent>
-          <PropertyTableView
-            data={initialData}
-            columns={propertyTableViewColumns}
+          <EditableTableView
+            isPropertyTable
+            data={propertyTableData}
+            columns={propertyTableColumns}
             onSaveChanges={handleSaveChanges}
-            pagination
-            itemsPerPage={2}
+          />
+        </CardContent>
+      </Card>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        EditableTableView (full version)
+      </h1>
+      <Card className='mx-auto w-[900px]'>
+        <CardContent>
+          <EditableTableView
+            data={initialData}
+            columns={editableTableViewColumns}
+            onSaveChanges={handleSaveChanges}
           />
         </CardContent>
       </Card>
@@ -444,20 +504,72 @@ export default function MyForm() {
             lg: 4,
             xl: 5,
           }}
-          data={gridItems}
+          data={gridViewData}
+          render={(item: any, index: number) => (
+            <div key={index} className='rounded border border-gray-300 p-4'>
+              <h3 className='text-lg font-semibold'>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          )}
           gap={6}
           padding={4}
           itemsPerPage={[10, 20, 30, 40]}
         />
       </div>
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        ListView
+        DraggableListView
       </h1>
-      <ListView data={listViewItems} />
+      <DraggableListView data={draggableListViewItems} />
       <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
         TreeView
       </h1>
       <TreeView data={treeData} />
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        GridPanel
+      </h1>
+      <GridPanel
+        render={(item: any) => (
+          <div key={item.id} className='rounded border border-gray-300 p-4'>
+            <h3 className='text-lg font-semibold'>{item.title}</h3>
+            <p>{item.body}</p>
+          </div>
+        )}
+        endpoint='https://jsonplaceholder.typicode.com/posts'
+        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+        gap={6}
+        padding={4}
+        itemsPerPage={[10, 20, 30, 40]}
+      />
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        PickerPanel (grid mode)
+      </h1>
+      <PickerPanel
+        endpoint='https://jsonplaceholder.typicode.com/posts'
+        type='grid'
+        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+        gap={6}
+        padding={4}
+        itemsPerPage={[10, 20, 30, 40]}
+        render={(item: any) => (
+          <div key={item.id}>
+            <h3 className='text-lg font-semibold'>{item.title}</h3>
+            <p>{item.body.slice(0, 50)}</p>
+          </div>
+        )}
+      />
+
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        PickerPanel (table mode)
+      </h1>
+      <PickerPanel
+        endpoint='https://jsonplaceholder.typicode.com/photos'
+        type='table'
+        columns={[
+          { key: 'id', header: 'ID' },
+          { key: 'title', header: 'Title' },
+        ]}
+        sortable
+      />
     </>
   )
 }

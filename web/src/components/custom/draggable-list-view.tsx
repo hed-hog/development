@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -17,17 +17,17 @@ import { Card, CardContent } from '@/components/ui/card'
 import { GripVertical } from 'lucide-react'
 
 // Definição das interfaces
-interface ListItem {
+interface DraggableListItem {
   id: string
   label: string
 }
 
-interface ListViewProps {
-  data: Array<ListItem>
+interface DraggableListViewProps {
+  data: Array<DraggableListItem>
 }
 
-const ListView: React.FC<ListViewProps> = ({ data }) => {
-  const [items, setItems] = useState<ListItem[]>(data)
+const DraggableListView: React.FC<DraggableListViewProps> = ({ data }) => {
+  const [items, setItems] = useState<DraggableListItem[]>(data)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -54,10 +54,6 @@ const ListView: React.FC<ListViewProps> = ({ data }) => {
     }
   }
 
-  useEffect(() => {
-    console.log({ items })
-  }, [items])
-
   return (
     <Card className='w-full'>
       <CardContent>
@@ -82,4 +78,4 @@ const ListView: React.FC<ListViewProps> = ({ data }) => {
   )
 }
 
-export default ListView
+export default DraggableListView

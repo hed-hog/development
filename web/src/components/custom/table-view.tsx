@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState } from 'react'
 import {
   Table,
   TableHeader,
@@ -8,15 +8,9 @@ import {
   TableCell,
   TableCaption,
 } from '@/components/ui/table'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-} from '@/components/ui/pagination'
-import { Search } from '@/components/search'
+import { Search } from '@/components/search-field'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Checkbox } from '../ui/checkbox'
 
 interface ITableViewProps {
   columns: Array<{
@@ -26,14 +20,16 @@ interface ITableViewProps {
   data: Array<Record<string, any>>
   sortable?: boolean
   searchable?: boolean
-  pagination?: boolean
+  isLoading?: boolean
   onRowClick?: (row: Record<string, any>) => void
   rowActions?: Array<{
-    label: string | JSX.Element
+    label: (row: Record<string, any>) => string | JSX.Element
     onClick: (row: Record<string, any>) => void
+    isCheckbox?: boolean
+    isAllSelected?: boolean
+    handleSelectAll?: (data: any[]) => void
   }>
   caption?: string
-  itemsPerPage?: number
 }
 
 const TableView = ({
@@ -41,15 +37,13 @@ const TableView = ({
   data,
   sortable = false,
   searchable = true,
-  pagination = false,
+  isLoading = false,
   onRowClick,
   rowActions = [],
   caption,
-  itemsPerPage = 10,
 }: ITableViewProps) => {
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
-  const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSort = (columnKey: string) => {
@@ -61,7 +55,7 @@ const TableView = ({
     }
   }
 
-  // Filter data based on search term
+  // Filtrar dados com base no termo de busca
   const filteredData = React.useMemo(() => {
     if (!searchTerm) return data
     return data.filter((row) =>
@@ -71,7 +65,7 @@ const TableView = ({
     )
   }, [data, searchTerm, columns])
 
-  // Sorting data
+  // Ordenar dados
   const sortedData = React.useMemo(() => {
     if (!sortColumn) return filteredData
     return [...filteredData].sort((a, b) => {
@@ -81,35 +75,15 @@ const TableView = ({
     })
   }, [filteredData, sortColumn, sortDirection])
 
-  const totalItems = sortedData.length
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
-
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page)
-    }
-  }
-
-  // Calcula os itens a serem exibidos na página atual
-  const paginatedData = sortedData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  )
-
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
-    setCurrentPage(1) // Reseta para a primeira página ao alterar o termo de busca
-  }
-
   return (
     <>
-      {/* Search Input */}
+      {/* Campo de Busca */}
       {searchable && (
         <div className='relative my-4'>
           <Search
             placeholder='Buscar...'
             value={searchTerm}
-            setValue={handleSearchChange}
+            onSearch={setSearchTerm}
           />
         </div>
       )}
@@ -118,6 +92,18 @@ const TableView = ({
         {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
         <TableHeader>
           <TableRow>
+            {rowActions
+              .filter((action) => action.isCheckbox)
+              .map((action, actionIndex) => (
+                <TableHead key={actionIndex} className='p-0'>
+                  <Checkbox
+                    checked={action.isAllSelected}
+                    onCheckedChange={() => {
+                      if (action.handleSelectAll) action.handleSelectAll(data)
+                    }}
+                  />
+                </TableHead>
+              ))}
             {columns.map((col) => (
               <TableHead
                 key={col.key}
@@ -130,70 +116,72 @@ const TableView = ({
                 )}
               </TableHead>
             ))}
-            {rowActions.length > 0 && <TableHead>Ações</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedData.map((row, rowIndex) => (
-            <TableRow
-              key={rowIndex}
-              onClick={() => onRowClick && onRowClick(row)}
-            >
-              {columns.map((col) => (
-                <TableCell key={col.key}>{row[col.key]}</TableCell>
-              ))}
-              {rowActions.length > 0 && (
-                <TableCell>
-                  {rowActions.map((action, actionIndex) => (
-                    <button
-                      key={actionIndex}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        action.onClick(row)
-                      }}
-                      className='btn-action'
-                    >
-                      {action.label}
-                    </button>
+          {isLoading
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <TableRow key={index}>
+                  {columns.map((col) => (
+                    <TableCell key={`${col.key}-${index}`}>
+                      <Skeleton className='h-8 w-full' />
+                    </TableCell>
                   ))}
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
+                  {rowActions.length > 0 && (
+                    <TableCell>
+                      <Skeleton className='h-8 w-full' />
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))
+            : sortedData.map((row, rowIndex) => (
+                <TableRow
+                  key={rowIndex}
+                  onClick={() => onRowClick && onRowClick(row)}
+                >
+                  {rowActions.filter((action) => action.isCheckbox).length >
+                    0 && (
+                    <TableCell style={{ padding: '0.5rem 0' }}>
+                      {rowActions
+                        .filter((action) => action.isCheckbox)
+                        .map((action, actionIndex) => (
+                          <button
+                            key={actionIndex}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              action.onClick(row)
+                            }}
+                            className='btn-action'
+                          >
+                            {action.label(row)}
+                          </button>
+                        ))}
+                    </TableCell>
+                  )}
+                  {columns.map((col) => (
+                    <TableCell key={col.key}>{row[col.key]}</TableCell>
+                  ))}
+                  {rowActions.length > 0 && (
+                    <TableCell style={{ padding: '0.5rem 0' }}>
+                      {rowActions
+                        .filter((action) => !action.isCheckbox)
+                        .map((action, actionIndex) => (
+                          <button
+                            key={actionIndex}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              action.onClick(row)
+                            }}
+                            className='btn-action'
+                          >
+                            {action.label(row)}
+                          </button>
+                        ))}
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
         </TableBody>
-        {pagination && (
-          <TableCell
-            colSpan={columns.length + (rowActions.length > 0 ? 1 : 0)}
-            className='relative px-0 pb-12'
-          >
-            <Pagination className='absolute right-0 w-fit'>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() => handlePageChange(currentPage - 1)}
-                  />
-                </PaginationItem>
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <PaginationItem key={index}>
-                    <PaginationLink
-                      isActive={currentPage === index + 1}
-                      onClick={() => handlePageChange(index + 1)}
-                    >
-                      {index + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-                {totalPages > 1 && (
-                  <PaginationItem>
-                    <PaginationNext
-                      onClick={() => handlePageChange(currentPage + 1)}
-                    />
-                  </PaginationItem>
-                )}
-              </PaginationContent>
-            </Pagination>
-          </TableCell>
-        )}
       </Table>
     </>
   )
