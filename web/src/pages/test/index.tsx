@@ -321,6 +321,59 @@ export default function MyForm() {
     },
   ]
 
+  const gridViewData = [
+    {
+      id: 1,
+      title: 'A New Era of Technology',
+      body: 'In this article, we explore the latest advancements in technology and their implications for the future. The pace of innovation is faster than ever, bringing new opportunities and challenges.',
+    },
+    {
+      id: 2,
+      title: 'The Benefits of a Healthy Lifestyle',
+      body: 'Adopting a healthy lifestyle can lead to improved physical and mental well-being. This article covers various tips on maintaining a balanced diet, regular exercise, and mental health practices.',
+    },
+    {
+      id: 3,
+      title: 'Understanding Quantum Computing',
+      body: 'Quantum computing represents a major leap forward in computational power. We delve into the principles of quantum mechanics and how they are applied to create powerful new types of computers.',
+    },
+    {
+      id: 4,
+      title: 'Exploring the Cosmos',
+      body: "The cosmos has fascinated humanity for centuries. This piece discusses the latest discoveries in space exploration and the ongoing quest to understand the universe's mysteries.",
+    },
+    {
+      id: 5,
+      title: 'The Evolution of Social Media',
+      body: 'Social media has transformed the way we communicate and interact. This article examines its evolution over the years and its impact on society and culture.',
+    },
+    {
+      id: 6,
+      title: 'The Rise of Remote Work',
+      body: 'Remote work has become increasingly popular, offering flexibility and new ways of working. We discuss the benefits and challenges of working from home and how to stay productive.',
+    },
+    {
+      id: 7,
+      title: 'Sustainable Living Practices',
+      body: 'Sustainable living is crucial for the health of our planet. This article provides practical advice on reducing your carbon footprint, conserving resources, and adopting eco-friendly habits.',
+    },
+    {
+      id: 8,
+      title: 'The Power of Artificial Intelligence',
+      body: 'Artificial intelligence is revolutionizing various industries. We explore its applications, potential benefits, and ethical considerations as AI continues to advance.',
+    },
+    {
+      id: 9,
+      title: 'Innovations in Healthcare',
+      body: 'Healthcare is rapidly evolving with new technologies and treatments. This article highlights recent innovations and their potential to improve patient outcomes and healthcare delivery.',
+    },
+    {
+      id: 10,
+      title: 'The Art of Mindfulness',
+      body: 'Mindfulness is a practice that helps individuals stay present and reduce stress. We delve into techniques for incorporating mindfulness into daily life and its benefits for mental health.',
+    },
+  ]
+
   const handleSaveChanges = (updatedData: any) => {
     console.log('Dados atualizados:', updatedData)
   }
@@ -451,11 +504,11 @@ export default function MyForm() {
             lg: 4,
             xl: 5,
           }}
-          data={Array.from({ length: 50 })}
-          render={(_: any, index: number) => (
+          data={gridViewData}
+          render={(item: any, index: number) => (
             <div key={index} className='rounded border border-gray-300 p-4'>
-              <h3 className='text-lg font-semibold'>Item {index + 1}</h3>
-              <p>Descrição do item {index + 1}</p>
+              <h3 className='text-lg font-semibold'>{item.title}</h3>
+              <p>{item.body}</p>
             </div>
           )}
           gap={6}
