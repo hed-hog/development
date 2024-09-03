@@ -9,18 +9,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination'
 import { SkeletonCard } from './skeleton-card'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import { SearchField } from '../search-field'
+import { PaginationView } from './pagiation-view'
 
 interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
@@ -53,13 +45,11 @@ const GridPanel = ({
   maxPages = 3,
   ...props
 }: GridPanelProps) => {
-  const [pages, setPages] = useState<number[]>([])
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(itemsPerPageOptions[0])
   const [items, setItems] = useState<any[]>([])
   const [totalItems, setTotalItems] = useState(0)
   const [search, setSearch] = useState('')
-  const totalPages = Math.ceil(totalItems / pageSize)
 
   const { data, isLoading, refetch } = usePaginationFetch({
     url,
@@ -81,24 +71,6 @@ const GridPanel = ({
   useEffect(() => {
     refetch()
   }, [pageSize, page, search, refetch])
-
-  useEffect(() => {
-    const buttons: number[] = []
-    const start =
-      page + maxPages > totalPages && totalPages > maxPages
-        ? totalPages - maxPages
-        : page
-    const end =
-      start + maxPages > totalPages ? totalPages + 1 : start + maxPages
-
-    for (let i = start; i < end; i++) {
-      if (i <= totalPages) {
-        buttons.push(i)
-      }
-    }
-
-    setPages(buttons)
-  }, [page, totalPages])
 
   if (isLoading) {
     return (
@@ -160,74 +132,14 @@ const GridPanel = ({
           </SelectContent>
         </Select>
 
-        <Pagination className='mx-0 w-fit'>
-          <PaginationContent>
-            <PaginationItem
-              className={
-                page <= 1 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
-              }
-              onClick={() => page > 1 && setPage(page - 1)}
-            >
-              <PaginationPrevious />
-            </PaginationItem>
-
-            {page > 1 && !pages.includes(1) && (
-              <PaginationItem
-                className='cursor-pointer'
-                onClick={() => setPage(1)}
-              >
-                <PaginationLink isActive={1 === page}>1</PaginationLink>
-              </PaginationItem>
-            )}
-
-            {page > 2 && (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            )}
-
-            {pages.map((p) => (
-              <PaginationItem
-                className='cursor-pointer'
-                onClick={() => setPage(p)}
-              >
-                <PaginationLink isActive={p === page}>{p}</PaginationLink>
-              </PaginationItem>
-            ))}
-
-            {totalPages > maxPages && (
-              <>
-                {totalPages - (page + maxPages) > 0 && (
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                )}
-
-                <PaginationItem
-                  className='cursor-pointer'
-                  onClick={() => setPage(totalPages)}
-                >
-                  <PaginationLink isActive={totalPages === page}>
-                    {totalPages}
-                  </PaginationLink>
-                </PaginationItem>
-              </>
-            )}
-
-            <PaginationItem
-              className={
-                page >= totalPages
-                  ? 'cursor-not-allowed opacity-50'
-                  : 'cursor-pointer'
-              }
-              onClick={() => {
-                page < totalPages && setPage(page + 1)
-              }}
-            >
-              <PaginationNext />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        <PaginationView
+          page={page}
+          pageSize={pageSize}
+          total={totalItems}
+          variant='default'
+          maxPages={maxPages}
+          onPageChange={(page) => setPage(page)}
+        />
       </div>
 
       {Boolean(selectedItems.length) && (
