@@ -50,8 +50,6 @@ const GridPanel = ({
   const totalItems = 100
 
   const {
-    endIndex: end,
-    startIndex: start,
     currentPage,
     itemsPerPage,
     totalPages,
@@ -62,8 +60,8 @@ const GridPanel = ({
 
   const { data, isLoading, refetch } = useFetch(
     endpoint,
-    start,
-    end,
+    currentPage,
+    itemsPerPage,
     'grid-panel'
   )
 

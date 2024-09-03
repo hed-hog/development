@@ -9,6 +9,11 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.enableCors({
+    credentials: true,
+    allowedHeaders: '*',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  });
   await app.listen(5000);
 }
 bootstrap();

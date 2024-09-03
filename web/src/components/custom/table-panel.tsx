@@ -56,8 +56,6 @@ const TablePanel = ({
     currentPage,
     itemsPerPage,
     totalPages,
-    startIndex: start,
-    endIndex: end,
     handlePageChange,
     handleItemsPerPageChange,
     renderPaginationButtons,
@@ -65,8 +63,8 @@ const TablePanel = ({
 
   const { data, isLoading, refetch } = useFetch(
     endpoint,
-    start,
-    end,
+    currentPage,
+    itemsPerPage,
     'table-panel'
   )
 

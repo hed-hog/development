@@ -134,7 +134,7 @@ const TableView = ({
                   )}
                 </TableRow>
               ))
-            : sortedData.map((row, rowIndex) => (
+            : (sortedData ?? []).map((row, rowIndex) => (
                 <TableRow
                   key={rowIndex}
                   onClick={() => onRowClick && onRowClick(row)}
