@@ -35,7 +35,7 @@ interface ITablePanelProps {
   }>
   caption?: string
   itemsPerPage?: number[]
-  selectedItems?: number[]
+  selectedItems?: any[]
 }
 
 const TablePanel = ({
@@ -92,11 +92,7 @@ const TablePanel = ({
     <>
       <TableView
         columns={columns}
-        data={
-          filterSelected
-            ? data.filter((item: any) => selectedItems?.includes(item.id))
-            : data
-        }
+        data={filterSelected ? selectedItems : data}
         sortable={sortable}
         caption={caption}
         onRowClick={onRowClick}

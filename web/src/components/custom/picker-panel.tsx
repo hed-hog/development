@@ -53,15 +53,26 @@ export default function PickerPanel({
 }: IPickerPanelProps) {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [isAllSelected, setIsAllSelected] = useState(false)
+  const [filteredData, setFilteredData] = useState<any[]>([])
 
-  const handleCheckboxChange = (id: number) => {
-    setSelectedIds((prevSelectedIds) =>
-      prevSelectedIds.includes(id)
+  const handleCheckboxChange = (row: any, id: number) => {
+    setSelectedIds((prevSelectedIds) => {
+      const isAlreadySelected = prevSelectedIds.includes(id)
+      const updatedSelectedIds = isAlreadySelected
         ? prevSelectedIds.filter((selectedId) => selectedId !== id)
         : [...prevSelectedIds, id]
-    )
-  }
 
+      setSelectedIds(updatedSelectedIds)
+      setFilteredData((prevFilteredData) => {
+        const isInFilteredData = prevFilteredData.some((item) => item.id === id)
+        return isInFilteredData
+          ? prevFilteredData.filter((item) => item.id !== id)
+          : [...prevFilteredData, row]
+      })
+
+      return updatedSelectedIds
+    })
+  }
   const handleSelectAll = (data: any[]) => {
     if (isAllSelected) {
       setSelectedIds([])
@@ -78,11 +89,11 @@ export default function PickerPanel({
       <div
         key={item.id}
         className='rounded border border-gray-300 p-4'
-        onClick={() => handleCheckboxChange(item.id)}
+        onClick={() => handleCheckboxChange(item, item.id)}
       >
         <Checkbox
           checked={isChecked}
-          onChange={() => handleCheckboxChange(item.id)}
+          onChange={() => handleCheckboxChange(item, item.id)}
         />
         {typeof render === 'function' && render(item)}
       </div>
@@ -92,7 +103,7 @@ export default function PickerPanel({
   const rowActions = [
     {
       label: (row: any) => <Checkbox checked={selectedIds.includes(row.id)} />,
-      onClick: (row: any) => handleCheckboxChange(row.id),
+      onClick: (row: any) => handleCheckboxChange(row, row.id),
       isCheckbox: true,
       isAllSelected: isAllSelected,
       handleSelectAll: handleSelectAll,
@@ -114,8 +125,8 @@ export default function PickerPanel({
             sortable={sortable}
             itemsPerPage={[10, 20, 30, 40]} // Opções de itens por página
             rowActions={rowActions}
-            onRowClick={(row) => handleCheckboxChange(row.id)}
-            selectedItems={selectedIds}
+            onRowClick={(row) => handleCheckboxChange(row, row.id)}
+            selectedItems={filteredData}
           />
         ) : (
           <GridPanel
