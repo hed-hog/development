@@ -26,6 +26,7 @@ interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   padding?: number
   endpoint: string
   itemsPerPage?: number[]
+  selectedItems?: any[]
   render: (item: any, index: number) => JSX.Element
 }
 
@@ -42,6 +43,7 @@ const GridPanel = ({
   endpoint,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
   className,
+  selectedItems = [],
   render,
   ...props
 }: GridPanelProps) => {
@@ -140,6 +142,16 @@ const GridPanel = ({
           </PaginationContent>
         </Pagination>
       </div>
+
+      {Boolean(selectedItems.length) && (
+        <div className={`px-${padding} my-4`}>
+          <p
+            className={`cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
+          >
+            {(selectedItems ?? []).length} itens selecionados
+          </p>
+        </div>
+      )}
     </>
   )
 }

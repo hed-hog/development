@@ -153,6 +153,7 @@ export default function PickerPanel({
             render={renderWithCheckbox}
             padding={padding}
             responsiveColumns={responsiveColumns}
+            selectedItems={filteredData}
           />
         )}
         <CardFooter className={`flex w-full justify-end px-${padding} py-4`}>
