@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import {
   Pagination,
   PaginationContent,
@@ -36,6 +36,7 @@ interface ITablePanelProps {
   caption?: string
   itemsPerPage?: number[]
   selectedItems?: any[]
+  setIsAllSelected?: Dispatch<SetStateAction<boolean>>
 }
 
 const TablePanel = ({
@@ -47,6 +48,7 @@ const TablePanel = ({
   caption,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
   selectedItems,
+  setIsAllSelected,
 }: ITablePanelProps) => {
   const totalItems = 5000 // Esse valor virá da API
 
@@ -71,6 +73,7 @@ const TablePanel = ({
   const [filterSelected, setFilterSelected] = useState<boolean>(false)
 
   useEffect(() => {
+    if (setIsAllSelected) setIsAllSelected(false)
     refetch()
   }, [currentPage, refetch])
 

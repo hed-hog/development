@@ -76,8 +76,9 @@ export default function PickerPanel({
 
   const handleSelectAll = (data: any[]) => {
     if (isAllSelected) {
-      // Se todos estão selecionados, limpa selectedIds e filteredData
-      setSelectedIds([])
+      setSelectedIds((prevIds) =>
+        prevIds.filter((id) => !data.some((d) => d.id === id))
+      )
       setFilteredData((prevData) =>
         prevData.filter((item) => !data.some((d) => d.id === item.id))
       )
@@ -85,11 +86,14 @@ export default function PickerPanel({
       const newIds = new Set(data.map((item) => item.id))
 
       setFilteredData((prevData) => [
-        ...prevData.filter((item) => !newIds.has(item.id)), // Remove itens antigos que estão sendo substituídos
-        ...data, // Adiciona novos itens
+        ...prevData.filter((item) => !newIds.has(item.id)),
+        ...data,
       ])
 
-      setSelectedIds(data.map((item) => item.id))
+      setSelectedIds((prevIds) => [
+        ...prevIds.filter((id) => !newIds.has(id)),
+        ...data.map((item) => item.id),
+      ])
     }
 
     setIsAllSelected(!isAllSelected)
@@ -123,7 +127,7 @@ export default function PickerPanel({
   ]
 
   return (
-    <Card className='mx-auto max-w-[80%]'>
+    <Card className='mx-auto max-w-[95%]'>
       <CardContent className='w-full overflow-auto'>
         <CardHeader className='px-0'>
           <CardTitle>{title}</CardTitle>
@@ -139,6 +143,7 @@ export default function PickerPanel({
             rowActions={rowActions}
             onRowClick={(row) => handleCheckboxChange(row, row.id)}
             selectedItems={filteredData}
+            setIsAllSelected={setIsAllSelected}
           />
         ) : (
           <GridPanel
