@@ -35,7 +35,7 @@ interface ITablePanelProps {
   }>
   caption?: string
   itemsPerPage?: number[]
-  selectedItems: number[]
+  selectedItems?: number[]
 }
 
 const TablePanel = ({
@@ -94,7 +94,7 @@ const TablePanel = ({
         columns={columns}
         data={
           filterSelected
-            ? data.filter((item: any) => selectedItems.includes(item.id))
+            ? data.filter((item: any) => selectedItems?.includes(item.id))
             : data
         }
         sortable={sortable}
@@ -150,16 +150,16 @@ const TablePanel = ({
         </Pagination>
       </div>
 
-      <div className='my-4'>
-        <p
-          className={`cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
-          onClick={() =>
-            selectedItems.length ? setFilterSelected(!filterSelected) : {}
-          }
-        >
-          {(selectedItems ?? []).length} itens selecionados
-        </p>
-      </div>
+      {Boolean(rowActions.filter((row) => row.isCheckbox).length) && (
+        <div className='my-4'>
+          <p
+            className={`cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
+            onClick={() => setFilterSelected(!filterSelected)}
+          >
+            {(selectedItems ?? []).length} itens selecionados
+          </p>
+        </div>
+      )}
     </>
   )
 }
