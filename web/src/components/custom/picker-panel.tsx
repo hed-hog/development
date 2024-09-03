@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import GridPanel from '@/components/custom/grid-panel'
 import { Button } from '@/components/custom/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import TablePanel from './table-panel'
 import { Checkbox } from '@/components/ui/checkbox'
-import { useDialog } from '@/hooks/use-dialog'
 import { IResponsiveColumn } from '@/types/responsive-columns'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 interface IPickerPanelProps {
   endpoint: string
@@ -52,7 +51,6 @@ export default function PickerPanel({
   sortable,
   render,
 }: IPickerPanelProps) {
-  const { isOpen, open, close } = useDialog()
   const [selectedIds, setSelectedIds] = useState<number[]>([])
 
   const handleCheckboxChange = (id: number) => {
@@ -88,43 +86,38 @@ export default function PickerPanel({
   ]
 
   return (
-    <>
-      <Button variant='outline' onClick={open} className='w-full'>
-        Open Picker
-      </Button>
-      <Dialog open={isOpen} onOpenChange={close}>
-        <DialogContent className='max-h-[95%] max-w-[90%] overflow-auto'>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{subtitle}</DialogDescription>
-          </DialogHeader>
-          {type === 'table' && columns && Boolean(columns?.length) ? (
-            <TablePanel
-              columns={columns}
-              endpoint={endpoint}
-              caption={caption}
-              sortable={sortable}
-              itemsPerPage={[10, 20, 30, 40]} // Opções de itens por página
-              rowActions={rowActions}
-              onRowClick={(row) => handleCheckboxChange(row.id)}
-            />
-          ) : (
-            <GridPanel
-              itemsPerPage={itemsPerPageOptions}
-              gap={gap}
-              endpoint={endpoint}
-              render={renderWithCheckbox}
-              padding={padding}
-              responsiveColumns={responsiveColumns}
-            />
-          )}
-          <DialogFooter className={`px-${padding}`}>
-            <Button type='submit' onClick={() => console.log(selectedIds)}>
-              Save changes
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+    <Card className='mx-auto max-w-[80%]'>
+      <CardContent className='w-full overflow-auto'>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{subtitle}</CardDescription>
+        </CardHeader>
+        {type === 'table' && columns && Boolean(columns?.length) ? (
+          <TablePanel
+            columns={columns}
+            endpoint={endpoint}
+            caption={caption}
+            sortable={sortable}
+            itemsPerPage={[10, 20, 30, 40]} // Opções de itens por página
+            rowActions={rowActions}
+            onRowClick={(row) => handleCheckboxChange(row.id)}
+          />
+        ) : (
+          <GridPanel
+            itemsPerPage={itemsPerPageOptions}
+            gap={gap}
+            endpoint={endpoint}
+            render={renderWithCheckbox}
+            padding={padding}
+            responsiveColumns={responsiveColumns}
+          />
+        )}
+        <CardFooter className={`flex w-full justify-end px-${padding} py-4`}>
+          <Button type='submit' onClick={() => console.log(selectedIds)}>
+            Save changes
+          </Button>
+        </CardFooter>
+      </CardContent>
+    </Card>
   )
 }
