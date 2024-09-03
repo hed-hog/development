@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Pagination,
   PaginationContent,
@@ -35,6 +35,7 @@ interface ITablePanelProps {
   }>
   caption?: string
   itemsPerPage?: number[]
+  selectedItems: number[]
 }
 
 const TablePanel = ({
@@ -45,6 +46,7 @@ const TablePanel = ({
   rowActions = [],
   caption,
   itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
+  selectedItems,
 }: ITablePanelProps) => {
   const totalItems = 5000 // Esse valor virá da API
 
@@ -65,6 +67,8 @@ const TablePanel = ({
     end,
     'table-panel'
   )
+
+  const [filterSelected, setFilterSelected] = useState<boolean>(false)
 
   useEffect(() => {
     refetch()
@@ -88,7 +92,11 @@ const TablePanel = ({
     <>
       <TableView
         columns={columns}
-        data={data}
+        data={
+          filterSelected
+            ? data.filter((item: any) => selectedItems.includes(item.id))
+            : data
+        }
         sortable={sortable}
         caption={caption}
         onRowClick={onRowClick}
@@ -140,6 +148,17 @@ const TablePanel = ({
             </PaginationItem>
           </PaginationContent>
         </Pagination>
+      </div>
+
+      <div className='my-4'>
+        <p
+          className={`cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
+          onClick={() =>
+            selectedItems.length ? setFilterSelected(!filterSelected) : {}
+          }
+        >
+          {(selectedItems ?? []).length} itens selecionados
+        </p>
       </div>
     </>
   )

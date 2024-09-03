@@ -102,7 +102,7 @@ export default function PickerPanel({
   return (
     <Card className='mx-auto max-w-[80%]'>
       <CardContent className='w-full overflow-auto'>
-        <CardHeader>
+        <CardHeader className='px-0'>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{subtitle}</CardDescription>
         </CardHeader>
@@ -115,6 +115,7 @@ export default function PickerPanel({
             itemsPerPage={[10, 20, 30, 40]} // Opções de itens por página
             rowActions={rowActions}
             onRowClick={(row) => handleCheckboxChange(row.id)}
+            selectedItems={selectedIds}
           />
         ) : (
           <GridPanel
