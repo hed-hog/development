@@ -3,15 +3,15 @@ import {
   createParamDecorator,
   ExecutionContext,
 } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
+import { validateSync } from 'class-validator';
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '../constants/pagination.constants';
+import { PaginationDTO } from '../dto/pagination.dto';
 import { PageOrderDirection, PaginationField } from '../enums/patination.enums';
 import { PaginationType } from '../types/pagination.types';
-import { plainToClass } from 'class-transformer';
-import { PaginationDTO } from '../dto/pagination.dto';
-import { validateSync } from 'class-validator';
 
 export const Pagination = createParamDecorator(
   (data: PaginationField, ctx: ExecutionContext): PaginationType => {

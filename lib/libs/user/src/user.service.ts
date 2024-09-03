@@ -2,8 +2,8 @@ import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
-  Injectable,
   Inject,
+  Injectable,
   forwardRef,
 } from '@nestjs/common';
 import { genSalt, hash } from 'bcrypt';

@@ -44,6 +44,7 @@ export class PaginationService {
       if (sortField) {
         const invalid = this.isInvalidField(sortField, model);
         if (invalid) {
+          this.logger.error(`Invalid field: ${sortField}`);
           throw new BadRequestException(
             `Invalid field: ${sortField}. Valid columns are: ${this.extractFieldNames(
               model,
@@ -56,6 +57,7 @@ export class PaginationService {
 
       if (search) {
         if (typeof search !== 'string') {
+          this.logger.error('Search must be a string');
           throw new BadRequestException('Search must be a string');
         }
       }
@@ -64,6 +66,12 @@ export class PaginationService {
         const invalidFields = this.isInvalidFields(fields, model);
 
         if (invalidFields) {
+          this.logger.error(
+            `Invalid fields: ${sortField}. Valid columns are: ${this.extractFieldNames(
+              model,
+            ).join(', ')}`,
+          );
+
           throw new BadRequestException(
             `Invalid fields: ${sortField}. Valid columns are: ${this.extractFieldNames(
               model,

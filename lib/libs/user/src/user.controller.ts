@@ -5,12 +5,12 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Patch,
   Post,
   UseGuards,
-  Inject,
   forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
