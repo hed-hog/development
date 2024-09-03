@@ -129,7 +129,7 @@ export default function PickerPanel({
   return (
     <Card className='mx-auto max-w-[95%]'>
       <CardContent className='w-full overflow-auto'>
-        <CardHeader className='px-0'>
+        <CardHeader className='px-4'>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{subtitle}</CardDescription>
         </CardHeader>
