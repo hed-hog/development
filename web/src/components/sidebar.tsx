@@ -4,6 +4,7 @@ import { Layout } from './custom/layout'
 import { Button } from './custom/button'
 import Nav from './nav'
 import { cn } from '@/lib/utils'
+import Logo from '@/assets/logo'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -46,24 +47,14 @@ export default function Sidebar({
           className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'
         >
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
-            <svg
+            <Logo
               className={`transition-all ${isCollapsed ? 'h-6 w-6' : 'h-8 w-8'}`}
-              xmlns='http://www.w3.org/2000/svg'
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
               fill='none'
               stroke='currentColor'
               stroke-width='2'
               stroke-linecap='round'
               stroke-linejoin='round'
-            >
-              <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-              <path d='M3 12l3 3l3 -3l-3 -3z' />
-              <path d='M15 12l3 3l3 -3l-3 -3z' />
-              <path d='M9 6l3 3l3 -3l-3 -3z' />
-              <path d='M9 18l3 3l3 -3l-3 -3z' />
-            </svg>
+            />
 
             <div
               className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
