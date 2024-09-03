@@ -66,6 +66,12 @@ const router = createBrowserRouter([
               Component: (await import('./pages/management/screens')).default,
             }),
           },
+          {
+            path: 'settings',
+            lazy: async () => ({
+              Component: (await import('./pages/management/settings')).default,
+            }),
+          },
         ],
       },
     ],
