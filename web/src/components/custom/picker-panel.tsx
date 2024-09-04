@@ -13,23 +13,22 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { IStyleOption } from '@/types/style-options'
+import { IPaginationOption } from '@/types/pagination-options'
+import { ITableColumn } from '@/types/table-column'
 
 interface IPickerPanelProps {
   url: string
   type: 'grid' | 'table' | 'list'
-  responsiveColumns?: IResponsiveColumn
-  render?: (item: any) => JSX.Element
-  pageSizeOptions?: number[]
   title?: string
   subtitle?: string
-  gap?: number
-  padding?: number
-  columns?: Array<{
-    key: string
-    header: string
-  }>
   caption?: string
   sortable?: boolean
+  render?: (item: any) => JSX.Element
+  responsiveColumns?: IResponsiveColumn
+  paginationOptions?: IPaginationOption
+  styleOptions?: IStyleOption
+  columns?: ITableColumn[]
 }
 
 export default function PickerPanel({
@@ -42,12 +41,16 @@ export default function PickerPanel({
   },
   url,
   type,
-  pageSizeOptions = [10, 20, 30, 40],
+  paginationOptions = {
+    pageSizeOptions: [10, 20, 30, 40],
+  },
   title = 'Picker Panel',
   subtitle = "Select items from the list below. Click save when you're done.",
   columns,
-  gap = 6,
-  padding = 4,
+  styleOptions = {
+    gap: 6,
+    padding: 4,
+  },
   caption = 'List of Items',
   sortable,
   render,
@@ -142,20 +145,28 @@ export default function PickerPanel({
             url={url}
             caption={caption}
             sortable={sortable}
-            pageSizeOptions={pageSizeOptions}
             rowActions={rowActions}
             onRowClick={(row) => handleCheckboxChange(row, row.id)}
-            selectedItems={filteredData}
-            setIsAllSelected={setIsAllSelected}
+            paginationOptions={{
+              pageSizeOptions: paginationOptions?.pageSizeOptions,
+            }}
+            selectOptions={{
+              selectedItems: filteredData,
+              setIsAllSelected,
+            }}
           />
         ) : type === 'grid' ? (
           <GridPanel
             id={id}
-            pageSizeOptions={pageSizeOptions}
-            gap={gap}
+            paginationOptions={{
+              pageSizeOptions: paginationOptions?.pageSizeOptions,
+            }}
+            styleOptions={{
+              gap: styleOptions.gap,
+              padding: styleOptions.padding,
+            }}
             url={url}
             render={renderWithCheckbox}
-            padding={padding}
             responsiveColumns={responsiveColumns}
             selectOptions={{
               selectedItems: filteredData,
@@ -167,11 +178,15 @@ export default function PickerPanel({
         ) : (
           <ListPanel
             id={id}
-            pageSizeOptions={pageSizeOptions}
-            gap={gap}
             url={url}
             render={renderWithCheckbox}
-            padding={padding}
+            paginationOptions={{
+              pageSizeOptions: paginationOptions?.pageSizeOptions,
+            }}
+            styleOptions={{
+              gap: styleOptions.gap,
+              padding: styleOptions.padding,
+            }}
             selectOptions={{
               selectedItems: filteredData,
               setIsAllSelected,
@@ -180,7 +195,9 @@ export default function PickerPanel({
             }}
           />
         )}
-        <CardFooter className={`flex w-full justify-end px-${padding} py-4`}>
+        <CardFooter
+          className={`flex w-full justify-end px-${styleOptions.padding} py-4`}
+        >
           <Button type='submit' onClick={() => console.log(selectedIds)}>
             Save changes
           </Button>

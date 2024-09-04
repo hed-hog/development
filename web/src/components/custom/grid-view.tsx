@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { IResponsiveColumn } from '@/types/responsive-columns'
+import { IStyleOption } from '@/types/style-options'
 
 interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
   responsiveColumns?: IResponsiveColumn
-  gap?: number
-  padding?: number
   data: any[]
   render: (item: any, index: number) => JSX.Element
+  styleOptions?: IStyleOption
 }
 
 const GridView = ({
@@ -17,8 +17,10 @@ const GridView = ({
     lg: 4,
     xl: 5,
   },
-  gap = 6,
-  padding = 4,
+  styleOptions = {
+    gap: 6,
+    padding: 4,
+  },
   data = [],
   render,
   className,
@@ -53,12 +55,12 @@ const GridView = ({
   }, [responsiveColumns])
 
   return (
-    <div {...props} className={`p-${padding}`}>
+    <div {...props} className={`p-${styleOptions.padding}`}>
       <div
         style={{
           display: 'grid',
           gridTemplateColumns: `repeat(${gridColumns}, minmax(0, 1fr))`,
-          gap: `${gap / 4}rem`,
+          gap: `${styleOptions.gap / 4}rem`,
         }}
         className={className}
       >

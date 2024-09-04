@@ -497,8 +497,10 @@ export default function MyForm() {
             <p>{item.body}</p>
           </div>
         )}
-        gap={6}
-        padding={4}
+        styleOptions={{
+          padding: 4,
+          gap: 6,
+        }}
       />
 
       <h1
@@ -516,9 +518,13 @@ export default function MyForm() {
         )}
         url='/users'
         responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-        gap={6}
-        padding={4}
-        pageSizeOptions={[10, 20, 30, 40]}
+        styleOptions={{
+          padding: 4,
+          gap: 6,
+        }}
+        paginationOptions={{
+          pageSizeOptions: [10, 20, 30, 40],
+        }}
       />
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
@@ -557,6 +563,7 @@ export default function MyForm() {
         DraggableListView
       </h1>
       <DraggableListView data={draggableListViewItems} />
+
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
@@ -571,8 +578,10 @@ export default function MyForm() {
       </h1>
       <ListView
         data={data}
-        gap={8}
-        padding={4}
+        styleOptions={{
+          padding: 4,
+          gap: 8,
+        }}
         render={(item) => (
           <div
             style={{
@@ -595,9 +604,14 @@ export default function MyForm() {
       <ListPanel
         id='example-list-panel'
         url='/users'
-        gap={8}
-        padding={4}
-        pageSizeOptions={[5, 10, 20]}
+        styleOptions={{
+          padding: 4,
+          gap: 8,
+        }}
+        paginationOptions={{
+          pageSizeOptions: [5, 10, 20],
+          maxPages: 5,
+        }}
         render={(item: any, index: number) => (
           <div
             key={index}
@@ -612,7 +626,6 @@ export default function MyForm() {
             <p>Email: {item.email}</p>
           </div>
         )}
-        maxPages={5}
       />
 
       <h1
@@ -624,9 +637,13 @@ export default function MyForm() {
         url='/users'
         type='grid'
         responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-        gap={6}
-        padding={4}
-        pageSizeOptions={[10, 20, 30, 40]}
+        styleOptions={{
+          padding: 4,
+          gap: 6,
+        }}
+        paginationOptions={{
+          pageSizeOptions: [10, 20, 30, 40],
+        }}
         render={(item: any) => (
           <div key={item.id}>
             <h3 className='text-lg font-semibold'>{item.name}</h3>
@@ -659,9 +676,13 @@ export default function MyForm() {
       <PickerPanel
         url='/users'
         type='list'
-        pageSizeOptions={[5, 10, 20]}
-        padding={4}
-        gap={8}
+        paginationOptions={{
+          pageSizeOptions: [5, 10, 20],
+        }}
+        styleOptions={{
+          padding: 4,
+          gap: 8,
+        }}
         render={(item: any) => (
           <div key={item.id}>
             <h3 className='text-lg font-semibold'>{item.name}</h3>

@@ -1,15 +1,14 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import TableView from './table-view'
 import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
+import { ITableColumn } from '@/types/table-column'
+import { ISelectOption } from '@/types/select-options'
+import { IPaginationOption } from '@/types/pagination-options'
 
 interface ITablePanelProps {
   id: string
-  columns: Array<{
-    key: string
-    header: string
-  }>
   url: string
   sortable?: boolean
   onRowClick?: (row: Record<string, any>) => void
@@ -21,10 +20,9 @@ interface ITablePanelProps {
     handleSelectAll?: (data: any[]) => void
   }>
   caption?: string
-  pageSizeOptions?: number[]
-  selectedItems?: any[]
-  setIsAllSelected?: Dispatch<SetStateAction<boolean>>
-  maxPages?: number
+  columns: ITableColumn[]
+  paginationOptions?: IPaginationOption
+  selectOptions?: ISelectOption
 }
 
 const TablePanel = ({
@@ -35,13 +33,16 @@ const TablePanel = ({
   onRowClick,
   rowActions = [],
   caption,
-  pageSizeOptions = [10, 20, 30, 40],
-  selectedItems,
-  setIsAllSelected,
-  maxPages = 3,
+  paginationOptions = {
+    pageSizeOptions: [10, 20, 30, 40],
+    maxPages: 3,
+  },
+  selectOptions,
 }: ITablePanelProps) => {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(pageSizeOptions[0])
+  const [pageSize, setPageSize] = useState(
+    paginationOptions?.pageSizeOptions[0]
+  )
   const [items, setItems] = useState<any[]>([])
   const [totalItems, setTotalItems] = useState(0)
   const [search, setSearch] = useState('')
@@ -57,7 +58,7 @@ const TablePanel = ({
   const [filterSelected, setFilterSelected] = useState<boolean>(false)
 
   useEffect(() => {
-    if (setIsAllSelected) setIsAllSelected(false)
+    if (selectOptions?.setIsAllSelected) selectOptions?.setIsAllSelected(false)
     refetch()
   }, [page, refetch, search, pageSize])
 
@@ -98,7 +99,11 @@ const TablePanel = ({
       </div>
       <TableView
         columns={columns}
-        data={filterSelected && selectedItems ? selectedItems : items}
+        data={
+          filterSelected && selectOptions?.selectedItems
+            ? selectOptions?.selectedItems
+            : items
+        }
         sortable={sortable}
         caption={caption}
         onRowClick={onRowClick}
@@ -115,9 +120,9 @@ const TablePanel = ({
         pageSize={pageSize}
         total={totalItems}
         variant='default'
-        maxPages={maxPages}
+        maxPages={paginationOptions?.maxPages}
         onPageChange={(page) => setPage(page)}
-        pageSizeOptions={pageSizeOptions}
+        pageSizeOptions={paginationOptions?.pageSizeOptions}
         onPageSizeChange={(value) => {
           setPageSize(Number(value))
           setPage(1)
@@ -128,10 +133,10 @@ const TablePanel = ({
       {Boolean(rowActions.filter((row) => row.isCheckbox).length) && (
         <div className='my-4'>
           <p
-            className={`cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
+            className={`cursor-pointer text-sm ${(selectOptions?.selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
             onClick={() => setFilterSelected(!filterSelected)}
           >
-            {(selectedItems ?? []).length} itens selecionados
+            {(selectOptions?.selectedItems ?? []).length} itens selecionados
           </p>
         </div>
       )}

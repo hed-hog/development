@@ -1,40 +1,43 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ListView from '@/components/custom/list-view'
 import { SkeletonCard } from './skeleton-card'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import { PaginationView } from './pagination-view'
 import ListControls from './list-controls'
+import { IStyleOption } from '@/types/style-options'
+import { ISelectOption } from '@/types/select-options'
+import { IPaginationOption } from '@/types/pagination-options'
 
 interface ListPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
-  gap?: number
-  padding?: number
   url: string
-  pageSizeOptions?: number[]
   render: (item: any, index: number) => JSX.Element
-  selectOptions?: {
-    selectedItems?: any[]
-    setIsAllSelected?: Dispatch<SetStateAction<boolean>>
-    handleSelectAll?: (data: any[]) => void
-    isAllSelected?: boolean
-  }
-  maxPages?: number
+  styleOptions?: IStyleOption
+  paginationOptions?: IPaginationOption
+  selectOptions?: ISelectOption
 }
 
 const ListPanel = ({
   id,
-  gap = 6,
-  padding = 4,
+  styleOptions = {
+    gap: 6,
+    padding: 4,
+  },
   url,
-  pageSizeOptions = [10, 20, 30, 40],
+  paginationOptions = {
+    pageSizeOptions: [10, 20, 30, 40],
+    maxPages: 3,
+  },
   className,
   render,
   selectOptions,
-  maxPages = 3,
+
   ...props
 }: ListPanelProps) => {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(pageSizeOptions[0])
+  const [pageSize, setPageSize] = useState(
+    paginationOptions?.pageSizeOptions[0]
+  )
   const [items, setItems] = useState<any[]>([])
   const [totalItems, setTotalItems] = useState(0)
   const [search, setSearch] = useState('')
@@ -66,9 +69,11 @@ const ListPanel = ({
   if (isLoading) {
     return (
       <ListView
-        data={Array.from({ length: pageSizeOptions[0] })}
-        gap={gap}
-        padding={padding}
+        data={Array.from({ length: paginationOptions?.pageSizeOptions[0] })}
+        styleOptions={{
+          gap: styleOptions.gap,
+          padding: styleOptions.padding,
+        }}
         render={() => <SkeletonCard key={Math.random()} />}
         className={className}
         {...props}
@@ -92,8 +97,10 @@ const ListPanel = ({
             ? selectOptions?.selectedItems
             : items
         }
-        gap={gap}
-        padding={padding}
+        styleOptions={{
+          gap: styleOptions.gap,
+          padding: styleOptions.padding,
+        }}
         render={render}
         className={className}
         {...props}
@@ -104,9 +111,9 @@ const ListPanel = ({
         pageSize={pageSize}
         total={totalItems}
         variant='default'
-        maxPages={maxPages}
+        maxPages={paginationOptions?.maxPages}
         onPageChange={setPage}
-        pageSizeOptions={pageSizeOptions}
+        pageSizeOptions={paginationOptions?.pageSizeOptions}
         onPageSizeChange={(value) => {
           setPageSize(Number(value))
           setPage(1)

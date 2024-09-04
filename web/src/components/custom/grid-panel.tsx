@@ -1,26 +1,22 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import GridView from '@/components/custom/grid-view' // Importa o GridView
+import React, { useEffect, useState } from 'react'
+import GridView from '@/components/custom/grid-view'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import { PaginationView } from './pagination-view'
 import ListControls from './list-controls'
+import { IStyleOption } from '@/types/style-options'
+import { ISelectOption } from '@/types/select-options'
+import { IPaginationOption } from '@/types/pagination-options'
 
 interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
   responsiveColumns?: IResponsiveColumn
-  gap?: number
-  padding?: number
   url: string
-  pageSizeOptions?: number[]
   render: (item: any, index: number) => JSX.Element
-  maxPages?: number
-  selectOptions?: {
-    selectedItems?: any[]
-    handleSelectAll?: (data: any[]) => void
-    isAllSelected?: boolean
-    setIsAllSelected?: Dispatch<SetStateAction<boolean>>
-  }
+  paginationOptions?: IPaginationOption
+  selectOptions?: ISelectOption
+  styleOptions?: IStyleOption
 }
 
 const GridPanel = ({
@@ -32,18 +28,24 @@ const GridPanel = ({
     lg: 4,
     xl: 5,
   },
-  gap = 6,
-  padding = 4,
+  styleOptions = {
+    gap: 6,
+    padding: 4,
+  },
   url,
-  pageSizeOptions = [10, 20, 30, 40],
+  paginationOptions = {
+    pageSizeOptions: [10, 20, 30, 40],
+    maxPages: 3,
+  },
   className,
   render,
   selectOptions,
-  maxPages = 3,
   ...props
 }: GridPanelProps) => {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(pageSizeOptions[0])
+  const [pageSize, setPageSize] = useState(
+    paginationOptions?.pageSizeOptions[0]
+  )
   const [items, setItems] = useState<any[]>([])
   const [totalItems, setTotalItems] = useState(0)
   const [search, setSearch] = useState('')
@@ -75,10 +77,12 @@ const GridPanel = ({
   if (isLoading) {
     return (
       <GridView
-        data={Array.from({ length: pageSizeOptions[0] })}
+        data={Array.from({ length: paginationOptions?.pageSizeOptions[0] })}
         responsiveColumns={responsiveColumns}
-        gap={gap}
-        padding={padding}
+        styleOptions={{
+          gap: styleOptions.gap,
+          padding: styleOptions.padding,
+        }}
         render={() => <SkeletonCard key={Math.random()} />}
         className={className}
         {...props}
@@ -103,8 +107,10 @@ const GridPanel = ({
             : items
         }
         responsiveColumns={responsiveColumns}
-        gap={gap}
-        padding={padding}
+        styleOptions={{
+          gap: styleOptions.gap,
+          padding: styleOptions.padding,
+        }}
         render={render}
         className={className}
         {...props}
@@ -115,9 +121,9 @@ const GridPanel = ({
         pageSize={pageSize}
         total={totalItems}
         variant='default'
-        maxPages={maxPages}
+        maxPages={paginationOptions?.maxPages}
         onPageChange={(page) => setPage(page)}
-        pageSizeOptions={pageSizeOptions}
+        pageSizeOptions={paginationOptions?.pageSizeOptions}
         onPageSizeChange={(value) => {
           setPageSize(Number(value))
           setPage(1)
