@@ -12,6 +12,8 @@ import GridPanel from '@/components/custom/grid-panel'
 import TablePanel from '@/components/custom/table-panel'
 import { EnumFieldType } from '@/components/custom/field'
 import PickerPanel from '@/components/custom/picker-panel'
+import ListView from '@/components/custom/list-view'
+import ListPanel from '@/components/custom/list-panel'
 
 export default function MyForm() {
   // form
@@ -596,6 +598,57 @@ export default function MyForm() {
           { key: 'email', header: 'Email' },
         ]}
         sortable
+      />
+
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        ListView
+      </h1>
+      <ListView
+        data={data}
+        gap={8}
+        padding={4}
+        render={(item) => (
+          <div
+            style={{
+              padding: '16px',
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+            }}
+          >
+            <h2>{item.name}</h2>
+            <p>{item.email}</p>
+          </div>
+        )}
+      />
+
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        ListPanel
+      </h1>
+      <ListPanel
+        id='example-list-panel'
+        url='/users'
+        gap={8}
+        padding={4}
+        pageSizeOptions={[5, 10, 20]}
+        render={(item: any, index: number) => (
+          <div
+            key={index}
+            style={{
+              padding: '8px',
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+            }}
+          >
+            <h1>ID: {item.id}</h1>
+            <h2>Nome: {item.name}</h2>
+            <p>Email: {item.email}</p>
+          </div>
+        )}
+        maxPages={5}
       />
     </>
   )
