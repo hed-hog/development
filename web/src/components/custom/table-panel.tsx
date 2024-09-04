@@ -105,7 +105,7 @@ const TablePanel = ({
         rowActions={rowActions.map((action) => ({
           ...action,
           handleSelectAll: action.handleSelectAll
-            ? () => (action.handleSelectAll as any)(data)
+            ? () => (action.handleSelectAll as any)(items)
             : undefined,
         }))}
         isLoading={isLoading}

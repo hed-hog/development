@@ -116,6 +116,7 @@ export const PaginationView = ({
 
             {pages.map((p) => (
               <PaginationItem
+                key={p}
                 className='cursor-pointer'
                 onClick={() => handlerPageChange(p)}
               >

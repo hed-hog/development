@@ -41,7 +41,7 @@ export default function PickerPanel({
   },
   url,
   type,
-  itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
+  itemsPerPage: pageSizeOptions = [10, 20, 30, 40],
   title = 'Picker Panel',
   subtitle = "Select items from the list below. Click save when you're done.",
   columns,
@@ -150,7 +150,7 @@ export default function PickerPanel({
         ) : (
           <GridPanel
             id={id}
-            itemsPerPage={itemsPerPageOptions}
+            pageSizeOptions={pageSizeOptions}
             gap={gap}
             url={url}
             render={renderWithCheckbox}
