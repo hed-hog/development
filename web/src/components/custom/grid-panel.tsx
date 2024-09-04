@@ -3,9 +3,8 @@ import GridView from '@/components/custom/grid-view' // Importa o GridView
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
-import { SearchField } from '../search-field'
 import { PaginationView } from './pagination-view'
-import { Checkbox } from '../ui/checkbox'
+import ListControls from './list-controls'
 
 interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
@@ -89,29 +88,15 @@ const GridPanel = ({
   }
 
   return (
-    <>
-      <div className='m-4 flex flex-col gap-4'>
-        <SearchField
-          placeholder='Buscar...'
-          value={search}
-          onSearch={(value) => {
-            setSearch(value)
-            setPage(1)
-          }}
-        />
-        {selectedItems && (
-          <div className='flex items-center gap-x-2'>
-            <Checkbox
-              checked={isAllSelected}
-              onCheckedChange={() => {
-                if (handleSelectAll) handleSelectAll(items)
-              }}
-            />
-            <span>Selecionar tudo</span>
-          </div>
-        )}
-      </div>
-
+    <ListControls
+      data={items}
+      search={search}
+      setSearch={setSearch}
+      isAllSelected={isAllSelected}
+      handleSelectAll={handleSelectAll}
+      selectedItems={selectedItems}
+      onFilterToggle={() => setFilterSelected(!filterSelected)}
+    >
       <GridView
         data={filterSelected && selectedItems ? selectedItems : items}
         responsiveColumns={responsiveColumns}
@@ -135,18 +120,7 @@ const GridPanel = ({
           setPage(1)
         }}
       />
-
-      {Boolean(selectedItems) && (
-        <div className={`px-${padding} my-4`}>
-          <p
-            className={`cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
-            onClick={() => setFilterSelected(!filterSelected)}
-          >
-            {(selectedItems ?? []).length} itens selecionados
-          </p>
-        </div>
-      )}
-    </>
+    </ListControls>
   )
 }
 
