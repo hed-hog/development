@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import GridView from '@/components/custom/grid-view' // Importa o GridView
 import { IResponsiveColumn } from '@/types/responsive-columns'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { SkeletonCard } from './skeleton-card'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import { SearchField } from '../search-field'
@@ -38,7 +30,7 @@ const GridPanel = ({
   gap = 6,
   padding = 4,
   url,
-  itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
+  itemsPerPage: pageSizeOptions = [10, 20, 30, 40],
   className,
   selectedItems = [],
   render,
@@ -46,7 +38,7 @@ const GridPanel = ({
   ...props
 }: GridPanelProps) => {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(itemsPerPageOptions[0])
+  const [pageSize, setPageSize] = useState(pageSizeOptions[0])
   const [items, setItems] = useState<any[]>([])
   const [totalItems, setTotalItems] = useState(0)
   const [search, setSearch] = useState('')
@@ -75,12 +67,12 @@ const GridPanel = ({
   if (isLoading) {
     return (
       <GridView
-        data={Array.from({ length: itemsPerPageOptions[0] })}
+        data={Array.from({ length: pageSizeOptions[0] })}
         responsiveColumns={responsiveColumns}
         gap={gap}
         padding={padding}
         render={() => <SkeletonCard key={Math.random()} />}
-        itemsPerPage={itemsPerPageOptions}
+        itemsPerPage={pageSizeOptions}
         className={className}
         {...props}
       />
@@ -89,7 +81,7 @@ const GridPanel = ({
 
   return (
     <>
-      <div className='my-4'>
+      <div className='m-4'>
         <SearchField
           placeholder='Buscar...'
           value={search}
@@ -106,41 +98,24 @@ const GridPanel = ({
         gap={gap}
         padding={padding}
         render={render}
-        itemsPerPage={itemsPerPageOptions}
+        itemsPerPage={pageSizeOptions}
         className={className}
         {...props}
       />
 
-      <div
-        className={`mt-4 flex w-full items-center justify-between px-${padding}`}
-      >
-        <Select
-          value={pageSize.toString()}
-          onValueChange={(value) => setPageSize(Number(value))}
-        >
-          <SelectTrigger className='w-80'>
-            <SelectValue placeholder={`Itens por página: ${pageSize}`} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {itemsPerPageOptions.map((option) => (
-                <SelectItem key={option} value={option.toString()}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <PaginationView
-          page={page}
-          pageSize={pageSize}
-          total={totalItems}
-          variant='default'
-          maxPages={maxPages}
-          onPageChange={(page) => setPage(page)}
-        />
-      </div>
+      <PaginationView
+        page={page}
+        pageSize={pageSize}
+        total={totalItems}
+        variant='default'
+        maxPages={maxPages}
+        onPageChange={(page) => setPage(page)}
+        pageSizeOptions={pageSizeOptions}
+        onPageSizeChange={(value) => {
+          setPageSize(Number(value))
+          setPage(1)
+        }}
+      />
 
       {Boolean(selectedItems.length) && (
         <div className={`px-${padding} my-4`}>

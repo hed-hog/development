@@ -7,7 +7,16 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '../ui/pagination'
+} from '@/components/ui/pagination'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { IconChevronsLeft, IconChevronsRight } from '@tabler/icons-react'
 
 export type PaginationViewProps = {
   variant: 'default' | 'compact'
@@ -15,15 +24,19 @@ export type PaginationViewProps = {
   page: number
   total: number
   pageSize: number
+  pageSizeOptions: number[]
   onPageChange?: (page: number) => void
+  onPageSizeChange?: (value: string) => void
 }
 
 export const PaginationView = ({
   maxPages = 3,
   page,
-  variant,
+  variant = 'default',
   onPageChange,
+  onPageSizeChange,
   pageSize,
+  pageSizeOptions,
   total,
 }: PaginationViewProps) => {
   const [pages, setPages] = useState<number[]>([])
@@ -54,73 +67,151 @@ export const PaginationView = ({
   }, [page, totalPages])
 
   return (
-    <Pagination className='mx-0 w-fit'>
-      <PaginationContent>
-        <PaginationItem
-          className={
-            page <= 1 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
-          }
-          onClick={() => page > 1 && handlerPageChange(page - 1)}
-        >
-          <PaginationPrevious />
-        </PaginationItem>
+    <div className={`mt-4 flex w-full items-center justify-between px-4`}>
+      <Select value={pageSize.toString()} onValueChange={onPageSizeChange}>
+        <SelectTrigger className='w-80'>
+          <SelectValue placeholder={`Itens por página: ${pageSize}`} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {pageSizeOptions.map((option) => (
+              <SelectItem key={option} value={option.toString()}>
+                {option}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
 
-        {page > 1 && !pages.includes(1) && (
-          <PaginationItem
-            className='cursor-pointer'
-            onClick={() => handlerPageChange(1)}
-          >
-            <PaginationLink isActive={1 === page}>1</PaginationLink>
-          </PaginationItem>
-        )}
+      {variant === 'default' ? (
+        <Pagination className='mx-0 w-fit'>
+          <PaginationContent>
+            <PaginationItem
+              className={
+                page <= 1 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+              }
+              onClick={() => page > 1 && handlerPageChange(page - 1)}
+            >
+              <PaginationPrevious />
+            </PaginationItem>
 
-        {page > 2 && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
+            {page > 1 && !pages.includes(1) && (
+              <PaginationItem
+                className='cursor-pointer'
+                onClick={() => handlerPageChange(1)}
+              >
+                <PaginationLink isActive={1 === page}>1</PaginationLink>
+              </PaginationItem>
+            )}
 
-        {pages.map((p) => (
-          <PaginationItem
-            className='cursor-pointer'
-            onClick={() => handlerPageChange(p)}
-          >
-            <PaginationLink isActive={p === page}>{p}</PaginationLink>
-          </PaginationItem>
-        ))}
-
-        {totalPages > maxPages && (
-          <>
-            {totalPages - (page + maxPages) > 0 && (
+            {page > 2 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
             )}
 
-            <PaginationItem
-              className='cursor-pointer'
-              onClick={() => handlerPageChange(totalPages)}
-            >
-              <PaginationLink isActive={totalPages === page}>
-                {totalPages}
-              </PaginationLink>
-            </PaginationItem>
-          </>
-        )}
+            {pages.map((p) => (
+              <PaginationItem
+                className='cursor-pointer'
+                onClick={() => handlerPageChange(p)}
+              >
+                <PaginationLink isActive={p === page}>{p}</PaginationLink>
+              </PaginationItem>
+            ))}
 
-        <PaginationItem
-          className={
-            page >= totalPages
-              ? 'cursor-not-allowed opacity-50'
-              : 'cursor-pointer'
-          }
-          onClick={() => {
-            page < totalPages && handlerPageChange(page + 1)
-          }}
-        >
-          <PaginationNext />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+            {totalPages > maxPages && (
+              <>
+                {totalPages - (page + maxPages) > 0 && (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                )}
+
+                <PaginationItem
+                  className='cursor-pointer'
+                  onClick={() => handlerPageChange(totalPages)}
+                >
+                  <PaginationLink isActive={totalPages === page}>
+                    {totalPages}
+                  </PaginationLink>
+                </PaginationItem>
+              </>
+            )}
+
+            <PaginationItem
+              className={
+                page >= totalPages
+                  ? 'cursor-not-allowed opacity-50'
+                  : 'cursor-pointer'
+              }
+              onClick={() => {
+                page < totalPages && handlerPageChange(page + 1)
+              }}
+            >
+              <PaginationNext />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      ) : (
+        <>
+          <span>
+            Página {page} de {totalPages}
+          </span>
+          <Pagination className='mx-0 w-fit'>
+            <PaginationContent>
+              <PaginationItem
+                className={
+                  page <= 2 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+                }
+                onClick={() => page > 2 && handlerPageChange(page - 2)}
+              >
+                <IconChevronsLeft
+                  className='h-6 w-6'
+                  style={{ strokeWidth: 1 }}
+                />
+              </PaginationItem>
+
+              <PaginationItem
+                className={
+                  page <= 1 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+                }
+                onClick={() => page > 1 && handlerPageChange(page - 1)}
+              >
+                <PaginationPrevious />
+              </PaginationItem>
+
+              <PaginationItem
+                className={
+                  page >= totalPages
+                    ? 'cursor-not-allowed opacity-50'
+                    : 'cursor-pointer'
+                }
+                onClick={() => {
+                  page < totalPages && handlerPageChange(page + 1)
+                }}
+              >
+                <PaginationNext />
+              </PaginationItem>
+
+              <PaginationItem
+                className={
+                  page >= totalPages - 1
+                    ? 'cursor-not-allowed opacity-50'
+                    : 'cursor-pointer'
+                }
+                onClick={() =>
+                  page < totalPages - 1 && handlerPageChange(page + 2)
+                }
+              >
+                <IconChevronsRight
+                  className='h-6 w-6'
+                  style={{ strokeWidth: 1 }}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </>
+      )}
+    </div>
   )
 }
