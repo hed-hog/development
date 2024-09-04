@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import GridView from '@/components/custom/grid-view'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
-import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import { PaginationView } from './pagination-view'
 import ListControls from './list-controls'
 import { IStyleOption } from '@/types/style-options'
 import { ISelectOption } from '@/types/select-options'
 import { IPaginationOption } from '@/types/pagination-options'
+import { usePagination } from '@/hooks/use-pagination'
 
 interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
@@ -42,37 +42,19 @@ const GridPanel = ({
   selectOptions,
   ...props
 }: GridPanelProps) => {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(
-    paginationOptions?.pageSizeOptions[0]
-  )
-  const [items, setItems] = useState<any[]>([])
-  const [totalItems, setTotalItems] = useState(0)
-  const [search, setSearch] = useState('')
+  const {
+    isLoading,
+    items,
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
+    search,
+    setSearch,
+    totalItems,
+  } = usePagination({ url, id, paginationOptions, selectOptions })
 
   const [filterSelected, setFilterSelected] = useState<boolean>(false)
-
-  const { data, isLoading, refetch } = usePaginationFetch({
-    url,
-    page,
-    pageSize,
-    search,
-    queryKey: id,
-  })
-
-  useEffect(() => {
-    if (data) {
-      setItems(data.data)
-      setTotalItems(data.total)
-      setPage(data.page)
-      setPageSize(data.pageSize)
-    }
-  }, [data])
-
-  useEffect(() => {
-    if (selectOptions?.setIsAllSelected) selectOptions?.setIsAllSelected(false)
-    refetch()
-  }, [pageSize, page, search, refetch])
 
   if (isLoading) {
     return (

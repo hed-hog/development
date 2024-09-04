@@ -166,9 +166,11 @@ export const PaginationView = ({
             <PaginationContent>
               <PaginationItem
                 className={
-                  page <= 2 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+                  page === 1
+                    ? 'cursor-not-allowed opacity-50'
+                    : 'cursor-pointer'
                 }
-                onClick={() => page > 2 && handlerPageChange(page - 2)}
+                onClick={() => page !== 1 && handlerPageChange(1)}
               >
                 <IconChevronsLeft
                   className='h-6 w-6'
@@ -200,12 +202,12 @@ export const PaginationView = ({
 
               <PaginationItem
                 className={
-                  page >= totalPages - 1
+                  page === totalPages
                     ? 'cursor-not-allowed opacity-50'
                     : 'cursor-pointer'
                 }
                 onClick={() =>
-                  page < totalPages - 1 && handlerPageChange(page + 2)
+                  page !== totalPages && handlerPageChange(totalPages)
                 }
               >
                 <IconChevronsRight

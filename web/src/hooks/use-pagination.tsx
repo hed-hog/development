@@ -1,85 +1,60 @@
-import {
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-} from '@/components/ui/pagination'
 import { useEffect, useState } from 'react'
+import { usePaginationFetch } from './use-pagination-fetch'
+import { IPaginationOption } from '@/types/pagination-options'
+import { ISelectOption } from '@/types/select-options'
 
-type PaginationProps = {
-  page: number
-  pageSize: number
-  total: number
+type UsePaginationProps = {
+  selectOptions?: ISelectOption
+  paginationOptions?: IPaginationOption
+  url: string
+  id: string
 }
 
-type IPaginationHook = {
-  totalPages: number
-  handlePageChange: (page: number) => void
-  handlePageSizeChange: (value: string) => void
-  renderPaginationButtons: (totalPages: number) => JSX.Element[]
-} & PaginationProps
+export const usePagination = ({
+  id,
+  url,
+  selectOptions,
+  paginationOptions,
+}: UsePaginationProps) => {
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(
+    paginationOptions?.pageSizeOptions[0] || 10
+  )
+  const [items, setItems] = useState<any[]>([])
+  const [totalItems, setTotalItems] = useState(0)
+  const [search, setSearch] = useState('')
 
-export const usePagination = (props: PaginationProps): IPaginationHook => {
-  const [page, setPage] = useState<number>(props.page)
-  const [pageSize, setPageSize] = useState<number>(props.pageSize)
-
-  const handlePageChange = (page: number) => {
-    setPage(page)
-  }
-
-  const handlePageSizeChange = (value: string) => {
-    setPageSize(Number(value))
-    setPage(1) // Reset page to 1 when items per page changes
-  }
-
-  const [totalPages, setTotalPages] = useState<number>(props.total / pageSize)
+  const { data, isLoading, refetch } = usePaginationFetch({
+    url,
+    page,
+    pageSize,
+    search,
+    queryKey: id,
+  })
 
   useEffect(() => {
-    setTotalPages(Math.ceil(props.total / pageSize))
-  }, [pageSize, props.total])
-
-  const MAX_BUTTONS = 3
-
-  const renderPaginationButtons = () => {
-    const buttons = []
-    let startPage = Math.max(page - Math.floor(MAX_BUTTONS / 2), 1)
-    let endPage = Math.min(startPage + MAX_BUTTONS - 1, totalPages)
-
-    if (endPage - startPage < MAX_BUTTONS - 1) {
-      startPage = Math.max(endPage - MAX_BUTTONS + 1, 1)
+    if (data) {
+      setItems(data.data)
+      setTotalItems(data.total)
+      setPage(data.page)
+      setPageSize(data.pageSize)
     }
+  }, [data])
 
-    for (let i = startPage; i <= endPage; i++) {
-      buttons.push(
-        <PaginationItem key={i}>
-          <PaginationLink
-            onClick={(e) => {
-              e.preventDefault()
-              handlePageChange(i)
-            }}
-            isActive={page === i}
-          >
-            {i}
-          </PaginationLink>
-        </PaginationItem>
-      )
-    }
-
-    if (endPage < totalPages) {
-      buttons.push(
-        <PaginationItem key='next'>
-          <PaginationEllipsis />
-        </PaginationItem>
-      )
-    }
-
-    return buttons
-  }
+  useEffect(() => {
+    if (selectOptions?.setIsAllSelected) selectOptions?.setIsAllSelected(false)
+    refetch()
+  }, [pageSize, page, search, refetch])
 
   return {
-    ...props,
-    totalPages,
-    handlePageChange,
-    handlePageSizeChange,
-    renderPaginationButtons,
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
+    items,
+    totalItems,
+    isLoading,
+    search,
+    setSearch,
   }
 }
