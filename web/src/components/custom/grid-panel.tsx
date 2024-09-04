@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import GridView from '@/components/custom/grid-view' // Importa o GridView
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import { SearchField } from '../search-field'
 import { PaginationView } from './pagination-view'
+import { Checkbox } from '../ui/checkbox'
 
 interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
@@ -15,6 +16,9 @@ interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   pageSizeOptions?: number[]
   selectedItems?: any[]
   render: (item: any, index: number) => JSX.Element
+  handleSelectAll?: (data: any[]) => void
+  isAllSelected?: boolean
+  setIsAllSelected?: Dispatch<SetStateAction<boolean>>
   maxPages?: number
 }
 
@@ -32,8 +36,11 @@ const GridPanel = ({
   url,
   pageSizeOptions = [10, 20, 30, 40],
   className,
-  selectedItems = [],
+  selectedItems,
   render,
+  isAllSelected,
+  handleSelectAll,
+  setIsAllSelected,
   maxPages = 3,
   ...props
 }: GridPanelProps) => {
@@ -42,6 +49,8 @@ const GridPanel = ({
   const [items, setItems] = useState<any[]>([])
   const [totalItems, setTotalItems] = useState(0)
   const [search, setSearch] = useState('')
+
+  const [filterSelected, setFilterSelected] = useState<boolean>(false)
 
   const { data, isLoading, refetch } = usePaginationFetch({
     url,
@@ -61,6 +70,7 @@ const GridPanel = ({
   }, [data])
 
   useEffect(() => {
+    if (setIsAllSelected) setIsAllSelected(false)
     refetch()
   }, [pageSize, page, search, refetch])
 
@@ -80,7 +90,7 @@ const GridPanel = ({
 
   return (
     <>
-      <div className='m-4'>
+      <div className='m-4 flex flex-col gap-4'>
         <SearchField
           placeholder='Buscar...'
           value={search}
@@ -89,10 +99,21 @@ const GridPanel = ({
             setPage(1)
           }}
         />
+        {selectedItems && (
+          <div className='flex items-center gap-x-2'>
+            <Checkbox
+              checked={isAllSelected}
+              onCheckedChange={() => {
+                if (handleSelectAll) handleSelectAll(items)
+              }}
+            />
+            <span>Selecionar tudo</span>
+          </div>
+        )}
       </div>
 
       <GridView
-        data={items}
+        data={filterSelected && selectedItems ? selectedItems : items}
         responsiveColumns={responsiveColumns}
         gap={gap}
         padding={padding}
@@ -115,10 +136,11 @@ const GridPanel = ({
         }}
       />
 
-      {Boolean(selectedItems.length) && (
+      {Boolean(selectedItems) && (
         <div className={`px-${padding} my-4`}>
           <p
             className={`cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
+            onClick={() => setFilterSelected(!filterSelected)}
           >
             {(selectedItems ?? []).length} itens selecionados
           </p>

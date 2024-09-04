@@ -158,6 +158,9 @@ export default function PickerPanel({
             padding={padding}
             responsiveColumns={responsiveColumns}
             selectedItems={filteredData}
+            setIsAllSelected={setIsAllSelected}
+            isAllSelected={isAllSelected}
+            handleSelectAll={handleSelectAll}
           />
         ) : (
           <ListPanel
@@ -168,6 +171,9 @@ export default function PickerPanel({
             render={renderWithCheckbox}
             padding={padding}
             selectedItems={filteredData}
+            setIsAllSelected={setIsAllSelected}
+            isAllSelected={isAllSelected}
+            handleSelectAll={handleSelectAll}
           />
         )}
         <CardFooter className={`flex w-full justify-end px-${padding} py-4`}>
