@@ -12,7 +12,7 @@ interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: number
   padding?: number
   url: string
-  itemsPerPage?: number[]
+  pageSizeOptions?: number[]
   selectedItems?: any[]
   render: (item: any, index: number) => JSX.Element
   maxPages?: number
@@ -30,7 +30,7 @@ const GridPanel = ({
   gap = 6,
   padding = 4,
   url,
-  itemsPerPage: pageSizeOptions = [10, 20, 30, 40],
+  pageSizeOptions = [10, 20, 30, 40],
   className,
   selectedItems = [],
   render,

@@ -197,7 +197,8 @@ export default function MyForm() {
   // table-panel
   const tablePanelColumns = [
     { key: 'id', header: 'ID' },
-    { key: 'title', header: 'Título' },
+    { key: 'name', header: 'Nome' },
+    { key: 'email', header: 'Email' },
   ]
 
   const handleRowClick = (row: Record<string, any>) => {
@@ -413,29 +414,9 @@ export default function MyForm() {
 
   return (
     <>
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
-        GridPanel
-      </h1>
-      <GridPanel
-        id={'grid-users'}
-        render={(item: any) => (
-          <div key={item.id} className='rounded border border-gray-300 p-4'>
-            <h3 className='text-lg font-semibold'>{item.name}</h3>
-            <p>{item.email}</p>
-          </div>
-        )}
-        url='/users'
-        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-        gap={6}
-        padding={4}
-        itemsPerPage={[10, 20, 30, 40]}
-      />
-    </>
-  )
-
-  return (
-    <>
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
         FormPanel
       </h1>
       <Card className='mx-auto w-[620px]'>
@@ -459,7 +440,9 @@ export default function MyForm() {
           />
         </CardContent>
       </Card>
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
         TableView
       </h1>
       <Card className='mx-auto w-[620px]'>
@@ -474,7 +457,9 @@ export default function MyForm() {
           />
         </CardContent>
       </Card>
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
         TablePanel
       </h1>
       <Card className='mx-auto w-[800px]'>
@@ -490,7 +475,27 @@ export default function MyForm() {
           />
         </CardContent>
       </Card>
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        GridPanel
+      </h1>
+      <GridPanel
+        id={'grid-users'}
+        render={(item: any) => (
+          <div key={item.id} className='rounded border border-gray-300 p-4'>
+            <h3 className='text-lg font-semibold'>{item.name}</h3>
+            <p>{item.email}</p>
+          </div>
+        )}
+        url='/users'
+        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+        gap={6}
+        padding={4}
+        pageSizeOptions={[10, 20, 30, 40]}
+      />
+      {/* <h1 style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}>
         EditableTableView (property version)
       </h1>
       <Card className='mx-auto w-[900px]'>
@@ -503,7 +508,7 @@ export default function MyForm() {
           />
         </CardContent>
       </Card>
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}>
         EditableTableView (full version)
       </h1>
       <Card className='mx-auto w-[900px]'>
@@ -516,7 +521,7 @@ export default function MyForm() {
         </CardContent>
       </Card>
       <div className='p-6'>
-        <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+        <h1 style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}>
           GridView
         </h1>
         <GridView
@@ -539,16 +544,16 @@ export default function MyForm() {
           itemsPerPage={[10, 20, 30, 40]}
         />
       </div>
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}>
         DraggableListView
       </h1>
       <DraggableListView data={draggableListViewItems} />
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}>
         TreeView
       </h1>
       <TreeView data={treeData} />
 
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}>
         PickerPanel (grid mode)
       </h1>
       <PickerPanel
@@ -566,7 +571,7 @@ export default function MyForm() {
         )}
       />
 
-      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '24px 0' }}>
+      <h1 style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}>
         PickerPanel (table mode)
       </h1>
       <PickerPanel
@@ -577,7 +582,7 @@ export default function MyForm() {
           { key: 'email', header: 'Email' },
         ]}
         sortable
-      />
+      /> */}
     </>
   )
 }

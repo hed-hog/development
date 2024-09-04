@@ -1,22 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationNext,
-} from '@/components/ui/pagination'
-import { usePagination } from '@/hooks/use-pagination'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import TableView from './table-view'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { PaginationView } from './pagiation-view'
+import { SearchField } from '../search-field'
 
 interface ITablePanelProps {
   id: string
@@ -38,6 +24,7 @@ interface ITablePanelProps {
   itemsPerPage?: number[]
   selectedItems?: any[]
   setIsAllSelected?: Dispatch<SetStateAction<boolean>>
+  maxPages?: number
 }
 
 const TablePanel = ({
@@ -48,25 +35,22 @@ const TablePanel = ({
   onRowClick,
   rowActions = [],
   caption,
-  itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
+  itemsPerPage: pageSizeOptions = [10, 20, 30, 40],
   selectedItems,
   setIsAllSelected,
+  maxPages = 3,
 }: ITablePanelProps) => {
-  const totalItems = 5000 // Esse valor virá da API
-
-  const {
-    page,
-    pageSize,
-    totalPages,
-    handlePageChange,
-    handlePageSizeChange,
-    renderPaginationButtons,
-  } = usePagination(totalItems)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(pageSizeOptions[0])
+  const [items, setItems] = useState<any[]>([])
+  const [totalItems, setTotalItems] = useState(0)
+  const [search, setSearch] = useState('')
 
   const { data, isLoading, refetch } = usePaginationFetch({
     url,
     page,
     pageSize,
+    search,
     queryKey: id,
   })
 
@@ -75,7 +59,16 @@ const TablePanel = ({
   useEffect(() => {
     if (setIsAllSelected) setIsAllSelected(false)
     refetch()
-  }, [page, refetch])
+  }, [page, refetch, search, pageSize])
+
+  useEffect(() => {
+    if (data) {
+      setItems(data.data)
+      setTotalItems(data.total)
+      setPage(data.page)
+      setPageSize(data.pageSize)
+    }
+  }, [data])
 
   if (isLoading) {
     return (
@@ -93,9 +86,19 @@ const TablePanel = ({
 
   return (
     <>
+      <div className='relative my-4'>
+        <SearchField
+          placeholder='Buscar...'
+          value={search}
+          onSearch={(value) => {
+            setSearch(value)
+            setPage(1)
+          }}
+        />
+      </div>
       <TableView
         columns={columns}
-        data={filterSelected ? selectedItems : data}
+        data={filterSelected && selectedItems ? selectedItems : items}
         sortable={sortable}
         caption={caption}
         onRowClick={onRowClick}
@@ -107,47 +110,20 @@ const TablePanel = ({
         }))}
         isLoading={isLoading}
       />
-      <div className='mt-4 flex w-full items-center justify-between'>
-        <Select
-          value={pageSize.toString()}
-          onValueChange={handlePageSizeChange}
-        >
-          <SelectTrigger className='w-80'>
-            <SelectValue placeholder={`Itens por página: ${pageSize}`} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {itemsPerPageOptions.map((option) => (
-                <SelectItem key={option} value={option.toString()}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <Pagination className='mx-0 w-fit'>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={(e) => {
-                  e.preventDefault()
-                  handlePageChange(Math.max(page - 1, 1))
-                }}
-              />
-            </PaginationItem>
-            {renderPaginationButtons(totalPages)}
-            <PaginationItem>
-              <PaginationNext
-                onClick={(e) => {
-                  e.preventDefault()
-                  handlePageChange(Math.min(page + 1, totalPages))
-                }}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <PaginationView
+        page={page}
+        pageSize={pageSize}
+        total={totalItems}
+        variant='default'
+        maxPages={maxPages}
+        onPageChange={(page) => setPage(page)}
+        pageSizeOptions={pageSizeOptions}
+        onPageSizeChange={(value) => {
+          setPageSize(Number(value))
+          setPage(1)
+        }}
+        padding={0}
+      />
 
       {Boolean(rowActions.filter((row) => row.isCheckbox).length) && (
         <div className='my-4'>

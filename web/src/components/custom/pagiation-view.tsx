@@ -27,6 +27,7 @@ export type PaginationViewProps = {
   pageSizeOptions: number[]
   onPageChange?: (page: number) => void
   onPageSizeChange?: (value: string) => void
+  padding?: number
 }
 
 export const PaginationView = ({
@@ -38,6 +39,7 @@ export const PaginationView = ({
   pageSize,
   pageSizeOptions,
   total,
+  padding = 4,
 }: PaginationViewProps) => {
   const [pages, setPages] = useState<number[]>([])
   const totalPages = Math.ceil(total / pageSize)
@@ -67,7 +69,9 @@ export const PaginationView = ({
   }, [page, totalPages])
 
   return (
-    <div className={`mt-4 flex w-full items-center justify-between px-4`}>
+    <div
+      className={`mt-4 flex w-full items-center justify-between px-${padding}`}
+    >
       <Select value={pageSize.toString()} onValueChange={onPageSizeChange}>
         <SelectTrigger className='w-80'>
           <SelectValue placeholder={`Itens por página: ${pageSize}`} />
