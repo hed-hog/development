@@ -11,11 +11,13 @@ interface ListPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   padding?: number
   url: string
   pageSizeOptions?: number[]
-  selectedItems?: any[]
   render: (item: any, index: number) => JSX.Element
-  setIsAllSelected?: Dispatch<SetStateAction<boolean>>
-  handleSelectAll?: (data: any[]) => void
-  isAllSelected?: boolean
+  selectOptions?: {
+    selectedItems?: any[]
+    setIsAllSelected?: Dispatch<SetStateAction<boolean>>
+    handleSelectAll?: (data: any[]) => void
+    isAllSelected?: boolean
+  }
   maxPages?: number
 }
 
@@ -26,11 +28,8 @@ const ListPanel = ({
   url,
   pageSizeOptions = [10, 20, 30, 40],
   className,
-  selectedItems,
   render,
-  isAllSelected,
-  handleSelectAll,
-  setIsAllSelected,
+  selectOptions,
   maxPages = 3,
   ...props
 }: ListPanelProps) => {
@@ -60,7 +59,7 @@ const ListPanel = ({
   }, [data])
 
   useEffect(() => {
-    if (setIsAllSelected) setIsAllSelected(false)
+    if (selectOptions?.setIsAllSelected) selectOptions?.setIsAllSelected(false)
     refetch()
   }, [pageSize, page, search, refetch])
 
@@ -82,13 +81,17 @@ const ListPanel = ({
       data={items}
       search={search}
       setSearch={setSearch}
-      isAllSelected={isAllSelected}
-      handleSelectAll={handleSelectAll}
-      selectedItems={selectedItems}
+      isAllSelected={selectOptions?.isAllSelected}
+      handleSelectAll={selectOptions?.handleSelectAll}
+      selectedItems={selectOptions?.selectedItems}
       onFilterToggle={() => setFilterSelected(!filterSelected)}
     >
       <ListView
-        data={filterSelected && selectedItems ? selectedItems : items}
+        data={
+          filterSelected && selectOptions?.selectedItems
+            ? selectOptions?.selectedItems
+            : items
+        }
         gap={gap}
         padding={padding}
         render={render}

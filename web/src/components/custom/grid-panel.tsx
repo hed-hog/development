@@ -13,12 +13,14 @@ interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   padding?: number
   url: string
   pageSizeOptions?: number[]
-  selectedItems?: any[]
   render: (item: any, index: number) => JSX.Element
-  handleSelectAll?: (data: any[]) => void
-  isAllSelected?: boolean
-  setIsAllSelected?: Dispatch<SetStateAction<boolean>>
   maxPages?: number
+  selectOptions?: {
+    selectedItems?: any[]
+    handleSelectAll?: (data: any[]) => void
+    isAllSelected?: boolean
+    setIsAllSelected?: Dispatch<SetStateAction<boolean>>
+  }
 }
 
 const GridPanel = ({
@@ -35,11 +37,8 @@ const GridPanel = ({
   url,
   pageSizeOptions = [10, 20, 30, 40],
   className,
-  selectedItems,
   render,
-  isAllSelected,
-  handleSelectAll,
-  setIsAllSelected,
+  selectOptions,
   maxPages = 3,
   ...props
 }: GridPanelProps) => {
@@ -69,7 +68,7 @@ const GridPanel = ({
   }, [data])
 
   useEffect(() => {
-    if (setIsAllSelected) setIsAllSelected(false)
+    if (selectOptions?.setIsAllSelected) selectOptions?.setIsAllSelected(false)
     refetch()
   }, [pageSize, page, search, refetch])
 
@@ -92,13 +91,17 @@ const GridPanel = ({
       data={items}
       search={search}
       setSearch={setSearch}
-      isAllSelected={isAllSelected}
-      handleSelectAll={handleSelectAll}
-      selectedItems={selectedItems}
+      isAllSelected={selectOptions?.isAllSelected}
+      handleSelectAll={selectOptions?.handleSelectAll}
+      selectedItems={selectOptions?.selectedItems}
       onFilterToggle={() => setFilterSelected(!filterSelected)}
     >
       <GridView
-        data={filterSelected && selectedItems ? selectedItems : items}
+        data={
+          filterSelected && selectOptions?.selectedItems
+            ? selectOptions?.selectedItems
+            : items
+        }
         responsiveColumns={responsiveColumns}
         gap={gap}
         padding={padding}

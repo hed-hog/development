@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import GridPanel from '@/components/custom/grid-panel'
-import ListPanel from '@/components/custom/list-panel' // Importe o ListPanel
+import ListPanel from '@/components/custom/list-panel'
 import { Button } from '@/components/custom/button'
 import TablePanel from './table-panel'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -16,9 +16,9 @@ import {
 
 interface IPickerPanelProps {
   url: string
-  type: 'grid' | 'table' | 'list' // Adicione o novo tipo "list"
+  type: 'grid' | 'table' | 'list'
   responsiveColumns?: IResponsiveColumn
-  render?: (item: any) => JSX.Element // Função de renderização personalizada
+  render?: (item: any) => JSX.Element
   pageSizeOptions?: number[]
   title?: string
   subtitle?: string
@@ -123,8 +123,8 @@ export default function PickerPanel({
       label: (row: any) => <Checkbox checked={selectedIds.includes(row.id)} />,
       onClick: (row: any) => handleCheckboxChange(row, row.id),
       isCheckbox: true,
-      isAllSelected: isAllSelected,
-      handleSelectAll: handleSelectAll,
+      isAllSelected,
+      handleSelectAll,
     },
   ]
 
@@ -142,7 +142,7 @@ export default function PickerPanel({
             url={url}
             caption={caption}
             sortable={sortable}
-            pageSizeOptions={pageSizeOptions} // Opções de itens por página
+            pageSizeOptions={pageSizeOptions}
             rowActions={rowActions}
             onRowClick={(row) => handleCheckboxChange(row, row.id)}
             selectedItems={filteredData}
@@ -157,10 +157,12 @@ export default function PickerPanel({
             render={renderWithCheckbox}
             padding={padding}
             responsiveColumns={responsiveColumns}
-            selectedItems={filteredData}
-            setIsAllSelected={setIsAllSelected}
-            isAllSelected={isAllSelected}
-            handleSelectAll={handleSelectAll}
+            selectOptions={{
+              selectedItems: filteredData,
+              setIsAllSelected,
+              isAllSelected,
+              handleSelectAll,
+            }}
           />
         ) : (
           <ListPanel
@@ -170,10 +172,12 @@ export default function PickerPanel({
             url={url}
             render={renderWithCheckbox}
             padding={padding}
-            selectedItems={filteredData}
-            setIsAllSelected={setIsAllSelected}
-            isAllSelected={isAllSelected}
-            handleSelectAll={handleSelectAll}
+            selectOptions={{
+              selectedItems: filteredData,
+              setIsAllSelected,
+              isAllSelected,
+              handleSelectAll,
+            }}
           />
         )}
         <CardFooter className={`flex w-full justify-end px-${padding} py-4`}>
