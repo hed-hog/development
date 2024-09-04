@@ -71,6 +71,58 @@ const router = createBrowserRouter([
             lazy: async () => ({
               Component: (await import('./pages/management/settings')).default,
             }),
+            errorElement: <GeneralError />,
+            children: [
+              {
+                index: true,
+                lazy: async () => ({
+                  Component: (
+                    await import('./pages/management/settings/profile')
+                  ).default,
+                }),
+              },
+              {
+                path: 'account',
+                lazy: async () => ({
+                  Component: (
+                    await import('./pages/management/settings/account')
+                  ).default,
+                }),
+              },
+              {
+                path: 'appearance',
+                lazy: async () => ({
+                  Component: (
+                    await import('./pages/management/settings/appearance')
+                  ).default,
+                }),
+              },
+              {
+                path: 'notifications',
+                lazy: async () => ({
+                  Component: (
+                    await import('./pages/management/settings/notifications')
+                  ).default,
+                }),
+              },
+              {
+                path: 'display',
+                lazy: async () => ({
+                  Component: (
+                    await import('./pages/management/settings/display')
+                  ).default,
+                }),
+              },
+              {
+                path: 'error-example',
+                lazy: async () => ({
+                  Component: (
+                    await import('./pages/management/settings/error-example')
+                  ).default,
+                }),
+                errorElement: <GeneralError className='h-[50svh]' minimal />,
+              },
+            ],
           },
         ],
       },

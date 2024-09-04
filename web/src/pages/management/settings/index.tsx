@@ -1,96 +1,87 @@
-import { ChangeEvent, useCallback, useState } from 'react'
+import { Outlet } from 'react-router-dom'
 import {
-  IconAdjustmentsHorizontal,
-  IconSortAscendingLetters,
-  IconSortDescendingLetters,
+  IconBrowserCheck,
+  IconExclamationCircle,
+  IconNotification,
+  IconPalette,
+  IconTool,
+  IconUser,
 } from '@tabler/icons-react'
 import { Layout } from '@/components/custom/layout'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
 import { SearchField } from '@/components/search-field'
+import { Separator } from '@/components/ui/separator'
 import ThemeSwitch from '@/components/theme-switch'
 import { UserNav } from '@/components/user-nav'
+import SidebarNav from './components/sidebar-nav'
+import { Helmet } from 'react-helmet'
 
-export default function Page() {
-  const [sort, setSort] = useState('ascending')
-  const [appType, setAppType] = useState('all')
-  const [searchTerm, setSearchTerm] = useState('')
-
+export default function Settings() {
   return (
     <Layout fixed>
+      <Helmet>
+        <title>Configurações - Hedhog</title>
+      </Helmet>
       {/* ===== Top Heading ===== */}
       <Layout.Header>
-        <div className='flex w-full items-center justify-between'>
-          <SearchField value={''} placeholder={''} />
-          <div className='flex items-center space-x-4'>
-            <ThemeSwitch />
-            <UserNav />
-          </div>
+        <SearchField />
+        <div className='ml-auto flex items-center space-x-4'>
+          <ThemeSwitch />
+          <UserNav />
         </div>
       </Layout.Header>
 
-      {/* ===== Content ===== */}
       <Layout.Body className='flex flex-col'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>
-            Grupos de Saída de Campo
+        <div className='space-y-0.5'>
+          <h1 className='text-2xl font-bold tracking-tight md:text-3xl'>
+            Configurações
           </h1>
           <p className='text-muted-foreground'>
-            Here&apos;s a list of your apps for the integration!
+            Gerencie as configurações do sistema e defina suas preferências.
           </p>
         </div>
-        <div className='my-4 flex items-end justify-between sm:my-0 sm:items-center'>
-          <div className='flex flex-col gap-4 sm:my-4 sm:flex-row'>
-            <Input
-              placeholder='Filter apps...'
-              className='h-9 w-40 lg:w-[250px]'
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Select value={appType} onValueChange={setAppType}>
-              <SelectTrigger className='w-36'>
-                <SelectValue>Lorem</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='all'>All Apps</SelectItem>
-                <SelectItem value='connected'>Connected</SelectItem>
-                <SelectItem value='notConnected'>Not Connected</SelectItem>
-              </SelectContent>
-            </Select>
+        <Separator className='my-4 lg:my-6' />
+        <div className='flex flex-1 flex-col space-y-8 md:space-y-2 md:overflow-hidden lg:flex-row lg:space-x-12 lg:space-y-0'>
+          <aside className='top-0 lg:sticky lg:w-1/5'>
+            <SidebarNav items={sidebarNavItems} />
+          </aside>
+          <div className='flex w-full p-1 pr-4 md:overflow-y-hidden'>
+            <Outlet />
           </div>
-
-          <Select value={sort} onValueChange={setSort}>
-            <SelectTrigger className='w-16'>
-              <SelectValue>
-                <IconAdjustmentsHorizontal size={18} />
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent align='end'>
-              <SelectItem value='ascending'>
-                <div className='flex items-center gap-4'>
-                  <IconSortAscendingLetters size={16} />
-                  <span>Ascending</span>
-                </div>
-              </SelectItem>
-              <SelectItem value='descending'>
-                <div className='flex items-center gap-4'>
-                  <IconSortDescendingLetters size={16} />
-                  <span>Descending</span>
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
         </div>
-        <Separator className='shadow' />
-        <ul className='faded-bottom no-scrollbar grid gap-4 overflow-auto pb-16 pt-4 md:grid-cols-2 lg:grid-cols-3'></ul>
       </Layout.Body>
     </Layout>
   )
 }
+
+const sidebarNavItems = [
+  {
+    title: 'Profile',
+    icon: <IconUser size={18} />,
+    href: '/management/settings',
+  },
+  {
+    title: 'Account',
+    icon: <IconTool size={18} />,
+    href: '/management/settings/account',
+  },
+  {
+    title: 'Appearance',
+    icon: <IconPalette size={18} />,
+    href: '/management/settings/appearance',
+  },
+  {
+    title: 'Notifications',
+    icon: <IconNotification size={18} />,
+    href: '/management/settings/notifications',
+  },
+  {
+    title: 'Display',
+    icon: <IconBrowserCheck size={18} />,
+    href: '/management/settings/display',
+  },
+  {
+    title: 'Error Example',
+    icon: <IconExclamationCircle size={18} />,
+    href: '/management/settings/error-example',
+  },
+]
