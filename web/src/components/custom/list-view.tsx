@@ -6,6 +6,7 @@ interface ListViewProps extends React.HTMLAttributes<HTMLDivElement> {
   render?: (item: any, index: number) => JSX.Element
   styleOptions?: IStyleOption
   multipleSelect?: boolean
+  onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
 }
 
 const ListView = ({

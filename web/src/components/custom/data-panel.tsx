@@ -31,6 +31,7 @@ type DataPanelType = {
     index: number,
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => void
+  onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
 } & React.HTMLAttributes<HTMLDivElement>
 
 export type DataPanelProps = DataPanelType &
@@ -80,6 +81,7 @@ export const DataPanel = ({
   onItemContextMenu,
   responsiveColumns,
   multipleSelect,
+  onSelectionChange,
   ...props
 }: DataPanelProps) => {
   const {
@@ -135,6 +137,7 @@ export const DataPanel = ({
               onItemClick={onItemClick}
               onItemContextMenu={onItemContextMenu}
               isLoading={isLoading}
+              onSelectionChange={onSelectionChange}
             />
           )}
         </>
@@ -162,6 +165,7 @@ export const DataPanel = ({
                 padding: styleOptions.padding,
               }}
               render={render}
+              onSelectionChange={onSelectionChange}
               {...props}
             />
           )}
@@ -192,6 +196,7 @@ export const DataPanel = ({
                 padding: styleOptions.padding,
               }}
               render={render}
+              onSelectionChange={onSelectionChange}
               {...props}
             />
           )}

@@ -434,10 +434,20 @@ export default function MyForm() {
       >
         DataPanel Table
       </h1>
+      <DataPanel id='data-panel-list-example' url='/users' layout='list' />
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        DataPanel Table Selectable
+      </h1>
       <DataPanel
         id='data-panel-table-example'
         url='/users'
         layout='table'
+        multipleSelect={true}
+        onSelectionChange={(selectedItems) => {
+          console.log('onSelectionChange', { selectedItems })
+        }}
         columns={[
           {
             key: 'id',
