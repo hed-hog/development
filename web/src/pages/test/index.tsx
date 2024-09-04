@@ -14,6 +14,7 @@ import { EnumFieldType } from '@/components/custom/field'
 import PickerPanel from '@/components/custom/picker-panel'
 import ListView from '@/components/custom/list-view'
 import ListPanel from '@/components/custom/list-panel'
+import { DataPanel } from '@/components/custom/data-panel'
 
 export default function MyForm() {
   // form
@@ -419,6 +420,60 @@ export default function MyForm() {
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
+        DataPanel Grid
+      </h1>
+      <DataPanel id='data-panel-grid-example' url='/users' />
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        DataPanel List
+      </h1>
+      <DataPanel id='data-panel-list-example' url='/users' layout='list' />
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        DataPanel Table
+      </h1>
+      <DataPanel
+        id='data-panel-table-example'
+        url='/users'
+        layout='table'
+        columns={[
+          {
+            key: 'id',
+            header: 'ID',
+          },
+          {
+            key: 'name',
+            header: 'Nome',
+          },
+          {
+            key: 'email',
+            header: 'Email',
+          },
+          {
+            actions: [
+              {
+                variant: 'ghost',
+                tooltip: 'Editar',
+                icon: <IconEdit />,
+                handler: (row: Record<string, any>) =>
+                  console.log('Editar', row),
+              },
+              {
+                variant: 'destructive',
+                tooltip: 'Excluir',
+                icon: <IconTrash />,
+                handler: (row: Record<string, any>) =>
+                  console.log('Excluir', row),
+              },
+            ],
+          },
+        ]}
+      />
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
         FormPanel
       </h1>
       <Card className='mx-auto w-[620px]'>
@@ -454,8 +509,7 @@ export default function MyForm() {
             data={data}
             sortable
             caption='Lista de Usuários'
-            onRowClick={handleRowClick}
-            rowActions={rowActions}
+            onItemClick={handleRowClick}
           />
         </CardContent>
       </Card>

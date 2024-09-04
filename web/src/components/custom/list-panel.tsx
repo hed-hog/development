@@ -11,7 +11,7 @@ import { usePagination } from '@/hooks/use-pagination'
 interface ListPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
   url: string
-  render: (item: any, index: number) => JSX.Element
+  render?: (item: Record<string, any>, index: number) => JSX.Element
   styleOptions?: IStyleOption
   paginationOptions?: IPaginationOption
   selectOptions?: ISelectOption

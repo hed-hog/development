@@ -65,8 +65,7 @@ const TablePanel = ({
         data={[]}
         sortable={sortable}
         caption={caption}
-        onRowClick={onRowClick}
-        rowActions={rowActions}
+        onItemClick={onRowClick}
         isLoading={isLoading}
       />
     )
@@ -93,13 +92,7 @@ const TablePanel = ({
         }
         sortable={sortable}
         caption={caption}
-        onRowClick={onRowClick}
-        rowActions={rowActions.map((action) => ({
-          ...action,
-          handleSelectAll: action.handleSelectAll
-            ? () => (action.handleSelectAll as any)(items)
-            : undefined,
-        }))}
+        onItemClick={onRowClick}
         isLoading={isLoading}
       />
       <PaginationView

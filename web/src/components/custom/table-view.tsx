@@ -9,25 +9,33 @@ import {
   TableCaption,
 } from '@/components/ui/table'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Checkbox } from '../ui/checkbox'
+import { ITableColumn } from '@/types/table-column'
+import { Button } from './button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip'
 
 interface ITableViewProps {
-  columns: Array<{
-    key: string
-    header: string
-  }>
+  columns: ITableColumn[]
   data: Array<Record<string, any>>
   sortable?: boolean
   isLoading?: boolean
-  onRowClick?: (row: Record<string, any>) => void
-  rowActions?: Array<{
-    label: (row: Record<string, any>) => string | JSX.Element
-    onClick: (row: Record<string, any>) => void
-    isCheckbox?: boolean
-    isAllSelected?: boolean
-    handleSelectAll?: (data: any[]) => void
-  }>
+  multipleSelect?: boolean
+  onItemClick?: (
+    row: Record<string, any>,
+    index: number,
+    e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
+  ) => void
+  onItemContextMenu?: (
+    row: Record<string, any>,
+    index: number,
+    e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
+  ) => void
   caption?: string
+  render?: (item: Record<string, any>, index: number) => JSX.Element
 }
 
 const TableView = ({
@@ -35,9 +43,63 @@ const TableView = ({
   data,
   sortable = false,
   isLoading = false,
-  onRowClick,
-  rowActions = [],
+  onItemClick,
+  onItemContextMenu,
   caption,
+  render = (row: Record<string, any>, rowIndex: number) => {
+    return (
+      <TableRow
+        key={rowIndex}
+        onClick={(event) => {
+          if (typeof onItemClick === 'function') {
+            onItemClick(row, rowIndex, event)
+          }
+        }}
+        onContextMenu={(event) => {
+          if (typeof onItemContextMenu === 'function')
+            onItemContextMenu(row, rowIndex, event)
+        }}
+      >
+        {columns.map((col, index) => {
+          return col && 'key' in col ? (
+            <TableCell key={`${col.key}-${index}`}>{row[col.key]}</TableCell>
+          ) : (
+            <TableCell key={`actions-${index}`}>
+              <div className='grid auto-cols-max grid-flow-col gap-1'>
+                {col.actions.map(
+                  ({ handler, icon, tooltip, ...props }, actionIndex) => (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            key={actionIndex}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              if (typeof handler === 'function') {
+                                handler(row, actionIndex, e)
+                              }
+                            }}
+                            {...props}
+                          >
+                            {icon}
+                          </Button>
+                        </TooltipTrigger>
+                        {tooltip && (
+                          <TooltipContent>
+                            <p>{tooltip}</p>
+                          </TooltipContent>
+                        )}
+                      </Tooltip>
+                    </TooltipProvider>
+                  )
+                )}
+              </div>
+            </TableCell>
+          )
+        })}
+      </TableRow>
+    )
+  },
 }: ITableViewProps) => {
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
@@ -66,26 +128,14 @@ const TableView = ({
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
         <TableRow>
-          {rowActions
-            .filter((action) => action.isCheckbox)
-            .map((action, actionIndex) => (
-              <TableHead key={actionIndex} className='p-0'>
-                <Checkbox
-                  checked={action.isAllSelected}
-                  onCheckedChange={() => {
-                    if (action.handleSelectAll) action.handleSelectAll(data)
-                  }}
-                />
-              </TableHead>
-            ))}
           {columns.map((col) => (
             <TableHead
-              key={col.key}
-              onClick={() => sortable && handleSort(col.key)}
+              key={'key' in col ? col.key : 'actions'}
+              onClick={() => 'key' in col && sortable && handleSort(col.key)}
               className={sortable ? 'cursor-pointer' : ''}
             >
-              {col.header}{' '}
-              {sortable && sortColumn === col.key && (
+              {'header' in col ? col.header : ' '}
+              {'key' in col && sortable && sortColumn === col.key && (
                 <span>{sortDirection === 'asc' ? '🔼' : '🔽'}</span>
               )}
             </TableHead>
@@ -97,64 +147,15 @@ const TableView = ({
           ? Array.from({ length: 10 }).map((_, index) => (
               <TableRow key={index}>
                 {columns.map((col) => (
-                  <TableCell key={`${col.key}-${index}`}>
+                  <TableCell
+                    key={`skeleton-${'key' in col ? col.key : 'actions'}-${index}`}
+                  >
                     <Skeleton className='h-8 w-full' />
                   </TableCell>
                 ))}
-                {rowActions.length > 0 && (
-                  <TableCell>
-                    <Skeleton className='h-8 w-full' />
-                  </TableCell>
-                )}
               </TableRow>
             ))
-          : (sortedData ?? []).map((row, rowIndex) => (
-              <TableRow
-                key={rowIndex}
-                onClick={() => onRowClick && onRowClick(row)}
-              >
-                {rowActions.filter((action) => action.isCheckbox).length >
-                  0 && (
-                  <TableCell style={{ padding: '0.5rem 0' }}>
-                    {rowActions
-                      .filter((action) => action.isCheckbox)
-                      .map((action, actionIndex) => (
-                        <button
-                          key={actionIndex}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            action.onClick(row)
-                          }}
-                          className='btn-action'
-                        >
-                          {action.label(row)}
-                        </button>
-                      ))}
-                  </TableCell>
-                )}
-                {columns.map((col) => (
-                  <TableCell key={col.key}>{row[col.key]}</TableCell>
-                ))}
-                {rowActions.length > 0 && (
-                  <TableCell style={{ padding: '0.5rem 0' }}>
-                    {rowActions
-                      .filter((action) => !action.isCheckbox)
-                      .map((action, actionIndex) => (
-                        <button
-                          key={actionIndex}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            action.onClick(row)
-                          }}
-                          className='btn-action'
-                        >
-                          {action.label(row)}
-                        </button>
-                      ))}
-                  </TableCell>
-                )}
-              </TableRow>
-            ))}
+          : (sortedData ?? []).map(render)}
       </TableBody>
     </Table>
   )

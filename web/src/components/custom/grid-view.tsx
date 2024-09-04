@@ -5,8 +5,9 @@ import { IStyleOption } from '@/types/style-options'
 interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
   responsiveColumns?: IResponsiveColumn
   data: any[]
-  render: (item: any, index: number) => JSX.Element
+  render?: (item: Record<number, any>, index: number) => JSX.Element
   styleOptions?: IStyleOption
+  multipleSelect?: boolean
 }
 
 const GridView = ({
@@ -22,7 +23,11 @@ const GridView = ({
     padding: 4,
   },
   data = [],
-  render,
+  render = (item: any, index: number) => (
+    <div>
+      {index}. {item?.name ?? item?.title ?? JSON.stringify(item)}
+    </div>
+  ),
   className,
   ...props
 }: GridViewProps) => {

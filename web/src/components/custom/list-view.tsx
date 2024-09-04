@@ -3,8 +3,9 @@ import React from 'react'
 
 interface ListViewProps extends React.HTMLAttributes<HTMLDivElement> {
   data: any[]
-  render: (item: any, index: number) => JSX.Element
+  render?: (item: any, index: number) => JSX.Element
   styleOptions?: IStyleOption
+  multipleSelect?: boolean
 }
 
 const ListView = ({
@@ -13,7 +14,11 @@ const ListView = ({
     padding: 4,
   },
   data = [],
-  render,
+  render = (item: any, index: number) => (
+    <div>
+      {index}. {item?.name ?? item?.title ?? JSON.stringify(item)}
+    </div>
+  ),
   className,
   ...props
 }: ListViewProps) => {
