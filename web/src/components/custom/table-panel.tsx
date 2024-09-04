@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import TableView from './table-view'
-import { PaginationView } from './pagiation-view'
+import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
 
 interface ITablePanelProps {

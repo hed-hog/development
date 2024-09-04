@@ -4,7 +4,7 @@ import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
 import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
 import { SearchField } from '../search-field'
-import { PaginationView } from './pagiation-view'
+import { PaginationView } from './pagination-view'
 
 interface GridPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
