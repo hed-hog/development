@@ -567,42 +567,6 @@ export default function MyForm() {
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
-        PickerPanel (grid mode)
-      </h1>
-      <PickerPanel
-        url='/users'
-        type='grid'
-        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-        gap={6}
-        padding={4}
-        pageSizeOptions={[10, 20, 30, 40]}
-        render={(item: any) => (
-          <div key={item.id}>
-            <h3 className='text-lg font-semibold'>{item.name}</h3>
-            <p>{item.email}</p>
-          </div>
-        )}
-      />
-
-      <h1
-        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
-      >
-        PickerPanel (table mode)
-      </h1>
-      <PickerPanel
-        url='/users'
-        type='table'
-        columns={[
-          { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
-          { key: 'email', header: 'Email' },
-        ]}
-        sortable
-      />
-
-      <h1
-        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
-      >
         ListView
       </h1>
       <ListView
@@ -649,6 +613,61 @@ export default function MyForm() {
           </div>
         )}
         maxPages={5}
+      />
+
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        PickerPanel (grid mode)
+      </h1>
+      <PickerPanel
+        url='/users'
+        type='grid'
+        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+        gap={6}
+        padding={4}
+        pageSizeOptions={[10, 20, 30, 40]}
+        render={(item: any) => (
+          <div key={item.id}>
+            <h3 className='text-lg font-semibold'>{item.name}</h3>
+            <p>{item.email}</p>
+          </div>
+        )}
+      />
+
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        PickerPanel (table mode)
+      </h1>
+      <PickerPanel
+        url='/users'
+        type='table'
+        columns={[
+          { key: 'id', header: 'ID' },
+          { key: 'name', header: 'Name' },
+          { key: 'email', header: 'Email' },
+        ]}
+        sortable
+      />
+
+      <h1
+        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
+      >
+        PickerPanel (list mode)
+      </h1>
+      <PickerPanel
+        url='/users'
+        type='list'
+        pageSizeOptions={[5, 10, 20]}
+        padding={4}
+        gap={8}
+        render={(item: any) => (
+          <div key={item.id}>
+            <h3 className='text-lg font-semibold'>{item.name}</h3>
+            <p>{item.email}</p>
+          </div>
+        )}
       />
     </>
   )

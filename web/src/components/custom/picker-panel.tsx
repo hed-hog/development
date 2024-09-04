@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import GridPanel from '@/components/custom/grid-panel'
+import ListPanel from '@/components/custom/list-panel' // Importe o ListPanel
 import { Button } from '@/components/custom/button'
 import TablePanel from './table-panel'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -15,7 +16,7 @@ import {
 
 interface IPickerPanelProps {
   url: string
-  type: 'grid' | 'table'
+  type: 'grid' | 'table' | 'list' // Adicione o novo tipo "list"
   responsiveColumns?: IResponsiveColumn
   render?: (item: any) => JSX.Element // Função de renderização personalizada
   pageSizeOptions?: number[]
@@ -147,7 +148,7 @@ export default function PickerPanel({
             selectedItems={filteredData}
             setIsAllSelected={setIsAllSelected}
           />
-        ) : (
+        ) : type === 'grid' ? (
           <GridPanel
             id={id}
             pageSizeOptions={pageSizeOptions}
@@ -156,6 +157,16 @@ export default function PickerPanel({
             render={renderWithCheckbox}
             padding={padding}
             responsiveColumns={responsiveColumns}
+            selectedItems={filteredData}
+          />
+        ) : (
+          <ListPanel
+            id={id}
+            pageSizeOptions={pageSizeOptions}
+            gap={gap}
+            url={url}
+            render={renderWithCheckbox}
+            padding={padding}
             selectedItems={filteredData}
           />
         )}
