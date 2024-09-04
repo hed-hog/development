@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { usePaginationFetch } from '@/hooks/use-pagination-fetch'
+import { useState } from 'react'
 import TableView from './table-view'
 import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
 import { ITableColumn } from '@/types/table-column'
 import { ISelectOption } from '@/types/select-options'
 import { IPaginationOption } from '@/types/pagination-options'
+import { usePagination } from '@/hooks/use-pagination'
 
 interface ITablePanelProps {
   id: string
@@ -39,37 +39,24 @@ const TablePanel = ({
   },
   selectOptions,
 }: ITablePanelProps) => {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(
-    paginationOptions?.pageSizeOptions[0]
-  )
-  const [items, setItems] = useState<any[]>([])
-  const [totalItems, setTotalItems] = useState(0)
-  const [search, setSearch] = useState('')
-
-  const { data, isLoading, refetch } = usePaginationFetch({
-    url,
+  const {
+    isLoading,
+    items,
     page,
+    setPage,
     pageSize,
+    setPageSize,
     search,
-    queryKey: id,
+    setSearch,
+    totalItems,
+  } = usePagination({
+    url,
+    id,
+    paginationOptions,
+    selectOptions,
   })
 
   const [filterSelected, setFilterSelected] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (selectOptions?.setIsAllSelected) selectOptions?.setIsAllSelected(false)
-    refetch()
-  }, [page, refetch, search, pageSize])
-
-  useEffect(() => {
-    if (data) {
-      setItems(data.data)
-      setTotalItems(data.total)
-      setPage(data.page)
-      setPageSize(data.pageSize)
-    }
-  }, [data])
 
   if (isLoading) {
     return (
