@@ -72,7 +72,6 @@ const GridPanel = ({
         gap={gap}
         padding={padding}
         render={() => <SkeletonCard key={Math.random()} />}
-        itemsPerPage={pageSizeOptions}
         className={className}
         {...props}
       />
@@ -98,7 +97,6 @@ const GridPanel = ({
         gap={gap}
         padding={padding}
         render={render}
-        itemsPerPage={pageSizeOptions}
         className={className}
         {...props}
       />

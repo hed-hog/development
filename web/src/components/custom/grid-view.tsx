@@ -7,7 +7,6 @@ interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
   padding?: number
   data: any[]
   render: (item: any, index: number) => JSX.Element
-  itemsPerPage?: number[]
 }
 
 const GridView = ({
@@ -20,7 +19,6 @@ const GridView = ({
   },
   gap = 6,
   padding = 4,
-  itemsPerPage: itemsPerPageOptions = [10, 20, 30, 40],
   data = [],
   render,
   className,
@@ -32,7 +30,6 @@ const GridView = ({
 
   const gridItems = (data ?? []).map(render)
 
-  // Atualiza o número de colunas com base no tamanho da tela
   const updateColumnsBasedOnScreenSize = () => {
     if (window.innerWidth >= 1280) {
       setGridColumns(responsiveColumns.xl || responsiveColumns.default)
@@ -43,11 +40,9 @@ const GridView = ({
     } else if (window.innerWidth >= 640) {
       setGridColumns(responsiveColumns.sm || responsiveColumns.default)
     } else {
-      setGridColumns(1) // Coluna única para telas pequenas
+      setGridColumns(1)
     }
   }
-
-  // Função para filtrar os dados com base no termo de pesquisa
 
   useEffect(() => {
     updateColumnsBasedOnScreenSize()

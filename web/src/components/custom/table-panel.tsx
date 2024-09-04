@@ -21,7 +21,7 @@ interface ITablePanelProps {
     handleSelectAll?: (data: any[]) => void
   }>
   caption?: string
-  itemsPerPage?: number[]
+  pageSizeOptions?: number[]
   selectedItems?: any[]
   setIsAllSelected?: Dispatch<SetStateAction<boolean>>
   maxPages?: number
@@ -35,7 +35,7 @@ const TablePanel = ({
   onRowClick,
   rowActions = [],
   caption,
-  itemsPerPage: pageSizeOptions = [10, 20, 30, 40],
+  pageSizeOptions = [10, 20, 30, 40],
   selectedItems,
   setIsAllSelected,
   maxPages = 3,

@@ -497,7 +497,6 @@ export default function MyForm() {
         )}
         gap={6}
         padding={4}
-        itemsPerPage={[10, 20, 30, 40]}
       />
 
       <h1
@@ -574,7 +573,7 @@ export default function MyForm() {
         responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
         gap={6}
         padding={4}
-        itemsPerPage={[10, 20, 30, 40]}
+        pageSizeOptions={[10, 20, 30, 40]}
         render={(item: any) => (
           <div key={item.id}>
             <h3 className='text-lg font-semibold'>{item.name}</h3>

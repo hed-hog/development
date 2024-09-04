@@ -18,7 +18,7 @@ interface IPickerPanelProps {
   type: 'grid' | 'table'
   responsiveColumns?: IResponsiveColumn
   render?: (item: any) => JSX.Element // Função de renderização personalizada
-  itemsPerPage?: number[]
+  pageSizeOptions?: number[]
   title?: string
   subtitle?: string
   gap?: number
@@ -41,7 +41,7 @@ export default function PickerPanel({
   },
   url,
   type,
-  itemsPerPage: pageSizeOptions = [10, 20, 30, 40],
+  pageSizeOptions = [10, 20, 30, 40],
   title = 'Picker Panel',
   subtitle = "Select items from the list below. Click save when you're done.",
   columns,
@@ -141,7 +141,7 @@ export default function PickerPanel({
             url={url}
             caption={caption}
             sortable={sortable}
-            itemsPerPage={[10, 20, 30, 40]} // Opções de itens por página
+            pageSizeOptions={pageSizeOptions} // Opções de itens por página
             rowActions={rowActions}
             onRowClick={(row) => handleCheckboxChange(row, row.id)}
             selectedItems={filteredData}
