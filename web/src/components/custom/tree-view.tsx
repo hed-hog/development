@@ -9,6 +9,7 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 import { GripVertical } from 'lucide-react'
+import TreeContextMenu from './tree-context-menu'
 
 interface TreeNode {
   id: string
@@ -285,20 +286,20 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
             backgroundColor: '#020817',
           }}
         >
-          <div
-            className='relative flex w-32 cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+          <TreeContextMenu
+            icon={
+              <IconPlus className='ml-auto w-[20px] text-muted-foreground' />
+            }
+            title='Add'
             onClick={() => handleMenuAction('add')}
-          >
-            <span>Add</span>
-            <IconPlus className='ml-auto w-[20px] text-muted-foreground' />
-          </div>
-          <div
-            className='relative flex w-32 cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+          />
+          <TreeContextMenu
+            icon={
+              <IconTrash className='ml-auto w-[20px] text-muted-foreground' />
+            }
+            title='Remove'
             onClick={() => handleMenuAction('remove')}
-          >
-            <span>Remove</span>
-            <IconTrash className='ml-auto w-[20px] text-muted-foreground' />
-          </div>
+          />
         </div>
       )}
     </DragDropContext>
