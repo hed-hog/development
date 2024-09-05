@@ -417,9 +417,8 @@ export default function MyForm() {
             hasSearch
             multipleSelect
             render={(item: any, index: number) => {
-              console.log(item.name)
               return (
-                <div key={index} className='rounded border border-gray-300 p-4'>
+                <div key={index} className='p-4'>
                   <h3 className='text-lg font-semibold'>{item.name}</h3>
                   <p>{item.email}</p>
                 </div>

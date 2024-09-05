@@ -6,11 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function objectToString(obj: any) {
-  return 'name' in obj
-    ? obj.name
-    : 'title' in obj
-      ? obj.title
-      : 'email' in obj
-        ? obj.email
-        : JSON.stringify(obj, null, 2)
+  return obj
+    ? 'name' in obj
+      ? obj.name
+      : 'title' in obj
+        ? obj.title
+        : 'email' in obj
+          ? obj.email
+          : JSON.stringify(obj, null, 2)
+    : String(obj)
 }
