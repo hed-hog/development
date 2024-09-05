@@ -21,6 +21,7 @@ type DataPanelType = {
   styleOptions?: IStyleOption
   multipleSelect?: boolean
   hasSearch?: boolean
+  itemClassName?: string
   onItemClick?: (
     row: Record<string, any>,
     index: number,
@@ -81,6 +82,7 @@ export const DataPanel = ({
   onItemContextMenu,
   responsiveColumns,
   multipleSelect,
+  itemClassName,
   onSelectionChange,
   ...props
 }: DataPanelProps) => {
@@ -125,10 +127,12 @@ export const DataPanel = ({
               caption={caption}
               onItemClick={onItemClick}
               isLoading={isLoading}
+              itemClassName={itemClassName}
               {...props}
             />
           ) : (
             <TableView
+              itemClassName={itemClassName}
               multipleSelect={multipleSelect}
               columns={columns as ITableColumn[]}
               data={items}
@@ -146,6 +150,7 @@ export const DataPanel = ({
         <>
           {isLoading ? (
             <ListView
+              itemClassName={itemClassName}
               data={Array.from({
                 length: paginationOptions?.pageSizeOptions[0] ?? 10,
               })}
@@ -158,6 +163,7 @@ export const DataPanel = ({
             />
           ) : (
             <ListView
+              itemClassName={itemClassName}
               multipleSelect={multipleSelect}
               data={items}
               styleOptions={{
@@ -175,6 +181,7 @@ export const DataPanel = ({
         <>
           {isLoading ? (
             <GridView
+              itemClassName={itemClassName}
               data={Array.from({
                 length: paginationOptions?.pageSizeOptions[0] ?? 10,
               })}
@@ -188,6 +195,7 @@ export const DataPanel = ({
             />
           ) : (
             <GridView
+              itemClassName={itemClassName}
               multipleSelect={multipleSelect}
               data={items}
               responsiveColumns={responsiveColumns}

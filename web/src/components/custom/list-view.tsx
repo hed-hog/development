@@ -12,6 +12,7 @@ interface ListViewProps extends React.HTMLAttributes<HTMLDivElement> {
   styleOptions?: IStyleOption
   multipleSelect?: boolean
   onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
+  itemClassName?: string
 }
 
 const ListView = ({
@@ -24,6 +25,7 @@ const ListView = ({
   multipleSelect,
   onSelectionChange,
   className,
+  itemClassName,
   ...props
 }: ListViewProps) => {
   const [_data, set_data] = useState<SelectableItem<Record<string, any>>[]>([])
@@ -70,6 +72,7 @@ const ListView = ({
     <div
       key={item.id}
       className={[
+        itemClassName ?? '',
         'flex flex-row items-center truncate py-2 hover:bg-muted/50',
         selectedItems.includes(item.id) && 'bg-muted/30',
         typeof multipleSelect === 'boolean' && 'cursor-pointer',

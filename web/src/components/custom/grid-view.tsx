@@ -24,6 +24,7 @@ type GridViewProps<T> = {
     index: number,
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => void
+  itemClassName?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 const GridView = <T extends any>({
@@ -45,6 +46,7 @@ const GridView = <T extends any>({
   className,
   onItemClick,
   onItemContextMenu,
+  itemClassName,
   ...props
 }: GridViewProps<T>) => {
   const [gridColumns, setGridColumns] = useState<number>(
@@ -116,12 +118,17 @@ const GridView = <T extends any>({
     }
   }, [selectedItems])
 
+  if (!render) {
+    render = (item: T) => <div>{objectToString(item)}</div>
+  }
+
   // Renderizar os itens da grid com o Checkbox, se `multipleSelect` for boolean
   const gridItems = _data.map((item, index) => (
     <div
       key={item.id}
       style={{ marginBottom: `${styleOptions.gap / 4}rem` }}
       className={[
+        itemClassName ?? '',
         'relative truncate p-2 pl-8 hover:bg-muted/50',
         selectedItems.includes(item.id) && 'bg-muted/30',
         (typeof multipleSelect === 'boolean' ||
