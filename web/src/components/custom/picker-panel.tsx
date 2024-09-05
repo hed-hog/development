@@ -56,11 +56,13 @@ export default function PickerPanel({
   render,
 }: IPickerPanelProps) {
   const id = `${url}-picker-panel`
-  const [selectedIds, setSelectedIds] = useState<number[]>([])
+  const [selectedIds, setSelectedIds] = useState<
+    (string | Record<string, any>)[]
+  >([])
   const [isAllSelected, setIsAllSelected] = useState(false)
   const [filteredData, setFilteredData] = useState<any[]>([])
 
-  const handleCheckboxChange = (row: any, id: number) => {
+  const handleCheckboxChange = (row: any, id: string) => {
     setSelectedIds((prevSelectedIds) => {
       const isAlreadySelected = prevSelectedIds.includes(id)
       const updatedSelectedIds = isAlreadySelected
@@ -121,16 +123,6 @@ export default function PickerPanel({
     )
   }
 
-  const rowActions = [
-    {
-      label: (row: any) => <Checkbox checked={selectedIds.includes(row.id)} />,
-      onClick: (row: any) => handleCheckboxChange(row, row.id),
-      isCheckbox: true,
-      isAllSelected,
-      handleSelectAll,
-    },
-  ]
-
   return (
     <Card className='mx-auto max-w-[95%]'>
       <CardContent className='w-full overflow-auto'>
@@ -145,7 +137,10 @@ export default function PickerPanel({
             url={url}
             caption={caption}
             sortable={sortable}
-            rowActions={rowActions}
+            multipleSelect={true}
+            onSelectionChange={(selectedItems) => {
+              setSelectedIds((prevIds) => [...prevIds, ...selectedItems])
+            }}
             onRowClick={(row) => handleCheckboxChange(row, row.id)}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,

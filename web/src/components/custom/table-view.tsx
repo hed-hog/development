@@ -141,7 +141,7 @@ const TableView = ({
               onItemContextMenu(row.data, rowIndex, event)
           }}
         >
-          {typeof multipleSelect === 'boolean' && (
+          {typeof multipleSelect === 'boolean' && multipleSelect && (
             <TableCell>
               <Checkbox
                 checked={selectedRows.includes(row.id)}
@@ -200,7 +200,7 @@ const TableView = ({
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
         <TableRow>
-          {typeof multipleSelect === 'boolean' && (
+          {typeof multipleSelect === 'boolean' && multipleSelect && (
             <TableHead>
               <Checkbox
                 checked={selectedRows.length === _data.length}

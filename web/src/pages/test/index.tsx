@@ -208,19 +208,6 @@ export default function MyForm() {
     console.log('Linha clicada:', row)
   }
 
-  const rowActions = [
-    {
-      isCheckbox: false,
-      label: () => <IconEdit color='orange' />,
-      onClick: (row: Record<string, any>) => console.log('Editar', row),
-    },
-    {
-      isCheckbox: false,
-      label: () => <IconTrash color='#c4212e' />,
-      onClick: (row: Record<string, any>) => console.log('Excluir', row),
-    },
-  ]
-
   // role based access control
   const initialData = [
     {
@@ -422,65 +409,117 @@ export default function MyForm() {
       >
         DataPanel Grid
       </h1>
-      <DataPanel id='data-panel-grid-example' url='/users' />
+      <Card className='mx-auto w-[1000px]'>
+        <CardContent>
+          <DataPanel id='data-panel-grid-example' url='/users' />
+        </CardContent>
+      </Card>
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
         DataPanel List
       </h1>
-      <DataPanel id='data-panel-list-example' url='/users' layout='list' />
+      <Card className='mx-auto w-[1000px]'>
+        <CardContent>
+          <DataPanel id='data-panel-list-example' url='/users' layout='list' />
+        </CardContent>
+      </Card>
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
         DataPanel Table
       </h1>
-      <DataPanel id='data-panel-list-example' url='/users' layout='list' />
+      <Card className='mx-auto w-[1000px]'>
+        <CardContent>
+          <DataPanel
+            id='data-panel-list-example'
+            url='/users'
+            layout='table'
+            columns={[
+              {
+                key: 'id',
+                header: 'ID',
+              },
+              {
+                key: 'name',
+                header: 'Nome',
+              },
+              {
+                key: 'email',
+                header: 'Email',
+              },
+              {
+                actions: [
+                  {
+                    variant: 'ghost',
+                    tooltip: 'Editar',
+                    icon: <IconEdit />,
+                    handler: (row: Record<string, any>) =>
+                      console.log('Editar', row),
+                  },
+                  {
+                    variant: 'ghost',
+                    tooltip: 'Excluir',
+                    icon: <IconTrash className='text-red-700' />,
+                    handler: (row: Record<string, any>) =>
+                      console.log('Excluir', row),
+                  },
+                ],
+              },
+            ]}
+          />
+        </CardContent>
+      </Card>
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
         DataPanel Table Selectable
       </h1>
-      <DataPanel
-        id='data-panel-table-example'
-        url='/users'
-        layout='table'
-        multipleSelect={true}
-        onSelectionChange={(selectedItems) => {
-          console.log('onSelectionChange', { selectedItems })
-        }}
-        columns={[
-          {
-            key: 'id',
-            header: 'ID',
-          },
-          {
-            key: 'name',
-            header: 'Nome',
-          },
-          {
-            key: 'email',
-            header: 'Email',
-          },
-          {
-            actions: [
+      <Card className='mx-auto w-[1000px]'>
+        <CardContent>
+          <DataPanel
+            id='data-panel-table-example'
+            url='/users'
+            layout='table'
+            multipleSelect={true}
+            onSelectionChange={(selectedItems) => {
+              console.log('onSelectionChange', { selectedItems })
+            }}
+            columns={[
               {
-                variant: 'ghost',
-                tooltip: 'Editar',
-                icon: <IconEdit />,
-                handler: (row: Record<string, any>) =>
-                  console.log('Editar', row),
+                key: 'id',
+                header: 'ID',
               },
               {
-                variant: 'destructive',
-                tooltip: 'Excluir',
-                icon: <IconTrash />,
-                handler: (row: Record<string, any>) =>
-                  console.log('Excluir', row),
+                key: 'name',
+                header: 'Nome',
               },
-            ],
-          },
-        ]}
-      />
+              {
+                key: 'email',
+                header: 'Email',
+              },
+              {
+                actions: [
+                  {
+                    variant: 'ghost',
+                    tooltip: 'Editar',
+                    icon: <IconEdit />,
+                    handler: (row: Record<string, any>) =>
+                      console.log('Editar', row),
+                  },
+                  {
+                    variant: 'destructive',
+                    tooltip: 'Excluir',
+                    icon: <IconTrash />,
+                    handler: (row: Record<string, any>) =>
+                      console.log('Excluir', row),
+                  },
+                ],
+              },
+            ]}
+          />
+        </CardContent>
+      </Card>
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
@@ -528,7 +567,7 @@ export default function MyForm() {
       >
         TablePanel
       </h1>
-      <Card className='mx-auto w-[800px]'>
+      <Card className='mx-auto w-[1000px]'>
         <CardContent>
           <TablePanel
             id='table-users'
@@ -537,7 +576,6 @@ export default function MyForm() {
             sortable
             caption='Lista de Usuários'
             onRowClick={handleRowClick}
-            rowActions={rowActions}
           />
         </CardContent>
       </Card>

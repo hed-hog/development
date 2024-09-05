@@ -12,14 +12,9 @@ interface ITablePanelProps {
   url: string
   sortable?: boolean
   onRowClick?: (row: Record<string, any>) => void
-  rowActions?: Array<{
-    label: (row: Record<string, any>) => string | JSX.Element
-    onClick: (row: Record<string, any>) => void
-    isCheckbox?: boolean
-    isAllSelected?: boolean
-    handleSelectAll?: (data: any[]) => void
-  }>
   caption?: string
+  multipleSelect?: boolean
+  onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
   columns: ITableColumn[]
   paginationOptions?: IPaginationOption
   selectOptions?: ISelectOption
@@ -31,8 +26,9 @@ const TablePanel = ({
   url,
   sortable = false,
   onRowClick,
-  rowActions = [],
   caption,
+  onSelectionChange,
+  multipleSelect = false,
   paginationOptions = {
     pageSizeOptions: [10, 20, 30, 40],
     maxPages: 3,
@@ -84,16 +80,14 @@ const TablePanel = ({
         />
       </div>
       <TableView
-        columns={columns}
-        data={
-          filterSelected && selectOptions?.selectedItems
-            ? selectOptions?.selectedItems
-            : items
-        }
+        multipleSelect={multipleSelect}
+        onSelectionChange={onSelectionChange}
+        columns={columns as ITableColumn[]}
+        data={items}
         sortable={sortable}
         caption={caption}
-        onItemClick={onRowClick}
         isLoading={isLoading}
+        onItemClick={onRowClick}
       />
       <PaginationView
         page={page}
@@ -110,7 +104,7 @@ const TablePanel = ({
         padding={0}
       />
 
-      {Boolean(rowActions.filter((row) => row.isCheckbox).length) && (
+      {Boolean(multipleSelect) && (
         <div className='my-4'>
           <p
             className={`cursor-pointer text-sm ${(selectOptions?.selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
