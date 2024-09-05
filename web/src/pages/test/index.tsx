@@ -418,7 +418,7 @@ export default function MyForm() {
             multipleSelect
             render={(item: any, index: number) => {
               return (
-                <div key={index} className='p-4'>
+                <div>
                   <h3 className='text-lg font-semibold'>{item.name}</h3>
                   <p>{item.email}</p>
                 </div>

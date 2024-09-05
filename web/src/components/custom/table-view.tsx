@@ -22,31 +22,28 @@ import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectableItem } from '@/types/selectable-item'
 
-interface ITableViewProps {
+interface ITableViewProps<T> {
   columns: ITableColumn[]
-  data: Array<Record<string, any>>
+  data: T[]
   sortable?: boolean
   isLoading?: boolean
   multipleSelect?: boolean
   onItemClick?: (
-    row: Record<string, any>,
+    row: T,
     index: number,
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => void
   onItemContextMenu?: (
-    row: Record<string, any>,
+    row: T,
     index: number,
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => void
   caption?: string
-  render?: (
-    item: SelectableItem<Record<string, any>>,
-    index: number
-  ) => JSX.Element
-  onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
+  render?: (item: SelectableItem<T>, index: number) => JSX.Element
+  onSelectionChange?: (selectedItems: T[]) => void
 }
 
-const TableView = ({
+const TableView = <T extends any>({
   onSelectionChange,
   multipleSelect,
   columns,
@@ -57,10 +54,10 @@ const TableView = ({
   onItemContextMenu,
   caption,
   render,
-}: ITableViewProps) => {
-  const [_data, set_data] = useState<SelectableItem<Record<string, any>>[]>([])
+}: ITableViewProps<T>) => {
+  const [_data, set_data] = useState<SelectableItem<T>[]>([])
 
-  const [selectedRows, setSelectedRows] = useState<string[]>([])
+  const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
@@ -77,43 +74,43 @@ const TableView = ({
   const sortedData = React.useMemo(() => {
     if (!sortColumn) return _data
     return [..._data].sort((a, b) => {
-      if (a.data[sortColumn] < b.data[sortColumn])
+      if ((a.data as any)[sortColumn] < (b.data as any)[sortColumn])
         return sortDirection === 'asc' ? -1 : 1
-      if (a.data[sortColumn] > b.data[sortColumn])
+      if ((a.data as any)[sortColumn] > (b.data as any)[sortColumn])
         return sortDirection === 'asc' ? 1 : -1
       return 0
     })
   }, [_data, sortColumn, sortDirection])
 
-  const toggleSelectRow = useCallback(
-    (row: SelectableItem<Record<string, any>>) => {
+  const toggleSelectItem = useCallback(
+    (row: SelectableItem<T>) => {
       const id = row.id
-      const isSelected = selectedRows.includes(id)
+      const isSelected = selectedItems.includes(id)
 
-      const updateSelectedRows = (newSelectedRows: any[]) => {
-        setSelectedRows(newSelectedRows)
+      const updateSelectedItems = (newSelectedItems: any[]) => {
+        setSelectedItems(newSelectedItems)
       }
 
       if (multipleSelect) {
-        updateSelectedRows(
+        updateSelectedItems(
           isSelected
-            ? selectedRows.filter((item) => item !== id)
-            : [...selectedRows, id]
+            ? selectedItems.filter((item) => item !== id)
+            : [...selectedItems, id]
         )
       } else {
-        updateSelectedRows(isSelected ? [] : [id])
+        updateSelectedItems(isSelected ? [] : [id])
       }
     },
-    [selectedRows, multipleSelect]
+    [selectedItems, multipleSelect]
   )
 
-  const selectAllRows = useCallback(() => {
-    if (selectedRows.length === _data.length) {
-      setSelectedRows([])
+  const selectAllItems = useCallback(() => {
+    if (selectedItems.length === _data.length) {
+      setSelectedItems([])
     } else {
-      setSelectedRows(_data.map((row) => row.id))
+      setSelectedItems(_data.map((row) => row.id))
     }
-  }, [_data, selectedRows])
+  }, [_data, selectedItems])
 
   useEffect(() => {
     set_data(
@@ -128,31 +125,31 @@ const TableView = ({
     if (typeof onSelectionChange === 'function') {
       onSelectionChange(
         _data
-          .filter((row) => selectedRows.includes(row.id))
+          .filter((row) => selectedItems.includes(row.id))
           .map((row) => row.data)
       )
     }
-  }, [selectedRows])
+  }, [selectedItems])
 
   if (!render) {
-    render = (row: SelectableItem<Record<string, any>>, rowIndex: number) => {
+    render = (row: SelectableItem<T>, index: number) => {
       return (
         <TableRow
-          key={rowIndex}
+          key={index}
           onClick={(event) => {
             if (typeof multipleSelect === 'boolean') {
-              toggleSelectRow(row)
+              toggleSelectItem(row)
             }
             if (typeof onItemClick === 'function') {
-              onItemClick(row.data, rowIndex, event)
+              onItemClick(row.data, index, event)
             }
           }}
           onContextMenu={(event) => {
             if (typeof onItemContextMenu === 'function')
-              onItemContextMenu(row.data, rowIndex, event)
+              onItemContextMenu(row.data, index, event)
           }}
           className={[
-            selectedRows.includes(row.id) && 'bg-muted/30',
+            selectedItems.includes(row.id) && 'bg-muted/30',
             (typeof multipleSelect === 'boolean' ||
               typeof onItemClick === 'function') &&
               'cursor-pointer',
@@ -160,13 +157,13 @@ const TableView = ({
         >
           {typeof multipleSelect === 'boolean' && (
             <TableCell>
-              <Checkbox checked={selectedRows.includes(row.id)} />
+              <Checkbox checked={selectedItems.includes(row.id)} />
             </TableCell>
           )}
           {columns.map((col, index) => {
             return col && 'key' in col ? (
               <TableCell key={`${col.key}-${index}`}>
-                {row.data[col.key]}
+                {(row.data as any)[col.key]}
               </TableCell>
             ) : (
               <TableCell key={`actions-${index}`}>
@@ -217,8 +214,8 @@ const TableView = ({
             <TableHead>
               <Checkbox
                 style={{ display: multipleSelect ? 'flex' : 'none' }}
-                checked={selectedRows.length === _data.length}
-                onCheckedChange={() => selectAllRows()}
+                checked={selectedItems.length === _data.length}
+                onCheckedChange={() => selectAllItems()}
               />
             </TableHead>
           )}

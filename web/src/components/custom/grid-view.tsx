@@ -14,6 +14,16 @@ type GridViewProps<T> = {
   styleOptions?: IStyleOption
   multipleSelect?: boolean
   onSelectionChange?: (selectedItems: T[]) => void
+  onItemClick?: (
+    row: T,
+    index: number,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => void
+  onItemContextMenu?: (
+    row: T,
+    index: number,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => void
 } & React.HTMLAttributes<HTMLDivElement>
 
 const GridView = <T extends any>({
@@ -25,14 +35,16 @@ const GridView = <T extends any>({
     xl: 5,
   },
   styleOptions = {
-    gap: 6,
-    padding: 4,
+    gap: 0,
+    padding: 0,
   },
   data = [],
   render,
   multipleSelect,
   onSelectionChange,
   className,
+  onItemClick,
+  onItemContextMenu,
   ...props
 }: GridViewProps<T>) => {
   const [gridColumns, setGridColumns] = useState<number>(
@@ -109,13 +121,26 @@ const GridView = <T extends any>({
     <div
       key={item.id}
       style={{ marginBottom: `${styleOptions.gap / 4}rem` }}
-      className='relative'
+      className={[
+        'relative truncate p-2 pl-8 hover:bg-muted/50',
+        selectedItems.includes(item.id) && 'bg-muted/30',
+        (typeof multipleSelect === 'boolean' ||
+          typeof onItemClick === 'function') &&
+          'cursor-pointer',
+      ].join(' ')}
+      onClick={(event) => {
+        if (typeof multipleSelect === 'boolean') {
+          toggleSelectItem(item)
+        }
+        if (typeof onItemClick === 'function') {
+          onItemClick(item.data, index, event)
+        }
+      }}
     >
       {typeof multipleSelect === 'boolean' && (
         <Checkbox
           checked={selectedItems.includes(item.id)}
-          onCheckedChange={() => toggleSelectItem(item)}
-          className='absolute left-2 top-2'
+          className='absolute left-1 top-1'
         />
       )}
       {typeof render === 'function' ? (
@@ -126,8 +151,12 @@ const GridView = <T extends any>({
     </div>
   ))
 
+  console.log({
+    styleOptions,
+  })
+
   return (
-    <div {...props} className={`p-${styleOptions.padding}`}>
+    <div {...props}>
       <div
         style={{
           display: 'grid',
