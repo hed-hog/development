@@ -4,11 +4,7 @@ import { IResponsiveColumn } from '@/types/responsive-columns'
 import { IStyleOption } from '@/types/style-options'
 import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-
-type GridItem<T> = {
-  id: string
-  data: T
-}
+import { SelectableItem } from '@/types/selectable-item'
 
 interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
   responsiveColumns?: IResponsiveColumn
@@ -41,7 +37,7 @@ const GridView = ({
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
-  const [_data, set_data] = useState<GridItem<Record<string, any>>[]>([])
+  const [_data, set_data] = useState<SelectableItem<Record<string, any>>[]>([])
   const [selectedItems, setSelectedItems] = useState<string[]>([])
 
   // Atualiza o número de colunas baseado na largura da tela
@@ -81,7 +77,7 @@ const GridView = ({
 
   // Função para alternar a seleção de um item
   const toggleSelectItem = useCallback(
-    (item: GridItem<Record<string, any>>) => {
+    (item: SelectableItem<Record<string, any>>) => {
       const isSelected = selectedItems.includes(item.id)
       const updatedSelection = multipleSelect
         ? isSelected

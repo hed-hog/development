@@ -20,11 +20,7 @@ import {
 import { Checkbox } from '../ui/checkbox'
 import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-
-type TableRow<T> = {
-  id: string
-  data: T
-}
+import { SelectableItem } from '@/types/selectable-item'
 
 interface ITableViewProps {
   columns: ITableColumn[]
@@ -43,7 +39,10 @@ interface ITableViewProps {
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => void
   caption?: string
-  render?: (item: TableRow<Record<string, any>>, index: number) => JSX.Element
+  render?: (
+    item: SelectableItem<Record<string, any>>,
+    index: number
+  ) => JSX.Element
   onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
 }
 
@@ -59,7 +58,7 @@ const TableView = ({
   caption,
   render,
 }: ITableViewProps) => {
-  const [_data, set_data] = useState<TableRow<Record<string, any>>[]>([])
+  const [_data, set_data] = useState<SelectableItem<Record<string, any>>[]>([])
 
   const [selectedRows, setSelectedRows] = useState<string[]>([])
   const [sortColumn, setSortColumn] = useState<string | null>(null)
@@ -87,7 +86,7 @@ const TableView = ({
   }, [_data, sortColumn, sortDirection])
 
   const toggleSelectRow = useCallback(
-    (row: TableRow<Record<string, any>>) => {
+    (row: SelectableItem<Record<string, any>>) => {
       const id = row.id
       const isSelected = selectedRows.includes(id)
 
@@ -136,7 +135,7 @@ const TableView = ({
   }, [selectedRows])
 
   if (!render) {
-    render = (row: TableRow<Record<string, any>>, rowIndex: number) => {
+    render = (row: SelectableItem<Record<string, any>>, rowIndex: number) => {
       return (
         <TableRow
           key={rowIndex}
