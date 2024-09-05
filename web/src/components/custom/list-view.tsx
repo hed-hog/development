@@ -111,11 +111,13 @@ const ListView = ({
   return (
     <div {...props} className={`p-${styleOptions.padding} ${className}`}>
       <div className='border-b'>
-        <SelectAll
-          checked={selectedItems.length === _data.length}
-          onChange={selectAllItems}
-          label='Selecionar tudo'
-        />
+        {multipleSelect === true && (
+          <SelectAll
+            checked={selectedItems.length === _data.length}
+            onChange={selectAllItems}
+            label='Selecionar tudo'
+          />
+        )}
       </div>
       {listItems}
     </div>

@@ -130,8 +130,9 @@ const GridView = <T extends any>({
       style={{ marginBottom: `${styleOptions.gap / 4}rem` }}
       className={[
         itemClassName ?? 'border p-2',
-        'relative min-h-10 truncate pl-10 hover:bg-muted/50',
+        'relative min-h-10 truncate hover:bg-muted/50',
         selectedItems.includes(item.id) && 'bg-muted/30',
+        typeof multipleSelect === 'boolean' && 'pl-10',
         (typeof multipleSelect === 'boolean' ||
           typeof onItemClick === 'function') &&
           'cursor-pointer',
@@ -169,11 +170,13 @@ const GridView = <T extends any>({
 
   return (
     <div {...props}>
-      <SelectAll
-        checked={selectedItems.length === _data.length}
-        onChange={selectAllItems}
-        label='Selecionar tudo'
-      />
+      {multipleSelect === true && (
+        <SelectAll
+          checked={selectedItems.length === _data.length}
+          onChange={selectAllItems}
+          label='Selecionar tudo'
+        />
+      )}
       <div
         style={{
           display: 'grid',
