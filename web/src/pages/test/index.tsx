@@ -411,7 +411,24 @@ export default function MyForm() {
       </h1>
       <Card className='mx-auto w-[1000px]'>
         <CardContent>
-          <DataPanel id='data-panel-grid-example' url='/users' hasSearch />
+          <DataPanel
+            id='data-panel-grid-example'
+            url='/users'
+            hasSearch
+            multipleSelect
+            render={(item: any, index: number) => {
+              console.log(item.name)
+              return (
+                <div key={index} className='rounded border border-gray-300 p-4'>
+                  <h3 className='text-lg font-semibold'>{item.name}</h3>
+                  <p>{item.email}</p>
+                </div>
+              )
+            }}
+            onSelectionChange={(selectedItems) => {
+              console.log('data-panel grid', selectedItems)
+            }}
+          />
         </CardContent>
       </Card>
       <h1
@@ -426,6 +443,10 @@ export default function MyForm() {
             url='/users'
             layout='list'
             hasSearch
+            multipleSelect={true}
+            onSelectionChange={(selectedItems) => {
+              console.log('data-panel list', selectedItems)
+            }}
           />
         </CardContent>
       </Card>
@@ -441,6 +462,7 @@ export default function MyForm() {
             id='data-panel-list-example'
             url='/users'
             layout='table'
+            sortable
             columns={[
               {
                 key: 'id',

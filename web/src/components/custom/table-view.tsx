@@ -89,19 +89,20 @@ const TableView = ({
   const toggleSelectRow = useCallback(
     (row: TableRow<Record<string, any>>) => {
       const id = row.id
+      const isSelected = selectedRows.includes(id)
+
+      const updateSelectedRows = (newSelectedRows: any[]) => {
+        setSelectedRows(newSelectedRows)
+      }
 
       if (multipleSelect) {
-        if (selectedRows.includes(id)) {
-          setSelectedRows((prev) => prev.filter((item) => item !== id))
-        } else {
-          setSelectedRows((prev) => [...prev, id])
-        }
+        updateSelectedRows(
+          isSelected
+            ? selectedRows.filter((item) => item !== id)
+            : [...selectedRows, id]
+        )
       } else {
-        if (selectedRows.includes(id)) {
-          setSelectedRows([])
-        } else {
-          setSelectedRows([id])
-        }
+        updateSelectedRows(isSelected ? [] : [id])
       }
     },
     [selectedRows, multipleSelect]
