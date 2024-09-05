@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectableItem } from '@/types/selectable-item'
 import { objectToString } from '@/lib/utils'
+import SelectAll from './select-all'
 
 type GridViewProps<T> = {
   responsiveColumns?: IResponsiveColumn
@@ -158,12 +159,21 @@ const GridView = <T extends any>({
     </div>
   ))
 
-  console.log({
-    styleOptions,
-  })
+  const selectAllItems = useCallback(() => {
+    if (selectedItems.length === _data.length) {
+      setSelectedItems([])
+    } else {
+      setSelectedItems(_data.map((row) => row.id))
+    }
+  }, [_data, selectedItems])
 
   return (
     <div {...props}>
+      <SelectAll
+        checked={selectedItems.length === _data.length}
+        onChange={selectAllItems}
+        label='Selecionar tudo'
+      />
       <div
         style={{
           display: 'grid',

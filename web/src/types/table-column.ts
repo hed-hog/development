@@ -15,6 +15,7 @@ export type ITableColumn =
       key: string
       header: string
       render?: (item: Record<string, any>, index: number) => JSX.Element
+      width?: string | number
     }
   | {
       actions: ITableAction[]

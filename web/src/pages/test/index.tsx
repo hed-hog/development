@@ -466,6 +466,7 @@ export default function MyForm() {
               {
                 key: 'id',
                 header: 'ID',
+                width: 100,
               },
               {
                 key: 'name',
@@ -517,6 +518,7 @@ export default function MyForm() {
               {
                 key: 'id',
                 header: 'ID',
+                width: 100,
               },
               {
                 key: 'name',
@@ -536,9 +538,9 @@ export default function MyForm() {
                       console.log('Editar', row),
                   },
                   {
-                    variant: 'destructive',
+                    variant: 'ghost',
                     tooltip: 'Excluir',
-                    icon: <IconTrash />,
+                    icon: <IconTrash className='text-red-700' />,
                     handler: (row: Record<string, any>) =>
                       console.log('Excluir', row),
                   },

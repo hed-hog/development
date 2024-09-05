@@ -7,6 +7,7 @@ import {
   TableRow,
   TableCell,
   TableCaption,
+  TableHeadRow,
 } from '@/components/ui/table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ITableColumn } from '@/types/table-column'
@@ -21,6 +22,7 @@ import { Checkbox } from '../ui/checkbox'
 import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectableItem } from '@/types/selectable-item'
+import SelectAll from './select-all'
 
 interface ITableViewProps<T> {
   columns: ITableColumn[]
@@ -223,13 +225,12 @@ const TableView = <T extends any>({
     <Table>
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
-        <TableRow>
+        <TableHeadRow>
           {typeof multipleSelect === 'boolean' && (
             <TableHead>
-              <Checkbox
-                style={{ display: multipleSelect ? 'flex' : 'none' }}
+              <SelectAll
                 checked={selectedItems.length === _data.length}
-                onCheckedChange={() => selectAllItems()}
+                onChange={selectAllItems}
               />
             </TableHead>
           )}
@@ -237,7 +238,12 @@ const TableView = <T extends any>({
             <TableHead
               key={'key' in col ? col.key : 'actions'}
               onClick={() => 'key' in col && sortable && handleSort(col.key)}
-              className={sortable ? 'cursor-pointer' : ''}
+              className={
+                !('actions' in col) && sortable
+                  ? 'cursor-pointer hover:bg-muted/50'
+                  : ''
+              }
+              style={{ width: 'width' in col ? col.width : 'auto' }}
             >
               {'header' in col ? col.header : ' '}
               {'key' in col && sortable && sortColumn === col.key && (
@@ -245,7 +251,7 @@ const TableView = <T extends any>({
               )}
             </TableHead>
           ))}
-        </TableRow>
+        </TableHeadRow>
       </TableHeader>
       <TableBody>
         {isLoading

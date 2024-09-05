@@ -5,6 +5,7 @@ import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { IStyleOption } from '@/types/style-options'
 import { SelectableItem } from '@/types/selectable-item'
 import { objectToString } from '@/lib/utils'
+import SelectAll from './select-all'
 
 interface ListViewProps extends React.HTMLAttributes<HTMLDivElement> {
   data: any[]
@@ -68,6 +69,14 @@ const ListView = ({
     }
   }, [selectedItems])
 
+  const selectAllItems = useCallback(() => {
+    if (selectedItems.length === _data.length) {
+      setSelectedItems([])
+    } else {
+      setSelectedItems(_data.map((row) => row.id))
+    }
+  }, [_data, selectedItems])
+
   const listItems = _data.map((item, index) => (
     <div
       key={item.id}
@@ -101,6 +110,13 @@ const ListView = ({
 
   return (
     <div {...props} className={`p-${styleOptions.padding} ${className}`}>
+      <div className='border-b'>
+        <SelectAll
+          checked={selectedItems.length === _data.length}
+          onChange={selectAllItems}
+          label='Selecionar tudo'
+        />
+      </div>
       {listItems}
     </div>
   )
