@@ -416,14 +416,6 @@ export default function MyForm() {
             url='/users'
             hasSearch
             multipleSelect
-            render={(item: any, index: number) => {
-              return (
-                <div>
-                  <h3 className='text-lg font-semibold'>{item.name}</h3>
-                  <p>{item.email}</p>
-                </div>
-              )
-            }}
             onSelectionChange={(selectedItems) => {
               console.log('data-panel grid', selectedItems)
             }}

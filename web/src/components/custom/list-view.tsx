@@ -12,6 +12,7 @@ interface ListViewProps extends React.HTMLAttributes<HTMLDivElement> {
   styleOptions?: IStyleOption
   multipleSelect?: boolean
   onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
+  itemClassName?: string
 }
 
 const ListView = ({
@@ -24,6 +25,7 @@ const ListView = ({
   multipleSelect,
   onSelectionChange,
   className,
+  itemClassName,
   ...props
 }: ListViewProps) => {
   const [_data, set_data] = useState<SelectableItem<Record<string, any>>[]>([])
@@ -69,7 +71,7 @@ const ListView = ({
   const listItems = _data.map((item, index) => (
     <div
       key={item.id}
-      className='flex flex-row items-center'
+      className={[itemClassName ?? '', 'flex flex-row items-center'].join(' ')}
       style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
     >
       {multipleSelect !== undefined && (

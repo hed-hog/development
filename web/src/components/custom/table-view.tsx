@@ -28,6 +28,11 @@ interface ITableViewProps<T> {
   sortable?: boolean
   isLoading?: boolean
   multipleSelect?: boolean
+  onItemDoubleClick?: (
+    row: T,
+    index: number,
+    e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
+  ) => void
   onItemClick?: (
     row: T,
     index: number,
@@ -41,9 +46,11 @@ interface ITableViewProps<T> {
   caption?: string
   render?: (item: SelectableItem<T>, index: number) => JSX.Element
   onSelectionChange?: (selectedItems: T[]) => void
+  itemClassName?: string
 }
 
 const TableView = <T extends any>({
+  itemClassName,
   onSelectionChange,
   multipleSelect,
   columns,
@@ -51,6 +58,7 @@ const TableView = <T extends any>({
   sortable = false,
   isLoading = false,
   onItemClick,
+  onItemDoubleClick,
   onItemContextMenu,
   caption,
   render,
@@ -136,6 +144,11 @@ const TableView = <T extends any>({
       return (
         <TableRow
           key={index}
+          onDoubleClick={(event) => {
+            if (typeof onItemDoubleClick === 'function') {
+              onItemDoubleClick(row.data, index, event)
+            }
+          }}
           onClick={(event) => {
             if (typeof multipleSelect === 'boolean') {
               toggleSelectItem(row)
@@ -149,6 +162,7 @@ const TableView = <T extends any>({
               onItemContextMenu(row.data, index, event)
           }}
           className={[
+            itemClassName ?? '',
             selectedItems.includes(row.id) && 'bg-muted/30',
             (typeof multipleSelect === 'boolean' ||
               typeof onItemClick === 'function') &&
