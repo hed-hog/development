@@ -5,17 +5,18 @@ import { IStyleOption } from '@/types/style-options'
 import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectableItem } from '@/types/selectable-item'
+import { objectToString } from '@/lib/utils'
 
-interface GridViewProps extends React.HTMLAttributes<HTMLDivElement> {
+type GridViewProps<T> = {
   responsiveColumns?: IResponsiveColumn
-  data: any[]
-  render?: (item: Record<string, any>, index: number) => JSX.Element
+  data: T[]
+  render?: (item: T, index: number) => JSX.Element
   styleOptions?: IStyleOption
   multipleSelect?: boolean
-  onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
-}
+  onSelectionChange?: (selectedItems: T[]) => void
+} & React.HTMLAttributes<HTMLDivElement>
 
-const GridView = ({
+const GridView = <T extends any>({
   responsiveColumns = {
     default: 1,
     sm: 2,
@@ -33,11 +34,11 @@ const GridView = ({
   onSelectionChange,
   className,
   ...props
-}: GridViewProps) => {
+}: GridViewProps<T>) => {
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
-  const [_data, set_data] = useState<SelectableItem<Record<string, any>>[]>([])
+  const [_data, set_data] = useState<SelectableItem<T>[]>([])
   const [selectedItems, setSelectedItems] = useState<string[]>([])
 
   // Atualiza o número de colunas baseado na largura da tela
@@ -77,7 +78,7 @@ const GridView = ({
 
   // Função para alternar a seleção de um item
   const toggleSelectItem = useCallback(
-    (item: SelectableItem<Record<string, any>>) => {
+    (item: SelectableItem<T>) => {
       const isSelected = selectedItems.includes(item.id)
       const updatedSelection = multipleSelect
         ? isSelected
@@ -118,14 +119,9 @@ const GridView = ({
         />
       )}
       {typeof render === 'function' ? (
-        render(item, index)
+        render(item.data, index)
       ) : (
-        <div>
-          {item.data?.name ??
-            item.data?.title ??
-            item.data?.email ??
-            JSON.stringify(item.data)}
-        </div>
+        <div>{objectToString(item.data)}</div>
       )}
     </div>
   ))

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { IStyleOption } from '@/types/style-options'
 import { SelectableItem } from '@/types/selectable-item'
+import { objectToString } from '@/lib/utils'
 
 interface ListViewProps extends React.HTMLAttributes<HTMLDivElement> {
   data: any[]
@@ -81,7 +82,7 @@ const ListView = ({
       {render ? (
         render(item.data, index)
       ) : (
-        <div> {JSON.stringify(item.data)}</div>
+        <div>{objectToString(item.data)}</div>
       )}
     </div>
   ))
