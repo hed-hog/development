@@ -128,8 +128,8 @@ const GridView = <T extends any>({
       key={item.id}
       style={{ marginBottom: `${styleOptions.gap / 4}rem` }}
       className={[
-        itemClassName ?? '',
-        'relative truncate p-2 pl-8 hover:bg-muted/50',
+        itemClassName ?? 'border p-2',
+        'relative min-h-10 truncate pl-10 hover:bg-muted/50',
         selectedItems.includes(item.id) && 'bg-muted/30',
         (typeof multipleSelect === 'boolean' ||
           typeof onItemClick === 'function') &&
@@ -147,7 +147,7 @@ const GridView = <T extends any>({
       {typeof multipleSelect === 'boolean' && (
         <Checkbox
           checked={selectedItems.includes(item.id)}
-          className='absolute left-1 top-1'
+          className='absolute left-3 top-3'
         />
       )}
       {typeof render === 'function' ? (
