@@ -416,9 +416,9 @@ export default function MyForm() {
             url='/users'
             hasSearch
             multipleSelect
-            render={(item: any, index: number) => {
+            render={(item: any) => {
               return (
-                <div>
+                <div key={item.email}>
                   <h3 className='text-lg font-semibold'>{item.name}</h3>
                   <p>{item.email}</p>
                 </div>

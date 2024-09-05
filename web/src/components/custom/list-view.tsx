@@ -69,7 +69,16 @@ const ListView = ({
   const listItems = _data.map((item, index) => (
     <div
       key={item.id}
-      className='flex flex-row items-center'
+      className={[
+        'flex flex-row items-center truncate py-2 hover:bg-muted/50',
+        selectedItems.includes(item.id) && 'bg-muted/30',
+        typeof multipleSelect === 'boolean' && 'cursor-pointer',
+      ].join(' ')}
+      onClick={() => {
+        if (typeof multipleSelect === 'boolean') {
+          toggleSelectItem(item)
+        }
+      }}
       style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
     >
       {multipleSelect !== undefined && (
