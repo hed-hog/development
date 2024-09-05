@@ -10,32 +10,54 @@ import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
 import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
+import { useCallback, useState } from 'react'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 
-type DataPanelType = {
-  layout?: 'table' | 'list' | 'grid'
+type DataPanelTypeBase<T> = {
   url: string
   id: string
-  render?: (item: Record<string, any>, index: number) => JSX.Element
+  render?: (item: T, index: number) => JSX.Element
   paginationOptions?: IPaginationOption
   selectOptions?: ISelectOption
   styleOptions?: IStyleOption
   multipleSelect?: boolean
   hasSearch?: boolean
   itemClassName?: string
-  onItemClick?: (
-    row: Record<string, any>,
-    index: number,
-    e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
-  ) => void
-  onItemContextMenu?: (
-    row: Record<string, any>,
-    index: number,
-    e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
-  ) => void
-  onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
-} & React.HTMLAttributes<HTMLDivElement>
+  extractKey?: (item: T) => string
+  onSelectionChange?: (selectedItems: Array<T>) => void
+}
 
-export type DataPanelProps = DataPanelType &
+type DataPanelType<T> = DataPanelTypeBase<T> &
+  (
+    | ({
+        layout?: 'table'
+        onItemClick?: (
+          row: T,
+          index: number,
+          e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
+        ) => void
+        onItemContextMenu?: (
+          row: T,
+          index: number,
+          e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
+        ) => void
+      } & React.HTMLAttributes<HTMLTableRowElement>)
+    | ({
+        layout?: 'list' | 'grid'
+        onItemClick?: (
+          row: T,
+          index: number,
+          e: React.MouseEvent<HTMLDivElement, MouseEvent>
+        ) => void
+        onItemContextMenu?: (
+          row: T,
+          index: number,
+          e: React.MouseEvent<HTMLDivElement, MouseEvent>
+        ) => void
+      } & React.HTMLAttributes<HTMLDivElement>)
+  )
+
+export type DataPanelProps<T> = DataPanelType<T> &
   (
     | {
         layout: 'list'
@@ -46,7 +68,7 @@ export type DataPanelProps = DataPanelType &
       }
     | {
         layout: 'table'
-        columns: ITableColumn[]
+        columns: ITableColumn<T>[]
         sortable?: boolean
         caption?: string
         responsiveColumns?: never
@@ -60,8 +82,15 @@ export type DataPanelProps = DataPanelType &
       }
   )
 
-export const DataPanel = ({
+export const DataPanel = <T extends any>({
   layout = 'grid',
+  extractKey = (item: T) => {
+    try {
+      return 'id' in (item as any) ? String((item as any).id) : ''
+    } catch (e) {
+      return ''
+    }
+  },
   url,
   id,
   hasSearch = false,
@@ -85,7 +114,7 @@ export const DataPanel = ({
   itemClassName,
   onSelectionChange,
   ...props
-}: DataPanelProps) => {
+}: DataPanelProps<T>) => {
   const {
     isLoading,
     items,
@@ -102,6 +131,28 @@ export const DataPanel = ({
     paginationOptions,
     selectOptions,
   })
+
+  const [selectedItems, setSelectedItems] = useState<T[]>([])
+
+  const handleSelect = useCallback((item: T, _index: number) => {
+    console.log('handleSelect', item)
+    setSelectedItems((value) => [...value, item])
+  }, [])
+
+  const handleUnselect = useCallback(
+    (item: T, _index: number) => {
+      setSelectedItems((value) =>
+        value.filter((v) => extractKey(v) !== extractKey(item))
+      )
+    },
+    [extractKey]
+  )
+
+  useEffectAfterFirstUpdate(() => {
+    if (onSelectionChange) {
+      onSelectionChange(selectedItems)
+    }
+  }, [selectedItems])
 
   return (
     <>
@@ -120,28 +171,30 @@ export const DataPanel = ({
       {layout === 'table' && (
         <>
           {isLoading ? (
-            <TableView
-              columns={columns as ITableColumn[]}
+            <TableView<T>
+              columns={columns as ITableColumn<T>[]}
               data={[]}
               sortable={sortable}
               caption={caption}
-              onItemClick={onItemClick}
               isLoading={isLoading}
               itemClassName={itemClassName}
-              {...props}
+              extractKey={extractKey}
+              {...(props as any)}
             />
           ) : (
-            <TableView
+            <TableView<T>
               itemClassName={itemClassName}
               multipleSelect={multipleSelect}
-              columns={columns as ITableColumn[]}
+              columns={columns as ITableColumn<T>[]}
               data={items}
               sortable={sortable}
               caption={caption}
               onItemClick={onItemClick}
               onItemContextMenu={onItemContextMenu}
               isLoading={isLoading}
-              onSelectionChange={onSelectionChange}
+              onSelect={handleSelect}
+              onUnselect={handleUnselect}
+              extractKey={extractKey}
             />
           )}
         </>
@@ -149,7 +202,7 @@ export const DataPanel = ({
       {layout === 'list' && (
         <>
           {isLoading ? (
-            <ListView
+            <ListView<T>
               itemClassName={itemClassName}
               data={Array.from({
                 length: paginationOptions?.pageSizeOptions[0] ?? 10,
@@ -159,10 +212,10 @@ export const DataPanel = ({
                 padding: styleOptions.padding,
               }}
               render={() => <SkeletonCard key={Math.random()} />}
-              {...props}
+              {...(props as any)}
             />
           ) : (
-            <ListView
+            <ListView<T>
               itemClassName={itemClassName}
               multipleSelect={multipleSelect}
               data={items}
@@ -171,8 +224,9 @@ export const DataPanel = ({
                 padding: styleOptions.padding,
               }}
               render={render}
-              onSelectionChange={onSelectionChange}
-              {...props}
+              onSelect={handleSelect}
+              onUnselect={handleUnselect}
+              {...(props as any)}
             />
           )}
         </>
@@ -180,7 +234,7 @@ export const DataPanel = ({
       {layout === 'grid' && (
         <>
           {isLoading ? (
-            <GridView
+            <GridView<T>
               itemClassName={itemClassName}
               data={Array.from({
                 length: paginationOptions?.pageSizeOptions[0] ?? 10,
@@ -191,10 +245,10 @@ export const DataPanel = ({
                 padding: styleOptions.padding,
               }}
               render={() => <SkeletonCard key={Math.random()} />}
-              {...props}
+              {...(props as any)}
             />
           ) : (
-            <GridView
+            <GridView<T>
               itemClassName={itemClassName}
               multipleSelect={multipleSelect}
               data={items}
@@ -204,8 +258,9 @@ export const DataPanel = ({
                 padding: styleOptions.padding,
               }}
               render={render}
-              onSelectionChange={onSelectionChange}
-              {...props}
+              onSelect={handleSelect}
+              onUnselect={handleUnselect}
+              {...(props as any)}
             />
           )}
         </>
@@ -225,6 +280,8 @@ export const DataPanel = ({
         }}
         padding={0}
       />
+
+      <p>{selectedItems.length} selecionados</p>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   Table,
   TableHeader,
@@ -19,17 +19,16 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 import { Checkbox } from '../ui/checkbox'
-import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import { SelectableItem } from '@/types/selectable-item'
 import SelectAll from './select-all'
 
 interface ITableViewProps<T> {
-  columns: ITableColumn[]
+  columns: ITableColumn<T>[]
   data: T[]
   sortable?: boolean
   isLoading?: boolean
   multipleSelect?: boolean
+  extractKey?: (item: T) => string
   onItemDoubleClick?: (
     row: T,
     index: number,
@@ -45,13 +44,22 @@ interface ITableViewProps<T> {
     index: number,
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => void
+  onSelect?: (row: T, index: number) => void
+  onUnselect?: (row: T, index: number) => void
   caption?: string
-  render?: (item: SelectableItem<T>, index: number) => JSX.Element
+  render?: (item: T, index: number) => JSX.Element
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
 }
 
 const TableView = <T extends any>({
+  extractKey = (item: T) => {
+    try {
+      return 'id' in (item as any) ? String((item as any).id) : ''
+    } catch (e) {
+      return ''
+    }
+  },
   itemClassName,
   onSelectionChange,
   multipleSelect,
@@ -64,9 +72,9 @@ const TableView = <T extends any>({
   onItemContextMenu,
   caption,
   render,
+  onSelect,
+  onUnselect,
 }: ITableViewProps<T>) => {
-  const [_data, set_data] = useState<SelectableItem<T>[]>([])
-
   const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
@@ -82,20 +90,30 @@ const TableView = <T extends any>({
 
   // Ordenar dados
   const sortedData = React.useMemo(() => {
-    if (!sortColumn) return _data
-    return [..._data].sort((a, b) => {
-      if ((a.data as any)[sortColumn] < (b.data as any)[sortColumn])
-        return sortDirection === 'asc' ? -1 : 1
-      if ((a.data as any)[sortColumn] > (b.data as any)[sortColumn])
-        return sortDirection === 'asc' ? 1 : -1
+    if (!sortColumn) return data
+    return [...data].sort((a: any, b: any) => {
+      if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1
+      if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1
       return 0
     })
-  }, [_data, sortColumn, sortDirection])
+  }, [data, sortColumn, sortDirection])
 
   const toggleSelectItem = useCallback(
-    (row: SelectableItem<T>) => {
-      const id = row.id
+    (item: T) => {
+      const id = extractKey(item)
       const isSelected = selectedItems.includes(id)
+
+      if (typeof onSelect === 'function' && !isSelected) {
+        onSelect(
+          item,
+          data.findIndex((item) => extractKey(item) === id)
+        )
+      } else if (typeof onUnselect === 'function' && isSelected) {
+        onUnselect(
+          item,
+          data.findIndex((item) => extractKey(item) === id)
+        )
+      }
 
       const updateSelectedItems = (newSelectedItems: any[]) => {
         setSelectedItems(newSelectedItems)
@@ -111,44 +129,56 @@ const TableView = <T extends any>({
         updateSelectedItems(isSelected ? [] : [id])
       }
     },
-    [selectedItems, multipleSelect]
+    [selectedItems, multipleSelect, extractKey]
   )
 
   const selectAllItems = useCallback(() => {
-    if (selectedItems.length === _data.length) {
+    if (selectedItems.length === data.length) {
+      if (typeof onUnselect === 'function') {
+        for (const id of selectedItems) {
+          const item = data.find((i) => extractKey(i) === id)
+          if (item) {
+            onUnselect(
+              item,
+              data.findIndex((i) => extractKey(i) === id)
+            )
+          }
+        }
+      }
+
       setSelectedItems([])
     } else {
-      setSelectedItems(_data.map((row) => row.id))
-    }
-  }, [_data, selectedItems])
+      if (typeof onSelect === 'function') {
+        for (const item of data) {
+          onSelect(
+            item,
+            data.findIndex((i) => extractKey(i) === extractKey(item))
+          )
+        }
+      }
 
-  useEffect(() => {
-    set_data(
-      data.map((item) => ({
-        id: uuidv4(),
-        data: item,
-      }))
-    )
-  }, [data])
+      setSelectedItems(data.map((i) => extractKey(i)))
+    }
+  }, [data, selectedItems, extractKey])
 
   useEffectAfterFirstUpdate(() => {
     if (typeof onSelectionChange === 'function') {
       onSelectionChange(
-        _data
-          .filter((row) => selectedItems.includes(row.id))
-          .map((row) => row.data)
+        data
+          .filter((item) => selectedItems.includes(extractKey(item)))
+          .map((item) => item)
       )
     }
   }, [selectedItems])
 
   if (!render) {
-    render = (row: SelectableItem<T>, index: number) => {
+    render = (row: T, index: number) => {
       return (
         <TableRow
           key={index}
           onDoubleClick={(event) => {
             if (typeof onItemDoubleClick === 'function') {
-              onItemDoubleClick(row.data, index, event)
+              onItemDoubleClick(row, index, event)
             }
           }}
           onClick={(event) => {
@@ -156,16 +186,16 @@ const TableView = <T extends any>({
               toggleSelectItem(row)
             }
             if (typeof onItemClick === 'function') {
-              onItemClick(row.data, index, event)
+              onItemClick(row, index, event)
             }
           }}
           onContextMenu={(event) => {
             if (typeof onItemContextMenu === 'function')
-              onItemContextMenu(row.data, index, event)
+              onItemContextMenu(row, index, event)
           }}
           className={[
             itemClassName ?? '',
-            selectedItems.includes(row.id) && 'bg-muted/30',
+            selectedItems.includes(extractKey(row)) && 'bg-muted/30',
             (typeof multipleSelect === 'boolean' ||
               typeof onItemClick === 'function') &&
               'cursor-pointer',
@@ -173,13 +203,13 @@ const TableView = <T extends any>({
         >
           {typeof multipleSelect === 'boolean' && (
             <TableCell>
-              <Checkbox checked={selectedItems.includes(row.id)} />
+              <Checkbox checked={selectedItems.includes(extractKey(row))} />
             </TableCell>
           )}
           {columns.map((col, index) => {
             return col && 'key' in col ? (
               <TableCell key={`${col.key}-${index}`}>
-                {(row.data as any)[col.key]}
+                {(row as any)[col.key]}
               </TableCell>
             ) : (
               <TableCell key={`actions-${index}`}>
@@ -229,7 +259,7 @@ const TableView = <T extends any>({
           {typeof multipleSelect === 'boolean' && (
             <TableHead>
               <SelectAll
-                checked={selectedItems.length === _data.length}
+                checked={selectedItems.length === data.length}
                 onChange={selectAllItems}
               />
             </TableHead>

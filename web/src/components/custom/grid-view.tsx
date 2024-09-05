@@ -2,9 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Checkbox } from '../ui/checkbox'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import { IStyleOption } from '@/types/style-options'
-import { v4 as uuidv4 } from 'uuid'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import { SelectableItem } from '@/types/selectable-item'
 import { objectToString } from '@/lib/utils'
 import SelectAll from './select-all'
 
@@ -26,9 +24,19 @@ type GridViewProps<T> = {
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => void
   itemClassName?: string
+  extractKey?: (item: T) => string
+  onSelect?: (row: T, index: number) => void
+  onUnselect?: (row: T, index: number) => void
 } & React.HTMLAttributes<HTMLDivElement>
 
 const GridView = <T extends any>({
+  extractKey = (item: T) => {
+    try {
+      return 'id' in (item as any) ? String((item as any).id) : ''
+    } catch (e) {
+      return ''
+    }
+  },
   responsiveColumns = {
     default: 1,
     sm: 2,
@@ -48,12 +56,13 @@ const GridView = <T extends any>({
   onItemClick,
   onItemContextMenu,
   itemClassName,
+  onSelect,
+  onUnselect,
   ...props
 }: GridViewProps<T>) => {
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
-  const [_data, set_data] = useState<SelectableItem<T>[]>([])
   const [selectedItems, setSelectedItems] = useState<string[]>([])
 
   // Atualiza o número de colunas baseado na largura da tela
@@ -71,6 +80,69 @@ const GridView = <T extends any>({
     }
   }
 
+  const toggleSelectItem = useCallback(
+    (item: T) => {
+      const id = extractKey(item)
+      const isSelected = selectedItems.includes(id)
+
+      if (typeof onSelect === 'function' && !isSelected) {
+        onSelect(
+          item,
+          data.findIndex((item) => extractKey(item) === id)
+        )
+      } else if (typeof onUnselect === 'function' && isSelected) {
+        onUnselect(
+          item,
+          data.findIndex((item) => extractKey(item) === id)
+        )
+      }
+
+      const updateSelectedItems = (newSelectedItems: any[]) => {
+        setSelectedItems(newSelectedItems)
+      }
+
+      if (multipleSelect) {
+        updateSelectedItems(
+          isSelected
+            ? selectedItems.filter((item) => item !== id)
+            : [...selectedItems, id]
+        )
+      } else {
+        updateSelectedItems(isSelected ? [] : [id])
+      }
+    },
+    [selectedItems, multipleSelect, extractKey]
+  )
+
+  const selectAllItems = useCallback(() => {
+    if (selectedItems.length === data.length) {
+      if (typeof onUnselect === 'function') {
+        for (const id of selectedItems) {
+          const item = data.find((i) => extractKey(i) === id)
+          if (item) {
+            onUnselect(
+              item,
+              data.findIndex((i) => extractKey(i) === id)
+            )
+          }
+        }
+      }
+
+      setSelectedItems([])
+    } else {
+      if (typeof onSelect === 'function') {
+        for (const item of data) {
+          onSelect(
+            item,
+            data.findIndex((i) => extractKey(i) === extractKey(item))
+          )
+        }
+      }
+
+      setSelectedItems(data.map((i) => extractKey(i)))
+    }
+  }, [data, selectedItems, extractKey])
+
   useEffect(() => {
     updateColumnsBasedOnScreenSize()
     window.addEventListener('resize', updateColumnsBasedOnScreenSize)
@@ -79,42 +151,13 @@ const GridView = <T extends any>({
     }
   }, [responsiveColumns])
 
-  // Atualiza a lista de dados com IDs únicos
-  useEffect(() => {
-    set_data(
-      data
-        .map((item) => ({
-          id: uuidv4(),
-          data: item,
-        }))
-        .filter((item) => item.data !== undefined)
-    )
-  }, [data])
-
-  // Função para alternar a seleção de um item
-  const toggleSelectItem = useCallback(
-    (item: SelectableItem<T>) => {
-      const isSelected = selectedItems.includes(item.id)
-      const updatedSelection = multipleSelect
-        ? isSelected
-          ? selectedItems.filter((id) => id !== item.id)
-          : [...selectedItems, item.id]
-        : isSelected
-          ? []
-          : [item.id]
-
-      setSelectedItems(updatedSelection)
-    },
-    [selectedItems, multipleSelect]
-  )
-
   // Atualiza a seleção completa quando o estado selectedItems muda
   useEffectAfterFirstUpdate(() => {
     if (onSelectionChange) {
       onSelectionChange(
-        _data
-          .filter((item) => selectedItems.includes(item.id))
-          .map((item) => item.data)
+        data
+          .filter((item) => selectedItems.includes(extractKey(item)))
+          .map((item) => item)
       )
     }
   }, [selectedItems])
@@ -124,14 +167,14 @@ const GridView = <T extends any>({
   }
 
   // Renderizar os itens da grid com o Checkbox, se `multipleSelect` for boolean
-  const gridItems = _data.map((item, index) => (
+  const gridItems = data.map((item, index) => (
     <div
-      key={item.id}
+      key={extractKey(item)}
       style={{ marginBottom: `${styleOptions.gap / 4}rem` }}
       className={[
         itemClassName ?? 'border p-2',
         'relative min-h-10 truncate hover:bg-muted/50',
-        selectedItems.includes(item.id) && 'bg-muted/30',
+        selectedItems.includes(extractKey(item)) && 'bg-muted/30',
         typeof multipleSelect === 'boolean' && 'pl-10',
         (typeof multipleSelect === 'boolean' ||
           typeof onItemClick === 'function') &&
@@ -142,37 +185,29 @@ const GridView = <T extends any>({
           toggleSelectItem(item)
         }
         if (typeof onItemClick === 'function') {
-          onItemClick(item.data, index, event)
+          onItemClick(item, index, event)
         }
       }}
     >
       {typeof multipleSelect === 'boolean' && (
         <Checkbox
-          checked={selectedItems.includes(item.id)}
+          checked={selectedItems.includes(extractKey(item))}
           className='absolute left-3 top-3'
         />
       )}
       {typeof render === 'function' ? (
-        render(item.data, index)
+        render(item, index)
       ) : (
-        <div>{objectToString(item.data)}</div>
+        <div>{objectToString(item)}</div>
       )}
     </div>
   ))
-
-  const selectAllItems = useCallback(() => {
-    if (selectedItems.length === _data.length) {
-      setSelectedItems([])
-    } else {
-      setSelectedItems(_data.map((row) => row.id))
-    }
-  }, [_data, selectedItems])
 
   return (
     <div {...props}>
       {multipleSelect === true && (
         <SelectAll
-          checked={selectedItems.length === _data.length}
+          checked={selectedItems.length === data.length}
           onChange={selectAllItems}
           label='Selecionar tudo'
         />
