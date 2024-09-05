@@ -72,7 +72,7 @@ const ListView = ({
     <div
       key={item.id}
       className={[
-        itemClassName ?? '',
+        itemClassName ?? 'border-b',
         'flex flex-row items-center truncate py-2 hover:bg-muted/50',
         selectedItems.includes(item.id) && 'bg-muted/30',
         typeof multipleSelect === 'boolean' && 'cursor-pointer',
