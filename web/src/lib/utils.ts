@@ -4,15 +4,17 @@ import { twMerge } from 'tailwind-merge'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
 export function objectToString(obj: any) {
-  return obj
-    ? 'name' in obj
-      ? obj.name
-      : 'title' in obj
-        ? obj.title
-        : 'email' in obj
-          ? obj.email
-          : JSON.stringify(obj, null, 2)
-    : String(obj)
+  const options = ['name', 'title', 'email', 'username', 'id']
+
+  if (obj) {
+    for (const option of options) {
+      if (option in obj) {
+        return obj[option]
+      }
+    }
+    return JSON.stringify(obj, null, 2)
+  }
+
+  return String(obj)
 }
