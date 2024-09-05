@@ -141,6 +141,9 @@ const TableView = ({
         <TableRow
           key={rowIndex}
           onClick={(event) => {
+            if (typeof multipleSelect === 'boolean') {
+              toggleSelectRow(row)
+            }
             if (typeof onItemClick === 'function') {
               onItemClick(row.data, rowIndex, event)
             }
@@ -149,15 +152,16 @@ const TableView = ({
             if (typeof onItemContextMenu === 'function')
               onItemContextMenu(row.data, rowIndex, event)
           }}
+          className={[
+            selectedRows.includes(row.id) && 'bg-muted/30',
+            (typeof multipleSelect === 'boolean' ||
+              typeof onItemClick === 'function') &&
+              'cursor-pointer',
+          ].join(' ')}
         >
           {typeof multipleSelect === 'boolean' && (
             <TableCell>
-              <Checkbox
-                checked={selectedRows.includes(row.id)}
-                onCheckedChange={() => {
-                  toggleSelectRow(row)
-                }}
-              />
+              <Checkbox checked={selectedRows.includes(row.id)} />
             </TableCell>
           )}
           {columns.map((col, index) => {
