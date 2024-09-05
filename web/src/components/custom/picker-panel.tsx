@@ -146,7 +146,7 @@ export default function PickerPanel({
               pageSizeOptions: paginationOptions?.pageSizeOptions,
             }}
             selectOptions={{
-              selectedItems: filteredData,
+              selectedItems: selectedIds,
               setIsAllSelected,
             }}
           />

@@ -83,11 +83,7 @@ const GridPanel = ({
       onFilterToggle={() => setFilterSelected(!filterSelected)}
     >
       <GridView
-        data={
-          filterSelected && selectOptions?.selectedItems
-            ? selectOptions?.selectedItems
-            : items
-        }
+        data={items}
         responsiveColumns={responsiveColumns}
         styleOptions={{
           gap: styleOptions.gap,

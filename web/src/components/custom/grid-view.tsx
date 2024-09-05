@@ -25,7 +25,7 @@ const GridView = ({
   },
   data = [],
   render = (item: any, index: number) => (
-    <div>
+    <div key={item?.name}>
       {index}. {item?.name ?? item?.title ?? JSON.stringify(item)}
     </div>
   ),

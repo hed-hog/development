@@ -104,7 +104,7 @@ export const DataPanel = ({
   return (
     <>
       {hasSearch && (
-        <div className='m-4 flex flex-col gap-4'>
+        <div className='my-4 flex flex-col gap-4'>
           <SearchField
             placeholder='Buscar...'
             value={search}

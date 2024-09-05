@@ -90,13 +90,21 @@ const TableView = ({
     (row: TableRow<Record<string, any>>) => {
       const id = row.id
 
-      if (selectedRows.includes(id)) {
-        setSelectedRows((prev) => prev.filter((item) => item !== id))
+      if (multipleSelect) {
+        if (selectedRows.includes(id)) {
+          setSelectedRows((prev) => prev.filter((item) => item !== id))
+        } else {
+          setSelectedRows((prev) => [...prev, id])
+        }
       } else {
-        setSelectedRows((prev) => [...prev, id])
+        if (selectedRows.includes(id)) {
+          setSelectedRows([])
+        } else {
+          setSelectedRows([id])
+        }
       }
     },
-    [selectedRows]
+    [selectedRows, multipleSelect]
   )
 
   const selectAllRows = useCallback(() => {
@@ -141,7 +149,7 @@ const TableView = ({
               onItemContextMenu(row.data, rowIndex, event)
           }}
         >
-          {typeof multipleSelect === 'boolean' && multipleSelect && (
+          {typeof multipleSelect === 'boolean' && (
             <TableCell>
               <Checkbox
                 checked={selectedRows.includes(row.id)}
@@ -161,7 +169,7 @@ const TableView = ({
                 <div className='grid auto-cols-max grid-flow-col gap-1'>
                   {col.actions.map(
                     ({ handler, icon, tooltip, ...props }, actionIndex) => (
-                      <TooltipProvider>
+                      <TooltipProvider key={actionIndex}>
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Button
@@ -172,6 +180,7 @@ const TableView = ({
                                   handler(row, actionIndex, e)
                                 }
                               }}
+                              className='px-1'
                               {...props}
                             >
                               {icon}
@@ -200,9 +209,10 @@ const TableView = ({
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
         <TableRow>
-          {typeof multipleSelect === 'boolean' && multipleSelect && (
+          {typeof multipleSelect === 'boolean' && (
             <TableHead>
               <Checkbox
+                style={{ display: multipleSelect ? 'flex' : 'none' }}
                 checked={selectedRows.length === _data.length}
                 onCheckedChange={() => selectAllRows()}
               />

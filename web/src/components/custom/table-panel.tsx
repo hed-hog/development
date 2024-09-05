@@ -95,7 +95,9 @@ const TablePanel = ({
         total={totalItems}
         variant='default'
         maxPages={paginationOptions?.maxPages}
-        onPageChange={(page) => setPage(page)}
+        onPageChange={(page) => {
+          setPage(page)
+        }}
         pageSizeOptions={paginationOptions?.pageSizeOptions}
         onPageSizeChange={(value) => {
           setPageSize(Number(value))

@@ -411,7 +411,7 @@ export default function MyForm() {
       </h1>
       <Card className='mx-auto w-[1000px]'>
         <CardContent>
-          <DataPanel id='data-panel-grid-example' url='/users' />
+          <DataPanel id='data-panel-grid-example' url='/users' hasSearch />
         </CardContent>
       </Card>
       <h1
@@ -421,7 +421,12 @@ export default function MyForm() {
       </h1>
       <Card className='mx-auto w-[1000px]'>
         <CardContent>
-          <DataPanel id='data-panel-list-example' url='/users' layout='list' />
+          <DataPanel
+            id='data-panel-list-example'
+            url='/users'
+            layout='list'
+            hasSearch
+          />
         </CardContent>
       </Card>
       <h1
@@ -432,6 +437,7 @@ export default function MyForm() {
       <Card className='mx-auto w-[1000px]'>
         <CardContent>
           <DataPanel
+            hasSearch
             id='data-panel-list-example'
             url='/users'
             layout='table'
@@ -485,6 +491,7 @@ export default function MyForm() {
             onSelectionChange={(selectedItems) => {
               console.log('onSelectionChange', { selectedItems })
             }}
+            hasSearch
             columns={[
               {
                 key: 'id',
