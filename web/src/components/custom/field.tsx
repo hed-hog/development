@@ -1,7 +1,7 @@
 import { RichTextField } from '@/components/custom/rich-text-field'
 import { ColorPickerField } from '@/components/custom/color-picker-field'
 import { Input } from '@/components/ui/input'
-import { PasswordInput } from './password-input'
+import { PasswordInput } from './password-input-field'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -16,26 +16,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { MultiSelect } from '@/components/ui/multi-select'
+import { MultiSelectField } from '@/components/ui/multi-select-field'
 import { DatePickerField } from '@/components/ui/date-picker-field'
 import { SheetPickerField } from './sheet-picker-field'
 import { ChangeEventHandler, FormEventHandler } from 'react'
 import { CheckedState } from '@radix-ui/react-checkbox'
-
-export enum EnumFieldType {
-  RICHTEXT = 'richtext',
-  COLOR = 'color',
-  TEXT = 'text',
-  FILE = 'file',
-  PASSWORD = 'password',
-  RADIO = 'radio',
-  CHECKBOX = 'checkbox',
-  RANGE = 'range',
-  SELECT = 'select',
-  MULTISELECT = 'multiselect',
-  DATEPICKER = 'datepicker',
-  SHEETPICKER = 'sheetpicker',
-}
+import { EnumFieldType } from '@/enums/EnumFieldType'
 
 type FieldProps = (
   | {
@@ -193,7 +179,7 @@ export default function Field({
 
     case EnumFieldType.MULTISELECT:
       return (
-        <MultiSelect
+        <MultiSelectField
           value={value || []}
           onChange={onChange}
           options={options}

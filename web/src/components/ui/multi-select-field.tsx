@@ -19,9 +19,10 @@ import {
 } from '@/components/ui/command'
 import { Button } from '@/components/custom/button'
 import { Badge } from '@/components/ui/badge'
-import { IMultiSelectProps } from '@/types/form-panel'
+import { IMultiSelectFieldProps } from '@/types/form-panel'
 
-interface MultiSelectProps extends Omit<IMultiSelectProps, 'type' | 'name'> {
+interface MultiSelectFieldProps
+  extends Omit<IMultiSelectFieldProps, 'type' | 'name'> {
   options: {
     label: string
     value: string
@@ -34,9 +35,9 @@ interface MultiSelectProps extends Omit<IMultiSelectProps, 'type' | 'name'> {
   animation?: number
 }
 
-export const MultiSelect = React.forwardRef<
+export const MultiSelectField = React.forwardRef<
   HTMLButtonElement,
-  MultiSelectProps
+  MultiSelectFieldProps
 >(
   (
     {
@@ -201,4 +202,4 @@ export const MultiSelect = React.forwardRef<
   }
 )
 
-MultiSelect.displayName = 'MultiSelect'
+MultiSelectField.displayName = 'MultiSelectField'
