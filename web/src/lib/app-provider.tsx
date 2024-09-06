@@ -33,7 +33,6 @@ import { Button, ButtonProps } from '@/components/custom/button'
 import { v4 as uuidv4 } from 'uuid'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -361,7 +360,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                   open={open}
                   onOpenChange={(value) => !value && closeSheet(id)}
                 >
-                  <SheetContent side={side}>
+                  <SheetContent
+                    className={`flex flex-col ${['bottom', 'top'].includes(side) && 'max-h-full'}`}
+                    side={side}
+                  >
                     {(title || description) && (
                       <SheetHeader>
                         {title && <SheetTitle>{title}</SheetTitle>}
@@ -371,7 +373,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                       </SheetHeader>
                     )}
 
-                    {children}
+                    <div className='flex-1 overflow-y-auto'>{children}</div>
                     <SheetFooter>
                       {(buttons ?? []).map(({ text, ...props }) => (
                         <Button {...props}>{text}</Button>

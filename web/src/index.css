@@ -2,6 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --scrollbar-width: 8px;
+  --scrollbar-track-light: #f9fafb;
+  --scrollbar-thumb-light: #d1d5db;
+  --scrollbar-track-dark: #3576df;
+  --scrollbar-thumb-dark: #020817;
+}
+
+@media (prefers-color-scheme: light) {
+  * {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--scrollbar-thumb-light) var(--scrollbar-track-light); /* Firefox */
+  }
+
+  *::-webkit-scrollbar {
+    width: var(--scrollbar-width); /* Largura da scrollbar */
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-light); /* Cor do fundo da scrollbar */
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(
+      --scrollbar-thumb-light
+    ); /* Cor da parte que o usuário arrasta */
+    border-radius: 10px; /* Arredondamento dos cantos da scrollbar */
+  }
+}
+
+/* Estilos para o modo dark */
+@media (prefers-color-scheme: dark) {
+  * {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--scrollbar-thumb-dark) var(--scrollbar-track-dark); /* Firefox */
+  }
+
+  *::-webkit-scrollbar {
+    width: var(--scrollbar-width); /* Largura da scrollbar */
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-dark); /* Cor do fundo da scrollbar */
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(
+      --scrollbar-thumb-dark
+    ); /* Cor da parte que o usuário arrasta */
+    border-radius: 10px; /* Arredondamento dos cantos da scrollbar */
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
