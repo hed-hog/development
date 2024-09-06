@@ -16,33 +16,15 @@ import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
 import { useApp } from '@/hooks/use-app'
 
-const OtherPanel = () => {
-  const { openDialog, closeDialog } = useApp()
-
-  const handlerbutton = () => {
-    const id = openDialog({
-      title: 'Outro',
-      children: <div>Contenido</div>,
-    })
-
-    closeDialog(id)
-  }
-
-  return (
-    <>
-      <Button onClick={() => handlerbutton()}>Abrir Dialog</Button>
-    </>
-  )
-}
-
 export default function Dashboard() {
-  const { openDialog } = useApp()
+  const { openSheet } = useApp()
 
   const handlerbutton = () => {
-    openDialog({
-      title: 'Titulo',
-      description: 'Descripcion',
-      children: <OtherPanel />,
+    openSheet({
+      title: 'Testando',
+      description: 'Só teste',
+      children: <span>Saulo Costa</span>,
+      side: 'top',
     })
   }
 
@@ -206,7 +188,7 @@ export default function Dashboard() {
             </div>
           </TabsContent>
         </Tabs>
-        <Button onClick={() => handlerbutton()}>Abrir Dialog</Button>
+        <Button onClick={() => handlerbutton()}>Abrir Sheet</Button>
       </Layout.Body>
     </Layout>
   )

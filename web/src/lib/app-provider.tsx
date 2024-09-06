@@ -33,6 +33,15 @@ import {
 } from '@/components/ui/drawer'
 import { Button } from '@/components/custom/button'
 import { v4 as uuidv4 } from 'uuid'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 
 type DialogType = {
   id: string
@@ -46,6 +55,16 @@ type OpenDialogType = {
   children: ReactNode
 }
 
+type OpenSheetType = {
+  side: 'top' | 'right' | 'bottom' | 'left'
+} & OpenDialogType
+
+type SheetType = {
+  id: string
+  open: boolean
+  sheet: OpenSheetType
+}
+
 const BASE_URL = 'http://localhost:3000'
 
 type AppContextType = {
@@ -57,6 +76,8 @@ type AppContextType = {
   ) => Promise<AxiosResponse<T, any>>
   openDialog: (props: OpenDialogType) => string
   closeDialog: (id: string) => void
+  openSheet: (props: OpenSheetType) => string
+  closeSheet: (id: string) => void
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -66,6 +87,8 @@ export const AppContext = createContext<AppContextType>({
   request: () => new Promise(() => {}),
   openDialog: () => '',
   closeDialog: () => {},
+  openSheet: () => '',
+  closeSheet: () => {},
 })
 
 type RequestLoginType = {
@@ -80,6 +103,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const { toast } = useToast()
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [dialogs, setDialogs] = useState<DialogType[]>([])
+  const [sheets, setSheets] = useState<SheetType[]>([])
 
   const [token, setToken] = useLocalStorage({
     defaultValue: '',
@@ -95,6 +119,30 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       setDialogs([...dialogs].filter((dialog) => dialog.id !== id))
     },
     [dialogs]
+  )
+
+  const closeSheet = useCallback(
+    (id: string) => {
+      setSheets([...sheets].filter((sheet) => sheet.id !== id))
+    },
+    [sheets]
+  )
+
+  const openSheet = useCallback(
+    (sheet: OpenSheetType) => {
+      const id = uuidv4()
+
+      const data: SheetType = {
+        id,
+        open: true,
+        sheet,
+      }
+
+      setSheets([...sheets, data])
+
+      return id
+    },
+    [sheets]
   )
 
   const openDialog = useCallback(
@@ -229,17 +277,22 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   }
 
   useEffect(() => {
-    console.log(dialogs)
-  }, [dialogs])
-
-  useEffect(() => {
     parseToken(token)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
   return (
     <>
       <AppContext.Provider
-        value={{ login, user, request, logout, openDialog, closeDialog }}
+        value={{
+          login,
+          user,
+          request,
+          logout,
+          openDialog,
+          closeDialog,
+          openSheet,
+          closeSheet,
+        }}
       >
         <QueryClientProvider>
           {dialogs.map(
@@ -292,6 +345,35 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                     </DrawerContent>
                   </Drawer>
                 )}
+              </Fragment>
+            )
+          )}
+
+          {sheets.map(
+            ({ id, open, sheet: { children, side, description, title } }) => (
+              <Fragment key={id}>
+                <Sheet
+                  open={open}
+                  onOpenChange={(value) => !value && closeSheet(id)}
+                >
+                  <SheetContent side={side}>
+                    {(title || description) && (
+                      <SheetHeader>
+                        {title && <SheetTitle>{title}</SheetTitle>}
+                        {description && (
+                          <SheetDescription>{description}</SheetDescription>
+                        )}
+                      </SheetHeader>
+                    )}
+
+                    {children}
+                    <SheetFooter>
+                      <SheetClose>
+                        <Button variant='outline'>Cancel</Button>
+                      </SheetClose>
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
               </Fragment>
             )
           )}
