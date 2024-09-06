@@ -20,7 +20,7 @@ import {
 } from '../ui/tooltip'
 import { Checkbox } from '../ui/checkbox'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import SelectAll from './select-all'
+import { SelectAll } from './select-items'
 
 interface ITableViewProps<T> {
   columns: ITableColumn<T>[]

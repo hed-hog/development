@@ -12,6 +12,7 @@ import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
 import { useCallback, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { SelectedItems } from './select-items'
 
 type DataPanelTypeBase<T> = {
   url: string
@@ -281,7 +282,7 @@ export const DataPanel = <T extends any>({
         padding={0}
       />
 
-      <p>{selectedItems.length} selecionados</p>
+      {multipleSelect && <SelectedItems selectedItems={selectedItems} />}
     </>
   )
 }

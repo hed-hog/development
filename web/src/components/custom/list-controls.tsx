@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { Checkbox } from '../ui/checkbox'
 import { SearchField } from '../search-field'
+import { SelectedItems } from './select-items'
 
 interface ListControlsProps {
   data: any[]
@@ -47,14 +48,12 @@ const ListControls: React.FC<ListControlsProps> = ({
 
       {children}
 
-      {Boolean(selectedItems) && (
+      {Boolean(selectedItems) && selectedItems !== undefined && (
         <div className={`my-4 px-4`}>
-          <p
-            className={`cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
+          <SelectedItems
+            selectedItems={selectedItems}
             onClick={onFilterToggle}
-          >
-            {(selectedItems ?? []).length} itens selecionados
-          </p>
+          />
         </div>
       )}
     </>

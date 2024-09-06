@@ -6,6 +6,7 @@ import { ITableColumn } from '@/types/table-column'
 import { ISelectOption } from '@/types/select-options'
 import { IPaginationOption } from '@/types/pagination-options'
 import { usePagination } from '@/hooks/use-pagination'
+import { SelectedItems } from './select-items'
 
 interface ITablePanelProps {
   id: string
@@ -108,12 +109,10 @@ const TablePanel = ({
 
       {Boolean(multipleSelect) && (
         <div className='my-4'>
-          <p
-            className={`cursor-pointer text-sm ${(selectOptions?.selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
+          <SelectedItems
+            selectedItems={selectOptions?.selectedItems as any[]}
             onClick={() => setFilterSelected(!filterSelected)}
-          >
-            {(selectOptions?.selectedItems ?? []).length} itens selecionados
-          </p>
+          />
         </div>
       )}
     </>

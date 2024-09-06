@@ -4,7 +4,7 @@ import { IResponsiveColumn } from '@/types/responsive-columns'
 import { IStyleOption } from '@/types/style-options'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { objectToString } from '@/lib/utils'
-import SelectAll from './select-all'
+import { SelectAll } from './select-items'
 
 type GridViewProps<T> = {
   responsiveColumns?: IResponsiveColumn

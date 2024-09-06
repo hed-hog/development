@@ -3,7 +3,7 @@ import { Checkbox } from '../ui/checkbox'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { IStyleOption } from '@/types/style-options'
 import { objectToString } from '@/lib/utils'
-import SelectAll from './select-all'
+import { SelectAll } from './select-items'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   data: T[]
