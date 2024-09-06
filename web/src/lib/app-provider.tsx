@@ -29,8 +29,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer'
-import { Button, ButtonProps } from '@/components/custom/button'
-import { v4 as uuidv4 } from 'uuid'
+import { Button } from '@/components/custom/button'
 import {
   Sheet,
   SheetContent,
@@ -39,29 +38,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-
-type DialogType = {
-  id: string
-  open: boolean
-  dialog: OpenDialogType
-}
-
-type OpenDialogType = {
-  title?: string
-  description?: string
-  children: ReactNode
-  buttons?: (ButtonProps & { text: string })[]
-}
-
-type OpenSheetType = {
-  side: 'top' | 'right' | 'bottom' | 'left'
-} & OpenDialogType
-
-type SheetType = {
-  id: string
-  open: boolean
-  sheet: OpenSheetType
-}
+import { DialogType, OpenDialogType } from '@/types/dialog'
+import { OpenSheetType, SheetType } from '@/types/sheet'
+import { useDialog } from '@/hooks/use-dialog'
+import { useSheet } from '@/hooks/use-sheet'
 
 const BASE_URL = 'http://localhost:3000'
 
@@ -112,53 +92,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     key: LocalStorageKeys.User,
   })
 
-  const closeDialog = useCallback(
-    (id: string) => {
-      setDialogs([...dialogs].filter((dialog) => dialog.id !== id))
-    },
-    [dialogs]
-  )
-
-  const closeSheet = useCallback(
-    (id: string) => {
-      setSheets([...sheets].filter((sheet) => sheet.id !== id))
-    },
-    [sheets]
-  )
-
-  const openSheet = useCallback(
-    (sheet: OpenSheetType) => {
-      const id = uuidv4()
-
-      const data: SheetType = {
-        id,
-        open: true,
-        sheet,
-      }
-
-      setSheets([...sheets, data])
-
-      return id
-    },
-    [sheets]
-  )
-
-  const openDialog = useCallback(
-    (dialog: OpenDialogType) => {
-      const id = uuidv4()
-
-      const data: DialogType = {
-        id,
-        open: true,
-        dialog,
-      }
-
-      setDialogs([...dialogs, data])
-
-      return id
-    },
-    [dialogs]
-  )
+  const { openDialog, closeDialog } = useDialog(dialogs, setDialogs)
+  const { openSheet, closeSheet } = useSheet(sheets, setSheets)
 
   const handleError = (error: any) => {
     console.log('handleError', error)
