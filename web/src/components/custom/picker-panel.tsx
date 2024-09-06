@@ -17,7 +17,7 @@ import { IStyleOption } from '@/types/style-options'
 import { IPaginationOption } from '@/types/pagination-options'
 import { ITableColumn } from '@/types/table-column'
 
-interface IPickerPanelProps {
+interface IPickerPanelProps<T> {
   url: string
   type: 'grid' | 'table' | 'list'
   title?: string
@@ -28,10 +28,10 @@ interface IPickerPanelProps {
   responsiveColumns?: IResponsiveColumn
   paginationOptions?: IPaginationOption
   styleOptions?: IStyleOption
-  columns?: ITableColumn[]
+  columns?: ITableColumn<T>[]
 }
 
-export default function PickerPanel({
+export default function PickerPanel<T>({
   responsiveColumns = {
     default: 1,
     sm: 2,
@@ -54,7 +54,7 @@ export default function PickerPanel({
   caption = 'List of Items',
   sortable,
   render,
-}: IPickerPanelProps) {
+}: IPickerPanelProps<T>) {
   const id = `${url}-picker-panel`
   const [selectedIds, setSelectedIds] = useState<
     (string | Record<string, any>)[]
