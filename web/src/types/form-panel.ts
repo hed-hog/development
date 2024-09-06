@@ -1,4 +1,4 @@
-import { EnumFieldType } from '@/components/custom/field'
+import { EnumFieldType } from '@/enums/EnumFieldType'
 import { CSSProperties } from 'react'
 import { FieldValues, UseFormReturn } from 'react-hook-form'
 
@@ -65,7 +65,7 @@ export interface ISelectProps extends IFormFieldPropsBase {
   option?: IStylingProps
 }
 
-export interface IMultiSelectProps extends IFormFieldPropsBase {
+export interface IMultiSelectFieldProps extends IFormFieldPropsBase {
   badge?: IStylingProps
   actionButtons?: IStylingProps
   items?: IStylingProps
@@ -112,4 +112,4 @@ export type IFormFieldProps =
   | ISliderProps
   | ICalendarProps
   | ISelectProps
-  | IMultiSelectProps
+  | IMultiSelectFieldProps

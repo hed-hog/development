@@ -6,19 +6,15 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ColorPickerFieldVariant } from '@/enums/EnumColorPickerFieldVariant'
 import { cn } from '@/lib/utils'
 import { FieldProps } from '@/types/form-panel'
 import { Paintbrush } from 'lucide-react'
 import { useMemo } from 'react'
 
-export enum ColorPickerFieldVariant {
-  DEFAULT = 'default',
-  FULL = 'full',
-}
-
 export type ColorPickerFieldProps = {
   variant?: ColorPickerFieldVariant
-} & FieldProps
+} & Omit<FieldProps, 'label' | 'options' | 'sliderOptions'>
 
 export function ColorPickerField({
   value,

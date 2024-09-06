@@ -101,12 +101,7 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
 
   return (
     <div className='flex flex-col'>
-      <TableView
-        data={tableData}
-        columns={tableColumns}
-        searchable={false}
-        caption={caption}
-      />
+      <TableView data={tableData} columns={tableColumns} caption={caption} />
       <Button
         onClick={() => onSaveChanges(editedData)}
         className='mt-4 self-end'

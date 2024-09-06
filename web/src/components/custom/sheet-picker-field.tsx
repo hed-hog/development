@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Button } from '@/components/custom/button'
-import { MultiSelect } from '@/components/ui/multi-select' // Seu componente MultiSelect
+import { MultiSelectField } from '@/components/ui/multi-select-field'
 import {
   Sheet,
   SheetClose,
@@ -75,7 +75,7 @@ export const SheetPickerField: React.FC<SheetPickerFieldProps> = ({
     <Sheet>
       <SheetTrigger asChild className='h-15 w-full p-0'>
         <div className='h-15 w-full'>
-          <MultiSelect
+          <MultiSelectField
             required={required}
             options={options}
             value={selectedValues}
