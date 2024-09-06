@@ -1,11 +1,10 @@
-import { DataPanel } from '@/components/custom/data-panel'
+import DraggableListView from '@/components/custom/draggable-list-view'
 import type { Meta, StoryObj } from '@storybook/react'
-import { fn } from '@storybook/test'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Components/Data Panel',
-  component: DataPanel,
+  title: 'Views/DraggableListView',
+  component: DraggableListView,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
@@ -15,32 +14,20 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {},
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
-} satisfies Meta<typeof DataPanel>
+} satisfies Meta<typeof DraggableListView>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
+export const Example: Story = {
   args: {
-    url: '/users',
-    id: 'users',
-  },
-}
-
-export const SelectableUnique: Story = {
-  args: {
-    url: '/users',
-    id: 'users',
-    multipleSelect: false,
-  },
-}
-
-export const SelectableMultiple: Story = {
-  args: {
-    url: '/users',
-    id: 'users',
-    multipleSelect: true,
+    data: [
+      { id: '1', label: 'Item 1' },
+      { id: '2', label: 'Item 2' },
+      { id: '3', label: 'Item 3' },
+      { id: '4', label: 'Item 4' },
+      { id: '5', label: 'Item 5' },
+    ],
   },
 }

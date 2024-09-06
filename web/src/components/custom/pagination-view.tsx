@@ -159,7 +159,7 @@ export const PaginationView = ({
         </Pagination>
       ) : (
         <>
-          <span>
+          <span className='mx-8'>
             Página {page} de {totalPages}
           </span>
           <Pagination className='mx-0 w-fit'>

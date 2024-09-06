@@ -13,7 +13,6 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import SortableItem from './sortable-item'
-import { Card, CardContent } from '@/components/ui/card'
 import { GripVertical } from 'lucide-react'
 
 // Definição das interfaces
@@ -55,26 +54,22 @@ const DraggableListView: React.FC<DraggableListViewProps> = ({ data }) => {
   }
 
   return (
-    <Card className='w-full'>
-      <CardContent>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            {items.map((item) => (
-              <SortableItem key={item.id} id={item.id}>
-                <div className='flex flex-row rounded-md border border-gray-200 px-2 py-4'>
-                  <GripVertical className='mr-2 w-4' />
-                  <span>{item.label}</span>
-                </div>
-              </SortableItem>
-            ))}
-          </SortableContext>
-        </DndContext>
-      </CardContent>
-    </Card>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={items} strategy={verticalListSortingStrategy}>
+        {items.map((item) => (
+          <SortableItem key={item.id} id={item.id}>
+            <div className='flex flex-row rounded-md border border-gray-200 px-2 py-4'>
+              <GripVertical className='mr-2 w-4' />
+              <span>{item.label}</span>
+            </div>
+          </SortableItem>
+        ))}
+      </SortableContext>
+    </DndContext>
   )
 }
 
