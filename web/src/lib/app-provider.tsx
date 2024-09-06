@@ -245,7 +245,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                       open={open}
                       onOpenChange={(value) => !value && closeDialog(id)}
                     >
-                      <DialogContent className='sm:max-w-[425px]'>
+                      <DialogContent className='flex max-h-full flex-col sm:max-w-[425px]'>
                         {(title || description) && (
                           <DialogHeader>
                             {title && <DialogTitle>{title}</DialogTitle>}
@@ -256,10 +256,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                             )}
                           </DialogHeader>
                         )}
-                        {React.createElement(children, {
-                          ...props,
-                          block: children,
-                        })}
+                        <div className='flex-1 overflow-y-auto'>
+                          {React.createElement(children, {
+                            ...props,
+                            block: children,
+                          })}
+                        </div>
                         <DialogFooter className='gap-1 sm:justify-end'>
                           {(buttons ?? []).map(({ text, ...props }) => (
                             <Button {...props}>{text}</Button>
