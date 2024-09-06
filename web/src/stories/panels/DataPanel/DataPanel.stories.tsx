@@ -52,6 +52,10 @@ const meta: Meta<typeof DataPanel> = {
     layout: {
       control: 'select',
       options: ['grid', 'list', 'table'],
+      table: {
+        type: { summary: 'grid | table | list' },
+        defaultValue: { summary: 'grid' },
+      },
       description:
         'Defines the layout of the panel, affecting how items are displayed.',
     },

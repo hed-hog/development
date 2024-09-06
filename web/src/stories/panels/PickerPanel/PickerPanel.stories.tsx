@@ -39,7 +39,7 @@ const meta = {
       control: 'select',
       table: {
         type: { summary: 'grid | table | list' },
-        defaultValue: { summary: '[]' },
+        defaultValue: { summary: 'grid' },
       },
       options: ['grid', 'table', 'list'],
       description: 'Defines the layout type of the panel.',
