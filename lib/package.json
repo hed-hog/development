@@ -98,7 +98,8 @@
       "^@hedhog/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
       "^@hedhog/mail(|/.*)$": "<rootDir>/libs/mail/src/$1",
       "^@hedhog/user(|/.*)$": "<rootDir>/libs/user/src/$1",
-      "^@hedhog/pagination(|/.*)$": "<rootDir>/libs/pagination/src/$1"
+      "^@hedhog/pagination(|/.*)$": "<rootDir>/libs/pagination/src/$1",
+      "^@hedhog/permission(|/.*)$": "<rootDir>/libs/permission/src/$1"
     }
   }
 }

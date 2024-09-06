@@ -5,6 +5,24 @@ import { createContext, ReactNode, useCallback, useEffect } from 'react'
 import { Toaster } from 'sonner'
 import { decodeToken } from './decodeToken'
 import { QueryClientProvider } from './query-provider'
+import { useBoolean, useMediaQuery } from 'usehooks-ts'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer'
+import { Button } from '@/components/custom/button'
 
 const BASE_URL = 'http://localhost:3000'
 
@@ -33,7 +51,9 @@ export type AppProviderProps = {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
+  const { value, setValue } = useBoolean(false)
   const { toast } = useToast()
+  const isDesktop = useMediaQuery('(min-width: 768px)')
 
   const [token, setToken] = useLocalStorage({
     defaultValue: '',
@@ -165,7 +185,41 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <>
       <AppContext.Provider value={{ login, user, request, logout }}>
-        <QueryClientProvider>{children}</QueryClientProvider>
+        <QueryClientProvider>
+          {isDesktop ? (
+            <Dialog open={value} onOpenChange={setValue}>
+              <DialogContent className='sm:max-w-[425px]'>
+                <DialogHeader>
+                  <DialogTitle>Edit profile</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your profile here. Click save when you're
+                    done.
+                  </DialogDescription>
+                </DialogHeader>
+                Form
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <Drawer open={value} onOpenChange={setValue}>
+              <DrawerContent>
+                <DrawerHeader className='text-left'>
+                  <DrawerTitle>Edit profile</DrawerTitle>
+                  <DrawerDescription>
+                    Make changes to your profile here. Click save when you're
+                    done.
+                  </DrawerDescription>
+                </DrawerHeader>
+                Form
+                <DrawerFooter className='pt-2'>
+                  <DrawerClose asChild>
+                    <Button variant='outline'>Cancel</Button>
+                  </DrawerClose>
+                </DrawerFooter>
+              </DrawerContent>
+            </Drawer>
+          )}
+          {children}
+        </QueryClientProvider>
         <Toaster richColors />
       </AppContext.Provider>
     </>

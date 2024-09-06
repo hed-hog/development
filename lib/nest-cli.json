@@ -60,6 +60,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/pagination/tsconfig.lib.json"
       }
+    },
+    "permission": {
+      "type": "library",
+      "root": "libs/permission",
+      "entryFile": "index",
+      "sourceRoot": "libs/permission/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/permission/tsconfig.lib.json"
+      }
     }
   }
 }
