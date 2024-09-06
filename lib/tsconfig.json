@@ -53,6 +53,12 @@
       ],
       "@hedhog/pagination/*": [
         "libs/pagination/src/*"
+      ],
+      "@hedhog/permission": [
+        "libs/permission/src"
+      ],
+      "@hedhog/permission/*": [
+        "libs/permission/src/*"
       ]
     }
   }
