@@ -10,18 +10,46 @@ const meta: Meta<typeof FormPanel> = {
   argTypes: {
     title: {
       control: 'object',
+      description:
+        'Configuration for the form panel title, including text and styles.',
     },
     subtitle: {
       control: 'object',
+      description:
+        'Configuration for the form panel subtitle, including text and styles.',
     },
     button: {
       control: 'object',
+      description:
+        'Configuration for the submit button, including text and styles.',
     },
     form: {
       control: 'object',
+      description:
+        'React Hook Form instance used to manage form state and validation.',
     },
     onSubmit: {
       action: 'submitted',
+      description: 'Callback function triggered when the form is submitted.',
+    },
+  },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: `FormPanel component provides a versatile form interface with various field types and customizable options. It integrates seamlessly with React Hook Form to handle form submission and validation. 
+      <br/> <br/> 
+      <h3>Key Features:</h3>
+      <ul style={{ listStyle: 'none '}}>
+        <li>**Customizable Fields**: Includes various field types such as text, date, select, multi-select, and more.</li>
+        <li>**Dynamic Rendering**: Fields are rendered dynamically based on provided configuration, allowing for flexible form designs.</li>
+        <li>**Validation**: Supports form validation with required fields and custom validation rules.</li>
+        <li>**Integration with React Hook Form**: Easily integrates with React Hook Form for efficient form handling and validation.</li>
+        <li>**Customizable UI**: Customize form title, subtitle, button text, and individual field labels and descriptions.</li>
+      </ul>
+      Ideal for use in applications requiring complex forms with various input types and validation requirements, such as user registration, surveys, and settings forms.
+      `,
+      },
     },
   },
 }
@@ -184,7 +212,7 @@ const Template: Story = {
   },
 }
 
-export const Example: Story = {
+export const Default: Story = {
   ...Template,
   args: {
     title: {

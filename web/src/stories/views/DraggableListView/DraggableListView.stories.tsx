@@ -1,19 +1,38 @@
 import DraggableListView from '@/components/custom/draggable-list-view'
 import type { Meta, StoryObj } from '@storybook/react'
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: 'Views/DraggableListView',
   component: DraggableListView,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: 'centered',
+    docs: {
+      description: {
+        component: `The **DraggableListView** component allows users to reorder items in a list by dragging and dropping them. It uses the **@dnd-kit/core** library for drag-and-drop functionality with smooth handling of user interactions.
+        <br/><br/>
+        <h3>Key Features:</h3>
+        <ul style={{ listStyle: 'none '}}>
+          <li>**Drag-and-Drop Functionality**: Users can easily reorder items using drag and drop.</li>
+          <li>**Customizable List Items**: The content of each list item can be customized as needed.</li>
+          <li>**Pointer Sensor**: Utilizes pointer sensor for dragging, with an activation constraint for more accurate drag interactions.</li>
+          <li>**Vertical List Sorting Strategy**: Implements vertical list sorting, making it ideal for ordered lists.</li>
+          <li>**API Integration Ready**: Updated list order can be easily persisted or sent to a backend for further processing.</li>
+        </ul>
+        This component is ideal for use cases where users need to prioritize or reorder items visually, such as in task management, playlist organization, or custom sorting features.`,
+      },
+    },
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {},
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
+  argTypes: {
+    data: {
+      control: 'object',
+      description:
+        'Array of list items to be displayed. Each item contains an `id` and `label`.',
+      table: {
+        type: { summary: 'Array<{ id: string, label: string }>' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+  },
 } satisfies Meta<typeof DraggableListView>
 
 export default meta

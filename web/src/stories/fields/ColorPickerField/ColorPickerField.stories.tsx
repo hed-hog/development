@@ -27,7 +27,7 @@ const meta: Meta<typeof ColorPickerField> = {
     },
     variant: {
       description: 'Specifies the style of the color picker.',
-      control: 'radio',
+      control: 'select',
       options: [ColorPickerFieldVariant.DEFAULT, ColorPickerFieldVariant.FULL],
       type: 'string',
     },

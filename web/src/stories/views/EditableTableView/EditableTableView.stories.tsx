@@ -1,5 +1,5 @@
 import EditableTableView from '@/components/custom/editable-table-view'
-import { EnumFieldType } from '@/components/custom/field'
+import { EnumFieldType } from '@/enums/EnumFieldType'
 import type { Meta, StoryObj } from '@storybook/react'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -7,14 +7,60 @@ const meta = {
   title: 'Views/EditableTableView',
   component: EditableTableView,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: 'centered',
+    docs: {
+      description: {
+        component: `**EditableTableView** is a flexible and highly customizable table component that allows inline editing of data in a tabular format. 
+        It supports multiple field types (text, select, date picker, color picker, etc.) to accommodate various types of data, and it is suitable for forms, admin panels, or any UI where users need to view and edit multiple rows of data. 
+        <br/><br/>
+        <h3>Key Features:</h3>
+        <ul style={{ listStyle: 'none '}}>
+          <li>**Editable Fields**: Supports multiple field types like text, select, checkbox, date picker, and file upload.</li>
+          <li>**Dynamic Column Definitions**: The table columns are dynamically configured based on the provided configuration.</li>
+          <li>**Save Changes Callback**: A customizable save changes handler allows the integration of backend API calls or local state updates.</li>
+          <li>**Property Table Mode**: A special mode for property-style tables with simple key-value pairs.</li>
+        </ul>
+        `,
+      },
+    },
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {},
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
+  argTypes: {
+    isPropertyTable: {
+      control: 'boolean',
+      description: 'If true, the table behaves as a key-value property table.',
+      table: {
+        type: { summary: 'boolean' },
+      },
+    },
+    data: {
+      control: 'object',
+      description:
+        'The data to display in the table, where each object represents a row.',
+      table: {
+        type: { summary: 'Array<object>' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    columns: {
+      control: 'object',
+      description:
+        'An array defining the table columns, with each column specifying the key, header, and field type.',
+      table: {
+        type: {
+          summary:
+            'Array<{ key: string, header: string, type: EnumFieldType, options?: Array<{ label: string, value: string }> }>',
+        },
+      },
+    },
+    onSaveChanges: {
+      type: 'function',
+      description: 'Callback function invoked when the user saves changes.',
+      action: 'saveChanges',
+      table: {
+        type: { summary: 'function' },
+      },
+    },
+  },
 } satisfies Meta<typeof EditableTableView>
 
 export default meta
