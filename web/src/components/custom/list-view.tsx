@@ -16,6 +16,7 @@ type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   extractKey?: (item: T) => string
   onSelect?: (row: T, index: number) => void
   onUnselect?: (row: T, index: number) => void
+  selectedIds?: string[]
 }
 
 const ListView = <T extends any>({
@@ -39,9 +40,10 @@ const ListView = <T extends any>({
       return ''
     }
   },
+  selectedIds = [],
   ...props
 }: ListViewProps<T>) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
 
   useEffectAfterFirstUpdate(() => {
     if (onSelectionChange) {

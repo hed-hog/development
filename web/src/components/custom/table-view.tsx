@@ -51,6 +51,7 @@ interface ITableViewProps<T> {
   render?: (item: T, index: number) => JSX.Element
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
+  selectedIds?: string[]
 }
 
 const TableView = <T extends any>({
@@ -76,8 +77,9 @@ const TableView = <T extends any>({
   render,
   onSelect,
   onUnselect,
+  selectedIds = [],
 }: ITableViewProps<T>) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 

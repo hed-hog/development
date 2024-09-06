@@ -28,6 +28,7 @@ type GridViewProps<T> = {
   extractKey?: (item: T) => string
   onSelect?: (row: T, index: number) => void
   onUnselect?: (row: T, index: number) => void
+  selectedIds?: string[]
 } & React.HTMLAttributes<HTMLDivElement>
 
 const GridView = <T extends any>({
@@ -60,12 +61,13 @@ const GridView = <T extends any>({
   itemClassName,
   onSelect,
   onUnselect,
+  selectedIds = [],
   ...props
 }: GridViewProps<T>) => {
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
 
   // Atualiza o número de colunas baseado na largura da tela
   const updateColumnsBasedOnScreenSize = () => {
