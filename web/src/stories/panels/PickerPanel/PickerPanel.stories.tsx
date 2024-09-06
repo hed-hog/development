@@ -36,7 +36,7 @@ const meta = {
       description: 'The API endpoint URL used to fetch data for the panel.',
     },
     type: {
-      control: 'radio',
+      control: 'select',
       options: ['grid', 'table', 'list'],
       description: 'Defines the layout type of the panel.',
     },

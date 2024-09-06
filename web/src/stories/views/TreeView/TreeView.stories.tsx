@@ -1,26 +1,31 @@
-import TreeView from '@/components/custom/tree-view'
+import Tree from '@/components/custom/tree-view'
 import type { Meta, StoryObj } from '@storybook/react'
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: 'Views/TreeView',
-  component: TreeView,
+  component: Tree,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {},
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-} satisfies Meta<typeof TreeView>
+  argTypes: {
+    data: {
+      description:
+        'The hierarchical data structure to be displayed in the tree.',
+      table: {
+        type: { summary: 'Array' },
+        defaultValue: { summary: '[]' },
+      },
+      control: 'object',
+    },
+  },
+} satisfies Meta<typeof Tree>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Example: Story = {
+  render: (args) => <Tree {...args} />,
   args: {
     data: [
       {
@@ -44,5 +49,21 @@ export const Example: Story = {
         ],
       },
     ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `**TreeView** displays hierarchical data in a tree structure, supporting drag-and-drop functionality and context menus for node management.
+          <br/><br/>
+          <h3>Key Features</h3>
+          <ul>
+            <li>**Hierarchical Data Display:** Handles nested data with expandable and collapsible nodes.</li>
+            <li>**Drag and Drop:** Reorder nodes using drag-and-drop functionality.</li>
+            <li>**Context Menu:** Add or remove nodes with a context menu that appears on right-click.</li>
+            <li>**Expand/Collapse Nodes:** Toggle node visibility to expand or collapse children.</li>
+          </ul>
+        `,
+      },
+    },
   },
 }

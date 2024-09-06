@@ -50,7 +50,7 @@ const meta: Meta<typeof DataPanel> = {
         'Enables a search functionality within the panel for filtering items.',
     },
     layout: {
-      control: 'radio',
+      control: 'select',
       options: ['grid', 'list', 'table'],
       description:
         'Defines the layout of the panel, affecting how items are displayed.',
