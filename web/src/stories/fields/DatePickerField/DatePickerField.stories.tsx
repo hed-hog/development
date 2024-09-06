@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { DatePickerField } from '@/components/ui/date-picker-field'
 import type { Meta, StoryObj } from '@storybook/react'
 
@@ -7,35 +6,60 @@ const meta: Meta<typeof DatePickerField> = {
   component: DatePickerField,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `DatePickerField is a versatile and user-friendly date picker component designed for React applications. It allows users to select dates through an intuitive and interactive calendar interface, making it ideal for forms, booking systems, and any application that requires date input.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
-    label: { control: 'text', defaultValue: 'Pick a date' },
-    icon: { control: 'boolean' },
+    icon: {
+      description: 'An icon to display inside the date picker field.',
+      type: 'function',
+    },
+    label: {
+      description: 'The label for the date picker field.',
+      control: 'text',
+      defaultValue: 'Pick a date',
+    },
+    date: {
+      description: 'The currently selected date.',
+      control: 'date',
+    },
+    onDateChange: {
+      description: 'Function triggered when the date changes.',
+      action: 'changed',
+    },
+    style: {
+      description:
+        'Inline styles to apply to the main button of the date picker.',
+      control: 'object',
+    },
+    calendar: {
+      description:
+        'Custom styles and configuration for the calendar component.',
+      control: 'object',
+      properties: {
+        style: {
+          description: 'Inline styles to apply to the calendar component.',
+          control: 'object',
+        },
+      },
+    },
+    className: {
+      description:
+        'Additional CSS classes to apply to the main button of the date picker.',
+      control: 'text',
+    },
   },
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Story com estado controlado para a data
-const DatePickerExample = ({ label }: { label: string }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
-
-  const handleDateChange = (date: Date) => {
-    setSelectedDate(date)
-  }
-
-  return (
-    <DatePickerField
-      label={label}
-      date={selectedDate}
-      onDateChange={handleDateChange}
-    />
-  )
-}
-
-// Story padrão para o DatePickerField
 export const Default: Story = {
-  render: () => <DatePickerExample label='Selecione uma data' />,
+  render: (args) => (
+    <DatePickerField {...args} label={args.label || 'Pick a date'} />
+  ),
 }

@@ -7,49 +7,71 @@ const meta: Meta<typeof SheetPickerField> = {
   component: SheetPickerField,
   argTypes: {
     options: {
-      description: 'Options for the multi-select field',
+      description:
+        'Options for the multi-select field, represented as an array of objects with `label` and `value` properties.',
+      control: 'object',
     },
     onValueChange: {
       action: 'valueChanged',
-      description: 'Callback function when the selected values change',
+      description:
+        'Callback function triggered when the selected values change. Receives the updated list of selected values.',
     },
     title: {
       control: 'text',
-      description: 'Title of the sheet',
+      description:
+        'Title of the sheet, which is displayed at the top of the modal.',
     },
     subtitle: {
       control: 'text',
-      description: 'Subtitle of the sheet',
+      description:
+        'Subtitle of the sheet, displayed below the title for additional context or instructions.',
     },
     titleStyle: {
       control: 'object',
-      description: 'Inline style for the title',
+      description: 'Inline style for the title to customize its appearance.',
     },
     subtitleStyle: {
       control: 'object',
-      description: 'Inline style for the subtitle',
+      description: 'Inline style for the subtitle to customize its appearance.',
     },
     buttonText: {
       control: 'text',
-      description: 'Text for the button',
+      description:
+        'Text to display on the confirmation button at the bottom of the sheet.',
     },
     buttonStyle: {
       control: 'object',
-      description: 'Inline style for the button',
+      description: 'Inline style for the button to customize its appearance.',
     },
     defaultValue: {
-      description: 'Default selected values',
+      description:
+        'Array of default selected values to initialize the multi-select field.',
     },
     required: {
       control: 'boolean',
-      description: 'Whether the field is required',
+      description:
+        'Indicates if the field is required. When true, users must select at least one option before submitting.',
+    },
+    placeholder: {
+      control: 'text',
+      description: 'Placeholder text displayed when the input is empty.',
     },
   },
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
-        component:
-          'A picker field that uses a modal (Sheet) to select options. It provides a list of options with a search field and a button to confirm selections.',
+        component: `SheetPickerField component provides a modal (Sheet) that allows users to select options from a list. It features a multi-select field within a modal dialog, allowing users to choose multiple options and confirm their selections. 
+        <br/> <br/> 
+        <h3>Key Features:</h3>
+        <ul style={{ listStyle: 'none '}}>
+          <li>**Multi-Select Capability**: Users can select multiple options from the list.</li>
+          <li>**Search Functionality**: The search field helps in filtering options based on user input.</li>
+          <li>**Customizable**: The sheet's title, subtitle, and button text can be customized.</li>
+          <li>**Required Field**: Optionally mark the field as required to ensure user input.</li>
+        </ul>
+        Ideal for use in forms where users need to make multiple selections, such as filtering options, setting preferences, or selecting tags.
+          `,
       },
     },
   },

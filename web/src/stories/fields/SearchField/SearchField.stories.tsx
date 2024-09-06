@@ -16,6 +16,7 @@ const meta: Meta<typeof SearchField> = {
     },
     icon: {
       description: 'Custom icon to display in the search field',
+      type: 'function',
     },
     buttonText: {
       control: 'text',
@@ -27,10 +28,11 @@ const meta: Meta<typeof SearchField> = {
     },
   },
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
         component:
-          'A search field component with an input field and a search button. You can customize the placeholder text, icon, and button text.',
+          'The SearchField component features an input field with an optional custom icon and a button. It provides users with an intuitive interface for entering search queries and executing searches. Ideal for use in applications that require user-driven searches, including dashboards, settings, and content management systems.',
       },
     },
   },

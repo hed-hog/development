@@ -1,8 +1,5 @@
-import { useState } from 'react'
-import {
-  ColorPickerField,
-  ColorPickerFieldVariant,
-} from '@/components/custom/color-picker-field'
+import { ColorPickerField } from '@/components/custom/color-picker-field'
+import { ColorPickerFieldVariant } from '@/enums/EnumColorPickerFieldVariant'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof ColorPickerField> = {
@@ -10,46 +7,55 @@ const meta: Meta<typeof ColorPickerField> = {
   component: ColorPickerField,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `ColorPickerField is a flexible and user-friendly color picker component designed for React applications. It allows users to select colors through an interactive interface, making it perfect for form inputs, design tools, or any application requiring color selection.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'radio', options: ['default', 'full'] },
+    value: {
+      description: 'The currently selected color in HEX format.',
+      control: 'text',
+      type: 'string',
+    },
+    onChange: {
+      description:
+        'Function triggered when the color changes. Receives the new color value.',
+      type: 'function',
+    },
+    variant: {
+      description: 'Specifies the style of the color picker.',
+      control: 'radio',
+      options: [ColorPickerFieldVariant.DEFAULT, ColorPickerFieldVariant.FULL],
+      type: 'string',
+    },
+    required: {
+      description: 'Whether the color picker field is required.',
+      control: 'boolean',
+      defaultValue: false,
+    },
   },
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Story com estado controlado para a cor
-const ColorPickerExample = ({
-  variant,
-}: {
-  variant: ColorPickerFieldVariant
-}) => {
-  const [color, setColor] = useState<string>('#ff75c3')
-
-  const handleChange = (newColor: string) => {
-    setColor(newColor)
-  }
-
-  return (
-    <ColorPickerField
-      value={color}
-      onChange={handleChange}
-      variant={variant}
-      required
-    />
-  )
-}
-
-// Story para a variante default
 export const Default: Story = {
-  render: () => (
-    <ColorPickerExample variant={ColorPickerFieldVariant.DEFAULT} />
-  ),
+  render: (args) => <ColorPickerField {...args} />,
+  args: {
+    value: '#ff75c3',
+    required: false,
+    variant: ColorPickerFieldVariant.DEFAULT,
+  },
 }
 
-// Story para a variante full
 export const Full: Story = {
-  render: () => <ColorPickerExample variant={ColorPickerFieldVariant.FULL} />,
+  render: (args) => <ColorPickerField {...args} />,
+  args: {
+    value: '#ff75c3',
+    required: false,
+    variant: ColorPickerFieldVariant.FULL,
+  },
 }

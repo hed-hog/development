@@ -6,11 +6,36 @@ const meta: Meta<typeof PasswordInputField> = {
   title: 'Fields/PasswordInputField',
   component: PasswordInputField,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: `The PasswordInputField component is a secure and user-friendly input field for passwords. It features a toggle button to show or hide the password text, enhancing usability. Ideal for any form requiring password input, it supports various states such as disabled and customizable placeholder text.`,
+      },
+    },
+  },
   argTypes: {
-    className: { control: 'text' },
-    placeholder: { control: 'text' },
-    disabled: { control: 'boolean' },
-    value: { control: 'text' },
+    className: {
+      description: 'Additional CSS classes to apply to the input field.',
+      control: 'text',
+    },
+    placeholder: {
+      description: 'Placeholder text displayed when the input is empty.',
+      control: 'text',
+    },
+    disabled: {
+      description:
+        'If true, the input field will be disabled and not interactive.',
+      control: 'boolean',
+    },
+    value: {
+      description: 'The current value of the input field.',
+      control: 'text',
+    },
+    onChange: {
+      description: 'Callback function triggered when the input value changes.',
+      action: 'changed',
+    },
   },
 }
 
@@ -39,5 +64,6 @@ export const Default: Story = {
   },
   args: {
     placeholder: 'Enter your password',
+    disabled: false,
   },
 }

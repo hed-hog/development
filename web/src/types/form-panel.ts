@@ -1,4 +1,4 @@
-import { EnumFieldType } from '@/components/custom/field'
+import { EnumFieldType } from '@/enums/EnumFieldType'
 import { CSSProperties } from 'react'
 import { FieldValues, UseFormReturn } from 'react-hook-form'
 
