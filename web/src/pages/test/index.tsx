@@ -782,6 +782,19 @@ export default function MyForm() {
             <p>{item.email}</p>
           </div>
         )}
+        buttons={[
+          {
+            text: 'Cancelar',
+            variant: 'destructive',
+            onClick: () => console.log('Cancelou!'),
+          },
+          {
+            text: 'Enviar',
+            variant: 'ghost',
+            color: 'green',
+            onClick: () => console.log('Cancelou!'),
+          },
+        ]}
       />
 
       <h1
@@ -798,6 +811,19 @@ export default function MyForm() {
           { key: 'email', header: 'Email' },
         ]}
         sortable
+        buttons={[
+          {
+            text: 'Cancelar',
+            variant: 'destructive',
+            onClick: () => console.log('Cancelou!'),
+          },
+          {
+            text: 'Enviar',
+            variant: 'ghost',
+            color: 'green',
+            onClick: () => console.log('Cancelou!'),
+          },
+        ]}
       />
 
       <h1
@@ -821,6 +847,19 @@ export default function MyForm() {
             <p>{item.email}</p>
           </div>
         )}
+        buttons={[
+          {
+            text: 'Cancelar',
+            variant: 'destructive',
+            onClick: () => console.log('Cancelou!'),
+          },
+          {
+            text: 'Enviar',
+            variant: 'ghost',
+            color: 'green',
+            onClick: () => console.log('Cancelou!'),
+          },
+        ]}
       />
     </>
   )

@@ -37,6 +37,10 @@ const meta = {
     },
     type: {
       control: 'select',
+      table: {
+        type: { summary: 'grid | table | list' },
+        defaultValue: { summary: '[]' },
+      },
       options: ['grid', 'table', 'list'],
       description: 'Defines the layout type of the panel.',
     },
@@ -78,8 +82,17 @@ const meta = {
       type: 'function',
       description: 'A custom render function to display each item.',
     },
+    buttons: {
+      control: 'object',
+      description:
+        'An array of button objects to display in the panel footer, with each button having a variant, text, and onClick handler.',
+      table: {
+        type: { summary: '(ButtonProps & { text: string })[]' },
+        defaultValue: { summary: '[]' },
+      },
+      defaultValue: [],
+    },
   },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
 } satisfies Meta<typeof PickerPanel>
 
 export default meta
@@ -108,6 +121,18 @@ export const GridMode: Story = {
       { key: 'name', header: 'Name' },
       { key: 'email', header: 'Email' },
     ],
+    buttons: [
+      {
+        variant: 'destructive',
+        text: 'Cancel',
+        onClick: () => alert('Cancel clicked'),
+      },
+      {
+        variant: 'secondary',
+        text: 'Confirm',
+        onClick: () => alert('Confirm clicked'),
+      },
+    ],
   },
 }
 
@@ -121,6 +146,18 @@ export const TableMode: Story = {
       { key: 'email', header: 'Email' },
     ],
     sortable: true,
+    buttons: [
+      {
+        variant: 'destructive',
+        text: 'Cancel',
+        onClick: () => alert('Cancel clicked'),
+      },
+      {
+        variant: 'secondary',
+        text: 'Confirm',
+        onClick: () => alert('Confirm clicked'),
+      },
+    ],
   },
 }
 
@@ -141,5 +178,17 @@ export const ListMode: Story = {
         <p>{item.email}</p>
       </div>
     ),
+    buttons: [
+      {
+        variant: 'destructive',
+        text: 'Cancel',
+        onClick: () => alert('Cancel clicked'),
+      },
+      {
+        variant: 'secondary',
+        text: 'Confirm',
+        onClick: () => alert('Confirm clicked'),
+      },
+    ],
   },
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import GridPanel from '@/components/custom/grid-panel'
 import ListPanel from '@/components/custom/list-panel'
-import { Button } from '@/components/custom/button'
+import { Button, ButtonProps } from '@/components/custom/button'
 import TablePanel from './table-panel'
 import { Checkbox } from '@/components/ui/checkbox'
 import { IResponsiveColumn } from '@/types/responsive-columns'
@@ -29,6 +29,7 @@ interface IPickerPanelProps<T> {
   paginationOptions?: IPaginationOption
   styleOptions?: IStyleOption
   columns?: ITableColumn<T>[]
+  buttons?: (ButtonProps & { text: string })[]
 }
 
 export default function PickerPanel<T>({
@@ -53,6 +54,7 @@ export default function PickerPanel<T>({
   },
   caption = 'List of Items',
   sortable,
+  buttons = [],
   render,
 }: IPickerPanelProps<T>) {
   const id = `${url}-picker-panel`
@@ -146,8 +148,10 @@ export default function PickerPanel<T>({
               pageSizeOptions: paginationOptions?.pageSizeOptions,
             }}
             selectOptions={{
-              selectedItems: selectedIds,
+              selectedItems: filteredData,
               setIsAllSelected,
+              isAllSelected,
+              handleSelectAll,
             }}
           />
         ) : type === 'grid' ? (
@@ -190,9 +194,14 @@ export default function PickerPanel<T>({
             }}
           />
         )}
-        <CardFooter
-          className={`flex w-full justify-end px-${styleOptions.padding} py-4`}
-        >
+        <CardFooter className={`flex w-full justify-between p-0 py-4`}>
+          <div className='flex gap-2'>
+            {buttons.map(({ text, onClick, ...props }, index) => (
+              <Button key={index} {...props} onClick={onClick}>
+                {text}
+              </Button>
+            ))}
+          </div>
           <Button type='submit' onClick={() => console.log(selectedIds)}>
             Save changes
           </Button>
