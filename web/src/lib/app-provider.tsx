@@ -15,7 +15,6 @@ import { QueryClientProvider } from './query-provider'
 import { useMediaQuery } from 'usehooks-ts'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -24,14 +23,13 @@ import {
 } from '@/components/ui/dialog'
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer'
-import { Button } from '@/components/custom/button'
+import { Button, ButtonProps } from '@/components/custom/button'
 import { v4 as uuidv4 } from 'uuid'
 import {
   Sheet,
@@ -53,6 +51,7 @@ type OpenDialogType = {
   title?: string
   description?: string
   children: ReactNode
+  buttons?: (ButtonProps & { text: string })[]
 }
 
 type OpenSheetType = {
@@ -296,7 +295,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       >
         <QueryClientProvider>
           {dialogs.map(
-            ({ id, open, dialog: { title, children, description } }) => (
+            ({
+              id,
+              open,
+              dialog: { title, children, description, buttons },
+            }) => (
               <Fragment key={id}>
                 {isDesktop ? (
                   <Dialog
@@ -313,12 +316,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                         </DialogHeader>
                       )}
                       {children}
-                      <DialogFooter className='sm:justify-start'>
-                        <DialogClose asChild>
-                          <Button type='button' variant='secondary'>
-                            Close
-                          </Button>
-                        </DialogClose>
+                      <DialogFooter className='gap-1 sm:justify-end'>
+                        {(buttons ?? []).map(({ text, ...props }) => (
+                          <Button {...props}>{text}</Button>
+                        ))}
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
@@ -336,11 +337,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                           )}
                         </DrawerHeader>
                       )}
-                      {children}
-                      <DrawerFooter className='pt-2'>
-                        <DrawerClose asChild>
-                          <Button variant='outline'>Cancel</Button>
-                        </DrawerClose>
+                      <div className='px-4'>{children}</div>
+                      <DrawerFooter className='gap-1 sm:justify-end'>
+                        {(buttons ?? []).map(({ text, ...props }) => (
+                          <Button {...props}>{text}</Button>
+                        ))}
                       </DrawerFooter>
                     </DrawerContent>
                   </Drawer>
@@ -350,7 +351,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           )}
 
           {sheets.map(
-            ({ id, open, sheet: { children, side, description, title } }) => (
+            ({
+              id,
+              open,
+              sheet: { children, side, description, title, buttons },
+            }) => (
               <Fragment key={id}>
                 <Sheet
                   open={open}
@@ -368,9 +373,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
                     {children}
                     <SheetFooter>
-                      <SheetClose>
-                        <Button variant='outline'>Cancel</Button>
-                      </SheetClose>
+                      {(buttons ?? []).map(({ text, ...props }) => (
+                        <Button {...props}>{text}</Button>
+                      ))}
                     </SheetFooter>
                   </SheetContent>
                 </Sheet>

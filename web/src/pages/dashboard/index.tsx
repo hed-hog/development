@@ -17,15 +17,43 @@ import { Overview } from './components/overview'
 import { useApp } from '@/hooks/use-app'
 
 export default function Dashboard() {
-  const { openSheet } = useApp()
+  const { openSheet, closeSheet } = useApp()
 
   const handlerbutton = () => {
-    openSheet({
+    const id = openSheet({
       title: 'Testando',
       description: 'Só teste',
       children: <span>Saulo Costa</span>,
-      side: 'top',
+      side: 'right',
+      buttons: [
+        {
+          variant: 'destructive',
+          text: 'Cancelar',
+          onClick: () => closeSheet(id),
+        },
+        {
+          text: 'Salvar',
+          onClick: () => console.log('Salvar'),
+        },
+      ],
     })
+
+    /* const id = openDialog({
+      title: 'Testando',
+      description: 'Só teste',
+      children: <span>Saulo Costa</span>,
+      buttons: [
+        {
+          variant: 'destructive',
+          text: 'Cancelar',
+          onClick: () => closeDialog(id),
+        },
+        {
+          text: 'Salvar',
+          onClick: () => console.log('Salvar'),
+        },
+      ],
+    }) */
   }
 
   return (
