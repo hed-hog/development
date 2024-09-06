@@ -175,6 +175,10 @@ const TableView = <T extends any>({
     }
   }, [selectedItems])
 
+  useEffectAfterFirstUpdate(() => {
+    setSelectedItems(selectedIds)
+  }, [selectedIds])
+
   if (!render) {
     render = (row: T, index: number) => {
       return (

@@ -166,6 +166,10 @@ const GridView = <T extends any>({
     }
   }, [selectedItems])
 
+  useEffectAfterFirstUpdate(() => {
+    setSelectedItems(selectedIds)
+  }, [selectedIds])
+
   if (!render) {
     render = (item: T) => <div>{objectToString(item)}</div>
   }

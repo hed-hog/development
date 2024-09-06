@@ -118,6 +118,10 @@ const ListView = <T extends any>({
     }
   }, [data, selectedItems, extractKey])
 
+  useEffectAfterFirstUpdate(() => {
+    setSelectedItems(selectedIds)
+  }, [selectedIds])
+
   const listItems = data.map((item, index) => (
     <div
       key={extractKey(item)}

@@ -14,6 +14,7 @@ import { useCallback, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectedItems } from './select-items'
 import { useApp } from '@/hooks/use-app'
+import { set } from 'react-hook-form'
 
 type DataPanelTypeBase<T> = {
   url: string
@@ -141,7 +142,6 @@ export const DataPanel = <T extends any>({
   const [selectedItems, setSelectedItems] = useState<T[]>([])
 
   const handleSelect = useCallback((item: T, _index: number) => {
-    console.log('handleSelect', item)
     setSelectedItems((value) => [...value, item])
   }, [])
 
@@ -168,6 +168,11 @@ export const DataPanel = <T extends any>({
           render,
           selectable,
           multiple,
+          selectedIds: selectedItems.map((item) => extractKey(item)),
+          onSelectionChange: (items: T[]) => {
+            console.log('onSelectionChange', items)
+            setSelectedItems(items)
+          },
           ...(props as any),
         }
       case 'list':
@@ -178,6 +183,11 @@ export const DataPanel = <T extends any>({
           render,
           selectable,
           multiple,
+          selectedIds: selectedItems.map((item) => extractKey(item)),
+          onSelectionChange: (items: T[]) => {
+            console.log('onSelectionChange', items)
+            setSelectedItems(items)
+          },
           ...(props as any),
         }
       case 'grid':
@@ -189,6 +199,11 @@ export const DataPanel = <T extends any>({
           render,
           selectable,
           multiple,
+          selectedIds: selectedItems.map((item) => extractKey(item)),
+          onSelectionChange: (items: T[]) => {
+            console.log('onSelectionChange', items)
+            setSelectedItems(items)
+          },
           ...(props as any),
         }
     }
@@ -212,8 +227,9 @@ export const DataPanel = <T extends any>({
       buttons: [
         {
           variant: 'secondary',
-          text: 'Cencelar',
+          text: 'Cancelar',
           onClick: () => {
+            setSelectedItems(selectedItems)
             closeDialog(id)
           },
         },
@@ -230,7 +246,8 @@ export const DataPanel = <T extends any>({
   }, [selectedItems, getSelectedItemsPanel])
 
   useEffectAfterFirstUpdate(() => {
-    if (onSelectionChange) {
+    console.log('selectedItems', selectedItems)
+    if (typeof onSelectionChange === 'function') {
       onSelectionChange(selectedItems)
     }
   }, [selectedItems])
@@ -277,6 +294,7 @@ export const DataPanel = <T extends any>({
               onSelect={handleSelect}
               onUnselect={handleUnselect}
               extractKey={extractKey}
+              selectedIds={selectedItems.map((item) => extractKey(item))}
             />
           )}
         </>
@@ -309,6 +327,7 @@ export const DataPanel = <T extends any>({
               render={render}
               onSelect={handleSelect}
               onUnselect={handleUnselect}
+              selectedIds={selectedItems.map((item) => extractKey(item))}
               {...(props as any)}
             />
           )}
@@ -328,6 +347,7 @@ export const DataPanel = <T extends any>({
                 padding: styleOptions.padding,
               }}
               render={() => <SkeletonCard key={Math.random()} />}
+              selectedIds={selectedItems.map((item) => extractKey(item))}
               {...(props as any)}
             />
           ) : (
