@@ -11,7 +11,8 @@ type GridViewProps<T> = {
   data: T[]
   render?: (item: T, index: number) => JSX.Element
   styleOptions?: IStyleOption
-  multipleSelect?: boolean
+  selectable?: boolean
+  multiple?: boolean
   onSelectionChange?: (selectedItems: T[]) => void
   onItemClick?: (
     row: T,
@@ -50,7 +51,8 @@ const GridView = <T extends any>({
   },
   data = [],
   render,
-  multipleSelect,
+  selectable = false,
+  multiple = true,
   onSelectionChange,
   className,
   onItemClick,
@@ -101,7 +103,7 @@ const GridView = <T extends any>({
         setSelectedItems(newSelectedItems)
       }
 
-      if (multipleSelect) {
+      if (selectable && multiple) {
         updateSelectedItems(
           isSelected
             ? selectedItems.filter((item) => item !== id)
@@ -111,7 +113,7 @@ const GridView = <T extends any>({
         updateSelectedItems(isSelected ? [] : [id])
       }
     },
-    [selectedItems, multipleSelect, extractKey]
+    [selectedItems, selectable, extractKey]
   )
 
   const selectAllItems = useCallback(() => {
@@ -175,13 +177,11 @@ const GridView = <T extends any>({
         itemClassName ?? 'border p-2',
         'relative min-h-10 truncate hover:bg-muted/50',
         selectedItems.includes(extractKey(item)) && 'bg-muted/30',
-        typeof multipleSelect === 'boolean' && 'pl-10',
-        (typeof multipleSelect === 'boolean' ||
-          typeof onItemClick === 'function') &&
-          'cursor-pointer',
+        selectable && 'pl-10',
+        (selectable || typeof onItemClick === 'function') && 'cursor-pointer',
       ].join(' ')}
       onClick={(event) => {
-        if (typeof multipleSelect === 'boolean') {
+        if (selectable) {
           toggleSelectItem(item)
         }
         if (typeof onItemClick === 'function') {
@@ -189,7 +189,7 @@ const GridView = <T extends any>({
         }
       }}
     >
-      {typeof multipleSelect === 'boolean' && (
+      {selectable && (
         <Checkbox
           checked={selectedItems.includes(extractKey(item))}
           className='absolute left-3 top-3'
@@ -205,7 +205,7 @@ const GridView = <T extends any>({
 
   return (
     <div {...props}>
-      {multipleSelect === true && (
+      {selectable && multiple && (
         <SelectAll
           checked={selectedItems.length === data.length}
           onChange={selectAllItems}

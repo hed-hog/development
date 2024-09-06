@@ -27,7 +27,8 @@ interface ITableViewProps<T> {
   data: T[]
   sortable?: boolean
   isLoading?: boolean
-  multipleSelect?: boolean
+  selectable?: boolean
+  multiple?: boolean
   extractKey?: (item: T) => string
   onItemDoubleClick?: (
     row: T,
@@ -62,7 +63,8 @@ const TableView = <T extends any>({
   },
   itemClassName,
   onSelectionChange,
-  multipleSelect,
+  selectable = false,
+  multiple = true,
   columns,
   data,
   sortable = false,
@@ -119,7 +121,7 @@ const TableView = <T extends any>({
         setSelectedItems(newSelectedItems)
       }
 
-      if (multipleSelect) {
+      if (selectable && multiple) {
         updateSelectedItems(
           isSelected
             ? selectedItems.filter((item) => item !== id)
@@ -129,7 +131,7 @@ const TableView = <T extends any>({
         updateSelectedItems(isSelected ? [] : [id])
       }
     },
-    [selectedItems, multipleSelect, extractKey]
+    [selectedItems, selectable, extractKey]
   )
 
   const selectAllItems = useCallback(() => {
@@ -182,7 +184,7 @@ const TableView = <T extends any>({
             }
           }}
           onClick={(event) => {
-            if (typeof multipleSelect === 'boolean') {
+            if (selectable) {
               toggleSelectItem(row)
             }
             if (typeof onItemClick === 'function') {
@@ -196,12 +198,11 @@ const TableView = <T extends any>({
           className={[
             itemClassName ?? '',
             selectedItems.includes(extractKey(row)) && 'bg-muted/30',
-            (typeof multipleSelect === 'boolean' ||
-              typeof onItemClick === 'function') &&
+            (selectable || typeof onItemClick === 'function') &&
               'cursor-pointer',
           ].join(' ')}
         >
-          {typeof multipleSelect === 'boolean' && (
+          {selectable && (
             <TableCell>
               <Checkbox checked={selectedItems.includes(extractKey(row))} />
             </TableCell>
@@ -256,7 +257,7 @@ const TableView = <T extends any>({
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
         <TableHeadRow>
-          {typeof multipleSelect === 'boolean' && (
+          {selectable && multiple && (
             <TableHead>
               <SelectAll
                 checked={selectedItems.length === data.length}

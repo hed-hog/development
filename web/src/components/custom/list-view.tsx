@@ -9,7 +9,8 @@ type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   data: T[]
   render?: (item: T, index: number) => JSX.Element
   styleOptions?: IStyleOption
-  multipleSelect?: boolean
+  selectable?: boolean
+  multiple?: boolean
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
   extractKey?: (item: T) => string
@@ -24,7 +25,8 @@ const ListView = <T extends any>({
   },
   data = [],
   render,
-  multipleSelect,
+  selectable = false,
+  multiple = true,
   onSelectionChange,
   className,
   itemClassName,
@@ -72,7 +74,7 @@ const ListView = <T extends any>({
         setSelectedItems(newSelectedItems)
       }
 
-      if (multipleSelect) {
+      if (selectable && multiple) {
         updateSelectedItems(
           isSelected
             ? selectedItems.filter((item) => item !== id)
@@ -82,7 +84,7 @@ const ListView = <T extends any>({
         updateSelectedItems(isSelected ? [] : [id])
       }
     },
-    [selectedItems, multipleSelect, extractKey]
+    [selectedItems, selectable, extractKey]
   )
 
   const selectAllItems = useCallback(() => {
@@ -121,16 +123,16 @@ const ListView = <T extends any>({
         itemClassName ?? 'border-b',
         'flex flex-row items-center truncate py-2 hover:bg-muted/50',
         selectedItems.includes(extractKey(item)) && 'bg-muted/30',
-        typeof multipleSelect === 'boolean' && 'cursor-pointer',
+        selectable && 'cursor-pointer',
       ].join(' ')}
       onClick={() => {
-        if (typeof multipleSelect === 'boolean') {
+        if (selectable) {
           toggleSelectItem(item)
         }
       }}
       style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
     >
-      {multipleSelect !== undefined && (
+      {selectable && (
         <Checkbox
           checked={selectedItems.includes(extractKey(item))}
           onCheckedChange={() => toggleSelectItem(item)}
@@ -144,7 +146,7 @@ const ListView = <T extends any>({
   return (
     <div {...props} className={`p-${styleOptions.padding} ${className}`}>
       <div className='border-b'>
-        {multipleSelect === true && (
+        {selectable && multiple && (
           <SelectAll
             checked={selectedItems.length === data.length}
             onChange={selectAllItems}

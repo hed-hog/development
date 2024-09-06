@@ -13,6 +13,7 @@ import { SearchField } from '../search-field'
 import { useCallback, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectedItems } from './select-items'
+import { useApp } from '@/hooks/use-app'
 
 type DataPanelTypeBase<T> = {
   url: string
@@ -21,7 +22,8 @@ type DataPanelTypeBase<T> = {
   paginationOptions?: IPaginationOption
   selectOptions?: ISelectOption
   styleOptions?: IStyleOption
-  multipleSelect?: boolean
+  selectable?: boolean
+  multiple?: boolean
   hasSearch?: boolean
   itemClassName?: string
   extractKey?: (item: T) => string
@@ -95,6 +97,8 @@ export const DataPanel = <T extends any>({
   url,
   id,
   hasSearch = false,
+  selectable = false,
+  multiple = true,
   paginationOptions = {
     pageSizeOptions: [10, 20, 30, 40],
     maxPages: 3,
@@ -111,7 +115,6 @@ export const DataPanel = <T extends any>({
   onItemClick,
   onItemContextMenu,
   responsiveColumns,
-  multipleSelect,
   itemClassName,
   onSelectionChange,
   ...props
@@ -133,6 +136,8 @@ export const DataPanel = <T extends any>({
     selectOptions,
   })
 
+  const { openDialog, closeDialog } = useApp()
+
   const [selectedItems, setSelectedItems] = useState<T[]>([])
 
   const handleSelect = useCallback((item: T, _index: number) => {
@@ -148,6 +153,81 @@ export const DataPanel = <T extends any>({
     },
     [extractKey]
   )
+
+  const getSelectedItemsPanelProps = useCallback(() => {
+    switch (layout) {
+      case 'table':
+        return {
+          columns: columns as ITableColumn<T>[],
+          data: selectedItems,
+          sortable,
+          caption,
+          isLoading,
+          itemClassName,
+          extractKey,
+          render,
+          selectable,
+          multiple,
+          ...(props as any),
+        }
+      case 'list':
+        return {
+          itemClassName,
+          data: selectedItems,
+          styleOptions,
+          render,
+          selectable,
+          multiple,
+          ...(props as any),
+        }
+      case 'grid':
+        return {
+          itemClassName,
+          data: selectedItems,
+          responsiveColumns,
+          styleOptions,
+          render,
+          selectable,
+          multiple,
+          ...(props as any),
+        }
+    }
+  }, [selectedItems])
+
+  const getSelectedItemsPanel = useCallback(() => {
+    switch (layout) {
+      case 'table':
+        return TableView<T>
+      case 'list':
+        return ListView<T>
+      case 'grid':
+        return GridView<T>
+    }
+  }, [selectedItems, layout])
+
+  const showSelectedItems = useCallback(() => {
+    const id = openDialog({
+      children: getSelectedItemsPanel(),
+      props: getSelectedItemsPanelProps(),
+      buttons: [
+        {
+          variant: 'secondary',
+          text: 'Cencelar',
+          onClick: () => {
+            closeDialog(id)
+          },
+        },
+        {
+          text: 'Aplicar',
+          onClick: () => {
+            closeDialog(id)
+          },
+        },
+      ],
+      title: 'Itens selecionados',
+      description: 'Confira ou remova os itens selecionados',
+    })
+  }, [selectedItems, getSelectedItemsPanel])
 
   useEffectAfterFirstUpdate(() => {
     if (onSelectionChange) {
@@ -185,7 +265,8 @@ export const DataPanel = <T extends any>({
           ) : (
             <TableView<T>
               itemClassName={itemClassName}
-              multipleSelect={multipleSelect}
+              selectable={selectable}
+              multiple={multiple}
               columns={columns as ITableColumn<T>[]}
               data={items}
               sortable={sortable}
@@ -218,7 +299,8 @@ export const DataPanel = <T extends any>({
           ) : (
             <ListView<T>
               itemClassName={itemClassName}
-              multipleSelect={multipleSelect}
+              selectable={selectable}
+              multiple={multiple}
               data={items}
               styleOptions={{
                 gap: styleOptions.gap,
@@ -251,7 +333,8 @@ export const DataPanel = <T extends any>({
           ) : (
             <GridView<T>
               itemClassName={itemClassName}
-              multipleSelect={multipleSelect}
+              selectable={selectable}
+              multiple={multiple}
               data={items}
               responsiveColumns={responsiveColumns}
               styleOptions={{
@@ -282,7 +365,12 @@ export const DataPanel = <T extends any>({
         padding={0}
       />
 
-      {multipleSelect && <SelectedItems selectedItems={selectedItems} />}
+      {selectable && multiple && (
+        <SelectedItems
+          selectedItems={selectedItems}
+          onClick={() => showSelectedItems()}
+        />
+      )}
     </>
   )
 }

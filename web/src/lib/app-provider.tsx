@@ -1,7 +1,7 @@
 import { useToast } from '@/components/ui/use-toast'
 import useLocalStorage, { LocalStorageKeys } from '@/hooks/use-local-storage'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import {
+import React, {
   createContext,
   Fragment,
   ReactNode,
@@ -232,63 +232,81 @@ export const AppProvider = ({ children }: AppProviderProps) => {
             ({
               id,
               open,
-              dialog: { title, children, description, buttons },
-            }) => (
-              <Fragment key={id}>
-                {isDesktop ? (
-                  <Dialog
-                    open={open}
-                    onOpenChange={(value) => !value && closeDialog(id)}
-                  >
-                    <DialogContent className='sm:max-w-[425px]'>
-                      {(title || description) && (
-                        <DialogHeader>
-                          {title && <DialogTitle>{title}</DialogTitle>}
-                          {description && (
-                            <DialogDescription>{description}</DialogDescription>
-                          )}
-                        </DialogHeader>
-                      )}
-                      {children}
-                      <DialogFooter className='gap-1 sm:justify-end'>
-                        {(buttons ?? []).map(({ text, ...props }) => (
-                          <Button {...props}>{text}</Button>
-                        ))}
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                ) : (
-                  <Drawer
-                    open={open}
-                    onOpenChange={(value) => !value && closeDialog(id)}
-                  >
-                    <DrawerContent>
-                      {(title || description) && (
-                        <DrawerHeader className='text-left'>
-                          {title && <DrawerTitle>{title}</DrawerTitle>}
-                          {description && (
-                            <DrawerDescription>{description}</DrawerDescription>
-                          )}
-                        </DrawerHeader>
-                      )}
-                      <div className='px-4'>{children}</div>
-                      <DrawerFooter className='gap-1 sm:justify-end'>
-                        {(buttons ?? []).map(({ text, ...props }) => (
-                          <Button {...props}>{text}</Button>
-                        ))}
-                      </DrawerFooter>
-                    </DrawerContent>
-                  </Drawer>
-                )}
-              </Fragment>
-            )
+              dialog: { title, children, description, buttons, props },
+            }) => {
+              if (typeof props !== 'object') {
+                props = {}
+              }
+
+              return (
+                <Fragment key={id}>
+                  {isDesktop ? (
+                    <Dialog
+                      open={open}
+                      onOpenChange={(value) => !value && closeDialog(id)}
+                    >
+                      <DialogContent className='sm:max-w-[425px]'>
+                        {(title || description) && (
+                          <DialogHeader>
+                            {title && <DialogTitle>{title}</DialogTitle>}
+                            {description && (
+                              <DialogDescription>
+                                {description}
+                              </DialogDescription>
+                            )}
+                          </DialogHeader>
+                        )}
+                        {React.createElement(children, {
+                          ...props,
+                          block: children,
+                        })}
+                        <DialogFooter className='gap-1 sm:justify-end'>
+                          {(buttons ?? []).map(({ text, ...props }) => (
+                            <Button {...props}>{text}</Button>
+                          ))}
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  ) : (
+                    <Drawer
+                      open={open}
+                      onOpenChange={(value) => !value && closeDialog(id)}
+                    >
+                      <DrawerContent>
+                        {(title || description) && (
+                          <DrawerHeader className='text-left'>
+                            {title && <DrawerTitle>{title}</DrawerTitle>}
+                            {description && (
+                              <DrawerDescription>
+                                {description}
+                              </DrawerDescription>
+                            )}
+                          </DrawerHeader>
+                        )}
+                        <div className='px-4'>
+                          {React.createElement(children, {
+                            ...props,
+                            block: children,
+                          })}
+                        </div>
+                        <DrawerFooter className='gap-1 sm:justify-end'>
+                          {(buttons ?? []).map(({ text, ...props }) => (
+                            <Button {...props}>{text}</Button>
+                          ))}
+                        </DrawerFooter>
+                      </DrawerContent>
+                    </Drawer>
+                  )}
+                </Fragment>
+              )
+            }
           )}
 
           {sheets.map(
             ({
               id,
               open,
-              sheet: { children, side, description, title, buttons },
+              sheet: { children, side, description, title, buttons, props },
             }) => (
               <Fragment key={id}>
                 <Sheet
@@ -307,8 +325,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                         )}
                       </SheetHeader>
                     )}
-
-                    <div className='flex-1 overflow-y-auto'>{children}</div>
+                    <div className='flex-1 overflow-y-auto'>
+                      {React.createElement(children, {
+                        ...props,
+                        block: children,
+                      })}
+                    </div>
                     <SheetFooter>
                       {(buttons ?? []).map(({ text, ...props }) => (
                         <Button {...props}>{text}</Button>

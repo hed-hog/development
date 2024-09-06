@@ -39,7 +39,12 @@ const meta: Meta<typeof DataPanel> = {
       description:
         'A unique identifier for the panel, used for managing state and interactions.',
     },
-    multipleSelect: {
+    selectable: {
+      control: 'boolean',
+      description:
+        'Determines if items in the panel can be selected by the user',
+    },
+    multiple: {
       control: 'boolean',
       description:
         'Determines if multiple items can be selected simultaneously in the panel.',
@@ -78,7 +83,6 @@ export const GridSelectableUnique: Story = {
   args: {
     url: '/users',
     id: 'users',
-    multipleSelect: false,
     columns: [
       { key: 'id', header: 'ID' },
       { key: 'name', header: 'Name' },
@@ -99,7 +103,7 @@ export const GridSelectableMultiple: Story = {
   args: {
     url: '/users',
     id: 'users',
-    multipleSelect: true,
+    selectable: true,
   },
   parameters: {
     docs: {
@@ -132,7 +136,8 @@ export const ListSelectableUnique: Story = {
     layout: 'list',
     url: '/users',
     id: 'users',
-    multipleSelect: false,
+    selectable: true,
+    multiple: false,
   },
   parameters: {
     docs: {
@@ -149,7 +154,7 @@ export const ListSelectableMultiple: Story = {
     layout: 'list',
     url: '/users',
     id: 'users',
-    multipleSelect: true,
+    selectable: true,
   },
   parameters: {
     docs: {
@@ -183,7 +188,8 @@ export const TableSelectableUnique: Story = {
     layout: 'table',
     url: '/users',
     id: 'users',
-    multipleSelect: false,
+    selectable: true,
+    multiple: false,
     columns: [
       { key: 'id', header: 'ID', width: 100 },
       { key: 'name', header: 'Name' },
@@ -205,7 +211,7 @@ export const TableSelectableMultiple: Story = {
     layout: 'table',
     url: '/users',
     id: 'users',
-    multipleSelect: true,
+    selectable: true,
     columns: [
       { key: 'id', header: 'ID', width: 100 },
       { key: 'name', header: 'Name' },

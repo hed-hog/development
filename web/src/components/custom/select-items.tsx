@@ -1,4 +1,5 @@
 import { Checkbox } from '@/components/ui/checkbox'
+import { isPlural } from '@/lib/utils'
 
 interface ISelectAllProps {
   checked?: boolean
@@ -36,7 +37,15 @@ export const SelectedItems = <T extends any>({
       className={`mt-2 cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
       onClick={onClick}
     >
-      {(selectedItems ?? []).length} itens selecionados
+      {selectedItems && selectedItems.length > 0 && (
+        <>
+          {(selectedItems ?? []).length} ite
+          {isPlural(selectedItems.length, 'm', 'ns')} selecionado
+          {isPlural(selectedItems.length)}
+        </>
+      )}
+      {(!selectedItems || selectedItems.length === 0) &&
+        'Nenhum item selecionado'}
     </p>
   )
 }
