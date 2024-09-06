@@ -33,7 +33,6 @@ import { Button, ButtonProps } from '@/components/custom/button'
 import { v4 as uuidv4 } from 'uuid'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
