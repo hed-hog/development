@@ -8,11 +8,77 @@ const meta = {
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
+    docs: {
+      description: {
+        component: `PickerPanel component is a versatile selection interface that allows users to pick items from a list displayed in various formats, including grid, table, and list views. It supports functionalities such as multi-selection, pagination, and custom rendering.
+      <br/><br/>
+      <h3>Key Features:</h3>
+      <ul style={{ listStyle: 'none '}}>
+        <li>**Multiple Layout Options**: Choose between grid, table, and list layouts to display and select items.</li>
+        <li>**Customizable Rendering**: Render items with a custom function to control how each item appears.</li>
+        <li>**Pagination Support**: Easily manage large sets of data with built-in pagination options.</li>
+        <li>**Multi-Selection**: Allows users to select multiple items with visual feedback and an option to select all items.</li>
+        <li>**Responsive Grid Layout**: For grid mode, adjust the number of columns based on screen size for a responsive design.</li>
+        <li>**Checkbox Integration**: Integrates checkboxes for selection, allowing users to easily manage their selections.</li>
+        <li>**Customizable Styling**: Adjust padding, gap, and other style options to fit your design needs.</li>
+      </ul>
+      Ideal for use in applications requiring dynamic item selection, such as filtering options, managing inventories, or selecting multiple entries from a dataset.
+      `,
+      },
+    },
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {},
+  argTypes: {
+    url: {
+      control: 'text',
+      description: 'The API endpoint URL used to fetch data for the panel.',
+    },
+    type: {
+      control: 'radio',
+      options: ['grid', 'table', 'list'],
+      description: 'Defines the layout type of the panel.',
+    },
+    title: {
+      control: 'text',
+      description: 'The title displayed at the top of the panel.',
+    },
+    subtitle: {
+      control: 'text',
+      description: 'The subtitle displayed below the title.',
+    },
+    caption: {
+      control: 'text',
+      description: 'A caption or description displayed below the content.',
+    },
+    sortable: {
+      control: 'boolean',
+      description: 'Determines if the items in the table are sortable.',
+    },
+    responsiveColumns: {
+      control: 'object',
+      description:
+        'Defines the number of columns for grid layout at different screen sizes.',
+    },
+    paginationOptions: {
+      control: 'object',
+      description: 'Options for pagination, such as page size options.',
+    },
+    styleOptions: {
+      control: 'object',
+      description: 'Styling options for the panel, including padding and gap.',
+    },
+    columns: {
+      control: 'object',
+      description:
+        'Defines the columns for the table layout, including headers and data keys.',
+    },
+    render: {
+      type: 'function',
+      description: 'A custom render function to display each item.',
+    },
+  },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
 } satisfies Meta<typeof PickerPanel>
 
@@ -37,6 +103,11 @@ export const GridMode: Story = {
         <p>{item.email}</p>
       </div>
     ),
+    columns: [
+      { key: 'id', header: 'ID' },
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
+    ],
   },
 }
 
