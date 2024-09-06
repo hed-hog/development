@@ -14,8 +14,38 @@ import { TopNav } from '@/components/top-nav'
 import { UserNav } from '@/components/user-nav'
 import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
+import { useApp } from '@/hooks/use-app'
+
+const OtherPanel = () => {
+  const { openDialog, closeDialog } = useApp()
+
+  const handlerbutton = () => {
+    const id = openDialog({
+      title: 'Outro',
+      children: <div>Contenido</div>,
+    })
+
+    closeDialog(id)
+  }
+
+  return (
+    <>
+      <Button onClick={() => handlerbutton()}>Abrir Dialog</Button>
+    </>
+  )
+}
 
 export default function Dashboard() {
+  const { openDialog } = useApp()
+
+  const handlerbutton = () => {
+    openDialog({
+      title: 'Titulo',
+      description: 'Descripcion',
+      children: <OtherPanel />,
+    })
+  }
+
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -176,6 +206,7 @@ export default function Dashboard() {
             </div>
           </TabsContent>
         </Tabs>
+        <Button onClick={() => handlerbutton()}>Abrir Dialog</Button>
       </Layout.Body>
     </Layout>
   )

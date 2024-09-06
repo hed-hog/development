@@ -1,15 +1,24 @@
 import { useToast } from '@/components/ui/use-toast'
 import useLocalStorage, { LocalStorageKeys } from '@/hooks/use-local-storage'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { createContext, ReactNode, useCallback, useEffect } from 'react'
+import {
+  createContext,
+  Fragment,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { Toaster } from 'sonner'
 import { decodeToken } from './decodeToken'
 import { QueryClientProvider } from './query-provider'
-import { useBoolean, useMediaQuery } from 'usehooks-ts'
+import { useMediaQuery } from 'usehooks-ts'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -23,6 +32,19 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer'
 import { Button } from '@/components/custom/button'
+import { v4 as uuidv4 } from 'uuid'
+
+type DialogType = {
+  id: string
+  open: boolean
+  dialog: OpenDialogType
+}
+
+type OpenDialogType = {
+  title?: string
+  description?: string
+  children: ReactNode
+}
 
 const BASE_URL = 'http://localhost:3000'
 
@@ -33,6 +55,8 @@ type AppContextType = {
   request: <T extends {}>(
     config?: AxiosRequestConfig
   ) => Promise<AxiosResponse<T, any>>
+  openDialog: (props: OpenDialogType) => string
+  closeDialog: (id: string) => void
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -40,6 +64,8 @@ export const AppContext = createContext<AppContextType>({
   login: () => Promise.resolve(),
   user: {},
   request: () => new Promise(() => {}),
+  openDialog: () => '',
+  closeDialog: () => {},
 })
 
 type RequestLoginType = {
@@ -51,9 +77,9 @@ export type AppProviderProps = {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const { value, setValue } = useBoolean(false)
   const { toast } = useToast()
   const isDesktop = useMediaQuery('(min-width: 768px)')
+  const [dialogs, setDialogs] = useState<DialogType[]>([])
 
   const [token, setToken] = useLocalStorage({
     defaultValue: '',
@@ -63,6 +89,30 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     defaultValue: {},
     key: LocalStorageKeys.User,
   })
+
+  const closeDialog = useCallback(
+    (id: string) => {
+      setDialogs([...dialogs].filter((dialog) => dialog.id !== id))
+    },
+    [dialogs]
+  )
+
+  const openDialog = useCallback(
+    (dialog: OpenDialogType) => {
+      const id = uuidv4()
+
+      const data: DialogType = {
+        id,
+        open: true,
+        dialog,
+      }
+
+      setDialogs([...dialogs, data])
+
+      return id
+    },
+    [dialogs]
+  )
 
   const handleError = (error: any) => {
     console.log('handleError', error)
@@ -179,45 +229,73 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   }
 
   useEffect(() => {
+    console.log(dialogs)
+  }, [dialogs])
+
+  useEffect(() => {
     parseToken(token)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
   return (
     <>
-      <AppContext.Provider value={{ login, user, request, logout }}>
+      <AppContext.Provider
+        value={{ login, user, request, logout, openDialog, closeDialog }}
+      >
         <QueryClientProvider>
-          {isDesktop ? (
-            <Dialog open={value} onOpenChange={setValue}>
-              <DialogContent className='sm:max-w-[425px]'>
-                <DialogHeader>
-                  <DialogTitle>Edit profile</DialogTitle>
-                  <DialogDescription>
-                    Make changes to your profile here. Click save when you're
-                    done.
-                  </DialogDescription>
-                </DialogHeader>
-                Form
-              </DialogContent>
-            </Dialog>
-          ) : (
-            <Drawer open={value} onOpenChange={setValue}>
-              <DrawerContent>
-                <DrawerHeader className='text-left'>
-                  <DrawerTitle>Edit profile</DrawerTitle>
-                  <DrawerDescription>
-                    Make changes to your profile here. Click save when you're
-                    done.
-                  </DrawerDescription>
-                </DrawerHeader>
-                Form
-                <DrawerFooter className='pt-2'>
-                  <DrawerClose asChild>
-                    <Button variant='outline'>Cancel</Button>
-                  </DrawerClose>
-                </DrawerFooter>
-              </DrawerContent>
-            </Drawer>
+          {dialogs.map(
+            ({ id, open, dialog: { title, children, description } }) => (
+              <Fragment key={id}>
+                {isDesktop ? (
+                  <Dialog
+                    open={open}
+                    onOpenChange={(value) => !value && closeDialog(id)}
+                  >
+                    <DialogContent className='sm:max-w-[425px]'>
+                      {(title || description) && (
+                        <DialogHeader>
+                          {title && <DialogTitle>{title}</DialogTitle>}
+                          {description && (
+                            <DialogDescription>{description}</DialogDescription>
+                          )}
+                        </DialogHeader>
+                      )}
+                      {children}
+                      <DialogFooter className='sm:justify-start'>
+                        <DialogClose asChild>
+                          <Button type='button' variant='secondary'>
+                            Close
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                ) : (
+                  <Drawer
+                    open={open}
+                    onOpenChange={(value) => !value && closeDialog(id)}
+                  >
+                    <DrawerContent>
+                      {(title || description) && (
+                        <DrawerHeader className='text-left'>
+                          {title && <DrawerTitle>{title}</DrawerTitle>}
+                          {description && (
+                            <DrawerDescription>{description}</DrawerDescription>
+                          )}
+                        </DrawerHeader>
+                      )}
+                      {children}
+                      <DrawerFooter className='pt-2'>
+                        <DrawerClose asChild>
+                          <Button variant='outline'>Cancel</Button>
+                        </DrawerClose>
+                      </DrawerFooter>
+                    </DrawerContent>
+                  </Drawer>
+                )}
+              </Fragment>
+            )
           )}
+
           {children}
         </QueryClientProvider>
         <Toaster richColors />
