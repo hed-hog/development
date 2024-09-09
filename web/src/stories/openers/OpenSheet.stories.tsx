@@ -45,7 +45,7 @@ export const SheetStory: StoryObj<typeof Button> = {
       const id = openSheet({
         title: 'Test Sheet',
         description: 'This is a test sheet.',
-        children: <div>Sheet Content</div>,
+        children: () => <div>Sheet Content</div>,
         side: 'top',
         buttons: [
           {

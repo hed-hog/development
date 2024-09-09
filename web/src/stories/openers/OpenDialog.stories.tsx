@@ -44,7 +44,7 @@ export const DialogStory: StoryObj<typeof Button> = {
       const id = openDialog({
         title: 'Test Dialog',
         description: 'This is a test dialog.',
-        children: <span>Dialog Content</span>,
+        children: () => <span>Dialog Content</span>,
         buttons: [
           {
             variant: 'destructive',
