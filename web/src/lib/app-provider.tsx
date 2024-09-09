@@ -1,7 +1,7 @@
 import { useToast } from '@/components/ui/use-toast'
 import useLocalStorage, { LocalStorageKeys } from '@/hooks/use-local-storage'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import {
+import React, {
   createContext,
   Fragment,
   ReactNode,
@@ -29,8 +29,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer'
-import { Button, ButtonProps } from '@/components/custom/button'
-import { v4 as uuidv4 } from 'uuid'
+import { Button } from '@/components/custom/button'
 import {
   Sheet,
   SheetContent,
@@ -39,29 +38,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-
-type DialogType = {
-  id: string
-  open: boolean
-  dialog: OpenDialogType
-}
-
-type OpenDialogType = {
-  title?: string
-  description?: string
-  children: ReactNode
-  buttons?: (ButtonProps & { text: string })[]
-}
-
-type OpenSheetType = {
-  side: 'top' | 'right' | 'bottom' | 'left'
-} & OpenDialogType
-
-type SheetType = {
-  id: string
-  open: boolean
-  sheet: OpenSheetType
-}
+import { DialogType, OpenDialogType } from '@/types/dialog'
+import { OpenSheetType, SheetType } from '@/types/sheet'
+import { useDialog } from '@/hooks/use-dialog'
+import { useSheet } from '@/hooks/use-sheet'
 
 const BASE_URL = 'http://localhost:3000'
 
@@ -112,53 +92,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     key: LocalStorageKeys.User,
   })
 
-  const closeDialog = useCallback(
-    (id: string) => {
-      setDialogs([...dialogs].filter((dialog) => dialog.id !== id))
-    },
-    [dialogs]
-  )
-
-  const closeSheet = useCallback(
-    (id: string) => {
-      setSheets([...sheets].filter((sheet) => sheet.id !== id))
-    },
-    [sheets]
-  )
-
-  const openSheet = useCallback(
-    (sheet: OpenSheetType) => {
-      const id = uuidv4()
-
-      const data: SheetType = {
-        id,
-        open: true,
-        sheet,
-      }
-
-      setSheets([...sheets, data])
-
-      return id
-    },
-    [sheets]
-  )
-
-  const openDialog = useCallback(
-    (dialog: OpenDialogType) => {
-      const id = uuidv4()
-
-      const data: DialogType = {
-        id,
-        open: true,
-        dialog,
-      }
-
-      setDialogs([...dialogs, data])
-
-      return id
-    },
-    [dialogs]
-  )
+  const { openDialog, closeDialog } = useDialog(dialogs, setDialogs)
+  const { openSheet, closeSheet } = useSheet(sheets, setSheets)
 
   const handleError = (error: any) => {
     console.log('handleError', error)
@@ -297,63 +232,83 @@ export const AppProvider = ({ children }: AppProviderProps) => {
             ({
               id,
               open,
-              dialog: { title, children, description, buttons },
-            }) => (
-              <Fragment key={id}>
-                {isDesktop ? (
-                  <Dialog
-                    open={open}
-                    onOpenChange={(value) => !value && closeDialog(id)}
-                  >
-                    <DialogContent className='sm:max-w-[425px]'>
-                      {(title || description) && (
-                        <DialogHeader>
-                          {title && <DialogTitle>{title}</DialogTitle>}
-                          {description && (
-                            <DialogDescription>{description}</DialogDescription>
-                          )}
-                        </DialogHeader>
-                      )}
-                      {children}
-                      <DialogFooter className='gap-1 sm:justify-end'>
-                        {(buttons ?? []).map(({ text, ...props }) => (
-                          <Button {...props}>{text}</Button>
-                        ))}
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                ) : (
-                  <Drawer
-                    open={open}
-                    onOpenChange={(value) => !value && closeDialog(id)}
-                  >
-                    <DrawerContent>
-                      {(title || description) && (
-                        <DrawerHeader className='text-left'>
-                          {title && <DrawerTitle>{title}</DrawerTitle>}
-                          {description && (
-                            <DrawerDescription>{description}</DrawerDescription>
-                          )}
-                        </DrawerHeader>
-                      )}
-                      <div className='px-4'>{children}</div>
-                      <DrawerFooter className='gap-1 sm:justify-end'>
-                        {(buttons ?? []).map(({ text, ...props }) => (
-                          <Button {...props}>{text}</Button>
-                        ))}
-                      </DrawerFooter>
-                    </DrawerContent>
-                  </Drawer>
-                )}
-              </Fragment>
-            )
+              dialog: { title, children, description, buttons, props },
+            }) => {
+              if (typeof props !== 'object') {
+                props = {}
+              }
+
+              return (
+                <Fragment key={id}>
+                  {isDesktop ? (
+                    <Dialog
+                      open={open}
+                      onOpenChange={(value) => !value && closeDialog(id)}
+                    >
+                      <DialogContent className='flex max-h-full flex-col sm:max-w-[425px]'>
+                        {(title || description) && (
+                          <DialogHeader>
+                            {title && <DialogTitle>{title}</DialogTitle>}
+                            {description && (
+                              <DialogDescription>
+                                {description}
+                              </DialogDescription>
+                            )}
+                          </DialogHeader>
+                        )}
+                        <div className='flex-1 overflow-y-auto'>
+                          {React.createElement(children, {
+                            ...props,
+                            block: children,
+                          })}
+                        </div>
+                        <DialogFooter className='gap-1 sm:justify-end'>
+                          {(buttons ?? []).map(({ text, ...props }) => (
+                            <Button {...props}>{text}</Button>
+                          ))}
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  ) : (
+                    <Drawer
+                      open={open}
+                      onOpenChange={(value) => !value && closeDialog(id)}
+                    >
+                      <DrawerContent>
+                        {(title || description) && (
+                          <DrawerHeader className='text-left'>
+                            {title && <DrawerTitle>{title}</DrawerTitle>}
+                            {description && (
+                              <DrawerDescription>
+                                {description}
+                              </DrawerDescription>
+                            )}
+                          </DrawerHeader>
+                        )}
+                        <div className='px-4'>
+                          {React.createElement(children, {
+                            ...props,
+                            block: children,
+                          })}
+                        </div>
+                        <DrawerFooter className='gap-1 sm:justify-end'>
+                          {(buttons ?? []).map(({ text, ...props }) => (
+                            <Button {...props}>{text}</Button>
+                          ))}
+                        </DrawerFooter>
+                      </DrawerContent>
+                    </Drawer>
+                  )}
+                </Fragment>
+              )
+            }
           )}
 
           {sheets.map(
             ({
               id,
               open,
-              sheet: { children, side, description, title, buttons },
+              sheet: { children, side, description, title, buttons, props },
             }) => (
               <Fragment key={id}>
                 <Sheet
@@ -372,8 +327,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                         )}
                       </SheetHeader>
                     )}
-
-                    <div className='flex-1 overflow-y-auto'>{children}</div>
+                    <div className='flex-1 overflow-y-auto'>
+                      {React.createElement(children, {
+                        ...props,
+                        block: children,
+                      })}
+                    </div>
                     <SheetFooter>
                       {(buttons ?? []).map(({ text, ...props }) => (
                         <Button {...props}>{text}</Button>

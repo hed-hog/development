@@ -3,18 +3,20 @@ import { Checkbox } from '../ui/checkbox'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { IStyleOption } from '@/types/style-options'
 import { objectToString } from '@/lib/utils'
-import SelectAll from './select-all'
+import { SelectAll } from './select-items'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   data: T[]
   render?: (item: T, index: number) => JSX.Element
   styleOptions?: IStyleOption
-  multipleSelect?: boolean
+  selectable?: boolean
+  multiple?: boolean
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
   extractKey?: (item: T) => string
   onSelect?: (row: T, index: number) => void
   onUnselect?: (row: T, index: number) => void
+  selectedIds?: string[]
 }
 
 const ListView = <T extends any>({
@@ -24,7 +26,8 @@ const ListView = <T extends any>({
   },
   data = [],
   render,
-  multipleSelect,
+  selectable = false,
+  multiple = true,
   onSelectionChange,
   className,
   itemClassName,
@@ -37,9 +40,10 @@ const ListView = <T extends any>({
       return ''
     }
   },
+  selectedIds = [],
   ...props
 }: ListViewProps<T>) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
 
   useEffectAfterFirstUpdate(() => {
     if (onSelectionChange) {
@@ -68,51 +72,68 @@ const ListView = <T extends any>({
         )
       }
 
-      const updateSelectedItems = (newSelectedItems: any[]) => {
-        setSelectedItems(newSelectedItems)
-      }
-
-      if (multipleSelect) {
-        updateSelectedItems(
-          isSelected
-            ? selectedItems.filter((item) => item !== id)
-            : [...selectedItems, id]
-        )
-      } else {
-        updateSelectedItems(isSelected ? [] : [id])
+      if (selectable) {
+        if (multiple) {
+          setSelectedItems(
+            isSelected
+              ? selectedItems.filter((item) => item !== id)
+              : [...selectedItems, id]
+          )
+        } else {
+          setSelectedItems(isSelected ? [] : [id])
+        }
       }
     },
-    [selectedItems, multipleSelect, extractKey]
+    [selectedItems, selectable, extractKey]
   )
 
   const selectAllItems = useCallback(() => {
-    if (selectedItems.length === data.length) {
-      if (typeof onUnselect === 'function') {
-        for (const id of selectedItems) {
-          const item = data.find((i) => extractKey(i) === id)
-          if (item) {
-            onUnselect(
-              item,
-              data.findIndex((i) => extractKey(i) === id)
-            )
+    setSelectedItems((prevSelectedItems) => {
+      const newSelection = new Set<string>(prevSelectedItems)
+
+      if (newSelection.size === data.length) {
+        // If all items are already selected, unselect all
+        if (typeof onUnselect === 'function') {
+          for (const id of newSelection) {
+            const item = data.find((i) => extractKey(i) === id)
+            if (item) {
+              onUnselect(
+                item,
+                data.findIndex((i) => extractKey(i) === id)
+              )
+            }
           }
         }
-      }
-
-      setSelectedItems([])
-    } else {
-      if (typeof onSelect === 'function') {
-        for (const item of data) {
-          onSelect(
-            item,
-            data.findIndex((i) => extractKey(i) === extractKey(item))
-          )
+        return []
+      } else {
+        // Select all items
+        if (typeof onSelect === 'function') {
+          for (const item of data) {
+            const id = extractKey(item)
+            if (!newSelection.has(id)) {
+              onSelect(
+                item,
+                data.findIndex((i) => extractKey(i) === id)
+              )
+            }
+            newSelection.add(id)
+          }
         }
+        return Array.from(newSelection)
       }
+    })
+  }, [data, extractKey, onSelect, onUnselect])
 
-      setSelectedItems(data.map((i) => extractKey(i)))
+  useEffectAfterFirstUpdate(() => {
+    if (multiple) {
+      setSelectedItems(selectedIds)
     }
-  }, [data, selectedItems, extractKey])
+  }, [selectedIds])
+
+  const isAllSelected = React.useMemo(() => {
+    const selectedKeys = new Set(selectedItems)
+    return data.every((item) => selectedKeys.has(extractKey(item)))
+  }, [selectedItems, data, extractKey])
 
   const listItems = data.map((item, index) => (
     <div
@@ -121,16 +142,16 @@ const ListView = <T extends any>({
         itemClassName ?? 'border-b',
         'flex flex-row items-center truncate py-2 hover:bg-muted/50',
         selectedItems.includes(extractKey(item)) && 'bg-muted/30',
-        typeof multipleSelect === 'boolean' && 'cursor-pointer',
+        selectable && 'cursor-pointer',
       ].join(' ')}
       onClick={() => {
-        if (typeof multipleSelect === 'boolean') {
+        if (selectable) {
           toggleSelectItem(item)
         }
       }}
       style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
     >
-      {multipleSelect !== undefined && (
+      {selectable && (
         <Checkbox
           checked={selectedItems.includes(extractKey(item))}
           onCheckedChange={() => toggleSelectItem(item)}
@@ -144,9 +165,9 @@ const ListView = <T extends any>({
   return (
     <div {...props} className={`p-${styleOptions.padding} ${className}`}>
       <div className='border-b'>
-        {multipleSelect === true && (
+        {selectable && multiple && (
           <SelectAll
-            checked={selectedItems.length === data.length}
+            checked={isAllSelected}
             onChange={selectAllItems}
             label='Selecionar tudo'
           />

@@ -12,6 +12,8 @@ import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
 import { useCallback, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { SelectedItems } from './select-items'
+import { useApp } from '@/hooks/use-app'
 
 type DataPanelTypeBase<T> = {
   url: string
@@ -20,7 +22,8 @@ type DataPanelTypeBase<T> = {
   paginationOptions?: IPaginationOption
   selectOptions?: ISelectOption
   styleOptions?: IStyleOption
-  multipleSelect?: boolean
+  selectable?: boolean
+  multiple?: boolean
   hasSearch?: boolean
   itemClassName?: string
   extractKey?: (item: T) => string
@@ -94,6 +97,8 @@ export const DataPanel = <T extends any>({
   url,
   id,
   hasSearch = false,
+  selectable = false,
+  multiple = false,
   paginationOptions = {
     pageSizeOptions: [10, 20, 30, 40],
     maxPages: 3,
@@ -110,7 +115,6 @@ export const DataPanel = <T extends any>({
   onItemClick,
   onItemContextMenu,
   responsiveColumns,
-  multipleSelect,
   itemClassName,
   onSelectionChange,
   ...props
@@ -132,10 +136,11 @@ export const DataPanel = <T extends any>({
     selectOptions,
   })
 
+  const { openDialog, closeDialog } = useApp()
+
   const [selectedItems, setSelectedItems] = useState<T[]>([])
 
   const handleSelect = useCallback((item: T, _index: number) => {
-    console.log('handleSelect', item)
     setSelectedItems((value) => [...value, item])
   }, [])
 
@@ -148,8 +153,100 @@ export const DataPanel = <T extends any>({
     [extractKey]
   )
 
+  const getSelectedItemsPanelProps = useCallback(() => {
+    switch (layout) {
+      case 'table':
+        return {
+          columns: columns as ITableColumn<T>[],
+          data: selectedItems,
+          sortable,
+          caption,
+          isLoading,
+          itemClassName,
+          extractKey,
+          render,
+          selectable,
+          multiple,
+          selectedIds: selectedItems.map((item) => extractKey(item)),
+          onSelectionChange: (items: T[]) => {
+            console.log('onSelectionChange', items)
+            setSelectedItems(items)
+          },
+          ...(props as any),
+        }
+      case 'list':
+        return {
+          itemClassName,
+          data: selectedItems,
+          styleOptions,
+          render,
+          selectable,
+          multiple,
+          selectedIds: selectedItems.map((item) => extractKey(item)),
+          onSelectionChange: (items: T[]) => {
+            console.log('onSelectionChange', items)
+            setSelectedItems(items)
+          },
+          ...(props as any),
+        }
+      case 'grid':
+        return {
+          itemClassName,
+          data: selectedItems,
+          responsiveColumns,
+          styleOptions,
+          render,
+          selectable,
+          multiple,
+          selectedIds: selectedItems.map((item) => extractKey(item)),
+          onSelectionChange: (items: T[]) => {
+            console.log('onSelectionChange', items)
+            setSelectedItems(items)
+          },
+          ...(props as any),
+        }
+    }
+  }, [selectedItems])
+
+  const getSelectedItemsPanel = useCallback(() => {
+    switch (layout) {
+      case 'table':
+        return TableView<T>
+      case 'list':
+        return ListView<T>
+      case 'grid':
+        return GridView<T>
+    }
+  }, [selectedItems, layout])
+
+  const showSelectedItems = useCallback(() => {
+    const id = openDialog({
+      children: getSelectedItemsPanel(),
+      props: getSelectedItemsPanelProps(),
+      buttons: [
+        {
+          variant: 'secondary',
+          text: 'Cancelar',
+          onClick: () => {
+            setSelectedItems(selectedItems)
+            closeDialog(id)
+          },
+        },
+        {
+          text: 'Aplicar',
+          onClick: () => {
+            closeDialog(id)
+          },
+        },
+      ],
+      title: 'Itens selecionados',
+      description: 'Confira ou remova os itens selecionados',
+    })
+  }, [selectedItems, getSelectedItemsPanel])
+
   useEffectAfterFirstUpdate(() => {
-    if (onSelectionChange) {
+    console.log('selectedItems', selectedItems)
+    if (typeof onSelectionChange === 'function') {
       onSelectionChange(selectedItems)
     }
   }, [selectedItems])
@@ -184,7 +281,8 @@ export const DataPanel = <T extends any>({
           ) : (
             <TableView<T>
               itemClassName={itemClassName}
-              multipleSelect={multipleSelect}
+              selectable={selectable}
+              multiple={multiple}
               columns={columns as ITableColumn<T>[]}
               data={items}
               sortable={sortable}
@@ -195,6 +293,7 @@ export const DataPanel = <T extends any>({
               onSelect={handleSelect}
               onUnselect={handleUnselect}
               extractKey={extractKey}
+              selectedIds={selectedItems.map((item) => extractKey(item))}
             />
           )}
         </>
@@ -217,7 +316,8 @@ export const DataPanel = <T extends any>({
           ) : (
             <ListView<T>
               itemClassName={itemClassName}
-              multipleSelect={multipleSelect}
+              selectable={selectable}
+              multiple={multiple}
               data={items}
               styleOptions={{
                 gap: styleOptions.gap,
@@ -226,6 +326,7 @@ export const DataPanel = <T extends any>({
               render={render}
               onSelect={handleSelect}
               onUnselect={handleUnselect}
+              selectedIds={selectedItems.map((item) => extractKey(item))}
               {...(props as any)}
             />
           )}
@@ -245,12 +346,14 @@ export const DataPanel = <T extends any>({
                 padding: styleOptions.padding,
               }}
               render={() => <SkeletonCard key={Math.random()} />}
+              selectedIds={selectedItems.map((item) => extractKey(item))}
               {...(props as any)}
             />
           ) : (
             <GridView<T>
               itemClassName={itemClassName}
-              multipleSelect={multipleSelect}
+              selectable={selectable}
+              multiple={multiple}
               data={items}
               responsiveColumns={responsiveColumns}
               styleOptions={{
@@ -281,7 +384,12 @@ export const DataPanel = <T extends any>({
         padding={0}
       />
 
-      <p>{selectedItems.length} selecionados</p>
+      {selectable && multiple && (
+        <SelectedItems
+          selectedItems={selectedItems}
+          onClick={() => showSelectedItems()}
+        />
+      )}
     </>
   )
 }

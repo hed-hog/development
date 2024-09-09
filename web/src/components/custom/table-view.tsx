@@ -20,14 +20,15 @@ import {
 } from '../ui/tooltip'
 import { Checkbox } from '../ui/checkbox'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import SelectAll from './select-all'
+import { SelectAll } from './select-items'
 
 interface ITableViewProps<T> {
   columns: ITableColumn<T>[]
   data: T[]
   sortable?: boolean
   isLoading?: boolean
-  multipleSelect?: boolean
+  selectable?: boolean
+  multiple?: boolean
   extractKey?: (item: T) => string
   onItemDoubleClick?: (
     row: T,
@@ -50,6 +51,7 @@ interface ITableViewProps<T> {
   render?: (item: T, index: number) => JSX.Element
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
+  selectedIds?: string[]
 }
 
 const TableView = <T extends any>({
@@ -62,7 +64,8 @@ const TableView = <T extends any>({
   },
   itemClassName,
   onSelectionChange,
-  multipleSelect,
+  selectable = false,
+  multiple = true,
   columns,
   data,
   sortable = false,
@@ -74,8 +77,9 @@ const TableView = <T extends any>({
   render,
   onSelect,
   onUnselect,
+  selectedIds = [],
 }: ITableViewProps<T>) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
@@ -115,51 +119,57 @@ const TableView = <T extends any>({
         )
       }
 
-      const updateSelectedItems = (newSelectedItems: any[]) => {
-        setSelectedItems(newSelectedItems)
-      }
-
-      if (multipleSelect) {
-        updateSelectedItems(
-          isSelected
-            ? selectedItems.filter((item) => item !== id)
-            : [...selectedItems, id]
-        )
-      } else {
-        updateSelectedItems(isSelected ? [] : [id])
+      if (selectable) {
+        if (multiple) {
+          setSelectedItems(
+            isSelected
+              ? selectedItems.filter((item) => item !== id)
+              : [...selectedItems, id]
+          )
+        } else {
+          setSelectedItems(isSelected ? [] : [id])
+        }
       }
     },
-    [selectedItems, multipleSelect, extractKey]
+    [selectedItems, selectable, multiple, extractKey]
   )
 
   const selectAllItems = useCallback(() => {
-    if (selectedItems.length === data.length) {
-      if (typeof onUnselect === 'function') {
-        for (const id of selectedItems) {
-          const item = data.find((i) => extractKey(i) === id)
-          if (item) {
-            onUnselect(
-              item,
-              data.findIndex((i) => extractKey(i) === id)
-            )
+    setSelectedItems((prevSelectedItems) => {
+      const newSelection = new Set<string>(prevSelectedItems)
+
+      if (newSelection.size === data.length) {
+        // If all items are already selected, unselect all
+        if (typeof onUnselect === 'function') {
+          for (const id of newSelection) {
+            const item = data.find((i) => extractKey(i) === id)
+            if (item) {
+              onUnselect(
+                item,
+                data.findIndex((i) => extractKey(i) === id)
+              )
+            }
           }
         }
-      }
-
-      setSelectedItems([])
-    } else {
-      if (typeof onSelect === 'function') {
-        for (const item of data) {
-          onSelect(
-            item,
-            data.findIndex((i) => extractKey(i) === extractKey(item))
-          )
+        return []
+      } else {
+        // Select all items
+        if (typeof onSelect === 'function') {
+          for (const item of data) {
+            const id = extractKey(item)
+            if (!newSelection.has(id)) {
+              onSelect(
+                item,
+                data.findIndex((i) => extractKey(i) === id)
+              )
+            }
+            newSelection.add(id)
+          }
         }
+        return Array.from(newSelection)
       }
-
-      setSelectedItems(data.map((i) => extractKey(i)))
-    }
-  }, [data, selectedItems, extractKey])
+    })
+  }, [data, extractKey, onSelect, onUnselect])
 
   useEffectAfterFirstUpdate(() => {
     if (typeof onSelectionChange === 'function') {
@@ -170,6 +180,17 @@ const TableView = <T extends any>({
       )
     }
   }, [selectedItems])
+
+  useEffectAfterFirstUpdate(() => {
+    if (multiple) {
+      setSelectedItems(selectedIds)
+    }
+  }, [selectedIds])
+
+  const isAllSelected = React.useMemo(() => {
+    const selectedKeys = new Set(selectedItems)
+    return data.every((item) => selectedKeys.has(extractKey(item)))
+  }, [selectedItems, data, extractKey])
 
   if (!render) {
     render = (row: T, index: number) => {
@@ -182,7 +203,7 @@ const TableView = <T extends any>({
             }
           }}
           onClick={(event) => {
-            if (typeof multipleSelect === 'boolean') {
+            if (selectable) {
               toggleSelectItem(row)
             }
             if (typeof onItemClick === 'function') {
@@ -196,12 +217,11 @@ const TableView = <T extends any>({
           className={[
             itemClassName ?? '',
             selectedItems.includes(extractKey(row)) && 'bg-muted/30',
-            (typeof multipleSelect === 'boolean' ||
-              typeof onItemClick === 'function') &&
+            (selectable || typeof onItemClick === 'function') &&
               'cursor-pointer',
           ].join(' ')}
         >
-          {typeof multipleSelect === 'boolean' && (
+          {selectable && (
             <TableCell>
               <Checkbox checked={selectedItems.includes(extractKey(row))} />
             </TableCell>
@@ -256,12 +276,9 @@ const TableView = <T extends any>({
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
         <TableHeadRow>
-          {typeof multipleSelect === 'boolean' && (
+          {selectable && multiple && (
             <TableHead>
-              <SelectAll
-                checked={selectedItems.length === data.length}
-                onChange={selectAllItems}
-              />
+              <SelectAll checked={isAllSelected} onChange={selectAllItems} />
             </TableHead>
           )}
           {columns.map((col) => (

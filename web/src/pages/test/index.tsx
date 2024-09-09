@@ -8,12 +8,9 @@ import DraggableListView from '@/components/custom/draggable-list-view'
 import TreeView from '@/components/custom/tree-view'
 import { IFormFieldProps, IFormValues } from '@/types/form-panel'
 import GridView from '@/components/custom/grid-view'
-import GridPanel from '@/components/custom/grid-panel'
-import TablePanel from '@/components/custom/table-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import PickerPanel from '@/components/custom/picker-panel'
 import ListView from '@/components/custom/list-view'
-import ListPanel from '@/components/custom/list-panel'
 import { DataPanel } from '@/components/custom/data-panel'
 
 export default function MyForm() {
@@ -195,13 +192,6 @@ export default function MyForm() {
     { name: 'Maria', email: 'maria@example.com', role: 'User' },
     { name: 'João', email: 'joao@example.com', role: 'Admin' },
     { name: 'Maria', email: 'maria@example.com', role: 'User' },
-  ]
-
-  // table-panel
-  const tablePanelColumns = [
-    { key: 'id', header: 'ID' },
-    { key: 'name', header: 'Nome' },
-    { key: 'email', header: 'Email' },
   ]
 
   const handleRowClick = (row: Record<string, any>) => {
@@ -415,7 +405,8 @@ export default function MyForm() {
             id='data-panel-grid-example'
             url='/users'
             hasSearch
-            multipleSelect
+            selectable
+            multiple
             render={(item: any) => {
               return (
                 <div key={item.email}>
@@ -441,8 +432,9 @@ export default function MyForm() {
             id='data-panel-list-example'
             url='/users'
             layout='list'
+            selectable
+            multiple
             hasSearch
-            multipleSelect={true}
             onSelectionChange={(selectedItems) => {
               console.log('data-panel list', selectedItems)
             }}
@@ -462,6 +454,8 @@ export default function MyForm() {
             url='/users'
             layout='table'
             sortable
+            selectable={true}
+            multiple={false}
             columns={[
               {
                 key: 'id',
@@ -509,7 +503,8 @@ export default function MyForm() {
             id='data-panel-table-example'
             url='/users'
             layout='table'
-            multipleSelect={true}
+            selectable={true}
+            multiple={true}
             onSelectionChange={(selectedItems) => {
               console.log('onSelectionChange', { selectedItems })
             }}
@@ -595,23 +590,6 @@ export default function MyForm() {
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
-        TablePanel
-      </h1>
-      <Card className='mx-auto w-[1000px]'>
-        <CardContent>
-          <TablePanel
-            id='table-users'
-            columns={tablePanelColumns}
-            url='/users'
-            sortable
-            caption='Lista de Usuários'
-            onRowClick={handleRowClick}
-          />
-        </CardContent>
-      </Card>
-      <h1
-        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
-      >
         GridView
       </h1>
       <GridView
@@ -635,29 +613,6 @@ export default function MyForm() {
         }}
       />
 
-      <h1
-        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
-      >
-        GridPanel
-      </h1>
-      <GridPanel
-        id={'grid-users'}
-        render={(item: any) => (
-          <div key={item.id} className='rounded border border-gray-300 p-4'>
-            <h3 className='text-lg font-semibold'>{item.name}</h3>
-            <p>{item.email}</p>
-          </div>
-        )}
-        url='/users'
-        responsiveColumns={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-        styleOptions={{
-          padding: 4,
-          gap: 6,
-        }}
-        paginationOptions={{
-          pageSizeOptions: [10, 20, 30, 40],
-        }}
-      />
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
@@ -731,38 +686,6 @@ export default function MyForm() {
       <h1
         style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
       >
-        ListPanel
-      </h1>
-      <ListPanel
-        id='example-list-panel'
-        url='/users'
-        styleOptions={{
-          padding: 4,
-          gap: 8,
-        }}
-        paginationOptions={{
-          pageSizeOptions: [5, 10, 20],
-          maxPages: 5,
-        }}
-        render={(item: any, index: number) => (
-          <div
-            key={index}
-            style={{
-              padding: '8px',
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-            }}
-          >
-            <h1>ID: {item.id}</h1>
-            <h2>Nome: {item.name}</h2>
-            <p>Email: {item.email}</p>
-          </div>
-        )}
-      />
-
-      <h1
-        style={{ textAlign: 'center', fontSize: 48, margin: '96px 0 24px 0' }}
-      >
         PickerPanel (grid mode)
       </h1>
       <PickerPanel
@@ -782,6 +705,19 @@ export default function MyForm() {
             <p>{item.email}</p>
           </div>
         )}
+        buttons={[
+          {
+            text: 'Cancelar',
+            variant: 'destructive',
+            onClick: () => console.log('Cancelou!'),
+          },
+          {
+            text: 'Enviar',
+            variant: 'ghost',
+            color: 'green',
+            onClick: () => console.log('Cancelou!'),
+          },
+        ]}
       />
 
       <h1
@@ -798,6 +734,19 @@ export default function MyForm() {
           { key: 'email', header: 'Email' },
         ]}
         sortable
+        buttons={[
+          {
+            text: 'Cancelar',
+            variant: 'destructive',
+            onClick: () => console.log('Cancelou!'),
+          },
+          {
+            text: 'Enviar',
+            variant: 'ghost',
+            color: 'green',
+            onClick: () => console.log('Cancelou!'),
+          },
+        ]}
       />
 
       <h1
@@ -821,6 +770,19 @@ export default function MyForm() {
             <p>{item.email}</p>
           </div>
         )}
+        buttons={[
+          {
+            text: 'Cancelar',
+            variant: 'destructive',
+            onClick: () => console.log('Cancelou!'),
+          },
+          {
+            text: 'Enviar',
+            variant: 'ghost',
+            color: 'green',
+            onClick: () => console.log('Cancelou!'),
+          },
+        ]}
       />
     </>
   )

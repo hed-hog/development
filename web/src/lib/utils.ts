@@ -18,3 +18,7 @@ export function objectToString(obj: any) {
 
   return String(obj)
 }
+
+export function isPlural(count: number, singular = '', plural = 's') {
+  return count === 1 ? singular : plural
+}

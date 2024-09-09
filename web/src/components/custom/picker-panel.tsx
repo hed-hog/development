@@ -1,9 +1,5 @@
 import { useState } from 'react'
-import GridPanel from '@/components/custom/grid-panel'
-import ListPanel from '@/components/custom/list-panel'
-import { Button } from '@/components/custom/button'
-import TablePanel from './table-panel'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Button, ButtonProps } from '@/components/custom/button'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import {
   Card,
@@ -16,6 +12,7 @@ import {
 import { IStyleOption } from '@/types/style-options'
 import { IPaginationOption } from '@/types/pagination-options'
 import { ITableColumn } from '@/types/table-column'
+import { DataPanel } from './data-panel'
 
 interface IPickerPanelProps<T> {
   url: string
@@ -29,9 +26,10 @@ interface IPickerPanelProps<T> {
   paginationOptions?: IPaginationOption
   styleOptions?: IStyleOption
   columns?: ITableColumn<T>[]
+  buttons?: (ButtonProps & { text: string })[]
 }
 
-export default function PickerPanel<T>({
+export default function PickerPanel<T extends {}>({
   responsiveColumns = {
     default: 1,
     sm: 2,
@@ -53,6 +51,7 @@ export default function PickerPanel<T>({
   },
   caption = 'List of Items',
   sortable,
+  buttons = [],
   render,
 }: IPickerPanelProps<T>) {
   const id = `${url}-picker-panel`
@@ -63,6 +62,8 @@ export default function PickerPanel<T>({
   const [filteredData, setFilteredData] = useState<any[]>([])
 
   const handleCheckboxChange = (row: any, id: string) => {
+    console.log({ row, id })
+
     setSelectedIds((prevSelectedIds) => {
       const isAlreadySelected = prevSelectedIds.includes(id)
       const updatedSelectedIds = isAlreadySelected
@@ -106,23 +107,6 @@ export default function PickerPanel<T>({
     setIsAllSelected(!isAllSelected)
   }
 
-  const renderWithCheckbox = (item: any) => {
-    const isChecked = selectedIds.includes(item.id)
-    return (
-      <div
-        key={item.id}
-        className='rounded border border-gray-300 p-4'
-        onClick={() => handleCheckboxChange(item, item.id)}
-      >
-        <Checkbox
-          checked={isChecked}
-          onChange={() => handleCheckboxChange(item, item.id)}
-        />
-        {typeof render === 'function' && render(item)}
-      </div>
-    )
-  }
-
   return (
     <Card className='mx-auto max-w-[95%]'>
       <CardContent className='w-full overflow-auto'>
@@ -131,28 +115,37 @@ export default function PickerPanel<T>({
           <CardDescription>{subtitle}</CardDescription>
         </CardHeader>
         {type === 'table' && columns && Boolean(columns?.length) ? (
-          <TablePanel
+          <DataPanel
+            layout='table'
             id={id}
             columns={columns}
             url={url}
             caption={caption}
             sortable={sortable}
-            multipleSelect={true}
+            selectable={true}
+            multiple={true}
+            render={render}
             onSelectionChange={(selectedItems) => {
               setSelectedIds((prevIds) => [...prevIds, ...selectedItems])
             }}
-            onRowClick={(row) => handleCheckboxChange(row, row.id)}
+            onItemClick={(row: any) => handleCheckboxChange(row, row.id)}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,
             }}
             selectOptions={{
-              selectedItems: selectedIds,
+              selectedItems: filteredData,
               setIsAllSelected,
+              isAllSelected,
+              handleSelectAll,
             }}
           />
         ) : type === 'grid' ? (
-          <GridPanel
+          <DataPanel
+            layout='grid'
+            selectable={true}
+            multiple={true}
             id={id}
+            render={render}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,
             }}
@@ -161,7 +154,6 @@ export default function PickerPanel<T>({
               padding: styleOptions.padding,
             }}
             url={url}
-            render={renderWithCheckbox}
             responsiveColumns={responsiveColumns}
             selectOptions={{
               selectedItems: filteredData,
@@ -171,10 +163,13 @@ export default function PickerPanel<T>({
             }}
           />
         ) : (
-          <ListPanel
+          <DataPanel
+            layout='list'
             id={id}
             url={url}
-            render={renderWithCheckbox}
+            selectable={true}
+            multiple={true}
+            render={render}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,
             }}
@@ -190,9 +185,14 @@ export default function PickerPanel<T>({
             }}
           />
         )}
-        <CardFooter
-          className={`flex w-full justify-end px-${styleOptions.padding} py-4`}
-        >
+        <CardFooter className={`flex w-full justify-between p-0 py-4`}>
+          <div className='flex gap-2'>
+            {buttons.map(({ text, onClick, ...props }, index) => (
+              <Button key={index} {...props} onClick={onClick}>
+                {text}
+              </Button>
+            ))}
+          </div>
           <Button type='submit' onClick={() => console.log(selectedIds)}>
             Save changes
           </Button>

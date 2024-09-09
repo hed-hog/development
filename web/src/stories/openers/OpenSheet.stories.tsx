@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { AppContext } from '@/lib/app-provider'
 import { Button } from '@/components/custom/button'
@@ -40,7 +40,6 @@ export default meta
 export const SheetStory: StoryObj<typeof Button> = {
   render: () => {
     const { openSheet, closeSheet } = useContext(AppContext)
-    const [sheetId, setSheetId] = useState<string | null>(null)
 
     const handleOpenSheet = () => {
       const id = openSheet({
@@ -54,7 +53,6 @@ export const SheetStory: StoryObj<typeof Button> = {
             text: 'Cancel',
             onClick: () => {
               closeSheet(id)
-              setSheetId(null)
             },
           },
           {
@@ -63,7 +61,6 @@ export const SheetStory: StoryObj<typeof Button> = {
           },
         ],
       })
-      setSheetId(id)
     }
 
     return (

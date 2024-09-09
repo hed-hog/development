@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { AppContext } from '@/lib/app-provider'
 import { Button } from '@/components/custom/button'
@@ -39,7 +39,6 @@ export default meta
 export const DialogStory: StoryObj<typeof Button> = {
   render: () => {
     const { openDialog, closeDialog } = useContext(AppContext)
-    const [dialogId, setDialogId] = useState<string | null>(null)
 
     const handleOpenDialog = () => {
       const id = openDialog({
@@ -52,7 +51,6 @@ export const DialogStory: StoryObj<typeof Button> = {
             text: 'Cancel',
             onClick: () => {
               closeDialog(id)
-              setDialogId(null)
             },
           },
           {
@@ -61,7 +59,6 @@ export const DialogStory: StoryObj<typeof Button> = {
           },
         ],
       })
-      setDialogId(id)
     }
 
     return (
