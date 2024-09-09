@@ -101,18 +101,16 @@ const GridView = <T extends any>({
         )
       }
 
-      const updateSelectedItems = (newSelectedItems: any[]) => {
-        setSelectedItems(newSelectedItems)
-      }
-
-      if (selectable && multiple) {
-        updateSelectedItems(
-          isSelected
-            ? selectedItems.filter((item) => item !== id)
-            : [...selectedItems, id]
-        )
-      } else {
-        updateSelectedItems(isSelected ? [] : [id])
+      if (selectable) {
+        if (multiple) {
+          setSelectedItems(
+            isSelected
+              ? selectedItems.filter((item) => item !== id)
+              : [...selectedItems, id]
+          )
+        } else {
+          setSelectedItems(isSelected ? [] : [id])
+        }
       }
     },
     [selectedItems, selectable, extractKey]
@@ -167,7 +165,9 @@ const GridView = <T extends any>({
   }, [selectedItems])
 
   useEffectAfterFirstUpdate(() => {
-    setSelectedItems(selectedIds)
+    if (multiple) {
+      setSelectedItems(selectedIds)
+    }
   }, [selectedIds])
 
   if (!render) {

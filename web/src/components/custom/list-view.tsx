@@ -72,18 +72,16 @@ const ListView = <T extends any>({
         )
       }
 
-      const updateSelectedItems = (newSelectedItems: any[]) => {
-        setSelectedItems(newSelectedItems)
-      }
-
-      if (selectable && multiple) {
-        updateSelectedItems(
-          isSelected
-            ? selectedItems.filter((item) => item !== id)
-            : [...selectedItems, id]
-        )
-      } else {
-        updateSelectedItems(isSelected ? [] : [id])
+      if (selectable) {
+        if (multiple) {
+          setSelectedItems(
+            isSelected
+              ? selectedItems.filter((item) => item !== id)
+              : [...selectedItems, id]
+          )
+        } else {
+          setSelectedItems(isSelected ? [] : [id])
+        }
       }
     },
     [selectedItems, selectable, extractKey]
@@ -119,7 +117,9 @@ const ListView = <T extends any>({
   }, [data, selectedItems, extractKey])
 
   useEffectAfterFirstUpdate(() => {
-    setSelectedItems(selectedIds)
+    if (multiple) {
+      setSelectedItems(selectedIds)
+    }
   }, [selectedIds])
 
   const listItems = data.map((item, index) => (

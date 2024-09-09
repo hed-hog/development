@@ -405,6 +405,8 @@ export default function MyForm() {
             id='data-panel-grid-example'
             url='/users'
             hasSearch
+            selectable
+            multiple
             render={(item: any) => {
               return (
                 <div key={item.email}>

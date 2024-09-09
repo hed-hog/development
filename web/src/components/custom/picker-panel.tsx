@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Button, ButtonProps } from '@/components/custom/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import {
   Card,
@@ -108,23 +107,6 @@ export default function PickerPanel<T extends {}>({
     setIsAllSelected(!isAllSelected)
   }
 
-  const renderWithCheckbox = (item: any) => {
-    const isChecked = selectedIds.includes(item.id)
-    return (
-      <div
-        key={item.id}
-        className='rounded border border-gray-300 p-4'
-        onClick={() => handleCheckboxChange(item, item.id)}
-      >
-        <Checkbox
-          checked={isChecked}
-          onChange={() => handleCheckboxChange(item, item.id)}
-        />
-        {typeof render === 'function' && render(item)}
-      </div>
-    )
-  }
-
   return (
     <Card className='mx-auto max-w-[95%]'>
       <CardContent className='w-full overflow-auto'>
@@ -142,6 +124,7 @@ export default function PickerPanel<T extends {}>({
             sortable={sortable}
             selectable={true}
             multiple={true}
+            render={render}
             onSelectionChange={(selectedItems) => {
               setSelectedIds((prevIds) => [...prevIds, ...selectedItems])
             }}
@@ -159,7 +142,10 @@ export default function PickerPanel<T extends {}>({
         ) : type === 'grid' ? (
           <DataPanel
             layout='grid'
+            selectable={true}
+            multiple={true}
             id={id}
+            render={render}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,
             }}
@@ -168,7 +154,6 @@ export default function PickerPanel<T extends {}>({
               padding: styleOptions.padding,
             }}
             url={url}
-            render={renderWithCheckbox}
             responsiveColumns={responsiveColumns}
             selectOptions={{
               selectedItems: filteredData,
@@ -182,7 +167,9 @@ export default function PickerPanel<T extends {}>({
             layout='list'
             id={id}
             url={url}
-            render={renderWithCheckbox}
+            selectable={true}
+            multiple={true}
+            render={render}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,
             }}
