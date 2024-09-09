@@ -98,7 +98,7 @@ export const DataPanel = <T extends any>({
   id,
   hasSearch = false,
   selectable = false,
-  multiple = true,
+  multiple = false,
   paginationOptions = {
     pageSizeOptions: [10, 20, 30, 40],
     maxPages: 3,

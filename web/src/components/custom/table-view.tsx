@@ -119,19 +119,15 @@ const TableView = <T extends any>({
         )
       }
 
-      const updateSelectedItems = (newSelectedItems: any[]) => {
-        setSelectedItems(newSelectedItems)
-      }
-
       if (selectable) {
         if (multiple) {
-          updateSelectedItems(
+          setSelectedItems(
             isSelected
               ? selectedItems.filter((item) => item !== id)
               : [...selectedItems, id]
           )
         } else {
-          updateSelectedItems(isSelected ? [] : [id])
+          setSelectedItems(isSelected ? [] : [id])
         }
       }
     },
@@ -178,7 +174,9 @@ const TableView = <T extends any>({
   }, [selectedItems])
 
   useEffectAfterFirstUpdate(() => {
-    setSelectedItems(selectedIds)
+    if (multiple) {
+      setSelectedItems(selectedIds)
+    }
   }, [selectedIds])
 
   if (!render) {
