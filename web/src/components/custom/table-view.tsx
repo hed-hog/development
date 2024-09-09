@@ -135,33 +135,41 @@ const TableView = <T extends any>({
   )
 
   const selectAllItems = useCallback(() => {
-    if (selectedItems.length === data.length) {
-      if (typeof onUnselect === 'function') {
-        for (const id of selectedItems) {
-          const item = data.find((i) => extractKey(i) === id)
-          if (item) {
-            onUnselect(
-              item,
-              data.findIndex((i) => extractKey(i) === id)
-            )
+    setSelectedItems((prevSelectedItems) => {
+      const newSelection = new Set<string>(prevSelectedItems)
+
+      if (newSelection.size === data.length) {
+        // If all items are already selected, unselect all
+        if (typeof onUnselect === 'function') {
+          for (const id of newSelection) {
+            const item = data.find((i) => extractKey(i) === id)
+            if (item) {
+              onUnselect(
+                item,
+                data.findIndex((i) => extractKey(i) === id)
+              )
+            }
           }
         }
-      }
-
-      setSelectedItems([])
-    } else {
-      if (typeof onSelect === 'function') {
-        for (const item of data) {
-          onSelect(
-            item,
-            data.findIndex((i) => extractKey(i) === extractKey(item))
-          )
+        return []
+      } else {
+        // Select all items
+        if (typeof onSelect === 'function') {
+          for (const item of data) {
+            const id = extractKey(item)
+            if (!newSelection.has(id)) {
+              onSelect(
+                item,
+                data.findIndex((i) => extractKey(i) === id)
+              )
+            }
+            newSelection.add(id)
+          }
         }
+        return Array.from(newSelection)
       }
-
-      setSelectedItems(data.map((i) => extractKey(i)))
-    }
-  }, [data, selectedItems, extractKey])
+    })
+  }, [data, extractKey, onSelect, onUnselect])
 
   useEffectAfterFirstUpdate(() => {
     if (typeof onSelectionChange === 'function') {
@@ -178,6 +186,11 @@ const TableView = <T extends any>({
       setSelectedItems(selectedIds)
     }
   }, [selectedIds])
+
+  const isAllSelected = React.useMemo(() => {
+    const selectedKeys = new Set(selectedItems)
+    return data.every((item) => selectedKeys.has(extractKey(item)))
+  }, [selectedItems, data, extractKey])
 
   if (!render) {
     render = (row: T, index: number) => {
@@ -265,10 +278,7 @@ const TableView = <T extends any>({
         <TableHeadRow>
           {selectable && multiple && (
             <TableHead>
-              <SelectAll
-                checked={selectedItems.length === data.length}
-                onChange={selectAllItems}
-              />
+              <SelectAll checked={isAllSelected} onChange={selectAllItems} />
             </TableHead>
           )}
           {columns.map((col) => (
