@@ -346,7 +346,6 @@ export const DataPanel = <T extends any>({
                 padding: styleOptions.padding,
               }}
               render={() => <SkeletonCard key={Math.random()} />}
-              selectedIds={selectedItems.map((item) => extractKey(item))}
               {...(props as any)}
             />
           ) : (
@@ -361,6 +360,7 @@ export const DataPanel = <T extends any>({
                 padding: styleOptions.padding,
               }}
               render={render}
+              selectedIds={selectedItems.map((item) => extractKey(item))}
               onSelect={handleSelect}
               onUnselect={handleUnselect}
               {...(props as any)}

@@ -161,6 +161,12 @@ const GridView = <T extends any>({
     }
   }, [responsiveColumns])
 
+  useEffectAfterFirstUpdate(() => {
+    if (multiple) {
+      setSelectedItems(selectedIds)
+    }
+  }, [selectedIds])
+
   // Atualiza a seleção completa quando o estado selectedItems muda
   useEffectAfterFirstUpdate(() => {
     if (onSelectionChange) {
