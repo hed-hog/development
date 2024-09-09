@@ -432,6 +432,8 @@ export default function MyForm() {
             id='data-panel-list-example'
             url='/users'
             layout='list'
+            selectable
+            multiple
             hasSearch
             onSelectionChange={(selectedItems) => {
               console.log('data-panel list', selectedItems)

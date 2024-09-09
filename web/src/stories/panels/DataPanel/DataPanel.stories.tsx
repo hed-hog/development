@@ -83,6 +83,8 @@ export const GridSelectableUnique: Story = {
   args: {
     url: '/users',
     id: 'users',
+    selectable: true,
+    multiple: false,
     columns: [
       { key: 'id', header: 'ID' },
       { key: 'name', header: 'Name' },
@@ -104,6 +106,7 @@ export const GridSelectableMultiple: Story = {
     url: '/users',
     id: 'users',
     selectable: true,
+    multiple: true,
   },
   parameters: {
     docs: {
@@ -155,6 +158,7 @@ export const ListSelectableMultiple: Story = {
     url: '/users',
     id: 'users',
     selectable: true,
+    multiple: true,
   },
   parameters: {
     docs: {
@@ -212,6 +216,7 @@ export const TableSelectableMultiple: Story = {
     url: '/users',
     id: 'users',
     selectable: true,
+    multiple: true,
     columns: [
       { key: 'id', header: 'ID', width: 100 },
       { key: 'name', header: 'Name' },
