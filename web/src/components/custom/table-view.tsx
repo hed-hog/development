@@ -123,17 +123,19 @@ const TableView = <T extends any>({
         setSelectedItems(newSelectedItems)
       }
 
-      if (selectable && multiple) {
-        updateSelectedItems(
-          isSelected
-            ? selectedItems.filter((item) => item !== id)
-            : [...selectedItems, id]
-        )
-      } else {
-        updateSelectedItems(isSelected ? [] : [id])
+      if (selectable) {
+        if (multiple) {
+          updateSelectedItems(
+            isSelected
+              ? selectedItems.filter((item) => item !== id)
+              : [...selectedItems, id]
+          )
+        } else {
+          updateSelectedItems(isSelected ? [] : [id])
+        }
       }
     },
-    [selectedItems, selectable, extractKey]
+    [selectedItems, selectable, multiple, extractKey]
   )
 
   const selectAllItems = useCallback(() => {

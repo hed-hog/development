@@ -8,34 +8,36 @@ import { IPaginationOption } from '@/types/pagination-options'
 import { usePagination } from '@/hooks/use-pagination'
 import { SelectedItems } from './select-items'
 
-interface ITablePanelProps {
+type ITablePanelProps<T> = {
   id: string
   url: string
   sortable?: boolean
-  onRowClick?: (row: Record<string, any>) => void
+  onRowClick?: (row: T) => void
   caption?: string
-  multipleSelect?: boolean
-  onSelectionChange?: (selectedItems: Array<Record<string, any>>) => void
-  columns: ITableColumn[]
+  selectable?: boolean
+  multiple?: boolean
+  onSelectionChange?: (selectedItems: Array<T>) => void
+  columns: ITableColumn<T>[]
   paginationOptions?: IPaginationOption
   selectOptions?: ISelectOption
 }
 
-const TablePanel = ({
+const TablePanel = <T extends {}>({
   id,
   columns,
   url,
   sortable = false,
   onRowClick,
   caption,
+  selectable,
+  multiple,
   onSelectionChange,
-  multipleSelect = false,
   paginationOptions = {
     pageSizeOptions: [10, 20, 30, 40],
     maxPages: 3,
   },
   selectOptions,
-}: ITablePanelProps) => {
+}: ITablePanelProps<T>) => {
   const {
     isLoading,
     items,
@@ -80,10 +82,11 @@ const TablePanel = ({
           }}
         />
       </div>
-      <TableView
-        multipleSelect={multipleSelect}
+      <TableView<T>
+        selectable={selectable}
+        multiple={multiple}
         onSelectionChange={onSelectionChange}
-        columns={columns as ITableColumn[]}
+        columns={columns}
         data={items}
         sortable={sortable}
         caption={caption}
@@ -107,7 +110,7 @@ const TablePanel = ({
         padding={0}
       />
 
-      {Boolean(multipleSelect) && (
+      {multiple && (
         <div className='my-4'>
           <SelectedItems
             selectedItems={selectOptions?.selectedItems as any[]}

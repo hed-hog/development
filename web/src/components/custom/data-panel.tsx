@@ -14,7 +14,6 @@ import { useCallback, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectedItems } from './select-items'
 import { useApp } from '@/hooks/use-app'
-import { set } from 'react-hook-form'
 
 type DataPanelTypeBase<T> = {
   url: string

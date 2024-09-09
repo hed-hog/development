@@ -1,8 +1,5 @@
 import { useState } from 'react'
-import GridPanel from '@/components/custom/grid-panel'
-import ListPanel from '@/components/custom/list-panel'
 import { Button, ButtonProps } from '@/components/custom/button'
-import TablePanel from './table-panel'
 import { Checkbox } from '@/components/ui/checkbox'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import {
@@ -16,6 +13,7 @@ import {
 import { IStyleOption } from '@/types/style-options'
 import { IPaginationOption } from '@/types/pagination-options'
 import { ITableColumn } from '@/types/table-column'
+import { DataPanel } from './data-panel'
 
 interface IPickerPanelProps<T> {
   url: string
@@ -32,7 +30,7 @@ interface IPickerPanelProps<T> {
   buttons?: (ButtonProps & { text: string })[]
 }
 
-export default function PickerPanel<T>({
+export default function PickerPanel<T extends {}>({
   responsiveColumns = {
     default: 1,
     sm: 2,
@@ -65,6 +63,8 @@ export default function PickerPanel<T>({
   const [filteredData, setFilteredData] = useState<any[]>([])
 
   const handleCheckboxChange = (row: any, id: string) => {
+    console.log({ row, id })
+
     setSelectedIds((prevSelectedIds) => {
       const isAlreadySelected = prevSelectedIds.includes(id)
       const updatedSelectedIds = isAlreadySelected
@@ -133,17 +133,19 @@ export default function PickerPanel<T>({
           <CardDescription>{subtitle}</CardDescription>
         </CardHeader>
         {type === 'table' && columns && Boolean(columns?.length) ? (
-          <TablePanel
+          <DataPanel
+            layout='table'
             id={id}
             columns={columns}
             url={url}
             caption={caption}
             sortable={sortable}
-            multipleSelect={true}
+            selectable={true}
+            multiple={true}
             onSelectionChange={(selectedItems) => {
               setSelectedIds((prevIds) => [...prevIds, ...selectedItems])
             }}
-            onRowClick={(row) => handleCheckboxChange(row, row.id)}
+            onItemClick={(row: any) => handleCheckboxChange(row, row.id)}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,
             }}
@@ -155,7 +157,8 @@ export default function PickerPanel<T>({
             }}
           />
         ) : type === 'grid' ? (
-          <GridPanel
+          <DataPanel
+            layout='grid'
             id={id}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,
@@ -175,7 +178,8 @@ export default function PickerPanel<T>({
             }}
           />
         ) : (
-          <ListPanel
+          <DataPanel
+            layout='list'
             id={id}
             url={url}
             render={renderWithCheckbox}
