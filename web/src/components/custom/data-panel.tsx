@@ -24,6 +24,7 @@ import { useCreateUser, useDeleteUser, useEditUser } from '@/features/users'
 import FormPanel from './form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FieldValues, useForm } from 'react-hook-form'
+import { Button } from './button'
 
 type DataPanelTypeBase<T> = {
   url: string
@@ -301,6 +302,12 @@ export const DataPanel = <T extends any>({
   }
 
   const openCreateDialog = () => {
+    form.reset({
+      id: '',
+      name: '',
+      email: '',
+    })
+
     const id = openDialog({
       title: 'Criar Usuário',
       description: 'Preencha as informações do usuário.',
@@ -432,30 +439,51 @@ export const DataPanel = <T extends any>({
             />
           </div>
         )}
-        <div className='flex min-w-fit flex-row items-center justify-end rounded-lg bg-[#3b82f6] p-1'>
+        <div className='flex items-center justify-end space-x-4 rounded-md p-4'>
           {selectedItems.length ? (
             <>
               {' '}
-              <IconInfoCircle
-                className='mx-2 cursor-pointer'
-                onClick={openInfoDialog}
-              />
               {selectedItems.length === 1 && (
-                <IconEdit
-                  className='mx-2 cursor-pointer'
+                <Button
+                  variant='outline'
+                  className='bg-secondary'
+                  size='sm'
+                  aria-label='Visualizar item selecionado'
                   onClick={openEditDialog}
-                />
+                >
+                  <IconEdit className='mr-1 w-5 cursor-pointer' /> Editar
+                </Button>
               )}
-              <IconTrash
-                className='mx-2 cursor-pointer'
+              <Button
+                variant='outline'
+                className='bg-secondary'
+                size='sm'
+                aria-label='Visualizar item selecionado'
+                onClick={openInfoDialog}
+              >
+                <IconInfoCircle className='mr-1 w-5 cursor-pointer' />{' '}
+                Visualizar
+              </Button>
+              <Button
+                variant='outline'
+                className='bg-secondary'
+                size='sm'
+                aria-label='Visualizar item selecionado'
                 onClick={openDeleteDialog}
-              />
+              >
+                <IconTrash className='mr-1 w-5 cursor-pointer' /> Excluir
+              </Button>
             </>
           ) : (
-            <IconPlus
-              className='mx-2 cursor-pointer'
+            <Button
+              variant='outline'
+              className='bg-secondary'
+              size='sm'
+              aria-label='Visualizar item selecionado'
               onClick={openCreateDialog}
-            />
+            >
+              <IconPlus className='mr-1 w-5 cursor-pointer' /> Criar
+            </Button>
           )}
         </div>
       </div>
