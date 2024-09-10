@@ -8,6 +8,8 @@ type UsePaginationProps = {
   paginationOptions?: IPaginationOption
   url: string
   id: string
+  orderField?: string
+  orderDirection?: 'asc' | 'desc'
 }
 
 export const usePagination = ({
@@ -15,7 +17,13 @@ export const usePagination = ({
   url,
   selectOptions,
   paginationOptions,
+  orderField,
+  orderDirection,
 }: UsePaginationProps) => {
+  const [sortField, setSortField] = useState<string | undefined>(orderField)
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | undefined>(
+    orderDirection
+  )
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(
     paginationOptions?.pageSizeOptions[0] || 10
@@ -29,6 +37,8 @@ export const usePagination = ({
     page,
     pageSize,
     search,
+    sortField,
+    sortOrder,
     queryKey: id,
   })
 
@@ -44,7 +54,7 @@ export const usePagination = ({
   useEffect(() => {
     if (selectOptions?.setIsAllSelected) selectOptions?.setIsAllSelected(false)
     refetch()
-  }, [pageSize, page, search, refetch])
+  }, [pageSize, page, search, sortField, sortOrder, refetch])
 
   return {
     page,
@@ -56,5 +66,7 @@ export const usePagination = ({
     isLoading,
     search,
     setSearch,
+    setSortField,
+    setSortOrder,
   }
 }

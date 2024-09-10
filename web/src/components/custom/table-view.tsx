@@ -45,6 +45,7 @@ interface ITableViewProps<T> {
     index: number,
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => void
+  onSortChange?: (field: string, order: 'asc' | 'desc') => void
   onSelect?: (row: T, index: number) => void
   onUnselect?: (row: T, index: number) => void
   caption?: string
@@ -73,6 +74,7 @@ const TableView = <T extends any>({
   onItemClick,
   onItemDoubleClick,
   onItemContextMenu,
+  onSortChange,
   caption,
   render,
   onSelect,
@@ -83,24 +85,18 @@ const TableView = <T extends any>({
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
-  const handleSort = (columnKey: string) => {
-    if (sortColumn === columnKey) {
-      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
-    } else {
+  const handleSort = useCallback(
+    (columnKey: string) => {
+      const order = sortDirection === 'asc' ? 'desc' : 'asc'
       setSortColumn(columnKey)
-      setSortDirection('asc')
-    }
-  }
+      setSortDirection(order)
 
-  // Ordenar dados
-  const sortedData = React.useMemo(() => {
-    if (!sortColumn) return data
-    return [...data].sort((a: any, b: any) => {
-      if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1
-      if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1
-      return 0
-    })
-  }, [data, sortColumn, sortDirection])
+      if (typeof onSortChange === 'function') {
+        onSortChange(columnKey, order)
+      }
+    },
+    [sortDirection, onSortChange]
+  )
 
   const toggleSelectItem = useCallback(
     (item: T) => {
@@ -276,11 +272,11 @@ const TableView = <T extends any>({
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
         <TableHeadRow>
-          {selectable && multiple && (
-            <TableHead>
+          <TableHead>
+            {selectable && multiple && (
               <SelectAll checked={isAllSelected} onChange={selectAllItems} />
-            </TableHead>
-          )}
+            )}
+          </TableHead>
           {columns.map((col) => (
             <TableHead
               key={'key' in col ? col.key : 'actions'}
@@ -313,7 +309,7 @@ const TableView = <T extends any>({
                 ))}
               </TableRow>
             ))
-          : (sortedData ?? []).map(render)}
+          : (data ?? []).map(render)}
       </TableBody>
     </Table>
   )

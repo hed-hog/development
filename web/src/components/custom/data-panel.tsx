@@ -165,6 +165,8 @@ export const DataPanel = <T extends any>({
     search,
     setSearch,
     totalItems,
+    setSortField,
+    setSortOrder,
   } = usePagination({
     url,
     id,
@@ -188,6 +190,11 @@ export const DataPanel = <T extends any>({
     [extractKey]
   )
 
+  const onSortChange = (field: string, order: 'asc' | 'desc') => {
+    setSortField(field)
+    setSortOrder(order)
+  }
+
   const getSelectedItemsPanelProps = useCallback(() => {
     switch (layout) {
       case 'table':
@@ -201,6 +208,7 @@ export const DataPanel = <T extends any>({
           extractKey,
           render,
           selectable,
+          onSortChange,
           multiple,
           selectedIds: selectedItems.map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
@@ -420,6 +428,7 @@ export const DataPanel = <T extends any>({
               onItemClick={onItemClick}
               onItemContextMenu={onItemContextMenu}
               isLoading={isLoading}
+              onSortChange={onSortChange}
               onSelect={handleSelect}
               onUnselect={handleUnselect}
               extractKey={extractKey}
