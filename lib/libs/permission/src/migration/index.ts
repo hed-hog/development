@@ -11,7 +11,7 @@ export class Migration implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'permissions',
+        name: 'screens',
         columns: [
           idColumn(),
           {
@@ -21,7 +21,6 @@ export class Migration implements MigrationInterface {
           {
             name: 'slug',
             type: 'varchar',
-            isNullable: false,
             isUnique: true,
           },
           {
@@ -29,9 +28,9 @@ export class Migration implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'active',
-            type: 'boolean',
-            default: false,
+            name: 'icon',
+            type: 'varchar',
+            isNullable: true,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
@@ -53,11 +52,6 @@ export class Migration implements MigrationInterface {
             name: 'description',
             type: 'varchar',
           },
-          {
-            name: 'active',
-            type: 'boolean',
-            default: false,
-          },
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
@@ -66,7 +60,7 @@ export class Migration implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: 'role_permission',
+        name: 'role_screens',
         columns: [
           {
             name: 'role_id',
@@ -74,7 +68,7 @@ export class Migration implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: 'permission_id',
+            name: 'screen_id',
             type: 'int',
             isPrimary: true,
           },
@@ -84,26 +78,26 @@ export class Migration implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKeys('role_permission', [
+    await queryRunner.createForeignKeys('role_screens', [
       new TableForeignKey({
         columnNames: ['role_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'role',
         onDelete: 'CASCADE',
-        name: 'fk_role_permission_role',
+        name: 'fk_role_screens_role',
       }),
       new TableForeignKey({
-        columnNames: ['permission_id'],
+        columnNames: ['screen_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'permissions',
+        referencedTableName: 'screens',
         onDelete: 'CASCADE',
-        name: 'fk_role_permission_permission',
+        name: 'fk_role_screens_screen',
       }),
     ]);
 
     await queryRunner.createTable(
       new Table({
-        name: 'role_user',
+        name: 'role_users',
         columns: [
           {
             name: 'role_id',
@@ -121,13 +115,13 @@ export class Migration implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKeys('role_user', [
+    await queryRunner.createForeignKeys('role_users', [
       new TableForeignKey({
         columnNames: ['role_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'role',
         onDelete: 'CASCADE',
-        name: 'fk_role_user_role',
+        name: 'fk_role_users_role',
       }),
 
       new TableForeignKey({
@@ -135,14 +129,19 @@ export class Migration implements MigrationInterface {
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
         onDelete: 'CASCADE',
-        name: 'fk_role_user_user',
+        name: 'fk_role_users_user',
       }),
     ]);
+
+    await queryRunner.query(
+      `INSERT INTO roles (id, name, description) VALUES
+      (1, 'Administrador', 'Administrar todos os acessos.');`,
+    );
   }
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('permissions');
+    await queryRunner.dropTable('screens');
     await queryRunner.dropTable('role');
-    await queryRunner.dropTable('role_permission');
+    await queryRunner.dropTable('role_screens');
     await queryRunner.dropTable('role_user');
   }
 }
