@@ -69,6 +69,46 @@ const meta: Meta<typeof DataPanel> = {
       description:
         'Defines the columns for the table layout, including headers and data keys.',
     },
+    render: {
+      type: 'function',
+      description:
+        'A render function that defines how each item is displayed within the panel. It takes an item and its index as arguments and returns a JSX element for rendering the item.',
+    },
+    paginationOptions: {
+      control: 'object',
+      description:
+        'Options for pagination. This includes configurations such as page size, current page, and total item count.',
+    },
+    selectOptions: {
+      control: 'object',
+      description:
+        'Options for selecting items within the panel. This could include configurations for selection behavior, such as single or multiple selection.',
+    },
+    styleOptions: {
+      control: 'object',
+      description:
+        'Custom style options for the panel. This can include properties like gap and padding to control the layout and appearance of items within the panel.',
+    },
+    itemClassName: {
+      control: 'text',
+      description:
+        'A CSS class name that can be applied to each item in the panel for additional styling.',
+    },
+    extractKey: {
+      type: 'function',
+      description:
+        'A function to extract a unique key from each item in the panel. This is used for identifying items in lists and ensuring efficient rendering.',
+    },
+    onSelectionChange: {
+      type: 'function',
+      description:
+        'A callback function that is triggered when the selection of items changes. It receives an array of selected items as its argument.',
+    },
+    sortable: {
+      control: 'boolean',
+      description:
+        'Determines if the items in the panel can be sorted. When true, users can interact with the panel to sort items based on various criteria.',
+    },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel
   args: { onClick: fn() },

@@ -53,10 +53,33 @@ The \`TableView\` component is a versatile table for displaying data with suppor
       description: 'Indicates whether data is being loaded.',
       defaultValue: false,
     },
-    multipleSelect: {
+    selectable: {
       control: 'boolean',
-      description: 'Enable or disable multiple row selection with checkboxes.',
+      description: 'Allows for item selection in the table.',
       defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    multiple: {
+      control: 'boolean',
+      description:
+        'If true, multiple items can be selected. If false, only one item can be selected at a time.',
+      defaultValue: true,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
+    },
+    selectedIds: {
+      control: { summary: 'array' },
+      description: 'Array of IDs of the selected items.',
+      defaultValue: [],
+      table: {
+        type: { summary: 'string[]' },
+        defaultValue: { summary: '[]' },
+      },
     },
     extractKey: {
       type: 'function',

@@ -50,13 +50,32 @@ const meta = {
         defaultValue: { summary: '{ padding: 4, gap: 8 }' },
       },
     },
-    multipleSelect: {
+    selectable: {
       control: 'boolean',
-      description: 'If true, multiple items can be selected.',
+      description: 'Allows for item selection in the list.',
       defaultValue: false,
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
+      },
+    },
+    multiple: {
+      control: 'boolean',
+      description:
+        'If true, multiple items can be selected. If false, only one item can be selected at a time.',
+      defaultValue: true,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
+    },
+    selectedIds: {
+      control: { summary: 'array' },
+      description: 'Array of IDs of the selected items.',
+      defaultValue: [],
+      table: {
+        type: { summary: 'string[]' },
+        defaultValue: { summary: '[]' },
       },
     },
     onSelectionChange: {

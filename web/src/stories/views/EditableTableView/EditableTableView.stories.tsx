@@ -52,6 +52,14 @@ const meta = {
         },
       },
     },
+    caption: {
+      control: 'text',
+      description: 'A caption for the table, which appears above the table.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '' },
+      },
+    },
     onSaveChanges: {
       type: 'function',
       description: 'Callback function invoked when the user saves changes.',

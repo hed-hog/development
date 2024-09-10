@@ -28,6 +28,10 @@ const meta: Meta<typeof FormPanel> = {
       description:
         'React Hook Form instance used to manage form state and validation.',
     },
+    fields: {
+      control: { summary: 'array' },
+      description: `Array of field configurations used to render form fields.`,
+    },
     onSubmit: {
       action: 'submitted',
       description: 'Callback function triggered when the form is submitted.',
