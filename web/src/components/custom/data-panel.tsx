@@ -14,17 +14,36 @@ import { useCallback, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectedItems } from './select-items'
 import { useApp } from '@/hooks/use-app'
+import { Button, ButtonProps } from './button'
 import {
-  IconEdit,
-  IconInfoCircle,
-  IconPlus,
-  IconTrash,
-} from '@tabler/icons-react'
-import { useCreateUser, useDeleteUser, useEditUser } from '@/features/users'
-import FormPanel from './form-panel'
-import { EnumFieldType } from '@/enums/EnumFieldType'
-import { FieldValues, useForm } from 'react-hook-form'
-import { Button } from './button'
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip'
+import { useMediaQuery } from 'usehooks-ts'
+import { IconDotsVertical } from '@tabler/icons-react'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer'
+import MenuItem from './menu-item'
+import { isPlural } from '@/lib/utils'
+
+type IMenuItemAction<T> = ButtonProps & {
+  show?: 'once' | 'some' | 'none' | 'any'
+  label?: string
+  icon: JSX.Element
+  tooltip?: string
+  handler: (
+    items: T[],
+    event: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>
+  ) => void
+}
 
 type DataPanelTypeBase<T> = {
   url: string
@@ -36,7 +55,9 @@ type DataPanelTypeBase<T> = {
   selectable?: boolean
   multiple?: boolean
   hasSearch?: boolean
+  menuActions?: IMenuItemAction<T>[]
   itemClassName?: string
+  selected?: T[]
   extractKey?: (item: T) => string
   onSelectionChange?: (selectedItems: Array<T>) => void
 }
@@ -110,6 +131,7 @@ export const DataPanel = <T extends any>({
   hasSearch = false,
   selectable = false,
   multiple = false,
+  selected = [],
   paginationOptions = {
     pageSizeOptions: [10, 20, 30, 40],
     maxPages: 3,
@@ -128,8 +150,11 @@ export const DataPanel = <T extends any>({
   responsiveColumns,
   itemClassName,
   onSelectionChange,
+  menuActions = [],
   ...props
 }: DataPanelProps<T>) => {
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+
   const {
     isLoading,
     items,
@@ -147,21 +172,7 @@ export const DataPanel = <T extends any>({
     selectOptions,
   })
 
-  const [selectedItems, setSelectedItems] = useState<T[]>([])
-
-  const form = useForm<FieldValues>({
-    defaultValues: {
-      id: '',
-      name: '',
-      email: '',
-      password: '',
-    },
-    mode: 'onChange',
-  })
-
-  const { mutate: deleteUsers } = useDeleteUser()
-  const { mutate: createUser } = useCreateUser()
-  const { mutate: editUser } = useEditUser()
+  const [selectedItems, setSelectedItems] = useState<T[]>(selected)
   const { openDialog, closeDialog } = useApp()
 
   const handleSelect = useCallback(
@@ -268,160 +279,32 @@ export const DataPanel = <T extends any>({
     })
   }, [selectedItems, getSelectedItemsPanel])
 
+  const showButtons = useCallback(
+    <T extends any>({ show }: IMenuItemAction<T>): boolean => {
+      if (
+        (show === 'once' && selectedItems.length !== 1) ||
+        (show === 'some' && !selectedItems.length) ||
+        (show === 'none' && selectedItems.length)
+      ) {
+        return true
+      }
+
+      return false
+    },
+    [selectedItems]
+  )
+
   useEffectAfterFirstUpdate(() => {
     if (typeof onSelectionChange === 'function') {
       onSelectionChange(selectedItems)
     }
   }, [selectedItems])
 
-  const openInfoDialog = () => {
-    const id = openDialog({
-      children: () => {
-        return selectedItems.map((item: any) => (
-          <div key={item.email} className='mb-5 border-b'>
-            <div className='flex flex-row items-center'>
-              <span className='mr-1 text-xs'>ID:</span>
-              <h3 className='text-md font-semibold'>{item.id}</h3>
-            </div>
-            <div className='flex flex-row items-center'>
-              <span className='mr-1 text-xs'>Nome:</span>
-              <h3 className='text-md font-semibold'>{item.name}</h3>
-            </div>
-            <div className='flex flex-row items-center'>
-              <span className='mr-1 text-xs'>Email:</span>
-              <h3 className='text-md font-semibold'>{item.email}</h3>
-            </div>
-          </div>
-        ))
-      },
-      title: 'Informações de Usuário',
-      description: 'Confira mais informações sobre os usuários selecionados.',
-    })
-
-    return id
-  }
-
-  const openCreateDialog = () => {
-    form.reset({
-      id: '',
-      name: '',
-      email: '',
-    })
-
-    const id = openDialog({
-      title: 'Criar Usuário',
-      description: 'Preencha as informações do usuário.',
-      children: () => (
-        <FormPanel
-          fields={[
-            {
-              name: 'name',
-              label: { text: 'Nome' },
-              type: EnumFieldType.TEXT,
-              required: true,
-            },
-            {
-              name: 'email',
-              label: { text: 'Email' },
-              type: EnumFieldType.TEXT,
-              required: true,
-            },
-            {
-              name: 'password',
-              label: { text: 'Password' },
-              type: EnumFieldType.PASSWORD,
-              required: true,
-            },
-          ]}
-          form={form}
-          button={{ text: 'Criar' }}
-          onSubmit={(data) => {
-            createUser(data)
-            closeDialog(id)
-          }}
-        />
-      ),
-    })
-
-    return id
-  }
-
-  const openEditDialog = () => {
-    if (!selectedItems.length) return
-
-    form.reset({
-      id: (selectedItems as any)[0]?.id || '',
-      name: (selectedItems as any)[0]?.name || '',
-      email: (selectedItems as any)[0]?.email || '',
-    })
-
-    const id = openDialog({
-      children: () => (
-        <FormPanel
-          fields={[
-            {
-              name: 'name',
-              label: { text: 'Nome' },
-              type: EnumFieldType.TEXT,
-              required: false,
-            },
-            {
-              name: 'email',
-              label: { text: 'Email' },
-              type: EnumFieldType.TEXT,
-              required: false,
-            },
-          ]}
-          form={form}
-          button={{ text: 'Editar' }}
-          onSubmit={(data) => {
-            editUser({ id: data.id, data })
-            closeDialog(id)
-          }}
-        />
-      ),
-      title: 'Editar Usuário',
-      description: 'Atualize as informações do usuário.',
-    })
-
-    return id
-  }
-
-  const openDeleteDialog = () => {
-    const id = openDialog({
-      children: () => {
-        return selectedItems.map((item: any) => (
-          <div key={item.email} className='mb-5'>
-            <h3 className='text-md font-semibold'>{item.name}</h3>
-            <p className='text-xs'>{item.email}</p>
-          </div>
-        ))
-      },
-      title: 'Excluir Usuário',
-      description: 'Tem certeza de que deseja deletar estes usuários?',
-      buttons: [
-        {
-          variant: 'secondary',
-          text: 'Cancelar',
-          onClick: () => {
-            setSelectedItems(selectedItems)
-            closeDialog(id)
-          },
-        },
-        {
-          text: 'Deletar',
-          variant: 'destructive',
-          onClick: () => {
-            deleteUsers(selectedItems.map((item: any) => item.id))
-            setSelectedItems([])
-            closeDialog(id)
-          },
-        },
-      ],
-    })
-
-    return id
-  }
+  useEffectAfterFirstUpdate(() => {
+    if (multiple) {
+      setSelectedItems(selected)
+    }
+  }, [selected])
 
   return (
     <>
@@ -439,51 +322,79 @@ export const DataPanel = <T extends any>({
             />
           </div>
         )}
-        <div className='flex items-center justify-end space-x-4 rounded-md p-4'>
-          {selectedItems.length ? (
-            <>
-              {' '}
-              {selectedItems.length === 1 && (
-                <Button
-                  variant='outline'
-                  className='bg-secondary'
-                  size='sm'
-                  aria-label='Visualizar item selecionado'
-                  onClick={openEditDialog}
-                >
-                  <IconEdit className='mr-1 w-5 cursor-pointer' /> Editar
+        <div className='flex items-center justify-end space-x-4 rounded-md'>
+          {isDesktop &&
+            menuActions.map((btn, index) => {
+              const { label, handler, tooltip, icon, show, ...props } = btn
+              return (
+                <TooltipProvider key={index}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        disabled={showButtons(btn)}
+                        variant='secondary'
+                        size='sm'
+                        aria-label={label}
+                        onClick={(e) => {
+                          typeof handler === 'function' &&
+                            handler(selectedItems, e)
+                          setSelectedItems([])
+                        }}
+                        {...props}
+                      >
+                        {icon} {label}
+                      </Button>
+                    </TooltipTrigger>
+                    {tooltip && (
+                      <TooltipContent>
+                        <p>{tooltip}</p>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
+              )
+            })}
+          {!isDesktop && (
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button variant='outline' size='icon'>
+                  <IconDotsVertical className='h-4 w-4' />
                 </Button>
-              )}
-              <Button
-                variant='outline'
-                className='bg-secondary'
-                size='sm'
-                aria-label='Visualizar item selecionado'
-                onClick={openInfoDialog}
-              >
-                <IconInfoCircle className='mr-1 w-5 cursor-pointer' />{' '}
-                Visualizar
-              </Button>
-              <Button
-                variant='outline'
-                className='bg-secondary'
-                size='sm'
-                aria-label='Visualizar item selecionado'
-                onClick={openDeleteDialog}
-              >
-                <IconTrash className='mr-1 w-5 cursor-pointer' /> Excluir
-              </Button>
-            </>
-          ) : (
-            <Button
-              variant='outline'
-              className='bg-secondary'
-              size='sm'
-              aria-label='Visualizar item selecionado'
-              onClick={openCreateDialog}
-            >
-              <IconPlus className='mr-1 w-5 cursor-pointer' /> Criar
-            </Button>
+              </DrawerTrigger>
+              <DrawerContent className='w-full gap-4 pb-4'>
+                <DrawerHeader className='text-left'>
+                  <DrawerTitle>Opções</DrawerTitle>
+                  <DrawerDescription>
+                    {(selectedItems ?? []).length} ite
+                    {isPlural(selectedItems.length, 'm', 'ns')} selecionado
+                    {isPlural(selectedItems.length)}
+                  </DrawerDescription>
+                </DrawerHeader>
+                {menuActions
+                  .filter((btn) => !showButtons(btn))
+                  .map(
+                    (
+                      { icon, label, handler, variant, size, className },
+                      index
+                    ) => (
+                      <MenuItem
+                        key={index}
+                        aria-label={label}
+                        variant={variant}
+                        size={size}
+                        className={className}
+                        onClick={(e) => {
+                          typeof handler === 'function' &&
+                            handler(selectedItems, e)
+                          setSelectedItems([])
+                        }}
+                        icon={icon}
+                        label={String(label)}
+                      />
+                    )
+                  )}
+              </DrawerContent>
+            </Drawer>
           )}
         </div>
       </div>

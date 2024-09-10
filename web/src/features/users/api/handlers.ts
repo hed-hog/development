@@ -43,7 +43,7 @@ export function useEditUser() {
     mutationFn: editUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
-      toast.success('User edit successfully!')
+      toast.success('User edited successfully!')
     },
     onError: (error: any) => {
       toast.error('Error updating user: ' + error.message)
