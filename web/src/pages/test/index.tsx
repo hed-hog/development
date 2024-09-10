@@ -1,10 +1,5 @@
 import { DataPanel } from '@/components/custom/data-panel'
-import { DynamicBreadcrumb } from '@/components/custom/dynamic-breadcrumb'
 import FormPanel from '@/components/custom/form-panel'
-import { Layout } from '@/components/custom/layout'
-import { SearchField } from '@/components/search-field'
-import ThemeSwitch from '@/components/theme-switch'
-import { UserNav } from '@/components/user-nav'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useCreateUser, useDeleteUser, useEditUser } from '@/features/users'
 import { useApp } from '@/hooks/use-app'
@@ -184,77 +179,64 @@ export default function Screen() {
   }
 
   return (
-    <Layout>
-      {/* ===== Top Heading ===== */}
-      <Layout.Header>
-        <DynamicBreadcrumb />
-        <div className='ml-auto flex items-center space-x-4'>
-          <SearchField />
-          <ThemeSwitch />
-          <UserNav />
-        </div>
-      </Layout.Header>
-
-      {/* ===== Main ===== */}
-      <Layout.Body>
-        <h2 className='text-2xl font-bold tracking-tight'>Usuários</h2>
-        <p className='text-muted-foreground'>
-          Confira todos os usuários cadastrados no sistema.
-        </p>
-        <DataPanel
-          id='data-panel-grid-example'
-          url='/users'
-          hasSearch
-          selectable
-          multiple
-          selected={selectedItems}
-          render={(item: any) => {
-            return (
-              <div key={item.email} className='w-96'>
-                <h3 className='text-lg font-semibold'>{item.name}</h3>
-                <p>{item.email}</p>
-              </div>
-            )
-          }}
-          menuActions={[
-            {
-              icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-              label: 'Editar',
-              tooltip: 'Editar usuários selecionados',
-              handler: (items: any[]) => {
-                if (items.length === 1) openEditDialog(items[0])
-              },
-              show: 'once',
+    <>
+      <h2 className='text-2xl font-bold tracking-tight'>Usuários</h2>
+      <p className='text-muted-foreground'>
+        Confira todos os usuários cadastrados no sistema.
+      </p>
+      <DataPanel
+        id='data-panel-grid-example'
+        url='/users'
+        hasSearch
+        selectable
+        multiple
+        selected={selectedItems}
+        render={(item: any) => {
+          return (
+            <div key={item.email} className='w-96'>
+              <h3 className='text-lg font-semibold'>{item.name}</h3>
+              <p>{item.email}</p>
+            </div>
+          )
+        }}
+        menuActions={[
+          {
+            icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
+            label: 'Editar',
+            tooltip: 'Editar usuários selecionados',
+            handler: (items: any[]) => {
+              if (items.length === 1) openEditDialog(items[0])
             },
-            {
-              icon: <IconInfoCircle className='mr-1 w-8 cursor-pointer' />,
-              label: 'Visualizar',
-              tooltip: 'Visualizar mais informações dos usuários selecionados',
-              handler: openInfoDialog,
-              show: 'some',
-            },
-            {
-              icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-              label: 'Excluir',
-              variant: 'destructive',
-              tooltip: 'Excluir os usuários selecionados',
-              handler: openDeleteDialog,
-              show: 'some',
-            },
-            {
-              icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-              label: 'Criar',
-              variant: 'default',
-              tooltip: 'Criar novo usuário',
-              handler: openCreateDialog,
-              show: 'none',
-            },
-          ]}
-          onSelectionChange={(selectedItems) => {
-            console.log('data-panel grid', selectedItems)
-          }}
-        />
-      </Layout.Body>
-    </Layout>
+            show: 'once',
+          },
+          {
+            icon: <IconInfoCircle className='mr-1 w-8 cursor-pointer' />,
+            label: 'Visualizar',
+            tooltip: 'Visualizar mais informações dos usuários selecionados',
+            handler: openInfoDialog,
+            show: 'some',
+          },
+          {
+            icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
+            label: 'Excluir',
+            variant: 'destructive',
+            tooltip: 'Excluir os usuários selecionados',
+            handler: openDeleteDialog,
+            show: 'some',
+          },
+          {
+            icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
+            label: 'Criar',
+            variant: 'default',
+            tooltip: 'Criar novo usuário',
+            handler: openCreateDialog,
+            show: 'none',
+          },
+        ]}
+        onSelectionChange={(selectedItems) => {
+          console.log('data-panel grid', selectedItems)
+        }}
+      />
+    </>
   )
 }
