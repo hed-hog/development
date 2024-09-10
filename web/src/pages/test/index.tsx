@@ -199,6 +199,28 @@ export default function Screen() {
             </div>
           )
         }}
+        menuOrders={[
+          {
+            label: 'Nome - A-Z',
+            field: 'name',
+            order: 'asc',
+          },
+          {
+            label: 'Nome - Z-A',
+            field: 'name',
+            order: 'desc',
+          },
+          {
+            label: 'Email - A-Z',
+            field: 'email',
+            order: 'asc',
+          },
+          {
+            label: 'Email - Z-A',
+            field: 'email',
+            order: 'desc',
+          },
+        ]}
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
