@@ -1,8 +1,8 @@
-import { CommanderStatic } from 'commander';
+import { Command } from '@commander-js/extra-typings';
 import { AbstractCommand } from './abstract.command';
 
 export class InfoCommand extends AbstractCommand {
-  public load(program: CommanderStatic) {
+  public load(program: Command) {
     program
       .command('info')
       .alias('i')

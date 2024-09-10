@@ -2,7 +2,6 @@ import * as chalk from 'chalk';
 import { EMOJIS } from './emojis';
 
 export const MESSAGES = {
-  INVALID_PROJECT_NAME_ERROR: 'Invalid project name',
   PROJECT_SELECTION_QUESTION: 'Which project would you like to generate to?',
   LIBRARY_PROJECT_SELECTION_QUESTION:
     'Which project would you like to add the library to?',
@@ -18,16 +17,17 @@ export const MESSAGES = {
   GIT_INITIALIZATION_ERROR: 'Git repository has not been initialized',
   PACKAGE_MANAGER_INSTALLATION_SUCCEED: (name: string) =>
     name !== '.'
-      ? `${EMOJIS.ROCKET}  Successfully created project ${chalk.green(name)}`
-      : `${EMOJIS.ROCKET}  Successfully created a new project`,
+      ? `${EMOJIS.HEDGEHOG}  Successfully created project ${chalk.green(name)}`
+      : `${EMOJIS.HEDGEHOG}  Successfully created a new project`,
+  CONFIG_DATABASE: `${EMOJIS.CONFIG}  Configure your database connection in ${chalk.green('.env')} file`,
   GET_STARTED_INFORMATION: `${EMOJIS.POINT_RIGHT}  Get started with the following commands:`,
   CHANGE_DIR_COMMAND: (name: string) => `$ cd ${name}`,
-  START_COMMAND: (name: string) => `$ ${name} run start`,
+  START_COMMAND: (name: string) => `$ ${name} run dev`,
   PACKAGE_MANAGER_INSTALLATION_FAILED: (commandToRunManually: string) =>
     `${EMOJIS.SCREAM}  Packages installation failed!\nIn case you don't see any errors above, consider manually running the failed command ${commandToRunManually} to see more details on why it errored out.`,
   // tslint:disable-next-line:max-line-length
-  NEST_INFORMATION_PACKAGE_MANAGER_FAILED: `${EMOJIS.SMIRK}  cannot read your project package.json file, are you inside your project directory?`,
-  NEST_INFORMATION_PACKAGE_WARNING_FAILED: (nestDependencies: string[]) =>
+  HEDHOG_INFORMATION_PACKAGE_MANAGER_FAILED: `${EMOJIS.SMIRK}  cannot read your project package.json file, are you inside your project directory?`,
+  HEDHOG_INFORMATION_PACKAGE_WARNING_FAILED: (nestDependencies: string[]) =>
     `${
       EMOJIS.SMIRK
     }  failed to compare dependencies versions, please check that following packages are in the same minor version : \n ${nestDependencies.join(

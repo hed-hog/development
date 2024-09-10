@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import * as commander from 'commander';
-import { CommanderStatic } from 'commander';
+
+import { Command } from '@commander-js/extra-typings';
 import { CommandLoader } from '../commands';
 import {
   loadLocalBinCommandLoader,
@@ -8,7 +8,8 @@ import {
 } from '../lib/utils/local-binaries';
 
 const bootstrap = async () => {
-  const program: CommanderStatic = commander;
+  const program = new Command();
+
   program
     .version(
       require('../package.json').version,
@@ -24,7 +25,7 @@ const bootstrap = async () => {
   } else {
     await CommandLoader.load(program);
   }
-  await commander.parseAsync(process.argv);
+  await program.parseAsync(process.argv);
 
   if (!process.argv.slice(2).length) {
     program.outputHelp();

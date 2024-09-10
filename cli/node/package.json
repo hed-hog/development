@@ -5,7 +5,9 @@
     "hedhog": "bin/hedhog.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node bin/hedhog.js",
+    "dev": "tsc --watch"
   },
   "keywords": [],
   "author": "",
@@ -14,18 +16,22 @@
   "dependencies": {
     "chalk": "4.1.2",
     "cli-table3": "0.6.5",
-    "commander": "4.1.1",
+    "commander": "^12.1.0",
     "http": "^0.0.1-security",
     "inquirer": "8.2.6",
     "isomorphic-git": "^1.27.1",
+    "node-emoji": "^2.1.3",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
+    "@commander-js/extra-typings": "^12.1.0",
     "@types/inquirer": "9.0.7",
     "@types/node": "^22.5.4",
     "@types/node-emoji": "^1.8.2",
+    "concurrently": "^9.0.0",
     "prettier": "^3.3.3",
     "ts-loader": "^9.5.1",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
   }
 }

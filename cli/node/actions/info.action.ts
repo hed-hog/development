@@ -18,35 +18,31 @@ interface PackageJsonDependencies {
   [key: string]: LockfileDependency;
 }
 
-interface NestDependency {
+interface HedHogDependency {
   name: string;
   value: string;
   packageName: string;
 }
 
-interface NestDependencyWarnings {
-  [key: string]: Array<NestDependency>;
+interface HedHogDependencyWarnings {
+  [key: string]: Array<HedHogDependency>;
 }
 
 export class InfoAction extends AbstractAction {
   private manager!: AbstractPackageManager;
-  // Nest dependencies whitelist used to compare the major version
+
   private warningMessageDependenciesWhiteList = [
-    '@nestjs/core',
-    '@nestjs/common',
-    '@nestjs/schematics',
-    '@nestjs/platform-express',
-    '@nestjs/platform-fastify',
-    '@nestjs/platform-socket.io',
-    '@nestjs/platform-ws',
-    '@nestjs/websockets',
+    '@hedhog/auth',
+    '@hedhog/pagination',
+    '@hedhog/prisma',
+    '@hedhog/user',
   ];
 
   public async handle() {
     this.manager = await PackageManagerFactory.find();
     this.displayBanner();
     await this.displaySystemInformation();
-    await this.displayNestInformation();
+    await this.displayHedHogInformation();
   }
 
   private displayBanner() {
@@ -80,28 +76,28 @@ export class InfoAction extends AbstractAction {
     }
   }
 
-  async displayNestInformation(): Promise<void> {
+  async displayHedHogInformation(): Promise<void> {
     this.displayCliVersion();
-    console.info(chalk.green('[Nest Platform Information]'));
-    await this.displayNestInformationFromPackage();
+    console.info(chalk.green('[HedHog Platform Information]'));
+    await this.displayHedHogInformationFromPackage();
   }
 
-  async displayNestInformationFromPackage(): Promise<void> {
+  async displayHedHogInformationFromPackage(): Promise<void> {
     try {
       const dependencies: PackageJsonDependencies =
         this.readProjectPackageDependencies();
-      this.displayNestVersions(dependencies);
+      this.displayVersions(dependencies);
     } catch (err) {
       console.error(
-        chalk.red(MESSAGES.NEST_INFORMATION_PACKAGE_MANAGER_FAILED),
+        chalk.red(MESSAGES.HEDHOG_INFORMATION_PACKAGE_MANAGER_FAILED),
       );
     }
   }
 
   displayCliVersion(): void {
-    console.info(chalk.green('[Nest CLI]'));
+    console.info(chalk.green('[HedHog CLI]'));
     console.info(
-      'Nest CLI Version :',
+      'HedHog CLI Version :',
       chalk.blue(
         JSON.parse(readFileSync(join(__dirname, '../package.json')).toString())
           .version,
@@ -122,18 +118,18 @@ export class InfoAction extends AbstractAction {
     return dependencies;
   }
 
-  displayNestVersions(dependencies: PackageJsonDependencies) {
-    const nestDependencies = this.buildNestVersionsMessage(dependencies);
-    nestDependencies.forEach((dependency) =>
+  displayVersions(dependencies: PackageJsonDependencies) {
+    const _dependencies = this.buildHedhogVersionsMessage(dependencies);
+    _dependencies.forEach((dependency) =>
       console.info(dependency.name, chalk.blue(dependency.value)),
     );
 
-    this.displayWarningMessage(nestDependencies);
+    this.displayWarningMessage(_dependencies);
   }
 
-  displayWarningMessage(nestDependencies: NestDependency[]) {
+  displayWarningMessage(dependencies: HedHogDependency[]) {
     try {
-      const warnings = this.buildNestVersionsWarningMessage(nestDependencies);
+      const warnings = this.buildHedHogVersionsWarningMessage(dependencies);
       const majorVersions = Object.keys(warnings);
       if (majorVersions.length > 0) {
         console.info('\r');
@@ -153,7 +149,7 @@ export class InfoAction extends AbstractAction {
       console.info('\t');
       console.error(
         chalk.red(
-          MESSAGES.NEST_INFORMATION_PACKAGE_WARNING_FAILED(
+          MESSAGES.HEDHOG_INFORMATION_PACKAGE_WARNING_FAILED(
             this.warningMessageDependenciesWhiteList,
           ),
         ),
@@ -161,10 +157,10 @@ export class InfoAction extends AbstractAction {
     }
   }
 
-  buildNestVersionsWarningMessage(
-    nestDependencies: NestDependency[],
-  ): NestDependencyWarnings {
-    const unsortedWarnings = nestDependencies.reduce(
+  buildHedHogVersionsWarningMessage(
+    hedHogDependencies: HedHogDependency[],
+  ): HedHogDependencyWarnings {
+    const unsortedWarnings = hedHogDependencies.reduce(
       (depWarningsGroup, { name, packageName, value }) => {
         if (!this.warningMessageDependenciesWhiteList.includes(packageName)) {
           return depWarningsGroup;
@@ -179,7 +175,7 @@ export class InfoAction extends AbstractAction {
 
         return depWarningsGroup;
       },
-      Object.create(null) as NestDependencyWarnings,
+      Object.create(null) as HedHogDependencyWarnings,
     );
 
     const unsortedMinorVersions = Object.keys(unsortedWarnings);
@@ -207,40 +203,40 @@ export class InfoAction extends AbstractAction {
         warnings[minorVersion] = unsortedWarnings[minorVersion];
         return warnings;
       },
-      Object.create(null) as NestDependencyWarnings,
+      Object.create(null) as HedHogDependencyWarnings,
     );
   }
 
-  buildNestVersionsMessage(
+  buildHedhogVersionsMessage(
     dependencies: PackageJsonDependencies,
-  ): NestDependency[] {
-    const nestDependencies = this.collectNestDependencies(dependencies);
-    return this.format(nestDependencies);
+  ): HedHogDependency[] {
+    const _dependencies = this.collectHedHogDependencies(dependencies);
+    return this.format(_dependencies);
   }
 
-  collectNestDependencies(
+  collectHedHogDependencies(
     dependencies: PackageJsonDependencies,
-  ): NestDependency[] {
-    const nestDependencies: NestDependency[] = [];
+  ): HedHogDependency[] {
+    const _dependencies: HedHogDependency[] = [];
     Object.keys(dependencies).forEach((key) => {
-      if (key.indexOf('@nestjs') > -1) {
+      if (key.indexOf('@hedhog') > -1) {
         const depPackagePath = require.resolve(key + '/package.json', {
           paths: [process.cwd()],
         });
         const depPackage = readFileSync(depPackagePath).toString();
         const value = JSON.parse(depPackage).version;
-        nestDependencies.push({
-          name: `${key.replace(/@nestjs\//, '').replace(/@.*/, '')} version`,
+        _dependencies.push({
+          name: `${key.replace(/@hedhog\//, '').replace(/@.*/, '')} version`,
           value: value || dependencies[key].version,
           packageName: key,
         });
       }
     });
 
-    return nestDependencies;
+    return _dependencies;
   }
 
-  format(dependencies: NestDependency[]): NestDependency[] {
+  format(dependencies: HedHogDependency[]): HedHogDependency[] {
     const sorted = dependencies.sort(
       (dependencyA, dependencyB) =>
         dependencyB.name.length - dependencyA.name.length,

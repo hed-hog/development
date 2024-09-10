@@ -32,6 +32,7 @@ export abstract class AbstractPackageManager {
       spinner.succeed();
       console.info();
       console.info(MESSAGES.PACKAGE_MANAGER_INSTALLATION_SUCCEED(directory));
+      console.info(MESSAGES.CONFIG_DATABASE);
       console.info(MESSAGES.GET_STARTED_INFORMATION);
       console.info();
       console.info(chalk.gray(MESSAGES.CHANGE_DIR_COMMAND(directory)));

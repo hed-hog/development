@@ -1,33 +1,20 @@
 import * as chalk from 'chalk';
-import { CommanderStatic } from 'commander';
-import {
-  AddAction,
-  BuildAction,
-  GenerateAction,
-  InfoAction,
-  NewAction,
-  StartAction,
-} from '../actions';
-import { ERROR_PREFIX } from '../lib/ui';
+import { Command } from '@commander-js/extra-typings';
+import { AddAction, InfoAction, NewAction } from '../actions';
 import { AddCommand } from './add.command';
-import { BuildCommand } from './build.command';
-import { GenerateCommand } from './generate.command';
-import { InfoCommand } from './info.command';
 import { NewCommand } from './new.command';
-import { StartCommand } from './start.command';
+import { ERROR_PREFIX } from '../lib/ui';
+import { InfoCommand } from './info.command';
 export class CommandLoader {
-  public static async load(program: CommanderStatic): Promise<void> {
+  public static async load(program: Command): Promise<void> {
     new NewCommand(new NewAction()).load(program);
-    new BuildCommand(new BuildAction()).load(program);
-    new StartCommand(new StartAction()).load(program);
-    new InfoCommand(new InfoAction()).load(program);
     new AddCommand(new AddAction()).load(program);
-    await new GenerateCommand(new GenerateAction()).load(program);
+    new InfoCommand(new InfoAction()).load(program);
 
     this.handleInvalidCommand(program);
   }
 
-  private static handleInvalidCommand(program: CommanderStatic) {
+  private static handleInvalidCommand(program: Command) {
     program.on('command:*', () => {
       console.error(
         `\n${ERROR_PREFIX} Invalid command: ${chalk.red('%s')}`,

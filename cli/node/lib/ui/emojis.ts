@@ -18,4 +18,6 @@ export const EMOJIS = {
   BOOM: get('boom'),
   PRAY: get('pray'),
   WINE: get('wine_glass'),
+  HEDGEHOG: get('hedgehog'),
+  CONFIG: get('gear'),
 };
