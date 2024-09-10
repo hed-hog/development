@@ -302,12 +302,6 @@ export const DataPanel = <T extends any>({
     }
   }, [selectedItems])
 
-  useEffectAfterFirstUpdate(() => {
-    if (multiple) {
-      setSelectedItems(selected)
-    }
-  }, [selected])
-
   return (
     <>
       <div
