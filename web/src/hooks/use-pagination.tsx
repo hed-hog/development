@@ -67,6 +67,8 @@ export const usePagination = ({
     search,
     setSearch,
     setSortField,
+    sortField,
+    sortOrder,
     setSortOrder,
   }
 }

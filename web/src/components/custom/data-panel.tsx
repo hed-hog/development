@@ -10,7 +10,7 @@ import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
 import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectedItems } from './select-items'
 import { useApp } from '@/hooks/use-app'
@@ -22,7 +22,10 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 import { useMediaQuery } from 'usehooks-ts'
-import { IconDotsVertical } from '@tabler/icons-react'
+import {
+  IconAdjustmentsHorizontal,
+  IconDotsVertical,
+} from '@tabler/icons-react'
 import {
   Drawer,
   DrawerContent,
@@ -33,6 +36,13 @@ import {
 } from '../ui/drawer'
 import MenuItem from './menu-item'
 import { isPlural } from '@/lib/utils'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
@@ -45,6 +55,12 @@ type IMenuItemAction<T> = ButtonProps & {
   ) => void
 }
 
+type MenuOrder = {
+  field: string
+  label: string
+  order: 'asc' | 'desc'
+}
+
 type DataPanelTypeBase<T> = {
   url: string
   id: string
@@ -55,6 +71,7 @@ type DataPanelTypeBase<T> = {
   selectable?: boolean
   multiple?: boolean
   hasSearch?: boolean
+  menuOrders: MenuOrder[]
   menuActions?: IMenuItemAction<T>[]
   itemClassName?: string
   selected?: T[]
@@ -150,6 +167,7 @@ export const DataPanel = <T extends any>({
   responsiveColumns,
   itemClassName,
   onSelectionChange,
+  menuOrders = [],
   menuActions = [],
   ...props
 }: DataPanelProps<T>) => {
@@ -165,7 +183,9 @@ export const DataPanel = <T extends any>({
     search,
     setSearch,
     totalItems,
+    sortField,
     setSortField,
+    sortOrder,
     setSortOrder,
   } = usePagination({
     url,
@@ -174,6 +194,7 @@ export const DataPanel = <T extends any>({
     selectOptions,
   })
 
+  const [order, setOrder] = useState(`${sortOrder}-${sortField}`)
   const [selectedItems, setSelectedItems] = useState<T[]>(selected)
   const { openDialog, closeDialog } = useApp()
 
@@ -181,6 +202,12 @@ export const DataPanel = <T extends any>({
     (item: T) => setSelectedItems((value) => [...value, item]),
     []
   )
+
+  useEffect(() => {
+    console.log({ orderState: order })
+    console.log({ order: sortOrder })
+    console.log({ field: sortField })
+  }, [order])
 
   const handleUnselect = useCallback(
     (item: T) =>
@@ -399,6 +426,32 @@ export const DataPanel = <T extends any>({
                   )}
               </DrawerContent>
             </Drawer>
+          )}
+          {isDesktop && Boolean(menuOrders.length) && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='outline'>
+                  <IconAdjustmentsHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                <DropdownMenuRadioGroup value={order} onValueChange={setOrder}>
+                  {menuOrders.map((order) => (
+                    <DropdownMenuRadioItem
+                      className='cursor-pointer'
+                      onClick={() => {
+                        setSortField(order.field)
+                        setSortOrder(order.order)
+                        setOrder(`${order.order}-${order.field}`)
+                      }}
+                      value={`${order.order}-${order.field}`}
+                    >
+                      {order.label}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
       </div>
