@@ -14,6 +14,16 @@ import { useCallback, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectedItems } from './select-items'
 import { useApp } from '@/hooks/use-app'
+import {
+  IconEdit,
+  IconInfoCircle,
+  IconPlus,
+  IconTrash,
+} from '@tabler/icons-react'
+import { useCreateUser, useDeleteUser, useEditUser } from '@/features/users'
+import FormPanel from './form-panel'
+import { EnumFieldType } from '@/enums/EnumFieldType'
+import { FieldValues, useForm } from 'react-hook-form'
 
 type DataPanelTypeBase<T> = {
   url: string
@@ -136,20 +146,33 @@ export const DataPanel = <T extends any>({
     selectOptions,
   })
 
-  const { openDialog, closeDialog } = useApp()
-
   const [selectedItems, setSelectedItems] = useState<T[]>([])
 
-  const handleSelect = useCallback((item: T, _index: number) => {
-    setSelectedItems((value) => [...value, item])
-  }, [])
+  const form = useForm<FieldValues>({
+    defaultValues: {
+      id: '',
+      name: '',
+      email: '',
+      password: '',
+    },
+    mode: 'onChange',
+  })
+
+  const { mutate: deleteUsers } = useDeleteUser()
+  const { mutate: createUser } = useCreateUser()
+  const { mutate: editUser } = useEditUser()
+  const { openDialog, closeDialog } = useApp()
+
+  const handleSelect = useCallback(
+    (item: T) => setSelectedItems((value) => [...value, item]),
+    []
+  )
 
   const handleUnselect = useCallback(
-    (item: T, _index: number) => {
+    (item: T) =>
       setSelectedItems((value) =>
         value.filter((v) => extractKey(v) !== extractKey(item))
-      )
-    },
+      ),
     [extractKey]
   )
 
@@ -245,25 +268,197 @@ export const DataPanel = <T extends any>({
   }, [selectedItems, getSelectedItemsPanel])
 
   useEffectAfterFirstUpdate(() => {
-    console.log('selectedItems', selectedItems)
     if (typeof onSelectionChange === 'function') {
       onSelectionChange(selectedItems)
     }
   }, [selectedItems])
 
+  const openInfoDialog = () => {
+    const id = openDialog({
+      children: () => {
+        return selectedItems.map((item: any) => (
+          <div key={item.email} className='mb-5 border-b'>
+            <div className='flex flex-row items-center'>
+              <span className='mr-1 text-xs'>ID:</span>
+              <h3 className='text-md font-semibold'>{item.id}</h3>
+            </div>
+            <div className='flex flex-row items-center'>
+              <span className='mr-1 text-xs'>Nome:</span>
+              <h3 className='text-md font-semibold'>{item.name}</h3>
+            </div>
+            <div className='flex flex-row items-center'>
+              <span className='mr-1 text-xs'>Email:</span>
+              <h3 className='text-md font-semibold'>{item.email}</h3>
+            </div>
+          </div>
+        ))
+      },
+      title: 'Informações de Usuário',
+      description: 'Confira mais informações sobre os usuários selecionados.',
+    })
+
+    return id
+  }
+
+  const openCreateDialog = () => {
+    const id = openDialog({
+      title: 'Criar Usuário',
+      description: 'Preencha as informações do usuário.',
+      children: () => (
+        <FormPanel
+          fields={[
+            {
+              name: 'name',
+              label: { text: 'Nome' },
+              type: EnumFieldType.TEXT,
+              required: true,
+            },
+            {
+              name: 'email',
+              label: { text: 'Email' },
+              type: EnumFieldType.TEXT,
+              required: true,
+            },
+            {
+              name: 'password',
+              label: { text: 'Password' },
+              type: EnumFieldType.PASSWORD,
+              required: true,
+            },
+          ]}
+          form={form}
+          button={{ text: 'Criar' }}
+          onSubmit={(data) => {
+            createUser(data)
+            closeDialog(id)
+          }}
+        />
+      ),
+    })
+
+    return id
+  }
+
+  const openEditDialog = () => {
+    if (!selectedItems.length) return
+
+    form.reset({
+      id: (selectedItems as any)[0]?.id || '',
+      name: (selectedItems as any)[0]?.name || '',
+      email: (selectedItems as any)[0]?.email || '',
+    })
+
+    const id = openDialog({
+      children: () => (
+        <FormPanel
+          fields={[
+            {
+              name: 'name',
+              label: { text: 'Nome' },
+              type: EnumFieldType.TEXT,
+              required: false,
+            },
+            {
+              name: 'email',
+              label: { text: 'Email' },
+              type: EnumFieldType.TEXT,
+              required: false,
+            },
+          ]}
+          form={form}
+          button={{ text: 'Editar' }}
+          onSubmit={(data) => {
+            editUser({ id: data.id, data })
+            closeDialog(id)
+          }}
+        />
+      ),
+      title: 'Editar Usuário',
+      description: 'Atualize as informações do usuário.',
+    })
+
+    return id
+  }
+
+  const openDeleteDialog = () => {
+    const id = openDialog({
+      children: () => {
+        return selectedItems.map((item: any) => (
+          <div key={item.email} className='mb-5'>
+            <h3 className='text-md font-semibold'>{item.name}</h3>
+            <p className='text-xs'>{item.email}</p>
+          </div>
+        ))
+      },
+      title: 'Excluir Usuário',
+      description: 'Tem certeza de que deseja deletar estes usuários?',
+      buttons: [
+        {
+          variant: 'secondary',
+          text: 'Cancelar',
+          onClick: () => {
+            setSelectedItems(selectedItems)
+            closeDialog(id)
+          },
+        },
+        {
+          text: 'Deletar',
+          variant: 'destructive',
+          onClick: () => {
+            deleteUsers(selectedItems.map((item: any) => item.id))
+            setSelectedItems([])
+            closeDialog(id)
+          },
+        },
+      ],
+    })
+
+    return id
+  }
+
   return (
     <>
-      {hasSearch && (
-        <div className='my-4 flex flex-col gap-4'>
-          <SearchField
-            placeholder='Buscar...'
-            value={search}
-            onSearch={(value) => {
-              setSearch(value)
-            }}
-          />
+      <div
+        className={`my-4 flex w-full flex-row justify-${hasSearch ? 'between' : 'end'} gap-4`}
+      >
+        {hasSearch && (
+          <div className='w-1/4 min-w-80'>
+            <SearchField
+              placeholder='Buscar...'
+              value={search}
+              onSearch={(value) => {
+                setSearch(value)
+              }}
+            />
+          </div>
+        )}
+        <div className='flex min-w-fit flex-row items-center justify-end rounded-lg bg-[#3b82f6] p-1'>
+          {selectedItems.length ? (
+            <>
+              {' '}
+              <IconInfoCircle
+                className='mx-2 cursor-pointer'
+                onClick={openInfoDialog}
+              />
+              {selectedItems.length === 1 && (
+                <IconEdit
+                  className='mx-2 cursor-pointer'
+                  onClick={openEditDialog}
+                />
+              )}
+              <IconTrash
+                className='mx-2 cursor-pointer'
+                onClick={openDeleteDialog}
+              />
+            </>
+          ) : (
+            <IconPlus
+              className='mx-2 cursor-pointer'
+              onClick={openCreateDialog}
+            />
+          )}
         </div>
-      )}
+      </div>
 
       {layout === 'table' && (
         <>

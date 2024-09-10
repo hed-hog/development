@@ -70,7 +70,7 @@ export const usePaginationFetch = (
   }
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['items', props.queryKey],
+    queryKey: ['users', props.queryKey],
     queryFn: () => fetchItems(props),
   })
 

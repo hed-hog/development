@@ -23,12 +23,6 @@ const router = createBrowserRouter([
       Component: (await import('./pages/auth/otp')).default,
     }),
   },
-  {
-    path: '/examples',
-    lazy: async () => ({
-      Component: (await import('./pages/test')).default,
-    }),
-  },
 
   // Main routes
   {
@@ -43,6 +37,12 @@ const router = createBrowserRouter([
         index: true,
         lazy: async () => ({
           Component: (await import('./pages/dashboard')).default,
+        }),
+      },
+      {
+        path: 'examples',
+        lazy: async () => ({
+          Component: (await import('./pages/test')).default,
         }),
       },
       {

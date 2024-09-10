@@ -43,7 +43,7 @@ import { OpenSheetType, SheetType } from '@/types/sheet'
 import { useDialog } from '@/hooks/use-dialog'
 import { useSheet } from '@/hooks/use-sheet'
 
-const BASE_URL = 'http://localhost:3000'
+export const BASE_URL = 'http://localhost:3000'
 
 type AppContextType = {
   logout: () => void

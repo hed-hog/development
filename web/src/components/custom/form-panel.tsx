@@ -84,9 +84,11 @@ export default function FormPanel({
           </h3>
         )}
         {fields.map((field, index) => renderField(field, index))}
-        <Button type='submit' style={button.style} className='w-full'>
-          {button.text}
-        </Button>
+        {button.text && (
+          <Button type='submit' style={button.style} className='w-full'>
+            {button.text}
+          </Button>
+        )}
       </form>
     </Form>
   )
