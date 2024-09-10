@@ -34,7 +34,7 @@ export const SelectedItems = <T extends any>({
 }: ISelectedItemsProps<T>) => {
   return (
     <p
-      className={`mt-2 cursor-pointer text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
+      className={`mt-2 ${selectedItems.length > 0 && 'cursor-pointer'} text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
       onClick={onClick}
     >
       {selectedItems && selectedItems.length > 0 && (

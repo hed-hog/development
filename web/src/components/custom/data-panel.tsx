@@ -255,6 +255,8 @@ export const DataPanel = <T extends any>({
   }, [selectedItems, layout])
 
   const showSelectedItems = useCallback(() => {
+    if (!selectedItems.length) return
+
     const id = openDialog({
       children: getSelectedItemsPanel(),
       props: getSelectedItemsPanelProps(),
