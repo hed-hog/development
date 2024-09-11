@@ -11,15 +11,16 @@ import {
   PackageManagerFactory,
 } from '../lib/package-managers';
 import chalk = require('chalk');
+import { AddAction } from './add.action';
+import { MESSAGES } from '../lib/ui';
 
 export class NewAction extends AbstractAction {
   public async handle(inputs: Input[], options: Input[]) {
-    const name = inputs.find(({ name }) => name === 'name');
+    const name = String(
+      inputs.find(({ name }) => name === 'name')?.value || 'hedhog',
+    );
     const directory = options.find(({ name }) => name === 'directory');
-    const skipInstall = options.find(({ name }) => name === 'skip-install');
-    const skipGit = options.find(({ name }) => name === 'skip-git');
-
-    const directoryPath = String(directory?.value) || '.';
+    const directoryPath = `${String(directory?.value) || '.'}/${name}`;
 
     await this.cloneRepository(
       'https://github.com/hed-hog/bootstrap.git',
@@ -36,7 +37,36 @@ export class NewAction extends AbstractAction {
       database: 'hedhog',
     });
 
-    await this.installPackages(options, directoryPath);
+    const packageManager = await this.installPackages(options, directoryPath);
+
+    process.chdir(name);
+
+    await this.add('pagination');
+    await this.add('auth');
+    await this.add('user');
+
+    process.chdir('..');
+
+    this.complete(name, packageManager ?? 'npm');
+  }
+
+  complete(directory: string, packageManager: string) {
+    console.info();
+    console.info(MESSAGES.PACKAGE_MANAGER_INSTALLATION_SUCCEED(directory));
+    console.info(MESSAGES.CONFIG_DATABASE);
+    console.info(MESSAGES.GET_STARTED_INFORMATION);
+    console.info();
+    console.info(chalk.gray(MESSAGES.CHANGE_DIR_COMMAND(directory)));
+    console.info(chalk.gray(MESSAGES.START_COMMAND(packageManager)));
+    console.info();
+  }
+
+  async add(module: string) {
+    const action = new AddAction();
+    return action.handle(
+      [{ name: 'module', value: module }],
+      [{ name: 'silentComplete', value: true }],
+    );
   }
 
   async installPackages(options: Input[], directory: string) {
@@ -48,7 +78,7 @@ export class NewAction extends AbstractAction {
 
     try {
       packageManager = PackageManagerFactory.create(inputPackageManager);
-      await packageManager.install(directory, inputPackageManager);
+      return packageManager.install(directory, inputPackageManager);
     } catch (error) {
       if (error && error.message) {
         console.error(chalk.red(error.message));

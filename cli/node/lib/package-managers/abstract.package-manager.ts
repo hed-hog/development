@@ -30,14 +30,7 @@ export abstract class AbstractPackageManager {
         join(process.cwd(), normalizedDirectory),
       );
       spinner.succeed();
-      console.info();
-      console.info(MESSAGES.PACKAGE_MANAGER_INSTALLATION_SUCCEED(directory));
-      console.info(MESSAGES.CONFIG_DATABASE);
-      console.info(MESSAGES.GET_STARTED_INFORMATION);
-      console.info();
-      console.info(chalk.gray(MESSAGES.CHANGE_DIR_COMMAND(directory)));
-      console.info(chalk.gray(MESSAGES.START_COMMAND(packageManager)));
-      console.info();
+      return packageManager;
     } catch {
       spinner.fail();
       const commandArgs = this.cli.install;

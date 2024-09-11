@@ -10,12 +10,14 @@ import { PrismaModule } from '@hedhog/prisma';
 @Module({
   imports: [
     PrismaModule,
-    AuthModule,
     UserModule,
     CacheModule.register(),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
+      

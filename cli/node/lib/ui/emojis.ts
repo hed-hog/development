@@ -20,4 +20,8 @@ export const EMOJIS = {
   WINE: get('wine_glass'),
   HEDGEHOG: get('hedgehog'),
   CONFIG: get('gear'),
+  WARNING: get('warning'),
+  FIRE: get('fire'),
+  OK: get('ok'),
+  CHECK: get('white_check_mark'),
 };

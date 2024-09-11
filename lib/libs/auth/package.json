@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/auth",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.production.json && npm version patch",
@@ -20,7 +20,7 @@
   },
   "files": [
     "dist/**/*",
-    "src/migration/**/*.ts"
+    "src/migrations/**/*.ts"
   ],
   "devDependencies": {
     "@hedhog/mail": "^0.0.3",

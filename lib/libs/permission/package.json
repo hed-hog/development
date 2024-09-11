@@ -23,7 +23,7 @@
   },
   "files": [
     "dist/**/*",
-    "src/migration/**/*.ts"
+    "src/migrations/**/*.ts"
   ],
   "devDependencies": {
     "@hedhog/auth": "^0.0.8",

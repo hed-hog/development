@@ -19,7 +19,7 @@ export class PackageManagerFactory {
     }
   }
 
-  public static async find(): Promise<AbstractPackageManager> {
+  public static async findManager(): Promise<string> {
     const DEFAULT_PACKAGE_MANAGER = PackageManager.NPM;
 
     try {
@@ -27,17 +27,21 @@ export class PackageManagerFactory {
 
       const hasYarnLockFile = files.includes('yarn.lock');
       if (hasYarnLockFile) {
-        return this.create(PackageManager.YARN);
+        return PackageManager.YARN;
       }
 
       const hasPnpmLockFile = files.includes('pnpm-lock.yaml');
       if (hasPnpmLockFile) {
-        return this.create(PackageManager.PNPM);
+        return PackageManager.PNPM;
       }
 
-      return this.create(DEFAULT_PACKAGE_MANAGER);
+      return DEFAULT_PACKAGE_MANAGER;
     } catch (error) {
-      return this.create(DEFAULT_PACKAGE_MANAGER);
+      return DEFAULT_PACKAGE_MANAGER;
     }
+  }
+
+  public static async find(): Promise<AbstractPackageManager> {
+    return this.create(await this.findManager());
   }
 }

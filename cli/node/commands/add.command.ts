@@ -5,23 +5,19 @@ import { Input } from './command.input';
 export class AddCommand extends AbstractCommand {
   public load(program: Command): void {
     program
-      .command('add <module>')
+      .command('add')
+      .argument('<string>', 'module name')
+      .option('--silent-complete', 'Skip completion message.', false)
       .allowUnknownOption()
       .description('Adds support for an external module to your project.')
-      .option(
-        '-d, --dry-run',
-        'Report actions that would be performed without writing out results.',
-      )
-      .option('-s, --skip-install', 'Skip package installation.', false)
-      .option('-p, --project [project]', 'Project in which to generate files.')
       .usage('<module> [options] [module-specific-options]')
       .action(async (module, command) => {
         const options: Input[] = [];
-        options.push({ name: 'dry-run', value: !!command.dryRun });
-        options.push({ name: 'skip-install', value: command.skipInstall });
 
+        options.push({ name: 'silentComplete', value: command.silentComplete });
         const inputs: Input[] = [];
         inputs.push({ name: 'module', value: module });
+        this.action.handle(inputs, options);
       });
   }
 }

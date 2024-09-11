@@ -17,20 +17,25 @@ export const MESSAGES = {
   GIT_INITIALIZATION_ERROR: 'Git repository has not been initialized',
   PACKAGE_MANAGER_INSTALLATION_SUCCEED: (name: string) =>
     name !== '.'
-      ? `${EMOJIS.HEDGEHOG}  Successfully created project ${chalk.green(name)}`
-      : `${EMOJIS.HEDGEHOG}  Successfully created a new project`,
+      ? `${EMOJIS.CHECK}  Successfully created project ${chalk.green(name)}`
+      : `${EMOJIS.CHECK}  Successfully created a new project`,
+  ADD_MODULE_SUCCEED: (name: string) =>
+    name !== '.'
+      ? `${EMOJIS.HEDGEHOG}  Successfully added ${chalk.green(name)} module`
+      : `${EMOJIS.HEDGEHOG}  Successfully added a new module`,
   CONFIG_DATABASE: `${EMOJIS.CONFIG}  Configure your database connection in ${chalk.green('.env')} file`,
   GET_STARTED_INFORMATION: `${EMOJIS.POINT_RIGHT}  Get started with the following commands:`,
+  RUN_MIGRATE_COMMAND: `$ npm run migrate:up`,
   CHANGE_DIR_COMMAND: (name: string) => `$ cd ${name}`,
   START_COMMAND: (name: string) => `$ ${name} run dev`,
   PACKAGE_MANAGER_INSTALLATION_FAILED: (commandToRunManually: string) =>
     `${EMOJIS.SCREAM}  Packages installation failed!\nIn case you don't see any errors above, consider manually running the failed command ${commandToRunManually} to see more details on why it errored out.`,
   // tslint:disable-next-line:max-line-length
   HEDHOG_INFORMATION_PACKAGE_MANAGER_FAILED: `${EMOJIS.SMIRK}  cannot read your project package.json file, are you inside your project directory?`,
-  HEDHOG_INFORMATION_PACKAGE_WARNING_FAILED: (nestDependencies: string[]) =>
+  HEDHOG_INFORMATION_PACKAGE_WARNING_FAILED: (dependencies: string[]) =>
     `${
       EMOJIS.SMIRK
-    }  failed to compare dependencies versions, please check that following packages are in the same minor version : \n ${nestDependencies.join(
+    }  failed to compare dependencies versions, please check that following packages are in the same minor version : \n ${dependencies.join(
       '\n',
     )}`,
 

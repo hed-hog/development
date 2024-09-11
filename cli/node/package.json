@@ -1,13 +1,14 @@
 {
   "name": "@hedhog/cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "bin": {
     "hedhog": "bin/hedhog.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm version patch",
     "start": "node bin/hedhog.js",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "prod": "npm run build && npm publish --access public"
   },
   "keywords": [],
   "author": "",
