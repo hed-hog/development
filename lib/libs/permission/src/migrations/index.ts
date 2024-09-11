@@ -11,36 +11,7 @@ export class Migration implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'screens',
-        columns: [
-          idColumn(),
-          {
-            name: 'name',
-            type: 'varchar',
-          },
-          {
-            name: 'slug',
-            type: 'varchar',
-            isUnique: true,
-          },
-          {
-            name: 'description',
-            type: 'varchar',
-          },
-          {
-            name: 'icon',
-            type: 'varchar',
-            isNullable: true,
-          },
-          timestampColumn(),
-          timestampColumn('updated_at'),
-        ],
-      }),
-    );
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'role',
+        name: 'roles',
         columns: [
           idColumn(),
           {
@@ -119,7 +90,7 @@ export class Migration implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['role_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'role',
+        referencedTableName: 'roles',
         onDelete: 'CASCADE',
         name: 'fk_role_users_role',
       }),
@@ -139,9 +110,8 @@ export class Migration implements MigrationInterface {
     );
   }
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('screens');
-    await queryRunner.dropTable('role');
+    await queryRunner.dropTable('roles');
     await queryRunner.dropTable('role_screens');
-    await queryRunner.dropTable('role_user');
+    await queryRunner.dropTable('role_users');
   }
 }
