@@ -69,6 +69,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/permission/tsconfig.lib.json"
       }
+    },
+    "screen": {
+      "type": "library",
+      "root": "libs/screen",
+      "entryFile": "index",
+      "sourceRoot": "libs/screen/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/screen/tsconfig.lib.json"
+      }
     }
   }
 }

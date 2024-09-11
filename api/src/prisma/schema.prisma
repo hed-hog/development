@@ -100,3 +100,13 @@ model visibilities {
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 }
+
+model screens {
+  id          Int      @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
+  name        String   @db.VarChar
+  slug        String   @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
+  description String   @db.VarChar
+  icon        String?  @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+}
