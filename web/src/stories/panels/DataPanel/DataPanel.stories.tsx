@@ -351,7 +351,7 @@ export const TableSelectableMultiple: Story = {
     selectable: true,
     multiple: true,
     columns: [
-      { key: 'id', header: 'ID', width: 100 },
+      { key: 'id', header: 'ID', width: 100, isVisible: true },
       { key: 'name', header: 'Name', isVisible: true },
       { key: 'email', header: 'Email', isVisible: true },
     ],

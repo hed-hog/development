@@ -116,11 +116,6 @@ export const GridMode: Story = {
         <p>{item.email}</p>
       </div>
     ),
-    columns: [
-      { key: 'id', header: 'ID' },
-      { key: 'name', header: 'Name' },
-      { key: 'email', header: 'Email' },
-    ],
     buttons: [
       {
         variant: 'destructive',
@@ -141,9 +136,9 @@ export const TableMode: Story = {
     url: '/users',
     type: 'table',
     columns: [
-      { key: 'id', header: 'ID' },
-      { key: 'name', header: 'Name' },
-      { key: 'email', header: 'Email' },
+      { key: 'id', header: 'ID', isVisible: true },
+      { key: 'name', header: 'Name', isVisible: true },
+      { key: 'email', header: 'Email', isVisible: true },
     ],
     sortable: true,
     buttons: [
