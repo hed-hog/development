@@ -10,7 +10,7 @@ import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
 import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectedItems } from './select-items'
 import { useApp } from '@/hooks/use-app'
@@ -25,6 +25,7 @@ import { useMediaQuery } from 'usehooks-ts'
 import {
   IconAdjustmentsHorizontal,
   IconDotsVertical,
+  IconEye,
 } from '@tabler/icons-react'
 import {
   Drawer,
@@ -43,6 +44,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
+import { Checkbox } from '../ui/checkbox'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
@@ -71,7 +73,7 @@ type DataPanelTypeBase<T> = {
   selectable?: boolean
   multiple?: boolean
   hasSearch?: boolean
-  menuOrders: MenuOrder[]
+  menuOrders?: MenuOrder[]
   menuActions?: IMenuItemAction<T>[]
   itemClassName?: string
   selected?: T[]
@@ -171,7 +173,7 @@ export const DataPanel = <T extends any>({
   menuActions = [],
   ...props
 }: DataPanelProps<T>) => {
-  const isDesktop = useMediaQuery('(min-width: 768px)')
+  const isDesktop = useMediaQuery('(min-width: 992px)')
 
   const {
     isLoading,
@@ -197,18 +199,15 @@ export const DataPanel = <T extends any>({
   const [order, setOrder] = useState(`${sortOrder}-${sortField}`)
   const [selectedItems, setSelectedItems] = useState<T[]>(selected)
   const [isOrderDrawerOpen, setIsOrderDrawerOpen] = useState(false)
+  const [visibleColumns, setVisibleColumns] = useState<ITableColumn<T>[]>(
+    columns || []
+  )
   const { openDialog, closeDialog } = useApp()
 
   const handleSelect = useCallback(
     (item: T) => setSelectedItems((value) => [...value, item]),
     []
   )
-
-  useEffect(() => {
-    console.log({ orderState: order })
-    console.log({ order: sortOrder })
-    console.log({ field: sortField })
-  }, [order])
 
   const handleUnselect = useCallback(
     (item: T) =>
@@ -227,7 +226,9 @@ export const DataPanel = <T extends any>({
     switch (layout) {
       case 'table':
         return {
-          columns: columns as ITableColumn<T>[],
+          columns: visibleColumns.filter(
+            (col) => 'isVisible' in col && col.isVisible
+          ),
           data: selectedItems,
           sortable,
           caption,
@@ -277,7 +278,7 @@ export const DataPanel = <T extends any>({
           ...(props as any),
         }
     }
-  }, [selectedItems])
+  }, [selectedItems, visibleColumns])
 
   const getSelectedItemsPanel = useCallback(() => {
     switch (layout) {
@@ -338,6 +339,67 @@ export const DataPanel = <T extends any>({
     }
   }, [selectedItems])
 
+  const onColumnVisibilityChange = (columnKey: string) => {
+    setVisibleColumns((prevColumns) =>
+      prevColumns.map((col) =>
+        'key' in col && col.key === columnKey
+          ? { ...col, isVisible: !col.isVisible }
+          : col
+      )
+    )
+  }
+
+  const viewMenu = layout === 'table' && (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant={isDesktop ? 'outline' : 'ghost'}
+          className={
+            !isDesktop ? 'flex w-full items-center justify-start px-4 py-2' : ''
+          }
+          size={isDesktop ? 'sm' : 'icon'}
+        >
+          <IconEye className='mr-2 w-8 cursor-pointer' />
+          <span className={`font-medium ${!isDesktop && 'text-base'}`}>
+            Visualizar
+          </span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {columns?.map((column) => (
+          <DropdownMenuRadioGroup
+            key={String('key' in column && column.key)}
+            value={String('key' in column && column.key)}
+          >
+            <DropdownMenuRadioItem
+              value={String('key' in column && column.key)}
+              onClick={() =>
+                onColumnVisibilityChange(String('key' in column && column.key))
+              }
+            >
+              <Checkbox
+                checked={
+                  visibleColumns.find(
+                    (col) =>
+                      ('key' in col && col.key) ===
+                      ('key' in column && column.key)
+                  )?.isVisible ?? true
+                }
+                onChange={() =>
+                  onColumnVisibilityChange(
+                    String('key' in column && column.key)
+                  )
+                }
+                className='mr-2'
+              />
+              {'header' in column && column.header}
+            </DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+
   return (
     <>
       <div
@@ -355,6 +417,7 @@ export const DataPanel = <T extends any>({
           </div>
         )}
         <div className='flex items-center justify-end space-x-4 rounded-md'>
+          {isDesktop && viewMenu}
           {isDesktop &&
             menuActions.map((btn, index) => {
               const { label, handler, tooltip, icon, show, ...props } = btn
@@ -442,6 +505,7 @@ export const DataPanel = <T extends any>({
                     </DrawerContent>
                   </Drawer>
                 )}
+                {!isDesktop && viewMenu}
                 {menuActions
                   .filter((btn) => !showButtons(btn))
                   .map(
@@ -515,7 +579,9 @@ export const DataPanel = <T extends any>({
               itemClassName={itemClassName}
               selectable={selectable}
               multiple={multiple}
-              columns={columns as ITableColumn<T>[]}
+              columns={visibleColumns.filter(
+                (col) => 'isVisible' in col && col.isVisible
+              )}
               data={items}
               sortable={sortable}
               caption={caption}

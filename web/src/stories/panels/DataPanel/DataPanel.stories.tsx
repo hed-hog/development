@@ -328,9 +328,9 @@ export const TableSelectableUnique: Story = {
     selectable: true,
     multiple: false,
     columns: [
-      { key: 'id', header: 'ID', width: 100 },
-      { key: 'name', header: 'Name' },
-      { key: 'email', header: 'Email' },
+      { key: 'id', header: 'ID', width: 100, isVisible: true },
+      { key: 'name', header: 'Name', isVisible: true },
+      { key: 'email', header: 'Email', isVisible: true },
     ],
   },
   parameters: {
@@ -352,8 +352,8 @@ export const TableSelectableMultiple: Story = {
     multiple: true,
     columns: [
       { key: 'id', header: 'ID', width: 100 },
-      { key: 'name', header: 'Name' },
-      { key: 'email', header: 'Email' },
+      { key: 'name', header: 'Name', isVisible: true },
+      { key: 'email', header: 'Email', isVisible: true },
     ],
   },
   parameters: {
@@ -373,9 +373,9 @@ export const TableSearch: Story = {
     id: 'users',
     hasSearch: true,
     columns: [
-      { key: 'id', header: 'ID', width: 100 },
-      { key: 'name', header: 'Name' },
-      { key: 'email', header: 'Email' },
+      { key: 'id', header: 'ID', width: 100, isVisible: true },
+      { key: 'name', header: 'Name', isVisible: true },
+      { key: 'email', header: 'Email', isVisible: true },
     ],
   },
   parameters: {

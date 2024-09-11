@@ -15,6 +15,7 @@ export type ITableColumn<T> =
       key: string
       header: string
       render?: (item: T, index: number) => JSX.Element
+      isVisible?: boolean
       width?: string | number
     }
   | {

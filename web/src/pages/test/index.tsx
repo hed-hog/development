@@ -184,7 +184,7 @@ export default function Screen() {
       <p className='text-muted-foreground'>
         Confira todos os usuários cadastrados no sistema.
       </p>
-      <DataPanel
+      {/* <DataPanel
         id='data-panel-grid-example'
         url='/users'
         hasSearch
@@ -234,6 +234,79 @@ export default function Screen() {
           {
             icon: <IconInfoCircle className='mr-1 w-8 cursor-pointer' />,
             label: 'Visualizar',
+            tooltip: 'Visualizar mais informações dos usuários selecionados',
+            handler: openInfoDialog,
+            show: 'some',
+          },
+          {
+            icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
+            label: 'Excluir',
+            variant: 'destructive',
+            tooltip: 'Excluir os usuários selecionados',
+            handler: openDeleteDialog,
+            show: 'some',
+          },
+          {
+            icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
+            label: 'Criar',
+            variant: 'default',
+            tooltip: 'Criar novo usuário',
+            handler: openCreateDialog,
+            show: 'none',
+          },
+        ]}
+        onSelectionChange={(selectedItems) => {
+          console.log('data-panel grid', selectedItems)
+        }}
+      /> */}
+      <DataPanel
+        id='data-panel-table-example'
+        layout='table'
+        url='/users'
+        hasSearch
+        selectable
+        multiple
+        selected={selectedItems}
+        columns={[
+          { key: 'id', header: 'ID', isVisible: true },
+          { key: 'name', header: 'Name', isVisible: true },
+          { key: 'email', header: 'Email', isVisible: true },
+        ]}
+        menuOrders={[
+          {
+            label: 'Nome - A-Z',
+            field: 'name',
+            order: 'asc',
+          },
+          {
+            label: 'Nome - Z-A',
+            field: 'name',
+            order: 'desc',
+          },
+          {
+            label: 'Email - A-Z',
+            field: 'email',
+            order: 'asc',
+          },
+          {
+            label: 'Email - Z-A',
+            field: 'email',
+            order: 'desc',
+          },
+        ]}
+        menuActions={[
+          {
+            icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
+            label: 'Editar',
+            tooltip: 'Editar usuários selecionados',
+            handler: (items: any[]) => {
+              if (items.length === 1) openEditDialog(items[0])
+            },
+            show: 'once',
+          },
+          {
+            icon: <IconInfoCircle className='mr-1 w-8 cursor-pointer' />,
+            label: 'Informações',
             tooltip: 'Visualizar mais informações dos usuários selecionados',
             handler: openInfoDialog,
             show: 'some',

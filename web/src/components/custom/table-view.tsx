@@ -272,11 +272,14 @@ const TableView = <T extends any>({
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
         <TableHeadRow>
-          <TableHead>
-            {selectable && multiple && (
-              <SelectAll checked={isAllSelected} onChange={selectAllItems} />
-            )}
-          </TableHead>
+          {selectable && (
+            <TableHead>
+              {multiple && (
+                <SelectAll checked={isAllSelected} onChange={selectAllItems} />
+              )}
+            </TableHead>
+          )}
+
           {columns.map((col) => (
             <TableHead
               key={'key' in col ? col.key : 'actions'}
