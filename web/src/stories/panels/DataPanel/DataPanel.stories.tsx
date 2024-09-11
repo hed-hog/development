@@ -1,6 +1,7 @@
 import { DataPanel } from '@/components/custom/data-panel'
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DataPanel> = {
@@ -73,6 +74,16 @@ const meta: Meta<typeof DataPanel> = {
       type: 'function',
       description:
         'A render function that defines how each item is displayed within the panel. It takes an item and its index as arguments and returns a JSX element for rendering the item.',
+    },
+    menuOrders: {
+      control: 'object',
+      description:
+        'Defines the available sorting options for the data in the panel.',
+    },
+    menuActions: {
+      control: 'object',
+      description:
+        'Defines the actions available for items in the panel, such as edit, delete, etc.',
     },
     paginationOptions: {
       control: 'object',
@@ -169,6 +180,88 @@ export const GridSearch: Story = {
       description: {
         story:
           'Shows a grid layout with an integrated search feature to filter items dynamically. Enhances usability by allowing quick searches.',
+      },
+    },
+  },
+}
+
+export const GridWithMenuOrders: Story = {
+  args: {
+    id: 'data-panel-grid-menu-orders',
+    url: '/users',
+    hasSearch: true,
+    selectable: true,
+    multiple: true,
+    columns: [
+      { key: 'id', header: 'ID' },
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
+    ],
+    menuOrders: [
+      {
+        label: 'Name - A to Z',
+        field: 'name',
+        order: 'asc',
+      },
+      {
+        label: 'Name - Z to A',
+        field: 'name',
+        order: 'desc',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This grid layout allows users to sort items by name using the menu order options.',
+      },
+    },
+  },
+}
+
+export const GridWithMenuActions: Story = {
+  args: {
+    id: 'data-panel-grid-menu-actions',
+    url: '/users',
+    hasSearch: true,
+    selectable: true,
+    multiple: true,
+    columns: [
+      { key: 'id', header: 'ID' },
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
+    ],
+    menuActions: [
+      {
+        icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
+        label: 'Edit',
+        tooltip: 'Edit selected user(s)',
+        handler: () => {},
+        show: 'once',
+      },
+      {
+        icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
+        label: 'Delete',
+        tooltip: 'Delete selected user(s)',
+        variant: 'destructive',
+        handler: () => {},
+        show: 'some',
+      },
+      {
+        icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
+        label: 'Create',
+        tooltip: 'Create a new user',
+        handler: () => {},
+        show: 'none',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This grid layout includes actions such as edit, delete, and create for managing users.',
       },
     },
   },
