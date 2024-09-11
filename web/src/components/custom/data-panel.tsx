@@ -196,6 +196,7 @@ export const DataPanel = <T extends any>({
 
   const [order, setOrder] = useState(`${sortOrder}-${sortField}`)
   const [selectedItems, setSelectedItems] = useState<T[]>(selected)
+  const [isOrderDrawerOpen, setIsOrderDrawerOpen] = useState(false)
   const { openDialog, closeDialog } = useApp()
 
   const handleSelect = useCallback(
@@ -401,6 +402,46 @@ export const DataPanel = <T extends any>({
                     {isPlural(selectedItems.length)}
                   </DrawerDescription>
                 </DrawerHeader>
+                {!isDesktop && (
+                  <Drawer
+                    open={isOrderDrawerOpen}
+                    onOpenChange={setIsOrderDrawerOpen}
+                  >
+                    <DrawerTrigger asChild>
+                      <MenuItem
+                        label={'Ordenar'}
+                        icon={
+                          <IconAdjustmentsHorizontal className='mr-1 w-8 cursor-pointer' />
+                        }
+                      />
+                    </DrawerTrigger>
+                    <DrawerContent className='w-full gap-4 pb-4'>
+                      <DrawerHeader className='text-left'>
+                        <DrawerTitle>Ordenar por</DrawerTitle>
+                      </DrawerHeader>
+                      <div className='space-y-2'>
+                        <DropdownMenuRadioGroup
+                          value={order}
+                          onValueChange={setOrder}
+                        >
+                          {menuOrders.map((order) => (
+                            <MenuItem
+                              key={`${order.order}-${order.field}`}
+                              aria-label={order.label}
+                              onClick={() => {
+                                setIsOrderDrawerOpen(false)
+                                setSortField(order.field)
+                                setSortOrder(order.order)
+                                setOrder(`${order.order}-${order.field}`)
+                              }}
+                              label={order.label}
+                            />
+                          ))}
+                        </DropdownMenuRadioGroup>
+                      </div>
+                    </DrawerContent>
+                  </Drawer>
+                )}
                 {menuActions
                   .filter((btn) => !showButtons(btn))
                   .map(
