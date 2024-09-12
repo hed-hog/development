@@ -23,7 +23,7 @@ import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectAll } from './select-items'
 import {
   IconCaretDownFilled,
-  IconEye,
+  IconColumns,
   IconSortAscending,
   IconSortDescending,
 } from '@tabler/icons-react'
@@ -393,10 +393,9 @@ const TableView = <T extends any>({
                             variant='outline'
                             size='sm'
                           >
-                            <IconEye className='mr-3 h-5 w-5 cursor-pointer' />
-                            <span className='text-sm font-normal'>
-                              Visualizar
-                            </span>
+                            <IconColumns className='mr-3 h-5 w-5 cursor-pointer' />
+                            <span className='text-sm font-normal'>Colunas</span>
+                            <IconCaretDownFilled className='absolute right-2 w-4 text-white/50' />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
