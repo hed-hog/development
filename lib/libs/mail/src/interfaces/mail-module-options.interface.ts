@@ -4,14 +4,10 @@ export type MailModuleOptions =
   | {
       global?: boolean;
       type: 'AWS';
+      region: string;
       accessKeyId: string;
       secretAccessKey: string;
-
-      host?: string;
-      from?: string;
-      clientId?: string;
-      clientSecret?: string;
-      refreshToken?: string;
+      from: string;
     }
   | {
       global?: boolean;

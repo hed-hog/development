@@ -15,6 +15,7 @@ import { MailService } from './mail.service';
 })
 export class MailModule {
   static register(options: MailModuleOptions): DynamicModule {
+    console.log('MailModule.register', { options });
     return {
       module: MailModule,
       global: options.global,

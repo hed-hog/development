@@ -1,3 +1,4 @@
+import { MailService } from '@hedhog/mail';
 import {
   Controller,
   Get,
@@ -5,12 +6,15 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { AppService } from './app.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private mailService: MailService,
+  ) {}
 
   @Get()
   getHello(): string {
@@ -20,18 +24,18 @@ export class AppController {
   @Post('send')
   @UseInterceptors(FilesInterceptor('files'))
   async testMail(@UploadedFiles() files: Express.Multer.File[]) {
-    // return this.mailService.send({
-    //   to: ['anthonyribeiro1910@gmail.com', 'anthonyribeiro1910teste@gmail.com'],
-    //   subject: 'Testando email 2',
-    //   body: 'Testando 123',
-    //   attachments: files.map((it) => {
-    //     return {
-    //       ...it,
-    //       contentType: it.mimetype,
-    //       content: it.buffer,
-    //       filename: it.originalname,
-    //     };
-    //   }),
-    // });
+    return this.mailService.send({
+      to: ['joaohcrangel@gmail.com'],
+      subject: `Testando email enviado às ${new Date().toISOString()}`,
+      body: 'Testando 123',
+      attachments: (files ?? []).map((it) => {
+        return {
+          ...it,
+          contentType: it.mimetype,
+          content: it.buffer,
+          filename: it.originalname,
+        };
+      }),
+    });
   }
 }

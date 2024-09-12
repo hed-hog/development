@@ -11,9 +11,22 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
+    "mimemessage": "1.0.5"
+  },
+  "peerDependencies": {
     "aws-sdk": "2.1691.0",
     "googleapis": "144.0.0",
-    "nodemailer": "6.9.15",
-    "mimemessage": "1.0.5"
+    "nodemailer": "6.9.15"
+  },
+  "peerDependenciesMeta": {
+    "aws-sdk": {
+      "optional": true
+    },
+    "googleapis": {
+      "optional": true
+    },
+    "nodemailer": {
+      "optional": true
+    }
   }
 }

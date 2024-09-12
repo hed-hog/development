@@ -1,9 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable } from '@nestjs/common';
-import { SES } from 'aws-sdk';
-import { google } from 'googleapis';
 import * as mimemessage from 'mimemessage';
-import * as nodemailer from 'nodemailer';
 import { firstValueFrom } from 'rxjs';
 import { MailConfigurationTypeEnum } from './enums/mail-configuration-type.enum';
 import { MailModuleOptions } from './interfaces/mail-module-options.interface';
@@ -19,16 +16,13 @@ export class MailService {
   async send(mail: Mail) {
     switch (this.mailConfig.type) {
       case MailConfigurationTypeEnum.AWS:
-        await this.sendWithSES(mail);
-        break;
+        return this.sendWithSES(mail);
 
       case MailConfigurationTypeEnum.GMAIL:
-        await this.sendWithGmail(mail);
-        break;
+        return this.sendWithGmail(mail);
 
       case MailConfigurationTypeEnum.SMTP:
-        await this.sendWithSMTP(mail);
-        break;
+        return this.sendWithSMTP(mail);
     }
   }
 
@@ -58,7 +52,7 @@ export class MailService {
       mailContent.body.push(alternateEntity);
 
       await Promise.all(
-        mail.attachments.map(async (attachment) => {
+        (mail.attachments ?? []).map(async (attachment) => {
           const attachmentEntity = mimemessage.factory({
             contentType: attachment.contentType,
             contentTransferEncoding: 'base64',
@@ -117,6 +111,8 @@ export class MailService {
       secure = false,
     } = this.mailConfig;
 
+    const nodemailer = await import('nodemailer');
+
     const transporter = nodemailer.createTransport({
       host,
       port,
@@ -145,6 +141,8 @@ export class MailService {
     }
     const { clientId, clientSecret, from, refreshToken } = this.mailConfig;
     const redirectURI = 'https://developers.google.com/oauthplayground';
+
+    const { google } = await import('googleapis');
 
     const oauth2Client = new google.auth.OAuth2(
       clientId,
@@ -183,11 +181,13 @@ export class MailService {
     if (this.mailConfig.type !== 'AWS') {
       throw new Error('Invalid mail configuration type');
     }
-    const { host, from, accessKeyId, secretAccessKey } = this.mailConfig;
+    const { region, from, accessKeyId, secretAccessKey } = this.mailConfig;
+
+    const { SES } = await import('aws-sdk');
 
     const ses = new SES({
       apiVersion: '2010-12-01',
-      region: host.split('.')[1],
+      region,
       credentials: {
         accessKeyId,
         secretAccessKey,
@@ -245,7 +245,7 @@ export class MailService {
       mailContent.body.push(alternateEntity);
 
       await Promise.all(
-        mail.attachments.map((item) => {
+        (mail.attachments ?? []).map((item) => {
           const attachmentEntity = mimemessage.factory({
             contentType: item.contentType,
             contentTransferEncoding: 'base64',
