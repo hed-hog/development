@@ -8,14 +8,13 @@ datasource db {
 }
 
 model files {
-  id         Int       @id(map: "PK_6c16b9093a142e0e7613b04a3d9") @default(autoincrement())
-  name       String    @db.VarChar
-  url        String    @db.VarChar
-  extension  String    @db.VarChar(15)
+  id         Int      @id(map: "PK_6c16b9093a142e0e7613b04a3d9") @default(autoincrement())
+  name       String   @db.VarChar
+  url        String   @db.VarChar
+  extension  String   @db.VarChar(15)
   bytes      Int
-  created_at DateTime  @default(now()) @db.Timestamp(6)
-  updated_at DateTime  @default(now()) @db.Timestamp(6)
-  persons    persons[]
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
 }
 
 model migrations {
@@ -33,45 +32,16 @@ model persons {
   photo_id     Int?
   created_at   DateTime  @default(now()) @db.Timestamp(6)
   updated_at   DateTime  @default(now()) @db.Timestamp(6)
-  files        files?    @relation(fields: [photo_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_persons_to_files_on_photo_id")
-}
-
-model role_actions {
-  id               Int                @id(map: "PK_5ee58f1e3c6236c691f190e0781") @default(autoincrement())
-  name             String             @db.VarChar
-  created_at       DateTime           @default(now()) @db.Timestamp(6)
-  updated_at       DateTime           @default(now()) @db.Timestamp(6)
-  role_permissions role_permissions[]
-}
-
-model role_models {
-  id               Int                @id(map: "PK_e88c588e3d5bc43822a38e741b3") @default(autoincrement())
-  name             String             @db.VarChar
-  created_at       DateTime           @default(now()) @db.Timestamp(6)
-  updated_at       DateTime           @default(now()) @db.Timestamp(6)
-  role_permissions role_permissions[]
-}
-
-model role_permissions {
-  role_id      Int
-  model_id     Int
-  action_id    Int
-  created_at   DateTime     @default(now()) @db.Timestamp(6)
-  updated_at   DateTime     @default(now()) @db.Timestamp(6)
-  role_actions role_actions @relation(fields: [action_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_permissions_to_role_actions_on_action_id")
-  role_models  role_models  @relation(fields: [model_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_permissions_to_role_models_on_model_id")
-  roles        roles        @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_permissions_to_roles_on_role_id")
-
-  @@id([role_id, model_id, action_id], map: "PK_7398b3dc345fed4196d8b5536ec")
 }
 
 model roles {
-  id               Int                @id(map: "PK_c1433d71a4838793a49dcad46ab") @default(autoincrement())
-  name             String             @db.VarChar
-  description      String             @db.VarChar
-  created_at       DateTime           @default(now()) @db.Timestamp(6)
-  updated_at       DateTime           @default(now()) @db.Timestamp(6)
-  role_permissions role_permissions[]
+  id           Int            @id(map: "PK_c1433d71a4838793a49dcad46ab") @default(autoincrement())
+  name         String         @db.VarChar
+  description  String         @db.VarChar
+  created_at   DateTime       @default(now()) @db.Timestamp(6)
+  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  role_screens role_screens[]
+  role_users   role_users[]
 }
 
 model users {
@@ -83,6 +53,7 @@ model users {
   code           String?       @db.VarChar
   created_at     DateTime      @default(now()) @db.Timestamp(6)
   updated_at     DateTime      @default(now()) @db.Timestamp(6)
+  role_users     role_users[]
   multifactors   multifactors? @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users_to_multifactors_on_multifactor_id")
 }
 
@@ -102,11 +73,54 @@ model multifactors {
 }
 
 model screens {
-  id          Int      @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
-  name        String   @db.VarChar
-  slug        String   @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
-  description String   @db.VarChar
-  icon        String?  @db.VarChar
+  id           Int            @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
+  name         String         @db.VarChar
+  slug         String         @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
+  description  String         @db.VarChar
+  icon         String?        @db.VarChar
+  created_at   DateTime       @default(now()) @db.Timestamp(6)
+  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  role_screens role_screens[]
+}
+
+model role_screens {
+  role_id    Int
+  screen_id  Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_screens_roles")
+  screens    screens  @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_screens_screen")
+
+  @@id([role_id, screen_id], map: "PK_82cdd66bd3fd409bf87b1716c42")
+}
+
+model role_users {
+  role_id    Int
+  user_id    Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_users_roles")
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_users_user")
+
+  @@id([role_id, user_id], map: "PK_e976807ebe4fc773c2365d91566")
+}
+
+model setting_values {
+  id          Int      @id(map: "PK_c21069a3e9521c651c52051b939") @default(autoincrement())
+  value       String   @db.VarChar(1023)
+  name        String   @unique(map: "UQ_107f182a06aebe76c709d58dfbd") @db.VarChar
+  description String?  @db.VarChar
+  label       String?  @db.VarChar
+  setting_id  Int
   created_at  DateTime @default(now()) @db.Timestamp(6)
   updated_at  DateTime @default(now()) @db.Timestamp(6)
+  settings    settings @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4001238c50d670cf048b157cf9b")
+}
+
+model settings {
+  id             Int              @id(map: "PK_0669fe20e252eb692bf4d344975") @default(autoincrement())
+  name           String           @db.VarChar
+  created_at     DateTime         @default(now()) @db.Timestamp(6)
+  updated_at     DateTime         @default(now()) @db.Timestamp(6)
+  setting_values setting_values[]
 }
