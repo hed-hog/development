@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { timestampColumn, idColumn } from '@hedhog/utils';
 
-export class Migrate implements MigrationInterface {
+export class Migrate1726156177904 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
