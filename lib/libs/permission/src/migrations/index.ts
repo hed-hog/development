@@ -53,9 +53,9 @@ export class Migration1726103513 implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['role_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'role',
+        referencedTableName: 'roles',
         onDelete: 'CASCADE',
-        name: 'fk_role_screens_role',
+        name: 'fk_role_screens_roles',
       }),
       new TableForeignKey({
         columnNames: ['screen_id'],
@@ -92,7 +92,7 @@ export class Migration1726103513 implements MigrationInterface {
         referencedColumnNames: ['id'],
         referencedTableName: 'roles',
         onDelete: 'CASCADE',
-        name: 'fk_role_users_role',
+        name: 'fk_role_users_roles',
       }),
 
       new TableForeignKey({
