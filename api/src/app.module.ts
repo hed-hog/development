@@ -1,3 +1,4 @@
+import { FileModule } from '@hedhog/file';
 import { SettingModule } from '@hedhog/setting';
 import { PermissionModule } from '@hedhog/permission';
 import { ScreenModule } from '@hedhog/screen';
@@ -20,10 +21,12 @@ import { PrismaModule } from '@hedhog/prisma';
     ScreenModule,
     PermissionModule,
     SettingModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
 
+      
       
