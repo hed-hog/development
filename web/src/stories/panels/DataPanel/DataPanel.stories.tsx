@@ -303,6 +303,80 @@ export const ListSelectableMultiple: Story = {
   },
 }
 
+export const ListWithMenuOrders: Story = {
+  args: {
+    layout: 'list',
+    url: '/users',
+    id: 'data-panel-list-menu-orders',
+    hasSearch: true,
+    selectable: true,
+    multiple: true,
+    menuOrders: [
+      {
+        label: 'Name - A to Z',
+        field: 'name',
+        order: 'asc',
+      },
+      {
+        label: 'Name - Z to A',
+        field: 'name',
+        order: 'desc',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Displays a list layout with menu orders for sorting items by name. This layout supports searching and multiple item selections.',
+      },
+    },
+  },
+}
+
+export const ListWithMenuActions: Story = {
+  args: {
+    layout: 'list',
+    url: '/users',
+    id: 'data-panel-list-menu-actions',
+    hasSearch: true,
+    selectable: true,
+    multiple: true,
+    menuActions: [
+      {
+        icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
+        label: 'Edit',
+        tooltip: 'Edit selected user(s)',
+        handler: () => {},
+        show: 'once',
+      },
+      {
+        icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
+        label: 'Delete',
+        tooltip: 'Delete selected user(s)',
+        variant: 'destructive',
+        handler: () => {},
+        show: 'some',
+      },
+      {
+        icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
+        label: 'Create',
+        tooltip: 'Create a new user',
+        handler: () => {},
+        show: 'none',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Shows a list layout with menu actions for managing users. Includes actions such as edit, delete, and create, with support for search and multiple item selections.',
+      },
+    },
+  },
+}
+
 export const ListSearch: Story = {
   args: {
     layout: 'list',
@@ -361,6 +435,125 @@ export const TableSelectableMultiple: Story = {
       description: {
         story:
           'Displays a table layout allowing multiple selections. Useful for operations requiring bulk actions or multiple item manipulations.',
+      },
+    },
+  },
+}
+
+export const TableWithMenuOrders: Story = {
+  args: {
+    layout: 'table',
+    url: '/users',
+    id: 'data-panel-table-menu-orders',
+    hasSearch: true,
+    selectable: true,
+    multiple: true,
+    columns: [
+      { key: 'id', header: 'ID', width: 100 },
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
+    ],
+    menuOrders: [
+      {
+        label: 'Nome - A-Z',
+        field: 'name',
+        order: 'asc',
+      },
+      {
+        label: 'Nome - Z-A',
+        field: 'name',
+        order: 'desc',
+      },
+      {
+        label: 'Email - A-Z',
+        field: 'email',
+        order: 'asc',
+      },
+      {
+        label: 'Email - Z-A',
+        field: 'email',
+        order: 'desc',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Displays a table layout with menu orders for sorting items by name. This layout supports search and multiple item selections, ideal for detailed data presentation.',
+      },
+    },
+  },
+}
+
+export const TableWithMenuActions: Story = {
+  args: {
+    layout: 'table',
+    url: '/users',
+    id: 'data-panel-table-menu-actions',
+    hasSearch: true,
+    selectable: true,
+    multiple: true,
+    columns: [
+      { key: 'id', header: 'ID', width: 100 },
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
+    ],
+    menuActions: [
+      {
+        icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
+        label: 'Edit',
+        tooltip: 'Edit selected user(s)',
+        handler: () => {},
+        show: 'once',
+      },
+      {
+        icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
+        label: 'Delete',
+        tooltip: 'Delete selected user(s)',
+        variant: 'destructive',
+        handler: () => {},
+        show: 'some',
+      },
+      {
+        icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
+        label: 'Create',
+        tooltip: 'Create a new user',
+        handler: () => {},
+        show: 'none',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Shows a table layout with menu actions for managing users. Includes actions such as edit, delete, and create, along with search functionality and support for multiple selections.',
+      },
+    },
+  },
+}
+
+export const TableSortable: Story = {
+  args: {
+    layout: 'table',
+    url: '/users',
+    id: 'data-panel-table-menu-orders',
+    hasSearch: true,
+    selectable: true,
+    multiple: true,
+    sortable: true,
+    columns: [
+      { key: 'id', header: 'ID', width: 100 },
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Displays a table layout with menu orders for sorting items by name. This layout supports search and multiple item selections, ideal for detailed data presentation.',
       },
     },
   },

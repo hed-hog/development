@@ -22,7 +22,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useMediaQuery } from 'usehooks-ts'
-import { IconDotsVertical } from '@tabler/icons-react'
+import {
+  IconAdjustmentsHorizontal,
+  IconDotsVertical,
+} from '@tabler/icons-react'
 import {
   Drawer,
   DrawerContent,
@@ -33,6 +36,13 @@ import {
 } from '@/components/ui/drawer'
 import MenuItem from './menu-item'
 import { isPlural } from '@/lib/utils'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
@@ -45,6 +55,12 @@ type IMenuItemAction<T> = ButtonProps & {
   ) => void
 }
 
+type MenuOrder = {
+  field: string
+  label: string
+  order: 'asc' | 'desc'
+}
+
 type DataPanelTypeBase<T> = {
   url: string
   id: string
@@ -55,6 +71,7 @@ type DataPanelTypeBase<T> = {
   selectable?: boolean
   multiple?: boolean
   hasSearch?: boolean
+  menuOrders: MenuOrder[]
   menuActions?: IMenuItemAction<T>[]
   itemClassName?: string
   selected?: T[]
@@ -150,6 +167,7 @@ export const DataPanel = <T extends any>({
   responsiveColumns,
   itemClassName,
   onSelectionChange,
+  menuOrders = [],
   menuActions = [],
   ...props
 }: DataPanelProps<T>) => {
@@ -165,7 +183,9 @@ export const DataPanel = <T extends any>({
     search,
     setSearch,
     totalItems,
+    sortField,
     setSortField,
+    sortOrder,
     setSortOrder,
   } = usePagination({
     url,
@@ -174,7 +194,9 @@ export const DataPanel = <T extends any>({
     selectOptions,
   })
 
+  const [order, setOrder] = useState(`${sortOrder}-${sortField}`)
   const [selectedItems, setSelectedItems] = useState<T[]>(selected)
+  const [isOrderDrawerOpen, setIsOrderDrawerOpen] = useState(false)
   const { openDialog, closeDialog } = useApp()
 
   const handleSelect = useCallback(
@@ -358,6 +380,32 @@ export const DataPanel = <T extends any>({
                 </TooltipProvider>
               )
             })}
+          {isDesktop && Boolean(menuOrders.length) && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='outline'>
+                  <IconAdjustmentsHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                <DropdownMenuRadioGroup value={order} onValueChange={setOrder}>
+                  {menuOrders.map((order) => (
+                    <DropdownMenuRadioItem
+                      className='cursor-pointer'
+                      onClick={() => {
+                        setSortField(order.field)
+                        setSortOrder(order.order)
+                        setOrder(`${order.order}-${order.field}`)
+                      }}
+                      value={`${order.order}-${order.field}`}
+                    >
+                      {order.label}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           {!isDesktop && (
             <Drawer>
               <DrawerTrigger asChild>
@@ -374,6 +422,46 @@ export const DataPanel = <T extends any>({
                     {isPlural(selectedItems.length)}
                   </DrawerDescription>
                 </DrawerHeader>
+                {!isDesktop && (
+                  <Drawer
+                    open={isOrderDrawerOpen}
+                    onOpenChange={setIsOrderDrawerOpen}
+                  >
+                    <DrawerTrigger asChild>
+                      <MenuItem
+                        label={'Ordenar'}
+                        icon={
+                          <IconAdjustmentsHorizontal className='mr-1 w-8 cursor-pointer' />
+                        }
+                      />
+                    </DrawerTrigger>
+                    <DrawerContent className='w-full gap-4 pb-4'>
+                      <DrawerHeader className='text-left'>
+                        <DrawerTitle>Ordenar por</DrawerTitle>
+                      </DrawerHeader>
+                      <div className='space-y-2'>
+                        <DropdownMenuRadioGroup
+                          value={order}
+                          onValueChange={setOrder}
+                        >
+                          {menuOrders.map((order) => (
+                            <MenuItem
+                              key={`${order.order}-${order.field}`}
+                              aria-label={order.label}
+                              onClick={() => {
+                                setIsOrderDrawerOpen(false)
+                                setSortField(order.field)
+                                setSortOrder(order.order)
+                                setOrder(`${order.order}-${order.field}`)
+                              }}
+                              label={order.label}
+                            />
+                          ))}
+                        </DropdownMenuRadioGroup>
+                      </div>
+                    </DrawerContent>
+                  </Drawer>
+                )}
                 {menuActions
                   .filter((btn) => !showButtons(btn))
                   .map(
