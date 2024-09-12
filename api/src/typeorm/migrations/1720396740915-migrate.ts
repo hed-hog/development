@@ -35,34 +35,6 @@ export class Migrate1720396740915 implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: 'files',
-        columns: [
-          idColumn(),
-          {
-            name: 'name',
-            type: 'varchar',
-          },
-          {
-            name: 'url',
-            type: 'varchar',
-          },
-          {
-            name: 'extension',
-            type: 'varchar',
-            length: '15',
-          },
-          {
-            name: 'bytes',
-            type: 'int',
-          },
-          timestampColumn(),
-          timestampColumn('updated_at'),
-        ],
-      }),
-    );
-
-    await queryRunner.createTable(
-      new Table({
         name: 'persons',
         columns: [
           idColumn(),
@@ -95,20 +67,19 @@ export class Migrate1720396740915 implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKeys('persons', [
-      new TableForeignKey({
-        columnNames: ['photo_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'files',
-        name: 'fk_persons_to_files_on_photo_id',
-        onDelete: 'Cascade',
-      }),
-    ]);
+    // await queryRunner.createForeignKeys('persons', [
+    //   new TableForeignKey({
+    //     columnNames: ['photo_id'],
+    //     referencedColumnNames: ['id'],
+    //     referencedTableName: 'files',
+    //     name: 'fk_persons_to_files_on_photo_id',
+    //     onDelete: 'Cascade',
+    //   }),
+    // ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('persons');
-    await queryRunner.dropTable('files');
     await queryRunner.dropTable('visibilities');
   }
 }
