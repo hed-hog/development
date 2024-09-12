@@ -5,6 +5,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth.guard';
+import { MailModule } from '@hedhog/mail';
 
 @Module({
   imports: [
@@ -14,12 +15,15 @@ import { AuthGuard } from './guards/auth.guard';
           return {
             secret: String(process.env.JWT_SECRET),
             global: true,
-            signOptions: { expiresIn: '30d' },
+            signOptions: {
+              expiresIn: String(process.env.JWT_EXPIRES_IN) ?? '30d',
+            },
           };
         },
       }),
     ),
     forwardRef(() => PrismaModule),
+    forwardRef(() => MailModule),
   ],
   controllers: [AuthController],
   providers: [

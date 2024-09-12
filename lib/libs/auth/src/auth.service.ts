@@ -11,6 +11,7 @@ import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
+import { MailService } from '@hedhog/mail';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,8 @@ export class AuthService {
     private readonly prisma: PrismaService,
     @Inject(forwardRef(() => JwtService))
     private readonly jwt: JwtService,
+    @Inject(forwardRef(() => MailService))
+    private readonly mail: MailService,
   ) {}
 
   async verifyToken(token: string) {
@@ -75,7 +78,11 @@ export class AuthService {
           },
         });
 
-        //Send email...
+        await this.mail.send({
+          to: user.email,
+          subject: 'Login code',
+          body: `Your login code is ${code}`,
+        });
       }
 
       return {
@@ -123,7 +130,11 @@ export class AuthService {
       },
     });
 
-    //Send email...
+    await this.mail.send({
+      to: email,
+      subject: 'Reset password',
+      body: `Reset your password by clicking <a href="${process.env.FRONTEND_URL}/reset-password/${code}">here</a>`,
+    });
 
     return true;
   }
