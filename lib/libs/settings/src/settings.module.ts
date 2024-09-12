@@ -15,4 +15,4 @@ import { SettingsService } from './settings.service';
     forwardRef(() => PaginationModule),
   ],
 })
-export class SettingsModule {}
+export class SettingModule {}

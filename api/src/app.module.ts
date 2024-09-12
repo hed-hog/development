@@ -1,3 +1,4 @@
+import { SettingModule } from '@hedhog/setting';
 import { PermissionModule } from '@hedhog/permission';
 import { ScreenModule } from '@hedhog/screen';
 import { AuthModule } from '@hedhog/auth';
@@ -18,12 +19,11 @@ import { PrismaModule } from '@hedhog/prisma';
     AuthModule,
     ScreenModule,
     PermissionModule,
+    SettingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
 
-      
-      
       

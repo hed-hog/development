@@ -37,6 +37,7 @@
     "@hedhog/permission": "^0.0.5",
     "@hedhog/prisma": "^0.0.2",
     "@hedhog/screen": "^0.0.1",
+    "@hedhog/setting": "^0.0.2",
     "@hedhog/user": "^0.0.7",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.0.0",
