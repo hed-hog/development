@@ -1,6 +1,6 @@
 {
-  "name": "@hedhog/screen",
-  "version": "0.0.2",
+  "name": "@hedhog/menu",
+  "version": "0.0.1",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -18,10 +18,6 @@
     "@prisma/client": "^5.17.0",
     "bcrypt": "^5.1.1"
   },
-  "files": [
-    "dist/**/*",
-    "src/migrations/**/*.ts"
-  ],
   "devDependencies": {
     "@hedhog/auth": "^0.0.5",
     "@hedhog/pagination": "^0.0.2",

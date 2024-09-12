@@ -1,14 +1,8 @@
-import {
-  ArrayMinSize,
-  ArrayNotEmpty,
-  IsArray,
-  IsNumber,
-} from 'class-validator';
+import { ArrayMinSize, IsArray, IsInt } from 'class-validator';
 
 export class DeleteDTO {
   @IsArray()
-  @ArrayNotEmpty()
   @ArrayMinSize(1)
-  @IsNumber({}, { each: true })
+  @IsInt({ each: true })
   ids: number[];
 }
