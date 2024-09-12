@@ -16,6 +16,7 @@
     "@hedhog/prisma": "latest",
     "@hedhog/auth": "latest",
     "@hedhog/pagination": "latest",
+    "@hedhog/setting": "latest",
     "@nestjs/jwt": "^10.2.0",
     "@prisma/client": "^5.17.0",
     "typeorm": "^0.3.20",
@@ -30,6 +31,7 @@
     "@hedhog/auth": "^0.0.8",
     "@hedhog/prisma": "^0.0.2",
     "@hedhog/pagination": "^0.0.2",
-    "@hedhog/utils": "^0.0.2"
+    "@hedhog/utils": "^0.0.2",
+    "@hedhog/setting": "^0.0.2"
   }
 }
