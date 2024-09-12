@@ -266,33 +266,12 @@ export default function Screen() {
         hasSearch
         selectable
         multiple
+        sortable
         selected={selectedItems}
         columns={[
-          { key: 'id', header: 'ID', isVisible: true },
-          { key: 'name', header: 'Name', isVisible: true },
-          { key: 'email', header: 'Email', isVisible: true },
-        ]}
-        menuOrders={[
-          {
-            label: 'Nome - A-Z',
-            field: 'name',
-            order: 'asc',
-          },
-          {
-            label: 'Nome - Z-A',
-            field: 'name',
-            order: 'desc',
-          },
-          {
-            label: 'Email - A-Z',
-            field: 'email',
-            order: 'asc',
-          },
-          {
-            label: 'Email - Z-A',
-            field: 'email',
-            order: 'desc',
-          },
+          { key: 'id', header: 'ID' },
+          { key: 'name', header: 'Name' },
+          { key: 'email', header: 'Email' },
         ]}
         menuActions={[
           {

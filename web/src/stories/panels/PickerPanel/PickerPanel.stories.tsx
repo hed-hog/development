@@ -136,9 +136,9 @@ export const TableMode: Story = {
     url: '/users',
     type: 'table',
     columns: [
-      { key: 'id', header: 'ID', isVisible: true },
-      { key: 'name', header: 'Name', isVisible: true },
-      { key: 'email', header: 'Email', isVisible: true },
+      { key: 'id', header: 'ID' },
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
     ],
     sortable: true,
     buttons: [

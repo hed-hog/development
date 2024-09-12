@@ -20,13 +20,9 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip'
+} from '@/components/ui/tooltip'
 import { useMediaQuery } from 'usehooks-ts'
-import {
-  IconAdjustmentsHorizontal,
-  IconDotsVertical,
-  IconEye,
-} from '@tabler/icons-react'
+import { IconDotsVertical } from '@tabler/icons-react'
 import {
   Drawer,
   DrawerContent,
@@ -34,17 +30,9 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '../ui/drawer'
+} from '@/components/ui/drawer'
 import MenuItem from './menu-item'
 import { isPlural } from '@/lib/utils'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu'
-import { Checkbox } from '../ui/checkbox'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
@@ -57,12 +45,6 @@ type IMenuItemAction<T> = ButtonProps & {
   ) => void
 }
 
-type MenuOrder = {
-  field: string
-  label: string
-  order: 'asc' | 'desc'
-}
-
 type DataPanelTypeBase<T> = {
   url: string
   id: string
@@ -73,7 +55,6 @@ type DataPanelTypeBase<T> = {
   selectable?: boolean
   multiple?: boolean
   hasSearch?: boolean
-  menuOrders?: MenuOrder[]
   menuActions?: IMenuItemAction<T>[]
   itemClassName?: string
   selected?: T[]
@@ -169,7 +150,6 @@ export const DataPanel = <T extends any>({
   responsiveColumns,
   itemClassName,
   onSelectionChange,
-  menuOrders = [],
   menuActions = [],
   ...props
 }: DataPanelProps<T>) => {
@@ -185,9 +165,7 @@ export const DataPanel = <T extends any>({
     search,
     setSearch,
     totalItems,
-    sortField,
     setSortField,
-    sortOrder,
     setSortOrder,
   } = usePagination({
     url,
@@ -196,12 +174,7 @@ export const DataPanel = <T extends any>({
     selectOptions,
   })
 
-  const [order, setOrder] = useState(`${sortOrder}-${sortField}`)
   const [selectedItems, setSelectedItems] = useState<T[]>(selected)
-  const [isOrderDrawerOpen, setIsOrderDrawerOpen] = useState(false)
-  const [visibleColumns, setVisibleColumns] = useState<ITableColumn<T>[]>(
-    columns || []
-  )
   const { openDialog, closeDialog } = useApp()
 
   const handleSelect = useCallback(
@@ -226,9 +199,7 @@ export const DataPanel = <T extends any>({
     switch (layout) {
       case 'table':
         return {
-          columns: visibleColumns.filter(
-            (col) => 'isVisible' in col && col.isVisible
-          ),
+          columns,
           data: selectedItems,
           sortable,
           caption,
@@ -278,7 +249,7 @@ export const DataPanel = <T extends any>({
           ...(props as any),
         }
     }
-  }, [selectedItems, visibleColumns])
+  }, [selectedItems])
 
   const getSelectedItemsPanel = useCallback(() => {
     switch (layout) {
@@ -339,67 +310,6 @@ export const DataPanel = <T extends any>({
     }
   }, [selectedItems])
 
-  const onColumnVisibilityChange = (columnKey: string) => {
-    setVisibleColumns((prevColumns) =>
-      prevColumns.map((col) =>
-        'key' in col && col.key === columnKey
-          ? { ...col, isVisible: !col.isVisible }
-          : col
-      )
-    )
-  }
-
-  const viewMenu = layout === 'table' && (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant={isDesktop ? 'outline' : 'ghost'}
-          className={
-            !isDesktop ? 'flex w-full items-center justify-start px-4 py-2' : ''
-          }
-          size={isDesktop ? 'sm' : 'icon'}
-        >
-          <IconEye className='mr-2 w-8 cursor-pointer' />
-          <span className={`font-medium ${!isDesktop && 'text-base'}`}>
-            Visualizar
-          </span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {columns?.map((column) => (
-          <DropdownMenuRadioGroup
-            key={String('key' in column && column.key)}
-            value={String('key' in column && column.key)}
-          >
-            <DropdownMenuRadioItem
-              value={String('key' in column && column.key)}
-              onClick={() =>
-                onColumnVisibilityChange(String('key' in column && column.key))
-              }
-            >
-              <Checkbox
-                checked={
-                  visibleColumns.find(
-                    (col) =>
-                      ('key' in col && col.key) ===
-                      ('key' in column && column.key)
-                  )?.isVisible ?? true
-                }
-                onChange={() =>
-                  onColumnVisibilityChange(
-                    String('key' in column && column.key)
-                  )
-                }
-                className='mr-2'
-              />
-              {'header' in column && column.header}
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-
   return (
     <>
       <div
@@ -417,7 +327,6 @@ export const DataPanel = <T extends any>({
           </div>
         )}
         <div className='flex items-center justify-end space-x-4 rounded-md'>
-          {isDesktop && viewMenu}
           {isDesktop &&
             menuActions.map((btn, index) => {
               const { label, handler, tooltip, icon, show, ...props } = btn
@@ -465,47 +374,6 @@ export const DataPanel = <T extends any>({
                     {isPlural(selectedItems.length)}
                   </DrawerDescription>
                 </DrawerHeader>
-                {!isDesktop && (
-                  <Drawer
-                    open={isOrderDrawerOpen}
-                    onOpenChange={setIsOrderDrawerOpen}
-                  >
-                    <DrawerTrigger asChild>
-                      <MenuItem
-                        label={'Ordenar'}
-                        icon={
-                          <IconAdjustmentsHorizontal className='mr-1 w-8 cursor-pointer' />
-                        }
-                      />
-                    </DrawerTrigger>
-                    <DrawerContent className='w-full gap-4 pb-4'>
-                      <DrawerHeader className='text-left'>
-                        <DrawerTitle>Ordenar por</DrawerTitle>
-                      </DrawerHeader>
-                      <div className='space-y-2'>
-                        <DropdownMenuRadioGroup
-                          value={order}
-                          onValueChange={setOrder}
-                        >
-                          {menuOrders.map((order) => (
-                            <MenuItem
-                              key={`${order.order}-${order.field}`}
-                              aria-label={order.label}
-                              onClick={() => {
-                                setIsOrderDrawerOpen(false)
-                                setSortField(order.field)
-                                setSortOrder(order.order)
-                                setOrder(`${order.order}-${order.field}`)
-                              }}
-                              label={order.label}
-                            />
-                          ))}
-                        </DropdownMenuRadioGroup>
-                      </div>
-                    </DrawerContent>
-                  </Drawer>
-                )}
-                {!isDesktop && viewMenu}
                 {menuActions
                   .filter((btn) => !showButtons(btn))
                   .map(
@@ -532,32 +400,6 @@ export const DataPanel = <T extends any>({
               </DrawerContent>
             </Drawer>
           )}
-          {isDesktop && Boolean(menuOrders.length) && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant='outline'>
-                  <IconAdjustmentsHorizontal />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align='end'>
-                <DropdownMenuRadioGroup value={order} onValueChange={setOrder}>
-                  {menuOrders.map((order) => (
-                    <DropdownMenuRadioItem
-                      className='cursor-pointer'
-                      onClick={() => {
-                        setSortField(order.field)
-                        setSortOrder(order.order)
-                        setOrder(`${order.order}-${order.field}`)
-                      }}
-                      value={`${order.order}-${order.field}`}
-                    >
-                      {order.label}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
         </div>
       </div>
 
@@ -579,9 +421,7 @@ export const DataPanel = <T extends any>({
               itemClassName={itemClassName}
               selectable={selectable}
               multiple={multiple}
-              columns={visibleColumns.filter(
-                (col) => 'isVisible' in col && col.isVisible
-              )}
+              columns={columns as ITableColumn<T>[]}
               data={items}
               sortable={sortable}
               caption={caption}

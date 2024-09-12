@@ -17,10 +17,24 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip'
-import { Checkbox } from '../ui/checkbox'
+} from '@/components/ui/tooltip'
+import { Checkbox } from '@/components/ui/checkbox'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectAll } from './select-items'
+import {
+  IconCaretDownFilled,
+  IconEye,
+  IconSortAscending,
+  IconSortDescending,
+} from '@tabler/icons-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 interface ITableViewProps<T> {
   columns: ITableColumn<T>[]
@@ -81,12 +95,17 @@ const TableView = <T extends any>({
   onUnselect,
   selectedIds = [],
 }: ITableViewProps<T>) => {
+  const [visibleColumns, setVisibleColumns] = useState<ITableColumn<T>[]>(
+    columns || []
+  )
+  const [hoveredColumn, setHoveredColumn] = useState<string | null>(null)
   const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
   const handleSort = useCallback(
     (columnKey: string) => {
+      console.log(`column ${columnKey} clicked1`)
       const order = sortDirection === 'asc' ? 'desc' : 'asc'
       setSortColumn(columnKey)
       setSortDirection(order)
@@ -183,6 +202,21 @@ const TableView = <T extends any>({
     }
   }, [selectedIds])
 
+  const onColumnVisibilityChange = (columnKey: string) => {
+    setVisibleColumns((prevColumns) => {
+      const isColumnVisible = prevColumns.some(
+        (col) => 'key' in col && col.key === columnKey
+      )
+
+      return isColumnVisible
+        ? prevColumns.filter((col) => 'key' in col && col.key !== columnKey)
+        : [
+            ...prevColumns,
+            columns.find((col) => 'key' in col && col.key === columnKey)!,
+          ]
+    })
+  }
+
   const isAllSelected = React.useMemo(() => {
     const selectedKeys = new Set(selectedItems)
     return data.every((item) => selectedKeys.has(extractKey(item)))
@@ -222,7 +256,7 @@ const TableView = <T extends any>({
               <Checkbox checked={selectedItems.includes(extractKey(row))} />
             </TableCell>
           )}
-          {columns.map((col, index) => {
+          {visibleColumns.map((col, index) => {
             return col && 'key' in col ? (
               <TableCell key={`${col.key}-${index}`}>
                 {(row as any)[col.key]}
@@ -280,13 +314,15 @@ const TableView = <T extends any>({
             </TableHead>
           )}
 
-          {columns.map((col) => (
+          {visibleColumns.map((col) => (
             <TableHead
               key={'key' in col ? col.key : 'actions'}
               onClick={() => 'key' in col && sortable && handleSort(col.key)}
+              onMouseEnter={() => 'key' in col && setHoveredColumn(col.key)}
+              onMouseLeave={() => setHoveredColumn(null)}
               className={
                 !('actions' in col) && sortable
-                  ? 'cursor-pointer hover:bg-muted/50'
+                  ? 'relative cursor-pointer hover:bg-muted/50'
                   : ''
               }
               style={{ width: 'width' in col ? col.width : 'auto' }}
@@ -295,6 +331,85 @@ const TableView = <T extends any>({
               {'key' in col && sortable && sortColumn === col.key && (
                 <span>{sortDirection === 'asc' ? '🔼' : '🔽'}</span>
               )}
+
+              {'key' in col &&
+                sortable &&
+                typeof onSortChange === 'function' && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      asChild
+                      className={`ml-auto ${hoveredColumn === col.key ? 'visible' : 'invisible'}`}
+                    >
+                      <Button
+                        variant='outline'
+                        className='absolute right-0 top-0 h-full px-1'
+                      >
+                        <IconCaretDownFilled className='h-5 w-5' />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem
+                        onClick={() => onSortChange(col.key, 'asc')}
+                      >
+                        <IconSortAscending className='mr-2' />
+                        Ascendente
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => onSortChange(col.key, 'desc')}
+                      >
+                        <IconSortDescending className='mr-2' />
+                        Descendente
+                      </DropdownMenuItem>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            className='flex w-full justify-start border-none px-2'
+                            variant='outline'
+                            size='sm'
+                          >
+                            <IconEye className='mr-3 h-5 w-5 cursor-pointer' />
+                            <span className='text-sm font-normal'>
+                              Visualizar
+                            </span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          {columns?.map((column) => (
+                            <DropdownMenuRadioGroup
+                              key={String('key' in column && column.key)}
+                              value={String('key' in column && column.key)}
+                            >
+                              <DropdownMenuRadioItem
+                                value={String('key' in column && column.key)}
+                                onClick={() =>
+                                  onColumnVisibilityChange(
+                                    String('key' in column && column.key)
+                                  )
+                                }
+                              >
+                                <Checkbox
+                                  checked={visibleColumns.some(
+                                    (vc) =>
+                                      'key' in vc &&
+                                      'key' in column &&
+                                      vc.key === column.key
+                                  )}
+                                  onChange={() =>
+                                    onColumnVisibilityChange(
+                                      String('key' in column && column.key)
+                                    )
+                                  }
+                                  className='mr-2'
+                                />
+                                {'header' in column && column.header}
+                              </DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
             </TableHead>
           ))}
         </TableHeadRow>
