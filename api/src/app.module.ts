@@ -1,3 +1,4 @@
+import { PermissionModule } from '@hedhog/permission';
 import { ScreenModule } from '@hedhog/screen';
 import { AuthModule } from '@hedhog/auth';
 import { Module } from '@nestjs/common';
@@ -16,11 +17,13 @@ import { PrismaModule } from '@hedhog/prisma';
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     AuthModule,
     ScreenModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
 
+      
       
       

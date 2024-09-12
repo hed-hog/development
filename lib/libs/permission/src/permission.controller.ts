@@ -1,37 +1,63 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { AuthGuard } from '@hedhog/auth';
+import { Pagination } from '@hedhog/pagination';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+  forwardRef,
+} from '@nestjs/common';
+import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from './dto/delete.dto';
+import { UpdateDTO } from './dto/update.dto';
 import { PermissionService } from './permission.service';
 
-@Controller('permission')
+@Controller('permissions')
 export class PermissionController {
-  constructor(private readonly permissionService: PermissionService) {}
+  constructor(
+    @Inject(forwardRef(() => PermissionService))
+    private readonly permissionService: PermissionService,
+  ) {}
 
-  @Get('roles')
-  async listRoles() {
-    return { msg: 'list-roles' };
+  @UseGuards(AuthGuard)
+  @Get()
+  async getPermissions(@Pagination() paginationParams) {
+    return this.permissionService.getPermissions(paginationParams);
   }
 
-  @Get('permissions')
-  async listPermissions() {
-    return { msg: 'list-permissions' };
+  @UseGuards(AuthGuard)
+  @Get(':PermissionId')
+  async show(@Param('PermissionId', ParseIntPipe) permissionId: number) {
+    return this.permissionService.get(permissionId);
   }
 
-  @Post('roles')
-  async createRole() {
-    return { msg: 'create-role' };
+  @UseGuards(AuthGuard)
+  @Post()
+  create(@Body() data: CreateDTO) {
+    return this.permissionService.create(data);
   }
 
-  @Post('permissions')
-  async createPermission() {
-    return { msg: 'create-permission' };
+  @UseGuards(AuthGuard)
+  @Patch(':PermissionId')
+  async update(
+    @Param('PermissionId', ParseIntPipe) permissionId: number,
+    @Body() data: UpdateDTO,
+  ) {
+    return this.permissionService.update({
+      id: permissionId,
+      data,
+    });
   }
 
-  @Post('role-permission')
-  async createRolePermission() {
-    return { msg: 'create-role-permission' };
-  }
-
-  @Post('role-user')
-  async createRoleUser() {
-    return { msg: 'create-role-user' };
+  @UseGuards(AuthGuard)
+  @Delete()
+  async delete(@Body() data: DeleteDTO) {
+    return this.permissionService.delete(data);
   }
 }

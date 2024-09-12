@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/permission",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -15,6 +15,7 @@
     "@hedhog/utils": "latest",
     "@hedhog/prisma": "latest",
     "@hedhog/auth": "latest",
+    "@hedhog/pagination": "latest",
     "@nestjs/jwt": "^10.2.0",
     "@prisma/client": "^5.17.0",
     "typeorm": "^0.3.20",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@hedhog/auth": "^0.0.8",
     "@hedhog/prisma": "^0.0.2",
+    "@hedhog/pagination": "^0.0.2",
     "@hedhog/utils": "^0.0.2"
   }
 }

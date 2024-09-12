@@ -3,6 +3,7 @@ import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { PermissionService } from './permission.service';
+import { PermissionController } from './permission.controller';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { PermissionService } from './permission.service';
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
   ],
-  controllers: [PermissionModule],
+  controllers: [PermissionController],
   providers: [PermissionService],
   exports: [PermissionService],
 })
