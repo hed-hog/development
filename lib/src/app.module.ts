@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from '@hedhog/auth';
-import { ConfigModule } from '@nestjs/config';
+import { MailConfigurationTypeEnum, MailModule } from '@hedhog/mail';
 import { PrismaModule } from '@hedhog/prisma';
 import { UserModule } from '@hedhog/user';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -12,17 +13,15 @@ import { UserModule } from '@hedhog/user';
     UserModule,
     PrismaModule,
     ConfigModule.forRoot(),
-    // MailModule.init({
-    //   accessKeyId: process.env.ACCESS_KEY_ID,
-    //   secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    //   host: process.env.MAIL_HOST,
-    //   from: process.env.MAIL_FROM,
-
-    //   clientSecret: process.env.CLIENT_SECRET,
-    //   clientId: process.env.CLIENT_ID,
-    //   refreshToken: process.env.REFRESH_TOKEN,
-    //   mailConfigurationType: MailConfigurationTypeEnum.GMAIL,
-    // }),
+    MailModule.register({
+      type: MailConfigurationTypeEnum.SMTP,
+      host: 'smtp.ethereal.email',
+      port: 587,
+      auth: {
+        user: 'loyal.mante34@ethereal.email',
+        pass: 'AST7ZFbRWWNeAfqBaa',
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -35,6 +35,7 @@ export class AddAction extends AbstractAction {
     await this.checkIfModuleExists(module, nodeModulePath);
 
     const addedModule = await this.addModuleImportToAppModule(
+      module,
       addModuleName,
       moduleImport,
       appModulePath,
@@ -163,36 +164,51 @@ export class AddAction extends AbstractAction {
   }
 
   async addModuleImportToAppModule(
+    module: string,
     addModuleName: string,
     moduleImport: string,
     appModulePath: string,
   ) {
+    console.log('addModuleImportToAppModule', {
+      module,
+    });
     const spinner = ora('Adding module to app module...').start();
-    try {
-      let appModuleContent = readFileSync(appModulePath, 'utf8');
+    if (!['utils'].includes(module.toLowerCase())) {
+      try {
+        let appModuleContent = readFileSync(appModulePath, 'utf8');
 
-      if (appModuleContent.includes(moduleImport)) {
-        spinner.warn('Module already exists in app module.');
-        return false;
-      }
+        spinner.text = 'Checking if module already exists in app module...';
 
-      appModuleContent = `${moduleImport}
+        if (appModuleContent.includes(moduleImport)) {
+          spinner.warn('Module already exists in app module.');
+          return false;
+        }
+
+        spinner.text = 'Adding module to app module...';
+
+        appModuleContent = `${moduleImport}
 ${appModuleContent}
       `;
 
-      appModuleContent = appModuleContent.replace(
-        /(\n\s*imports:\s*\[[\s\S]*?)(\n\s*\])/m,
-        `$1\n    ${addModuleName},$2`,
-      );
+        appModuleContent = appModuleContent.replace(
+          /(\n\s*imports:\s*\[[\s\S]*?)(\n\s*\])/m,
+          `$1\n    ${addModuleName},$2`,
+        );
 
-      await writeFile(appModulePath, appModuleContent);
+        spinner.text = 'Writing changes to app module...';
 
-      spinner.succeed('Module added to app module.');
+        await writeFile(appModulePath, appModuleContent);
 
-      return true;
-    } catch (error) {
-      spinner.fail(error.message);
+        spinner.succeed('Module added to app module.');
 
+        return true;
+      } catch (error) {
+        spinner.fail(error.message);
+
+        return false;
+      }
+    } else {
+      spinner.succeed('Module import skipped.');
       return false;
     }
   }

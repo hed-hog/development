@@ -1,12 +1,13 @@
+import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable } from '@nestjs/common';
-import { Mail, MAIL_MODULE_OPTIONS } from './mail.consts';
 import { SES } from 'aws-sdk';
+import { google } from 'googleapis';
 import * as mimemessage from 'mimemessage';
+import * as nodemailer from 'nodemailer';
+import { firstValueFrom } from 'rxjs';
 import { MailConfigurationTypeEnum } from './enums/mail-configuration-type.enum';
 import { MailModuleOptions } from './interfaces/mail-module-options.interface';
-import { google } from 'googleapis';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+import { Mail, MAIL_MODULE_OPTIONS } from './mail.consts';
 
 @Injectable()
 export class MailService {
@@ -16,13 +17,17 @@ export class MailService {
   ) {}
 
   async send(mail: Mail) {
-    switch (this.mailConfig.mailConfigurationType) {
+    switch (this.mailConfig.type) {
       case MailConfigurationTypeEnum.AWS:
         await this.sendWithSES(mail);
         break;
 
       case MailConfigurationTypeEnum.GMAIL:
         await this.sendWithGmail(mail);
+        break;
+
+      case MailConfigurationTypeEnum.SMTP:
+        await this.sendWithSMTP(mail);
         break;
     }
   }
@@ -100,7 +105,44 @@ export class MailService {
     }
   }
 
+  async sendWithSMTP(mail: Mail) {
+    if (this.mailConfig.type !== 'SMTP') {
+      throw new Error('Invalid mail configuration type');
+    }
+
+    const {
+      auth: { pass, user },
+      host,
+      port,
+      secure = false,
+    } = this.mailConfig;
+
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      auth: {
+        user,
+        pass,
+      },
+    });
+
+    return transporter.sendMail({
+      from: mail.from || process.env.SMTP_FROM || process.env.SMTP_USER,
+      to: mail.to,
+      subject: mail.subject,
+      html: mail.body,
+      cc: mail.cc,
+      bcc: mail.bcc,
+      replyTo: mail.replyTo,
+      priority: mail.priority,
+    });
+  }
+
   async sendWithGmail(mail: Mail) {
+    if (this.mailConfig.type !== 'GMAIL') {
+      throw new Error('Invalid mail configuration type');
+    }
     const { clientId, clientSecret, from, refreshToken } = this.mailConfig;
     const redirectURI = 'https://developers.google.com/oauthplayground';
 
@@ -138,6 +180,9 @@ export class MailService {
   }
 
   async sendWithSES(mail: Mail) {
+    if (this.mailConfig.type !== 'AWS') {
+      throw new Error('Invalid mail configuration type');
+    }
     const { host, from, accessKeyId, secretAccessKey } = this.mailConfig;
 
     const ses = new SES({

@@ -1,4 +1,5 @@
 export enum MailConfigurationTypeEnum {
-    AWS = 'AWS',
-    GMAIL = 'GMAIL',
+  AWS = 'AWS',
+  SMTP = 'SMTP',
+  GMAIL = 'GMAIL',
 }

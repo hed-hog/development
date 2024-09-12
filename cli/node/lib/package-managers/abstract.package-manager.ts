@@ -21,7 +21,7 @@ export abstract class AbstractPackageManager {
     });
     spinner.start();
     try {
-      const commandArgs = `${this.cli.install} ${this.cli.silentFlag}`;
+      const commandArgs = `${this.cli.install} ${this.cli.silentFlag} ${this.cli.legacyPeerDepsFlag}`;
       const collect = true;
       const normalizedDirectory = normalizeToKebabOrSnakeCase(directory);
       await this.runner.run(
@@ -55,7 +55,12 @@ export abstract class AbstractPackageManager {
     dependencies: string[],
     tag: string,
   ): Promise<boolean> {
-    const command: string = [this.cli.add, this.cli.saveFlag]
+    const command: string = [
+      this.cli.add,
+      this.cli.saveFlag,
+      this.cli.silentFlag,
+      this.cli.legacyPeerDepsFlag,
+    ]
       .filter((i) => i)
       .join(' ');
     const args: string = dependencies

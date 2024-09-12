@@ -1,9 +1,12 @@
-import { DynamicModule, Module } from '@nestjs/common';
-import { MailService } from './mail.service';
-import { MailModuleOptions } from './interfaces/mail-module-options.interface';
-import { MailConfigurationTypeEnum } from './enums/mail-configuration-type.enum';
+import { HttpModule } from '@nestjs/axios';
+import { DynamicModule, Module, Provider } from '@nestjs/common';
+import {
+  MailModuleAsyncOptions,
+  MailModuleOptions,
+  MailOptionsFactory,
+} from './interfaces/mail-module-options.interface';
 import { MAIL_MODULE_OPTIONS } from './mail.consts';
-import { HttpModule, HttpService } from '@nestjs/axios';
+import { MailService } from './mail.service';
 
 @Module({
   imports: [HttpModule],
@@ -11,7 +14,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
   exports: [MailService],
 })
 export class MailModule {
-  static init(options: MailModuleOptions): DynamicModule {
+  static register(options: MailModuleOptions): DynamicModule {
     return {
       module: MailModule,
       global: options.global,
@@ -21,6 +24,51 @@ export class MailModule {
           useValue: options || {},
         },
       ],
+    };
+  }
+
+  static registerAsync(options: MailModuleAsyncOptions): DynamicModule {
+    return {
+      module: MailModule,
+      global: options.global,
+      imports: options.imports || [],
+      providers: [
+        ...this.createAsyncProviders(options),
+        ...(options.extraProviders ?? []),
+      ],
+    };
+  }
+
+  private static createAsyncProviders(
+    options: MailModuleAsyncOptions,
+  ): Provider[] {
+    if (options.useExisting || options.useFactory) {
+      return [this.createAsyncOptionsProvider(options)];
+    }
+    return [
+      this.createAsyncOptionsProvider(options),
+      {
+        provide: options.useClass,
+        useClass: options.useClass,
+      },
+    ];
+  }
+
+  private static createAsyncOptionsProvider(
+    options: MailModuleAsyncOptions,
+  ): Provider {
+    if (options.useFactory) {
+      return {
+        provide: MAIL_MODULE_OPTIONS,
+        useFactory: options.useFactory,
+        inject: options.inject || [],
+      };
+    }
+    return {
+      provide: MAIL_MODULE_OPTIONS,
+      useFactory: async (optionsFactory: MailOptionsFactory) =>
+        await optionsFactory.createMailOptions(),
+      inject: [options.useExisting || options.useClass],
     };
   }
 }

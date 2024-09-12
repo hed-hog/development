@@ -22,6 +22,7 @@ export class YarnPackageManager extends AbstractPackageManager {
       saveFlag: '',
       saveDevFlag: '-D',
       silentFlag: '--silent',
+      legacyPeerDepsFlag: '--legacy-peer-deps',
     };
   }
 }

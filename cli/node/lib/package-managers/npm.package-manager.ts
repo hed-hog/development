@@ -22,6 +22,7 @@ export class NpmPackageManager extends AbstractPackageManager {
       saveFlag: '--save',
       saveDevFlag: '--save-dev',
       silentFlag: '--silent',
+      legacyPeerDepsFlag: '--legacy-peer-deps',
     };
   }
 }

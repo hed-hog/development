@@ -23,6 +23,7 @@ export class PnpmPackageManager extends AbstractPackageManager {
       saveFlag: '--save',
       saveDevFlag: '--save-dev',
       silentFlag: '--reporter=silent',
+      legacyPeerDepsFlag: '--legacy-peer-deps',
     };
   }
 }
