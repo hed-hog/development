@@ -102,6 +102,9 @@ const TableView = <T extends any>({
   const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+  const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(
+    null
+  )
 
   const handleSort = useCallback(
     (columnKey: string) => {
@@ -118,35 +121,58 @@ const TableView = <T extends any>({
   )
 
   const toggleSelectItem = useCallback(
-    (item: T) => {
+    (item: T, index: number, shiftKey: boolean) => {
       const id = extractKey(item)
       const isSelected = selectedItems.includes(id)
 
-      if (typeof onSelect === 'function' && !isSelected) {
-        onSelect(
-          item,
-          data.findIndex((item) => extractKey(item) === id)
-        )
-      } else if (typeof onUnselect === 'function' && isSelected) {
-        onUnselect(
-          item,
-          data.findIndex((item) => extractKey(item) === id)
-        )
-      }
+      if (shiftKey && lastSelectedIndex !== null) {
+        const startIndex = Math.min(lastSelectedIndex, index)
+        const endIndex = Math.max(lastSelectedIndex, index)
 
-      if (selectable) {
-        if (multiple) {
-          setSelectedItems(
-            isSelected
-              ? selectedItems.filter((item) => item !== id)
-              : [...selectedItems, id]
-          )
-        } else {
-          setSelectedItems(isSelected ? [] : [id])
+        const newSelection = new Set<string>(selectedItems)
+        for (let i = startIndex; i <= endIndex; i++) {
+          const currentItem = data[i]
+          const currentId = extractKey(currentItem)
+          if (!newSelection.has(currentId)) {
+            newSelection.add(currentId)
+            if (typeof onSelect === 'function') {
+              onSelect(currentItem, i)
+            }
+          }
+        }
+        setSelectedItems(Array.from(newSelection))
+      } else {
+        if (typeof onSelect === 'function' && !isSelected) {
+          onSelect(item, index)
+        } else if (typeof onUnselect === 'function' && isSelected) {
+          onUnselect(item, index)
+        }
+
+        if (selectable) {
+          if (multiple) {
+            setSelectedItems(
+              isSelected
+                ? selectedItems.filter((item) => item !== id)
+                : [...selectedItems, id]
+            )
+          } else {
+            setSelectedItems(isSelected ? [] : [id])
+          }
         }
       }
+
+      setLastSelectedIndex(index)
     },
-    [selectedItems, selectable, multiple, extractKey]
+    [
+      selectedItems,
+      selectable,
+      multiple,
+      extractKey,
+      data,
+      onSelect,
+      onUnselect,
+      lastSelectedIndex,
+    ]
   )
 
   const selectAllItems = useCallback(() => {
@@ -234,7 +260,7 @@ const TableView = <T extends any>({
           }}
           onClick={(event) => {
             if (selectable) {
-              toggleSelectItem(row)
+              toggleSelectItem(row, index, event.shiftKey)
             }
             if (typeof onItemClick === 'function') {
               onItemClick(row, index, event)
