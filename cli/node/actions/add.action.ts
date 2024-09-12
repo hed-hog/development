@@ -6,6 +6,7 @@ import * as ora from 'ora';
 import { existsSync, readFileSync } from 'fs';
 import { readdir, readFile, writeFile } from 'fs/promises';
 import { MESSAGES } from '../lib/ui';
+import { join } from 'path';
 
 export class AddAction extends AbstractAction {
   public async handle(inputs: Input[], options: Input[]) {
@@ -29,6 +30,8 @@ export class AddAction extends AbstractAction {
 
     await this.installPackage(packageName);
 
+    await this.checkDependences(module, nodeModulePath);
+
     await this.checkIfModuleExists(module, nodeModulePath);
 
     const addedModule = await this.addModuleImportToAppModule(
@@ -42,6 +45,74 @@ export class AddAction extends AbstractAction {
       if (!silentComplete) {
         await this.complete(module);
       }
+    }
+  }
+
+  async add(module: string) {
+    const action = new AddAction();
+    return action.handle(
+      [{ name: 'module', value: module }],
+      [{ name: 'silentComplete', value: true }],
+    );
+  }
+
+  async getModuleDependencies(modulePath: string) {
+    const packageJsonPath = join(process.cwd(), modulePath, 'package.json');
+
+    if (!existsSync(packageJsonPath)) {
+      throw new Error('package.json not found.');
+    }
+
+    const packageJson = require(packageJsonPath);
+
+    const dependencies = Object.assign(
+      packageJson.dependencies ?? {},
+      packageJson.devDependencies ?? {},
+    );
+
+    const hedhogDependencies: any[] = [];
+
+    for (const [key, value] of Object.entries(dependencies)) {
+      if (key.startsWith('@hedhog/')) {
+        hedhogDependencies.push([key.split('@hedhog/')[1], value]);
+      }
+    }
+
+    return hedhogDependencies;
+  }
+
+  getPackageInstalledModules(moduleName: string) {
+    const packageJsonMainPath = join(process.cwd(), 'package.json');
+
+    const packageJsonMain = require(packageJsonMainPath);
+
+    const hedhogModules: any[] = [];
+
+    for (const [key, value] of Object.entries(
+      packageJsonMain.dependencies ?? {},
+    )) {
+      if (
+        key.startsWith('@hedhog/') &&
+        key.split('@hedhog/')[1] !== moduleName
+      ) {
+        hedhogModules.push([key.split('@hedhog/')[1], value]);
+      }
+    }
+
+    return hedhogModules;
+  }
+
+  async checkDependences(moduleName: string, modulePath: string) {
+    const moduleDependences = await this.getModuleDependencies(modulePath);
+    const packageInstalledModules = this.getPackageInstalledModules(moduleName);
+
+    const missingDependences = moduleDependences.filter(
+      ([name]: [string, any]) =>
+        !packageInstalledModules.find(([moduleName]) => moduleName === name),
+    );
+
+    for (const [name] of missingDependences) {
+      await this.add(name);
     }
   }
 

@@ -40,11 +40,11 @@ export class NewAction extends AbstractAction {
     const packageManager = await this.installPackages(options, directoryPath);
 
     process.chdir(name);
-
+    /*
     await this.add('pagination');
     await this.add('auth');
     await this.add('user');
-
+    */
     process.chdir('..');
 
     this.complete(name, packageManager ?? 'npm');
