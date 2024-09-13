@@ -1,13 +1,33 @@
-version: "3"
+version: '3'
 services:
-  db:
+  postgres:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: hedhog
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./data/postgresql:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hedhog
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root -proot']
+      interval: 10s
+      timeout: 5s
+      retries: 5
