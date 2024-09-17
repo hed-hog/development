@@ -11,7 +11,6 @@ import { MailService } from './mail.service';
 @Module({})
 export class MailModule {
   static forRoot(options: MailModuleOptions): DynamicModule {
-    console.log('MailModule.register', { options });
     return {
       module: MailModule,
       imports: [HttpModule],
