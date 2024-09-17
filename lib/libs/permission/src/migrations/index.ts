@@ -106,7 +106,7 @@ export class Migrate implements MigrationInterface {
 
     await queryRunner.query(
       `INSERT INTO roles (id, name, description) VALUES
-      (1, 'Administrador', 'Administrar todos os acessos.');`,
+      (1, 'Administrator', 'System administrator');`,
     );
   }
   async down(queryRunner: QueryRunner) {

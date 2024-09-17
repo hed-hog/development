@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/permission",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -16,6 +16,8 @@
     "@hedhog/prisma": "latest",
     "@hedhog/auth": "latest",
     "@hedhog/pagination": "latest",
+    "@hedhog/screen": "latest",
+    "@hedhog/user": "latest",
     "@nestjs/jwt": "^10.2.0",
     "@prisma/client": "^5.17.0",
     "typeorm": "^0.3.20",
@@ -27,9 +29,11 @@
     "src/migrations/**/*.ts"
   ],
   "devDependencies": {
-    "@hedhog/auth": "^0.0.8",
-    "@hedhog/prisma": "^0.0.2",
-    "@hedhog/pagination": "^0.0.2",
-    "@hedhog/utils": "^0.0.2"
+    "@hedhog/auth": "latest",
+    "@hedhog/prisma": "latest",
+    "@hedhog/pagination": "latest",
+    "@hedhog/screen": "latest",
+    "@hedhog/user": "latest",
+    "@hedhog/utils": "latest"
   }
 }

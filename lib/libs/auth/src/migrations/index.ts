@@ -78,7 +78,7 @@ export class Migrate implements MigrationInterface {
     await queryRunner.query(
       `
           INSERT INTO users (name, email, password) VALUES
-          ('Administrador', 'root@hcode.com.br', '${password}');
+          ('Superuser', 'root@hedhog.com', '${password}');
         `,
     );
   }
