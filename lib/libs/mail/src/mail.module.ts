@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { DynamicModule, Module, Provider } from '@nestjs/common';
+import { DynamicModule, forwardRef, Module, Provider } from '@nestjs/common';
 import {
   MailModuleAsyncOptions,
   MailModuleOptions,
@@ -9,7 +9,7 @@ import { MAIL_MODULE_OPTIONS } from './mail.consts';
 import { MailService } from './mail.service';
 
 @Module({
-  imports: [HttpModule],
+  imports: [forwardRef(() => HttpModule)],
   providers: [MailService],
   exports: [MailService],
 })

@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import * as mimemessage from 'mimemessage';
 import { firstValueFrom } from 'rxjs';
 import { MailConfigurationTypeEnum } from './enums/mail-configuration-type.enum';
@@ -9,7 +9,9 @@ import { Mail, MAIL_MODULE_OPTIONS } from './mail.consts';
 @Injectable()
 export class MailService {
   constructor(
-    @Inject(MAIL_MODULE_OPTIONS) private readonly mailConfig: MailModuleOptions,
+    @Inject(MAIL_MODULE_OPTIONS)
+    private readonly mailConfig: MailModuleOptions,
+    @Inject(forwardRef(() => HttpService))
     private readonly httpService: HttpService,
   ) {}
 
