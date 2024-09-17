@@ -11,10 +11,9 @@
   "license": "MIT",
   "description": "",
   "peerDependencies": {
+    "@hedhog/mail": "latest",
     "@hedhog/prisma": "latest",
     "@hedhog/utils": "latest",
-    "@hedhog/mail": "latest",
-    "@nestjs/axios": "^3.0.3",
     "@nestjs/jwt": "^10.2.0",
     "bcrypt": "^5.1.1",
     "typeorm": "^0.3.20"
@@ -27,7 +26,6 @@
   "devDependencies": {
     "@hedhog/mail": "latest",
     "@hedhog/prisma": "latest",
-    "@hedhog/utils": "latest",
-    "@nestjs/axios": "^3.0.3"
+    "@hedhog/utils": "latest"
   }
 }

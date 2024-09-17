@@ -17,10 +17,9 @@ import { AppService } from './app.service';
       type: MailConfigurationTypeEnum.SMTP,
       host: 'smtp.ethereal.email',
       port: 587,
-      auth: {
-        user: 'loyal.mante34@ethereal.email',
-        pass: 'AST7ZFbRWWNeAfqBaa',
-      },
+      secure: false,
+      password: 'AST7ZFbRWWNeAfqBaa',
+      username: 'loyal.mante34@ethereal.email',
     }),
   ],
   controllers: [AppController],

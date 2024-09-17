@@ -16,6 +16,7 @@
     "src/**/*.ejs"
   ],
   "dependencies": {
+    "@nestjs/axios": "^3.0.3",
     "mimemessage": "1.0.5"
   },
   "peerDependencies": {
