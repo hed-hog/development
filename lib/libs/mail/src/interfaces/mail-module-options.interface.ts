@@ -1,4 +1,4 @@
-import { ModuleMetadata, Provider, Type } from '@nestjs/common';
+import { ModuleMetadata } from '@nestjs/common';
 
 export type MailModuleOptions =
   | {
@@ -33,12 +33,8 @@ export interface MailOptionsFactory {
 
 export interface MailModuleAsyncOptions
   extends Pick<ModuleMetadata, 'imports'> {
-  global?: boolean;
-  useExisting?: Type<MailOptionsFactory>;
-  useClass?: Type<MailOptionsFactory>;
-  useFactory?: (
+  useFactory: (
     ...args: any[]
   ) => Promise<MailModuleOptions> | MailModuleOptions;
   inject?: any[];
-  extraProviders?: Provider[];
 }

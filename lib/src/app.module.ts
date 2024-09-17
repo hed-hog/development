@@ -13,7 +13,7 @@ import { AppService } from './app.service';
     UserModule,
     PrismaModule,
     ConfigModule.forRoot(),
-    MailModule.register({
+    MailModule.forRoot({
       type: MailConfigurationTypeEnum.SMTP,
       host: 'smtp.ethereal.email',
       port: 587,
