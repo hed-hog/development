@@ -105,7 +105,8 @@ export class MailService {
     }
 
     const {
-      auth: { pass, user },
+      password: pass,
+      username: user,
       host,
       port,
       secure = false,

@@ -15,10 +15,8 @@ export type MailModuleOptions =
       host: string;
       port: number;
       secure?: boolean;
-      auth: {
-        user: string;
-        pass: string;
-      };
+      username: string;
+      password: string;
     }
   | {
       global?: boolean;

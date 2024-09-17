@@ -7,7 +7,7 @@ import {
 import { idColumn, timestampColumn } from '@hedhog/utils';
 import * as bcrypt from 'bcrypt';
 
-export class Migration1724714866253 implements MigrationInterface {
+export class Migrate1726596601432 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
@@ -78,7 +78,7 @@ export class Migration1724714866253 implements MigrationInterface {
     await queryRunner.query(
       `
           INSERT INTO users (name, email, password) VALUES
-          ('Administrador', 'root@hcode.com.br', '${password}');
+          ('Superuser', 'root@hedhog.com', '${password}');
         `,
     );
   }

@@ -6,11 +6,11 @@ import {
 } from 'typeorm';
 import { idColumn, timestampColumn } from '@hedhog/utils';
 
-export class CreateSettings1726152718000 implements MigrationInterface {
+export class Migrate1720396740915 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'settings',
+        name: 'visibilities',
         columns: [
           idColumn(),
           {
@@ -23,34 +23,42 @@ export class CreateSettings1726152718000 implements MigrationInterface {
       }),
     );
 
+    await queryRunner.query(
+      `
+        INSERT INTO visibilities (name) VALUES
+        ('Privado'),
+        ('Público'),
+        ('Não Listado');
+      `,
+    );
+    /*
     await queryRunner.createTable(
       new Table({
-        name: 'setting_values',
+        name: 'persons',
         columns: [
           idColumn(),
           {
-            name: 'value',
-            type: 'varchar',
-            length: '1023',
-          },
-          {
             name: 'name',
             type: 'varchar',
-            isUnique: true,
           },
           {
-            name: 'description',
+            name: 'display_name',
             type: 'varchar',
+          },
+          {
+            name: 'gender',
+            type: 'varchar',
+            length: '1',
+          },
+          {
+            name: 'birth_at',
+            type: 'date',
             isNullable: true,
           },
           {
-            name: 'label',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'setting_id',
+            name: 'photo_id',
             type: 'int',
+            isNullable: true,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
@@ -58,20 +66,20 @@ export class CreateSettings1726152718000 implements MigrationInterface {
       }),
     );
 
-    // Criação das foreign keys
-    await queryRunner.createForeignKey(
-      'setting_values',
+    await queryRunner.createForeignKeys('persons', [
       new TableForeignKey({
-        columnNames: ['setting_id'],
+        columnNames: ['photo_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'settings',
-        onDelete: 'CASCADE',
+        referencedTableName: 'files',
+        name: 'fk_persons_to_files_on_photo_id',
+        onDelete: 'Cascade',
       }),
-    );
+    ]);
+    */
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('setting_values');
-    await queryRunner.dropTable('settings');
+    await queryRunner.dropTable('persons');
+    await queryRunner.dropTable('visibilities');
   }
 }

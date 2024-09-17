@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/auth",
-  "version": "0.0.11",
+  "version": "0.0.15",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.production.json && npm version patch",
@@ -14,17 +14,20 @@
     "@hedhog/prisma": "latest",
     "@hedhog/utils": "latest",
     "@hedhog/mail": "latest",
+    "@nestjs/axios": "^3.0.3",
     "@nestjs/jwt": "^10.2.0",
     "bcrypt": "^5.1.1",
     "typeorm": "^0.3.20"
   },
   "files": [
     "dist/**/*",
-    "src/migrations/**/*.ts"
+    "src/migrations/**/*.ts",
+    "src/**/*.ejs"
   ],
   "devDependencies": {
-    "@hedhog/mail": "^0.0.3",
-    "@hedhog/prisma": "^0.0.2",
-    "@hedhog/utils": "^0.0.2"
+    "@hedhog/mail": "latest",
+    "@hedhog/prisma": "latest",
+    "@hedhog/utils": "latest",
+    "@nestjs/axios": "^3.0.3"
   }
 }

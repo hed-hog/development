@@ -1,26 +1,26 @@
 import { createBrowserRouter } from 'react-router-dom'
-import GeneralError from './pages/errors/general-error'
-import NotFoundError from './pages/errors/not-found-error'
-import MaintenanceError from './pages/errors/maintenance-error'
+import GeneralError from './pages/errors/general-error.tsx'
+import NotFoundError from './pages/errors/not-found-error.tsx'
+import MaintenanceError from './pages/errors/maintenance-error.tsx'
 import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 
 const router = createBrowserRouter([
   {
     path: '/login',
     lazy: async () => ({
-      Component: (await import('./pages/auth/login')).default,
+      Component: (await import('./pages/auth/login.tsx')).default,
     }),
   },
   {
     path: '/forgot-password',
     lazy: async () => ({
-      Component: (await import('./pages/auth/forgot-password')).default,
+      Component: (await import('./pages/auth/forgot-password.tsx')).default,
     }),
   },
   {
     path: '/otp',
     lazy: async () => ({
-      Component: (await import('./pages/auth/otp')).default,
+      Component: (await import('./pages/auth/otp.tsx')).default,
     }),
   },
 
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     lazy: async () => {
-      const AppShell = await import('./components/app-shell')
+      const AppShell = await import('./components/app-shell.tsx')
       return { Component: AppShell.default }
     },
     errorElement: <GeneralError />,
@@ -36,13 +36,13 @@ const router = createBrowserRouter([
       {
         index: true,
         lazy: async () => ({
-          Component: (await import('./pages/dashboard')).default,
+          Component: (await import('./pages/dashboard/index.tsx')).default,
         }),
       },
       {
         path: 'examples',
         lazy: async () => ({
-          Component: (await import('./pages/test')).default,
+          Component: (await import('./pages/test/index.tsx')).default,
         }),
       },
       {
@@ -51,25 +51,29 @@ const router = createBrowserRouter([
           {
             path: 'users',
             lazy: async () => ({
-              Component: (await import('./pages/management/users')).default,
+              Component: (await import('./pages/management/users/index.tsx'))
+                .default,
             }),
           },
           {
             path: 'roles',
             lazy: async () => ({
-              Component: (await import('./pages/management/roles')).default,
+              Component: (await import('./pages/management/roles/index.tsx'))
+                .default,
             }),
           },
           {
             path: 'screens',
             lazy: async () => ({
-              Component: (await import('./pages/management/screens')).default,
+              Component: (await import('./pages/management/screens/index.tsx'))
+                .default,
             }),
           },
           {
             path: 'settings',
             lazy: async () => ({
-              Component: (await import('./pages/management/settings')).default,
+              Component: (await import('./pages/management/settings/index.tsx'))
+                .default,
             }),
             errorElement: <GeneralError />,
             children: [
@@ -77,7 +81,9 @@ const router = createBrowserRouter([
                 index: true,
                 lazy: async () => ({
                   Component: (
-                    await import('./pages/management/settings/profile')
+                    await import(
+                      './pages/management/settings/profile/index.tsx'
+                    )
                   ).default,
                 }),
               },
@@ -85,7 +91,9 @@ const router = createBrowserRouter([
                 path: 'account',
                 lazy: async () => ({
                   Component: (
-                    await import('./pages/management/settings/account')
+                    await import(
+                      './pages/management/settings/account/index.tsx'
+                    )
                   ).default,
                 }),
               },
@@ -93,7 +101,9 @@ const router = createBrowserRouter([
                 path: 'appearance',
                 lazy: async () => ({
                   Component: (
-                    await import('./pages/management/settings/appearance')
+                    await import(
+                      './pages/management/settings/appearance/index.tsx'
+                    )
                   ).default,
                 }),
               },
@@ -101,7 +111,9 @@ const router = createBrowserRouter([
                 path: 'notifications',
                 lazy: async () => ({
                   Component: (
-                    await import('./pages/management/settings/notifications')
+                    await import(
+                      './pages/management/settings/notifications/index.tsx'
+                    )
                   ).default,
                 }),
               },
@@ -109,7 +121,9 @@ const router = createBrowserRouter([
                 path: 'display',
                 lazy: async () => ({
                   Component: (
-                    await import('./pages/management/settings/display')
+                    await import(
+                      './pages/management/settings/display/index.tsx'
+                    )
                   ).default,
                 }),
               },
@@ -117,7 +131,9 @@ const router = createBrowserRouter([
                 path: 'error-example',
                 lazy: async () => ({
                   Component: (
-                    await import('./pages/management/settings/error-example')
+                    await import(
+                      './pages/management/settings/error-example/index.tsx'
+                    )
                   ).default,
                 }),
                 errorElement: <GeneralError className='h-[50svh]' minimal />,

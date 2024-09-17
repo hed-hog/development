@@ -51,6 +51,7 @@ export class Migrate implements MigrationInterface {
             name: 'multifactor_id',
             type: 'int',
             isNullable: true,
+            unsigned: true,
           },
           {
             name: 'code',

@@ -1,11 +1,10 @@
-version: '3'
 services:
   postgres:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: hedhog
+      POSTGRES_PASSWORD: changeme
       POSTGRES_DB: hedhog
     volumes:
       - ./data/postgresql:/var/lib/postgresql/data
@@ -22,6 +21,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: hedhog
+      MYSQL_USER: hedhog
+      MYSQL_PASSWORD: changeme
     volumes:
       - ./data/mysql:/var/lib/mysql
     ports:
