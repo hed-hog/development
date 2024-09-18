@@ -8,12 +8,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   getProvider() {
-    console.log('getProvider', (this as any)._engineConfig.activeProvider);
     return (this as any)._engineConfig.activeProvider;
   }
 
   isPostgres() {
-    return this.getProvider() === 'postgres';
+    return this.getProvider() === 'postgresql';
   }
 
   isMysql() {
