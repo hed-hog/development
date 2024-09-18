@@ -13,14 +13,11 @@ import { MailModule } from '@hedhog/mail';
       JwtModule.registerAsync({
         global: true,
         useFactory: () => {
-          const expiresIn = process.env.JWT_EXPIRES_IN || '30d';
-          console.log('JWT_SECRET', process.env.JWT_SECRET);
-          console.log('JWT_EXPIRES_IN', expiresIn);
           return {
             secret: String(process.env.JWT_SECRET),
             global: true,
             signOptions: {
-              expiresIn,
+              expiresIn: process.env.JWT_EXPIRES_IN || '30d',
             },
           };
         },
