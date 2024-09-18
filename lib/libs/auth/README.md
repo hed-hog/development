@@ -46,6 +46,8 @@ The `AuthService` provides methods for:
 
 ```plaintext
 auth/
+├── dist/                        # Compiled JavaScript files from build
+├── node_modules/                # Discardable folder with all module dependencies
 ├── src/
 │   ├── auth.controller.ts         # Defines routes for authentication
 │   ├── auth.service.ts            # Contains authentication logic
@@ -70,6 +72,6 @@ auth/
 ├── package.json                   # Manages dependencies and scripts for the library
 ├── package-lock.json              # Lock file for package dependencies
 ├── README.md                      # Documentation for the library
-├── tsconfig.json                  # TypeScript configuration for the library
+├── tsconfig.lib.json              # TypeScript configuration for the library
 └── tsconfig.production.json       # TypeScript configuration for production builds
 ```

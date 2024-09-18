@@ -4,8 +4,6 @@
   <img src="https://avatars.githubusercontent.com/u/177489127?s=200&v=4" alt="Hedhog Avatar" />
 </p>
 
-# HedHog Mail
-
 **HedHog Mail** is an email sending library that is part of the HedHog framework. This library provides support for sending emails using various email services such as AWS SES, Gmail, and SMTP. It is configured to handle multiple types of email sending, including emails with attachments and multi-part content.
 
 ## Features
@@ -70,6 +68,8 @@ mailService
 
 ```plaintext
 mail/
+├── dist/                        # Compiled JavaScript files from build
+├── node_modules/                # Discardable folder with all module dependencies
 ├── src/
 │   ├── mail.service.ts           # Email sending service
 │   ├── mail.module.ts            # Module for MailService
@@ -85,6 +85,6 @@ mail/
 ├── package.json                   # Manages dependencies and scripts for the library
 ├── package-lock.json              # Lock file for dependencies
 ├── README.md                      # Documentation for the library
-└── tsconfig.json                  # TypeScript configuration for the library
+└── tsconfig.lib.json              # TypeScript configuration for the library
 └── tsconfig.production.json       # TypeScript configuration for production builds
 ```
