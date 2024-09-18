@@ -39,3 +39,35 @@ model users {
   updated_at     DateTime      @default(now()) @db.Timestamp(6)
   multifactors   multifactors? @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users_to_multifactors_on_multifactor_id")
 }
+
+model screens {
+  id           Int            @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
+  name         String         @db.VarChar
+  slug         String         @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
+  description  String         @db.VarChar
+  icon         String?        @db.VarChar
+  created_at   DateTime       @default(now()) @db.Timestamp(6)
+  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  menu_screens menu_screens[]
+}
+
+model menu_screens {
+  menu_id   Int
+  screen_id Int
+  screens   screens @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5fce02e2ce60ad6508a0de01464")
+  menus     menus   @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9b57bb2e47bf2b0dbf693ef456c")
+
+  @@id([menu_id, screen_id], map: "PK_18f770e8566e02e344d1f494dbb")
+}
+
+model menus {
+  id           Int            @id(map: "PK_3fec3d93327f4538e0cbd4349c4") @default(autoincrement())
+  name         String         @db.VarChar
+  url          String         @unique(map: "UQ_7069e145e36b235e72aba4aa3f8") @db.VarChar
+  order        Int            @default(0)
+  menu_id      Int
+  icon         String?        @db.VarChar
+  created_at   DateTime       @default(now()) @db.Timestamp(6)
+  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  menu_screens menu_screens[]
+}
