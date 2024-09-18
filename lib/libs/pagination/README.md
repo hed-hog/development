@@ -45,6 +45,7 @@ pagination/
 ├── .gitignore                    # Specifies which files Git should ignore
 ├── package.json                  # Manages dependencies and scripts for the library
 ├── package-lock.json             # Lock file for dependencies
+├── README.md                     # Documentation for the library
 ├── tsconfig.lib.json             # TypeScript configuration for library builds
 ├── tsconfig.production.json      # TypeScript configuration for production builds
 ```
