@@ -17,7 +17,10 @@ import { MailModule } from '@hedhog/mail';
             secret: String(process.env.JWT_SECRET),
             global: true,
             signOptions: {
-              expiresIn: String(process.env.JWT_EXPIRES_IN) ?? '30d',
+              expiresIn:
+                String(process.env.JWT_EXPIRES_IN) === ''
+                  ? '30d'
+                  : String(process.env.JWT_EXPIRES_IN),
             },
           };
         },
