@@ -44,24 +44,24 @@ The PermissionService provides the following methods:
 
 ```plaintext
 permission/
-├── dist/ # Compiled JavaScript files
-├── node_modules/ # Node.js modules
+├── dist/                         # Compiled JavaScript files
+├── node_modules/                 # Node.js modules
 ├── src/
-│ ├── dto/ # Data Transfer Objects (DTOs) for permissions
-│ │ ├── create.dto.ts # DTO for creating permissions
-│ │ ├── delete.dto.ts # DTO for deleting permissions
-│ │ ├── update.dto.ts # DTO for updating permissions
-│ ├── migrations/ # Database migration files
-│ ├── types/ # Type definitions related to permissions
-│ │ └── permission.types.ts # Type definitions for permissions
-│ ├── permission.controller.ts # Controller class for handling permission-related HTTP requests
-│ ├── permission.module.ts # Module definition for permissions
-│ ├── permission.service.spec.ts # Unit tests for PermissionService
-│ ├── permission.service.ts # Service class for permission-related business logic
-│ └── index.ts # Entry point for permission files
-├── .gitignore # Specifies which files Git should ignore
-├── package.json # Manages dependencies and scripts for the library
-├── package-lock.json # Lock file for dependencies
-├── tsconfig.lib.json # TypeScript configuration for library builds
-├── tsconfig.production.json # TypeScript configuration for production builds
+│ ├── dto/                        # Data Transfer Objects (DTOs) for permissions
+│ │ ├── create.dto.ts             # DTO for creating permissions
+│ │ ├── delete.dto.ts             # DTO for deleting permissions
+│ │ ├── update.dto.ts             # DTO for updating permissions
+│ ├── migrations/                 # Database migration files
+│ ├── types/                      # Type definitions related to permissions
+│ │ └── permission.types.ts       # Type definitions for permissions
+│ ├── permission.controller.ts    # Controller class for handling permission-related HTTP requests
+│ ├── permission.module.ts        # Module definition for permissions
+│ ├── permission.service.spec.ts  # Unit tests for PermissionService
+│ ├── permission.service.ts       # Service class for permission-related business logic
+│ └── index.ts                    # Entry point for permission files
+├── .gitignore                    # Specifies which files Git should ignore
+├── package.json                  # Manages dependencies and scripts for the library
+├── package-lock.json             # Lock file for dependencies
+├── tsconfig.lib.json             # TypeScript configuration for library builds
+├── tsconfig.production.json      # TypeScript configuration for production builds
 ```
