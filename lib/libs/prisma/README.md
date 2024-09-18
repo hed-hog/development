@@ -1,4 +1,4 @@
-# <p align="center">hedhog/prisman</p>
+# <p align="center">hedhog/prisma</p>
 
 <p align="center">
   <img src="https://avatars.githubusercontent.com/u/177489127?s=200&v=4" alt="Hedhog Avatar" />
@@ -26,8 +26,11 @@ npm i @hedhog/prisma
 ## Methods
 
 **onModuleInit()**: Automatically connects to the database when the module initializes.
+
 **getProvider()**: Returns the active database provider (e.g., 'postgresql', 'mysql').
+
 **isPostgres()**: Returns true if the active database provider is PostgreSQL.
+
 **isMysql()**: Returns true if the active database provider is MySQL.
 
 ## Folder Structure
