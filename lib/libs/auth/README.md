@@ -17,6 +17,10 @@
 
 This library is a part of the HedHog framework and is typically included as a dependency in your HedHog projects. Ensure you have the necessary dependencies and setup by following the installation guide in the HedHog framework documentation.
 
+```bash
+npm i @hedhog/auth
+```
+
 #### Controller
 
 The `AuthController` defines the following endpoints:
