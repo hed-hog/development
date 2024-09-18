@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
+import { FileModule } from '@hedhog/file';
+import { SettingModule } from '@hedhog/setting';
+import { PermissionModule } from '@hedhog/permission';
+import { UserModule } from '@hedhog/user';
 import { MenuModule } from '@hedhog/menu';
 import { ScreenModule } from '@hedhog/screen';
 import { PaginationModule } from '@hedhog/pagination';
@@ -26,6 +30,10 @@ import { PrismaModule } from '@hedhog/prisma';
     PaginationModule,
     ScreenModule,
     MenuModule,
+    UserModule,
+    PermissionModule,
+    SettingModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
