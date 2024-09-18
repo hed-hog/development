@@ -117,10 +117,12 @@ Start the development servers for both the backend and admin:
 npm run dev
 ```
 
-**Result**
+## Result
+
 Once the above commands are executed, both the backend and the admin interface will be up and running:
 
 Backend API: Available at http://localhost:3000
+
 Admin Panel: Available at http://localhost:3100
 
 For more detailed instructions on how to set up and use the HedHog Framework, refer to the documentation in the [**docs/**](https://github.com/hed-hog/docs) directory or consult the HedHog CLI's commands to generate new modules and configure your project.
