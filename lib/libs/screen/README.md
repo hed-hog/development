@@ -101,8 +101,8 @@ npm i @hedhog/screen
 
 ```plaintext
 screen/
-├── dist/                          # Compiled JavaScript files
-├── node_modules/                  # Node.js modules
+├── dist/                           # Compiled JavaScript files from build
+├── node_modules/                   # Discardable folder with all module dependencies
 ├── src/
 │   ├── dto/                        # Data Transfer Objects
 │   │   ├── create.dto.ts           # DTO for creating a screen
@@ -117,6 +117,7 @@ screen/
 ├── .gitignore                      # Specifies which files Git should ignore
 ├── package.json                    # Manages dependencies and scripts for the module
 ├── package-lock.json               # Lock file for dependencies
+├── README.md                       # Documentation for the library
 ├── tsconfig.lib.json               # TypeScript configuration for library builds
 ├── tsconfig.production.json        # TypeScript configuration for production builds
 ```
