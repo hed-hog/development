@@ -73,9 +73,9 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && IMAGE_NAME=$(echo $IMAGE_NAME) && REGISTRY_NAME=$(echo $REGISTRY_NAME) && sed -i 's|<IMAGE>|${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}|' $GITHUB_WORKSPACE/k8s/storybook.yaml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && IMAGE_NAME=$(echo $IMAGE_NAME) && REGISTRY_NAME=$(echo $REGISTRY_NAME) && sed -i 's|<IMAGE>|${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}|' $GITHUB_WORKSPACE/admin/k8s/storybook.yaml
       - name: Kubernetes deployment
-        run: kubectl apply -f ./k8s/storybook.yaml
+        run: kubectl apply -f ./admin/k8s/storybook.yaml
   clearImages:
     permissions:
       actions: read
