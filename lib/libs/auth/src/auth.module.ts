@@ -11,6 +11,7 @@ import { MailModule } from '@hedhog/mail';
   imports: [
     forwardRef(() =>
       JwtModule.registerAsync({
+        global: true,
         useFactory: () => {
           return {
             secret: String(process.env.JWT_SECRET),
