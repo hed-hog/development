@@ -3,146 +3,142 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model files {
-  id         Int      @id(map: "PK_6c16b9093a142e0e7613b04a3d9") @default(autoincrement())
-  name       String   @db.VarChar
-  url        String   @db.VarChar
-  extension  String   @db.VarChar(15)
-  bytes      Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-}
-
 model migrations {
-  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   timestamp BigInt
-  name      String @db.VarChar
-}
-
-model persons {
-  id           Int       @id(map: "PK_74278d8812a049233ce41440ac7") @default(autoincrement())
-  name         String    @db.VarChar
-  display_name String    @db.VarChar
-  gender       String    @db.VarChar(1)
-  birth_at     DateTime? @db.Date
-  photo_id     Int?
-  created_at   DateTime  @default(now()) @db.Timestamp(6)
-  updated_at   DateTime  @default(now()) @db.Timestamp(6)
-}
-
-model roles {
-  id           Int            @id(map: "PK_c1433d71a4838793a49dcad46ab") @default(autoincrement())
-  name         String         @db.VarChar
-  description  String         @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
-  role_screens role_screens[]
-  role_users   role_users[]
-}
-
-model users {
-  id             Int           @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(autoincrement())
-  name           String        @db.VarChar
-  email          String        @db.VarChar
-  password       String        @db.VarChar
-  multifactor_id Int?
-  code           String?       @db.VarChar
-  created_at     DateTime      @default(now()) @db.Timestamp(6)
-  updated_at     DateTime      @default(now()) @db.Timestamp(6)
-  role_users     role_users[]
-  multifactors   multifactors? @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users_to_multifactors_on_multifactor_id")
-}
-
-model visibilities {
-  id         Int      @id(map: "PK_a79efb6fcb668f9fb256635fd18") @default(autoincrement())
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
+  name      String @db.VarChar(255)
 }
 
 model multifactors {
-  id         Int      @id(map: "PK_8e88fc38e04a53be42acb939e9c") @default(autoincrement())
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  name       String   @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @db.Timestamp(0)
   users      users[]
 }
 
 model screens {
-  id           Int            @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
-  name         String         @db.VarChar
-  slug         String         @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
-  description  String         @db.VarChar
-  icon         String?        @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  id           Int            @id @default(autoincrement()) @db.UnsignedInt
+  name         String         @db.VarChar(255)
+  slug         String         @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar(255)
+  description  String         @db.VarChar(255)
+  icon         String?        @db.VarChar(255)
+  created_at   DateTime       @default(now()) @db.Timestamp(0)
+  updated_at   DateTime       @default(now()) @db.Timestamp(0)
   menu_screens menu_screens[]
   role_screens role_screens[]
 }
 
+model users {
+  id             Int           @id @default(autoincrement()) @db.UnsignedInt
+  name           String        @db.VarChar(255)
+  email          String        @db.VarChar(255)
+  password       String        @db.VarChar(255)
+  multifactor_id Int?          @db.UnsignedInt
+  code           String?       @db.VarChar(255)
+  created_at     DateTime      @default(now()) @db.Timestamp(0)
+  updated_at     DateTime      @default(now()) @db.Timestamp(0)
+  role_users     role_users[]
+  multifactors   multifactors? @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users_to_multifactors_on_multifactor_id")
+
+  @@index([multifactor_id], map: "fk_users_to_multifactors_on_multifactor_id")
+}
+
+model visibilities {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  name       String   @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @db.Timestamp(0)
+}
+
 model role_screens {
-  role_id    Int
-  screen_id  Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
+  role_id    Int      @db.UnsignedInt
+  screen_id  Int      @db.UnsignedInt
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @db.Timestamp(0)
   roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_screens_roles")
   screens    screens  @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_screens_screen")
 
-  @@id([role_id, screen_id], map: "PK_82cdd66bd3fd409bf87b1716c42")
+  @@id([role_id, screen_id])
+  @@index([screen_id], map: "fk_role_screens_screen")
 }
 
 model role_users {
-  role_id    Int
-  user_id    Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
+  role_id    Int      @db.UnsignedInt
+  user_id    Int      @db.UnsignedInt
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @db.Timestamp(0)
   roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_users_roles")
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_users_user")
 
-  @@id([role_id, user_id], map: "PK_e976807ebe4fc773c2365d91566")
+  @@id([role_id, user_id])
+  @@index([user_id], map: "fk_role_users_user")
+}
+
+model roles {
+  id           Int            @id @default(autoincrement()) @db.UnsignedInt
+  name         String         @db.VarChar(255)
+  description  String         @db.VarChar(255)
+  created_at   DateTime       @default(now()) @db.Timestamp(0)
+  updated_at   DateTime       @default(now()) @db.Timestamp(0)
+  role_screens role_screens[]
+  role_users   role_users[]
 }
 
 model setting_values {
-  id          Int      @id(map: "PK_c21069a3e9521c651c52051b939") @default(autoincrement())
+  id          Int      @id @default(autoincrement()) @db.UnsignedInt
   value       String   @db.VarChar(1023)
-  name        String   @unique(map: "UQ_107f182a06aebe76c709d58dfbd") @db.VarChar
-  description String?  @db.VarChar
-  label       String?  @db.VarChar
-  setting_id  Int
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  name        String   @unique(map: "UQ_107f182a06aebe76c709d58dfbd") @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  label       String?  @db.VarChar(255)
+  setting_id  Int      @db.UnsignedInt
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  updated_at  DateTime @default(now()) @db.Timestamp(0)
   settings    settings @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4001238c50d670cf048b157cf9b")
+
+  @@index([setting_id], map: "FK_4001238c50d670cf048b157cf9b")
 }
 
 model settings {
-  id             Int              @id(map: "PK_0669fe20e252eb692bf4d344975") @default(autoincrement())
-  name           String           @db.VarChar
-  created_at     DateTime         @default(now()) @db.Timestamp(6)
-  updated_at     DateTime         @default(now()) @db.Timestamp(6)
+  id             Int              @id @default(autoincrement()) @db.UnsignedInt
+  name           String           @db.VarChar(255)
+  created_at     DateTime         @default(now()) @db.Timestamp(0)
+  updated_at     DateTime         @default(now()) @db.Timestamp(0)
   setting_values setting_values[]
 }
 
+model files {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  name       String   @db.VarChar(255)
+  url        String   @db.VarChar(255)
+  extension  String   @db.VarChar(15)
+  bytes      Int
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @db.Timestamp(0)
+}
+
 model menu_screens {
-  menu_id   Int
-  screen_id Int
+  menu_id   Int     @db.UnsignedInt
+  screen_id Int     @db.UnsignedInt
   screens   screens @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5fce02e2ce60ad6508a0de01464")
   menus     menus   @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9b57bb2e47bf2b0dbf693ef456c")
 
-  @@id([menu_id, screen_id], map: "PK_18f770e8566e02e344d1f494dbb")
+  @@id([menu_id, screen_id])
+  @@index([screen_id], map: "FK_5fce02e2ce60ad6508a0de01464")
 }
 
 model menus {
-  id           Int            @id(map: "PK_3fec3d93327f4538e0cbd4349c4") @default(autoincrement())
-  name         String         @db.VarChar
-  url          String         @unique(map: "UQ_7069e145e36b235e72aba4aa3f8") @db.VarChar
-  order        Int            @default(0)
+  id           Int            @id @default(autoincrement()) @db.UnsignedInt
+  name         String         @db.VarChar(255)
+  url          String         @unique(map: "UQ_7069e145e36b235e72aba4aa3f8") @db.VarChar(255)
+  order        Int            @default(0) @db.UnsignedInt
   menu_id      Int
-  icon         String?        @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  icon         String?        @db.VarChar(255)
+  created_at   DateTime       @default(now()) @db.Timestamp(0)
+  updated_at   DateTime       @default(now()) @db.Timestamp(0)
   menu_screens menu_screens[]
 }

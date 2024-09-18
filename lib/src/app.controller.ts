@@ -8,7 +8,9 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
+import { Public } from '@hedhog/auth';
 
+@Public()
 @Controller()
 export class AppController {
   constructor(

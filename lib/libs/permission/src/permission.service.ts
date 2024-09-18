@@ -22,12 +22,20 @@ export class PermissionService {
   async getPermissions(paginationParams: PaginationDTO) {
     const OR: any[] = [
       {
-        name: { contains: paginationParams.search, mode: 'insensitive' },
+        name: { contains: paginationParams.search },
       },
       {
-        description: { contains: paginationParams.search, mode: 'insensitive' },
+        description: { contains: paginationParams.search },
       },
     ];
+
+    if (this.prismaService.getProvider() === 'postgres') {
+      for (let i = 0; i < OR.length; i++) {
+        for (let x = 0; x < Object.keys(OR[i]).length; x++) {
+          OR[i][Object.keys(OR[i])[x]].insensitive = true;
+        }
+      }
+    }
 
     if (!isNaN(+paginationParams.search)) {
       OR.push({ id: { equals: +paginationParams.search } });

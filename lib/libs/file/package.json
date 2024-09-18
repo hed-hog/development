@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/file",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -28,10 +28,10 @@
     "src/migrations/**/*.ts"
   ],
   "devDependencies": {
-    "@hedhog/auth": "^0.0.8",
-    "@hedhog/prisma": "^0.0.2",
-    "@hedhog/pagination": "^0.0.2",
-    "@hedhog/utils": "^0.0.2",
-    "@hedhog/setting": "^0.0.2"
+    "@hedhog/auth": "latest",
+    "@hedhog/prisma": "latest",
+    "@hedhog/pagination": "latest",
+    "@hedhog/utils": "latest",
+    "@hedhog/setting": "latest"
   }
 }

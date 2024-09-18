@@ -6,12 +6,22 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ScreenModule } from '@hedhog/screen';
+import { PermissionModule } from '@hedhog/permission';
+import { SettingModule } from 'libs/setting/src';
+import { FileModule } from '@hedhog/file';
+import { MenuModule } from '@hedhog/menu';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     PrismaModule,
+    ScreenModule,
+    PermissionModule,
+    SettingModule,
+    FileModule,
+    MenuModule,
     ConfigModule.forRoot(),
     MailModule.forRoot({
       type: MailConfigurationTypeEnum.SMTP,

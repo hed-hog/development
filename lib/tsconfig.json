@@ -33,7 +33,9 @@
       "@hedhog/permission": ["libs/permission/src"],
       "@hedhog/permission/*": ["libs/permission/src/*"],
       "@hedhog/screen": ["libs/screen/src"],
-      "@hedhog/screen/*": ["libs/screen/src/*"]
+      "@hedhog/screen/*": ["libs/screen/src/*"],
+      "@hedhog/menu": ["libs/menu/src"],
+      "@hedhog/menu/*": ["libs/menu/src/*"]
     }
   }
 }

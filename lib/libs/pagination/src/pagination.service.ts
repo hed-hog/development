@@ -124,11 +124,10 @@ export class PaginationService {
 
   extractFieldNames(model: Record<string, any>): string[] {
     const fieldNames: string[] = [];
-
     const fields = model.fields;
 
     for (const key in fields) {
-      if (fields.hasOwnProperty(key)) {
+      if (fields && fields.hasOwnProperty(key)) {
         fieldNames.push(key);
       }
     }
@@ -137,10 +136,12 @@ export class PaginationService {
   }
 
   isInvalidField(sortField: string, model: BaseModel): boolean {
-    return !model.fields[sortField];
+    return model && model.fields ? !model.fields[sortField] : true;
   }
 
   isInvalidFields(fields: string[], model: BaseModel): boolean {
-    return !fields.every((field) => model.fields[field]);
+    return !fields.every((field) =>
+      model.fields ? model && model.fields[field] : false,
+    );
   }
 }

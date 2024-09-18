@@ -20,15 +20,23 @@ export class FileService {
   async getFiles(paginationParams: PaginationDTO) {
     const OR: any[] = [
       {
-        name: { contains: paginationParams.search, mode: 'insensitive' },
+        name: { contains: paginationParams.search },
       },
       {
-        url: { contains: paginationParams.search, mode: 'insensitive' },
+        url: { contains: paginationParams.search },
       },
       {
-        extension: { contains: paginationParams.search, mode: 'insensitive' },
+        extension: { contains: paginationParams.search },
       },
     ];
+
+    if (this.prismaService.getProvider() === 'postgres') {
+      for (let i = 0; i < OR.length; i++) {
+        for (let x = 0; x < Object.keys(OR[i]).length; x++) {
+          OR[i][Object.keys(OR[i])[x]].insensitive = true;
+        }
+      }
+    }
 
     if (!isNaN(+paginationParams.search)) {
       OR.push({ id: { equals: +paginationParams.search } });

@@ -51,6 +51,7 @@ export class Migrate implements MigrationInterface {
           {
             name: 'setting_id',
             type: 'int',
+            unsigned: true,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
