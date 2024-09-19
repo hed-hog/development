@@ -32,6 +32,7 @@ export class AuthController {
     return this.service.login({ email, password });
   }
 
+  @Public()
   @Post('otp')
   async otp(@Body() { token, code }: OtpDTO) {
     return this.service.otp({ token, code });

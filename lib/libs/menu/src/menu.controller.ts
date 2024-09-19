@@ -1,4 +1,4 @@
-import { AuthGuard } from '@hedhog/auth';
+import { AuthGuard, User } from '@hedhog/auth';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -25,6 +25,12 @@ export class MenuController {
     @Inject(forwardRef(() => MenuService))
     private readonly menuService: MenuService,
   ) {}
+
+  @UseGuards(AuthGuard)
+  @Get('system')
+  async getSystemMenu(@User() { id }) {
+    return this.menuService.getSystemMenu(id);
+  }
 
   @UseGuards(AuthGuard)
   @Get()

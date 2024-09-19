@@ -65,9 +65,9 @@ model menu_screens {
 model menus {
   id           Int            @id(map: "PK_3fec3d93327f4538e0cbd4349c4") @default(autoincrement())
   name         String         @db.VarChar
-  url          String         @unique(map: "UQ_7069e145e36b235e72aba4aa3f8") @db.VarChar
+  url          String         @db.VarChar
   order        Int            @default(0)
-  menu_id      Int
+  menu_id      Int?
   icon         String?        @db.VarChar
   created_at   DateTime       @default(now()) @db.Timestamp(6)
   updated_at   DateTime       @default(now()) @db.Timestamp(6)

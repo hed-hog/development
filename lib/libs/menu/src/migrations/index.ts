@@ -20,7 +20,7 @@ export class Migrate implements MigrationInterface {
           {
             name: 'url',
             type: 'varchar',
-            isUnique: true,
+            isNullable: true,
           },
           {
             name: 'order',
@@ -31,6 +31,8 @@ export class Migrate implements MigrationInterface {
           {
             name: 'menu_id',
             type: 'int',
+            isNullable: true,
+            unsigned: true,
           },
           {
             name: 'icon',
@@ -82,6 +84,73 @@ export class Migrate implements MigrationInterface {
         onDelete: 'CASCADE',
       }),
     );
+
+    //System Populating
+    await this.insertMenu(queryRunner, 'Dashboard', '/', 0, null, 'dashboard');
+    const managementId = await this.insertMenu(
+      queryRunner,
+      'Management',
+      null,
+      1,
+      null,
+      'settings',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Users',
+      '/users',
+      0,
+      managementId,
+      'users',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Roles',
+      '/roles',
+      1,
+      managementId,
+      'circles',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Screens',
+      '/screens',
+      2,
+      managementId,
+      'screem',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Menus',
+      '/menus',
+      3,
+      managementId,
+      'menu',
+    );
+  }
+
+  private async insertMenu(
+    queryRunner: QueryRunner,
+    name: string,
+    url: string,
+    order: number,
+    menuId: number,
+    icon: string,
+  ) {
+    await queryRunner.query(`
+      INSERT INTO menus (name, url, order, menu_id, icon, created_at, updated_at)
+      VALUES ('${name}', '${url}', ${order}, ${menuId}, '${icon}', NOW(), NOW())
+    `);
+
+    return (
+      await queryRunner.query(`
+      SELECT id
+      FROM menus
+      WHERE name = '${name}' AND url = '${url}' AND order = ${order} AND menu_id = ${menuId} AND icon = '${icon}'
+      ORDER BY created_at DESC
+      LIMIT 1
+    `)
+    )[0].id;
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

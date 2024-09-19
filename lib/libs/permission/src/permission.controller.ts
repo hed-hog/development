@@ -32,7 +32,7 @@ export class PermissionController {
   }
 
   @UseGuards(AuthGuard)
-  @Get(':PermissionId')
+  @Get(':permissionId')
   async show(@Param('PermissionId', ParseIntPipe) permissionId: number) {
     return this.permissionService.get(permissionId);
   }
@@ -44,7 +44,7 @@ export class PermissionController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':PermissionId')
+  @Patch(':permissionId')
   async update(
     @Param('PermissionId', ParseIntPipe) permissionId: number,
     @Body() data: UpdateDTO,

@@ -20,6 +20,34 @@ export class MenuService {
     private readonly paginationService: PaginationService,
   ) {}
 
+  async getMenus(userId: number, menuId = 0) {
+    if (menuId === 0) {
+      menuId = null;
+    }
+
+    const menus = (await this.prismaService.menus.findMany({
+      where: {
+        menu_id: menuId,
+      },
+      orderBy: {
+        order: 'asc',
+      },
+    })) as unknown[] as any[];
+
+    for (let i = 0; i < menus.length; i++) {
+      menus[i].menus = await this.getMenus(userId, menus[i].id);
+    }
+
+    return menus.map((menu) => ({
+      ...menu,
+      menus: [],
+    }));
+  }
+
+  async getSystemMenu(userId: number) {
+    return this.getMenus(userId);
+  }
+
   async getMenu(paginationParams: PaginationDTO) {
     const OR: any[] = [
       {
@@ -36,7 +64,7 @@ export class MenuService {
     if (this.prismaService.getProvider() === 'postgres') {
       for (let i = 0; i < OR.length; i++) {
         for (let x = 0; x < Object.keys(OR[i]).length; x++) {
-          OR[i][Object.keys(OR[i])[x]].insensitive = true;
+          OR[i][Object.keys(OR[i])[x]].mode = 'insensitive';
         }
       }
     }

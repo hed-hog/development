@@ -9,6 +9,8 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { Public } from '@hedhog/auth';
+import { GraphInspector } from '@nestjs/core/inspector';
+import { HttpAdapterHost } from '@nestjs/core';
 
 @Public()
 @Controller()
@@ -16,6 +18,7 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private mailService: MailService,
+    private readonly httpAdapterHost: HttpAdapterHost,
   ) {}
 
   @Get()
@@ -39,5 +42,48 @@ export class AppController {
         };
       }),
     });
+  }
+
+  @Get('routes')
+  getEndpoints() {
+    const httpServer = this.httpAdapterHost.httpAdapter.getInstance();
+
+    if (httpServer._events) {
+      // Fastify
+      return this.getEndpointsFromFastify(httpServer);
+    } else if (httpServer._router) {
+      // Express
+      return this.getEndpointsFromExpress(httpServer);
+    } else {
+      throw new Error('Unknown HTTP server');
+    }
+  }
+
+  private getEndpointsFromExpress(server: any) {
+    const router = server._router;
+    const endpoints = [];
+
+    router.stack.forEach((layer) => {
+      if (layer.route) {
+        const path = layer.route?.path;
+        const methods = Object.keys(layer.route.methods)
+          .filter((method) => layer.route.methods[method])
+          .map((method) => method.toUpperCase());
+        endpoints.push({ path, methods });
+      }
+    });
+
+    return endpoints;
+  }
+
+  private getEndpointsFromFastify(server: any) {
+    const endpoints = [];
+
+    server.routes.forEach((route) => {
+      const { url, method } = route;
+      endpoints.push({ path: url, methods: [method] });
+    });
+
+    return endpoints;
   }
 }
