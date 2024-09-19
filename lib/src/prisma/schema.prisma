@@ -7,16 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model files {
-  id         Int      @id(map: "PK_6c16b9093a142e0e7613b04a3d9") @default(autoincrement())
-  name       String   @db.VarChar
-  url        String   @db.VarChar
-  extension  String   @db.VarChar(15)
-  bytes      Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-}
-
 model menu_screens {
   menu_id   Int
   screen_id Int
@@ -29,7 +19,7 @@ model menu_screens {
 model menus {
   id           Int            @id(map: "PK_3fec3d93327f4538e0cbd4349c4") @default(autoincrement())
   name         String         @db.VarChar
-  url          String         @db.VarChar
+  url          String?        @db.VarChar
   order        Int            @default(0)
   menu_id      Int?
   icon         String?        @db.VarChar
@@ -80,6 +70,7 @@ model roles {
   description  String         @db.VarChar
   created_at   DateTime       @default(now()) @db.Timestamp(6)
   updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  role_routes  role_routes[]
   role_screens role_screens[]
   role_users   role_users[]
 }
@@ -96,26 +87,6 @@ model screens {
   role_screens role_screens[]
 }
 
-model setting_values {
-  id          Int      @id(map: "PK_c21069a3e9521c651c52051b939") @default(autoincrement())
-  value       String   @db.VarChar(1023)
-  name        String   @unique(map: "UQ_107f182a06aebe76c709d58dfbd") @db.VarChar
-  description String?  @db.VarChar
-  label       String?  @db.VarChar
-  setting_id  Int
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
-  settings    settings @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4001238c50d670cf048b157cf9b")
-}
-
-model settings {
-  id             Int              @id(map: "PK_0669fe20e252eb692bf4d344975") @default(autoincrement())
-  name           String           @db.VarChar
-  created_at     DateTime         @default(now()) @db.Timestamp(6)
-  updated_at     DateTime         @default(now()) @db.Timestamp(6)
-  setting_values setting_values[]
-}
-
 model users {
   id             Int           @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(autoincrement())
   name           String        @db.VarChar
@@ -129,9 +100,34 @@ model users {
   multifactors   multifactors? @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users_to_multifactors_on_multifactor_id")
 }
 
-model visibilities {
-  id         Int      @id(map: "PK_a79efb6fcb668f9fb256635fd18") @default(autoincrement())
-  name       String   @db.VarChar
+model role_routes {
+  role_id    Int
+  route_id   Int
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
+  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_routes_roles")
+  routes     routes   @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_routes_routes")
+
+  @@id([role_id, route_id], map: "PK_d2641c113ec79d2a55d11ce182b")
+}
+
+model routes {
+  id          Int                @id(map: "PK_76100511cdfa1d013c859f01d8b") @default(autoincrement())
+  url         String             @db.VarChar
+  method      routes_method_enum
+  created_at  DateTime           @default(now()) @db.Timestamp(6)
+  updated_at  DateTime           @default(now()) @db.Timestamp(6)
+  role_routes role_routes[]
+
+  @@unique([url, method], map: "unique_routes")
+}
+
+enum routes_method_enum {
+  GET
+  POST
+  PATCH
+  DELETE
+  PUT
+  OPTIONS
+  HEAD
 }

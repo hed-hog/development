@@ -98,7 +98,7 @@ export class Migrate implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Users',
-      '/users',
+      '/management/users',
       0,
       managementId,
       'users',
@@ -106,7 +106,7 @@ export class Migrate implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Roles',
-      '/roles',
+      '/management/roles',
       1,
       managementId,
       'circles',
@@ -114,7 +114,7 @@ export class Migrate implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Screens',
-      '/screens',
+      '/management/screens',
       2,
       managementId,
       'screem',
@@ -122,7 +122,7 @@ export class Migrate implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Menus',
-      '/menus',
+      '/management/menus',
       3,
       managementId,
       'menu',

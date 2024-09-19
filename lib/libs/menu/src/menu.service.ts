@@ -21,6 +21,10 @@ export class MenuService {
   ) {}
 
   async getMenus(userId: number, menuId = 0) {
+    console.log({
+      userId,
+      menuId,
+    });
     if (menuId === 0) {
       menuId = null;
     }
@@ -34,14 +38,13 @@ export class MenuService {
       },
     })) as unknown[] as any[];
 
+    console.log(menus);
+
     for (let i = 0; i < menus.length; i++) {
       menus[i].menus = await this.getMenus(userId, menus[i].id);
     }
 
-    return menus.map((menu) => ({
-      ...menu,
-      menus: [],
-    }));
+    return menus;
   }
 
   async getSystemMenu(userId: number) {

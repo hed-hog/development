@@ -42,8 +42,9 @@ import { DialogType, OpenDialogType } from '@/types/dialog'
 import { OpenSheetType, SheetType } from '@/types/sheet'
 import { useDialog } from '@/hooks/use-dialog'
 import { useSheet } from '@/hooks/use-sheet'
+import { getBaseURL } from './getBaseURL'
 
-export const BASE_URL = 'http://localhost:3000'
+export const BASE_URL = getBaseURL()
 
 type AppContextType = {
   logout: () => void
@@ -137,6 +138,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           return response
         },
         (error) => {
+          console.log('request error', error)
           handleError(error)
           return Promise.reject(error)
         }

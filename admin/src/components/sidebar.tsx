@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
 import { Layout } from './custom/layout'
 import { Button } from './custom/button'
 import Nav from './nav'
 import { cn } from '@/lib/utils'
-// import { sidelinks } from '@/data/sidelinks'
+import { useQuery } from '@tanstack/react-query'
+import { useApp } from '@/hooks/use-app'
+import { toPascalCase } from '@/lib/toPascalCase'
+import * as TablerIcons from '@tabler/icons-react'
+import { SideLink } from '@/data/sidelinks'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -16,7 +20,57 @@ export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
 }: SidebarProps) {
+  const { request } = useApp()
   const [navOpened, setNavOpened] = useState(false)
+  const { data, isLoading } = useQuery({
+    queryKey: ['menus-system'],
+    queryFn: () =>
+      request({
+        url: `/menus/system`,
+      }),
+  })
+
+  const getSideLinkIcon = (icon: string) => {
+    if (icon !== '' && icon.length > 0) {
+      const componentName = 'Icon' + toPascalCase(icon)
+      const IconComponent = TablerIcons[
+        componentName as keyof typeof TablerIcons
+      ] as React.FC<{ size?: number }>
+      if (IconComponent) {
+        return <IconComponent size={18} />
+      }
+    }
+    return <TablerIcons.IconSquare size={18} />
+  }
+
+  const getSideLinks = (items: any[]) => {
+    const links: SideLink[] = []
+
+    for (let i = 0; i < items.length; i++) {
+      const link: SideLink = {
+        href: items[i].url ?? '',
+        icon: getSideLinkIcon(items[i].icon),
+        title: items[i].name,
+        sub:
+          items[i].menus && items[i].menus.length > 0
+            ? getSideLinks(items[i].menus)
+            : [],
+      }
+
+      if (link.sub?.length === 0) {
+        delete link.sub
+      }
+
+      links.push(link)
+    }
+    return links
+  }
+
+  let sideLinks = getSideLinks((data?.data as any[]) || [])
+
+  if (!(sideLinks instanceof Array)) {
+    sideLinks = []
+  }
 
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
@@ -105,7 +159,7 @@ export default function Sidebar({
           className={`z-40 h-full flex-1 overflow-auto ${navOpened ? 'max-h-screen' : 'max-h-0 py-0 md:max-h-screen md:py-2'}`}
           closeNav={() => setNavOpened(false)}
           isCollapsed={isCollapsed}
-          links={[]}
+          links={sideLinks}
         />
 
         {/* Scrollbar width toggle button */}

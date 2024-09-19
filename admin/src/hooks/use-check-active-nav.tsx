@@ -6,9 +6,11 @@ export default function useCheckActiveNav() {
   const checkActiveNav = (nav: string) => {
     const pathArray = pathname.split('/').filter((item) => item !== '')
 
-    if (nav === '/' && pathArray.length < 1) return true
+    if (nav === '/' && pathArray.length < 1) {
+      return true
+    }
 
-    return pathArray.includes(nav.replace(/^\//, ''))
+    return pathArray.join('/') === nav.replace(/^\//, '')
   }
 
   return { checkActiveNav }

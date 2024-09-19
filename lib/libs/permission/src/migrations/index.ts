@@ -224,9 +224,9 @@ export class Migrate implements MigrationInterface {
   }
   async down(queryRunner: QueryRunner) {
     await queryRunner.dropTable('role_routes');
-    await queryRunner.dropTable('roles');
     await queryRunner.dropTable('role_screens');
     await queryRunner.dropTable('role_users');
+    await queryRunner.dropTable('roles');
     await queryRunner.dropTable('routes');
   }
 }
