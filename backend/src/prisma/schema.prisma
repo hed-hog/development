@@ -30,104 +30,15 @@ model users {
   code           String?       @db.VarChar
   created_at     DateTime      @default(now()) @db.Timestamp(6)
   updated_at     DateTime      @default(now()) @db.Timestamp(6)
-  role_users     role_users[]
   multifactors   multifactors? @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users_to_multifactors_on_multifactor_id")
 }
 
 model screens {
-  id           Int            @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
-  name         String         @db.VarChar
-  slug         String         @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
-  description  String         @db.VarChar
-  icon         String?        @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
-  menu_screens menu_screens[]
-  role_screens role_screens[]
-}
-
-model menu_screens {
-  menu_id   Int
-  screen_id Int
-  screens   screens @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5fce02e2ce60ad6508a0de01464")
-  menus     menus   @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9b57bb2e47bf2b0dbf693ef456c")
-
-  @@id([menu_id, screen_id], map: "PK_18f770e8566e02e344d1f494dbb")
-}
-
-model menus {
-  id           Int            @id(map: "PK_3fec3d93327f4538e0cbd4349c4") @default(autoincrement())
-  name         String         @db.VarChar
-  url          String?        @db.VarChar
-  order        Int            @default(0)
-  menu_id      Int?
-  icon         String?        @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
-  menu_screens menu_screens[]
-}
-
-model role_routes {
-  role_id    Int
-  route_id   Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_routes_roles")
-  routes     routes   @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_routes_routes")
-
-  @@id([role_id, route_id], map: "PK_d2641c113ec79d2a55d11ce182b")
-}
-
-model role_screens {
-  role_id    Int
-  screen_id  Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_screens_roles")
-  screens    screens  @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_screens_screen")
-
-  @@id([role_id, screen_id], map: "PK_82cdd66bd3fd409bf87b1716c42")
-}
-
-model role_users {
-  role_id    Int
-  user_id    Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_users_roles")
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_users_user")
-
-  @@id([role_id, user_id], map: "PK_e976807ebe4fc773c2365d91566")
-}
-
-model roles {
-  id           Int            @id(map: "PK_c1433d71a4838793a49dcad46ab") @default(autoincrement())
-  name         String         @db.VarChar
-  description  String         @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
-  role_routes  role_routes[]
-  role_screens role_screens[]
-  role_users   role_users[]
-}
-
-model routes {
-  id          Int                @id(map: "PK_76100511cdfa1d013c859f01d8b") @default(autoincrement())
-  url         String             @db.VarChar
-  method      routes_method_enum
-  created_at  DateTime           @default(now()) @db.Timestamp(6)
-  updated_at  DateTime           @default(now()) @db.Timestamp(6)
-  role_routes role_routes[]
-
-  @@unique([url, method], map: "unique_routes")
-}
-
-enum routes_method_enum {
-  GET
-  POST
-  PATCH
-  DELETE
-  PUT
-  OPTIONS
-  HEAD
+  id          Int      @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
+  name        String   @db.VarChar
+  slug        String   @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
+  description String   @db.VarChar
+  icon        String?  @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
 }

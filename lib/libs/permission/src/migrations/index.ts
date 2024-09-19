@@ -60,6 +60,45 @@ export class Migrate implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
+        name: 'role_menus',
+        columns: [
+          {
+            name: 'role_id',
+            type: 'int',
+            isPrimary: true,
+            unsigned: true,
+          },
+          {
+            name: 'menu_id',
+            type: 'int',
+            isPrimary: true,
+            unsigned: true,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+      }),
+    );
+
+    await queryRunner.createForeignKeys('role_menus', [
+      new TableForeignKey({
+        columnNames: ['role_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'roles',
+        onDelete: 'CASCADE',
+        name: 'fk_role_menus_roles',
+      }),
+      new TableForeignKey({
+        columnNames: ['menu_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'menus',
+        onDelete: 'CASCADE',
+        name: 'fk_role_menus_menus',
+      }),
+    ]);
+
+    await queryRunner.createTable(
+      new Table({
         name: 'role_screens',
         columns: [
           {
@@ -93,7 +132,7 @@ export class Migrate implements MigrationInterface {
         referencedColumnNames: ['id'],
         referencedTableName: 'screens',
         onDelete: 'CASCADE',
-        name: 'fk_role_screens_screen',
+        name: 'fk_role_screens_screens',
       }),
     ]);
 
@@ -133,7 +172,7 @@ export class Migrate implements MigrationInterface {
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
         onDelete: 'CASCADE',
-        name: 'fk_role_users_user',
+        name: 'fk_role_users_users',
       }),
     ]);
 
