@@ -22,18 +22,21 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   createInsensitiveSearch(
     fields: string[],
     paginationParams: { search: string },
-    prismaService: { getProvider: () => string },
   ): any[] {
-    const OR = fields.map((field) => ({
+    const OR: any = fields.map((field) => ({
       [field]: { contains: paginationParams.search },
     }));
 
-    if (prismaService.getProvider() === 'postgres') {
+    if (this.isPostgres()) {
       OR.forEach((condition) => {
         Object.keys(condition).forEach((key) => {
           (condition[key] as any).mode = 'insensitive';
         });
       });
+    }
+
+    if (!isNaN(+paginationParams.search)) {
+      OR.push({ id: { equals: +paginationParams.search } });
     }
 
     return OR;
