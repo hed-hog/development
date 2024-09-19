@@ -31,42 +31,110 @@ export class Migrate implements MigrationInterface {
       }),
     );
 
-    await queryRunner.query(
-      `INSERT INTO settings(name) VALUES('Storage Provider'),('AWS Storage'),('Azure Storage');`,
-    );
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('settings')
+      .values([
+        { name: 'Storage Provider' },
+        { name: 'AWS Storage' },
+        { name: 'Azure Storage' },
+      ])
+      .execute();
 
-    const rows = await queryRunner.query(`
-        SELECT * FROM settings WHERE name in ('Storage Provider', 'AWS Storage','Azure Storage')
-    `);
+    const rows = await queryRunner.manager
+      .createQueryBuilder()
+      .select('*')
+      .from('settings', 's')
+      .where('s.name IN (:...names)', {
+        names: ['Storage Provider', 'AWS Storage', 'Azure Storage'],
+      })
+      .getRawMany();
 
     for (const row of rows) {
       switch (row.name) {
         case 'AWS Storage':
-          await queryRunner.query(
-            `INSERT INTO setting_values(value, name, description, label, setting_id) VALUES
-            ('', 'ACCESS_KEY_ID', 'O campo AWS_ACCESS_KEY_ID é uma chave pública usada para identificar o usuário ou serviço que realiza chamadas à API da AWS, sendo necessária para autenticação junto com o AWS_SECRET_ACCESS_KEY.', 'ID da chave de acesso', ${row.id}),
-            ('', 'SECRET_ACCESS_KEY', 'Chave secreta de acesso para autenticação segura em serviços da AWS.', 'Chave Secreta de Acesso', ${row.id}),
-            ('', 'BUCKET_NAME', 'Nome do bucket de armazenamento na AWS.', 'Nome do Bucket', ${row.id})
-            ;`,
-          );
+          await queryRunner.manager
+            .createQueryBuilder()
+            .insert()
+            .into('setting_values')
+            .values([
+              {
+                value: '',
+                name: 'ACCESS_KEY_ID',
+                description:
+                  'Chave pública usada para identificar o usuário ou serviço que realiza chamadas à API da AWS, sendo necessária para autenticação junto com o AWS_SECRET_ACCESS_KEY.',
+                label: 'ID da chave de acesso',
+                setting_id: row.id,
+              },
+              {
+                value: '',
+                name: 'SECRET_ACCESS_KEY',
+                description:
+                  'Chave secreta de acesso para autenticação segura em serviços da AWS.',
+                label: 'Chave Secreta de Acesso',
+                setting_id: row.id,
+              },
+              {
+                value: '',
+                name: 'BUCKET_NAME',
+                description: 'Nome do bucket de armazenamento na AWS.',
+                label: 'Nome do Bucket',
+                setting_id: row.id,
+              },
+            ])
+            .execute();
           break;
 
         case 'Azure Storage':
-          await queryRunner.query(
-            `INSERT INTO setting_values(value, name, description, label, setting_id) VALUES
-            ('', 'ACCOUNT_NAME', 'Nome da conta de armazenamento no Azure.', 'Nome da Conta de Armazenamento', ${row.id}),
-            ('', 'ACCOUNT_KEY', 'Chave de acesso para autenticação e gerenciamento da conta de armazenamento.', 'Chave da Conta de Armazenamento', ${row.id}),
-            ('', 'CONTAINER_NAME', 'Nome do contêiner dentro da conta de armazenamento.', 'Nome do Container', ${row.id})
-            ;`,
-          );
+          await queryRunner.manager
+            .createQueryBuilder()
+            .insert()
+            .into('setting_values')
+            .values([
+              {
+                value: '',
+                name: 'ACCOUNT_NAME',
+                description: 'Nome da conta de armazenamento no Azure.',
+                label: 'Nome da Conta de Armazenamento',
+                setting_id: row.id,
+              },
+              {
+                value: '',
+                name: 'ACCOUNT_KEY',
+                description:
+                  'Chave de acesso para autenticação e gerenciamento da conta de armazenamento.',
+                label: 'Chave da Conta de Armazenamento',
+                setting_id: row.id,
+              },
+              {
+                value: '',
+                name: 'CONTAINER_NAME',
+                description:
+                  'Nome do contêiner dentro da conta de armazenamento.',
+                label: 'Nome do Container',
+                setting_id: row.id,
+              },
+            ])
+            .execute();
           break;
 
         case 'Storage Provider':
-          await queryRunner.query(
-            `INSERT INTO setting_values(value, name, description, label, setting_id) VALUES
-            ('', 'STORAGE_PROVIDER', 'Escolha entre AWS e Azure como provedor de armazenamento e forneça as informações correspondentes.', 'Provedor de armazenamento', ${row.id})
-            ;`,
-          );
+          await queryRunner.manager
+            .createQueryBuilder()
+            .insert()
+            .into('setting_values')
+            .values([
+              {
+                value: '',
+                name: 'STORAGE_PROVIDER',
+                description:
+                  'Escolha entre AWS e Azure como provedor de armazenamento e forneça as informações correspondentes.',
+                label: 'Provedor de armazenamento',
+                setting_id: row.id,
+              },
+            ])
+            .execute();
           break;
       }
     }

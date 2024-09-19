@@ -7,7 +7,7 @@ import {
 import { idColumn, timestampColumn } from '@hedhog/utils';
 import * as bcrypt from 'bcrypt';
 
-export class Migrate implements MigrationInterface {
+export class Migrate1726761076759 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
@@ -24,11 +24,12 @@ export class Migrate implements MigrationInterface {
       }),
     );
 
-    await queryRunner.query(`
-        INSERT INTO multifactors (name) VALUES
-        ('Email'),
-        ('Applicativo');
-      `);
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('multifactors')
+      .values([{ name: 'Email' }, { name: 'Aplicativo' }])
+      .execute();
 
     await queryRunner.createTable(
       new Table({
@@ -76,12 +77,16 @@ export class Migrate implements MigrationInterface {
 
     const password = await bcrypt.hash(`hedhog`, 12);
 
-    await queryRunner.query(
-      `
-          INSERT INTO users (name, email, password) VALUES
-          ('Superuser', 'root@hedhog.com', '${password}');
-        `,
-    );
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('users')
+      .values({
+        name: 'Superuser',
+        email: 'root@hedhog.com',
+        password,
+      })
+      .execute();
   }
   async down(queryRunner: QueryRunner) {
     await queryRunner.dropTable('users');

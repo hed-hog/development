@@ -136,21 +136,36 @@ export class Migrate implements MigrationInterface {
     order: number,
     menuId: number,
     icon: string,
-  ) {
-    await queryRunner.query(`
-      INSERT INTO menus (name, url, order, menu_id, icon, created_at, updated_at)
-      VALUES ('${name}', '${url}', ${order}, ${menuId}, '${icon}', NOW(), NOW())
-    `);
+  ): Promise<number> {
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('menus')
+      .values({
+        name,
+        url,
+        order,
+        menu_id: menuId,
+        icon,
+        created_at: () => 'NOW()',
+        updated_at: () => 'NOW()',
+      })
+      .execute();
 
-    return (
-      await queryRunner.query(`
-      SELECT id
-      FROM menus
-      WHERE name = '${name}' AND url = '${url}' AND order = ${order} AND menu_id = ${menuId} AND icon = '${icon}'
-      ORDER BY created_at DESC
-      LIMIT 1
-    `)
-    )[0].id;
+    const result = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('menus', 'menu')
+      .where('name = :name', { name })
+      .andWhere('url = :url', { url })
+      .andWhere('order = :order', { order })
+      .andWhere('menu_id = :menuId', { menuId })
+      .andWhere('icon = :icon', { icon })
+      .orderBy('created_at', 'DESC')
+      .limit(1)
+      .getRawOne();
+
+    return result.id;
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

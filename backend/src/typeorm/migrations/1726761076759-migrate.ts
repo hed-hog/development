@@ -3,88 +3,93 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
-} from "typeorm";
-import { idColumn, timestampColumn } from "@hedhog/utils";
-import * as bcrypt from "bcrypt";
+} from 'typeorm';
+import { idColumn, timestampColumn } from '@hedhog/utils';
+import * as bcrypt from 'bcrypt';
 
 export class Migrate1726761076759 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: "multifactors",
+        name: 'multifactors',
         columns: [
           idColumn(),
           {
-            name: "name",
-            type: "varchar",
+            name: 'name',
+            type: 'varchar',
           },
           timestampColumn(),
-          timestampColumn("updated_at"),
+          timestampColumn('updated_at'),
         ],
       }),
     );
 
-    await queryRunner.query(`
-        INSERT INTO multifactors (name) VALUES
-        ('Email'),
-        ('Applicativo');
-      `);
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('multifactors')
+      .values([{ name: 'Email' }, { name: 'Aplicativo' }])
+      .execute();
 
     await queryRunner.createTable(
       new Table({
-        name: "users",
+        name: 'users',
         columns: [
           idColumn(),
           {
-            name: "name",
-            type: "varchar",
+            name: 'name',
+            type: 'varchar',
           },
           {
-            name: "email",
-            type: "varchar",
+            name: 'email',
+            type: 'varchar',
           },
           {
-            name: "password",
-            type: "varchar",
+            name: 'password',
+            type: 'varchar',
           },
           {
-            name: "multifactor_id",
-            type: "int",
+            name: 'multifactor_id',
+            type: 'int',
             isNullable: true,
             unsigned: true,
           },
           {
-            name: "code",
-            type: "varchar",
+            name: 'code',
+            type: 'varchar',
             isNullable: true,
           },
           timestampColumn(),
-          timestampColumn("updated_at"),
+          timestampColumn('updated_at'),
         ],
       }),
     );
 
-    await queryRunner.createForeignKeys("users", [
+    await queryRunner.createForeignKeys('users', [
       new TableForeignKey({
-        columnNames: ["multifactor_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "multifactors",
-        name: "fk_users_to_multifactors_on_multifactor_id",
-        onDelete: "Cascade",
+        columnNames: ['multifactor_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'multifactors',
+        name: 'fk_users_to_multifactors_on_multifactor_id',
+        onDelete: 'Cascade',
       }),
     ]);
 
     const password = await bcrypt.hash(`hedhog`, 12);
 
-    await queryRunner.query(
-      `
-          INSERT INTO users (name, email, password) VALUES
-          ('Superuser', 'root@hedhog.com', '${password}');
-        `,
-    );
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('users')
+      .values({
+        name: 'Superuser',
+        email: 'root@hedhog.com',
+        password,
+      })
+      .execute();
   }
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable("users");
-    await queryRunner.dropTable("multifactors");
+    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('multifactors');
   }
 }

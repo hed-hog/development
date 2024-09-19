@@ -176,50 +176,69 @@ export class Migrate implements MigrationInterface {
       }),
     ]);
 
-    await queryRunner.manager.query(
-      `INSERT INTO routes (url, method) VALUES
-      ('/auth/verify', 'GET'),
-      ('/menus', 'GET'),
-      ('/menus/system', 'GET'),
-      ('/menus/:menuId', 'GET'),
-      ('/menus', 'POST'),
-      ('/menus/:menuId', 'PATCH'),
-      ('/menus', 'DELETE'),
-      ('/menus/order', 'PATCH'),
-      ('/permissions', 'GET'),
-      ('/permissions/:permissionId', 'GET'),
-      ('/permissions', 'POST'),
-      ('/permissions/:permissionId', 'PATCH'),
-      ('/permissions', 'DELETE'),
-      ('/screens', 'GET'),
-      ('/screens/:screenId', 'GET'),
-      ('/screens', 'POST'),
-      ('/screens/:screenId', 'PATCH'),
-      ('/screens', 'DELETE'),
-      ('/settings', 'GET'),
-      ('/settings/:settingId', 'GET'),
-      ('/settings', 'POST'),
-      ('/settings/:settingId', 'PATCH'),
-      ('/settings', 'DELETE'),
-      ('/users', 'GET'),
-      ('/users/:userId', 'GET'),
-      ('/users', 'POST'),
-      ('/users/:userId', 'PATCH'),
-      ('/users', 'DELETE');
-    `,
-    );
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('routes')
+      .values([
+        { url: '/auth/verify', method: 'GET' },
+        { url: '/menus', method: 'GET' },
+        { url: '/menus/system', method: 'GET' },
+        { url: '/menus/:menuId', method: 'GET' },
+        { url: '/menus', method: 'POST' },
+        { url: '/menus/:menuId', method: 'PATCH' },
+        { url: '/menus', method: 'DELETE' },
+        { url: '/menus/order', method: 'PATCH' },
+        { url: '/permissions', method: 'GET' },
+        { url: '/permissions/:permissionId', method: 'GET' },
+        { url: '/permissions', method: 'POST' },
+        { url: '/permissions/:permissionId', method: 'PATCH' },
+        { url: '/permissions', method: 'DELETE' },
+        { url: '/screens', method: 'GET' },
+        { url: '/screens/:screenId', method: 'GET' },
+        { url: '/screens', method: 'POST' },
+        { url: '/screens/:screenId', method: 'PATCH' },
+        { url: '/screens', method: 'DELETE' },
+        { url: '/settings', method: 'GET' },
+        { url: '/settings/:settingId', method: 'GET' },
+        { url: '/settings', method: 'POST' },
+        { url: '/settings/:settingId', method: 'PATCH' },
+        { url: '/settings', method: 'DELETE' },
+        { url: '/users', method: 'GET' },
+        { url: '/users/:userId', method: 'GET' },
+        { url: '/users', method: 'POST' },
+        { url: '/users/:userId', method: 'PATCH' },
+        { url: '/users', method: 'DELETE' },
+      ])
+      .execute();
 
-    await queryRunner.manager.query(
-      `INSERT INTO roles (id, name, description) VALUES
-      (1, 'Administrator', 'System administrator');`,
-    );
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('roles')
+      .values({
+        id: 1,
+        name: 'Administrator',
+        description: 'System administrator',
+      })
+      .execute();
 
-    const routes = await queryRunner.manager.query('SELECT id FROM routes');
+    const routes = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('routes', 'routes')
+      .getRawMany();
 
     for (const route of routes) {
-      await queryRunner.manager.query(
-        `INSERT INTO role_routes (role_id, route_id) VALUES(${1}, ${route.id});`,
-      );
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('role_routes')
+        .values({
+          role_id: 1,
+          route_id: route.id,
+        })
+        .execute();
     }
   }
   async down(queryRunner: QueryRunner) {

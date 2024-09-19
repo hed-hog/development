@@ -1,4 +1,4 @@
-import { idColumn, timestampColumn } from "@hedhog/utils";
+import { idColumn, timestampColumn } from '@hedhog/utils';
 
 import {
   MigrationInterface,
@@ -6,227 +6,246 @@ import {
   Table,
   TableForeignKey,
   TableUnique,
-} from "typeorm";
+} from 'typeorm';
 
 export class Migrate1726764468755 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: "routes",
+        name: 'routes',
         columns: [
           idColumn(),
           {
-            name: "url",
-            type: "varchar",
+            name: 'url',
+            type: 'varchar',
           },
           {
-            name: "method",
-            type: "enum",
-            enum: ["GET", "POST", "PATCH", "DELETE", "PUT", "OPTIONS", "HEAD"],
+            name: 'method',
+            type: 'enum',
+            enum: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS', 'HEAD'],
           },
           timestampColumn(),
-          timestampColumn("updated_at"),
+          timestampColumn('updated_at'),
         ],
       }),
     );
 
     await queryRunner.createUniqueConstraint(
-      "routes",
+      'routes',
       new TableUnique({
-        columnNames: ["url", "method"],
-        name: "unique_routes",
+        columnNames: ['url', 'method'],
+        name: 'unique_routes',
       }),
     );
 
     await queryRunner.createTable(
       new Table({
-        name: "roles",
+        name: 'roles',
         columns: [
           idColumn(),
           {
-            name: "name",
-            type: "varchar",
+            name: 'name',
+            type: 'varchar',
             isNullable: false,
           },
           {
-            name: "description",
-            type: "varchar",
+            name: 'description',
+            type: 'varchar',
           },
           timestampColumn(),
-          timestampColumn("updated_at"),
+          timestampColumn('updated_at'),
         ],
       }),
     );
 
     await queryRunner.createTable(
       new Table({
-        name: "role_screens",
+        name: 'role_screens',
         columns: [
           {
-            name: "role_id",
-            type: "int",
+            name: 'role_id',
+            type: 'int',
             isPrimary: true,
             unsigned: true,
           },
           {
-            name: "screen_id",
-            type: "int",
+            name: 'screen_id',
+            type: 'int',
             isPrimary: true,
             unsigned: true,
           },
           timestampColumn(),
-          timestampColumn("updated_at"),
+          timestampColumn('updated_at'),
         ],
       }),
     );
 
-    await queryRunner.createForeignKeys("role_screens", [
+    await queryRunner.createForeignKeys('role_screens', [
       new TableForeignKey({
-        columnNames: ["role_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "roles",
-        onDelete: "CASCADE",
-        name: "fk_role_screens_roles",
+        columnNames: ['role_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'roles',
+        onDelete: 'CASCADE',
+        name: 'fk_role_screens_roles',
       }),
       new TableForeignKey({
-        columnNames: ["screen_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "screens",
-        onDelete: "CASCADE",
-        name: "fk_role_screens_screen",
+        columnNames: ['screen_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'screens',
+        onDelete: 'CASCADE',
+        name: 'fk_role_screens_screen',
       }),
     ]);
 
     await queryRunner.createTable(
       new Table({
-        name: "role_users",
+        name: 'role_users',
         columns: [
           {
-            name: "role_id",
-            type: "int",
+            name: 'role_id',
+            type: 'int',
             isPrimary: true,
             unsigned: true,
           },
           {
-            name: "user_id",
-            type: "int",
+            name: 'user_id',
+            type: 'int',
             isPrimary: true,
             unsigned: true,
           },
           timestampColumn(),
-          timestampColumn("updated_at"),
+          timestampColumn('updated_at'),
         ],
       }),
     );
 
-    await queryRunner.createForeignKeys("role_users", [
+    await queryRunner.createForeignKeys('role_users', [
       new TableForeignKey({
-        columnNames: ["role_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "roles",
-        onDelete: "CASCADE",
-        name: "fk_role_users_roles",
+        columnNames: ['role_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'roles',
+        onDelete: 'CASCADE',
+        name: 'fk_role_users_roles',
       }),
 
       new TableForeignKey({
-        columnNames: ["user_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "users",
-        onDelete: "CASCADE",
-        name: "fk_role_users_user",
+        columnNames: ['user_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE',
+        name: 'fk_role_users_user',
       }),
     ]);
 
     await queryRunner.createTable(
       new Table({
-        name: "role_routes",
+        name: 'role_routes',
         columns: [
           {
-            name: "role_id",
-            type: "int",
+            name: 'role_id',
+            type: 'int',
             isPrimary: true,
             unsigned: true,
           },
           {
-            name: "route_id",
-            type: "int",
+            name: 'route_id',
+            type: 'int',
             isPrimary: true,
             unsigned: true,
           },
           timestampColumn(),
-          timestampColumn("updated_at"),
+          timestampColumn('updated_at'),
         ],
       }),
     );
 
-    await queryRunner.createForeignKeys("role_routes", [
+    await queryRunner.createForeignKeys('role_routes', [
       new TableForeignKey({
-        columnNames: ["role_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "roles",
-        onDelete: "CASCADE",
-        name: "fk_role_routes_roles",
+        columnNames: ['role_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'roles',
+        onDelete: 'CASCADE',
+        name: 'fk_role_routes_roles',
       }),
       new TableForeignKey({
-        columnNames: ["route_id"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "routes",
-        onDelete: "CASCADE",
-        name: "fk_role_routes_routes",
+        columnNames: ['route_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'routes',
+        onDelete: 'CASCADE',
+        name: 'fk_role_routes_routes',
       }),
     ]);
 
-    await queryRunner.manager.query(
-      `INSERT INTO routes (url, method) VALUES
-      ('/auth/verify', 'GET'),
-      ('/menus', 'GET'),
-      ('/menus/system', 'GET'),
-      ('/menus/:menuId', 'GET'),
-      ('/menus', 'POST'),
-      ('/menus/:menuId', 'PATCH'),
-      ('/menus', 'DELETE'),
-      ('/menus/order', 'PATCH'),
-      ('/permissions', 'GET'),
-      ('/permissions/:permissionId', 'GET'),
-      ('/permissions', 'POST'),
-      ('/permissions/:permissionId', 'PATCH'),
-      ('/permissions', 'DELETE'),
-      ('/screens', 'GET'),
-      ('/screens/:screenId', 'GET'),
-      ('/screens', 'POST'),
-      ('/screens/:screenId', 'PATCH'),
-      ('/screens', 'DELETE'),
-      ('/settings', 'GET'),
-      ('/settings/:settingId', 'GET'),
-      ('/settings', 'POST'),
-      ('/settings/:settingId', 'PATCH'),
-      ('/settings', 'DELETE'),
-      ('/users', 'GET'),
-      ('/users/:userId', 'GET'),
-      ('/users', 'POST'),
-      ('/users/:userId', 'PATCH'),
-      ('/users', 'DELETE');
-    `,
-    );
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('routes')
+      .values([
+        { url: '/auth/verify', method: 'GET' },
+        { url: '/menus', method: 'GET' },
+        { url: '/menus/system', method: 'GET' },
+        { url: '/menus/:menuId', method: 'GET' },
+        { url: '/menus', method: 'POST' },
+        { url: '/menus/:menuId', method: 'PATCH' },
+        { url: '/menus', method: 'DELETE' },
+        { url: '/menus/order', method: 'PATCH' },
+        { url: '/permissions', method: 'GET' },
+        { url: '/permissions/:permissionId', method: 'GET' },
+        { url: '/permissions', method: 'POST' },
+        { url: '/permissions/:permissionId', method: 'PATCH' },
+        { url: '/permissions', method: 'DELETE' },
+        { url: '/screens', method: 'GET' },
+        { url: '/screens/:screenId', method: 'GET' },
+        { url: '/screens', method: 'POST' },
+        { url: '/screens/:screenId', method: 'PATCH' },
+        { url: '/screens', method: 'DELETE' },
+        { url: '/settings', method: 'GET' },
+        { url: '/settings/:settingId', method: 'GET' },
+        { url: '/settings', method: 'POST' },
+        { url: '/settings/:settingId', method: 'PATCH' },
+        { url: '/settings', method: 'DELETE' },
+        { url: '/users', method: 'GET' },
+        { url: '/users/:userId', method: 'GET' },
+        { url: '/users', method: 'POST' },
+        { url: '/users/:userId', method: 'PATCH' },
+        { url: '/users', method: 'DELETE' },
+      ])
+      .execute();
 
-    await queryRunner.manager.query(
-      `INSERT INTO roles (id, name, description) VALUES
-      (1, 'Administrator', 'System administrator');`,
-    );
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('roles')
+      .values({
+        id: 1,
+        name: 'Administrator',
+        description: 'System administrator',
+      })
+      .execute();
 
-    const routes = await queryRunner.manager.query("SELECT id FROM routes");
+    const routes = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('routes', 'routes')
+      .getRawMany();
 
     for (const route of routes) {
-      await queryRunner.manager.query(
-        `INSERT INTO role_routes (role_id, route_id) VALUES(${1}, ${route.id});`,
-      );
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('role_routes')
+        .values({
+          role_id: 1,
+          route_id: route.id,
+        })
+        .execute();
     }
   }
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable("role_routes");
-    await queryRunner.dropTable("roles");
-    await queryRunner.dropTable("role_screens");
-    await queryRunner.dropTable("role_users");
-    await queryRunner.dropTable("routes");
+    await queryRunner.dropTable('role_routes');
+    await queryRunner.dropTable('roles');
+    await queryRunner.dropTable('role_screens');
+    await queryRunner.dropTable('role_users');
+    await queryRunner.dropTable('routes');
   }
 }
