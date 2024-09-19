@@ -24,11 +24,19 @@ export class Migrate implements MigrationInterface {
       }),
     );
 
-    await queryRunner.query(`
-        INSERT INTO multifactors (name) VALUES
-        ('Email'),
-        ('Applicativo');
-      `);
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('multifactors', ['name'])
+      .values([
+        {
+          name: 'Email',
+        },
+        {
+          name: 'Applicativo',
+        },
+      ])
+      .execute();
 
     await queryRunner.createTable(
       new Table({
@@ -74,17 +82,26 @@ export class Migrate implements MigrationInterface {
       }),
     ]);
 
-    const password = await bcrypt.hash(`hedhog`, 12);
-
-    await queryRunner.query(
-      `
-          INSERT INTO users (name, email, password) VALUES
-          ('Superuser', 'root@hedhog.com', '${password}');
-        `,
-    );
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('users', ['name', 'email', 'password'])
+      .values([
+        {
+          name: 'Superuser',
+          email: 'root@hedhog.com',
+          password: await bcrypt.hash(`hedhog`, 12),
+        },
+        {
+          name: 'User',
+          email: 'user@hedhog.com',
+          password: await bcrypt.hash(`hedhog`, 12),
+        },
+      ])
+      .execute();
   }
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('users');
     await queryRunner.dropTable('multifactors');
+    await queryRunner.dropTable('users');
   }
 }

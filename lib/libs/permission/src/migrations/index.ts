@@ -218,7 +218,7 @@ export class Migrate implements MigrationInterface {
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into('routes')
+      .into('routes', ['url', 'method'])
       .values([
         {
           url: '/auth/verify',
@@ -338,12 +338,17 @@ export class Migrate implements MigrationInterface {
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into('roles')
+      .into('roles', ['id', 'name', 'description'])
       .values([
         {
           id: 1,
           name: 'Administrator',
           description: 'System administrator',
+        },
+        {
+          id: 2,
+          name: 'Screen Manager',
+          description: 'Screen manager',
         },
       ])
       .execute();
@@ -355,6 +360,29 @@ export class Migrate implements MigrationInterface {
       .execute();
 
     for (const route of routes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('role_routes')
+        .values({
+          role_id: 1,
+          route_id: route.id,
+        })
+        .execute();
+    }
+
+    const routesScreens = await queryRunner.manager
+      .createQueryBuilder()
+      .select()
+      .from('routes', 's')
+      .where({
+        url: {
+          $in: ['/screens'],
+        },
+      })
+      .execute();
+
+    for (const route of routesScreens) {
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
