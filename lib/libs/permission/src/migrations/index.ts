@@ -10,6 +10,8 @@ import {
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
+    await queryRunner.startTransaction();
+
     await queryRunner.createTable(
       new Table({
         name: 'routes',
@@ -22,6 +24,7 @@ export class Migrate implements MigrationInterface {
           {
             name: 'method',
             type: 'enum',
+            enum: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS', 'HEAD'],
           },
           timestampColumn(),
           timestampColumn('updated_at'),
@@ -221,11 +224,16 @@ export class Migrate implements MigrationInterface {
         INSERT INTO role_routes (role_id, route_id) VALUES(${1}, ${route.id}),
       `);
     }
+
+    await queryRunner.commitTransaction();
   }
   async down(queryRunner: QueryRunner) {
+    await queryRunner.startTransaction();
+    await queryRunner.dropTable('role_routes');
     await queryRunner.dropTable('roles');
     await queryRunner.dropTable('role_screens');
     await queryRunner.dropTable('role_users');
     await queryRunner.dropTable('routes');
+    await queryRunner.commitTransaction();
   }
 }
