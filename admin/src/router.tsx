@@ -70,6 +70,13 @@ const router = createBrowserRouter([
             }),
           },
           {
+            path: 'menus',
+            lazy: async () => ({
+              Component: (await import('./pages/management/menus/index.tsx'))
+                .default,
+            }),
+          },
+          {
             path: 'settings',
             lazy: async () => ({
               Component: (await import('./pages/management/settings/index.tsx'))

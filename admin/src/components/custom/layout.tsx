@@ -98,8 +98,8 @@ const Body = React.forwardRef<
     />
   )
 })
-Body.displayName = 'Body'
 
+Body.displayName = 'Body'
 Layout.Header = Header
 Layout.Body = Body
 
