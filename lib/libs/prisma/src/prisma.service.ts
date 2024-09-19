@@ -18,4 +18,24 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   isMysql() {
     return this.getProvider() === 'mysql';
   }
+
+  createInsensitiveSearch(
+    fields: string[],
+    paginationParams: { search: string },
+    prismaService: { getProvider: () => string },
+  ): any[] {
+    const OR = fields.map((field) => ({
+      [field]: { contains: paginationParams.search },
+    }));
+
+    if (prismaService.getProvider() === 'postgres') {
+      OR.forEach((condition) => {
+        Object.keys(condition).forEach((key) => {
+          (condition[key] as any).mode = 'insensitive';
+        });
+      });
+    }
+
+    return OR;
+  }
 }
