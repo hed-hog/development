@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/menu",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -26,5 +26,10 @@
     "@hedhog/screen": "latest",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.3"
-  }
+  },
+  "files": [
+    "dist/**/*",
+    "src/migrations/**/*.ts",
+    "src/**/*.ejs"
+  ]
 }

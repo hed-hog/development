@@ -6,7 +6,7 @@ import {
 } from 'typeorm';
 import { idColumn, timestampColumn } from '@hedhog/utils';
 
-export class Migrate1726623572707 implements MigrationInterface {
+export class Migrate1726761137378 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -137,24 +137,25 @@ export class Migrate1726623572707 implements MigrationInterface {
     menuId: number,
     icon: string,
   ) {
-    await queryRunner.query(`
-      INSERT INTO menus (name, url, order, menu_id, icon, created_at, updated_at)
-      VALUES ('${name}', '${url}', ${order}, ${menuId}, '${icon}', NOW(), NOW())
-    `);
+    const result = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('menus')
+      .values({
+        name,
+        url,
+        order,
+        icon,
+        menu_id: menuId,
+      })
+      .returning('id')
+      .execute();
 
-    return (
-      await queryRunner.query(`
-      SELECT id
-      FROM menus
-      WHERE name = '${name}' AND url = '${url}' AND order = ${order} AND menu_id = ${menuId} AND icon = '${icon}'
-      ORDER BY created_at DESC
-      LIMIT 1
-    `)
-    )[0].id;
+    return result.raw[0].id;
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('menus');
     await queryRunner.dropTable('menu_screens');
+    await queryRunner.dropTable('menus');
   }
 }

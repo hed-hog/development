@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { FileModule } from '@hedhog/file';
-import { SettingModule } from '@hedhog/setting';
 import { PermissionModule } from '@hedhog/permission';
 import { UserModule } from '@hedhog/user';
 import { MenuModule } from '@hedhog/menu';
@@ -20,11 +18,11 @@ import { PrismaModule } from '@hedhog/prisma';
     MailModule.forRoot({
       global: true,
       type: 'SMTP',
-      host: 'smtp.ethereal.email',
-      port: 587,
+      host: 'changeme',
+      port: 465,
       secure: false,
-      username: 'coby60@ethereal.email',
-      password: '16JQu4vTux7DRGaBmr',
+      username: 'changeme',
+      password: 'changeme',
     }),
     AuthModule,
     PaginationModule,
@@ -32,8 +30,6 @@ import { PrismaModule } from '@hedhog/prisma';
     MenuModule,
     UserModule,
     PermissionModule,
-    SettingModule,
-    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
