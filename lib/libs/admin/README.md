@@ -4,6 +4,12 @@
   <img src="https://avatars.githubusercontent.com/u/177489127?s=200&v=4" alt="Hedhog Avatar" />
 </p>
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Hedhog Auth](#hedhog-auth)
+- [Hedhog Menu](#hedhog-menu)
+
 # Overview
 
 The **Hedhog Admin** module is a collection of core modules essential for managing and administering applications within the HedHog framework. It brings together various modules that provide key functionalities such as authentication, menu configuration, permissions, screen management and user management.
@@ -43,7 +49,7 @@ By importing the AdminModule, you gain access to all the functionality provided 
 
 ---
 
-# @hedhog/auth
+# Hedhog Auth
 
 **HedHog Auth** is a library designed to handle authentication tasks within the HedHog framework. It provides functionalities for user login, token management, multi-factor authentication (MFA), and password reset, ensuring secure and reliable user authentication processes.
 
@@ -53,14 +59,6 @@ By importing the AdminModule, you gain access to all the functionality provided 
 - **Login**: Authenticate users with email and password, and handle multi-factor authentication if required.
 - **OTP Management**: Manage one-time passwords (OTP) for multi-factor authentication.
 - **Password Reset**: Facilitate password reset requests through email.
-
-### Installation
-
-This library is a part of the HedHog framework and is typically included as a dependency in your HedHog projects. Ensure you have the necessary dependencies and setup by following the installation guide in the HedHog framework documentation.
-
-```bash
-npm i @hedhog/auth
-```
 
 #### Controller
 
@@ -119,7 +117,7 @@ auth/
 
 ---
 
-# @hedhog/menu
+# Hedhog Menu
 
 **HedHog Menu** is a library for managing menus within the HedHog framework. It provides a set of RESTful endpoints for CRUD operations on menu items, as well as functionalities to handle pagination and ordering of menus.
 
@@ -128,14 +126,6 @@ auth/
 - **CRUD Operations**: Create, Read, Update, and Delete menu items.
 - **Pagination**: Paginate menu items for efficient data retrieval.
 - **Ordering**: Update the order of menu items.
-
-### Installation
-
-This library is an integral part of the HedHog framework and should be installed as a dependency in your HedHog project. Ensure that the necessary dependencies are configured in your HedHog project.
-
-```bash
-npm i @hedhog/menu
-```
 
 ### MenuController
 
@@ -187,7 +177,7 @@ menu/
 
 ---
 
-# @hedhog/screen
+# Hedhog Screen
 
 **Hedhog Screen** module is part of the HedHog framework and provides functionalities for managing screens in your application. It offers a set of RESTful API endpoints and service methods to handle CRUD operations and pagination for screens.
 
@@ -196,14 +186,6 @@ menu/
 - Create, Read, Update, and Delete (**CRUD**) operations for screens.
 - **Pagination** for listing screens.
 - **Search** functionality to filter screens based on various attributes.
-
-### Installation
-
-This library is an integral part of the HedHog framework and should be installed as a dependency in your HedHog project. Ensure that the necessary dependencies are configured in your HedHog project.
-
-```bash
-npm i @hedhog/screen
-```
 
 ### Controller Endpoints
 
@@ -309,23 +291,15 @@ screen/
 
 ---
 
-# @hedhog/user
+# Hedhog User
 
 The **Hedhog User** module in HedHog provides functionality to manage user data within an application. This module leverages the HedHog framework components, including pagination and [**Prisma**](https://www.prisma.io/) integration, to offer a robust user management system.
-
-### Installation
-
-This library is an integral part of the HedHog framework and should be installed as a dependency in your HedHog project. Ensure that the necessary dependencies are configured in your HedHog project.
-
-```bash
-npm i @hedhog/user
-```
 
 ### Integrations
 
 - **Pagination**: Utilizes `@hedhog/pagination` for managing paginated results of user queries.
 - **Database Interaction**: Uses `@hedhog/prisma` to interface with the database for user data management.
-- **Authentication**: Secured with `@hedhog/auth` to ensure that only authorized users can access or modify user data.
+- **Authentication**: Secured with Auth Module from `@hedhog/admin` to ensure that only authorized users can access or modify user data.
 
 ### Controller Endpoints
 
@@ -354,7 +328,7 @@ npm i @hedhog/user
 #### `PATCH /users/:userId`
 
 - **Description**: Update an existing user.
-- **Authentication**: Required (uses AuthGuard).
+- **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - **userId** (number): The ID of the user to update.
 - **Body**:
@@ -365,7 +339,7 @@ npm i @hedhog/user
 #### `DELETE /users`
 
 - **Description**: Delete one or more users.
-- **Authentication**: Required (uses AuthGuard).
+- **Authentication**: Required (uses `AuthGuard`).
 - **Body**:
   - **ids** (number[]): Array of user IDs to delete.
 

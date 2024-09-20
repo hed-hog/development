@@ -11,7 +11,7 @@ import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
-import { MailService } from '../../';
+import { MailService } from '@hedhog/mail';
 
 @Injectable()
 export class AuthService {
