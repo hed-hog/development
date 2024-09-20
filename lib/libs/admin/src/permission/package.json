@@ -14,11 +14,7 @@
   "peerDependencies": {
     "@hedhog/utils": "latest",
     "@hedhog/prisma": "latest",
-    "@hedhog/auth": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/screen": "latest",
-    "@hedhog/user": "latest",
-    "@hedhog/menu": "latest",
     "@nestjs/jwt": "^10.2.0",
     "@prisma/client": "^5.17.0",
     "typeorm": "^0.3.20",
@@ -31,12 +27,8 @@
     "src/**/*.ejs"
   ],
   "devDependencies": {
-    "@hedhog/auth": "latest",
     "@hedhog/prisma": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/screen": "latest",
-    "@hedhog/user": "latest",
-    "@hedhog/utils": "latest",
-    "@hedhog/menu": "latest"
+    "@hedhog/utils": "latest"
   }
 }

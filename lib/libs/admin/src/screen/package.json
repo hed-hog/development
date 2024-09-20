@@ -12,8 +12,6 @@
   "license": "MIT",
   "description": "",
   "peerDependencies": {
-    "@hedhog/permission": "latest",
-    "@hedhog/auth": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
     "@prisma/client": "^5.17.0",
@@ -24,8 +22,6 @@
     "src/migrations/**/*.ts"
   ],
   "devDependencies": {
-    "@hedhog/permission": "latest",
-    "@hedhog/auth": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
     "ts-node": "^10.9.1",
