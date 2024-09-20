@@ -1,39 +1,27 @@
 import { PrismaModule } from '@hedhog/prisma';
-import {
-  AuthModule,
-  MailConfigurationTypeEnum,
-  MailModule,
-  UserModule,
-  ScreenModule,
-  PermissionModule,
-  SettingModule,
-  FileModule,
-  MenuModule,
-} from '@hedhog/admin';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AdminModule } from '@hedhog/admin';
+import { MailModule, MailConfigurationTypeEnum } from '@hedhog/mail';
+import { PaginationModule } from '@hedhog/pagination';
 
 @Module({
   imports: [
-    AuthModule,
-    UserModule,
     PrismaModule,
-    ScreenModule,
-    PermissionModule,
-    SettingModule,
-    FileModule,
-    MenuModule,
     ConfigModule.forRoot(),
+    PaginationModule,
     MailModule.forRoot({
-      type: MailConfigurationTypeEnum.SMTP,
-      host: 'smtp.ethereal.email',
-      port: 587,
+      global: true,
+      type: 'SMTP',
+      host: 'changeme',
+      port: 465,
       secure: false,
-      password: 'AST7ZFbRWWNeAfqBaa',
-      username: 'loyal.mante34@ethereal.email',
+      username: 'changeme',
+      password: 'changeme',
     }),
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

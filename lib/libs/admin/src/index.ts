@@ -2,27 +2,23 @@
 export * from './admin.module';
 
 // Auth Module
-export * from './auth/src/auth.module';
-export * from './auth/src/auth.service';
-export * from './auth/src/decorators/public.decorator';
-export * from './auth/src/decorators/user.decorator';
-export * from './auth/src/guards/auth.guard';
+export * from './auth/auth.service';
+export * from './auth/decorators/public.decorator';
+export * from './auth/decorators/user.decorator';
+export * from './auth/guards/auth.guard';
 
 // Menu Module
-export * from './menu/src/menu.module';
-export * from './menu/src/menu.service';
+export * from './menu/menu.service';
 
 // Permission Module
-export * from './permission/src/permission.module';
-export * from './permission/src/permission.service';
-export * from './permission/src/types/permission.types';
-export * from './permission/src/decorators/permission.decorator';
+export * from './permission/permission.service';
+export * from './permission/types/permission.types';
+export * from './permission/decorators/permission.decorator';
+export * from './permission/guards/permission.guard';
 
 // Screen Module
-export * from './screen/src/screen.module';
-export * from './screen/src/screen.service';
+export * from './screen/screen.service';
 
 // User Module
-export * from './user/src/constants/user.constants';
-export * from './user/src/user.module';
-export * from './user/src/user.service';
+export * from './user/constants/user.constants';
+export * from './user/user.service';
