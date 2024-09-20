@@ -1,4 +1,4 @@
-import { AuthModule } from '@hedhog/admin';
+import { AuthModule } from '../../';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';

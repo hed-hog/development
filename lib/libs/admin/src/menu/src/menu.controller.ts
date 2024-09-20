@@ -1,4 +1,4 @@
-import { AuthGuard, Permission, User } from '@hedhog/admin';
+import { AuthGuard, Permission, User } from '../../';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,

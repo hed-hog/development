@@ -1,6 +1,6 @@
 import { PrismaModule } from '@hedhog/prisma';
-import { AuthModule } from '@hedhog/admin';
 import {
+  AuthModule,
   MailConfigurationTypeEnum,
   MailModule,
   UserModule,

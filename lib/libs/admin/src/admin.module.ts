@@ -9,7 +9,7 @@ import {
   ScreenModule,
   SettingModule,
   UserModule,
-} from '@hedhog/admin';
+} from './';
 import { forwardRef, Module } from '@nestjs/common';
 
 @Module({
