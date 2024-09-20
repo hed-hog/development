@@ -101,7 +101,8 @@
       "^@hedhog/pagination(|/.*)$": "<rootDir>/libs/pagination/src/$1",
       "^@hedhog/permission(|/.*)$": "<rootDir>/libs/permission/src/$1",
       "^@hedhog/screen(|/.*)$": "<rootDir>/libs/screen/src/$1",
-      "^@hedhog/menu(|/.*)$": "<rootDir>/libs/menu/src/$1"
+      "^@hedhog/menu(|/.*)$": "<rootDir>/libs/menu/src/$1",
+      "^@hedhog/admin(|/.*)$": "<rootDir>/libs/admin/src/$1"
     }
   }
 }
