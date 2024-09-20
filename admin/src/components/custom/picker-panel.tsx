@@ -62,8 +62,6 @@ export default function PickerPanel<T extends {}>({
   const [filteredData, setFilteredData] = useState<any[]>([])
 
   const handleCheckboxChange = (row: any, id: string) => {
-    console.log({ row, id })
-
     setSelectedIds((prevSelectedIds) => {
       const isAlreadySelected = prevSelectedIds.includes(id)
       const updatedSelectedIds = isAlreadySelected

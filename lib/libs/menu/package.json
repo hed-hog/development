@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/menu",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "license": "MIT",
   "description": "",
   "peerDependencies": {
+    "@hedhog/permission": "latest",
     "@hedhog/auth": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
@@ -20,6 +21,7 @@
     "bcrypt": "^5.1.1"
   },
   "devDependencies": {
+    "@hedhog/permission": "latest",
     "@hedhog/auth": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
