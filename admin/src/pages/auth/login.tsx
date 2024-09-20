@@ -24,12 +24,12 @@ export default function SignIn2() {
               <circle cx='9.5' cy='9.5' r='.5' fill='currentColor' />
               <circle cx='14.5' cy='14.5' r='.5' fill='currentColor' />
             </svg>
-            <h1 className='text-xl font-medium'>Hedhog</h1>
+            <h1 className='text-xl font-medium'>HedHog</h1>
           </div>
           <Card className='p-6'>
             <div className='flex flex-col space-y-2 text-left'>
               <h1 className='mb-4 text-2xl font-semibold tracking-tight'>
-                Autenticação
+                Authentication
               </h1>
             </div>
             <UserAuthForm />

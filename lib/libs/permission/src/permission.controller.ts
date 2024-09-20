@@ -17,7 +17,9 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { PermissionService } from './permission.service';
+import { Permission } from './decorators/permission.decorator';
 
+@Permission()
 @Controller('permissions')
 export class PermissionController {
   constructor(

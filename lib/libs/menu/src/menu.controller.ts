@@ -18,7 +18,9 @@ import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { MenuService } from './menu.service';
 import { OrderDTO } from './dto/order.dto';
+import { Permission } from '@hedhog/permission';
 
+@Permission()
 @Controller('menus')
 export class MenuController {
   constructor(

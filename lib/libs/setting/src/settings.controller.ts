@@ -17,7 +17,9 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { SettingsService } from './settings.service';
+import { Permission } from '@hedhog/permission';
 
+@Permission()
 @Controller('settings')
 export class SettingsController {
   constructor(

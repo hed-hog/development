@@ -17,7 +17,9 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
+import { Permission } from '@hedhog/permission';
 
+@Permission()
 @Controller('users')
 export class UserController {
   constructor(

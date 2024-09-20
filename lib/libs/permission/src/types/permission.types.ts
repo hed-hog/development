@@ -1,4 +1,4 @@
-export type Permission = {
+export type PermissionType = {
   id: number;
   name: string;
   slug: string;
@@ -8,7 +8,7 @@ export type Permission = {
   updated_at: string;
 };
 
-export type Role = {
+export type RoleType = {
   id: number;
   name: string;
   slug: string;
@@ -18,7 +18,7 @@ export type Role = {
   updated_at: string;
 };
 
-export type RolePermission = {
+export type RolePermissionType = {
   id: number;
   role_id: number;
   permission_id: number;
@@ -26,7 +26,7 @@ export type RolePermission = {
   updated_at: string;
 };
 
-export type RoleUser = {
+export type RoleUserType = {
   id: number;
   role_id: number;
   user_id: number;

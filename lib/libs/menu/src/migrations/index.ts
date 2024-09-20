@@ -117,7 +117,7 @@ export class Migrate implements MigrationInterface {
       '/management/screens',
       2,
       managementId,
-      'screem',
+      'monitor',
     );
     await this.insertMenu(
       queryRunner,

@@ -21,10 +21,6 @@ export class MenuService {
   ) {}
 
   async getMenus(userId: number, menuId = 0) {
-    console.log({
-      userId,
-      menuId,
-    });
     if (menuId === 0) {
       menuId = null;
     }
@@ -32,13 +28,22 @@ export class MenuService {
     const menus = (await this.prismaService.menus.findMany({
       where: {
         menu_id: menuId,
+        role_menus: {
+          some: {
+            roles: {
+              role_users: {
+                some: {
+                  user_id: userId,
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: {
         order: 'asc',
       },
     })) as unknown[] as any[];
-
-    console.log(menus);
 
     for (let i = 0; i < menus.length; i++) {
       menus[i].menus = await this.getMenus(userId, menus[i].id);
