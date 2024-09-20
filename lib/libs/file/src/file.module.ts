@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { FileService } from './file.service';
-import { AuthModule } from '../../';
+import { AuthModule } from '@hedhog/admin';
 import { PrismaModule } from '@hedhog/prisma';
 import { PaginationModule } from '@hedhog/pagination';
 
