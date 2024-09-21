@@ -17,5 +17,6 @@ import { UserModule } from './user/user.module';
     forwardRef(() => ScreenModule),
     forwardRef(() => UserModule),
   ],
+  exports: [UserModule, AuthModule, PermissionModule, MenuModule, ScreenModule],
 })
 export class AdminModule {}

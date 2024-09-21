@@ -1,6 +1,8 @@
 import {
   CanActivate,
   ExecutionContext,
+  forwardRef,
+  Inject,
   Injectable,
   RequestMethod,
   UnauthorizedException,
@@ -15,7 +17,8 @@ import { PrismaService } from '@hedhog/prisma';
 export class PermissionGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private prisma: PrismaService,
+    @Inject(forwardRef(() => PrismaService))
+    private readonly prisma: PrismaService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

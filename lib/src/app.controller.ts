@@ -7,8 +7,9 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
-import { Public, MailService } from '@hedhog/admin';
+import { Public } from '@hedhog/admin';
 import { HttpAdapterHost } from '@nestjs/core';
+import { MailService } from '@hedhog/mail';
 
 @Public()
 @Controller()

@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Public } from '@hedhog/auth';
+import { Public } from '@hedhog/admin';
 
 @Public()
 @Controller()
