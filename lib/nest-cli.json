@@ -7,15 +7,6 @@
     "webpack": true
   },
   "projects": {
-    "auth": {
-      "type": "library",
-      "root": "libs/auth",
-      "entryFile": "index",
-      "sourceRoot": "libs/auth/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/auth/tsconfig.lib.json"
-      }
-    },
     "file": {
       "type": "library",
       "root": "libs/file",
@@ -43,15 +34,6 @@
         "tsConfigPath": "libs/mail/tsconfig.lib.json"
       }
     },
-    "user": {
-      "type": "library",
-      "root": "libs/user",
-      "entryFile": "index",
-      "sourceRoot": "libs/user/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/user/tsconfig.lib.json"
-      }
-    },
     "pagination": {
       "type": "library",
       "root": "libs/pagination",
@@ -61,31 +43,22 @@
         "tsConfigPath": "libs/pagination/tsconfig.lib.json"
       }
     },
-    "permission": {
+    "setting": {
       "type": "library",
-      "root": "libs/permission",
+      "root": "libs/setting",
       "entryFile": "index",
-      "sourceRoot": "libs/permission/src",
+      "sourceRoot": "libs/setting/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/permission/tsconfig.lib.json"
+        "tsConfigPath": "libs/setting/tsconfig.lib.json"
       }
     },
-    "screen": {
+    "admin": {
       "type": "library",
-      "root": "libs/screen",
+      "root": "libs/admin",
       "entryFile": "index",
-      "sourceRoot": "libs/screen/src",
+      "sourceRoot": "libs/admin/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/screen/tsconfig.lib.json"
-      }
-    },
-    "menu": {
-      "type": "library",
-      "root": "libs/menu",
-      "entryFile": "index",
-      "sourceRoot": "libs/menu/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/menu/tsconfig.lib.json"
+        "tsConfigPath": "libs/admin/tsconfig.lib.json"
       }
     }
   }

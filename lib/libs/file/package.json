@@ -14,7 +14,7 @@
   "peerDependencies": {
     "@hedhog/utils": "latest",
     "@hedhog/prisma": "latest",
-    "@hedhog/auth": "latest",
+    "@hedhog/admin": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/setting": "latest",
     "@nestjs/jwt": "^10.2.0",
@@ -28,7 +28,7 @@
     "src/migrations/**/*.ts"
   ],
   "devDependencies": {
-    "@hedhog/auth": "latest",
+    "@hedhog/admin": "latest",
     "@hedhog/prisma": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/utils": "latest",

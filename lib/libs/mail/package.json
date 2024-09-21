@@ -17,8 +17,10 @@
   ],
   "dependencies": {
     "@nestjs/axios": "^3.0.3",
+    "@nestjs/jwt": "^10.2.0",
     "axios": "^1.7.7",
-    "mimemessage": "1.0.5"
+    "mimemessage": "1.0.5",
+    "bcrypt": "^5.1.1"
   },
   "peerDependencies": {
     "aws-sdk": "2.1691.0",

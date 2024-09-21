@@ -1,4 +1,4 @@
-import { AuthGuard } from '@hedhog/auth';
+import { AuthGuard, Permission } from '@hedhog/admin';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -17,7 +17,6 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { SettingsService } from './settings.service';
-import { Permission } from '@hedhog/permission';
 
 @Permission()
 @Controller('settings')
