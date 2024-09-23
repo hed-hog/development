@@ -18,6 +18,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
 import { Permission } from '../permission/decorators/permission.decorator';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { UpdateRolesDTO } from './dto/update-roles.dto';
 
 @Permission()
 @Controller('users')
@@ -31,6 +32,21 @@ export class UserController {
   @Get()
   async getUsers(@Pagination() paginationParams) {
     return this.userService.getUsers(paginationParams);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':userId/roles')
+  async listRoles(@Param('userId', ParseIntPipe) userId: number) {
+    return this.userService.listRoles(userId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':userId/roles')
+  async updateRoles(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() data: UpdateRolesDTO,
+  ) {
+    return this.userService.updateRoles(userId, data);
   }
 
   @UseGuards(AuthGuard)

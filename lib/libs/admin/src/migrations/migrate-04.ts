@@ -138,11 +138,19 @@ export class Migrate implements MigrationInterface {
           method: 'GET',
         },
         {
+          url: '/users/:userId/roles',
+          method: 'GET',
+        },
+        {
           url: '/users',
           method: 'POST',
         },
         {
           url: '/users/:userId',
+          method: 'PATCH',
+        },
+        {
+          url: '/users/:userId/roles',
           method: 'PATCH',
         },
         {
