@@ -90,6 +90,7 @@ export class PaginationService {
       const query = {
         select: selectCondition,
         where: customQuery?.where || {},
+        include: customQuery?.include || {},
         orderBy: sortOrderCondition,
         take: pageSize,
         skip,
