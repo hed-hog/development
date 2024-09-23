@@ -20,6 +20,16 @@ export class Migrate implements MigrationInterface {
         .execute();
     }
 
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('role_routes')
+      .values({
+        role_id: 2,
+        route_id: 3,
+      })
+      .execute();
+
     const routesScreens = await queryRunner.manager
       .createQueryBuilder()
       .select()
