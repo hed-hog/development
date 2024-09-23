@@ -48,7 +48,7 @@ export class PermissionController {
   @UseGuards(AuthGuard)
   @Patch(':permissionId')
   async update(
-    @Param('PermissionId', ParseIntPipe) permissionId: number,
+    @Param('permissionId', ParseIntPipe) permissionId: number,
     @Body() data: UpdateDTO,
   ) {
     return this.permissionService.update({
