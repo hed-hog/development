@@ -116,37 +116,28 @@ export default function Page() {
 
     const id = openDialog({
       children: () => (
-        <Tabs defaultValue='details'>
-          <TabsList className='grid w-full grid-cols-2'>
-            <TabsTrigger value='details'>Detalhes</TabsTrigger>
-            <TabsTrigger value='roles'>Funções</TabsTrigger>
-          </TabsList>
-          <TabsContent value='details'>
-            <FormPanel
-              fields={[
-                {
-                  name: 'name',
-                  label: { text: 'Nome' },
-                  type: EnumFieldType.TEXT,
-                  required: false,
-                },
-                {
-                  name: 'email',
-                  label: { text: 'Email' },
-                  type: EnumFieldType.TEXT,
-                  required: false,
-                },
-              ]}
-              form={form}
-              button={{ text: 'Editar' }}
-              onSubmit={(data) => {
-                editUser({ id: data.id, data })
-                closeDialog(id)
-              }}
-            />
-          </TabsContent>
-          <TabsContent value='roles'></TabsContent>
-        </Tabs>
+        <FormPanel
+          fields={[
+            {
+              name: 'name',
+              label: { text: 'Nome' },
+              type: EnumFieldType.TEXT,
+              required: false,
+            },
+            {
+              name: 'email',
+              label: { text: 'Email' },
+              type: EnumFieldType.TEXT,
+              required: false,
+            },
+          ]}
+          form={form}
+          button={{ text: 'Editar' }}
+          onSubmit={(data) => {
+            editUser({ id: data.id, data })
+            closeDialog(id)
+          }}
+        />
       ),
       title: 'Editar Usuário',
       description: 'Visualize e edite as informações do usuário.',

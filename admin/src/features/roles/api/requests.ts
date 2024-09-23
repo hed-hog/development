@@ -5,7 +5,7 @@ export function requests() {
 
   const createRole = async (data: any) => {
     return request({
-      url: '/permissions',
+      url: '/roles',
       data,
       method: 'post',
     }).then((res) => res.data)
@@ -13,7 +13,7 @@ export function requests() {
 
   const deleteRoles = async <T>(roleIds: T[]) => {
     return request({
-      url: '/permissions',
+      url: '/roles',
       data: { ids: roleIds },
       method: 'delete',
     }).then((res) => res.data)
@@ -22,7 +22,7 @@ export function requests() {
   const editRole = async (params: { id: string; data: any }) => {
     const { id, data } = params
     return request({
-      url: `/permissions/${id}`,
+      url: `/roles/${id}`,
       method: 'patch',
       data,
     }).then((res) => res.data)

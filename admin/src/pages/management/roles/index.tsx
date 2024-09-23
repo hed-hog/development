@@ -150,7 +150,7 @@ export default function Page() {
       </div>
 
       <DataPanel
-        url='/permissions'
+        url='/roles'
         layout='table'
         id='roles'
         selectable
