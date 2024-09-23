@@ -4,7 +4,6 @@ import { PrismaModule } from '@hedhog/prisma';
 import { Module, forwardRef } from '@nestjs/common';
 import { MenuController } from './menu.controller';
 import { MenuService } from './menu.service';
-import { PermissionModule } from '../role/role.module';
 
 @Module({
   providers: [MenuService],
@@ -14,7 +13,6 @@ import { PermissionModule } from '../role/role.module';
     forwardRef(() => AuthModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
-    forwardRef(() => PermissionModule),
   ],
 })
 export class MenuModule {}
