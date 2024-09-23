@@ -1,6 +1,6 @@
 import { DataPanel } from '@/components/custom/data-panel'
 import FormPanel from '@/components/custom/form-panel'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useCreateUser, useDeleteUser, useEditUser } from '@/features/users'
 import { useApp } from '@/hooks/use-app'
@@ -21,7 +21,7 @@ export default function Page() {
     mode: 'onChange',
   })
 
-  const { openDialog, closeDialog } = useApp()
+  const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
   const { mutate: deleteUsers } = useDeleteUser()
   const { mutate: createUser } = useCreateUser()
   const { mutate: editUser } = useEditUser()
@@ -114,29 +114,43 @@ export default function Page() {
       email: item.email || '',
     })
 
-    const id = openDialog({
+    const id = openSheet({
       children: () => (
-        <FormPanel
-          fields={[
+        <TabPanel
+          activeTabIndex={1}
+          tabs={[
             {
-              name: 'name',
-              label: { text: 'Nome' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Detalhes',
+              children: (
+                <FormPanel
+                  fields={[
+                    {
+                      name: 'name',
+                      label: { text: 'Nome' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                    {
+                      name: 'email',
+                      label: { text: 'Email' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                  ]}
+                  form={form}
+                  button={{ text: 'Editar' }}
+                  onSubmit={(data) => {
+                    editUser({ id: data.id, data })
+                    closeSheet(id)
+                  }}
+                />
+              ),
             },
             {
-              name: 'email',
-              label: { text: 'Email' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Funções',
+              children: <>Hello</>,
             },
           ]}
-          form={form}
-          button={{ text: 'Editar' }}
-          onSubmit={(data) => {
-            editUser({ id: data.id, data })
-            closeDialog(id)
-          }}
         />
       ),
       title: 'Editar Usuário',
