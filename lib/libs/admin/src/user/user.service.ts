@@ -12,8 +12,6 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UpdateRolesDTO } from './dto/update-roles.dto';
-import { count } from 'console';
-import { skip } from 'node:test';
 
 @Injectable()
 export class UserService {
@@ -24,20 +22,24 @@ export class UserService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async listRoles(userId: number) {
-    return this.prismaService.roles.findMany({
-      include: {
-        role_users: {
-          where: {
-            user_id: userId,
-          },
-          select: {
-            user_id: true,
-            role_id: true,
+  async listRoles(userId: number, paginationParams: PaginationDTO) {
+    return this.paginationService.paginate(
+      this.prismaService.roles,
+      paginationParams,
+      {
+        include: {
+          role_users: {
+            where: {
+              user_id: userId,
+            },
+            select: {
+              user_id: true,
+              role_id: true,
+            },
           },
         },
       },
-    });
+    );
   }
 
   async updateRoles(userId: number, { ids }: UpdateRolesDTO) {
