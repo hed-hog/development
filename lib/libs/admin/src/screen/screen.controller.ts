@@ -16,10 +16,11 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { ScreenService } from './screen.service';
-import { Permission } from '../permission/decorators/permission.decorator';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { Role } from '../role/decorators/role.decorator';
 
-@Permission()
+@Role()
+@UseGuards(AuthGuard)
 @Controller('screens')
 export class ScreenController {
   constructor(
@@ -27,25 +28,21 @@ export class ScreenController {
     private readonly screenService: ScreenService,
   ) {}
 
-  @UseGuards(AuthGuard)
   @Get()
   async getScreens(@Pagination() paginationParams) {
     return this.screenService.getScreens(paginationParams);
   }
 
-  @UseGuards(AuthGuard)
   @Get(':screenId')
   async show(@Param('screenId', ParseIntPipe) screenId: number) {
     return this.screenService.get(screenId);
   }
 
-  @UseGuards(AuthGuard)
   @Post()
   create(@Body() data: CreateDTO) {
     return this.screenService.create(data);
   }
 
-  @UseGuards(AuthGuard)
   @Patch(':screenId')
   async update(
     @Param('screenId', ParseIntPipe) screenId: number,
@@ -57,7 +54,6 @@ export class ScreenController {
     });
   }
 
-  @UseGuards(AuthGuard)
   @Delete()
   async delete(@Body() data: DeleteDTO) {
     return this.screenService.delete(data);

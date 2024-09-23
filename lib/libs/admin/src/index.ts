@@ -11,10 +11,9 @@ export * from './auth/guards/auth.guard';
 export * from './menu/menu.service';
 
 // Permission Module
-export * from './permission/permission.service';
-export * from './permission/types/permission.types';
-export * from './permission/decorators/permission.decorator';
-export * from './permission/guards/permission.guard';
+export * from './role/role.service';
+export * from './role/decorators/role.decorator';
+export * from './role/guards/role.guard';
 
 // Screen Module
 export * from './screen/screen.service';

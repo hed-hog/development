@@ -10,11 +10,11 @@ import {
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { METHOD_METADATA } from '@nestjs/common/constants';
-import { WITH_PERMISSION } from '../decorators/permission.decorator';
+import { WITH_ROLE } from '../decorators/role.decorator';
 import { PrismaService } from '@hedhog/prisma';
 
 @Injectable()
-export class PermissionGuard implements CanActivate {
+export class RoleGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     @Inject(forwardRef(() => PrismaService))
@@ -22,12 +22,12 @@ export class PermissionGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const withPermission = this.reflector.getAllAndOverride<boolean>(
-      WITH_PERMISSION,
-      [context.getHandler(), context.getClass()],
-    );
+    const withRole = this.reflector.getAllAndOverride<boolean>(WITH_ROLE, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
-    if (!withPermission) {
+    if (!withRole) {
       return true;
     }
 

@@ -2,10 +2,10 @@ import { AuthModule } from '../auth/auth.module';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
-import { PermissionService } from './permission.service';
-import { PermissionController } from './permission.controller';
-import { PermissionGuard } from './guards/permission.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { RoleController } from './role.controller';
+import { RoleService } from './role.service';
+import { RoleGuard } from './guards/role.guard';
 
 @Module({
   imports: [
@@ -13,14 +13,14 @@ import { APP_GUARD } from '@nestjs/core';
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
   ],
-  controllers: [PermissionController],
+  controllers: [RoleController],
   providers: [
-    PermissionService,
+    RoleService,
     {
       provide: APP_GUARD,
-      useClass: PermissionGuard,
+      useClass: RoleGuard,
     },
   ],
-  exports: [PermissionService],
+  exports: [RoleService],
 })
-export class PermissionModule {}
+export class RoleModule {}

@@ -11,7 +11,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class PermissionService {
+export class RoleService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -19,7 +19,7 @@ export class PermissionService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async getPermissions(paginationParams: PaginationDTO) {
+  async getRoles(paginationParams: PaginationDTO) {
     const fields = ['name', 'description'];
 
     const OR: any[] = this.prismaService.createInsensitiveSearch(
@@ -38,9 +38,9 @@ export class PermissionService {
     );
   }
 
-  async get(permissionId: number) {
+  async get(roleId: number) {
     return this.prismaService.roles.findUnique({
-      where: { id: permissionId },
+      where: { id: roleId },
     });
   }
 

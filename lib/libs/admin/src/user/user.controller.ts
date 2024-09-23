@@ -16,11 +16,12 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
-import { Permission } from '../permission/decorators/permission.decorator';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { UpdateRolesDTO } from './dto/update-roles.dto';
+import { Role } from '../role/decorators/role.decorator';
 
-@Permission()
+@Role()
+@UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
   constructor(
@@ -28,13 +29,11 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
-  @UseGuards(AuthGuard)
   @Get()
   async getUsers(@Pagination() paginationParams) {
     return this.userService.getUsers(paginationParams);
   }
 
-  @UseGuards(AuthGuard)
   @Get(':userId/roles')
   async listRoles(
     @Param('userId', ParseIntPipe) userId: number,
@@ -43,7 +42,6 @@ export class UserController {
     return this.userService.listRoles(userId, paginationParams);
   }
 
-  @UseGuards(AuthGuard)
   @Patch(':userId/roles')
   async updateRoles(
     @Param('userId', ParseIntPipe) userId: number,
@@ -52,19 +50,16 @@ export class UserController {
     return this.userService.updateRoles(userId, data);
   }
 
-  @UseGuards(AuthGuard)
   @Get(':userId')
   async show(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.get(userId);
   }
 
-  @UseGuards(AuthGuard)
   @Post()
   create(@Body() data: CreateDTO) {
     return this.userService.create(data);
   }
 
-  @UseGuards(AuthGuard)
   @Patch(':userId')
   async update(
     @Param('userId', ParseIntPipe) userId: number,
@@ -76,7 +71,6 @@ export class UserController {
     });
   }
 
-  @UseGuards(AuthGuard)
   @Delete()
   async delete(@Body() data: DeleteDTO) {
     return this.userService.delete(data);
