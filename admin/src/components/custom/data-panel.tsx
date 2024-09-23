@@ -71,7 +71,7 @@ type DataPanelTypeBase<T> = {
   selectable?: boolean
   multiple?: boolean
   hasSearch?: boolean
-  menuOrders: MenuOrder[]
+  menuOrders?: MenuOrder[]
   menuActions?: IMenuItemAction<T>[]
   itemClassName?: string
   selected?: T[]
