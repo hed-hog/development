@@ -31,6 +31,7 @@ export default function Page() {
       id: '',
       name: '',
       email: '',
+      password: '',
     })
 
     const id = openDialog({
@@ -49,6 +50,12 @@ export default function Page() {
               name: 'email',
               label: { text: 'Email' },
               type: EnumFieldType.TEXT,
+              required: true,
+            },
+            {
+              name: 'password',
+              label: { text: 'Senha' },
+              type: EnumFieldType.PASSWORD,
               required: true,
             },
           ]}
@@ -112,7 +119,7 @@ export default function Page() {
         <Tabs defaultValue='details'>
           <TabsList className='grid w-full grid-cols-2'>
             <TabsTrigger value='details'>Detalhes</TabsTrigger>
-            <TabsTrigger value='roles'>Cargos</TabsTrigger>
+            <TabsTrigger value='roles'>Funções</TabsTrigger>
           </TabsList>
           <TabsContent value='details'>
             <FormPanel
