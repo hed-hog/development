@@ -36,8 +36,11 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get(':userId/roles')
-  async listRoles(@Param('userId', ParseIntPipe) userId: number) {
-    return this.userService.listRoles(userId);
+  async listRoles(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Pagination() paginationParams,
+  ) {
+    return this.userService.listRoles(userId, paginationParams);
   }
 
   @UseGuards(AuthGuard)
