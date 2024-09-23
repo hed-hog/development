@@ -1,3 +1,4 @@
+import { DataPanel } from '@/components/custom/data-panel'
 import { Helmet } from 'react-helmet'
 
 export default function Page() {
@@ -11,6 +12,12 @@ export default function Page() {
           <h1 className='text-2xl font-bold tracking-tight'>Users</h1>
         </div>
       </div>
+      <DataPanel
+        url="/users"
+        layout='grid'
+        id='users'
+        menuOrders={[]}
+      />
     </>
   )
 }

@@ -42,7 +42,11 @@ export class PermissionGuard implements CanActivate {
       handler,
     );
 
-    const fullPath = `/${controllerPath}/${methodPath}`.replace(/\/+/g, '/');
+    let fullPath = `/${controllerPath}/${methodPath}`.replace(/\/+/g, '/');
+
+    if (fullPath.endsWith('/')) {
+      fullPath = fullPath.slice(0, -1);
+    }
 
     const token = this.extractTokenFromHeader(request);
 

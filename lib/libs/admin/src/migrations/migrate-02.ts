@@ -32,6 +32,38 @@ export class Migrate implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('screens', ['name', 'slug', 'description', 'icon'])
+      .values([
+        {
+          name: 'Users',
+          slug: '/management/users',
+          description: 'Check all users registered in the system.',
+          icon: 'users',
+        },
+        {
+          name: 'Roles',
+          slug: '/management/roles',
+          description: 'Check all roles registered in the system.',
+          icon: 'circles',
+        },
+        {
+          name: 'Screens',
+          slug: '/management/screens',
+          description: 'Check all screens registered in the system.',
+          icon: 'monitor',
+        },
+        {
+          name: 'Menus',
+          slug: '/management/menus',
+          description: 'Check all menus registered in the system.',
+          icon: 'menu',
+        },
+      ])
+      .execute();
   }
 
   async down(queryRunner: QueryRunner) {

@@ -1,27 +1,55 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { timestampColumn } from '@hedhog/utils';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
-    const screens = await queryRunner.manager
-      .createQueryBuilder()
-      .select()
-      .from('screens', 's')
-      .execute();
+    await queryRunner.createTable(
+      new Table({
+        name: 'role_users',
+        columns: [
+          {
+            name: 'role_id',
+            type: 'int',
+            isPrimary: true,
+            unsigned: true,
+          },
+          {
+            name: 'user_id',
+            type: 'int',
+            isPrimary: true,
+            unsigned: true,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+      }),
+    );
 
-    for (const screen of screens.raw) {
-      await queryRunner.manager
-        .createQueryBuilder()
-        .insert()
-        .into('role_screens')
-        .values({
-          role_id: 1,
-          screen_id: screen.id,
-        })
-        .execute();
-    }
+    await queryRunner.createForeignKeys('role_users', [
+      new TableForeignKey({
+        columnNames: ['role_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'roles',
+        onDelete: 'CASCADE',
+        name: 'fk_role_users_roles',
+      }),
+
+      new TableForeignKey({
+        columnNames: ['user_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE',
+        name: 'fk_role_users_users',
+      }),
+    ]);
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('role_screens');
+    await queryRunner.dropTable('role_users');
   }
 }

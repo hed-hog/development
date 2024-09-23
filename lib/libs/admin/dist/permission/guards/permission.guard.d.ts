@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { PrismaService } from '@hedhog/prisma';
 export declare class PermissionGuard implements CanActivate {
     private reflector;
-    private prisma;
+    private readonly prisma;
     constructor(reflector: Reflector, prisma: PrismaService);
     canActivate(context: ExecutionContext): Promise<boolean>;
     private extractTokenFromHeader;

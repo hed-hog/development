@@ -10,7 +10,7 @@ export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'role_users',
+        name: 'role_routes',
         columns: [
           {
             name: 'role_id',
@@ -19,7 +19,7 @@ export class Migrate implements MigrationInterface {
             unsigned: true,
           },
           {
-            name: 'user_id',
+            name: 'route_id',
             type: 'int',
             isPrimary: true,
             unsigned: true,
@@ -30,40 +30,25 @@ export class Migrate implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKeys('role_users', [
+    await queryRunner.createForeignKeys('role_routes', [
       new TableForeignKey({
         columnNames: ['role_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'roles',
         onDelete: 'CASCADE',
-        name: 'fk_role_users_roles',
+        name: 'fk_role_routes_roles',
       }),
-
       new TableForeignKey({
-        columnNames: ['user_id'],
+        columnNames: ['route_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'users',
+        referencedTableName: 'routes',
         onDelete: 'CASCADE',
-        name: 'fk_role_users_users',
+        name: 'fk_role_routes_routes',
       }),
     ]);
-
-    const roleUsers = [
-      { role_id: 1, user_id: 1 },
-      { role_id: 2, user_id: 2 },
-    ];
-
-    for (const roleUser of roleUsers) {
-      await queryRunner.manager
-        .createQueryBuilder()
-        .insert()
-        .into('role_users')
-        .values(roleUser)
-        .execute();
-    }
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('role_users');
+    await queryRunner.dropTable('role_routes');
   }
 }

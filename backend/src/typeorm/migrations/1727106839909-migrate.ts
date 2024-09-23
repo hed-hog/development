@@ -1,40 +1,48 @@
 import { idColumn, timestampColumn } from "@hedhog/utils";
-
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class Migrate1726857953037 implements MigrationInterface {
+export class Migrate1727106839909 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: "screens",
+        name: "roles",
         columns: [
           idColumn(),
           {
             name: "name",
             type: "varchar",
-          },
-          {
-            name: "slug",
-            type: "varchar",
-            isUnique: true,
+            isNullable: false,
           },
           {
             name: "description",
             type: "varchar",
-          },
-          {
-            name: "icon",
-            type: "varchar",
-            isNullable: true,
           },
           timestampColumn(),
           timestampColumn("updated_at"),
         ],
       }),
     );
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into("roles", ["id", "name", "description"])
+      .values([
+        {
+          id: 1,
+          name: "Administrator",
+          description: "System administrator",
+        },
+        {
+          id: 2,
+          name: "Screen Manager",
+          description: "Screen manager",
+        },
+      ])
+      .execute();
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable("screens");
+    await queryRunner.dropTable("roles");
   }
 }
