@@ -5,9 +5,9 @@ import { PermissionService } from './permission.service';
 export declare class PermissionController {
     private readonly permissionService;
     constructor(permissionService: PermissionService);
-    getPermissions(paginationParams: any): Promise<import("@hedhog/pagination").PaginatedResult<unknown>>;
+    getPermissions(paginationParams: any): Promise<any>;
     show(permissionId: number): Promise<any>;
-    create(data: CreateDTO): Promise<any>;
+    create(data: CreateDTO): any;
     update(permissionId: number, data: UpdateDTO): Promise<any>;
     delete(data: DeleteDTO): Promise<any>;
 }
