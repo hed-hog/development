@@ -70,23 +70,23 @@ export class Migrate implements MigrationInterface {
           method: 'PATCH',
         },
         {
-          url: '/permissions',
+          url: '/roles',
           method: 'GET',
         },
         {
-          url: '/permissions/:permissionId',
+          url: '/roles/:roleId',
           method: 'GET',
         },
         {
-          url: '/permissions',
+          url: '/roles',
           method: 'POST',
         },
         {
-          url: '/permissions/:permissionId',
+          url: '/roles/:roleId',
           method: 'PATCH',
         },
         {
-          url: '/permissions',
+          url: '/roles',
           method: 'DELETE',
         },
         {
