@@ -46,7 +46,7 @@ const ListView = <T extends any>({
   selectedIds = [],
   ...props
 }: ListViewProps<T>) => {
-  const isFirstRender = useFirstRender()
+  const [isFirstRender, setIsFirstRender] = useState(false)
 
   const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
 
@@ -142,37 +142,6 @@ const ListView = <T extends any>({
     return data.every((item) => selectedKeys.has(extractKey(item)))
   }, [selectedItems, data, extractKey])
 
-  const listItems = data.map((item, index) => (
-    <div
-      key={extractKey(item)}
-      className={[
-        itemClassName ?? 'border-b',
-        'flex flex-row items-center truncate py-2 hover:bg-muted/50',
-        selectedItems.includes(extractKey(item)) && 'bg-muted/30',
-        selectable && 'cursor-pointer',
-      ].join(' ')}
-      onClick={() => {
-        if (selectable) {
-          toggleSelectItem(item)
-        }
-      }}
-      style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
-    >
-      {selectable && (
-        <Checkbox
-          checked={
-            isFirstRender && typeof checked === 'function'
-              ? checked(item)
-              : selectedItems.includes(extractKey(item))
-          }
-          onCheckedChange={() => toggleSelectItem(item)}
-          className='mr-2'
-        />
-      )}
-      {render ? render(item, index) : <div>{objectToString(item)}</div>}
-    </div>
-  ))
-
   return (
     <div {...props} className={`p-${styleOptions.padding} ${className}`}>
       <div className='border-b'>
@@ -184,7 +153,43 @@ const ListView = <T extends any>({
           />
         )}
       </div>
-      {listItems}
+
+      {data.map((item, index) => (
+        <div
+          key={extractKey(item)}
+          className={[
+            itemClassName ?? 'border-b',
+            'flex flex-row items-center truncate py-2 hover:bg-muted/50',
+            selectedItems.includes(extractKey(item)) && 'bg-muted/30',
+            selectable && 'cursor-pointer',
+          ].join(' ')}
+          onClick={() => {
+            if (selectable) {
+              toggleSelectItem(item)
+            }
+          }}
+          style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
+        >
+          {selectable && (
+            <Checkbox
+              checked={
+                !isFirstRender && typeof checked === 'function'
+                  ? checked(item)
+                  : selectedItems.includes(extractKey(item))
+              }
+              onCheckedChange={() => toggleSelectItem(item)}
+              className='mr-2'
+            />
+          )}
+          {render ? render(item, index) : <div>{objectToString(item)}</div>}
+        </div>
+      ))}
+      {data.length > 0 &&
+        !isFirstRender &&
+        (() => {
+          setIsFirstRender(true)
+          return null
+        })()}
     </div>
   )
 }
