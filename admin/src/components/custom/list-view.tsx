@@ -1,10 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Checkbox } from '../ui/checkbox'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { IStyleOption } from '@/types/style-options'
 import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
-import useFirstRender from '@/hooks/use-first-render'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   data: T[]
@@ -47,8 +46,31 @@ const ListView = <T extends any>({
   ...props
 }: ListViewProps<T>) => {
   const [isFirstRender, setIsFirstRender] = useState(false)
-
   const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
+
+  const firstChecked = useCallback(() => {
+    if (!isFirstRender && data.length > 0 && typeof checked === 'function') {
+      setIsFirstRender(true)
+
+      let index = 0
+      for (const item of data) {
+        const id = extractKey(item)
+
+        if (checked(item)) {
+          setSelectedItems([...selectedItems, id])
+        }
+        index++
+      }
+    }
+  }, [isFirstRender, data, selectedItems, extractKey])
+
+  useEffect(() => {
+    firstChecked()
+  }, [data])
+
+  useEffect(() => {
+    console.log({ selectedItems })
+  }, [selectedItems])
 
   useEffectAfterFirstUpdate(() => {
     if (onSelectionChange) {
@@ -132,7 +154,7 @@ const ListView = <T extends any>({
   }, [data, extractKey, onSelect, onUnselect])
 
   useEffectAfterFirstUpdate(() => {
-    if (multiple) {
+    if (multiple && typeof checked !== 'function') {
       setSelectedItems(selectedIds)
     }
   }, [selectedIds])
@@ -172,11 +194,7 @@ const ListView = <T extends any>({
         >
           {selectable && (
             <Checkbox
-              checked={
-                !isFirstRender && typeof checked === 'function'
-                  ? checked(item)
-                  : selectedItems.includes(extractKey(item))
-              }
+              checked={selectedItems.includes(extractKey(item))}
               onCheckedChange={() => toggleSelectItem(item)}
               className='mr-2'
             />
@@ -184,12 +202,6 @@ const ListView = <T extends any>({
           {render ? render(item, index) : <div>{objectToString(item)}</div>}
         </div>
       ))}
-      {data.length > 0 &&
-        !isFirstRender &&
-        (() => {
-          setIsFirstRender(true)
-          return null
-        })()}
     </div>
   )
 }
