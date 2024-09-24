@@ -68,10 +68,6 @@ const ListView = <T extends any>({
     firstChecked()
   }, [data])
 
-  useEffect(() => {
-    console.log({ selectedItems })
-  }, [selectedItems])
-
   useEffectAfterFirstUpdate(() => {
     if (onSelectionChange) {
       onSelectionChange(
@@ -196,7 +192,7 @@ const ListView = <T extends any>({
             <Checkbox
               checked={selectedItems.includes(extractKey(item))}
               onCheckedChange={() => toggleSelectItem(item)}
-              className='mr-2'
+              className='mx-2'
             />
           )}
           {render ? render(item, index) : <div>{objectToString(item)}</div>}

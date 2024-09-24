@@ -282,6 +282,7 @@ const TableView = <T extends any>({
           {selectable && (
             <TableCell>
               <Checkbox
+                className='mx-2'
                 checked={
                   (typeof checked === 'function' && checked(row)) ||
                   selectedItems.includes(extractKey(row))

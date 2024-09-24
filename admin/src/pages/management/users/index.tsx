@@ -25,6 +25,8 @@ export default function Page() {
         userId,
         roleIds: newUserRoles.map((r) => r.id),
       })
+
+      setUserId('')
     }
   }, [userId])
 
@@ -188,14 +190,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Cancelar',
-                  variant: 'secondary',
-                  onClick: () => {
-                    closeSheet(id)
-                  },
-                },
-                {
-                  text: 'Editar',
+                  text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
                     setUserId(item.id)
