@@ -28,5 +28,26 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  return { createUser, deleteUsers, editUser }
+  const getUserRoles = async ({ userId }: { userId: string }) => {
+    return request({
+      url: `/users/${userId}/roles`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const editUserRoles = async ({
+    userId,
+    roleIds,
+  }: {
+    userId: string
+    roleIds: number[]
+  }) => {
+    return request({
+      url: `/users/${userId}/roles`,
+      data: { ids: roleIds },
+      method: 'patch',
+    }).then((res) => res.data)
+  }
+
+  return { createUser, deleteUsers, editUser, getUserRoles, editUserRoles }
 }

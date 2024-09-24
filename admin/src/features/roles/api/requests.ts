@@ -28,5 +28,12 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  return { createRole, deleteRoles, editRole }
+  const getRoles = async () => {
+    return request({
+      url: '/roles',
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  return { createRole, deleteRoles, editRole, getRoles }
 }
