@@ -41,7 +41,7 @@ export const TabPanel = ({ tabs, activeTabIndex = 0 }: TabPanelProps) => {
         ))}
       </TabsList>
       {tabs.map(({ children, buttons }, index) => (
-        <TabsContent key={`tab-content-${index}`} value='account'>
+        <TabsContent key={`tab-content-${index}`} value={`tab-${index}`}>
           <TabsBody>{children}</TabsBody>
           {buttons && buttons?.length > 0 && (
             <TabsFooter>
