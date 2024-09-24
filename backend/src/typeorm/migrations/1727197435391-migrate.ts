@@ -2,7 +2,7 @@ import { idColumn, timestampColumn } from "@hedhog/utils";
 
 import { MigrationInterface, QueryRunner, Table, TableUnique } from "typeorm";
 
-export class Migrate1727190646188 implements MigrationInterface {
+export class Migrate1727197435391 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
@@ -128,6 +128,22 @@ export class Migrate1727190646188 implements MigrationInterface {
         {
           url: "/screens/:screenId",
           method: "GET",
+        },
+        {
+          url: "/screens/:screenId/roles",
+          method: "GET",
+        },
+        {
+          url: "/screens/:screenId/routes",
+          method: "GET",
+        },
+        {
+          url: "/screens/:screenId/roles",
+          method: "PATCH",
+        },
+        {
+          url: "/screens/:screenId/routes",
+          method: "PATCH",
         },
         {
           url: "/screens",

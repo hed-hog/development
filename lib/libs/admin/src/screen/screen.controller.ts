@@ -35,13 +35,19 @@ export class ScreenController {
   }
 
   @Get(':screenId/roles')
-  async listRoles(@Param('screenId', ParseIntPipe) screenId: number) {
-    return this.screenService.listRoles(screenId);
+  async listRoles(
+    @Param('screenId', ParseIntPipe) screenId: number,
+    @Pagination() paginationParams,
+  ) {
+    return this.screenService.listRoles(screenId, paginationParams);
   }
 
   @Get(':screenId/routes')
-  async listRoutes(@Param('screenId', ParseIntPipe) screenId: number) {
-    return this.screenService.listRoutes(screenId);
+  async listRoutes(
+    @Param('screenId', ParseIntPipe) screenId: number,
+    @Pagination() paginationParams,
+  ) {
+    return this.screenService.listRoutes(screenId, paginationParams);
   }
 
   @Patch(':screenId/roles')

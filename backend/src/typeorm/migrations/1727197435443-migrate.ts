@@ -6,7 +6,7 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class Migrate1727190646235 implements MigrationInterface {
+export class Migrate1727197435443 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
