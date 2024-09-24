@@ -117,7 +117,7 @@ export default function Page() {
     const id = openSheet({
       children: () => (
         <TabPanel
-          activeTabIndex={1}
+          activeTabIndex={0}
           tabs={[
             {
               title: 'Detalhes',
