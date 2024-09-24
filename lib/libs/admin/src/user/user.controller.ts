@@ -17,8 +17,8 @@ import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
-import { UpdateRolesDTO } from './dto/update-roles.dto';
 import { Role } from '../role/decorators/role.decorator';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
 @Role()
 @UseGuards(AuthGuard)
@@ -45,7 +45,7 @@ export class UserController {
   @Patch(':userId/roles')
   async updateRoles(
     @Param('userId', ParseIntPipe) userId: number,
-    @Body() data: UpdateRolesDTO,
+    @Body() data: UpdateIdsDTO,
   ) {
     return this.userService.updateRoles(userId, data);
   }

@@ -18,6 +18,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { ScreenService } from './screen.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { Role } from '../role/decorators/role.decorator';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
 @Role()
 @UseGuards(AuthGuard)
@@ -31,6 +32,32 @@ export class ScreenController {
   @Get()
   async getScreens(@Pagination() paginationParams) {
     return this.screenService.getScreens(paginationParams);
+  }
+
+  @Get(':screenId/roles')
+  async listRoles(@Param('screenId', ParseIntPipe) screenId: number) {
+    return this.screenService.listRoles(screenId);
+  }
+
+  @Get(':screenId/routes')
+  async listRoutes(@Param('screenId', ParseIntPipe) screenId: number) {
+    return this.screenService.listRoutes(screenId);
+  }
+
+  @Patch(':screenId/roles')
+  async updateRoles(
+    @Param('screenId', ParseIntPipe) screenId: number,
+    @Body() data: UpdateIdsDTO,
+  ) {
+    return this.screenService.updateRoles(screenId, data);
+  }
+
+  @Patch(':screenId/routes')
+  async updateRoutes(
+    @Param('screenId', ParseIntPipe) screenId: number,
+    @Body() data: UpdateIdsDTO,
+  ) {
+    return this.screenService.updateRoutes(screenId, data);
   }
 
   @Get(':screenId')

@@ -9,6 +9,7 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
 @Injectable()
 export class ScreenService {
@@ -18,6 +19,59 @@ export class ScreenService {
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
   ) {}
+
+  async updateRoles(screenId: number, data: UpdateIdsDTO) {
+    await this.prismaService.role_screens.deleteMany({
+      where: {
+        screen_id: screenId,
+      },
+    });
+
+    return this.prismaService.role_screens.createMany({
+      data: data.ids.map((roleId) => ({
+        screen_id: screenId,
+        role_id: roleId,
+      })),
+      skipDuplicates: true,
+    });
+  }
+  async updateRoutes(screenId: number, data: UpdateIdsDTO) {
+    await this.prismaService.route_screeens.deleteMany({
+      where: {
+        screen_id: screenId,
+      },
+    });
+
+    return this.prismaService.route_screeens.createMany({
+      data: data.ids.map((routeId) => ({
+        screen_id: screenId,
+        route_id: routeId,
+      })),
+      skipDuplicates: true,
+    });
+  }
+  async listRoutes(screenId: number) {
+    return this.prismaService.routes.findMany({
+      where: {
+        screens: {
+          some: {
+            id: screenId,
+          },
+        },
+      },
+    });
+  }
+  async listRoles(screenId: number) {
+    return this.prismaService.roles.findMany({
+      where: {
+        screens: {
+          some: {
+            id: screenId,
+          },
+        },
+      },
+    });
+  }
 
   async getScreens(paginationParams: PaginationDTO) {
     const fields = ['name', 'slug', 'description', 'icon'];

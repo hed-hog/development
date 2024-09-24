@@ -20,6 +20,7 @@ import { OrderDTO } from './dto/order.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../auth/decorators/user.decorator';
 import { Role } from '../role/decorators/role.decorator';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
 @Role()
 @UseGuards(AuthGuard)
@@ -38,6 +39,32 @@ export class MenuController {
   @Get()
   async getMenu(@Pagination() paginationParams) {
     return this.menuService.getMenu(paginationParams);
+  }
+
+  @Get(':menuId/roles')
+  async listRoles(@Param('menuId', ParseIntPipe) menuId: number) {
+    return this.menuService.listRoles(menuId);
+  }
+
+  @Get(':menuId/screens')
+  async listScreens(@Param('menuId', ParseIntPipe) menuId: number) {
+    return this.menuService.listScreens(menuId);
+  }
+
+  @Patch(':menuId/roles')
+  async updateRoles(
+    @Param('menuId', ParseIntPipe) menuId: number,
+    @Body() data: UpdateIdsDTO,
+  ) {
+    return this.menuService.updateRoles(menuId, data);
+  }
+
+  @Patch(':menuId/screens')
+  async updateScreens(
+    @Param('menuId', ParseIntPipe) menuId: number,
+    @Body() data: UpdateIdsDTO,
+  ) {
+    return this.menuService.updateScreens(menuId, data);
   }
 
   @Get(':menuId')

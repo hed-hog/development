@@ -18,11 +18,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { RoleService } from './role.service';
 import { Role } from './decorators/role.decorator';
 import { AuthGuard } from '../auth/guards/auth.guard';
-import { UpdateUsersDTO } from './dto/update-users.dto';
-import { UpdateMenusDTO } from './dto/update-menus.dto';
-import { UpdateRoutesDTO } from './dto/update-routes.dto';
-import { UpdateScreensDTO } from './dto/update-screens.dto';
-
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 @Role()
 @UseGuards(AuthGuard)
 @Controller('roles')
@@ -60,7 +56,7 @@ export class RoleController {
   @Patch(':roleId/users')
   async updateUsers(
     @Param('roleId', ParseIntPipe) roleId: number,
-    @Body() data: UpdateUsersDTO,
+    @Body() data: UpdateIdsDTO,
   ) {
     return this.roleService.updateUsers(roleId, data);
   }
@@ -68,7 +64,7 @@ export class RoleController {
   @Patch(':roleId/menus')
   async updateMenus(
     @Param('roleId', ParseIntPipe) roleId: number,
-    @Body() data: UpdateMenusDTO,
+    @Body() data: UpdateIdsDTO,
   ) {
     return this.roleService.updateMenus(roleId, data);
   }
@@ -76,7 +72,7 @@ export class RoleController {
   @Patch(':roleId/routes')
   async updateRoutes(
     @Param('roleId', ParseIntPipe) roleId: number,
-    @Body() data: UpdateRoutesDTO,
+    @Body() data: UpdateIdsDTO,
   ) {
     return this.roleService.updateRoutes(roleId, data);
   }
@@ -84,7 +80,7 @@ export class RoleController {
   @Patch(':roleId/screens')
   async updateScreens(
     @Param('roleId', ParseIntPipe) roleId: number,
-    @Body() data: UpdateScreensDTO,
+    @Body() data: UpdateIdsDTO,
   ) {
     return this.roleService.updateScreens(roleId, data);
   }

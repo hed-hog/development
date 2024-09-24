@@ -3,6 +3,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { MenuService } from './menu.service';
 import { OrderDTO } from './dto/order.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 export declare class MenuController {
     private readonly menuService;
     constructor(menuService: MenuService);
@@ -10,6 +11,10 @@ export declare class MenuController {
         id: any;
     }): Promise<any[]>;
     getMenu(paginationParams: any): Promise<import("@hedhog/pagination").PaginatedResult<unknown>>;
+    listRoles(menuId: number): Promise<any>;
+    listScreens(menuId: number): Promise<any>;
+    updateRoles(menuId: number, data: UpdateIdsDTO): Promise<any>;
+    updateScreens(menuId: number, data: UpdateIdsDTO): Promise<any>;
     show(menuId: number): Promise<any>;
     create(data: CreateDTO): Promise<any>;
     update(menuId: number, data: UpdateDTO): Promise<any>;

@@ -10,6 +10,7 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { OrderDTO } from './dto/order.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
 @Injectable()
 export class MenuService {
@@ -19,6 +20,59 @@ export class MenuService {
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
   ) {}
+
+  async updateScreens(menuId: number, data: UpdateIdsDTO) {
+    await this.prismaService.menu_screens.deleteMany({
+      where: {
+        menu_id: menuId,
+      },
+    });
+
+    return this.prismaService.menu_screens.createMany({
+      data: data.ids.map((screenId) => ({
+        menu_id: menuId,
+        screen_id: screenId,
+      })),
+      skipDuplicates: true,
+    });
+  }
+  async updateRoles(menuId: number, data: UpdateIdsDTO) {
+    await this.prismaService.role_menus.deleteMany({
+      where: {
+        menu_id: menuId,
+      },
+    });
+
+    return this.prismaService.role_menus.createMany({
+      data: data.ids.map((roleId) => ({
+        menu_id: menuId,
+        role_id: roleId,
+      })),
+      skipDuplicates: true,
+    });
+  }
+  async listScreens(menuId: number) {
+    return this.prismaService.screens.findMany({
+      where: {
+        menus: {
+          some: {
+            id: menuId,
+          },
+        },
+      },
+    });
+  }
+  async listRoles(menuId: number) {
+    return this.prismaService.roles.findMany({
+      where: {
+        role_menus: {
+          some: {
+            menu_id: menuId,
+          },
+        },
+      },
+    });
+  }
 
   async getMenus(userId: number, menuId = 0) {
     if (menuId === 0) {

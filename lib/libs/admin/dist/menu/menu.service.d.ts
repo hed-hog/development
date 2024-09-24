@@ -4,10 +4,15 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { OrderDTO } from './dto/order.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 export declare class MenuService {
     private readonly prismaService;
     private readonly paginationService;
     constructor(prismaService: PrismaService, paginationService: PaginationService);
+    updateScreens(menuId: number, data: UpdateIdsDTO): Promise<any>;
+    updateRoles(menuId: number, data: UpdateIdsDTO): Promise<any>;
+    listScreens(menuId: number): Promise<any>;
+    listRoles(menuId: number): Promise<any>;
     getMenus(userId: number, menuId?: number): Promise<any[]>;
     getSystemMenu(userId: number): Promise<any[]>;
     getMenu(paginationParams: PaginationDTO): Promise<import("@hedhog/pagination").PaginatedResult<unknown>>;

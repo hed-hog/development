@@ -130,6 +130,22 @@ export class Migrate implements MigrationInterface {
           method: 'GET',
         },
         {
+          url: '/screens/:screenId/roles',
+          method: 'GET',
+        },
+        {
+          url: '/screens/:screenId/routes',
+          method: 'GET',
+        },
+        {
+          url: '/screens/:screenId/roles',
+          method: 'PATCH',
+        },
+        {
+          url: '/screens/:screenId/routes',
+          method: 'PATCH',
+        },
+        {
           url: '/screens',
           method: 'POST',
         },

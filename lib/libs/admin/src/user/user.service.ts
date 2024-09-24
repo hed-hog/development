@@ -11,7 +11,7 @@ import { SALT_ROUNDS } from './constants/user.constants';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { UpdateRolesDTO } from './dto/update-roles.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
 @Injectable()
 export class UserService {
@@ -42,7 +42,7 @@ export class UserService {
     );
   }
 
-  async updateRoles(userId: number, { ids }: UpdateRolesDTO) {
+  async updateRoles(userId: number, { ids }: UpdateIdsDTO) {
     await this.prismaService.roles.deleteMany({
       where: {
         user_id: userId,

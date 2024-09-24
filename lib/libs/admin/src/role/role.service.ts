@@ -9,11 +9,7 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { UpdateUsersDTO } from './dto/update-users.dto';
-import { UpdateMenusDTO } from './dto/update-menus.dto';
-import { UpdateRoutesDTO } from './dto/update-routes.dto';
-import { UpdateScreensDTO } from './dto/update-screens.dto';
-import { skip } from 'node:test';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
 @Injectable()
 export class RoleService {
@@ -24,7 +20,7 @@ export class RoleService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async updateUsers(roleId: number, { ids }: UpdateUsersDTO) {
+  async updateUsers(roleId: number, { ids }: UpdateIdsDTO) {
     await this.prismaService.role_users.deleteMany({
       where: {
         role_id: roleId,
@@ -40,7 +36,7 @@ export class RoleService {
     });
   }
 
-  async updateScreens(roleId: number, data: UpdateScreensDTO) {
+  async updateScreens(roleId: number, data: UpdateIdsDTO) {
     await this.prismaService.role_screens.deleteMany({
       where: {
         role_id: roleId,
@@ -56,7 +52,7 @@ export class RoleService {
     });
   }
 
-  async updateRoutes(roleId: number, data: UpdateRoutesDTO) {
+  async updateRoutes(roleId: number, data: UpdateIdsDTO) {
     await this.prismaService.role_routes.deleteMany({
       where: {
         role_id: roleId,
@@ -72,7 +68,7 @@ export class RoleService {
     });
   }
 
-  async updateMenus(roleId: number, data: UpdateMenusDTO) {
+  async updateMenus(roleId: number, data: UpdateIdsDTO) {
     await this.prismaService.role_menus.deleteMany({
       where: {
         role_id: roleId,
