@@ -43,13 +43,13 @@ export class UserService {
   }
 
   async updateRoles(userId: number, { ids }: UpdateRolesDTO) {
-    await this.prismaService.roles.deleteMany({
+    await this.prismaService.role_users.deleteMany({
       where: {
         user_id: userId,
       },
     });
 
-    return this.prismaService.roles.createMany({
+    return this.prismaService.role_users.createMany({
       data: ids.map((role) => {
         return {
           user_id: userId,

@@ -63,6 +63,7 @@ interface ITableViewProps<T> {
   onSelect?: (row: T, index: number) => void
   onUnselect?: (row: T, index: number) => void
   caption?: string
+  checked?: (item: any) => boolean
   render?: (item: T, index: number) => JSX.Element
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
@@ -83,6 +84,7 @@ const TableView = <T extends any>({
   multiple = true,
   columns,
   data,
+  checked,
   sortable = false,
   isLoading = false,
   onItemClick,
@@ -279,7 +281,12 @@ const TableView = <T extends any>({
         >
           {selectable && (
             <TableCell>
-              <Checkbox checked={selectedItems.includes(extractKey(row))} />
+              <Checkbox
+                checked={
+                  (typeof checked === 'function' && checked(row)) ||
+                  selectedItems.includes(extractKey(row))
+                }
+              />
             </TableCell>
           )}
           {visibleColumns.map((col, index) => {

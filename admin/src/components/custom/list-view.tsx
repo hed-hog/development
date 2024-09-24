@@ -11,6 +11,7 @@ type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   styleOptions?: IStyleOption
   selectable?: boolean
   multiple?: boolean
+  checked?: (item: any) => boolean
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
   extractKey?: (item: T) => string
@@ -30,6 +31,7 @@ const ListView = <T extends any>({
   multiple = true,
   onSelectionChange,
   className,
+  checked,
   itemClassName,
   onSelect,
   onUnselect,
@@ -57,6 +59,8 @@ const ListView = <T extends any>({
 
   const toggleSelectItem = useCallback(
     (item: T) => {
+      console.log({ item })
+
       const id = extractKey(item)
       const isSelected = selectedItems.includes(id)
 
@@ -153,7 +157,10 @@ const ListView = <T extends any>({
     >
       {selectable && (
         <Checkbox
-          checked={selectedItems.includes(extractKey(item))}
+          checked={
+            (typeof checked === 'function' && checked(item)) ||
+            selectedItems.includes(extractKey(item))
+          }
           onCheckedChange={() => toggleSelectItem(item)}
           className='mr-2'
         />
