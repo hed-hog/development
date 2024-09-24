@@ -18,6 +18,10 @@ import { UpdateDTO } from './dto/update.dto';
 import { RoleService } from './role.service';
 import { Role } from './decorators/role.decorator';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { UpdateUsersDTO } from './dto/update-users.dto';
+import { UpdateMenusDTO } from './dto/update-menus.dto';
+import { UpdateRoutesDTO } from './dto/update-routes.dto';
+import { UpdateScreensDTO } from './dto/update-screens.dto';
 
 @Role()
 @UseGuards(AuthGuard)
@@ -31,6 +35,58 @@ export class RoleController {
   @Get()
   async getRoles(@Pagination() paginationParams) {
     return this.roleService.getRoles(paginationParams);
+  }
+
+  @Get(':roleId/users')
+  async listUsers(@Param('roleId', ParseIntPipe) roleId: number) {
+    return this.roleService.listUsers(roleId);
+  }
+
+  @Get(':roleId/menus')
+  async listMenus(@Param('roleId', ParseIntPipe) roleId: number) {
+    return this.roleService.listMenus(roleId);
+  }
+
+  @Get(':roleId/routes')
+  async listRoutes(@Param('roleId', ParseIntPipe) roleId: number) {
+    return this.roleService.listRoutes(roleId);
+  }
+
+  @Get(':roleId/screens')
+  async listScreens(@Param('roleId', ParseIntPipe) roleId: number) {
+    return this.roleService.listScreens(roleId);
+  }
+
+  @Patch(':roleId/users')
+  async updateUsers(
+    @Param('roleId', ParseIntPipe) roleId: number,
+    @Body() data: UpdateUsersDTO,
+  ) {
+    return this.roleService.updateUsers(roleId, data);
+  }
+
+  @Patch(':roleId/menus')
+  async updateMenus(
+    @Param('roleId', ParseIntPipe) roleId: number,
+    @Body() data: UpdateMenusDTO,
+  ) {
+    return this.roleService.updateMenus(roleId, data);
+  }
+
+  @Patch(':roleId/routes')
+  async updateRoutes(
+    @Param('roleId', ParseIntPipe) roleId: number,
+    @Body() data: UpdateRoutesDTO,
+  ) {
+    return this.roleService.updateRoutes(roleId, data);
+  }
+
+  @Patch(':roleId/screens')
+  async updateScreens(
+    @Param('roleId', ParseIntPipe) roleId: number,
+    @Body() data: UpdateScreensDTO,
+  ) {
+    return this.roleService.updateScreens(roleId, data);
   }
 
   @Get(':roleId')

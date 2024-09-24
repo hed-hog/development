@@ -2,7 +2,7 @@ import { idColumn, timestampColumn } from "@hedhog/utils";
 
 import { MigrationInterface, QueryRunner, Table, TableUnique } from "typeorm";
 
-export class Migrate1727110138091 implements MigrationInterface {
+export class Migrate1727190646188 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
@@ -70,23 +70,55 @@ export class Migrate1727110138091 implements MigrationInterface {
           method: "PATCH",
         },
         {
-          url: "/permissions",
+          url: "/roles",
           method: "GET",
         },
         {
-          url: "/permissions/:permissionId",
+          url: "/roles/:roleId",
           method: "GET",
         },
         {
-          url: "/permissions",
-          method: "POST",
+          url: "/roles/:roleId/users",
+          method: "GET",
         },
         {
-          url: "/permissions/:permissionId",
+          url: "/roles/:roleId/menus",
+          method: "GET",
+        },
+        {
+          url: "/roles/:roleId/routes",
+          method: "GET",
+        },
+        {
+          url: "/roles/:roleId/screens",
+          method: "GET",
+        },
+        {
+          url: "/roles/:roleId/users",
           method: "PATCH",
         },
         {
-          url: "/permissions",
+          url: "/roles/:roleId/menus",
+          method: "PATCH",
+        },
+        {
+          url: "/roles/:roleId/routes",
+          method: "PATCH",
+        },
+        {
+          url: "/roles/:roleId/screens",
+          method: "PATCH",
+        },
+        {
+          url: "/roles",
+          method: "POST",
+        },
+        {
+          url: "/roles/:roleId",
+          method: "PATCH",
+        },
+        {
+          url: "/roles",
           method: "DELETE",
         },
         {
@@ -138,11 +170,19 @@ export class Migrate1727110138091 implements MigrationInterface {
           method: "GET",
         },
         {
+          url: "/users/:userId/roles",
+          method: "GET",
+        },
+        {
           url: "/users",
           method: "POST",
         },
         {
           url: "/users/:userId",
+          method: "PATCH",
+        },
+        {
+          url: "/users/:userId/roles",
           method: "PATCH",
         },
         {

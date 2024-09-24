@@ -78,6 +78,38 @@ export class Migrate implements MigrationInterface {
           method: 'GET',
         },
         {
+          url: '/roles/:roleId/users',
+          method: 'GET',
+        },
+        {
+          url: '/roles/:roleId/menus',
+          method: 'GET',
+        },
+        {
+          url: '/roles/:roleId/routes',
+          method: 'GET',
+        },
+        {
+          url: '/roles/:roleId/screens',
+          method: 'GET',
+        },
+        {
+          url: '/roles/:roleId/users',
+          method: 'PATCH',
+        },
+        {
+          url: '/roles/:roleId/menus',
+          method: 'PATCH',
+        },
+        {
+          url: '/roles/:roleId/routes',
+          method: 'PATCH',
+        },
+        {
+          url: '/roles/:roleId/screens',
+          method: 'PATCH',
+        },
+        {
           url: '/roles',
           method: 'POST',
         },
