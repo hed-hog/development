@@ -70,6 +70,7 @@ type DataPanelTypeBase<T> = {
   styleOptions?: IStyleOption
   selectable?: boolean
   multiple?: boolean
+  checked?: (item: any) => boolean
   hasSearch?: boolean
   menuOrders?: MenuOrder[]
   menuActions?: IMenuItemAction<T>[]
@@ -160,6 +161,7 @@ export const DataPanel = <T extends any>({
   },
   render,
   columns,
+  checked,
   sortable = false,
   caption,
   onItemClick,
@@ -227,6 +229,7 @@ export const DataPanel = <T extends any>({
           caption,
           isLoading,
           itemClassName,
+          checked,
           extractKey,
           render,
           selectable,
@@ -245,6 +248,7 @@ export const DataPanel = <T extends any>({
           data: selectedItems,
           styleOptions,
           render,
+          checked,
           selectable,
           multiple,
           selectedIds: selectedItems.map((item) => extractKey(item)),
@@ -262,6 +266,7 @@ export const DataPanel = <T extends any>({
           styleOptions,
           render,
           selectable,
+          checked,
           multiple,
           selectedIds: selectedItems.map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
@@ -512,6 +517,7 @@ export const DataPanel = <T extends any>({
               columns={columns as ITableColumn<T>[]}
               data={items}
               sortable={sortable}
+              checked={checked}
               caption={caption}
               onItemClick={onItemClick}
               onItemContextMenu={onItemContextMenu}
@@ -546,6 +552,7 @@ export const DataPanel = <T extends any>({
               selectable={selectable}
               multiple={multiple}
               data={items}
+              checked={checked}
               styleOptions={{
                 gap: styleOptions.gap,
                 padding: styleOptions.padding,
@@ -581,6 +588,7 @@ export const DataPanel = <T extends any>({
               selectable={selectable}
               multiple={multiple}
               data={items}
+              checked={checked}
               responsiveColumns={responsiveColumns}
               styleOptions={{
                 gap: styleOptions.gap,

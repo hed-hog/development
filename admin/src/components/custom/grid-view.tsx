@@ -13,6 +13,7 @@ type GridViewProps<T> = {
   styleOptions?: IStyleOption
   selectable?: boolean
   multiple?: boolean
+  checked?: (item: any) => boolean
   onSelectionChange?: (selectedItems: T[]) => void
   onItemClick?: (
     row: T,
@@ -57,6 +58,7 @@ const GridView = <T extends any>({
   onSelectionChange,
   className,
   onItemClick,
+  checked,
   onItemContextMenu,
   itemClassName,
   onSelect,
@@ -210,7 +212,10 @@ const GridView = <T extends any>({
     >
       {selectable && (
         <Checkbox
-          checked={selectedItems.includes(extractKey(item))}
+          checked={
+            (typeof checked === 'function' && checked(item)) ||
+            selectedItems.includes(extractKey(item))
+          }
           className='absolute left-3 top-3'
         />
       )}

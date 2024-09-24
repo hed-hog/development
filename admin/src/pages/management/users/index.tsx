@@ -1,6 +1,5 @@
 import { DataPanel } from '@/components/custom/data-panel'
 import FormPanel from '@/components/custom/form-panel'
-import RoleBox from '@/components/custom/role-box'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
@@ -11,12 +10,23 @@ import {
 } from '@/features/users'
 import { useApp } from '@/hooks/use-app'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
+  const [userId, setUserId] = useState<string>('')
+  const [newUserRoles, setNewUserRoles] = useState<any[]>([])
   const [selectedItems, setSelectedItems] = useState<any[]>([])
+
+  useEffect(() => {
+    if (userId) {
+      editUserRoles({
+        userId,
+        roleIds: newUserRoles.map((r) => r.id),
+      })
+    }
+  }, [userId])
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -31,6 +41,7 @@ export default function Page() {
   const { mutate: deleteUsers } = useDeleteUser()
   const { mutate: createUser } = useCreateUser()
   const { mutate: editUser } = useEditUser()
+  const { mutate: editUserRoles } = useEditUserRoles()
 
   const openCreateDialog = () => {
     form.reset({
@@ -154,13 +165,40 @@ export default function Page() {
             },
             {
               title: 'Funções',
-              children: <RoleBox userId={String(item.id)} />,
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id='user-roles'
+                  url={`/users/${item.id}/roles`}
+                  checked={(item) => {
+                    return item.role_users.length > 0
+                  }}
+                  onSelectionChange={(selectedItems) => {
+                    setNewUserRoles((prevSelected) => {
+                      const uniqueSelectedItems = new Set([
+                        ...prevSelected,
+                        ...selectedItems,
+                      ])
+                      return Array.from(uniqueSelectedItems)
+                    })
+                  }}
+                />
+              ),
               buttons: [
                 {
                   text: 'Cancelar',
                   variant: 'secondary',
                   onClick: () => {
                     closeSheet(id)
+                  },
+                },
+                {
+                  text: 'Editar',
+                  variant: 'default',
+                  onClick: () => {
+                    setUserId(item.id)
                   },
                 },
               ],

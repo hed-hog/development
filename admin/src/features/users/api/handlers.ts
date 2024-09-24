@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
 import { toast } from 'sonner'
@@ -51,23 +51,12 @@ export function useEditUser() {
   })
 }
 
-export function useGetUserRoles(userId: string) {
-  const { getUserRoles } = requests()
-
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ['user-roles'],
-    queryFn: () => getUserRoles({ userId }),
-  })
-
-  return { data, isLoading, refetch }
-}
-
-export function useEditUserRoles(userId: string, roleIds: number[]) {
+export function useEditUserRoles() {
   const { editUserRoles } = requests()
 
   return useMutation({
     mutationKey: ['edit-user-roles'],
-    mutationFn: () => editUserRoles({ userId, roleIds }),
+    mutationFn: editUserRoles,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       toast.success('User edited successfully!')

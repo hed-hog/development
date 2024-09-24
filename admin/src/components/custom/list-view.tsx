@@ -4,6 +4,7 @@ import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { IStyleOption } from '@/types/style-options'
 import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
+import useFirstRender from '@/hooks/use-first-render'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   data: T[]
@@ -11,6 +12,7 @@ type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   styleOptions?: IStyleOption
   selectable?: boolean
   multiple?: boolean
+  checked?: (item: any) => boolean
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
   extractKey?: (item: T) => string
@@ -30,6 +32,7 @@ const ListView = <T extends any>({
   multiple = true,
   onSelectionChange,
   className,
+  checked,
   itemClassName,
   onSelect,
   onUnselect,
@@ -43,6 +46,8 @@ const ListView = <T extends any>({
   selectedIds = [],
   ...props
 }: ListViewProps<T>) => {
+  const isFirstRender = useFirstRender()
+
   const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
 
   useEffectAfterFirstUpdate(() => {
@@ -57,6 +62,8 @@ const ListView = <T extends any>({
 
   const toggleSelectItem = useCallback(
     (item: T) => {
+      console.log({ item })
+
       const id = extractKey(item)
       const isSelected = selectedItems.includes(id)
 
@@ -153,7 +160,11 @@ const ListView = <T extends any>({
     >
       {selectable && (
         <Checkbox
-          checked={selectedItems.includes(extractKey(item))}
+          checked={
+            isFirstRender && typeof checked === 'function'
+              ? checked(item)
+              : selectedItems.includes(extractKey(item))
+          }
           onCheckedChange={() => toggleSelectItem(item)}
           className='mr-2'
         />
