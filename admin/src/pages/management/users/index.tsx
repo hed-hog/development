@@ -1,8 +1,14 @@
 import { DataPanel } from '@/components/custom/data-panel'
 import FormPanel from '@/components/custom/form-panel'
+import RoleBox from '@/components/custom/role-box'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useCreateUser, useDeleteUser, useEditUser } from '@/features/users'
+import {
+  useCreateUser,
+  useDeleteUser,
+  useEditUser,
+  useEditUserRoles,
+} from '@/features/users'
 import { useApp } from '@/hooks/use-app'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
@@ -148,7 +154,16 @@ export default function Page() {
             },
             {
               title: 'Funções',
-              children: <>Hello</>,
+              children: <RoleBox userId={String(item.id)} />,
+              buttons: [
+                {
+                  text: 'Cancelar',
+                  variant: 'secondary',
+                  onClick: () => {
+                    closeSheet(id)
+                  },
+                },
+              ],
             },
           ]}
         />

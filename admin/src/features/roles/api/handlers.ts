@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
 import { toast } from 'sonner'
@@ -49,4 +49,15 @@ export function useEditRole() {
       toast.error('Error updating role: ' + error.message)
     },
   })
+}
+
+export function useGetRoles() {
+  const { getRoles } = requests()
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => getRoles(),
+  })
+
+  return { data, isLoading, refetch }
 }

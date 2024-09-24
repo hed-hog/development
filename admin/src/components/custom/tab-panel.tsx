@@ -45,7 +45,7 @@ export const TabPanel = ({ tabs, activeTabIndex = 0 }: TabPanelProps) => {
           <TabsBody>{children}</TabsBody>
           {buttons && buttons?.length > 0 && (
             <TabsFooter>
-              <div className='flex gap-2'>
+              <div className='flex justify-end gap-2'>
                 {buttons?.map(({ text, onClick, ...props }, index) => (
                   <Button key={index} {...props} onClick={onClick}>
                     {text}
