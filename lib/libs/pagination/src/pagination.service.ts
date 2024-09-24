@@ -87,14 +87,18 @@ export class PaginationService {
 
       const skip = page > 0 ? pageSize * (page - 1) : 0;
 
-      const query = {
+      const query: any = {
         select: selectCondition,
         where: customQuery?.where || {},
-        include: customQuery?.include || {},
         orderBy: sortOrderCondition,
         take: pageSize,
         skip,
       };
+
+      if (customQuery?.include) {
+        query.include = customQuery?.include;
+        delete query.select;
+      }
 
       const [total, data] = await Promise.all([
         model.count({ where: customQuery?.where || {} }),
