@@ -35,7 +35,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { getIcon } from '@/lib/get-icon'
 
 interface ITableViewProps<T> {
   columns: ITableColumn<T>[]
@@ -251,6 +250,10 @@ const TableView = <T extends any>({
     return data.every((item) => selectedKeys.has(extractKey(item)))
   }, [selectedItems, data, extractKey])
 
+  const renderCell = (key: string, item: T) => {
+    return (item as any)[key]
+  }
+
   if (!render) {
     render = (row: T, index: number) => {
       return (
@@ -292,21 +295,11 @@ const TableView = <T extends any>({
             </TableCell>
           )}
           {visibleColumns.map((col, index) => {
-            if ('key' in col && col.key === 'icon') {
-              return (
-                <TableCell
-                  key={`${col.key}-${index}`}
-                  className='flex flex-row'
-                >
-                  {getIcon((row as any)[col.key])}
-                  <span className='ml-2'>{(row as any).icon}</span>
-                </TableCell>
-              )
-            }
-
             return col && 'key' in col ? (
               <TableCell key={`${col.key}-${index}`}>
-                {(row as any)[col.key]}
+                {typeof col.render === 'function'
+                  ? col.render(row, index)
+                  : renderCell(col.key, row)}
               </TableCell>
             ) : (
               <TableCell key={`actions-${index}`}>

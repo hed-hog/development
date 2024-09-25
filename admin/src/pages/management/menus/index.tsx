@@ -3,6 +3,7 @@ import { FormPanel } from '@/components/custom/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useCreateMenu, useDeleteMenu, useEditMenu } from '@/features/menus/api'
 import { useApp } from '@/hooks/use-app'
+import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -181,7 +182,15 @@ export default function Page() {
           { key: 'id', header: 'ID' },
           { key: 'name', header: 'Name' },
           { key: 'url', header: 'URL' },
-          { key: 'icon', header: 'Ícone' },
+          {
+            key: 'icon',
+            header: 'Ícone',
+            render: (item) => (
+              <div className='flex flex-row gap-2'>
+                {getIcon(item.icon)} {`${item.icon}`}
+              </div>
+            ),
+          },
         ]}
         selected={selectedItems}
         multiple

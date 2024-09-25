@@ -7,6 +7,7 @@ import {
   useEditScreen,
 } from '@/features/screens/api'
 import { useApp } from '@/hooks/use-app'
+import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -200,7 +201,15 @@ export default function Page() {
           { key: 'name', header: 'Name' },
           { key: 'slug', header: 'Slug' },
           { key: 'description', header: 'Descrição' },
-          { key: 'icon', header: 'Ícone' },
+          {
+            key: 'icon',
+            header: 'Ícone',
+            render: (item) => (
+              <div className='flex flex-row gap-2'>
+                {getIcon(item.icon)} {`${item.icon}`}
+              </div>
+            ),
+          },
         ]}
         selected={selectedItems}
         multiple
