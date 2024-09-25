@@ -10,6 +10,15 @@
   --scrollbar-thumb-dark: #020817;
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
 @media (prefers-color-scheme: light) {
   * {
     scrollbar-width: thin; /* Firefox */

@@ -74,7 +74,7 @@ export class ScreenService {
               screen_id: screenId,
             },
             select: {
-              rote_id: true,
+              route_id: true,
               screen_id: true,
             },
           },
@@ -94,7 +94,7 @@ export class ScreenService {
               screen_id: screenId,
             },
             select: {
-              rote_id: true,
+              role_id: true,
               screen_id: true,
             },
           },

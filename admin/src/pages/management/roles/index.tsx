@@ -4,6 +4,7 @@ import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useCreateRole, useDeleteRole, useEditRole } from '@/features/roles/api'
 import { useApp } from '@/hooks/use-app'
+import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -159,7 +160,111 @@ export default function Page() {
                   id={`role-users-${item.id}`}
                   url={`/roles/${item.id}/users`}
                   checked={(item) => {
-                    return item.role_users.length > 0
+                    return (item.role_users ?? []).length
+                  }}
+                  onSelectionChange={(selectedItems) => {
+                    console.log({ selectedItems })
+                  }}
+                />
+              ),
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {},
+                },
+              ],
+            },
+            {
+              title: 'Rotas',
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id={`role-routes-${item.id}`}
+                  url={`/roles/${item.id}/routes`}
+                  render={(item: any) => (
+                    <div className='flex flex-row gap-2'>
+                      <code className='relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold'>
+                        {item.method}
+                      </code>
+                      <code>{item.url}</code>
+                    </div>
+                  )}
+                  checked={(item) => {
+                    return (item.role_routes ?? []).length
+                  }}
+                  onSelectionChange={(selectedItems) => {
+                    console.log({ selectedItems })
+                  }}
+                />
+              ),
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {},
+                },
+              ],
+            },
+            {
+              title: 'Menus',
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id={`role-menus-${item.id}`}
+                  url={`/roles/${item.id}/menus`}
+                  render={(item: any) => (
+                    <div className='flex flex-row items-center gap-2'>
+                      {getIcon(item.icon || '')}
+                      <code>
+                        {item.name} - {item.url}
+                      </code>
+                    </div>
+                  )}
+                  checked={(item) => {
+                    return (item.role_menus ?? []).length
+                  }}
+                  onSelectionChange={(selectedItems) => {
+                    console.log({ selectedItems })
+                  }}
+                />
+              ),
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {},
+                },
+              ],
+            },
+            {
+              title: 'Telas',
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id={`role-screens-${item.id}`}
+                  url={`/roles/${item.id}/screens`}
+                  render={(item: any) => (
+                    <div className='flex flex-col'>
+                      <div className='flex flex-row'>
+                        {getIcon(item.icon || '')}
+                        <code className='px-1'>
+                          {item.name} - {item.slug}
+                        </code>
+                      </div>
+                      <p className='m-0 text-left text-xs'>
+                        {item.description}
+                      </p>
+                    </div>
+                  )}
+                  checked={(item) => {
+                    return (item.role_screens ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
                     console.log({ selectedItems })

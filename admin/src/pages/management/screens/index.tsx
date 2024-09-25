@@ -1,5 +1,6 @@
 import { DataPanel } from '@/components/custom/data-panel'
 import { FormPanel } from '@/components/custom/form-panel'
+import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
   useCreateScreen,
@@ -9,12 +10,13 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const formEdit = useRef<any>(null)
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -27,7 +29,7 @@ export default function Page() {
     mode: 'onChange',
   })
 
-  const { openDialog, closeDialog } = useApp()
+  const { openDialog, closeDialog, openSheet } = useApp()
   const { mutate: deleteRoles } = useDeleteScreen()
   const { mutate: createScreen } = useCreateScreen()
   const { mutate: editScreen } = useEditScreen()
@@ -136,41 +138,119 @@ export default function Page() {
       icon: item.icon || '',
     })
 
-    const id = openDialog({
+    const id = openSheet({
       children: () => (
-        <FormPanel
-          fields={[
+        <TabPanel
+          activeTabIndex={0}
+          tabs={[
             {
-              name: 'name',
-              label: { text: 'Nome' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Detalhes',
+              buttons: [
+                {
+                  text: 'Salvar',
+                  variant: 'default',
+                  onClick: () => {
+                    formEdit.current?.submit()
+                  },
+                },
+              ],
+              children: (
+                <FormPanel
+                  ref={formEdit}
+                  fields={[
+                    {
+                      name: 'name',
+                      label: { text: 'Nome' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                    {
+                      name: 'slug',
+                      label: { text: 'Slug' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                    {
+                      name: 'description',
+                      label: { text: 'Descrição' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                    {
+                      name: 'icon',
+                      label: { text: 'Ícone' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                  ]}
+                  form={form}
+                  button={{ text: 'Editar' }}
+                  onSubmit={(data) => {
+                    editScreen({ id: data.id, data })
+                    closeDialog(id)
+                  }}
+                />
+              ),
             },
             {
-              name: 'slug',
-              label: { text: 'Slug' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Funções',
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id={`screen-roles-${item.id}`}
+                  url={`/screens/${item.id}/roles`}
+                  checked={(item) => {
+                    return (item.role_screens ?? []).length
+                  }}
+                  onSelectionChange={(selectedItems) => {
+                    console.log({ selectedItems })
+                  }}
+                />
+              ),
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {},
+                },
+              ],
             },
             {
-              name: 'description',
-              label: { text: 'Descrição' },
-              type: EnumFieldType.TEXT,
-              required: false,
-            },
-            {
-              name: 'icon',
-              label: { text: 'Ícone' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Rotas',
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id={`screen-routes-${item.id}`}
+                  url={`/screens/${item.id}/routes`}
+                  checked={(item) => {
+                    return (item.role_routes ?? []).length
+                  }}
+                  render={(item: any) => (
+                    <div className='flex flex-row gap-2'>
+                      <code className='relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold'>
+                        {item.method}
+                      </code>
+                      <code>{item.url}</code>
+                    </div>
+                  )}
+                  onSelectionChange={(selectedItems) => {
+                    console.log({ selectedItems })
+                  }}
+                />
+              ),
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {},
+                },
+              ],
             },
           ]}
-          form={form}
-          button={{ text: 'Editar' }}
-          onSubmit={(data) => {
-            editScreen({ id: data.id, data })
-            closeDialog(id)
-          }}
         />
       ),
       title: 'Editar Cargo',
