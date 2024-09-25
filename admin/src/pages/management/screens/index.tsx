@@ -184,7 +184,6 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  button={{ text: 'Editar' }}
                   onSubmit={(data) => {
                     editScreen({ id: data.id, data })
                     closeDialog(id)
