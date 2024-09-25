@@ -1,5 +1,5 @@
 import { DataPanel } from '@/components/custom/data-panel'
-import FormPanel from '@/components/custom/form-panel'
+import { FormPanel } from '@/components/custom/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useCreateRole, useDeleteRole, useEditRole } from '@/features/roles/api'
 import { useApp } from '@/hooks/use-app'

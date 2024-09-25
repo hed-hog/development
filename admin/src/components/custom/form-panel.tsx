@@ -92,7 +92,7 @@ export const FormPanel = forwardRef(
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='space-y-8'
+          className='w-full space-y-8'
           ref={formRef}
         >
           {title.text && (

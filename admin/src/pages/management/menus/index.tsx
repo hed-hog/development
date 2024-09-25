@@ -1,5 +1,5 @@
 import { DataPanel } from '@/components/custom/data-panel'
-import FormPanel from '@/components/custom/form-panel'
+import { FormPanel } from '@/components/custom/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useCreateMenu, useDeleteMenu, useEditMenu } from '@/features/menus/api'
 import { useApp } from '@/hooks/use-app'
