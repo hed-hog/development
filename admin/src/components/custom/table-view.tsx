@@ -287,10 +287,7 @@ const TableView = <T extends any>({
             <TableCell>
               <Checkbox
                 className='mx-2'
-                checked={
-                  (typeof checked === 'function' && checked(row)) ||
-                  selectedItems.includes(extractKey(row))
-                }
+                checked={selectedItems.includes(extractKey(row))}
               />
             </TableCell>
           )}
@@ -382,7 +379,7 @@ const TableView = <T extends any>({
                     >
                       <Button
                         variant='outline'
-                        className='absolute right-0 top-0 h-full px-1'
+                        className='absolute right-0 top-0 h-full min-w-2 px-1'
                       >
                         <IconCaretDownFilled className='h-5 w-5' />
                       </Button>

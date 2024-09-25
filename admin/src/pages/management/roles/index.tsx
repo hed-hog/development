@@ -156,7 +156,7 @@ export default function Page() {
                   selectable
                   multiple
                   layout='list'
-                  id='role-users'
+                  id={`role-users-${item.id}`}
                   url={`/roles/${item.id}/users`}
                   checked={(item) => {
                     return item.role_users.length > 0

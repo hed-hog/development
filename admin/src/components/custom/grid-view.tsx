@@ -212,10 +212,7 @@ const GridView = <T extends any>({
     >
       {selectable && (
         <Checkbox
-          checked={
-            (typeof checked === 'function' && checked(item)) ||
-            selectedItems.includes(extractKey(item))
-          }
+          checked={selectedItems.includes(extractKey(item))}
           className='absolute left-3 top-3'
         />
       )}

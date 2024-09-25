@@ -53,14 +53,15 @@ const ListView = <T extends any>({
       setIsFirstRender(true)
 
       let index = 0
+      let idsArray = []
       for (const item of data) {
         const id = extractKey(item)
-
         if (checked(item)) {
-          setSelectedItems([...selectedItems, id])
+          idsArray.push(id)
         }
         index++
       }
+      setSelectedItems([...selectedItems, ...idsArray])
     }
   }, [isFirstRender, data, selectedItems, extractKey])
 

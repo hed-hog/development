@@ -52,6 +52,7 @@ const PaginationLink = ({
         variant: isActive ? 'outline' : 'ghost',
         size,
       }),
+      'min-w-4',
       className
     )}
     {...props}
