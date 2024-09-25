@@ -1,5 +1,5 @@
 import { DataPanel } from '@/components/custom/data-panel'
-import FormPanel from '@/components/custom/form-panel'
+import { FormPanel } from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
@@ -10,7 +10,7 @@ import {
 } from '@/features/users'
 import { useApp } from '@/hooks/use-app'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
@@ -18,6 +18,7 @@ export default function Page() {
   const [userId, setUserId] = useState<string>('')
   const [newUserRoles, setNewUserRoles] = useState<any[]>([])
   const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const formEdit = useRef<any>(null)
 
   useEffect(() => {
     if (userId) {
@@ -140,8 +141,18 @@ export default function Page() {
           tabs={[
             {
               title: 'Detalhes',
+              buttons: [
+                {
+                  text: 'Salvar',
+                  variant: 'default',
+                  onClick: () => {
+                    formEdit.current?.submit()
+                  },
+                },
+              ],
               children: (
                 <FormPanel
+                  ref={formEdit}
                   fields={[
                     {
                       name: 'name',
@@ -157,7 +168,6 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  button={{ text: 'Editar' }}
                   onSubmit={(data) => {
                     editUser({ id: data.id, data })
                     closeSheet(id)

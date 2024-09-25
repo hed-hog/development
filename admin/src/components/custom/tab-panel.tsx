@@ -21,13 +21,17 @@ export type TabPanelProps = {
   buttons?: (ButtonProps & { text: string })[]
 }
 
-export const TabPanel = ({ tabs, activeTabIndex = 0 }: TabPanelProps) => {
+export const TabPanel = ({
+  tabs,
+  activeTabIndex = 0,
+  buttons: tabButtons,
+}: TabPanelProps) => {
   const [activeTab, setActiveTab] = useState(activeTabIndex)
 
   return (
     <Tabs
       defaultValue='account'
-      className='w-full'
+      className='tabs-flex w-full flex-1 flex-col'
       value={`tab-${activeTab}`}
       onValueChange={(value) => {
         setActiveTab(Number(value.split('-')[1]))
@@ -41,13 +45,20 @@ export const TabPanel = ({ tabs, activeTabIndex = 0 }: TabPanelProps) => {
         ))}
       </TabsList>
       {tabs.map(({ children, buttons }, index) => (
-        <TabsContent key={`tab-content-${index}`} value={`tab-${index}`}>
+        <TabsContent
+          className='flex-1'
+          key={`tab-content-${index}`}
+          value={`tab-${index}`}
+        >
           <TabsBody>{children}</TabsBody>
           {buttons && buttons?.length > 0 && (
             <TabsFooter>
               <div className='flex justify-end gap-2'>
-                {buttons?.map(({ text, onClick, ...props }, index) => (
-                  <Button key={index} {...props} onClick={onClick}>
+                {(buttons ?? []).map(({ text, ...props }, index) => (
+                  <Button
+                    key={`tab-content-${index}-button-${index}`}
+                    {...props}
+                  >
                     {text}
                   </Button>
                 ))}
@@ -55,6 +66,11 @@ export const TabPanel = ({ tabs, activeTabIndex = 0 }: TabPanelProps) => {
             </TabsFooter>
           )}
         </TabsContent>
+      ))}
+      {(tabButtons ?? []).map(({ text, ...props }, index) => (
+        <Button key={`tab-${index}-button-${index}`} {...props}>
+          {text}
+        </Button>
       ))}
     </Tabs>
   )
