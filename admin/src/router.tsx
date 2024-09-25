@@ -40,14 +40,14 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: 'examples',
-        lazy: async () => ({
-          Component: (await import('./pages/test/index.tsx')).default,
-        }),
-      },
-      {
         path: 'management',
         children: [
+          {
+            path: '',
+            lazy: async () => ({
+              Component: (await import('./pages/management/index.tsx')).default,
+            }),
+          },
           {
             path: 'users',
             lazy: async () => ({
