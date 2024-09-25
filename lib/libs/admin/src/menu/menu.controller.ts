@@ -42,13 +42,19 @@ export class MenuController {
   }
 
   @Get(':menuId/roles')
-  async listRoles(@Param('menuId', ParseIntPipe) menuId: number) {
-    return this.menuService.listRoles(menuId);
+  async listRoles(
+    @Param('menuId', ParseIntPipe) menuId: number,
+    @Pagination() paginationParams,
+  ) {
+    return this.menuService.listRoles(paginationParams, menuId);
   }
 
   @Get(':menuId/screens')
-  async listScreens(@Param('menuId', ParseIntPipe) menuId: number) {
-    return this.menuService.listScreens(menuId);
+  async listScreens(
+    @Param('menuId', ParseIntPipe) menuId: number,
+    @Pagination() paginationParams,
+  ) {
+    return this.menuService.listScreens(paginationParams, menuId);
   }
 
   @Patch(':menuId/roles')

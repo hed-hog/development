@@ -51,27 +51,43 @@ export class MenuService {
       skipDuplicates: true,
     });
   }
-  async listScreens(menuId: number) {
-    return this.prismaService.screens.findMany({
-      where: {
-        menus: {
-          some: {
-            id: menuId,
+  async listScreens(paginationParams: PaginationDTO, menuId: number) {
+    return this.paginationService.paginate(
+      this.prismaService.screens,
+      paginationParams,
+      {
+        include: {
+          menu_screens: {
+            where: {
+              menu_id: menuId,
+            },
+            select: {
+              screen_id: true,
+              menu_id: true,
+            },
           },
         },
       },
-    });
+    );
   }
-  async listRoles(menuId: number) {
-    return this.prismaService.roles.findMany({
-      where: {
-        role_menus: {
-          some: {
-            menu_id: menuId,
+  async listRoles(paginationParams: PaginationDTO, menuId: number) {
+    return this.paginationService.paginate(
+      this.prismaService.roles,
+      paginationParams,
+      {
+        include: {
+          role_menus: {
+            where: {
+              menu_id: menuId,
+            },
+            select: {
+              role_id: true,
+              menu_id: true,
+            },
           },
         },
       },
-    });
+    );
   }
 
   async getMenus(userId: number, menuId = 0) {
