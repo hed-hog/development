@@ -68,10 +68,14 @@ export class ScreenService {
       this.prismaService.routes,
       paginationParams,
       {
-        where: {
+        include: {
           route_screens: {
-            some: {
-              screen_id: screenId,
+            where: {
+              menu_id: screenId,
+            },
+            select: {
+              rote_id: true,
+              screen_id: true,
             },
           },
         },
