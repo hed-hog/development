@@ -89,9 +89,16 @@ export class RoleService {
       this.prismaService.users,
       paginationParams,
       {
-        where: { role_users: { some: { role_id: roleId } } },
         include: {
-          role_users: true,
+          role_users: {
+            where: {
+              role_id: roleId,
+            },
+            select: {
+              user_id: true,
+              role_id: true,
+            },
+          },
         },
       },
     );
@@ -102,9 +109,16 @@ export class RoleService {
       this.prismaService.menus,
       paginationParams,
       {
-        where: { role_menus: { some: { role_id: roleId } } },
         include: {
-          role_menus: true,
+          role_menus: {
+            where: {
+              role_id: roleId,
+            },
+            select: {
+              menu_id: true,
+              role_id: true,
+            },
+          },
         },
       },
     );
@@ -115,9 +129,16 @@ export class RoleService {
       this.prismaService.routes,
       paginationParams,
       {
-        where: { role_routes: { some: { role_id: roleId } } },
         include: {
-          role_routes: true,
+          role_routes: {
+            where: {
+              role_id: roleId,
+            },
+            select: {
+              route_id: true,
+              role_id: true,
+            },
+          },
         },
       },
     );
@@ -128,9 +149,16 @@ export class RoleService {
       this.prismaService.screens,
       paginationParams,
       {
-        where: { role_screens: { some: { role_id: roleId } } },
         include: {
-          role_screens: true,
+          role_screens: {
+            where: {
+              role_id: roleId,
+            },
+            select: {
+              screen_id: true,
+              role_id: true,
+            },
+          },
         },
       },
     );
