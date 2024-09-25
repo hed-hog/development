@@ -36,6 +36,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
+import * as TablerIcons from '@tabler/icons-react'
+import { toPascalCase } from '@/lib/to-pascal-case'
+
 interface ITableViewProps<T> {
   columns: ITableColumn<T>[]
   data: T[]
@@ -230,6 +233,19 @@ const TableView = <T extends any>({
     }
   }, [selectedIds])
 
+  const getIcon = (icon: string) => {
+    if (icon !== '' && icon.length > 0) {
+      const componentName = 'Icon' + toPascalCase(icon)
+      const IconComponent = TablerIcons[
+        componentName as keyof typeof TablerIcons
+      ] as React.FC<{ size?: number }>
+      if (IconComponent) {
+        return <IconComponent size={18} />
+      }
+    }
+    return <TablerIcons.IconSquare size={18} />
+  }
+
   const onColumnVisibilityChange = (columnKey: string) => {
     setVisibleColumns((prevColumns) => {
       const isColumnVisible = prevColumns.some(
@@ -291,6 +307,18 @@ const TableView = <T extends any>({
             </TableCell>
           )}
           {visibleColumns.map((col, index) => {
+            if ('key' in col && col.key === 'icon') {
+              return (
+                <TableCell
+                  key={`${col.key}-${index}`}
+                  className='flex flex-row'
+                >
+                  {getIcon((row as any)[col.key])}
+                  <span className='ml-2'>{(row as any).icon}</span>
+                </TableCell>
+              )
+            }
+
             return col && 'key' in col ? (
               <TableCell key={`${col.key}-${index}`}>
                 {(row as any)[col.key]}

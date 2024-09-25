@@ -6,7 +6,7 @@ import Nav from './nav'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useApp } from '@/hooks/use-app'
-import { toPascalCase } from '@/lib/toPascalCase'
+import { toPascalCase } from '@/lib/to-pascal-case'
 import * as TablerIcons from '@tabler/icons-react'
 import { SideLink } from '@/data/sidelinks'
 
