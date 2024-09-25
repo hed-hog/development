@@ -84,28 +84,56 @@ export class RoleService {
     });
   }
 
-  async listUsers(roleId: number) {
-    return this.prismaService.users.findMany({
-      where: { role_users: { some: { role_id: roleId } } },
-    });
+  async listUsers(paginationParams: PaginationDTO, roleId: number) {
+    return this.paginationService.paginate(
+      this.prismaService.users,
+      paginationParams,
+      {
+        where: { role_users: { some: { role_id: roleId } } },
+        include: {
+          role_users: true,
+        },
+      },
+    );
   }
 
-  async listMenus(roleId: number) {
-    return this.prismaService.menus.findMany({
-      where: { role_menus: { some: { role_id: roleId } } },
-    });
+  async listMenus(paginationParams: PaginationDTO, roleId: number) {
+    return this.paginationService.paginate(
+      this.prismaService.menus,
+      paginationParams,
+      {
+        where: { role_menus: { some: { role_id: roleId } } },
+        include: {
+          role_menus: true,
+        },
+      },
+    );
   }
 
-  async listRoutes(roleId: number) {
-    return this.prismaService.routes.findMany({
-      where: { role_routes: { some: { role_id: roleId } } },
-    });
+  async listRoutes(paginationParams: PaginationDTO, roleId: number) {
+    return this.paginationService.paginate(
+      this.prismaService.routes,
+      paginationParams,
+      {
+        where: { role_routes: { some: { role_id: roleId } } },
+        include: {
+          role_routes: true,
+        },
+      },
+    );
   }
 
-  async listScreens(roleId: number) {
-    return this.prismaService.screens.findMany({
-      where: { role_screens: { some: { role_id: roleId } } },
-    });
+  async listScreens(paginationParams: PaginationDTO, roleId: number) {
+    return this.paginationService.paginate(
+      this.prismaService.screens,
+      paginationParams,
+      {
+        where: { role_screens: { some: { role_id: roleId } } },
+        include: {
+          role_screens: true,
+        },
+      },
+    );
   }
 
   async getRoles(paginationParams: PaginationDTO) {

@@ -257,7 +257,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                             )}
                           </DialogHeader>
                         )}
-                        <div className='flex flex-1 overflow-y-auto'>
+                        <div className='mt-8 flex flex-1 overflow-y-auto'>
                           {React.createElement(children, {
                             ...props,
                             block: children,
@@ -328,7 +328,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                         )}
                       </SheetHeader>
                     )}
-                    <div className='flex flex-1 overflow-y-auto'>
+                    <div className='mt-8 flex flex-1 overflow-y-auto'>
                       {React.createElement(children, {
                         ...props,
                         block: children,

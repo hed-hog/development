@@ -340,7 +340,7 @@ export const DataPanel = <T extends any>({
   return (
     <>
       <div
-        className={`my-4 flex w-full flex-row justify-${hasSearch ? 'between' : 'end'} gap-4`}
+        className={`flex w-full flex-row justify-${hasSearch ? 'between' : 'end'}`}
       >
         {hasSearch && (
           <div className='w-1/4 min-w-80'>

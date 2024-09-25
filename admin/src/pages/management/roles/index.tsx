@@ -1,15 +1,17 @@
 import { DataPanel } from '@/components/custom/data-panel'
 import { FormPanel } from '@/components/custom/form-panel'
+import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useCreateRole, useDeleteRole, useEditRole } from '@/features/roles/api'
 import { useApp } from '@/hooks/use-app'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const formEdit = useRef<any>(null)
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -20,7 +22,7 @@ export default function Page() {
     mode: 'onChange',
   })
 
-  const { openDialog, closeDialog } = useApp()
+  const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
   const { mutate: deleteRoles } = useDeleteRole()
   const { mutate: createRole } = useCreateRole()
   const { mutate: editRole } = useEditRole()
@@ -106,33 +108,77 @@ export default function Page() {
       description: item.description || '',
     })
 
-    const id = openDialog({
+    const id = openSheet({
       children: () => (
-        <FormPanel
-          fields={[
+        <TabPanel
+          activeTabIndex={0}
+          tabs={[
             {
-              name: 'name',
-              label: { text: 'Nome' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Detalhes',
+              buttons: [
+                {
+                  text: 'Salvar',
+                  variant: 'default',
+                  onClick: () => {
+                    formEdit.current?.submit()
+                  },
+                },
+              ],
+              children: (
+                <FormPanel
+                  ref={formEdit}
+                  fields={[
+                    {
+                      name: 'name',
+                      label: { text: 'Nome' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                    {
+                      name: 'description',
+                      label: { text: 'Descrição' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                  ]}
+                  form={form}
+                  onSubmit={(data) => {
+                    editRole({ id: data.id, data })
+                    closeSheet(id)
+                  }}
+                />
+              ),
             },
             {
-              name: 'description',
-              label: { text: 'Descrição' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Usuários',
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id='role-users'
+                  url={`/roles/${item.id}/users`}
+                  checked={(item) => {
+                    return item.role_users.length > 0
+                  }}
+                  onSelectionChange={(selectedItems) => {
+                    console.log({ selectedItems })
+                  }}
+                />
+              ),
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {},
+                },
+              ],
             },
           ]}
-          form={form}
-          button={{ text: 'Editar' }}
-          onSubmit={(data) => {
-            editRole({ id: data.id, data })
-            closeDialog(id)
-          }}
         />
       ),
       title: 'Editar Cargo',
-      description: 'Visualize e edite as informações do cargo.',
+      description: 'Visualize e edite as informações dos cargos.',
     })
 
     return id

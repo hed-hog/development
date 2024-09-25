@@ -34,23 +34,35 @@ export class RoleController {
   }
 
   @Get(':roleId/users')
-  async listUsers(@Param('roleId', ParseIntPipe) roleId: number) {
-    return this.roleService.listUsers(roleId);
+  async listUsers(
+    @Pagination() paginationParams,
+    @Param('roleId', ParseIntPipe) roleId: number,
+  ) {
+    return this.roleService.listUsers(paginationParams, roleId);
   }
 
   @Get(':roleId/menus')
-  async listMenus(@Param('roleId', ParseIntPipe) roleId: number) {
-    return this.roleService.listMenus(roleId);
+  async listMenus(
+    @Pagination() paginationParams,
+    @Param('roleId', ParseIntPipe) roleId: number,
+  ) {
+    return this.roleService.listMenus(paginationParams, roleId);
   }
 
   @Get(':roleId/routes')
-  async listRoutes(@Param('roleId', ParseIntPipe) roleId: number) {
-    return this.roleService.listRoutes(roleId);
+  async listRoutes(
+    @Pagination() paginationParams,
+    @Param('roleId', ParseIntPipe) roleId: number,
+  ) {
+    return this.roleService.listRoutes(paginationParams, roleId);
   }
 
   @Get(':roleId/screens')
-  async listScreens(@Param('roleId', ParseIntPipe) roleId: number) {
-    return this.roleService.listScreens(roleId);
+  async listScreens(
+    @Pagination() paginationParams,
+    @Param('roleId', ParseIntPipe) roleId: number,
+  ) {
+    return this.roleService.listScreens(paginationParams, roleId);
   }
 
   @Patch(':roleId/users')
