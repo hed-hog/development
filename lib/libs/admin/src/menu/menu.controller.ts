@@ -46,7 +46,7 @@ export class MenuController {
     @Param('menuId', ParseIntPipe) menuId: number,
     @Pagination() paginationParams,
   ) {
-    return this.menuService.listRoles(paginationParams, menuId);
+    return this.menuService.listRoles(menuId, paginationParams);
   }
 
   @Get(':menuId/screens')
@@ -54,7 +54,7 @@ export class MenuController {
     @Param('menuId', ParseIntPipe) menuId: number,
     @Pagination() paginationParams,
   ) {
-    return this.menuService.listScreens(paginationParams, menuId);
+    return this.menuService.listScreens(menuId, paginationParams);
   }
 
   @Patch(':menuId/roles')

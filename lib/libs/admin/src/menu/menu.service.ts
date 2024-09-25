@@ -51,7 +51,7 @@ export class MenuService {
       skipDuplicates: true,
     });
   }
-  async listScreens(paginationParams: PaginationDTO, menuId: number) {
+  async listScreens(menuId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.screens,
       paginationParams,
@@ -70,7 +70,7 @@ export class MenuService {
       },
     );
   }
-  async listRoles(paginationParams: PaginationDTO, menuId: number) {
+  async listRoles(menuId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.roles,
       paginationParams,

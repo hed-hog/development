@@ -71,7 +71,7 @@ export class ScreenService {
         include: {
           route_screens: {
             where: {
-              menu_id: screenId,
+              screen_id: screenId,
             },
             select: {
               rote_id: true,
@@ -82,15 +82,20 @@ export class ScreenService {
       },
     );
   }
+
   async listRoles(screenId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.roles,
       paginationParams,
       {
-        where: {
+        include: {
           role_screens: {
-            some: {
+            where: {
               screen_id: screenId,
+            },
+            select: {
+              rote_id: true,
+              screen_id: true,
             },
           },
         },

@@ -84,7 +84,7 @@ export class RoleService {
     });
   }
 
-  async listUsers(paginationParams: PaginationDTO, roleId: number) {
+  async listUsers(roleId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.users,
       paginationParams,
@@ -104,7 +104,7 @@ export class RoleService {
     );
   }
 
-  async listMenus(paginationParams: PaginationDTO, roleId: number) {
+  async listMenus(roleId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.menus,
       paginationParams,
@@ -124,7 +124,7 @@ export class RoleService {
     );
   }
 
-  async listRoutes(paginationParams: PaginationDTO, roleId: number) {
+  async listRoutes(roleId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.routes,
       paginationParams,
@@ -144,7 +144,7 @@ export class RoleService {
     );
   }
 
-  async listScreens(paginationParams: PaginationDTO, roleId: number) {
+  async listScreens(roleId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.screens,
       paginationParams,

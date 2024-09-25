@@ -38,7 +38,7 @@ export class RoleController {
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
   ) {
-    return this.roleService.listUsers(paginationParams, roleId);
+    return this.roleService.listUsers(roleId, paginationParams);
   }
 
   @Get(':roleId/menus')
@@ -46,7 +46,7 @@ export class RoleController {
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
   ) {
-    return this.roleService.listMenus(paginationParams, roleId);
+    return this.roleService.listMenus(roleId, paginationParams);
   }
 
   @Get(':roleId/routes')
@@ -54,7 +54,7 @@ export class RoleController {
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
   ) {
-    return this.roleService.listRoutes(paginationParams, roleId);
+    return this.roleService.listRoutes(roleId, paginationParams);
   }
 
   @Get(':roleId/screens')
@@ -62,7 +62,7 @@ export class RoleController {
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
   ) {
-    return this.roleService.listScreens(paginationParams, roleId);
+    return this.roleService.listScreens(roleId, paginationParams);
   }
 
   @Patch(':roleId/users')
