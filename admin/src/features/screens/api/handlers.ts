@@ -50,3 +50,35 @@ export function useEditScreen() {
     },
   })
 }
+
+export function useEditScreenRoles() {
+  const { editScreenRoles } = requests()
+
+  return useMutation({
+    mutationKey: ['edit-screen-roles'],
+    mutationFn: editScreenRoles,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['screens'] })
+      toast.success('Screen edited successfully!')
+    },
+    onError: (error: any) => {
+      toast.error('Error updating screen: ' + error.message)
+    },
+  })
+}
+
+export function useEditScreenRoutes() {
+  const { editScreenRoutes } = requests()
+
+  return useMutation({
+    mutationKey: ['edit-screen-routes'],
+    mutationFn: editScreenRoutes,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['screens'] })
+      toast.success('Screen edited successfully!')
+    },
+    onError: (error: any) => {
+      toast.error('Error updating screen: ' + error.message)
+    },
+  })
+}

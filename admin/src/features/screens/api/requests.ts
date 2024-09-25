@@ -28,5 +28,55 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  return { createScreen, deleteScreens, editScreen }
+  const getScreenRoles = async ({ screenId }: { screenId: string }) => {
+    return request({
+      url: `/screens/${screenId}/roles`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const editScreenRoles = async ({
+    screenId,
+    roleIds,
+  }: {
+    screenId: string
+    roleIds: number[]
+  }) => {
+    return request({
+      url: `/screens/${screenId}/roles`,
+      data: { ids: roleIds },
+      method: 'patch',
+    }).then((res) => res.data)
+  }
+
+  const getScreenRoutes = async ({ screenId }: { screenId: string }) => {
+    return request({
+      url: `/screens/${screenId}/routes`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const editScreenRoutes = async ({
+    screenId,
+    roleIds,
+  }: {
+    screenId: string
+    roleIds: number[]
+  }) => {
+    return request({
+      url: `/screens/${screenId}/routes`,
+      data: { ids: roleIds },
+      method: 'patch',
+    }).then((res) => res.data)
+  }
+
+  return {
+    createScreen,
+    deleteScreens,
+    editScreen,
+    getScreenRoles,
+    editScreenRoles,
+    getScreenRoutes,
+    editScreenRoutes,
+  }
 }

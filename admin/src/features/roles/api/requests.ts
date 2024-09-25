@@ -35,5 +35,102 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  return { createRole, deleteRoles, editRole, getRoles }
+  const getRoleUsers = async ({ roleId }: { roleId: string }) => {
+    return request({
+      url: `/roles/${roleId}/users`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const getRoleRoutes = async ({ roleId }: { roleId: string }) => {
+    return request({
+      url: `/roles/${roleId}/routes`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const getRoleScreens = async ({ roleId }: { roleId: string }) => {
+    return request({
+      url: `/roles/${roleId}/screens`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const getRoleMenus = async ({ roleId }: { roleId: string }) => {
+    return request({
+      url: `/roles/${roleId}/menus`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const editRoleRoutes = async ({
+    roleId,
+    roleIds,
+  }: {
+    roleId: string
+    roleIds: number[]
+  }) => {
+    return request({
+      url: `/roles/${roleId}/routes`,
+      data: { ids: roleIds },
+      method: 'patch',
+    }).then((res) => res.data)
+  }
+
+  const editRoleUsers = async ({
+    roleId,
+    roleIds,
+  }: {
+    roleId: string
+    roleIds: number[]
+  }) => {
+    return request({
+      url: `/roles/${roleId}/users`,
+      data: { ids: roleIds },
+      method: 'patch',
+    }).then((res) => res.data)
+  }
+
+  const editRoleScreens = async ({
+    roleId,
+    roleIds,
+  }: {
+    roleId: string
+    roleIds: number[]
+  }) => {
+    return request({
+      url: `/roles/${roleId}/screens`,
+      data: { ids: roleIds },
+      method: 'patch',
+    }).then((res) => res.data)
+  }
+
+  const editRoleMenus = async ({
+    roleId,
+    roleIds,
+  }: {
+    roleId: string
+    roleIds: number[]
+  }) => {
+    return request({
+      url: `/roles/${roleId}/menus`,
+      data: { ids: roleIds },
+      method: 'patch',
+    }).then((res) => res.data)
+  }
+
+  return {
+    createRole,
+    deleteRoles,
+    editRole,
+    getRoles,
+    editRoleMenus,
+    editRoleRoutes,
+    editRoleScreens,
+    editRoleUsers,
+    getRoleMenus,
+    getRoleRoutes,
+    getRoleScreens,
+    getRoleUsers,
+  }
 }
