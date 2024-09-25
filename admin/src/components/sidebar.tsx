@@ -6,9 +6,8 @@ import Nav from './nav'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useApp } from '@/hooks/use-app'
-import { toPascalCase } from '@/lib/to-pascal-case'
-import * as TablerIcons from '@tabler/icons-react'
 import { SideLink } from '@/data/sidelinks'
+import { getIcon } from '@/lib/get-icon'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -22,7 +21,7 @@ export default function Sidebar({
 }: SidebarProps) {
   const { request } = useApp()
   const [navOpened, setNavOpened] = useState(false)
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['menus-system'],
     queryFn: () =>
       request({
@@ -30,26 +29,13 @@ export default function Sidebar({
       }),
   })
 
-  const getSideLinkIcon = (icon: string) => {
-    if (icon !== '' && icon.length > 0) {
-      const componentName = 'Icon' + toPascalCase(icon)
-      const IconComponent = TablerIcons[
-        componentName as keyof typeof TablerIcons
-      ] as React.FC<{ size?: number }>
-      if (IconComponent) {
-        return <IconComponent size={18} />
-      }
-    }
-    return <TablerIcons.IconSquare size={18} />
-  }
-
   const getSideLinks = (items: any[]) => {
     const links: SideLink[] = []
 
     for (let i = 0; i < items.length; i++) {
       const link: SideLink = {
         href: items[i].url ?? '',
-        icon: getSideLinkIcon(items[i].icon),
+        icon: getIcon(items[i].icon),
         title: items[i].name,
         sub:
           items[i].menus && items[i].menus.length > 0

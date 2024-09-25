@@ -35,9 +35,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-
-import * as TablerIcons from '@tabler/icons-react'
-import { toPascalCase } from '@/lib/to-pascal-case'
+import { getIcon } from '@/lib/get-icon'
 
 interface ITableViewProps<T> {
   columns: ITableColumn<T>[]
@@ -232,19 +230,6 @@ const TableView = <T extends any>({
       setSelectedItems(selectedIds)
     }
   }, [selectedIds])
-
-  const getIcon = (icon: string) => {
-    if (icon !== '' && icon.length > 0) {
-      const componentName = 'Icon' + toPascalCase(icon)
-      const IconComponent = TablerIcons[
-        componentName as keyof typeof TablerIcons
-      ] as React.FC<{ size?: number }>
-      if (IconComponent) {
-        return <IconComponent size={18} />
-      }
-    }
-    return <TablerIcons.IconSquare size={18} />
-  }
 
   const onColumnVisibilityChange = (columnKey: string) => {
     setVisibleColumns((prevColumns) => {
