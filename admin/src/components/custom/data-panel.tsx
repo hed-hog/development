@@ -339,162 +339,167 @@ export const DataPanel = <T extends any>({
 
   return (
     <>
-      <div
-        className={`flex w-full flex-row justify-${hasSearch ? 'between' : 'end'}`}
-      >
-        {hasSearch && (
-          <div className='w-1/4 min-w-80'>
-            <SearchField
-              placeholder='Buscar...'
-              value={search}
-              onSearch={(value) => {
-                setSearch(value)
-              }}
-            />
-          </div>
-        )}
-        <div className='flex items-center justify-end space-x-4 rounded-md'>
-          {isDesktop &&
-            menuActions.map((btn, index) => {
-              const { label, handler, tooltip, icon, show, ...props } = btn
-              return (
-                <TooltipProvider key={index}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        disabled={showButtons(btn)}
-                        variant='secondary'
-                        size='sm'
-                        aria-label={label}
-                        onClick={(e) => {
-                          typeof handler === 'function' &&
-                            handler(selectedItems, e)
-                          setSelectedItems([])
-                        }}
-                        {...props}
-                      >
-                        {icon} {label}
-                      </Button>
-                    </TooltipTrigger>
-                    {tooltip && (
-                      <TooltipContent>
-                        <p>{tooltip}</p>
-                      </TooltipContent>
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
-              )
-            })}
-          {isDesktop && Boolean(menuOrders.length) && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant='outline'>
-                  <IconAdjustmentsHorizontal />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align='end'>
-                <DropdownMenuRadioGroup value={order} onValueChange={setOrder}>
-                  {menuOrders.map((order) => (
-                    <DropdownMenuRadioItem
-                      className='cursor-pointer'
-                      onClick={() => {
-                        setSortField(order.field)
-                        setSortOrder(order.order)
-                        setOrder(`${order.order}-${order.field}`)
-                      }}
-                      value={`${order.order}-${order.field}`}
-                    >
-                      {order.label}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+      {Boolean(hasSearch || menuActions.length) && (
+        <div
+          className={`my-4 flex w-full flex-row justify-${hasSearch ? 'between' : 'end'}`}
+        >
+          {hasSearch && (
+            <div className='w-1/4 min-w-80'>
+              <SearchField
+                placeholder='Buscar...'
+                value={search}
+                onSearch={(value) => {
+                  setSearch(value)
+                }}
+              />
+            </div>
           )}
-          {!isDesktop && (
-            <Drawer>
-              <DrawerTrigger asChild>
-                <Button variant='outline' size='icon'>
-                  <IconDotsVertical className='h-4 w-4' />
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent className='w-full gap-4 pb-4'>
-                <DrawerHeader className='text-left'>
-                  <DrawerTitle>Opções</DrawerTitle>
-                  <DrawerDescription>
-                    {(selectedItems ?? []).length} ite
-                    {isPlural(selectedItems.length, 'm', 'ns')} selecionado
-                    {isPlural(selectedItems.length)}
-                  </DrawerDescription>
-                </DrawerHeader>
-                {!isDesktop && (
-                  <Drawer
-                    open={isOrderDrawerOpen}
-                    onOpenChange={setIsOrderDrawerOpen}
-                  >
-                    <DrawerTrigger asChild>
-                      <MenuItem
-                        label={'Ordenar'}
-                        icon={
-                          <IconAdjustmentsHorizontal className='mr-1 w-8 cursor-pointer' />
-                        }
-                      />
-                    </DrawerTrigger>
-                    <DrawerContent className='w-full gap-4 pb-4'>
-                      <DrawerHeader className='text-left'>
-                        <DrawerTitle>Ordenar por</DrawerTitle>
-                      </DrawerHeader>
-                      <div className='space-y-2'>
-                        <DropdownMenuRadioGroup
-                          value={order}
-                          onValueChange={setOrder}
+          <div className='flex items-center justify-end space-x-4 rounded-md'>
+            {isDesktop &&
+              menuActions.map((btn, index) => {
+                const { label, handler, tooltip, icon, show, ...props } = btn
+                return (
+                  <TooltipProvider key={index}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          disabled={showButtons(btn)}
+                          variant='secondary'
+                          size='sm'
+                          aria-label={label}
+                          onClick={(e) => {
+                            typeof handler === 'function' &&
+                              handler(selectedItems, e)
+                            setSelectedItems([])
+                          }}
+                          {...props}
                         >
-                          {menuOrders.map((order) => (
-                            <MenuItem
-                              key={`${order.order}-${order.field}`}
-                              aria-label={order.label}
-                              onClick={() => {
-                                setIsOrderDrawerOpen(false)
-                                setSortField(order.field)
-                                setSortOrder(order.order)
-                                setOrder(`${order.order}-${order.field}`)
-                              }}
-                              label={order.label}
-                            />
-                          ))}
-                        </DropdownMenuRadioGroup>
-                      </div>
-                    </DrawerContent>
-                  </Drawer>
-                )}
-                {menuActions
-                  .filter((btn) => !showButtons(btn))
-                  .map(
-                    (
-                      { icon, label, handler, variant, size, className },
-                      index
-                    ) => (
-                      <MenuItem
-                        key={index}
-                        aria-label={label}
-                        variant={variant}
-                        size={size}
-                        className={className}
-                        onClick={(e) => {
-                          typeof handler === 'function' &&
-                            handler(selectedItems, e)
-                          setSelectedItems([])
+                          {icon} {label}
+                        </Button>
+                      </TooltipTrigger>
+                      {tooltip && (
+                        <TooltipContent>
+                          <p>{tooltip}</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
+                )
+              })}
+            {isDesktop && Boolean(menuOrders.length) && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='outline'>
+                    <IconAdjustmentsHorizontal />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end'>
+                  <DropdownMenuRadioGroup
+                    value={order}
+                    onValueChange={setOrder}
+                  >
+                    {menuOrders.map((order) => (
+                      <DropdownMenuRadioItem
+                        className='cursor-pointer'
+                        onClick={() => {
+                          setSortField(order.field)
+                          setSortOrder(order.order)
+                          setOrder(`${order.order}-${order.field}`)
                         }}
-                        icon={icon}
-                        label={String(label)}
-                      />
-                    )
+                        value={`${order.order}-${order.field}`}
+                      >
+                        {order.label}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+            {!isDesktop && (
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button variant='outline' size='icon'>
+                    <IconDotsVertical className='h-4 w-4' />
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent className='w-full gap-4 pb-4'>
+                  <DrawerHeader className='text-left'>
+                    <DrawerTitle>Opções</DrawerTitle>
+                    <DrawerDescription>
+                      {(selectedItems ?? []).length} ite
+                      {isPlural(selectedItems.length, 'm', 'ns')} selecionado
+                      {isPlural(selectedItems.length)}
+                    </DrawerDescription>
+                  </DrawerHeader>
+                  {!isDesktop && (
+                    <Drawer
+                      open={isOrderDrawerOpen}
+                      onOpenChange={setIsOrderDrawerOpen}
+                    >
+                      <DrawerTrigger asChild>
+                        <MenuItem
+                          label={'Ordenar'}
+                          icon={
+                            <IconAdjustmentsHorizontal className='mr-1 w-8 cursor-pointer' />
+                          }
+                        />
+                      </DrawerTrigger>
+                      <DrawerContent className='w-full gap-4 pb-4'>
+                        <DrawerHeader className='text-left'>
+                          <DrawerTitle>Ordenar por</DrawerTitle>
+                        </DrawerHeader>
+                        <div className='space-y-2'>
+                          <DropdownMenuRadioGroup
+                            value={order}
+                            onValueChange={setOrder}
+                          >
+                            {menuOrders.map((order) => (
+                              <MenuItem
+                                key={`${order.order}-${order.field}`}
+                                aria-label={order.label}
+                                onClick={() => {
+                                  setIsOrderDrawerOpen(false)
+                                  setSortField(order.field)
+                                  setSortOrder(order.order)
+                                  setOrder(`${order.order}-${order.field}`)
+                                }}
+                                label={order.label}
+                              />
+                            ))}
+                          </DropdownMenuRadioGroup>
+                        </div>
+                      </DrawerContent>
+                    </Drawer>
                   )}
-              </DrawerContent>
-            </Drawer>
-          )}
+                  {menuActions
+                    .filter((btn) => !showButtons(btn))
+                    .map(
+                      (
+                        { icon, label, handler, variant, size, className },
+                        index
+                      ) => (
+                        <MenuItem
+                          key={index}
+                          aria-label={label}
+                          variant={variant}
+                          size={size}
+                          className={className}
+                          onClick={(e) => {
+                            typeof handler === 'function' &&
+                              handler(selectedItems, e)
+                            setSelectedItems([])
+                          }}
+                          icon={icon}
+                          label={String(label)}
+                        />
+                      )
+                    )}
+                </DrawerContent>
+              </Drawer>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {layout === 'table' && (
         <>
