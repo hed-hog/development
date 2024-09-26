@@ -12,13 +12,36 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const [menuId, setMenuId] = useState<string>('')
   const formEdit = useRef<any>(null)
+
+  useEffect(() => {
+    const itemId = menuId.split('-')[1]
+    const categoryIds = selectedItems.map((c) => c.id)
+
+    if (menuId && menuId.startsWith('roles')) {
+      editMenuRoles({
+        menuId: itemId,
+        roleIds: categoryIds,
+      })
+    }
+
+    if (menuId && menuId.startsWith('screens')) {
+      editMenuScreens({
+        menuId: itemId,
+        screenIds: categoryIds,
+      })
+    }
+
+    setSelectedItems([])
+    setMenuId('')
+  }, [menuId])
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -186,7 +209,7 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    console.log({ item })
+                    setMenuId(`roles-${item.id}`)
                   },
                 },
               ],
@@ -201,20 +224,13 @@ export default function Page() {
                     return (item.role_menus ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
-                    console.log({ selectedItems })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),
             },
             {
               title: 'Telas',
-              buttons: [
-                {
-                  text: 'Aplicar',
-                  variant: 'default',
-                  onClick: () => {},
-                },
-              ],
               children: (
                 <DataPanel
                   selectable
@@ -239,10 +255,19 @@ export default function Page() {
                     return (item.menu_screens ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
-                    console.log({ selectedItems })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {
+                    setMenuId(`screens-${item.id}`)
+                  },
+                },
+              ],
             },
           ]}
         />

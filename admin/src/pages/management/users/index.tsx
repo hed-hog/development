@@ -16,7 +16,6 @@ import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [userId, setUserId] = useState<string>('')
-  const [newUserRoles, setNewUserRoles] = useState<any[]>([])
   const [selectedItems, setSelectedItems] = useState<any[]>([])
   const formEdit = useRef<any>(null)
 
@@ -24,7 +23,7 @@ export default function Page() {
     if (userId) {
       editUserRoles({
         userId,
-        roleIds: newUserRoles.map((r) => r.id),
+        roleIds: selectedItems.map((r) => r.id),
       })
 
       setUserId('')
@@ -190,13 +189,7 @@ export default function Page() {
                     return item.role_users.length > 0
                   }}
                   onSelectionChange={(selectedItems) => {
-                    setNewUserRoles((prevSelected) => {
-                      const uniqueSelectedItems = new Set([
-                        ...prevSelected,
-                        ...selectedItems,
-                      ])
-                      return Array.from(uniqueSelectedItems)
-                    })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),

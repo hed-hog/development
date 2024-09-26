@@ -6,16 +6,19 @@ import {
   useCreateScreen,
   useDeleteScreen,
   useEditScreen,
+  useEditScreenRoles,
+  useEditScreenRoutes,
 } from '@/features/screens/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const [screenId, setScreenId] = useState<string>('')
   const formEdit = useRef<any>(null)
 
   const form = useForm<FieldValues>({
@@ -33,6 +36,30 @@ export default function Page() {
   const { mutate: deleteRoles } = useDeleteScreen()
   const { mutate: createScreen } = useCreateScreen()
   const { mutate: editScreen } = useEditScreen()
+  const { mutate: editScreenRoles } = useEditScreenRoles()
+  const { mutate: editScreenRoutes } = useEditScreenRoutes()
+
+  useEffect(() => {
+    const itemId = screenId.split('-')[1]
+    const categoryIds = selectedItems.map((c) => c.id)
+
+    if (screenId && screenId.startsWith('roles')) {
+      editScreenRoles({
+        screenId: itemId,
+        roleIds: categoryIds,
+      })
+    }
+
+    if (screenId && screenId.startsWith('routes')) {
+      editScreenRoutes({
+        screenId: itemId,
+        routeIds: categoryIds,
+      })
+    }
+
+    setScreenId('')
+    setSelectedItems([])
+  }, [screenId])
 
   const openCreateDialog = () => {
     form.reset({
@@ -206,7 +233,7 @@ export default function Page() {
                     return (item.role_screens ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
-                    console.log({ selectedItems })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),
@@ -214,7 +241,9 @@ export default function Page() {
                 {
                   text: 'Aplicar',
                   variant: 'default',
-                  onClick: () => {},
+                  onClick: () => {
+                    setScreenId(`roles-${item.id}`)
+                  },
                 },
               ],
             },
@@ -239,7 +268,7 @@ export default function Page() {
                     </div>
                   )}
                   onSelectionChange={(selectedItems) => {
-                    console.log({ selectedItems })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),
@@ -247,7 +276,9 @@ export default function Page() {
                 {
                   text: 'Aplicar',
                   variant: 'default',
-                  onClick: () => {},
+                  onClick: () => {
+                    setScreenId(`routes-${item.id}`)
+                  },
                 },
               ],
             },

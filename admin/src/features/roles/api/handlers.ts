@@ -51,6 +51,70 @@ export function useEditRole() {
   })
 }
 
+export function useEditRoleRoutes() {
+  const { editRoleRoutes } = requests()
+
+  return useMutation({
+    mutationKey: ['edit-role-routes'],
+    mutationFn: editRoleRoutes,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['roles'] })
+      toast.success('Role routes edited successfully!')
+    },
+    onError: (error: any) => {
+      toast.error('Error updating role routes: ' + error.message)
+    },
+  })
+}
+
+export function useEditRoleMenus() {
+  const { editRoleMenus } = requests()
+
+  return useMutation({
+    mutationKey: ['edit-role-menus'],
+    mutationFn: editRoleMenus,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['roles'] })
+      toast.success('Role menus edited successfully!')
+    },
+    onError: (error: any) => {
+      toast.error('Error updating role menus: ' + error.message)
+    },
+  })
+}
+
+export function useEditRoleScreens() {
+  const { editRoleScreens } = requests()
+
+  return useMutation({
+    mutationKey: ['edit-role-screens'],
+    mutationFn: editRoleScreens,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['roles'] })
+      toast.success('Role screens edited successfully!')
+    },
+    onError: (error: any) => {
+      toast.error('Error updating role screens: ' + error.message)
+    },
+  })
+}
+
+export function useEditRoleUsers() {
+  const { editRoleUsers } = requests()
+
+  return useMutation({
+    mutationKey: ['edit-role-users'],
+    mutationFn: editRoleUsers,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['roles'] })
+      toast.success('Role users edited successfully!')
+    },
+    onError: (error: any) => {
+      toast.error('Error updating role users: ' + error.message)
+    },
+  })
+}
+
 export function useGetRoles() {
   const { getRoles } = requests()
 

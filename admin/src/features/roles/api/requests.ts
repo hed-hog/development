@@ -65,56 +65,56 @@ export function requests() {
 
   const editRoleRoutes = async ({
     roleId,
-    roleIds,
+    routeIds,
   }: {
     roleId: string
-    roleIds: number[]
+    routeIds: number[]
   }) => {
     return request({
       url: `/roles/${roleId}/routes`,
-      data: { ids: roleIds },
+      data: { ids: routeIds },
       method: 'patch',
     }).then((res) => res.data)
   }
 
   const editRoleUsers = async ({
     roleId,
-    roleIds,
+    userIds,
   }: {
     roleId: string
-    roleIds: number[]
+    userIds: number[]
   }) => {
     return request({
       url: `/roles/${roleId}/users`,
-      data: { ids: roleIds },
+      data: { ids: userIds },
       method: 'patch',
     }).then((res) => res.data)
   }
 
   const editRoleScreens = async ({
     roleId,
-    roleIds,
+    screenIds,
   }: {
     roleId: string
-    roleIds: number[]
+    screenIds: number[]
   }) => {
     return request({
       url: `/roles/${roleId}/screens`,
-      data: { ids: roleIds },
+      data: { ids: screenIds },
       method: 'patch',
     }).then((res) => res.data)
   }
 
   const editRoleMenus = async ({
     roleId,
-    roleIds,
+    menuIds,
   }: {
     roleId: string
-    roleIds: number[]
+    menuIds: number[]
   }) => {
     return request({
       url: `/roles/${roleId}/menus`,
-      data: { ids: roleIds },
+      data: { ids: menuIds },
       method: 'patch',
     }).then((res) => res.data)
   }

@@ -2,17 +2,67 @@ import { DataPanel } from '@/components/custom/data-panel'
 import { FormPanel } from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useCreateRole, useDeleteRole, useEditRole } from '@/features/roles/api'
+import {
+  useCreateRole,
+  useDeleteRole,
+  useEditRole,
+  useEditRoleMenus,
+  useEditRoleRoutes,
+  useEditRoleScreens,
+  useEditRoleUsers,
+} from '@/features/roles/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const [roleId, setRoleId] = useState<string>('')
   const formEdit = useRef<any>(null)
+
+  const { mutate: editRoleRoutes } = useEditRoleRoutes()
+  const { mutate: editRoleScreens } = useEditRoleScreens()
+  const { mutate: editRoleUsers } = useEditRoleUsers()
+  const { mutate: editRoleMenus } = useEditRoleMenus()
+
+  useEffect(() => {
+    const itemId = roleId.split('-')[1]
+    const categoryIds = selectedItems.map((c) => c.id)
+
+    if (roleId && roleId.startsWith('screens')) {
+      editRoleScreens({
+        roleId: itemId,
+        screenIds: categoryIds,
+      })
+    }
+
+    if (roleId && roleId.startsWith('menus')) {
+      editRoleMenus({
+        roleId: itemId,
+        menuIds: categoryIds,
+      })
+    }
+
+    if (roleId && roleId.startsWith('routes')) {
+      editRoleRoutes({
+        roleId: itemId,
+        routeIds: categoryIds,
+      })
+    }
+
+    if (roleId && roleId.startsWith('users')) {
+      editRoleUsers({
+        roleId: itemId,
+        userIds: categoryIds,
+      })
+    }
+
+    setRoleId('')
+    setSelectedItems([])
+  }, [roleId])
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -165,7 +215,7 @@ export default function Page() {
                     return (item.role_users ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
-                    console.log({ selectedItems })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),
@@ -173,7 +223,9 @@ export default function Page() {
                 {
                   text: 'Aplicar',
                   variant: 'default',
-                  onClick: () => {},
+                  onClick: () => {
+                    setRoleId(`users-${item.id}`)
+                  },
                 },
               ],
             },
@@ -198,7 +250,7 @@ export default function Page() {
                     return (item.role_routes ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
-                    console.log({ selectedItems })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),
@@ -206,7 +258,9 @@ export default function Page() {
                 {
                   text: 'Aplicar',
                   variant: 'default',
-                  onClick: () => {},
+                  onClick: () => {
+                    setRoleId(`routes-${item.id}`)
+                  },
                 },
               ],
             },
@@ -231,7 +285,7 @@ export default function Page() {
                     return (item.role_menus ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
-                    console.log({ selectedItems })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),
@@ -239,7 +293,9 @@ export default function Page() {
                 {
                   text: 'Aplicar',
                   variant: 'default',
-                  onClick: () => {},
+                  onClick: () => {
+                    setRoleId(`menus-${item.id}`)
+                  },
                 },
               ],
             },
@@ -269,7 +325,7 @@ export default function Page() {
                     return (item.role_screens ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
-                    console.log({ selectedItems })
+                    setSelectedItems((prev) => [...prev, ...selectedItems])
                   }}
                 />
               ),
@@ -277,7 +333,9 @@ export default function Page() {
                 {
                   text: 'Aplicar',
                   variant: 'default',
-                  onClick: () => {},
+                  onClick: () => {
+                    setRoleId(`screens-${item.id}`)
+                  },
                 },
               ],
             },
