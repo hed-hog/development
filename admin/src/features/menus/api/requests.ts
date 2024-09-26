@@ -28,5 +28,55 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  return { createMenu, deleteMenus, editMenu }
+  const getMenuRoles = async ({ menuId }: { menuId: string }) => {
+    return request({
+      url: `/menus/${menuId}/roles`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const getMenuScreens = async ({ menuId }: { menuId: string }) => {
+    return request({
+      url: `/menus/${menuId}/screens`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const editMenuRoles = async ({
+    menuId,
+    roleIds,
+  }: {
+    menuId: string
+    roleIds: number[]
+  }) => {
+    return request({
+      url: `/menus/${menuId}/roles`,
+      method: 'patch',
+      data: { ids: roleIds },
+    }).then((res) => res.data)
+  }
+
+  const editMenuScreens = async ({
+    menuId,
+    screenIds,
+  }: {
+    menuId: string
+    screenIds: number[]
+  }) => {
+    return request({
+      url: `/menus/${menuId}/screens`,
+      method: 'patch',
+      data: { ids: screenIds },
+    }).then((res) => res.data)
+  }
+
+  return {
+    createMenu,
+    deleteMenus,
+    editMenu,
+    getMenuRoles,
+    getMenuScreens,
+    editMenuRoles,
+    editMenuScreens,
+  }
 }

@@ -50,3 +50,35 @@ export function useEditMenu() {
     },
   })
 }
+
+export function useEditMenuRoles() {
+  const { editMenuRoles } = requests()
+
+  return useMutation({
+    mutationKey: ['edit-menu-roles'],
+    mutationFn: editMenuRoles,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['menus'] })
+      toast.success('Menu roles edited successfully!')
+    },
+    onError: (error: any) => {
+      toast.error('Error updating menu roles: ' + error.message)
+    },
+  })
+}
+
+export function useEditMenuScreens() {
+  const { editMenuScreens } = requests()
+
+  return useMutation({
+    mutationKey: ['edit-menu-screens'],
+    mutationFn: editMenuScreens,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['menus'] })
+      toast.success('Menu screens edited successfully!')
+    },
+    onError: (error: any) => {
+      toast.error('Error updating menu screens: ' + error.message)
+    },
+  })
+}

@@ -58,14 +58,14 @@ export function requests() {
 
   const editScreenRoutes = async ({
     screenId,
-    roleIds,
+    routeIds,
   }: {
     screenId: string
-    roleIds: number[]
+    routeIds: number[]
   }) => {
     return request({
       url: `/screens/${screenId}/routes`,
-      data: { ids: roleIds },
+      data: { ids: routeIds },
       method: 'patch',
     }).then((res) => res.data)
   }
