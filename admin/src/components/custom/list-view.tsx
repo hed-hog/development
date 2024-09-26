@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Checkbox } from '../ui/checkbox'
-import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { IStyleOption } from '@/types/style-options'
 import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
@@ -45,53 +44,38 @@ const ListView = <T extends any>({
   selectedIds = [],
   ...props
 }: ListViewProps<T>) => {
-  const [isFirstRender, setIsFirstRender] = useState(false)
-  const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
-
-  const firstChecked = useCallback(() => {
-    if (!isFirstRender && data.length > 0 && typeof checked === 'function') {
-      setIsFirstRender(true)
-
-      let index = 0
-      let idsArray = []
-      for (const item of data) {
-        const id = extractKey(item)
-        if (checked(item)) {
-          idsArray.push(id)
-        }
-        index++
-      }
-      setSelectedItems([...selectedItems, ...idsArray])
-    }
-  }, [isFirstRender, data, selectedItems, extractKey])
+  const [selectedItems, setSelectedItems] = useState<string[]>([])
 
   useEffect(() => {
-    firstChecked()
-  }, [data])
+    const initialSelectedItems =
+      selectedIds.length > 0
+        ? selectedIds
+        : data
+            .filter((item) => typeof checked === 'function' && checked(item))
+            .map((item) => extractKey(item))
 
-  useEffectAfterFirstUpdate(() => {
+    setSelectedItems(initialSelectedItems)
+  }, [data, checked, extractKey, selectedIds])
+
+  useEffect(() => {
     if (onSelectionChange) {
       onSelectionChange(
-        data
-          .filter((item) => selectedItems.includes(extractKey(item)))
-          .map((item) => item)
+        data.filter((item) => selectedItems.includes(extractKey(item)))
       )
     }
-  }, [selectedItems])
+  }, [selectedItems, data, extractKey, onSelectionChange])
 
   const toggleSelectItem = useCallback(
     (item: T) => {
-      console.log({ item })
-
       const id = extractKey(item)
       const isSelected = selectedItems.includes(id)
 
-      if (typeof onSelect === 'function' && !isSelected) {
+      if (!isSelected && typeof onSelect === 'function') {
         onSelect(
           item,
           data.findIndex((item) => extractKey(item) === id)
         )
-      } else if (typeof onUnselect === 'function' && isSelected) {
+      } else if (isSelected && typeof onUnselect === 'function') {
         onUnselect(
           item,
           data.findIndex((item) => extractKey(item) === id)
@@ -99,18 +83,14 @@ const ListView = <T extends any>({
       }
 
       if (selectable) {
-        if (multiple) {
-          setSelectedItems(
-            isSelected
-              ? selectedItems.filter((item) => item !== id)
-              : [...selectedItems, id]
-          )
-        } else {
-          setSelectedItems(isSelected ? [] : [id])
-        }
+        setSelectedItems((prevSelected) =>
+          isSelected
+            ? prevSelected.filter((itemId) => itemId !== id)
+            : [...prevSelected, id]
+        )
       }
     },
-    [selectedItems, selectable, extractKey]
+    [selectedItems, selectable, extractKey, onSelect, onUnselect, data]
   )
 
   const selectAllItems = useCallback(() => {
@@ -118,7 +98,6 @@ const ListView = <T extends any>({
       const newSelection = new Set<string>(prevSelectedItems)
 
       if (newSelection.size === data.length) {
-        // If all items are already selected, unselect all
         if (typeof onUnselect === 'function') {
           for (const id of newSelection) {
             const item = data.find((i) => extractKey(i) === id)
@@ -132,7 +111,6 @@ const ListView = <T extends any>({
         }
         return []
       } else {
-        // Select all items
         if (typeof onSelect === 'function') {
           for (const item of data) {
             const id = extractKey(item)
@@ -150,15 +128,11 @@ const ListView = <T extends any>({
     })
   }, [data, extractKey, onSelect, onUnselect])
 
-  useEffectAfterFirstUpdate(() => {
-    if (multiple && typeof checked !== 'function') {
-      setSelectedItems(selectedIds)
-    }
-  }, [selectedIds])
-
   const isAllSelected = React.useMemo(() => {
-    const selectedKeys = new Set(selectedItems)
-    return data.every((item) => selectedKeys.has(extractKey(item)))
+    return (
+      data.length > 0 &&
+      data.every((item) => selectedItems.includes(extractKey(item)))
+    )
   }, [selectedItems, data, extractKey])
 
   return (
@@ -173,32 +147,37 @@ const ListView = <T extends any>({
         )}
       </div>
 
-      {data.map((item, index) => (
-        <div
-          key={extractKey(item)}
-          className={[
-            itemClassName ?? 'border-b',
-            'flex flex-row items-center truncate py-2 hover:bg-muted/50',
-            selectedItems.includes(extractKey(item)) && 'bg-muted/30',
-            selectable && 'cursor-pointer',
-          ].join(' ')}
-          onClick={() => {
-            if (selectable) {
-              toggleSelectItem(item)
-            }
-          }}
-          style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
-        >
-          {selectable && (
-            <Checkbox
-              checked={selectedItems.includes(extractKey(item))}
-              onCheckedChange={() => toggleSelectItem(item)}
-              className='mx-2'
-            />
-          )}
-          {render ? render(item, index) : <div>{objectToString(item)}</div>}
-        </div>
-      ))}
+      {data.map((item, index) => {
+        const itemKey = extractKey(item)
+        const isChecked = selectedItems.includes(itemKey)
+
+        return (
+          <div
+            key={itemKey}
+            className={[
+              itemClassName ?? 'border-b',
+              'flex flex-row items-center truncate py-2 hover:bg-muted/50',
+              isChecked ? 'bg-muted/30' : '',
+              selectable ? 'cursor-pointer' : '',
+            ].join(' ')}
+            onClick={() => {
+              if (selectable) {
+                toggleSelectItem(item)
+              }
+            }}
+            style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
+          >
+            {selectable && (
+              <Checkbox
+                checked={isChecked}
+                onCheckedChange={() => toggleSelectItem(item)}
+                className='mx-2'
+              />
+            )}
+            {render ? render(item, index) : <div>{objectToString(item)}</div>}
+          </div>
+        )
+      })}
     </div>
   )
 }

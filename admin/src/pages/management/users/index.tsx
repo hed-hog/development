@@ -94,14 +94,16 @@ export default function Page() {
 
   const openDeleteDialog = (items: any[]) => {
     const id = openDialog({
-      children: () => {
-        return items.map((item: any) => (
-          <div key={item.email} className='mb-5'>
-            <h3 className='text-md font-semibold'>{item.name}</h3>
-            <p className='text-xs'>{item.email}</p>
-          </div>
-        ))
-      },
+      children: () => (
+        <div className='flex flex-col'>
+          {items.map((item: any) => (
+            <div key={item.email} className='mb-5'>
+              <h3 className='text-md font-semibold'>{item.name}</h3>
+              <p className='text-xs'>{item.email}</p>
+            </div>
+          ))}
+        </div>
+      ),
       title: 'Excluir Usuário',
       description: 'Tem certeza de que deseja deletar estes usuários?',
       buttons: [

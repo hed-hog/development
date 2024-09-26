@@ -2,7 +2,13 @@ import { DataPanel } from '@/components/custom/data-panel'
 import { FormPanel } from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useCreateMenu, useDeleteMenu, useEditMenu } from '@/features/menus/api'
+import {
+  useCreateMenu,
+  useDeleteMenu,
+  useEditMenu,
+  useEditMenuRoles,
+  useEditMenuScreens,
+} from '@/features/menus/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
@@ -28,6 +34,8 @@ export default function Page() {
   const { mutate: deleteMenu } = useDeleteMenu()
   const { mutate: createMenu } = useCreateMenu()
   const { mutate: editMenu } = useEditMenu()
+  const { mutate: editMenuRoles } = useEditMenuRoles()
+  const { mutate: editMenuScreens } = useEditMenuScreens()
 
   const openCreateDialog = () => {
     form.reset({
@@ -77,22 +85,21 @@ export default function Page() {
 
   const openDeleteDialog = (items: any[]) => {
     const id = openDialog({
-      children: () => {
-        return items.map((item: any) => (
-          <div key={item.name} className='mb-5'>
-            <h3 className='text-md font-semibold'>{item.name}</h3>
-            <p className='text-xs'>
-              <b>Description:</b> {item.description}
-            </p>
-            <p className='text-xs'>
-              <b>URL:</b> {item.url}
-            </p>
-            <p className='text-xs'>
-              <b>Icon:</b> {item.icon}
-            </p>
-          </div>
-        ))
-      },
+      children: () => (
+        <div className='flex flex-col'>
+          {items.map((item: any) => (
+            <div key={item.name} className='mb-5 flex flex-col'>
+              <div className='flex flex-row items-center'>
+                <h3 className='text-md font-semibold'>{item.name}</h3>
+                <span className='ml-2 inline'>{getIcon(item.icon)}</span>
+              </div>
+              <p className='text-xs'>
+                <b>URL:</b> {item.url}
+              </p>
+            </div>
+          ))}
+        </div>
+      ),
       title: 'Excluir Menu',
       description: 'Tem certeza de que deseja deletar estes menus?',
       buttons: [
@@ -178,7 +185,9 @@ export default function Page() {
                 {
                   text: 'Aplicar',
                   variant: 'default',
-                  onClick: () => {},
+                  onClick: () => {
+                    console.log({ item })
+                  },
                 },
               ],
               children: (

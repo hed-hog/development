@@ -88,22 +88,24 @@ export default function Page() {
 
   const openDeleteDialog = (items: any[]) => {
     const id = openDialog({
-      children: () => {
-        return items.map((item: any) => (
-          <div key={item.name} className='mb-5'>
-            <h3 className='text-md font-semibold'>{item.name}</h3>
-            <p className='text-xs'>
-              <b>Description:</b> {item.description}
-            </p>
-            <p className='text-xs'>
-              <b>Slug:</b> {item.slug}
-            </p>
-            <p className='text-xs'>
-              <b>Icon:</b> {item.icon}
-            </p>
-          </div>
-        ))
-      },
+      children: () => (
+        <div className='flex flex-col'>
+          {items.map((item: any) => (
+            <div key={item.name} className='mb-5'>
+              <div className='flex flex-row items-center'>
+                <h3 className='text-md font-semibold'>{item.name}</h3>
+                <span className='ml-2 inline'>{getIcon(item.icon)}</span>
+              </div>
+              <p className='text-xs'>
+                <b>Description:</b> {item.description}
+              </p>
+              <p className='text-xs'>
+                <b>Slug:</b> {item.slug}
+              </p>
+            </div>
+          ))}
+        </div>
+      ),
       title: 'Excluir Tela',
       description: 'Tem certeza de que deseja deletar estas telas?',
       buttons: [
