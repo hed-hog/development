@@ -257,7 +257,7 @@ export default function Page() {
                   id={`screen-routes-${item.id}`}
                   url={`/screens/${item.id}/routes`}
                   checked={(item) => {
-                    return (item.role_routes ?? []).length
+                    return (item.route_screens ?? []).length
                   }}
                   render={(item: any) => (
                     <div className='flex flex-row gap-2'>
