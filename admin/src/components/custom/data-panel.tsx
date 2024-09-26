@@ -10,7 +10,13 @@ import { IResponsiveColumn } from '@/types/responsive-columns'
 import { SkeletonCard } from './skeleton-card'
 import { PaginationView } from './pagination-view'
 import { SearchField } from '../search-field'
-import { useCallback, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { SelectedItems } from './select-items'
 import { useApp } from '@/hooks/use-app'
@@ -70,7 +76,6 @@ type DataPanelTypeBase<T> = {
   styleOptions?: IStyleOption
   selectable?: boolean
   multiple?: boolean
-  checked?: (item: any) => boolean
   hasSearch?: boolean
   menuOrders?: MenuOrder[]
   menuActions?: IMenuItemAction<T>[]
@@ -78,6 +83,7 @@ type DataPanelTypeBase<T> = {
   selected?: T[]
   extractKey?: (item: T) => string
   onSelectionChange?: (selectedItems: Array<T>) => void
+  checked?: (item: T) => boolean
 }
 
 type DataPanelType<T> = DataPanelTypeBase<T> &
@@ -135,44 +141,51 @@ export type DataPanelProps<T> = DataPanelType<T> &
       }
   )
 
-export const DataPanel = <T extends any>({
-  layout = 'grid',
-  extractKey = (item: T) => {
-    try {
-      return 'id' in (item as any) ? String((item as any).id) : ''
-    } catch (e) {
-      return ''
-    }
-  },
-  url,
-  id,
-  hasSearch = false,
-  selectable = false,
-  multiple = false,
-  selected = [],
-  paginationOptions = {
-    pageSizeOptions: [10, 20, 30, 40],
-    maxPages: 3,
-  },
-  selectOptions,
-  styleOptions = {
-    gap: 1,
-    padding: 0,
-  },
-  render,
-  columns,
-  checked,
-  sortable = false,
-  caption,
-  onItemClick,
-  onItemContextMenu,
-  responsiveColumns,
-  itemClassName,
-  onSelectionChange,
-  menuOrders = [],
-  menuActions = [],
-  ...props
-}: DataPanelProps<T>) => {
+export type DataPanelRef<T> = {
+  getSelectedItems: () => T[]
+}
+
+const DataPanelInner = <T extends any>(
+  {
+    layout = 'grid',
+    extractKey = (item: T) => {
+      try {
+        return 'id' in (item as any) ? String((item as any).id) : ''
+      } catch (e) {
+        return ''
+      }
+    },
+    url,
+    id,
+    hasSearch = false,
+    selectable = false,
+    multiple = false,
+    selected = [],
+    paginationOptions = {
+      pageSizeOptions: [10, 20, 30, 40],
+      maxPages: 3,
+    },
+    selectOptions,
+    styleOptions = {
+      gap: 1,
+      padding: 0,
+    },
+    render,
+    columns,
+    sortable = false,
+    caption,
+    onItemClick,
+    onItemContextMenu,
+    responsiveColumns,
+    itemClassName,
+    onSelectionChange,
+    menuOrders = [],
+    menuActions = [],
+    checked,
+    ...props
+  }: DataPanelProps<T>,
+  ref: React.Ref<DataPanelRef<T>>
+) => {
   const isDesktop = useMediaQuery('(min-width: 992px)')
 
   const {
@@ -197,21 +210,45 @@ export const DataPanel = <T extends any>({
   })
 
   const [order, setOrder] = useState(`${sortOrder}-${sortField}`)
-  const [selectedItems, setSelectedItems] = useState<T[]>(selected)
+  const [selectedItems, setSelectedItems] = useState<string>(
+    JSON.stringify(selected)
+  )
   const [isOrderDrawerOpen, setIsOrderDrawerOpen] = useState(false)
   const { openDialog, closeDialog } = useApp()
 
+  const getSelectedItems = useCallback(() => {
+    return JSON.parse(selectedItems) as T[]
+  }, [selectedItems])
+
+  const applySelectedItems = useCallback(() => {
+    if (typeof checked === 'function') {
+      const checkedItems = items.filter(checked)
+      console.log({ checkedItems })
+      setSelectedItems(JSON.stringify([...getSelectedItems(), ...checkedItems]))
+    }
+  }, [items, selectedItems, checked])
+
+  useEffect(() => {
+    console.log('DataPanel', 'items change', items, typeof checked)
+    applySelectedItems()
+  }, [items])
+
   const handleSelect = useCallback(
-    (item: T) => setSelectedItems((value) => [...value, item]),
-    []
+    (item: T) =>
+      setSelectedItems(JSON.stringify([...getSelectedItems(), item])),
+    [getSelectedItems]
   )
 
   const handleUnselect = useCallback(
     (item: T) =>
-      setSelectedItems((value) =>
-        value.filter((v) => extractKey(v) !== extractKey(item))
+      setSelectedItems(
+        JSON.stringify(
+          getSelectedItems().filter(
+            (v: T) => extractKey(v) !== extractKey(item)
+          )
+        )
       ),
-    [extractKey]
+    [extractKey, getSelectedItems]
   )
 
   const onSortChange = (field: string, order: 'asc' | 'desc') => {
@@ -224,59 +261,56 @@ export const DataPanel = <T extends any>({
       case 'table':
         return {
           columns,
-          data: selectedItems,
+          data: getSelectedItems(),
           sortable,
           caption,
           isLoading,
           itemClassName,
-          checked,
           extractKey,
           render,
           selectable,
           onSortChange,
           multiple,
-          selectedIds: selectedItems.map((item) => extractKey(item)),
+          selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
             console.log('onSelectionChange', items)
-            setSelectedItems(items)
+            setSelectedItems(JSON.stringify(items))
           },
           ...(props as any),
         }
       case 'list':
         return {
           itemClassName,
-          data: selectedItems,
+          data: getSelectedItems(),
           styleOptions,
           render,
-          checked,
           selectable,
           multiple,
-          selectedIds: selectedItems.map((item) => extractKey(item)),
+          selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
             console.log('onSelectionChange', items)
-            setSelectedItems(items)
+            setSelectedItems(JSON.stringify(items))
           },
           ...(props as any),
         }
       case 'grid':
         return {
           itemClassName,
-          data: selectedItems,
+          data: getSelectedItems(),
           responsiveColumns,
           styleOptions,
           render,
           selectable,
-          checked,
           multiple,
-          selectedIds: selectedItems.map((item) => extractKey(item)),
+          selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
             console.log('onSelectionChange', items)
-            setSelectedItems(items)
+            setSelectedItems(JSON.stringify(items))
           },
           ...(props as any),
         }
     }
-  }, [selectedItems])
+  }, [getSelectedItems])
 
   const getSelectedItemsPanel = useCallback(() => {
     switch (layout) {
@@ -287,10 +321,10 @@ export const DataPanel = <T extends any>({
       case 'grid':
         return GridView<T>
     }
-  }, [selectedItems, layout])
+  }, [getSelectedItems, layout])
 
   const showSelectedItems = useCallback(() => {
-    if (!selectedItems.length) return
+    if (!getSelectedItems().length) return
 
     const id = openDialog({
       children: getSelectedItemsPanel(),
@@ -314,28 +348,38 @@ export const DataPanel = <T extends any>({
       title: 'Itens selecionados',
       description: 'Confira ou remova os itens selecionados',
     })
-  }, [selectedItems, getSelectedItemsPanel])
+  }, [selectedItems, getSelectedItemsPanel, getSelectedItems])
 
   const showButtons = useCallback(
     <T extends any>({ show }: IMenuItemAction<T>): boolean => {
       if (
-        (show === 'once' && selectedItems.length !== 1) ||
-        (show === 'some' && !selectedItems.length) ||
-        (show === 'none' && selectedItems.length)
+        (show === 'once' && getSelectedItems().length !== 1) ||
+        (show === 'some' && !getSelectedItems().length) ||
+        (show === 'none' && getSelectedItems().length)
       ) {
         return true
       }
 
       return false
     },
-    [selectedItems]
+    [getSelectedItems]
   )
 
   useEffectAfterFirstUpdate(() => {
     if (typeof onSelectionChange === 'function') {
-      onSelectionChange(selectedItems)
+      onSelectionChange(getSelectedItems())
     }
-  }, [selectedItems])
+  }, [getSelectedItems])
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getSelectedItems() {
+        return getSelectedItems()
+      },
+    }),
+    [getSelectedItems]
+  )
 
   return (
     <>
@@ -369,8 +413,8 @@ export const DataPanel = <T extends any>({
                           aria-label={label}
                           onClick={(e) => {
                             typeof handler === 'function' &&
-                              handler(selectedItems, e)
-                            setSelectedItems([])
+                              handler(getSelectedItems(), e)
+                            setSelectedItems('[]')
                           }}
                           {...props}
                         >
@@ -426,9 +470,10 @@ export const DataPanel = <T extends any>({
                   <DrawerHeader className='text-left'>
                     <DrawerTitle>Opções</DrawerTitle>
                     <DrawerDescription>
-                      {(selectedItems ?? []).length} ite
-                      {isPlural(selectedItems.length, 'm', 'ns')} selecionado
-                      {isPlural(selectedItems.length)}
+                      {(getSelectedItems() ?? []).length} ite
+                      {isPlural(getSelectedItems().length, 'm', 'ns')}{' '}
+                      selecionado
+                      {isPlural(getSelectedItems().length)}
                     </DrawerDescription>
                   </DrawerHeader>
                   {!isDesktop && (
@@ -486,8 +531,8 @@ export const DataPanel = <T extends any>({
                           className={className}
                           onClick={(e) => {
                             typeof handler === 'function' &&
-                              handler(selectedItems, e)
-                            setSelectedItems([])
+                              handler(getSelectedItems(), e)
+                            setSelectedItems('[]')
                           }}
                           icon={icon}
                           label={String(label)}
@@ -522,7 +567,6 @@ export const DataPanel = <T extends any>({
               columns={columns as ITableColumn<T>[]}
               data={items}
               sortable={sortable}
-              checked={checked}
               caption={caption}
               onItemClick={onItemClick}
               onItemContextMenu={onItemContextMenu}
@@ -531,7 +575,7 @@ export const DataPanel = <T extends any>({
               onSelect={handleSelect}
               onUnselect={handleUnselect}
               extractKey={extractKey}
-              selectedIds={selectedItems.map((item) => extractKey(item))}
+              selectedIds={getSelectedItems().map((item) => extractKey(item))}
             />
           )}
         </>
@@ -557,7 +601,6 @@ export const DataPanel = <T extends any>({
               selectable={selectable}
               multiple={multiple}
               data={items}
-              checked={checked}
               styleOptions={{
                 gap: styleOptions.gap,
                 padding: styleOptions.padding,
@@ -565,7 +608,7 @@ export const DataPanel = <T extends any>({
               render={render}
               onSelect={handleSelect}
               onUnselect={handleUnselect}
-              selectedIds={selectedItems.map((item) => extractKey(item))}
+              selectedIds={getSelectedItems().map((item) => extractKey(item))}
               {...(props as any)}
             />
           )}
@@ -593,14 +636,13 @@ export const DataPanel = <T extends any>({
               selectable={selectable}
               multiple={multiple}
               data={items}
-              checked={checked}
               responsiveColumns={responsiveColumns}
               styleOptions={{
                 gap: styleOptions.gap,
                 padding: styleOptions.padding,
               }}
               render={render}
-              selectedIds={selectedItems.map((item) => extractKey(item))}
+              selectedIds={getSelectedItems().map((item) => extractKey(item))}
               onSelect={handleSelect}
               onUnselect={handleUnselect}
               {...(props as any)}
@@ -626,10 +668,16 @@ export const DataPanel = <T extends any>({
 
       {selectable && multiple && (
         <SelectedItems
-          selectedItems={selectedItems}
+          selectedItems={getSelectedItems()}
           onClick={() => showSelectedItems()}
         />
       )}
     </>
   )
 }
+
+export const DataPanel = forwardRef(DataPanelInner) as <T>(
+  props: DataPanelProps<T> & { ref?: React.Ref<HTMLDivElement> }
+) => React.ReactElement
+
+export default DataPanel

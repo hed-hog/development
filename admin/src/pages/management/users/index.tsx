@@ -10,25 +10,13 @@ import {
 } from '@/features/users'
 import { useApp } from '@/hooks/use-app'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [userId, setUserId] = useState<string>('')
-  const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const userRolesRef = useRef<any>(null)
   const formEdit = useRef<any>(null)
-
-  useEffect(() => {
-    if (userId) {
-      editUserRoles({
-        userId,
-        roleIds: selectedItems.map((r) => r.id),
-      })
-
-      setUserId('')
-    }
-  }, [userId])
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -110,7 +98,6 @@ export default function Page() {
           variant: 'secondary',
           text: 'Cancelar',
           onClick: () => {
-            setSelectedItems(items)
             closeDialog(id)
           },
         },
@@ -180,17 +167,13 @@ export default function Page() {
               title: 'Funções',
               children: (
                 <DataPanel
+                  ref={userRolesRef}
                   selectable
+                  checked={(item: any) => item.role_users.length > 0}
                   multiple
                   layout='list'
-                  id='user-roles'
+                  id={`user-roles-${item.id}`}
                   url={`/users/${item.id}/roles`}
-                  checked={(item) => {
-                    return item.role_users.length > 0
-                  }}
-                  onSelectionChange={(selectedItems) => {
-                    setSelectedItems((prev) => [...prev, ...selectedItems])
-                  }}
                 />
               ),
               buttons: [
@@ -198,7 +181,16 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setUserId(item.id)
+                    if (userRolesRef.current) {
+                      const items = userRolesRef.current?.getSelectedItems()
+
+                      if (items) {
+                        editUserRoles({
+                          userId: item.id,
+                          roleIds: items.map((r: any) => r.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],
@@ -233,7 +225,6 @@ export default function Page() {
           { key: 'name', header: 'Name' },
           { key: 'email', header: 'Email' },
         ]}
-        selected={selectedItems}
         multiple
         hasSearch
         sortable

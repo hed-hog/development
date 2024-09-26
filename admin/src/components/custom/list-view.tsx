@@ -1,8 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react'
 import { Checkbox } from '../ui/checkbox'
 import { IStyleOption } from '@/types/style-options'
 import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   data: T[]
@@ -10,7 +17,6 @@ type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   styleOptions?: IStyleOption
   selectable?: boolean
   multiple?: boolean
-  checked?: (item: any) => boolean
   onSelectionChange?: (selectedItems: T[]) => void
   itemClassName?: string
   extractKey?: (item: T) => string
@@ -19,43 +25,34 @@ type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   selectedIds?: string[]
 }
 
-const ListView = <T extends any>({
-  styleOptions = {
-    gap: 6,
-    padding: 4,
-  },
-  data = [],
-  render,
-  selectable = false,
-  multiple = true,
-  onSelectionChange,
-  className,
-  checked,
-  itemClassName,
-  onSelect,
-  onUnselect,
-  extractKey = (item: T) => {
-    try {
-      return 'id' in (item as any) ? String((item as any).id) : ''
-    } catch (e) {
-      return ''
-    }
-  },
-  selectedIds = [],
-  ...props
-}: ListViewProps<T>) => {
+const ListViewInner = <T extends any>(
+  {
+    styleOptions = {
+      gap: 6,
+      padding: 4,
+    },
+    data = [],
+    render,
+    selectable = false,
+    multiple = true,
+    onSelectionChange,
+    className,
+    itemClassName,
+    onSelect,
+    onUnselect,
+    extractKey = (item: T) => {
+      try {
+        return 'id' in (item as any) ? String((item as any).id) : ''
+      } catch (e) {
+        return ''
+      }
+    },
+    selectedIds = [],
+    ...props
+  }: ListViewProps<T>,
+  ref: React.Ref<any>
+) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([])
-
-  useEffect(() => {
-    const initialSelectedItems =
-      selectedIds.length > 0
-        ? selectedIds
-        : data
-            .filter((item) => typeof checked === 'function' && checked(item))
-            .map((item) => extractKey(item))
-
-    setSelectedItems(initialSelectedItems)
-  }, [data, checked, extractKey, selectedIds])
 
   useEffect(() => {
     if (onSelectionChange) {
@@ -135,6 +132,32 @@ const ListView = <T extends any>({
     )
   }, [selectedItems, data, extractKey])
 
+  useEffect(() => {
+    console.log({ selectedIds })
+  }, [selectedIds])
+
+  useEffectAfterFirstUpdate(() => {
+    if (multiple) {
+      setSelectedItems(selectedIds)
+    }
+  }, [selectedIds])
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      selectAllItems() {
+        selectAllItems()
+      },
+      toggleSelectItem(item: T) {
+        toggleSelectItem(item)
+      },
+      setSelectedItems(ids: string[]) {
+        setSelectedItems(ids)
+      },
+    }),
+    [selectAllItems, toggleSelectItem]
+  )
+
   return (
     <div {...props} className={`p-${styleOptions.padding} ${className}`}>
       <div className='border-b'>
@@ -181,5 +204,9 @@ const ListView = <T extends any>({
     </div>
   )
 }
+
+const ListView = React.forwardRef(ListViewInner) as <T>(
+  props: ListViewProps<T> & { ref?: React.Ref<HTMLDivElement> }
+) => React.ReactElement
 
 export default ListView
