@@ -1,16 +1,18 @@
 import { DataPanel } from '@/components/custom/data-panel'
 import { FormPanel } from '@/components/custom/form-panel'
+import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useCreateMenu, useDeleteMenu, useEditMenu } from '@/features/menus/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const formEdit = useRef<any>(null)
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -22,7 +24,7 @@ export default function Page() {
     mode: 'onChange',
   })
 
-  const { openDialog, closeDialog } = useApp()
+  const { openDialog, closeDialog, openSheet } = useApp()
   const { mutate: deleteMenu } = useDeleteMenu()
   const { mutate: createMenu } = useCreateMenu()
   const { mutate: editMenu } = useEditMenu()
@@ -124,35 +126,116 @@ export default function Page() {
       icon: item.icon || '',
     })
 
-    const id = openDialog({
+    const id = openSheet({
       children: () => (
-        <FormPanel
-          fields={[
+        <TabPanel
+          activeTabIndex={0}
+          tabs={[
             {
-              name: 'name',
-              label: { text: 'Nome' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Detalhes',
+              buttons: [
+                {
+                  text: 'Salvar',
+                  variant: 'default',
+                  onClick: () => {
+                    formEdit.current?.submit()
+                  },
+                },
+              ],
+              children: (
+                <FormPanel
+                  fields={[
+                    {
+                      name: 'name',
+                      label: { text: 'Nome' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                    {
+                      name: 'url',
+                      label: { text: 'URL' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                    {
+                      name: 'icon',
+                      label: { text: 'Ícone' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                  ]}
+                  form={form}
+                  onSubmit={(data) => {
+                    editMenu({ id: data.id, data })
+                    closeDialog(id)
+                  }}
+                />
+              ),
             },
             {
-              name: 'url',
-              label: { text: 'URL' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Funções',
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {},
+                },
+              ],
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id={`role-menus-${item.id}`}
+                  url={`/menus/${item.id}/roles`}
+                  checked={(item) => {
+                    return (item.role_menus ?? []).length
+                  }}
+                  onSelectionChange={(selectedItems) => {
+                    console.log({ selectedItems })
+                  }}
+                />
+              ),
             },
             {
-              name: 'icon',
-              label: { text: 'Ícone' },
-              type: EnumFieldType.TEXT,
-              required: false,
+              title: 'Telas',
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {},
+                },
+              ],
+              children: (
+                <DataPanel
+                  selectable
+                  multiple
+                  layout='list'
+                  id={`menu-screens-${item.id}`}
+                  url={`/menus/${item.id}/screens`}
+                  render={(item: any) => (
+                    <div className='flex flex-col'>
+                      <div className='flex flex-row'>
+                        {getIcon(item.icon || '')}
+                        <code className='px-1'>
+                          {item.name} - {item.slug}
+                        </code>
+                      </div>
+                      <p className='m-0 text-left text-xs'>
+                        {item.description}
+                      </p>
+                    </div>
+                  )}
+                  checked={(item) => {
+                    return (item.menu_screens ?? []).length
+                  }}
+                  onSelectionChange={(selectedItems) => {
+                    console.log({ selectedItems })
+                  }}
+                />
+              ),
             },
           ]}
-          form={form}
-          button={{ text: 'Editar' }}
-          onSubmit={(data) => {
-            editMenu({ id: data.id, data })
-            closeDialog(id)
-          }}
         />
       ),
       title: 'Editar Menu',
