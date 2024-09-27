@@ -7,6 +7,7 @@ import { MenuModule } from './menu/menu.module';
 import { ScreenModule } from './screen/screen.module';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
+import { RouteModule } from './route/route.module';
 
 @Module({
   imports: [
@@ -14,10 +15,18 @@ import { RoleModule } from './role/role.module';
     forwardRef(() => MenuModule),
     forwardRef(() => PaginationModule),
     forwardRef(() => RoleModule),
+    forwardRef(() => RouteModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => ScreenModule),
     forwardRef(() => UserModule),
   ],
-  exports: [UserModule, AuthModule, RoleModule, MenuModule, ScreenModule],
+  exports: [
+    UserModule,
+    AuthModule,
+    RouteModule,
+    RoleModule,
+    MenuModule,
+    ScreenModule,
+  ],
 })
 export class AdminModule {}

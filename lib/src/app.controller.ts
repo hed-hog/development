@@ -43,7 +43,7 @@ export class AppController {
     });
   }
 
-  @Get('routes')
+  @Get('endpoints')
   getEndpoints() {
     const httpServer = this.httpAdapterHost.httpAdapter.getInstance();
 

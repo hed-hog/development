@@ -62,6 +62,22 @@ export class Migrate implements MigrationInterface {
           method: 'PATCH',
         },
         {
+          url: '/menus/:menuId/roles',
+          method: 'GET',
+        },
+        {
+          url: '/menus/:menuId/roles',
+          method: 'PATCH',
+        },
+        {
+          url: '/menus/:menuId/screens',
+          method: 'GET',
+        },
+        {
+          url: '/menus/:menuId/screens',
+          method: 'PATCH',
+        },
+        {
           url: '/menus',
           method: 'DELETE',
         },
@@ -204,6 +220,26 @@ export class Migrate implements MigrationInterface {
         {
           url: '/users',
           method: 'DELETE',
+        },
+        {
+          url: '/routes',
+          method: 'GET',
+        },
+        {
+          url: '/routes',
+          method: 'POST',
+        },
+        {
+          url: '/routes',
+          method: 'DELETE',
+        },
+        {
+          url: '/routes/:routeId',
+          method: 'GET',
+        },
+        {
+          url: '/routes/:routeId',
+          method: 'PATCH',
         },
       ])
       .execute();
