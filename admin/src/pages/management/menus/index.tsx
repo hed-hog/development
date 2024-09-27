@@ -11,6 +11,7 @@ import {
 } from '@/features/menus/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
+import { queryClient } from '@/lib/query-provider'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -206,31 +207,13 @@ export default function Page() {
             },
             {
               title: 'Funções',
-              buttons: [
-                {
-                  text: 'Aplicar',
-                  variant: 'default',
-                  onClick: () => {
-                    if (menuRolesRef.current) {
-                      const items = menuRolesRef.current.getSelectedItems()
-
-                      if (items) {
-                        editMenuRoles({
-                          menuId: item.id,
-                          roleIds: items.map((r: any) => r.id),
-                        })
-                      }
-                    }
-                  },
-                },
-              ],
               children: (
                 <DataPanel
                   ref={menuRolesRef}
                   selectable
                   multiple
                   layout='list'
-                  id={`role-menus-${item.id}`}
+                  id={`menu-roles-${item.id}`}
                   url={`/menus/${item.id}/roles`}
                   checked={(item: any) => {
                     return (item.role_menus ?? []).length
@@ -240,6 +223,33 @@ export default function Page() {
                   }}
                 />
               ),
+              buttons: [
+                {
+                  text: 'Aplicar',
+                  variant: 'default',
+                  onClick: () => {
+                    if (menuRolesRef.current) {
+                      const items = menuRolesRef.current.getSelectedItems()
+
+                      if (items) {
+                        editMenuRoles(
+                          {
+                            menuId: item.id,
+                            roleIds: items.map((r: any) => r.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`menu-roles-${item.id}`],
+                              })
+                            },
+                          }
+                        )
+                      }
+                    }
+                  },
+                },
+              ],
             },
             {
               title: 'Telas',
@@ -281,10 +291,19 @@ export default function Page() {
                       const items = menuScreensRef.current.getSelectedItems()
 
                       if (items) {
-                        editMenuScreens({
-                          menuId: item.id,
-                          screenIds: items.map((s: any) => s.id),
-                        })
+                        editMenuScreens(
+                          {
+                            menuId: item.id,
+                            screenIds: items.map((s: any) => s.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`menu-screens-${item.id}`],
+                              })
+                            },
+                          }
+                        )
                       }
                     }
                   },

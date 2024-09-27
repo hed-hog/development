@@ -11,6 +11,7 @@ import {
 } from '@/features/screens/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
+import { queryClient } from '@/lib/query-provider'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -227,10 +228,19 @@ export default function Page() {
                       const items = screenRolesRef.current.getSelectedItems()
 
                       if (items) {
-                        editScreenRoles({
-                          screenId: item.id,
-                          roleIds: items.map((r: any) => r.id),
-                        })
+                        editScreenRoles(
+                          {
+                            screenId: item.id,
+                            roleIds: items.map((r: any) => r.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`screen-roles-${item.id}`],
+                              })
+                            },
+                          }
+                        )
                       }
                     }
                   },
@@ -272,10 +282,19 @@ export default function Page() {
                       const items = screenRoutesRef.current.getSelectedItems()
 
                       if (items) {
-                        editScreenRoutes({
-                          screenId: item.id,
-                          routeIds: items.map((r: any) => r.id),
-                        })
+                        editScreenRoutes(
+                          {
+                            screenId: item.id,
+                            routeIds: items.map((r: any) => r.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`screen-routes-${item.id}`],
+                              })
+                            },
+                          }
+                        )
                       }
                     }
                   },

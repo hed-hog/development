@@ -8,6 +8,7 @@ import {
   useEditUser,
   useEditUserRoles,
 } from '@/features/users'
+import { queryClient } from '@/lib/query-provider'
 import { useApp } from '@/hooks/use-app'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef } from 'react'
@@ -185,10 +186,19 @@ export default function Page() {
                       const items = userRolesRef.current?.getSelectedItems()
 
                       if (items) {
-                        editUserRoles({
-                          userId: item.id,
-                          roleIds: items.map((r: any) => r.id),
-                        })
+                        editUserRoles(
+                          {
+                            userId: item.id,
+                            roleIds: items.map((r: any) => r.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`user-roles-${item.id}`],
+                              })
+                            },
+                          }
+                        )
                       }
                     }
                   },

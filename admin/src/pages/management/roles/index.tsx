@@ -13,6 +13,7 @@ import {
 } from '@/features/roles/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
+import { queryClient } from '@/lib/query-provider'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -196,10 +197,19 @@ export default function Page() {
                       const items = roleUsersRef.current.getSelectedItems()
 
                       if (items) {
-                        editRoleUsers({
-                          roleId: item.id,
-                          userIds: items.map((u: any) => u.id),
-                        })
+                        editRoleUsers(
+                          {
+                            roleId: item.id,
+                            userIds: items.map((u: any) => u.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`role-users-${item.id}`],
+                              })
+                            },
+                          }
+                        )
                       }
                     }
                   },
@@ -241,10 +251,19 @@ export default function Page() {
                       const items = roleRoutesRef.current.getSelectedItems()
 
                       if (items) {
-                        editRoleRoutes({
-                          roleId: item.id,
-                          routeIds: items.map((r: any) => r.id),
-                        })
+                        editRoleRoutes(
+                          {
+                            roleId: item.id,
+                            routeIds: items.map((r: any) => r.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`role-routes-${item.id}`],
+                              })
+                            },
+                          }
+                        )
                       }
                     }
                   },
@@ -286,10 +305,19 @@ export default function Page() {
                       const items = roleMenusRef.current.getSelectedItems()
 
                       if (items) {
-                        editRoleMenus({
-                          roleId: item.id,
-                          menuIds: items.map((m: any) => m.id),
-                        })
+                        editRoleMenus(
+                          {
+                            roleId: item.id,
+                            menuIds: items.map((m: any) => m.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`role-menus-${item.id}`],
+                              })
+                            },
+                          }
+                        )
                       }
                     }
                   },
@@ -336,10 +364,19 @@ export default function Page() {
                       const items = roleScreensRef.current.getSelectedItems()
 
                       if (items) {
-                        editRoleScreens({
-                          roleId: item.id,
-                          screenIds: items.map((s: any) => s.id),
-                        })
+                        editRoleScreens(
+                          {
+                            roleId: item.id,
+                            screenIds: items.map((s: any) => s.id),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: [`role-screens-${item.id}`],
+                              })
+                            },
+                          }
+                        )
                       }
                     }
                   },
