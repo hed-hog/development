@@ -228,7 +228,6 @@ const DataPanelInner = <T extends any>(
   }, [items, selectedItems, checked])
 
   useEffect(() => {
-    console.log('DataPanel', 'items change', items, typeof checked)
     applySelectedItems()
   }, [items])
 

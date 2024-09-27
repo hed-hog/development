@@ -12,13 +12,12 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
-  const [screenId, setScreenId] = useState<string>('')
   const formEdit = useRef<any>(null)
 
   const form = useForm<FieldValues>({
@@ -39,27 +38,8 @@ export default function Page() {
   const { mutate: editScreenRoles } = useEditScreenRoles()
   const { mutate: editScreenRoutes } = useEditScreenRoutes()
 
-  useEffect(() => {
-    const itemId = screenId.split('-')[1]
-    const categoryIds = selectedItems.map((c) => c.id)
-
-    if (screenId && screenId.startsWith('roles')) {
-      editScreenRoles({
-        screenId: itemId,
-        roleIds: categoryIds,
-      })
-    }
-
-    if (screenId && screenId.startsWith('routes')) {
-      editScreenRoutes({
-        screenId: itemId,
-        routeIds: categoryIds,
-      })
-    }
-
-    setScreenId('')
-    setSelectedItems([])
-  }, [screenId])
+  const screenRolesRef = useRef<any>(null)
+  const screenRoutesRef = useRef<any>(null)
 
   const openCreateDialog = () => {
     form.reset({
@@ -224,12 +204,13 @@ export default function Page() {
               title: 'Funções',
               children: (
                 <DataPanel
+                  ref={screenRolesRef}
                   selectable
                   multiple
                   layout='list'
                   id={`screen-roles-${item.id}`}
                   url={`/screens/${item.id}/roles`}
-                  checked={(item) => {
+                  checked={(item: any) => {
                     return (item.role_screens ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
@@ -242,7 +223,16 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setScreenId(`roles-${item.id}`)
+                    if (screenRolesRef.current) {
+                      const items = screenRolesRef.current.getSelectedItems()
+
+                      if (items) {
+                        editScreenRoles({
+                          screenId: item.id,
+                          roleIds: items.map((r: any) => r.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],
@@ -251,6 +241,7 @@ export default function Page() {
               title: 'Rotas',
               children: (
                 <DataPanel
+                  ref={screenRoutesRef}
                   selectable
                   multiple
                   layout='list'
@@ -277,7 +268,16 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setScreenId(`routes-${item.id}`)
+                    if (screenRoutesRef.current) {
+                      const items = screenRoutesRef.current.getSelectedItems()
+
+                      if (items) {
+                        editScreenRoutes({
+                          screenId: item.id,
+                          routeIds: items.map((r: any) => r.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],

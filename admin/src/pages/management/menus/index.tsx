@@ -20,6 +20,8 @@ export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
   const [menuId, setMenuId] = useState<string>('')
   const formEdit = useRef<any>(null)
+  const menuRolesRef = useRef<any>(null)
+  const menuScreensRef = useRef<any>(null)
 
   useEffect(() => {
     const itemId = menuId.split('-')[1]
@@ -209,18 +211,28 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setMenuId(`roles-${item.id}`)
+                    if (menuRolesRef.current) {
+                      const items = menuRolesRef.current.getSelectedItems()
+
+                      if (items) {
+                        editMenuRoles({
+                          menuId: item.id,
+                          roleIds: items.map((r: any) => r.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],
               children: (
                 <DataPanel
+                  ref={menuRolesRef}
                   selectable
                   multiple
                   layout='list'
                   id={`role-menus-${item.id}`}
                   url={`/menus/${item.id}/roles`}
-                  checked={(item) => {
+                  checked={(item: any) => {
                     return (item.role_menus ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
@@ -233,6 +245,7 @@ export default function Page() {
               title: 'Telas',
               children: (
                 <DataPanel
+                  ref={menuScreensRef}
                   selectable
                   multiple
                   layout='list'
@@ -264,7 +277,16 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setMenuId(`screens-${item.id}`)
+                    if (menuScreensRef.current) {
+                      const items = menuScreensRef.current.getSelectedItems()
+
+                      if (items) {
+                        editMenuScreens({
+                          menuId: item.id,
+                          screenIds: items.map((s: any) => s.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],

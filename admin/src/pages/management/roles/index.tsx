@@ -14,55 +14,22 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
-  const [roleId, setRoleId] = useState<string>('')
   const formEdit = useRef<any>(null)
+  const roleScreensRef = useRef<any>(null)
+  const roleMenusRef = useRef<any>(null)
+  const roleRoutesRef = useRef<any>(null)
+  const roleUsersRef = useRef<any>(null)
 
   const { mutate: editRoleRoutes } = useEditRoleRoutes()
   const { mutate: editRoleScreens } = useEditRoleScreens()
   const { mutate: editRoleUsers } = useEditRoleUsers()
   const { mutate: editRoleMenus } = useEditRoleMenus()
-
-  useEffect(() => {
-    const itemId = roleId.split('-')[1]
-    const categoryIds = selectedItems.map((c) => c.id)
-
-    if (roleId && roleId.startsWith('screens')) {
-      editRoleScreens({
-        roleId: itemId,
-        screenIds: categoryIds,
-      })
-    }
-
-    if (roleId && roleId.startsWith('menus')) {
-      editRoleMenus({
-        roleId: itemId,
-        menuIds: categoryIds,
-      })
-    }
-
-    if (roleId && roleId.startsWith('routes')) {
-      editRoleRoutes({
-        roleId: itemId,
-        routeIds: categoryIds,
-      })
-    }
-
-    if (roleId && roleId.startsWith('users')) {
-      editRoleUsers({
-        roleId: itemId,
-        userIds: categoryIds,
-      })
-    }
-
-    setRoleId('')
-    setSelectedItems([])
-  }, [roleId])
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -206,12 +173,13 @@ export default function Page() {
               title: 'Usuários',
               children: (
                 <DataPanel
+                  ref={roleUsersRef}
                   selectable
                   multiple
                   layout='list'
                   id={`role-users-${item.id}`}
                   url={`/roles/${item.id}/users`}
-                  checked={(item) => {
+                  checked={(item: any) => {
                     return (item.role_users ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
@@ -224,7 +192,16 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setRoleId(`users-${item.id}`)
+                    if (roleUsersRef.current) {
+                      const items = roleUsersRef.current.getSelectedItems()
+
+                      if (items) {
+                        editRoleUsers({
+                          roleId: item.id,
+                          userIds: items.map((u: any) => u.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],
@@ -233,6 +210,7 @@ export default function Page() {
               title: 'Rotas',
               children: (
                 <DataPanel
+                  ref={roleRoutesRef}
                   selectable
                   multiple
                   layout='list'
@@ -259,7 +237,16 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setRoleId(`routes-${item.id}`)
+                    if (roleRoutesRef.current) {
+                      const items = roleRoutesRef.current.getSelectedItems()
+
+                      if (items) {
+                        editRoleRoutes({
+                          roleId: item.id,
+                          routeIds: items.map((r: any) => r.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],
@@ -268,6 +255,7 @@ export default function Page() {
               title: 'Menus',
               children: (
                 <DataPanel
+                  ref={roleMenusRef}
                   selectable
                   multiple
                   layout='list'
@@ -294,7 +282,16 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setRoleId(`menus-${item.id}`)
+                    if (roleMenusRef.current) {
+                      const items = roleMenusRef.current.getSelectedItems()
+
+                      if (items) {
+                        editRoleMenus({
+                          roleId: item.id,
+                          menuIds: items.map((m: any) => m.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],
@@ -303,6 +300,7 @@ export default function Page() {
               title: 'Telas',
               children: (
                 <DataPanel
+                  ref={roleScreensRef}
                   selectable
                   multiple
                   layout='list'
@@ -334,7 +332,16 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    setRoleId(`screens-${item.id}`)
+                    if (roleScreensRef.current) {
+                      const items = roleScreensRef.current.getSelectedItems()
+
+                      if (items) {
+                        editRoleScreens({
+                          roleId: item.id,
+                          screenIds: items.map((s: any) => s.id),
+                        })
+                      }
+                    }
                   },
                 },
               ],

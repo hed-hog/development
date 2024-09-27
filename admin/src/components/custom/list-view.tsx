@@ -131,10 +131,6 @@ const ListViewInner = <T extends any>(
     )
   }, [selectedItems, data, extractKey])
 
-  useEffect(() => {
-    console.log({ selectedIds })
-  }, [selectedIds])
-
   useEffectAfterFirstUpdate(() => {
     if (multiple) {
       setSelectedItems(selectedIds)
