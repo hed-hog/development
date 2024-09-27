@@ -13,7 +13,7 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from './dto/delete.dto';
+import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { MenuService } from './menu.service';
 import { OrderDTO } from './dto/order.dto';
