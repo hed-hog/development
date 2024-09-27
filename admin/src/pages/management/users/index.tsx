@@ -174,6 +174,9 @@ export default function Page() {
                   layout='list'
                   id={`user-roles-${item.id}`}
                   url={`/users/${item.id}/roles`}
+                  onDataLoaded={(items) => {
+                    userRolesRef.current.setSelectedItems()
+                  }}
                 />
               ),
               buttons: [
