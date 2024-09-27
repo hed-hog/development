@@ -218,7 +218,6 @@ const DataPanelInner = <T extends any>(
   const { openDialog, closeDialog } = useApp()
 
   const getSelectedItems = useCallback(() => {
-    console.log({ arr: removeDuplicates(JSON.parse(selectedItems)) })
     return removeDuplicates(JSON.parse(selectedItems)) as T[]
   }, [selectedItems])
 
