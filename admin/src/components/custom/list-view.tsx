@@ -153,6 +153,9 @@ const ListViewInner = <T extends any>(
       setSelectedItems(ids: string[]) {
         setSelectedItems(ids)
       },
+      getSelectedItems() {
+        return data.filter((item) => selectedItems.includes(extractKey(item)))
+      },
     }),
     [selectAllItems, toggleSelectItem]
   )

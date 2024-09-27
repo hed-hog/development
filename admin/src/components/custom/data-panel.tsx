@@ -223,7 +223,6 @@ const DataPanelInner = <T extends any>(
   const applySelectedItems = useCallback(() => {
     if (typeof checked === 'function') {
       const checkedItems = items.filter(checked)
-      console.log({ checkedItems })
       setSelectedItems(JSON.stringify([...getSelectedItems(), ...checkedItems]))
     }
   }, [items, selectedItems, checked])
@@ -273,7 +272,6 @@ const DataPanelInner = <T extends any>(
           multiple,
           selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
-            console.log('onSelectionChange', items)
             setSelectedItems(JSON.stringify(items))
           },
           ...(props as any),
@@ -288,7 +286,6 @@ const DataPanelInner = <T extends any>(
           multiple,
           selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
-            console.log('onSelectionChange', items)
             setSelectedItems(JSON.stringify(items))
           },
           ...(props as any),
@@ -304,7 +301,6 @@ const DataPanelInner = <T extends any>(
           multiple,
           selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
-            console.log('onSelectionChange', items)
             setSelectedItems(JSON.stringify(items))
           },
           ...(props as any),
