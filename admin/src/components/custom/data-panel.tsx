@@ -49,6 +49,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
+import { removeDuplicates } from '@/lib/remove-duplicates'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
@@ -217,7 +218,8 @@ const DataPanelInner = <T extends any>(
   const { openDialog, closeDialog } = useApp()
 
   const getSelectedItems = useCallback(() => {
-    return JSON.parse(selectedItems) as T[]
+    console.log({ arr: removeDuplicates(JSON.parse(selectedItems)) })
+    return removeDuplicates(JSON.parse(selectedItems)) as T[]
   }, [selectedItems])
 
   const applySelectedItems = useCallback(() => {
