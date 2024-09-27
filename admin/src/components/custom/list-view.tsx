@@ -54,7 +54,14 @@ const ListView = <T extends any>({
             .filter((item) => typeof checked === 'function' && checked(item))
             .map((item) => extractKey(item))
 
-    setSelectedItems(initialSelectedItems)
+    // Atualiza o estado apenas se houver mudanças
+    setSelectedItems((prevSelectedItems) => {
+      const hasChanges =
+        initialSelectedItems.length !== prevSelectedItems.length ||
+        initialSelectedItems.some((id) => !prevSelectedItems.includes(id))
+
+      return hasChanges ? initialSelectedItems : prevSelectedItems
+    })
   }, [data, checked, extractKey, selectedIds])
 
   useEffect(() => {
