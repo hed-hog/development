@@ -68,6 +68,12 @@ export class Migrate implements MigrationInterface {
           description: 'Check all routes registered in the system.',
           icon: 'route',
         },
+        {
+          name: 'Settings',
+          slug: '/management/settings',
+          description: 'Check all settings registered in the system.',
+          icon: 'settings',
+        },
       ])
       .execute();
   }

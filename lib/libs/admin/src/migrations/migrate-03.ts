@@ -135,6 +135,14 @@ export class Migrate implements MigrationInterface {
       managementId,
       'route',
     );
+    await this.insertMenu(
+      queryRunner,
+      'Settings',
+      '/management/settings',
+      5,
+      managementId,
+      'settings',
+    );
   }
 
   private async insertMenu(

@@ -37,12 +37,20 @@ export class Migrate implements MigrationInterface {
       .where('slug = :slug', { slug: '/management/routes' })
       .execute();
 
+    const screenIdSetting = await queryRunner.manager
+      .createQueryBuilder()
+      .select()
+      .from('screens', 's')
+      .where('slug = :slug', { slug: '/management/settings' })
+      .execute();
+
     for (const { url, screendId } of [
       { url: '/screens%', screendId: screenIdScreen[0].id },
       { url: '/roles%', screendId: screenIdRole[0].id },
       { url: '/users%', screendId: screenIdUser[0].id },
       { url: '/menus%', screendId: screenIdMenu[0].id },
       { url: '/routes%', screendId: screenIdRoute[0].id },
+      { url: '/settings%', screendId: screenIdSetting[0].id },
     ]) {
       const routesScreens = await queryRunner.manager
         .createQueryBuilder()

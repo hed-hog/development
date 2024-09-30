@@ -1,87 +1,207 @@
-import { Outlet } from 'react-router-dom'
+import DataPanel from '@/components/custom/data-panel'
+import { FormPanel } from '@/components/custom/form-panel'
+import { TabPanel } from '@/components/custom/tab-panel'
+import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
-  IconBrowserCheck,
-  IconExclamationCircle,
-  IconNotification,
-  IconPalette,
-  IconTool,
-  IconUser,
-} from '@tabler/icons-react'
-import { Layout } from '@/components/custom/layout'
-import { SearchField } from '@/components/search-field'
-import { Separator } from '@/components/ui/separator'
-import ThemeSwitch from '@/components/theme-switch'
-import { UserNav } from '@/components/user-nav'
-import SidebarNav from './components/sidebar-nav'
+  useCreateSetting,
+  useDeleteSettings,
+  useEditSetting,
+} from '@/features/settings'
+import { useApp } from '@/hooks/use-app'
+import { SettingType } from '@/types/setting'
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
+import { useRef } from 'react'
 import { Helmet } from 'react-helmet'
+import { FieldValues, useForm } from 'react-hook-form'
 
-export default function Settings() {
+export default function Page() {
+  const formEdit = useRef<any>(null)
+
+  const form = useForm<FieldValues>({
+    defaultValues: {
+      id: '',
+      name: '',
+    },
+    mode: 'onChange',
+  })
+
+  const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+
+  const { mutate: createSetting } = useCreateSetting()
+  const { mutate: editSetting } = useEditSetting()
+  const { mutate: deleteSettings } = useDeleteSettings()
+
+  const openCreateDialog = () => {
+    form.reset({
+      id: '',
+      name: '',
+      email: '',
+      password: '',
+    })
+
+    const id = openDialog({
+      title: 'Criar Nova Configuração',
+      description: 'Preencha as informações da configuração.',
+      children: () => (
+        <FormPanel
+          fields={[
+            {
+              name: 'name',
+              label: { text: 'Nome' },
+              type: EnumFieldType.TEXT,
+              required: true,
+            },
+          ]}
+          form={form}
+          button={{ text: 'Criar' }}
+          onSubmit={(data: SettingType) => {
+            createSetting(data)
+            closeDialog(id)
+          }}
+        />
+      ),
+    })
+
+    return id
+  }
+
+  const openDeleteDialog = (items: SettingType[]) => {
+    const id = openDialog({
+      children: () => (
+        <div className='flex flex-col'>
+          {items.map((item: SettingType) => (
+            <div key={item.name} className='mb-5'>
+              <h3 className='text-md font-semibold'>{item.name}</h3>
+            </div>
+          ))}
+        </div>
+      ),
+      title: 'Excluir Configuração',
+      description: 'Tem certeza de que deseja deletar estas configurações?',
+      buttons: [
+        {
+          variant: 'secondary',
+          text: 'Cancelar',
+          onClick: () => {
+            closeDialog(id)
+          },
+        },
+        {
+          text: 'Deletar',
+          variant: 'destructive',
+          onClick: () => {
+            deleteSettings(items.map((item) => item.id))
+            closeDialog(id)
+          },
+        },
+      ],
+    })
+
+    return id
+  }
+
+  const openEditDialog = (item: SettingType) => {
+    form.reset({
+      id: item.id || '',
+      name: item.name || '',
+    })
+
+    const id = openSheet({
+      children: () => (
+        <TabPanel
+          activeTabIndex={0}
+          tabs={[
+            {
+              title: 'Detalhes',
+              buttons: [
+                {
+                  text: 'Salvar',
+                  variant: 'default',
+                  onClick: () => {
+                    formEdit.current?.submit()
+                  },
+                },
+              ],
+              children: (
+                <FormPanel
+                  ref={formEdit}
+                  fields={[
+                    {
+                      name: 'name',
+                      label: { text: 'Nome' },
+                      type: EnumFieldType.TEXT,
+                      required: false,
+                    },
+                  ]}
+                  form={form}
+                  onSubmit={(data: SettingType) => {
+                    editSetting({ id: String(data.id), data })
+                    closeSheet(id)
+                  }}
+                />
+              ),
+            },
+          ]}
+        />
+      ),
+      title: 'Editar Configuração',
+      description: 'Visualize e edite as informações da configuração.',
+    })
+
+    return id
+  }
+
   return (
-    <Layout fixed>
+    <>
       <Helmet>
-        <title>Configurações - Hedhog</title>
+        <title>Settings - Hedhog</title>
       </Helmet>
-      {/* ===== Top Heading ===== */}
-      <Layout.Header>
-        <SearchField />
-        <div className='ml-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <UserNav />
+      <div className='mb-2 flex items-center justify-between space-y-2'>
+        <div>
+          <h1 className='text-2xl font-bold tracking-tight'>Settings</h1>
         </div>
-      </Layout.Header>
+      </div>
 
-      <Layout.Body className='flex flex-col'>
-        <div className='space-y-0.5'>
-          <h1 className='text-2xl font-bold tracking-tight md:text-3xl'>
-            Configurações
-          </h1>
-          <p className='text-muted-foreground'>
-            Gerencie as configurações do sistema e defina suas preferências.
-          </p>
-        </div>
-        <Separator className='my-4 lg:my-6' />
-        <div className='flex flex-1 flex-col space-y-8 md:space-y-2 md:overflow-hidden lg:flex-row lg:space-x-12 lg:space-y-0'>
-          <aside className='top-0 lg:sticky lg:w-1/5'>
-            <SidebarNav items={sidebarNavItems} />
-          </aside>
-          <div className='flex w-full p-1 pr-4 md:overflow-y-hidden'>
-            <Outlet />
-          </div>
-        </div>
-      </Layout.Body>
-    </Layout>
+      <DataPanel
+        url='/settings'
+        layout='table'
+        id='settings'
+        selectable
+        columns={[
+          { key: 'id', header: 'ID' },
+          { key: 'name', header: 'Nome' },
+        ]}
+        multiple
+        hasSearch
+        sortable
+        menuActions={[
+          {
+            icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
+            label: 'Editar',
+            tooltip: 'Editar usuários selecionados',
+            handler: (items: SettingType[]) => {
+              if (items.length === 1) openEditDialog(items[0])
+            },
+            show: 'once',
+          },
+          {
+            icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
+            label: 'Excluir',
+            variant: 'destructive',
+            tooltip: 'Excluir os usuários selecionados',
+            handler: openDeleteDialog,
+            show: 'some',
+          },
+          {
+            icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
+            label: 'Criar',
+            variant: 'default',
+            tooltip: 'Criar novo usuário',
+            handler: openCreateDialog,
+            show: 'none',
+          },
+        ]}
+      />
+    </>
   )
 }
-
-const sidebarNavItems = [
-  {
-    title: 'Profile',
-    icon: <IconUser size={18} />,
-    href: '/management/settings',
-  },
-  {
-    title: 'Account',
-    icon: <IconTool size={18} />,
-    href: '/management/settings/account',
-  },
-  {
-    title: 'Appearance',
-    icon: <IconPalette size={18} />,
-    href: '/management/settings/appearance',
-  },
-  {
-    title: 'Notifications',
-    icon: <IconNotification size={18} />,
-    href: '/management/settings/notifications',
-  },
-  {
-    title: 'Display',
-    icon: <IconBrowserCheck size={18} />,
-    href: '/management/settings/display',
-  },
-  {
-    title: 'Error Example',
-    icon: <IconExclamationCircle size={18} />,
-    href: '/management/settings/error-example',
-  },
-]
