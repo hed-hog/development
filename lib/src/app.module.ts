@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AdminModule } from '@hedhog/admin';
-import { MailModule, MailConfigurationTypeEnum } from '@hedhog/mail';
+import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 
 @Module({

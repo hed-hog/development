@@ -1,4 +1,4 @@
-import { AuthModule } from '@hedhog/admin';
+import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { Module, forwardRef } from '@nestjs/common';
@@ -10,7 +10,7 @@ import { SettingsService } from './settings.service';
   exports: [SettingsService],
   controllers: [SettingsController],
   imports: [
-    forwardRef(() => AuthModule),
+    forwardRef(() => AdminModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
   ],

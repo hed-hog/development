@@ -8,6 +8,7 @@ import { ScreenModule } from './screen/screen.module';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
+import { SettingModule } from './setting/settings.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { RouteModule } from './route/route.module';
     forwardRef(() => RouteModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => ScreenModule),
+    forwardRef(() => SettingModule),
     forwardRef(() => UserModule),
   ],
   exports: [
@@ -26,6 +28,7 @@ import { RouteModule } from './route/route.module';
     RouteModule,
     RoleModule,
     MenuModule,
+    SettingModule,
     ScreenModule,
   ],
 })

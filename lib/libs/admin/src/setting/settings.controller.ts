@@ -1,4 +1,3 @@
-import { AuthGuard, Permission } from '@hedhog/admin';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -13,12 +12,14 @@ import {
   UseGuards,
   forwardRef,
 } from '@nestjs/common';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { Role } from '../role/decorators/role.decorator';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from './dto/delete.dto';
+import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { SettingsService } from './settings.service';
 
-@Permission()
+@Role()
 @Controller('settings')
 export class SettingsController {
   constructor(

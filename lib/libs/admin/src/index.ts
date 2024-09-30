@@ -18,6 +18,9 @@ export * from './role/guards/role.guard';
 // Screen Module
 export * from './screen/screen.service';
 
+// Screen Module
+export * from './setting/settings.service';
+
 // User Module
 export * from './user/constants/user.constants';
 export * from './user/user.service';

@@ -148,6 +148,26 @@ model route_screens {
   @@id([route_id, screen_id], map: "PK_3172af099b6b65644be3bc72acc")
 }
 
+model setting_values {
+  id          Int      @id(map: "PK_c21069a3e9521c651c52051b939") @default(autoincrement())
+  value       String   @db.VarChar(1023)
+  name        String   @unique(map: "UQ_107f182a06aebe76c709d58dfbd") @db.VarChar
+  description String?  @db.VarChar
+  label       String?  @db.VarChar
+  setting_id  Int
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  settings    settings @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4001238c50d670cf048b157cf9b")
+}
+
+model settings {
+  id             Int              @id(map: "PK_0669fe20e252eb692bf4d344975") @default(autoincrement())
+  name           String           @db.VarChar
+  created_at     DateTime         @default(now()) @db.Timestamp(6)
+  updated_at     DateTime         @default(now()) @db.Timestamp(6)
+  setting_values setting_values[]
+}
+
 enum routes_method_enum {
   GET
   POST
