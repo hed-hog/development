@@ -62,6 +62,12 @@ export class Migrate implements MigrationInterface {
           description: 'Check all menus registered in the system.',
           icon: 'menu',
         },
+        {
+          name: 'Routes',
+          slug: '/management/routes',
+          description: 'Check all routes registered in the system.',
+          icon: 'route',
+        },
       ])
       .execute();
   }

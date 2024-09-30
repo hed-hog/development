@@ -44,9 +44,7 @@ export class RouteService {
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
     return this.prismaService.routes.update({
-      where: {
-        id,
-      },
+      where: { id },
       data,
     });
   }

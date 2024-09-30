@@ -165,7 +165,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Funções',
+              title: 'Cargos',
               children: (
                 <DataPanel
                   ref={userRolesRef}

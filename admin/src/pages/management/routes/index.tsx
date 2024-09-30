@@ -1,14 +1,14 @@
-import { DataPanel } from '@/components/custom/data-panel'
+import DataPanel from '@/components/custom/data-panel'
 import { FormPanel } from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
-  useCreateScreen,
-  useDeleteScreen,
-  useEditScreen,
-  useEditScreenRoles,
-  useEditScreenRoutes,
-} from '@/features/screens/api'
+  useCreateRoute,
+  useDeleteRoute,
+  useEditRoute,
+  useEditRouteRoles,
+  useEditRouteScreens,
+} from '@/features/routes/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
@@ -20,63 +20,48 @@ import { FieldValues, useForm } from 'react-hook-form'
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
   const formEdit = useRef<any>(null)
+  const routeScreensRef = useRef<any>(null)
+  const routeRolesRef = useRef<any>(null)
 
   const form = useForm<FieldValues>({
     defaultValues: {
       id: '',
-      name: '',
-      slug: '',
-      description: '',
-      icon: '',
+      url: '',
+      method: '',
     },
     mode: 'onChange',
   })
 
-  const { openDialog, closeDialog, openSheet } = useApp()
-  const { mutate: deleteRoles } = useDeleteScreen()
-  const { mutate: createScreen } = useCreateScreen()
-  const { mutate: editScreen } = useEditScreen()
-  const { mutate: editScreenRoles } = useEditScreenRoles()
-  const { mutate: editScreenRoutes } = useEditScreenRoutes()
+  const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
 
-  const screenRolesRef = useRef<any>(null)
-  const screenRoutesRef = useRef<any>(null)
+  const { mutate: deleteRoutes } = useDeleteRoute()
+  const { mutate: createRoute } = useCreateRoute()
+  const { mutate: editRoute } = useEditRoute()
+  const { mutate: editRouteScreens } = useEditRouteScreens()
+  const { mutate: editRouteRoles } = useEditRouteRoles()
 
   const openCreateDialog = () => {
     form.reset({
       id: '',
-      name: '',
-      slug: '',
-      description: '',
+      url: '',
+      method: '',
     })
 
     const id = openDialog({
-      title: 'Criar Tela',
-      description: 'Preencha as informações da tela.',
+      title: 'Criar Rota',
+      description: 'Preencha as informações da rota.',
       children: () => (
         <FormPanel
           fields={[
             {
-              name: 'name',
-              label: { text: 'Nome' },
+              name: 'url',
+              label: { text: 'URL' },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
-              name: 'slug',
-              label: { text: 'Slug' },
-              type: EnumFieldType.TEXT,
-              required: true,
-            },
-            {
-              name: 'description',
-              label: { text: 'Descrição' },
-              type: EnumFieldType.TEXT,
-              required: true,
-            },
-            {
-              name: 'icon',
-              label: { text: 'Ícone' },
+              name: 'method',
+              label: { text: 'Método' },
               type: EnumFieldType.TEXT,
               required: true,
             },
@@ -84,7 +69,7 @@ export default function Page() {
           form={form}
           button={{ text: 'Criar' }}
           onSubmit={(data) => {
-            createScreen(data)
+            createRoute(data)
             closeDialog(id)
           }}
         />
@@ -99,23 +84,15 @@ export default function Page() {
       children: () => (
         <div className='flex flex-col'>
           {items.map((item: any) => (
-            <div key={item.name} className='mb-5'>
-              <div className='flex flex-row items-center'>
-                <h3 className='text-md font-semibold'>{item.name}</h3>
-                <span className='ml-2 inline'>{getIcon(item.icon)}</span>
-              </div>
-              <p className='text-xs'>
-                <b>Description:</b> {item.description}
-              </p>
-              <p className='text-xs'>
-                <b>Slug:</b> {item.slug}
-              </p>
+            <div key={item.url} className='mb-5'>
+              <h3 className='text-md font-semibold'>{item.url}</h3>
+              <p className='text-xs'>{item.method}</p>
             </div>
           ))}
         </div>
       ),
-      title: 'Excluir Tela',
-      description: 'Tem certeza de que deseja deletar estas telas?',
+      title: 'Excluir Rota',
+      description: 'Tem certeza de que deseja deletar estas rotas?',
       buttons: [
         {
           variant: 'secondary',
@@ -129,7 +106,7 @@ export default function Page() {
           text: 'Deletar',
           variant: 'destructive',
           onClick: () => {
-            deleteRoles(items.map((item) => item.id))
+            deleteRoutes(items.map((item) => item.id))
             closeDialog(id)
           },
         },
@@ -142,10 +119,8 @@ export default function Page() {
   const openEditDialog = (item: any) => {
     form.reset({
       id: item.id || '',
-      name: item.name || '',
-      slug: item.slug || '',
-      description: item.description || '',
-      icon: item.icon || '',
+      url: item.url || '',
+      method: item.method || '',
     })
 
     const id = openSheet({
@@ -169,34 +144,22 @@ export default function Page() {
                   ref={formEdit}
                   fields={[
                     {
-                      name: 'name',
-                      label: { text: 'Nome' },
+                      name: 'url',
+                      label: { text: 'URL' },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
-                      name: 'slug',
-                      label: { text: 'Slug' },
-                      type: EnumFieldType.TEXT,
-                      required: false,
-                    },
-                    {
-                      name: 'description',
-                      label: { text: 'Descrição' },
-                      type: EnumFieldType.TEXT,
-                      required: false,
-                    },
-                    {
-                      name: 'icon',
-                      label: { text: 'Ícone' },
+                      name: 'method',
+                      label: { text: 'Método' },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                   ]}
                   form={form}
                   onSubmit={(data) => {
-                    editScreen({ id: data.id, data })
-                    closeDialog(id)
+                    editRoute({ id: data.id, data })
+                    closeSheet(id)
                   }}
                 />
               ),
@@ -205,14 +168,14 @@ export default function Page() {
               title: 'Cargos',
               children: (
                 <DataPanel
-                  ref={screenRolesRef}
+                  ref={routeRolesRef}
                   selectable
                   multiple
                   layout='list'
-                  id={`screen-roles-${item.id}`}
-                  url={`/screens/${item.id}/roles`}
+                  id={`route-roles-${item.id}`}
+                  url={`/routes/${item.id}/roles`}
                   checked={(item: any) => {
-                    return (item.role_screens ?? []).length
+                    return (item.role_routes ?? []).length
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -224,19 +187,19 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    if (screenRolesRef.current) {
-                      const items = screenRolesRef.current.getSelectedItems()
+                    if (routeRolesRef.current) {
+                      const items = routeRolesRef.current.getSelectedItems()
 
                       if (items) {
-                        editScreenRoles(
+                        editRouteRoles(
                           {
-                            screenId: item.id,
+                            routeId: item.id,
                             roleIds: items.map((r: any) => r.id),
                           },
                           {
                             onSuccess: () => {
                               queryClient.invalidateQueries({
-                                queryKey: [`screen-roles-${item.id}`],
+                                queryKey: [`route-roles-${item.id}`],
                               })
                             },
                           }
@@ -248,24 +211,29 @@ export default function Page() {
               ],
             },
             {
-              title: 'Rotas',
+              title: 'Telas',
               children: (
                 <DataPanel
-                  ref={screenRoutesRef}
+                  ref={routeScreensRef}
                   selectable
                   multiple
                   layout='list'
-                  id={`screen-routes-${item.id}`}
-                  url={`/screens/${item.id}/routes`}
-                  checked={(item) => {
+                  id={`route-screens-${item.id}`}
+                  url={`/routes/${item.id}/screens`}
+                  checked={(item: any) => {
                     return (item.route_screens ?? []).length
                   }}
                   render={(item: any) => (
-                    <div className='flex flex-row gap-2'>
-                      <code className='relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold'>
-                        {item.method}
-                      </code>
-                      <code>{item.url}</code>
+                    <div className='flex flex-col'>
+                      <div className='flex flex-row'>
+                        {getIcon(item.icon || '')}
+                        <code className='px-1'>
+                          {item.name} - {item.slug}
+                        </code>
+                      </div>
+                      <p className='m-0 text-left text-xs'>
+                        {item.description}
+                      </p>
                     </div>
                   )}
                   onSelectionChange={(selectedItems) => {
@@ -278,19 +246,19 @@ export default function Page() {
                   text: 'Aplicar',
                   variant: 'default',
                   onClick: () => {
-                    if (screenRoutesRef.current) {
-                      const items = screenRoutesRef.current.getSelectedItems()
+                    if (routeScreensRef.current) {
+                      const items = routeScreensRef.current.getSelectedItems()
 
                       if (items) {
-                        editScreenRoutes(
+                        editRouteScreens(
                           {
-                            screenId: item.id,
-                            routeIds: items.map((r: any) => r.id),
+                            routeId: item.id,
+                            screenIds: items.map((u: any) => u.id),
                           },
                           {
                             onSuccess: () => {
                               queryClient.invalidateQueries({
-                                queryKey: [`screen-routes-${item.id}`],
+                                queryKey: [`route-screens-${item.id}`],
                               })
                             },
                           }
@@ -305,7 +273,7 @@ export default function Page() {
         />
       ),
       title: 'Editar Cargo',
-      description: 'Visualize e edite as informações do cargo.',
+      description: 'Visualize e edite as informações dos cargos.',
     })
 
     return id
@@ -314,33 +282,23 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Screens - Hedhog</title>
+        <title>Routes - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Screens</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>Routes</h1>
         </div>
       </div>
 
       <DataPanel
-        url='/screens'
+        url='/routes'
         layout='table'
-        id='screens'
+        id='routes'
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
-          { key: 'slug', header: 'Slug' },
-          { key: 'description', header: 'Descrição' },
-          {
-            key: 'icon',
-            header: 'Ícone',
-            render: (item) => (
-              <div className='flex flex-row gap-2'>
-                {getIcon(item.icon)} {`${item.icon}`}
-              </div>
-            ),
-          },
+          { key: 'url', header: 'URL' },
+          { key: 'method', header: 'Método' },
         ]}
         selected={selectedItems}
         multiple
@@ -350,7 +308,7 @@ export default function Page() {
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
-            tooltip: 'Editar as telas selecionados',
+            tooltip: 'Editar as rotas selecionados',
             handler: (items: any[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -360,7 +318,7 @@ export default function Page() {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: 'Excluir',
             variant: 'destructive',
-            tooltip: 'Excluir as telas selecionados',
+            tooltip: 'Excluir as rotas selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
@@ -368,7 +326,7 @@ export default function Page() {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: 'Criar',
             variant: 'default',
-            tooltip: 'Criar nova tela',
+            tooltip: 'Criar nova rota',
             handler: openCreateDialog,
             show: 'none',
           },

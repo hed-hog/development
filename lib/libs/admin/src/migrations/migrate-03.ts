@@ -117,7 +117,7 @@ export class Migrate implements MigrationInterface {
       '/management/screens',
       2,
       managementId,
-      'screem',
+      'device-tv',
     );
     await this.insertMenu(
       queryRunner,
@@ -126,6 +126,14 @@ export class Migrate implements MigrationInterface {
       3,
       managementId,
       'menu',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Routes',
+      '/management/routes',
+      4,
+      managementId,
+      'route',
     );
   }
 

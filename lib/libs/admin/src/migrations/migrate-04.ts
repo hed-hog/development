@@ -241,6 +241,22 @@ export class Migrate implements MigrationInterface {
           url: '/routes/:routeId',
           method: 'PATCH',
         },
+        {
+          url: '/routes/:routeId/roles',
+          method: 'GET',
+        },
+        {
+          url: '/routes/:routeId/roles',
+          method: 'PATCH',
+        },
+        {
+          url: '/routes/:routeId/screens',
+          method: 'GET',
+        },
+        {
+          url: '/routes/:routeId/screens',
+          method: 'PATCH',
+        },
       ])
       .execute();
   }

@@ -27,11 +27,6 @@ export default function Page() {
   const roleRoutesRef = useRef<any>(null)
   const roleUsersRef = useRef<any>(null)
 
-  const { mutate: editRoleRoutes } = useEditRoleRoutes()
-  const { mutate: editRoleScreens } = useEditRoleScreens()
-  const { mutate: editRoleUsers } = useEditRoleUsers()
-  const { mutate: editRoleMenus } = useEditRoleMenus()
-
   const form = useForm<FieldValues>({
     defaultValues: {
       id: '',
@@ -42,6 +37,10 @@ export default function Page() {
   })
 
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+  const { mutate: editRoleRoutes } = useEditRoleRoutes()
+  const { mutate: editRoleScreens } = useEditRoleScreens()
+  const { mutate: editRoleUsers } = useEditRoleUsers()
+  const { mutate: editRoleMenus } = useEditRoleMenus()
   const { mutate: deleteRoles } = useDeleteRole()
   const { mutate: createRole } = useCreateRole()
   const { mutate: editRole } = useEditRole()
