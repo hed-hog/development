@@ -9,7 +9,8 @@
 - [Overview](#overview)
 - [Hedhog Auth](#hedhog-auth)
 - [Hedhog Menu](#hedhog-menu)
-- [Hedhog Permission](#hedhog-permission)
+- [Hedhog Role](#hedhog-role)
+- [Hedhog Route](#hedhog-route)
 - [Hedhog Screen](#hedhog-screen)
 - [Hedhog User](#hedhog-user)
 
