@@ -1,9 +1,10 @@
 import { useApp } from '@/hooks/use-app'
+import { RoleType } from '@/types/role'
 
 export function requests() {
   const { request } = useApp()
 
-  const createRole = async (data: any) => {
+  const createRole = async (data: RoleType) => {
     return request({
       url: '/roles',
       data,
@@ -19,7 +20,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editRole = async (params: { id: string; data: any }) => {
+  const editRole = async (params: { id: string; data: RoleType }) => {
     const { id, data } = params
     return request({
       url: `/roles/${id}`,

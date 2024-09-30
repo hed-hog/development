@@ -14,6 +14,8 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { UserType } from '@/types/user'
+import { RoleType } from '@/types/role'
 
 export default function Page() {
   const userRolesRef = useRef<any>(null)
@@ -69,7 +71,7 @@ export default function Page() {
           ]}
           form={form}
           button={{ text: 'Criar' }}
-          onSubmit={(data) => {
+          onSubmit={(data: UserType) => {
             createUser(data)
             closeDialog(id)
           }}
@@ -80,11 +82,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: any[]) => {
+  const openDeleteDialog = (items: UserType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: any) => (
+          {items.map((item: UserType) => (
             <div key={item.email} className='mb-5'>
               <h3 className='text-md font-semibold'>{item.name}</h3>
               <p className='text-xs'>{item.email}</p>
@@ -116,7 +118,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: any) => {
+  const openEditDialog = (item: UserType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -157,8 +159,8 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data) => {
-                    editUser({ id: data.id, data })
+                  onSubmit={(data: UserType) => {
+                    editUser({ id: String(data.id), data })
                     closeSheet(id)
                   }}
                 />
@@ -170,7 +172,7 @@ export default function Page() {
                 <DataPanel
                   ref={userRolesRef}
                   selectable
-                  checked={(item: any) => item.role_users.length > 0}
+                  checked={(item: RoleType) => item.role_users.length > 0}
                   multiple
                   layout='list'
                   id={`user-roles-${item.id}`}
@@ -188,8 +190,8 @@ export default function Page() {
                       if (items) {
                         editUserRoles(
                           {
-                            userId: item.id,
-                            roleIds: items.map((r: any) => r.id),
+                            userId: String(item.id),
+                            roleIds: items.map((r: RoleType) => r.id),
                           },
                           {
                             onSuccess: () => {
@@ -243,7 +245,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar usuários selecionados',
-            handler: (items: any[]) => {
+            handler: (items: UserType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',

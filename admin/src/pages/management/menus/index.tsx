@@ -12,13 +12,18 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
+import { MenuType } from '@/types/menu'
+import { RoleType } from '@/types/role'
+import { ScreenType } from '@/types/screen'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const [selectedItems, setSelectedItems] = useState<
+    (MenuType | RoleType | ScreenType)[]
+  >([])
   const [menuId, setMenuId] = useState<string>('')
   const formEdit = useRef<any>(null)
   const menuRolesRef = useRef<any>(null)
@@ -109,11 +114,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: any[]) => {
+  const openDeleteDialog = (items: MenuType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: any) => (
+          {items.map((item: MenuType) => (
             <div key={item.name} className='mb-5 flex flex-col'>
               <div className='flex flex-row items-center'>
                 <h3 className='text-md font-semibold'>{item.name}</h3>
@@ -151,7 +156,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: any) => {
+  const openEditDialog = (item: MenuType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -198,8 +203,8 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data) => {
-                    editMenu({ id: data.id, data })
+                  onSubmit={(data: MenuType) => {
+                    editMenu({ id: String(data.id), data })
                     closeDialog(id)
                   }}
                 />
@@ -208,15 +213,15 @@ export default function Page() {
             {
               title: 'Cargos',
               children: (
-                <DataPanel
+                <DataPanel<RoleType>
                   ref={menuRolesRef}
                   selectable
                   multiple
                   layout='list'
                   id={`menu-roles-${item.id}`}
                   url={`/menus/${item.id}/roles`}
-                  checked={(item: any) => {
-                    return (item.role_menus ?? []).length
+                  checked={(item: RoleType) => {
+                    return Boolean((item.role_menus ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -234,8 +239,8 @@ export default function Page() {
                       if (items) {
                         editMenuRoles(
                           {
-                            menuId: item.id,
-                            roleIds: items.map((r: any) => r.id),
+                            menuId: String(item.id),
+                            roleIds: items.map((r: RoleType) => r.id),
                           },
                           {
                             onSuccess: () => {
@@ -261,7 +266,7 @@ export default function Page() {
                   layout='list'
                   id={`menu-screens-${item.id}`}
                   url={`/menus/${item.id}/screens`}
-                  render={(item: any) => (
+                  render={(item: ScreenType) => (
                     <div className='flex flex-col'>
                       <div className='flex flex-row'>
                         {getIcon(item.icon || '')}
@@ -274,8 +279,8 @@ export default function Page() {
                       </p>
                     </div>
                   )}
-                  checked={(item) => {
-                    return (item.menu_screens ?? []).length
+                  checked={(item: ScreenType) => {
+                    return Boolean((item.menu_screens ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -293,8 +298,8 @@ export default function Page() {
                       if (items) {
                         editMenuScreens(
                           {
-                            menuId: item.id,
-                            screenIds: items.map((s: any) => s.id),
+                            menuId: String(item.id),
+                            screenIds: items.map((s: ScreenType) => s.id),
                           },
                           {
                             onSuccess: () => {
@@ -350,7 +355,7 @@ export default function Page() {
             ),
           },
         ]}
-        selected={selectedItems}
+        selected={selectedItems as MenuType[]}
         multiple
         hasSearch
         sortable
@@ -359,7 +364,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar os menus selecionados',
-            handler: (items: any[]) => {
+            handler: (items: MenuType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',

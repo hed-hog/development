@@ -1,9 +1,10 @@
 import { useApp } from '@/hooks/use-app'
+import { RouteType } from '@/types/route'
 
 export function requests() {
   const { request } = useApp()
 
-  const createRoute = async (data: any) => {
+  const createRoute = async (data: RouteType) => {
     return request({
       url: '/routes',
       method: 'post',
@@ -11,10 +12,10 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editRoute = async (params: { id: string; data: any }) => {
+  const editRoute = async (params: { id: string; data: RouteType }) => {
     const { id, data } = params
 
-    if (data.id) delete data.id
+    if (data.id) delete (data as any).id
 
     return request({
       url: `/routes/${id}`,

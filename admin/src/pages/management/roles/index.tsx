@@ -14,13 +14,20 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
+import { MenuType } from '@/types/menu'
+import { RoleType } from '@/types/role'
+import { RouteType } from '@/types/route'
+import { ScreenType } from '@/types/screen'
+import { UserType } from '@/types/user'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const [selectedItems, setSelectedItems] = useState<
+    (RoleType | RouteType | MenuType | ScreenType)[]
+  >([])
   const formEdit = useRef<any>(null)
   const roleScreensRef = useRef<any>(null)
   const roleMenusRef = useRef<any>(null)
@@ -73,7 +80,7 @@ export default function Page() {
           ]}
           form={form}
           button={{ text: 'Criar' }}
-          onSubmit={(data) => {
+          onSubmit={(data: RoleType) => {
             createRole(data)
             closeDialog(id)
           }}
@@ -84,11 +91,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: any[]) => {
+  const openDeleteDialog = (items: RoleType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: any) => (
+          {items.map((item: RoleType) => (
             <div key={item.name} className='mb-5'>
               <h3 className='text-md font-semibold'>{item.name}</h3>
               <p className='text-xs'>{item.description}</p>
@@ -121,7 +128,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: any) => {
+  const openEditDialog = (item: RoleType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -162,8 +169,8 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data) => {
-                    editRole({ id: data.id, data })
+                  onSubmit={(data: RoleType) => {
+                    editRole({ id: String(data.id), data })
                     closeSheet(id)
                   }}
                 />
@@ -179,8 +186,8 @@ export default function Page() {
                   layout='list'
                   id={`role-users-${item.id}`}
                   url={`/roles/${item.id}/users`}
-                  checked={(item: any) => {
-                    return (item.role_users ?? []).length
+                  checked={(item: RoleType) => {
+                    return Boolean((item.role_users ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -198,8 +205,8 @@ export default function Page() {
                       if (items) {
                         editRoleUsers(
                           {
-                            roleId: item.id,
-                            userIds: items.map((u: any) => u.id),
+                            roleId: String(item.id),
+                            userIds: items.map((u: UserType) => u.id),
                           },
                           {
                             onSuccess: () => {
@@ -225,7 +232,7 @@ export default function Page() {
                   layout='list'
                   id={`role-routes-${item.id}`}
                   url={`/roles/${item.id}/routes`}
-                  render={(item: any) => (
+                  render={(item: RouteType) => (
                     <div className='flex flex-row gap-2'>
                       <code className='relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold'>
                         {item.method}
@@ -233,8 +240,8 @@ export default function Page() {
                       <code>{item.url}</code>
                     </div>
                   )}
-                  checked={(item) => {
-                    return (item.role_routes ?? []).length
+                  checked={(item: RouteType) => {
+                    return Boolean((item.role_routes ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -252,8 +259,8 @@ export default function Page() {
                       if (items) {
                         editRoleRoutes(
                           {
-                            roleId: item.id,
-                            routeIds: items.map((r: any) => r.id),
+                            roleId: String(item.id),
+                            routeIds: items.map((r: RouteType) => r.id),
                           },
                           {
                             onSuccess: () => {
@@ -279,7 +286,7 @@ export default function Page() {
                   layout='list'
                   id={`role-menus-${item.id}`}
                   url={`/roles/${item.id}/menus`}
-                  render={(item: any) => (
+                  render={(item: MenuType) => (
                     <div className='flex flex-row items-center gap-2'>
                       {getIcon(item.icon || '')}
                       <code>
@@ -287,8 +294,8 @@ export default function Page() {
                       </code>
                     </div>
                   )}
-                  checked={(item) => {
-                    return (item.role_menus ?? []).length
+                  checked={(item: MenuType) => {
+                    return Boolean((item.role_menus ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -306,8 +313,8 @@ export default function Page() {
                       if (items) {
                         editRoleMenus(
                           {
-                            roleId: item.id,
-                            menuIds: items.map((m: any) => m.id),
+                            roleId: String(item.id),
+                            menuIds: items.map((m: MenuType) => m.id),
                           },
                           {
                             onSuccess: () => {
@@ -333,7 +340,7 @@ export default function Page() {
                   layout='list'
                   id={`role-screens-${item.id}`}
                   url={`/roles/${item.id}/screens`}
-                  render={(item: any) => (
+                  render={(item: ScreenType) => (
                     <div className='flex flex-col'>
                       <div className='flex flex-row'>
                         {getIcon(item.icon || '')}
@@ -346,8 +353,8 @@ export default function Page() {
                       </p>
                     </div>
                   )}
-                  checked={(item) => {
-                    return (item.role_screens ?? []).length
+                  checked={(item: ScreenType) => {
+                    return Boolean((item.role_screens ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -365,8 +372,8 @@ export default function Page() {
                       if (items) {
                         editRoleScreens(
                           {
-                            roleId: item.id,
-                            screenIds: items.map((s: any) => s.id),
+                            roleId: String(item.id),
+                            screenIds: items.map((s: ScreenType) => s.id),
                           },
                           {
                             onSuccess: () => {
@@ -413,7 +420,7 @@ export default function Page() {
           { key: 'name', header: 'Name' },
           { key: 'description', header: 'Descrição' },
         ]}
-        selected={selectedItems}
+        selected={selectedItems as RoleType[]}
         multiple
         hasSearch
         sortable
@@ -422,7 +429,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar os cargos selecionados',
-            handler: (items: any[]) => {
+            handler: (items: RoleType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',

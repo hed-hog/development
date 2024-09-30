@@ -1,9 +1,10 @@
 import { useApp } from '@/hooks/use-app'
+import { ScreenType } from '@/types/screen'
 
 export function requests() {
   const { request } = useApp()
 
-  const createScreen = async (data: any) => {
+  const createScreen = async (data: ScreenType) => {
     return request({
       url: '/screens',
       data,
@@ -19,7 +20,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editScreen = async (params: { id: string; data: any }) => {
+  const editScreen = async (params: { id: string; data: ScreenType }) => {
     const { id, data } = params
     return request({
       url: `/screens/${id}`,

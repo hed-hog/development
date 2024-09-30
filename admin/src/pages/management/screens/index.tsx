@@ -12,13 +12,18 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
+import { RoleType } from '@/types/role'
+import { RouteType } from '@/types/route'
+import { ScreenType } from '@/types/screen'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const [selectedItems, setSelectedItems] = useState<
+    (ScreenType | RoleType | RouteType)[]
+  >([])
   const formEdit = useRef<any>(null)
 
   const form = useForm<FieldValues>({
@@ -83,7 +88,7 @@ export default function Page() {
           ]}
           form={form}
           button={{ text: 'Criar' }}
-          onSubmit={(data) => {
+          onSubmit={(data: ScreenType) => {
             createScreen(data)
             closeDialog(id)
           }}
@@ -94,11 +99,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: any[]) => {
+  const openDeleteDialog = (items: ScreenType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: any) => (
+          {items.map((item: ScreenType) => (
             <div key={item.name} className='mb-5'>
               <div className='flex flex-row items-center'>
                 <h3 className='text-md font-semibold'>{item.name}</h3>
@@ -139,7 +144,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: any) => {
+  const openEditDialog = (item: ScreenType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -194,8 +199,8 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data) => {
-                    editScreen({ id: data.id, data })
+                  onSubmit={(data: ScreenType) => {
+                    editScreen({ id: String(data.id), data })
                     closeDialog(id)
                   }}
                 />
@@ -211,8 +216,8 @@ export default function Page() {
                   layout='list'
                   id={`screen-roles-${item.id}`}
                   url={`/screens/${item.id}/roles`}
-                  checked={(item: any) => {
-                    return (item.role_screens ?? []).length
+                  checked={(item: RoleType) => {
+                    return Boolean((item.role_screens ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -230,8 +235,8 @@ export default function Page() {
                       if (items) {
                         editScreenRoles(
                           {
-                            screenId: item.id,
-                            roleIds: items.map((r: any) => r.id),
+                            screenId: String(item.id),
+                            roleIds: items.map((r: RoleType) => r.id),
                           },
                           {
                             onSuccess: () => {
@@ -257,10 +262,10 @@ export default function Page() {
                   layout='list'
                   id={`screen-routes-${item.id}`}
                   url={`/screens/${item.id}/routes`}
-                  checked={(item) => {
-                    return (item.route_screens ?? []).length
+                  checked={(item: RouteType) => {
+                    return Boolean((item.route_screens ?? []).length)
                   }}
-                  render={(item: any) => (
+                  render={(item: RouteType) => (
                     <div className='flex flex-row gap-2'>
                       <code className='relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold'>
                         {item.method}
@@ -284,8 +289,8 @@ export default function Page() {
                       if (items) {
                         editScreenRoutes(
                           {
-                            screenId: item.id,
-                            routeIds: items.map((r: any) => r.id),
+                            screenId: String(item.id),
+                            routeIds: items.map((r: RouteType) => r.id),
                           },
                           {
                             onSuccess: () => {
@@ -342,7 +347,7 @@ export default function Page() {
             ),
           },
         ]}
-        selected={selectedItems}
+        selected={selectedItems as ScreenType[]}
         multiple
         hasSearch
         sortable
@@ -351,7 +356,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar as telas selecionados',
-            handler: (items: any[]) => {
+            handler: (items: ScreenType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',

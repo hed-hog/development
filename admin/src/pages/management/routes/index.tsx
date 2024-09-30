@@ -12,13 +12,18 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
+import { RoleType } from '@/types/role'
+import { RouteType } from '@/types/route'
+import { ScreenType } from '@/types/screen'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<any[]>([])
+  const [selectedItems, setSelectedItems] = useState<
+    (RouteType | RoleType | ScreenType)[]
+  >([])
   const formEdit = useRef<any>(null)
   const routeScreensRef = useRef<any>(null)
   const routeRolesRef = useRef<any>(null)
@@ -79,11 +84,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: any[]) => {
+  const openDeleteDialog = (items: RouteType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: any) => (
+          {items.map((item: RouteType) => (
             <div key={item.url} className='mb-5'>
               <h3 className='text-md font-semibold'>{item.url}</h3>
               <p className='text-xs'>{item.method}</p>
@@ -116,7 +121,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: any) => {
+  const openEditDialog = (item: RouteType) => {
     form.reset({
       id: item.id || '',
       url: item.url || '',
@@ -157,8 +162,8 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data) => {
-                    editRoute({ id: data.id, data })
+                  onSubmit={(data: RouteType) => {
+                    editRoute({ id: String(data.id), data })
                     closeSheet(id)
                   }}
                 />
@@ -174,8 +179,8 @@ export default function Page() {
                   layout='list'
                   id={`route-roles-${item.id}`}
                   url={`/routes/${item.id}/roles`}
-                  checked={(item: any) => {
-                    return (item.role_routes ?? []).length
+                  checked={(item: RoleType) => {
+                    return Boolean((item.role_routes ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -193,8 +198,8 @@ export default function Page() {
                       if (items) {
                         editRouteRoles(
                           {
-                            routeId: item.id,
-                            roleIds: items.map((r: any) => r.id),
+                            routeId: String(item.id),
+                            roleIds: items.map((r: RoleType) => r.id),
                           },
                           {
                             onSuccess: () => {
@@ -220,10 +225,10 @@ export default function Page() {
                   layout='list'
                   id={`route-screens-${item.id}`}
                   url={`/routes/${item.id}/screens`}
-                  checked={(item: any) => {
-                    return (item.route_screens ?? []).length
+                  checked={(item: ScreenType) => {
+                    return Boolean((item.route_screens ?? []).length)
                   }}
-                  render={(item: any) => (
+                  render={(item: ScreenType) => (
                     <div className='flex flex-col'>
                       <div className='flex flex-row'>
                         {getIcon(item.icon || '')}
@@ -252,8 +257,8 @@ export default function Page() {
                       if (items) {
                         editRouteScreens(
                           {
-                            routeId: item.id,
-                            screenIds: items.map((u: any) => u.id),
+                            routeId: String(item.id),
+                            screenIds: items.map((s: ScreenType) => s.id),
                           },
                           {
                             onSuccess: () => {
@@ -300,7 +305,7 @@ export default function Page() {
           { key: 'url', header: 'URL' },
           { key: 'method', header: 'Método' },
         ]}
-        selected={selectedItems}
+        selected={selectedItems as RouteType[]}
         multiple
         hasSearch
         sortable
@@ -309,7 +314,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar as rotas selecionados',
-            handler: (items: any[]) => {
+            handler: (items: RouteType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',

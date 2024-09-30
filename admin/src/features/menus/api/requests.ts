@@ -1,9 +1,10 @@
 import { useApp } from '@/hooks/use-app'
+import { MenuType } from '@/types/menu'
 
 export function requests() {
   const { request } = useApp()
 
-  const createMenu = async (data: any) => {
+  const createMenu = async (data: MenuType) => {
     return request({
       url: '/menus',
       data,
@@ -19,7 +20,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editMenu = async (params: { id: string; data: any }) => {
+  const editMenu = async (params: { id: string; data: MenuType }) => {
     const { id, data } = params
     return request({
       url: `/menus/${id}`,
