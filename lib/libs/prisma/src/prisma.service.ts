@@ -23,20 +23,32 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     fields: string[],
     paginationParams: { search: string },
   ): any[] {
-    const OR: any = fields.map((field) => ({
-      [field]: { contains: paginationParams.search },
-    }));
+    const searchValue = paginationParams.search;
+    const OR: any[] = [];
 
-    if (this.isPostgres()) {
-      OR.forEach((condition) => {
-        Object.keys(condition).forEach((key) => {
-          (condition[key] as any).mode = 'insensitive';
-        });
-      });
-    }
+    fields.forEach((field) => {
+      if (field === 'id' && !isNaN(+searchValue)) {
+        OR.push({ id: { equals: +searchValue } });
+      } else if (
+        field === 'method' &&
+        ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'].includes(
+          searchValue,
+        )
+      ) {
+        OR.push({ method: { equals: searchValue } });
+      } else if (field !== 'method') {
+        const condition = { [field]: { contains: searchValue } };
 
-    if (!isNaN(+paginationParams.search)) {
-      OR.push({ id: { equals: +paginationParams.search } });
+        if (this.isPostgres()) {
+          (condition[field] as any).mode = 'insensitive';
+        }
+
+        OR.push(condition);
+      }
+    });
+
+    if (!isNaN(+searchValue)) {
+      OR.push({ id: { equals: +searchValue } });
     }
 
     return OR;

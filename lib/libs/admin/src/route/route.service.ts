@@ -1,7 +1,6 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { HttpMethod } from '../enums/http-method.enum';
 import { UpdateDTO } from './dto/update.dto';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
@@ -17,9 +16,21 @@ export class RouteService {
   ) {}
 
   async getRoutes(paginationParams: PaginationDTO) {
+    const fields = ['url', 'method'];
+
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
+      fields,
+      paginationParams,
+    );
+
     return this.paginationService.paginate(
       this.prismaService.routes,
       paginationParams,
+      {
+        where: {
+          OR,
+        },
+      },
     );
   }
 
