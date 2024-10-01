@@ -3,14 +3,14 @@ import { PrismaModule } from '@hedhog/prisma';
 import { Module, forwardRef } from '@nestjs/common';
 import { ContactTypeController } from './contact-type.controller';
 import { ContactTypeService } from './contact-type.service';
-import { AuthModule } from '../../../admin/src/auth/auth.module';
+import { AdminModule } from '@hedhog/admin';
 
 @Module({
   providers: [ContactTypeService],
   exports: [ContactTypeService],
   controllers: [ContactTypeController],
   imports: [
-    forwardRef(() => AuthModule),
+    forwardRef(() => AdminModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
   ],

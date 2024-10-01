@@ -67,28 +67,4 @@ export class PersonController {
   ) {
     return this.personService.listAddresses(personId, paginationParams);
   }
-
-  @Patch(':id/documents')
-  async updateDocuments(
-    @Param('id') personId: number,
-    @Body() data: UpdateIdsDTO,
-  ) {
-    return this.personService.updateDocuments(personId, data);
-  }
-
-  @Patch(':id/contacts')
-  async updateContacts(
-    @Param('id') personId: number,
-    @Body() data: UpdateIdsDTO,
-  ) {
-    return this.personService.updateContacts(personId, data);
-  }
-
-  @Patch(':id/addresses')
-  async updateAddresses(
-    @Param('id') personId: number,
-    @Body() data: UpdateIdsDTO,
-  ) {
-    return this.personService.updateAddresses(personId, data);
-  }
 }
