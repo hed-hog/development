@@ -169,31 +169,23 @@ model settings {
 }
 
 model person_addresses {
-  id           Int      @id(map: "PK_5589c5d05b3cefd4520bc618fff") @default(autoincrement())
-  person_id    Int
-  street       String?  @db.VarChar(255)
-  number       String?  @db.VarChar(50)
-  complement   String?  @db.VarChar(255)
-  district     String?  @db.VarChar(255)
-  city         String?  @db.VarChar(255)
-  state        String?  @db.VarChar(255)
-  country      String?  @db.VarChar(100)
-  postal_code  String?  @db.VarChar(20)
-  address_type String?  @db.VarChar(50)
-  created_at   DateTime @default(now()) @db.Timestamp(6)
-  updated_at   DateTime @default(now()) @db.Timestamp(6)
-  persons      persons  @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c96dbc8d8afeb80efa16023ae48")
+  id         Int       @id(map: "PK_5589c5d05b3cefd4520bc618fff") @default(autoincrement())
+  person_id  Int
+  address_id Int
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
+  addresses  addresses @relation(fields: [address_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3102e665cbde18fb2aaac1ff545")
+  persons    persons   @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c96dbc8d8afeb80efa16023ae48")
 }
 
 model person_contacts {
-  id            Int      @id(map: "PK_07b8ffac6f3ee21ad90b7af50e2") @default(autoincrement())
-  person_id     Int
-  contact_type  String   @db.VarChar(50)
-  contact_value String   @db.VarChar(255)
-  note          String?
-  created_at    DateTime @default(now()) @db.Timestamp(6)
-  updated_at    DateTime @default(now()) @db.Timestamp(6)
-  persons       persons  @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f93c944e8b6efe7d6c247e19e92")
+  id         Int      @id(map: "PK_07b8ffac6f3ee21ad90b7af50e2") @default(autoincrement())
+  person_id  Int
+  contact_id Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  contacts   contacts @relation(fields: [contact_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_52810151a87e100ae2b7d8d4cb5")
+  persons    persons  @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f93c944e8b6efe7d6c247e19e92")
 }
 
 model person_custom_attributes {
@@ -209,18 +201,13 @@ model person_custom_attributes {
 }
 
 model person_documents {
-  id              Int       @id(map: "PK_01c97611450ec13b16fa4a2f3e5") @default(autoincrement())
-  person_id       Int
-  document_type   String    @db.VarChar(50)
-  document_number String    @db.VarChar(100)
-  issuing_country String?   @db.VarChar(50)
-  issued_date     DateTime? @db.Date
-  expiry_date     DateTime? @db.Date
-  created_at      DateTime  @default(now()) @db.Timestamp(6)
-  updated_at      DateTime  @default(now()) @db.Timestamp(6)
-  persons         persons   @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c9de95eb603253addb0dc502bb5")
-
-  @@unique([person_id, document_type, document_number], map: "UQ_person_document")
+  id          Int       @id(map: "PK_01c97611450ec13b16fa4a2f3e5") @default(autoincrement())
+  person_id   Int
+  document_id Int
+  created_at  DateTime  @default(now()) @db.Timestamp(6)
+  updated_at  DateTime  @default(now()) @db.Timestamp(6)
+  documents   documents @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_0d79f108795de604ccbab4b538d")
+  persons     persons   @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c9de95eb603253addb0dc502bb5")
 }
 
 model person_types {
@@ -242,6 +229,44 @@ model persons {
   person_contacts          person_contacts[]
   person_custom_attributes person_custom_attributes[]
   person_documents         person_documents[]
+}
+
+model addresses {
+  id               Int                @id(map: "PK_745d8f43d3af10ab8247465e450") @default(autoincrement())
+  street           String?            @db.VarChar(255)
+  number           String?            @db.VarChar(50)
+  complement       String?            @db.VarChar(255)
+  district         String?            @db.VarChar(255)
+  city             String?            @db.VarChar(255)
+  state            String?            @db.VarChar(255)
+  country          String?            @db.VarChar(100)
+  postal_code      String?            @db.VarChar(20)
+  address_type     String?            @db.VarChar(50)
+  created_at       DateTime           @default(now()) @db.Timestamp(6)
+  updated_at       DateTime           @default(now()) @db.Timestamp(6)
+  person_addresses person_addresses[]
+}
+
+model contacts {
+  id              Int               @id(map: "PK_b99cd40cfd66a99f1571f4f72e6") @default(autoincrement())
+  contact_type    String            @db.VarChar(50)
+  contact_value   String            @db.VarChar(255)
+  note            String?
+  created_at      DateTime          @default(now()) @db.Timestamp(6)
+  updated_at      DateTime          @default(now()) @db.Timestamp(6)
+  person_contacts person_contacts[]
+}
+
+model documents {
+  id               Int                @id(map: "PK_ac51aa5181ee2036f5ca482857c") @default(autoincrement())
+  document_type    String             @db.VarChar(50)
+  document_number  String             @db.VarChar(100)
+  issuing_country  String?            @db.VarChar(50)
+  issued_date      DateTime?          @db.Date
+  expiry_date      DateTime?          @db.Date
+  created_at       DateTime           @default(now()) @db.Timestamp(6)
+  updated_at       DateTime           @default(now()) @db.Timestamp(6)
+  person_documents person_documents[]
 }
 
 enum routes_method_enum {

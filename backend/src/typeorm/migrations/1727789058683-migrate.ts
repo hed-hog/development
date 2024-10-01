@@ -72,6 +72,23 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'document_id',
+            type: 'int',
+            isNullable: false,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+      }),
+      true,
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'documents',
+        columns: [
+          idColumn(),
+          {
             name: 'document_type',
             type: 'varchar',
             length: '50',
@@ -102,14 +119,7 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
-        uniques: [
-          {
-            name: 'UQ_person_document',
-            columnNames: ['person_id', 'document_type', 'document_number'],
-          },
-        ],
       }),
-      true,
     );
 
     await queryRunner.createTable(
@@ -122,6 +132,23 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
             type: 'int',
             isNullable: false,
           },
+          {
+            name: 'contact_id',
+            type: 'int',
+            isNullable: false,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+      }),
+      true,
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'contacts',
+        columns: [
+          idColumn(),
           {
             name: 'contact_type',
             type: 'varchar',
@@ -143,7 +170,6 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
           timestampColumn('updated_at'),
         ],
       }),
-      true,
     );
 
     await queryRunner.createTable(
@@ -156,6 +182,23 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
             type: 'int',
             isNullable: false,
           },
+          {
+            name: 'address_id',
+            type: 'int',
+            isNullable: false,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+      }),
+      true,
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'addresses',
+        columns: [
+          idColumn(),
           {
             name: 'street',
             type: 'varchar',
@@ -214,7 +257,6 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
           timestampColumn('updated_at'),
         ],
       }),
-      true,
     );
 
     await queryRunner.createTable(
@@ -258,6 +300,12 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
         referencedTableName: 'persons',
         onDelete: 'CASCADE',
       }),
+      new TableForeignKey({
+        columnNames: ['document_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'documents',
+        onDelete: 'CASCADE',
+      }),
     ]);
 
     await queryRunner.createForeignKeys('person_contacts', [
@@ -265,6 +313,12 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
         columnNames: ['person_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'persons',
+        onDelete: 'CASCADE',
+      }),
+      new TableForeignKey({
+        columnNames: ['contact_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'contacts',
         onDelete: 'CASCADE',
       }),
     ]);
@@ -276,8 +330,13 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
         referencedTableName: 'persons',
         onDelete: 'CASCADE',
       }),
+      new TableForeignKey({
+        columnNames: ['address_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'addresses',
+        onDelete: 'CASCADE',
+      }),
     ]);
-
     await queryRunner.createForeignKeys('person_custom_attributes', [
       new TableForeignKey({
         columnNames: ['person_id'],
@@ -291,8 +350,11 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('person_custom_attributes');
     await queryRunner.dropTable('person_addresses');
+    await queryRunner.dropTable('addresses');
     await queryRunner.dropTable('person_contacts');
+    await queryRunner.dropTable('contacts');
     await queryRunner.dropTable('person_documents');
+    await queryRunner.dropTable('documents');
     await queryRunner.dropTable('person_types');
     await queryRunner.dropTable('persons');
   }

@@ -38,9 +38,21 @@ export class PersonService {
           OR,
         },
         include: {
-          person_addresses: true,
-          person_contacts: true,
-          person_documents: true,
+          person_addresses: {
+            include: {
+              addresses: true,
+            },
+          },
+          person_contacts: {
+            include: {
+              contacts: true,
+            },
+          },
+          person_documents: {
+            include: {
+              documents: true,
+            },
+          },
           person_custom_attributes: true,
         },
       },
@@ -51,9 +63,21 @@ export class PersonService {
     const person = await this.prismaService.persons.findUnique({
       where: { id },
       include: {
-        person_documents: true,
-        person_contacts: true,
-        person_addresses: true,
+        person_addresses: {
+          include: {
+            addresses: true,
+          },
+        },
+        person_contacts: {
+          include: {
+            contacts: true,
+          },
+        },
+        person_documents: {
+          include: {
+            documents: true,
+          },
+        },
       },
     });
 
@@ -115,5 +139,53 @@ export class PersonService {
         where: { person_id: personId },
       },
     );
+  }
+
+  async updateDocuments(personId: number, data: UpdateIdsDTO) {
+    await this.prismaService.person_documents.deleteMany({
+      where: {
+        person_id: personId,
+      },
+    });
+
+    return this.prismaService.person_documents.createMany({
+      data: data.ids.map((documentId) => ({
+        person_id: personId,
+        document_id: documentId,
+      })),
+      skipDuplicates: true,
+    });
+  }
+
+  async updateContacts(personId: number, data: UpdateIdsDTO) {
+    await this.prismaService.person_contacts.deleteMany({
+      where: {
+        person_id: personId,
+      },
+    });
+
+    return this.prismaService.person_contacts.createMany({
+      data: data.ids.map((contactId) => ({
+        person_id: personId,
+        contact_id: contactId,
+      })),
+      skipDuplicates: true,
+    });
+  }
+
+  async updateAddresses(personId: number, data: UpdateIdsDTO) {
+    await this.prismaService.person_addresses.deleteMany({
+      where: {
+        person_id: personId,
+      },
+    });
+
+    return this.prismaService.person_addresses.createMany({
+      data: data.ids.map((addressId) => ({
+        person_id: personId,
+        address_id: addressId,
+      })),
+      skipDuplicates: true,
+    });
   }
 }

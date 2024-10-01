@@ -13,6 +13,7 @@ import { CreatePersonDTO } from './dto/create-person.dto';
 import { UpdatePersonDTO } from './dto/update-person.dto';
 import { Pagination } from '@hedhog/pagination';
 import { DeleteDTO } from './dto/delete.dto';
+import { UpdateIdsDTO } from './dto/update-ids.dto';
 
 @Controller('persons')
 export class PersonController {
@@ -44,7 +45,7 @@ export class PersonController {
   }
 
   @Get(':id/documents')
-  findPersonDocuments(
+  getPersonDocuments(
     @Param('id', ParseIntPipe) personId: number,
     @Pagination() paginationParams,
   ) {
@@ -52,7 +53,7 @@ export class PersonController {
   }
 
   @Get(':id/contacts')
-  findPersonContacts(
+  getPersonContacts(
     @Param('id', ParseIntPipe) personId: number,
     @Pagination() paginationParams,
   ) {
@@ -60,10 +61,34 @@ export class PersonController {
   }
 
   @Get(':id/addresses')
-  findPersonAddresses(
+  getPersonAddresses(
     @Param('id', ParseIntPipe) personId: number,
     @Pagination() paginationParams,
   ) {
     return this.personService.listAddresses(personId, paginationParams);
+  }
+
+  @Patch(':id/documents')
+  async updateDocuments(
+    @Param('id') personId: number,
+    @Body() data: UpdateIdsDTO,
+  ) {
+    return this.personService.updateDocuments(personId, data);
+  }
+
+  @Patch(':id/contacts')
+  async updateContacts(
+    @Param('id') personId: number,
+    @Body() data: UpdateIdsDTO,
+  ) {
+    return this.personService.updateContacts(personId, data);
+  }
+
+  @Patch(':id/addresses')
+  async updateAddresses(
+    @Param('id') personId: number,
+    @Body() data: UpdateIdsDTO,
+  ) {
+    return this.personService.updateAddresses(personId, data);
   }
 }
