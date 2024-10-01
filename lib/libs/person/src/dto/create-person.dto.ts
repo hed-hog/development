@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsOptional, IsDate } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  IsDate,
+  IsInt,
+} from 'class-validator';
 
 export class CreatePersonDTO {
   @IsNotEmpty()
@@ -6,10 +12,10 @@ export class CreatePersonDTO {
   name: string;
 
   @IsNotEmpty()
-  @IsString()
-  person_type: string;
+  @IsInt()
+  type_id: number;
 
   @IsOptional()
   @IsDate()
-  birth_date?: Date;
+  birth_at?: Date;
 }
