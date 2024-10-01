@@ -37,6 +37,12 @@ export class PersonService {
         where: {
           OR,
         },
+        include: {
+          person_addresses: true,
+          person_contacts: true,
+          person_customs: true,
+          person_documents: true,
+        },
       },
     );
   }

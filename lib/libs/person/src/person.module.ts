@@ -5,6 +5,10 @@ import { PersonService } from './person.service';
 import { PersonController } from './person..controller';
 import { AdminModule } from '@hedhog/admin';
 import { ContactTypeModule } from './contact-type/contact-type.module';
+import { AddressTypeModule } from './address-type/address-type.module';
+import { CustomTypeModule } from './custom-type/custom-type.module';
+import { DocumentTypeModule } from './document-type/document-type.module';
+import { PersonTypeModule } from './person-type/person-type.module';
 
 @Module({
   providers: [PersonService],
@@ -12,7 +16,11 @@ import { ContactTypeModule } from './contact-type/contact-type.module';
   controllers: [PersonController],
   imports: [
     forwardRef(() => AdminModule),
+    forwardRef(() => AddressTypeModule),
     forwardRef(() => ContactTypeModule),
+    forwardRef(() => CustomTypeModule),
+    forwardRef(() => DocumentTypeModule),
+    forwardRef(() => PersonTypeModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
   ],
