@@ -74,6 +74,42 @@ export class Migrate1727197435336 implements MigrationInterface {
           description: 'Check all settings registered in the system.',
           icon: 'settings',
         },
+        {
+          name: 'Persons',
+          slug: '/management/persons',
+          description: 'Check all persons registered in the system.',
+          icon: 'user-check',
+        },
+        {
+          name: 'Address Types',
+          slug: '/management/address-types',
+          description: 'Check all types of address registered in the system.',
+          icon: 'home-link',
+        },
+        {
+          name: 'Contact Types',
+          slug: '/management/contact-types',
+          description: 'Check all types of contacts registered in the system.',
+          icon: 'address-book',
+        },
+        {
+          name: 'Custom Types',
+          slug: '/management/custom-types',
+          description: 'Check all custom types registered in the system.',
+          icon: 'adjustments',
+        },
+        {
+          name: 'Document Types',
+          slug: '/management/document-types',
+          description: 'Check all types of documents registered in the system.',
+          icon: 'file-search',
+        },
+        {
+          name: 'Person Types',
+          slug: '/management/person-types',
+          description: 'Check all types of persons registered in the system.',
+          icon: 'id',
+        },
       ])
       .execute();
   }

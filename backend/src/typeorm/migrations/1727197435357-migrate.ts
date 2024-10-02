@@ -143,6 +143,55 @@ export class Migrate1727197435357 implements MigrationInterface {
       managementId,
       'settings',
     );
+
+    const personId = await this.insertMenu(
+      queryRunner,
+      'Persons',
+      '/management/persons',
+      6,
+      managementId,
+      'user-check',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Address Types',
+      '/management/address-types',
+      0,
+      personId,
+      'home-link',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Contact Types',
+      '/management/contact-types',
+      1,
+      personId,
+      'address-book',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Custom Types',
+      '/management/custom-types',
+      2,
+      personId,
+      'adjustments',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Document Types',
+      '/management/document-types',
+      3,
+      personId,
+      'file-search',
+    );
+    await this.insertMenu(
+      queryRunner,
+      'Person Types',
+      '/management/person-types',
+      4,
+      personId,
+      'id',
+    );
   }
 
   private async insertMenu(

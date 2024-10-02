@@ -257,6 +257,126 @@ export class Migrate1727197435391 implements MigrationInterface {
           url: '/routes/:routeId/screens',
           method: 'PATCH',
         },
+        {
+          url: '/persons',
+          method: 'GET',
+        },
+        {
+          url: '/persons',
+          method: 'POST',
+        },
+        {
+          url: '/persons',
+          method: 'DELETE',
+        },
+        {
+          url: '/persons/:personId',
+          method: 'GET',
+        },
+        {
+          url: '/persons/:personId',
+          method: 'PATCH',
+        },
+        {
+          url: '/person-types',
+          method: 'GET',
+        },
+        {
+          url: '/person-types',
+          method: 'POST',
+        },
+        {
+          url: '/person-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/person-types/:personTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/person-types/:personTypeId',
+          method: 'PATCH',
+        },
+        {
+          url: '/address-types',
+          method: 'GET',
+        },
+        {
+          url: '/address-types',
+          method: 'POST',
+        },
+        {
+          url: '/address-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/address-types/:addressTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/address-types/:addressTypeId',
+          method: 'PATCH',
+        },
+        {
+          url: '/contact-types',
+          method: 'GET',
+        },
+        {
+          url: '/contact-types',
+          method: 'POST',
+        },
+        {
+          url: '/contact-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/contact-types/:contactTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/contact-types/:contactTypeId',
+          method: 'PATCH',
+        },
+        {
+          url: '/custom-types',
+          method: 'GET',
+        },
+        {
+          url: '/custom-types',
+          method: 'POST',
+        },
+        {
+          url: '/custom-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/custom-types/:customTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/custom-types/:customTypeId',
+          method: 'PATCH',
+        },
+        {
+          url: '/document-types',
+          method: 'GET',
+        },
+        {
+          url: '/document-types',
+          method: 'POST',
+        },
+        {
+          url: '/document-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/document-types/:documentTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/document-types/:documentTypeId',
+          method: 'PATCH',
+        },
       ])
       .execute();
   }
