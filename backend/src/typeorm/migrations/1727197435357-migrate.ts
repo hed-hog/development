@@ -155,7 +155,7 @@ export class Migrate1727197435357 implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Address Types',
-      '/management/address-types',
+      '/management/persons/address-types',
       0,
       personId,
       'home-link',
@@ -163,7 +163,7 @@ export class Migrate1727197435357 implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Contact Types',
-      '/management/contact-types',
+      '/management/persons/contact-types',
       1,
       personId,
       'address-book',
@@ -171,7 +171,7 @@ export class Migrate1727197435357 implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Custom Types',
-      '/management/custom-types',
+      '/management/persons/custom-types',
       2,
       personId,
       'adjustments',
@@ -179,7 +179,7 @@ export class Migrate1727197435357 implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Document Types',
-      '/management/document-types',
+      '/management/persons/document-types',
       3,
       personId,
       'file-search',
@@ -187,7 +187,7 @@ export class Migrate1727197435357 implements MigrationInterface {
     await this.insertMenu(
       queryRunner,
       'Person Types',
-      '/management/person-types',
+      '/management/persons/person-types',
       4,
       personId,
       'id',

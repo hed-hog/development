@@ -30,34 +30,37 @@ interface NavProps extends React.HTMLAttributes<HTMLDivElement> {
   closeNav: () => void
 }
 
+function renderLink(
+  link: SideLink,
+  isCollapsed: boolean,
+  closeNav: () => void
+) {
+  const { sub, ...rest } = link
+  const key = `${rest.title}-${rest.href}`
+
+  if (isCollapsed && sub) {
+    return (
+      <NavLinkIconDropdown {...rest} sub={sub} key={key} closeNav={closeNav} />
+    )
+  }
+
+  if (isCollapsed) {
+    return <NavLinkIcon {...rest} key={key} closeNav={closeNav} />
+  }
+
+  if (sub) {
+    return <NavLinkDropdown {...rest} sub={sub} key={key} closeNav={closeNav} />
+  }
+
+  return <NavLink {...rest} key={key} closeNav={closeNav} />
+}
+
 export default function Nav({
   links,
   isCollapsed,
   className,
   closeNav,
 }: NavProps) {
-  const renderLink = ({ sub, ...rest }: SideLink) => {
-    const key = `${rest.title}-${rest.href}`
-    if (isCollapsed && sub)
-      return (
-        <NavLinkIconDropdown
-          {...rest}
-          sub={sub}
-          key={key}
-          closeNav={closeNav}
-        />
-      )
-
-    if (isCollapsed)
-      return <NavLinkIcon {...rest} key={key} closeNav={closeNav} />
-
-    if (sub)
-      return (
-        <NavLinkDropdown {...rest} sub={sub} key={key} closeNav={closeNav} />
-      )
-
-    return <NavLink {...rest} key={key} closeNav={closeNav} />
-  }
   return (
     <div
       data-collapsed={isCollapsed}
@@ -68,7 +71,7 @@ export default function Nav({
     >
       <TooltipProvider delayDuration={0}>
         <nav className='grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'>
-          {links.map(renderLink)}
+          {links.map((link) => renderLink(link, isCollapsed, closeNav))}
         </nav>
       </TooltipProvider>
     </div>
@@ -98,7 +101,7 @@ function NavLink({
           variant: checkActiveNav(href) ? 'secondary' : 'ghost',
           size: 'sm',
         }),
-        'h-12 justify-start text-wrap rounded-none px-6',
+        'h-12 w-full justify-start text-wrap rounded-none px-6',
         subLink && 'h-10 w-full border-l border-l-slate-500 px-2'
       )}
       aria-current={checkActiveNav(href) ? 'page' : undefined}
@@ -116,9 +119,6 @@ function NavLink({
 
 function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav()
-
-  /* Open collapsible by default
-   * if one of child element is active */
   const isChildActive = !!sub?.find((s) => checkActiveNav(s.href))
 
   return (
@@ -148,7 +148,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
         <ul>
           {sub!.map((sublink) => (
             <li key={sublink.title} className='my-1 ml-8'>
-              <NavLink {...sublink} subLink closeNav={closeNav} />
+              {renderLink(sublink, false, closeNav)}
             </li>
           ))}
         </ul>
@@ -188,9 +188,6 @@ function NavLinkIcon({ title, icon, label, href }: NavLinkProps) {
 
 function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav()
-
-  /* Open collapsible by default
-   * if one of child element is active */
   const isChildActive = !!sub?.find((s) => checkActiveNav(s.href))
 
   return (
