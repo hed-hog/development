@@ -1,39 +1,39 @@
 import { useApp } from '@/hooks/use-app'
-import { PersonType } from '@/types/person'
+import { CustomType } from '@/types/custom-type'
 
 export function requests() {
   const { request } = useApp()
 
-  const createPerson = async (data: PersonType) => {
+  const createCustomType = async (data: CustomType) => {
     if (!data.id) delete (data as any).id
     return request({
-      url: '/persons',
+      url: '/custom-types',
       method: 'post',
       data,
     }).then((res) => res.data)
   }
 
-  const deletePersons = async <T>(personIds: T[]) => {
+  const deleteCustomTypes = async <T>(customTypeIds: T[]) => {
     return request({
-      url: '/persons',
-      data: { ids: personIds },
+      url: '/custom-types',
+      data: { ids: customTypeIds },
       method: 'delete',
     }).then((res) => res.data)
   }
 
-  const editPerson = async (params: { id: string; data: PersonType }) => {
+  const editCustomType = async (params: { id: string; data: CustomType }) => {
     const { id, data } = params
 
     return request({
-      url: `/persons/${id}`,
+      url: `/custom-types/${id}`,
       method: 'patch',
       data,
     }).then((res) => res.data)
   }
 
   return {
-    createPerson,
-    deletePersons,
-    editPerson,
+    createCustomType,
+    deleteCustomTypes,
+    editCustomType,
   }
 }

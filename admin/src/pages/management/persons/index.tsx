@@ -216,7 +216,7 @@ export default function Page() {
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
-            tooltip: 'Editar os cargos selecionados',
+            tooltip: 'Editar as pessoas selecionados',
             handler: (items: PersonType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -226,7 +226,7 @@ export default function Page() {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: 'Excluir',
             variant: 'destructive',
-            tooltip: 'Excluir os cargos selecionados',
+            tooltip: 'Excluir as pessoas selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
@@ -234,7 +234,7 @@ export default function Page() {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: 'Criar',
             variant: 'default',
-            tooltip: 'Criar novo cargo',
+            tooltip: 'Criar novo pessoa',
             handler: openCreateDialog,
             show: 'none',
           },

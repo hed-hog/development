@@ -309,8 +309,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Cargo',
-      description: 'Visualize e edite as informações do cargo.',
+      title: 'Editar Tela',
+      description: 'Visualize e edite as informações da tela.',
     })
 
     return id

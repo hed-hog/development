@@ -277,8 +277,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Cargo',
-      description: 'Visualize e edite as informações dos cargos.',
+      title: 'Editar Rota',
+      description: 'Visualize e edite as informações dos rotas.',
     })
 
     return id

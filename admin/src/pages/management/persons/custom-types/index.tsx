@@ -3,19 +3,25 @@ import { FormPanel } from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
-  useCreateSetting,
-  useDeleteSettings,
-  useEditSetting,
-} from '@/features/settings'
+  useCreateCustomType,
+  useDeleteCustomType,
+  useEditCustomType,
+} from '@/features/custom-types'
 import { useApp } from '@/hooks/use-app'
-import { SettingType } from '@/types/setting'
+import { CustomType } from '@/types/custom-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
+  const [selectedItems, setSelectedItems] = useState<CustomType[]>([])
   const formEdit = useRef<any>(null)
+
+  const { mutate: createCustomType } = useCreateCustomType()
+  const { mutate: editCustomType } = useEditCustomType()
+  const { mutate: deleteCustomTypes } = useDeleteCustomType()
+  const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -25,23 +31,15 @@ export default function Page() {
     mode: 'onChange',
   })
 
-  const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
-
-  const { mutate: createSetting } = useCreateSetting()
-  const { mutate: editSetting } = useEditSetting()
-  const { mutate: deleteSettings } = useDeleteSettings()
-
   const openCreateDialog = () => {
     form.reset({
       id: '',
       name: '',
-      email: '',
-      password: '',
     })
 
     const id = openDialog({
-      title: 'Criar Nova Configuração',
-      description: 'Preencha as informações da configuração.',
+      title: 'Criar Tipo de Contato',
+      description: 'Preencha as informações do tipo de contato.',
       children: () => (
         <FormPanel
           fields={[
@@ -54,8 +52,11 @@ export default function Page() {
           ]}
           form={form}
           button={{ text: 'Criar' }}
-          onSubmit={(data: SettingType) => {
-            createSetting(data)
+          onSubmit={(data: CustomType) => {
+            createCustomType({
+              id: Number(data.id),
+              name: data.name,
+            })
             closeDialog(id)
           }}
         />
@@ -65,24 +66,28 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: SettingType[]) => {
+  const openDeleteDialog = (items: CustomType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: SettingType) => (
+          {items.map((item: CustomType) => (
             <div key={item.name} className='mb-5'>
-              <h3 className='text-md font-semibold'>{item.name}</h3>
+              <h3 className='text-md font-semibold'>
+                {item.id} - {item.name}
+              </h3>
             </div>
           ))}
         </div>
       ),
-      title: 'Excluir Configuração',
-      description: 'Tem certeza de que deseja deletar estas configurações?',
+      title: 'Excluir Tipo Customizado',
+      description:
+        'Tem certeza de que deseja deletar estes tipos customizados?',
       buttons: [
         {
           variant: 'secondary',
           text: 'Cancelar',
           onClick: () => {
+            setSelectedItems(items)
             closeDialog(id)
           },
         },
@@ -90,7 +95,7 @@ export default function Page() {
           text: 'Deletar',
           variant: 'destructive',
           onClick: () => {
-            deleteSettings(items.map((item) => item.id))
+            deleteCustomTypes(items.map((item) => item.id))
             closeDialog(id)
           },
         },
@@ -100,7 +105,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: SettingType) => {
+  const openEditDialog = (item: CustomType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -134,8 +139,8 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data: SettingType) => {
-                    editSetting({ id: String(data.id), data })
+                  onSubmit={(data: CustomType) => {
+                    editCustomType({ id: String(data.id), data })
                     closeSheet(id)
                   }}
                 />
@@ -144,8 +149,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Configuração',
-      description: 'Visualize e edite as informações da configuração.',
+      title: 'Editar Tipo Customizado',
+      description: 'Visualize e edite as informações do tipo customizado.',
     })
 
     return id
@@ -154,23 +159,24 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Settings - Hedhog</title>
+        <title>Custom Types - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Settings</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>Custom Types</h1>
         </div>
       </div>
 
       <DataPanel
-        url='/settings'
+        url='/custom-types'
         layout='table'
-        id='settings'
+        id='custom-types'
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Nome' },
+          { key: 'name', header: 'Name' },
         ]}
+        selected={selectedItems as CustomType[]}
         multiple
         hasSearch
         sortable
@@ -178,8 +184,8 @@ export default function Page() {
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
-            tooltip: 'Editar configurações selecionadas',
-            handler: (items: SettingType[]) => {
+            tooltip: 'Editar os tipos customizados selecionados',
+            handler: (items: CustomType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',
@@ -188,7 +194,7 @@ export default function Page() {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: 'Excluir',
             variant: 'destructive',
-            tooltip: 'Excluir as configurações selecionadas',
+            tooltip: 'Excluir os tipos customizados selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
@@ -196,7 +202,7 @@ export default function Page() {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: 'Criar',
             variant: 'default',
-            tooltip: 'Criar nova configuração',
+            tooltip: 'Criar novo tipo customizado',
             handler: openCreateDialog,
             show: 'none',
           },

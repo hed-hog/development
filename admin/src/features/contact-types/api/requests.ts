@@ -1,39 +1,39 @@
 import { useApp } from '@/hooks/use-app'
-import { PersonType } from '@/types/person'
+import { ContactType } from '@/types/contact-type'
 
 export function requests() {
   const { request } = useApp()
 
-  const createPerson = async (data: PersonType) => {
+  const createContactType = async (data: ContactType) => {
     if (!data.id) delete (data as any).id
     return request({
-      url: '/persons',
+      url: '/contact-types',
       method: 'post',
       data,
     }).then((res) => res.data)
   }
 
-  const deletePersons = async <T>(personIds: T[]) => {
+  const deleteContactTypes = async <T>(contactTypeIds: T[]) => {
     return request({
-      url: '/persons',
-      data: { ids: personIds },
+      url: '/contact-types',
+      data: { ids: contactTypeIds },
       method: 'delete',
     }).then((res) => res.data)
   }
 
-  const editPerson = async (params: { id: string; data: PersonType }) => {
+  const editContactType = async (params: { id: string; data: ContactType }) => {
     const { id, data } = params
 
     return request({
-      url: `/persons/${id}`,
+      url: `/contact-types/${id}`,
       method: 'patch',
       data,
     }).then((res) => res.data)
   }
 
   return {
-    createPerson,
-    deletePersons,
-    editPerson,
+    createContactType,
+    deleteContactTypes,
+    editContactType,
   }
 }
