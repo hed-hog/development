@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { IconChevronDown } from '@tabler/icons-react'
 import { Button, buttonVariants } from './custom/button'
 import {
@@ -49,7 +49,15 @@ function renderLink(
   }
 
   if (sub) {
-    return <NavLinkDropdown {...rest} sub={sub} key={key} closeNav={closeNav} />
+    return (
+      <NavLinkDropdown
+        {...rest}
+        href={link.href}
+        sub={sub}
+        key={key}
+        closeNav={closeNav}
+      />
+    )
   }
 
   return <NavLink {...rest} key={key} closeNav={closeNav} />
@@ -117,9 +125,19 @@ function NavLink({
   )
 }
 
-function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
+function NavLinkDropdown({
+  title,
+  icon,
+  label,
+  href,
+  sub,
+  closeNav,
+}: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav()
   const isChildActive = !!sub?.find((s) => checkActiveNav(s.href))
+  const navigate = useNavigate()
+  console.log({ href })
+  const handleClick = () => href && navigate(href)
 
   return (
     <Collapsible defaultOpen={isChildActive}>
@@ -128,6 +146,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
           buttonVariants({ variant: 'ghost', size: 'sm' }),
           'group h-12 w-full justify-start rounded-none px-6'
         )}
+        onClick={handleClick}
       >
         <div className='mr-2'>{icon}</div>
         {title}

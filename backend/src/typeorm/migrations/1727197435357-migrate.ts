@@ -90,7 +90,7 @@ export class Migrate1727197435357 implements MigrationInterface {
     const managementId = await this.insertMenu(
       queryRunner,
       'Management',
-      null,
+      '/management',
       1,
       null,
       'settings',
