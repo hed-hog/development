@@ -95,6 +95,15 @@ export class Migrate1727197435357 implements MigrationInterface {
       null,
       'settings',
     );
+
+    await this.insertMenu(
+      queryRunner,
+      'Persons',
+      '/persons',
+      2,
+      null,
+      'user-check',
+    );
     await this.insertMenu(
       queryRunner,
       'Users',
@@ -144,52 +153,44 @@ export class Migrate1727197435357 implements MigrationInterface {
       'settings',
     );
 
-    const personId = await this.insertMenu(
-      queryRunner,
-      'Persons',
-      '/management/persons',
-      6,
-      managementId,
-      'user-check',
-    );
     await this.insertMenu(
       queryRunner,
       'Address Types',
-      '/management/persons/address-types',
-      0,
-      personId,
+      '/management/address-types',
+      6,
+      managementId,
       'home-link',
     );
     await this.insertMenu(
       queryRunner,
       'Contact Types',
-      '/management/persons/contact-types',
-      1,
-      personId,
+      '/management/contact-types',
+      7,
+      managementId,
       'address-book',
     );
     await this.insertMenu(
       queryRunner,
       'Custom Types',
-      '/management/persons/custom-types',
-      2,
-      personId,
+      '/management/custom-types',
+      8,
+      managementId,
       'adjustments',
     );
     await this.insertMenu(
       queryRunner,
       'Document Types',
-      '/management/persons/document-types',
-      3,
-      personId,
+      '/management/document-types',
+      9,
+      managementId,
       'file-search',
     );
     await this.insertMenu(
       queryRunner,
       'Person Types',
-      '/management/persons/person-types',
-      4,
-      personId,
+      '/management/person-types',
+      10,
+      managementId,
       'id',
     );
   }

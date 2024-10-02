@@ -40,6 +40,17 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: 'persons',
+        children: [
+          {
+            index: true,
+            lazy: async () => ({
+              Component: (await import('./pages/persons/index.tsx')).default,
+            }),
+          },
+        ],
+      },
+      {
         path: 'management',
         children: [
           {
@@ -77,67 +88,44 @@ const router = createBrowserRouter([
             }),
           },
           {
-            path: 'persons',
-            children: [
-              {
-                index: true,
-                lazy: async () => ({
-                  Component: (
-                    await import('./pages/management/persons/index.tsx')
-                  ).default,
-                }),
-              },
-              {
-                path: 'address-types',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/persons/address-types/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'contact-types',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/persons/contact-types/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'custom-types',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/persons/custom-types/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'document-types',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/persons/document-types/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'person-types',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/persons/person-types/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-            ],
+            path: 'address-types',
+            lazy: async () => ({
+              Component: (
+                await import('./pages/management/address-types/index.tsx')
+              ).default,
+            }),
+          },
+          {
+            path: 'contact-types',
+            lazy: async () => ({
+              Component: (
+                await import('./pages/management/contact-types/index.tsx')
+              ).default,
+            }),
+          },
+          {
+            path: 'custom-types',
+            lazy: async () => ({
+              Component: (
+                await import('./pages/management/custom-types/index.tsx')
+              ).default,
+            }),
+          },
+          {
+            path: 'document-types',
+            lazy: async () => ({
+              Component: (
+                await import('./pages/management/document-types/index.tsx')
+              ).default,
+            }),
+          },
+          {
+            path: 'person-types',
+            lazy: async () => ({
+              Component: (
+                await import('./pages/management/person-types/index.tsx')
+              ).default,
+            }),
           },
           {
             path: 'routes',
