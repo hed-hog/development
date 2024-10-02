@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsDate, IsInt } from 'class-validator';
+import { IsOptional, IsString, IsDateString, IsInt } from 'class-validator';
 
 export class UpdatePersonDTO {
   @IsOptional()
@@ -10,6 +10,6 @@ export class UpdatePersonDTO {
   type_id: number;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   birth_date?: Date;
 }

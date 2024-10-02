@@ -2,20 +2,20 @@ import {
   IsNotEmpty,
   IsString,
   IsOptional,
-  IsDate,
+  IsDateString,
   IsInt,
 } from 'class-validator';
 
 export class CreatePersonDTO {
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: 'Name is mandatory.' })
+  @IsString({ message: 'Name needs to be a string.' })
   name: string;
 
-  @IsNotEmpty()
-  @IsInt()
+  @IsNotEmpty({ message: 'TypeID is mandatory.' })
+  @IsInt({ message: 'TypeID must be an integer number.' })
   type_id: number;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString({ message: 'BirthAt needs to be a Date string.' })
   birth_at?: Date;
 }

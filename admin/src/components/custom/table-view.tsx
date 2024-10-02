@@ -35,6 +35,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { formatDate, isValidDateString } from '@/lib/date-string'
 
 interface ITableViewProps<T> {
   columns: ITableColumn<T>[]
@@ -84,7 +85,6 @@ const TableView = <T extends any>({
   multiple = true,
   columns,
   data,
-  checked,
   sortable = false,
   isLoading = false,
   onItemClick,
@@ -251,7 +251,13 @@ const TableView = <T extends any>({
   }, [selectedItems, data, extractKey])
 
   const renderCell = (key: string, item: T) => {
-    return (item as any)[key]
+    const value = (item as any)[key]
+
+    if (typeof value === 'string' && isValidDateString(value)) {
+      return formatDate(value)
+    }
+
+    return value
   }
 
   if (!render) {
