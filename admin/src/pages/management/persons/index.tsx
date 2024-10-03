@@ -12,8 +12,16 @@ import { useApp } from '@/hooks/use-app'
 import { formatDate } from '@/lib/date-string'
 import timeSince from '@/lib/time-since'
 import { PersonType } from '@/types/person'
-import { IconEdit, IconId, IconPlus, IconTrash } from '@tabler/icons-react'
-import { CalendarIcon, MapPinIcon } from 'lucide-react'
+import {
+  IconCalendarClock,
+  IconClock,
+  IconEdit,
+  IconId,
+  IconMapPin,
+  IconPhone,
+  IconPlus,
+  IconTrash,
+} from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -208,44 +216,44 @@ export default function Page() {
         selectable
         render={(item: PersonType) => (
           <Card className='mx-auto w-full max-w-lg rounded-lg border border-gray-200 bg-[#020817] shadow-lg'>
-            <CardHeader className='flex flex-row rounded-t-lg px-6 py-4 text-white'>
+            <CardHeader className='flex flex-row items-center rounded-t-lg px-6 py-4 text-white'>
               <div className='h-10 w-10 rounded-full bg-white' />
-              <div className='flex flex-col items-center'>
-                <CardTitle className='text-xl font-semibold'>
+              <div className='flex flex-col px-4' style={{ marginTop: 0 }}>
+                <CardTitle className='text-md font-semibold'>
                   {item.name}
                 </CardTitle>
-                <h4>Cadastrado {timeSince(String(item.created_at))}</h4>
+                <div className='flex flex-row'>
+                  <IconClock className='mr-0.5 h-4 w-4 text-white' />
+                  <h4 className='text-xs font-normal'>
+                    Cadastrado {timeSince(String(item.created_at))}
+                  </h4>
+                </div>
               </div>
             </CardHeader>
-            <CardContent className='px-4 py-4'>
-              <div className='mb-4 flex items-center'>
-                <CalendarIcon className='text-white-500 mr-3 h-6 w-6' />
-                <div>
-                  <span className='text-white-600 block text-sm'>
-                    Date of Birth
-                  </span>
-                  <span className='text-white-800 text-sm font-medium'>
-                    {formatDate(item.birth_at)}
-                  </span>
-                </div>
+            <CardContent className='px-4 py-2'>
+              <div className='my-3  flex items-center'>
+                <IconCalendarClock className='text-white-500 mr-3 h-5 w-5' />
+                <span className='text-white-800 text-sm font-normal'>
+                  {formatDate(item.birth_at)}
+                </span>
               </div>
-              <div className='mb-4 flex items-center'>
-                <MapPinIcon className='text-white-500 mr-3 h-6 w-6' />
-                <div>
-                  <span className='text-white-600 block text-sm'>Address</span>
-                  <span className='text-white-800 text-sm font-medium'>
-                    Rua dos Cravos, 256
-                  </span>
-                </div>
+              <div className='my-3 flex items-center'>
+                <IconMapPin className='text-white-500 mr-3 h-5 w-5' />
+                <span className='text-white-800 text-sm font-normal'>
+                  Avenida José Versolato, 101
+                </span>
               </div>
-              <div className='flex items-center'>
-                <IconId className='text-white-500 mr-3 h-6 w-6' />
-                <div>
-                  <span className='text-white-600 block text-sm'>Document</span>
-                  <span className='text-white-800 text-sm font-medium'>
-                    123.456.789-00
-                  </span>
-                </div>
+              <div className='my-3 flex items-center'>
+                <IconPhone className='text-white-500 mr-3 h-5 w-5' />
+                <span className='text-white-800 text-sm font-normal'>
+                  (11) 2149-7360
+                </span>
+              </div>
+              <div className='my-3 flex items-center'>
+                <IconId className='text-white-500 mr-3 h-5 w-5' />
+                <span className='text-white-800 text-sm font-normal'>
+                  123.456.789-00
+                </span>
               </div>
             </CardContent>
           </Card>
