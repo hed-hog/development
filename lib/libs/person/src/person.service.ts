@@ -50,6 +50,12 @@ export class PersonService {
   async getPersonById(id: number) {
     const person = await this.prismaService.persons.findUnique({
       where: { id },
+      include: {
+        person_addresses: true,
+        person_contacts: true,
+        person_customs: true,
+        person_documents: true,
+      },
     });
 
     if (!person) {
@@ -80,25 +86,5 @@ export class PersonService {
         },
       },
     });
-  }
-
-  async listContacts(personId: number, paginationParams: PaginationDTO) {
-    return this.paginationService.paginate(
-      this.prismaService.person_contacts,
-      paginationParams,
-      {
-        where: { person_id: personId },
-      },
-    );
-  }
-
-  async listAddresses(personId: number, paginationParams: PaginationDTO) {
-    return this.paginationService.paginate(
-      this.prismaService.person_addresses,
-      paginationParams,
-      {
-        where: { person_id: personId },
-      },
-    );
   }
 }

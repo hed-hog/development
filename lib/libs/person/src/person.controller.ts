@@ -43,22 +43,6 @@ export class PersonController {
     return this.personService.remove(data);
   }
 
-  @Get(':id/contacts')
-  getPersonContacts(
-    @Param('id', ParseIntPipe) personId: number,
-    @Pagination() paginationParams,
-  ) {
-    return this.personService.listContacts(personId, paginationParams);
-  }
-
-  @Get(':id/addresses')
-  getPersonAddresses(
-    @Param('id', ParseIntPipe) personId: number,
-    @Pagination() paginationParams,
-  ) {
-    return this.personService.listAddresses(personId, paginationParams);
-  }
-
   @Patch(':id/documents')
   updateDocuments(@Param('id', ParseIntPipe) personId: number) {}
 }

@@ -1,11 +1,6 @@
-import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { DeleteDTO } from '../dto/delete.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePersonDocumentDTO } from './dto/create-document.dto';
 import { UpdatePersonDocumentDTO } from './dto/update-document.dto';
 
@@ -35,6 +30,18 @@ export class DocumentService {
       {
         where: {
           person_id: personId,
+        },
+        include: {
+          person_document_types: {
+            select: {
+              name: true,
+            },
+          },
+          countries: {
+            select: {
+              name: true,
+            },
+          },
         },
       },
     );
@@ -81,8 +88,8 @@ export class DocumentService {
           id: documentId,
         },
       })
-      .then((data) => {
-        return { message: 'Ok' };
+      .then(() => {
+        return { count: 1 };
       });
   }
 }

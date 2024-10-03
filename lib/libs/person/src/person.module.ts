@@ -10,6 +10,8 @@ import { CustomTypeModule } from './custom-type/custom-type.module';
 import { DocumentTypeModule } from './document-type/document-type.module';
 import { PersonTypeModule } from './person-type/person-type.module';
 import { DocumentModule } from './document/document.module';
+import { AddressModule } from './address/address.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   providers: [PersonService],
@@ -17,7 +19,9 @@ import { DocumentModule } from './document/document.module';
   controllers: [PersonController],
   imports: [
     forwardRef(() => AdminModule),
+    forwardRef(() => AddressModule),
     forwardRef(() => AddressTypeModule),
+    forwardRef(() => ContactModule),
     forwardRef(() => ContactTypeModule),
     forwardRef(() => CustomTypeModule),
     forwardRef(() => DocumentModule),

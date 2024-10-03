@@ -494,8 +494,7 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
           },
           {
             name: 'number',
-            type: 'varchar',
-            length: '50',
+            type: 'int',
             isNullable: true,
           },
           {
@@ -536,9 +535,9 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
           },
           {
             name: 'type_id',
-            type: 'varchar',
-            length: '50',
-            isNullable: true,
+            type: 'int',
+            unsigned: true,
+            isNullable: false,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
