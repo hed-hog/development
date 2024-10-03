@@ -1,4 +1,4 @@
-export type ContactType = {
+export type PersonContactType = {
   id: number
   name: string
 }

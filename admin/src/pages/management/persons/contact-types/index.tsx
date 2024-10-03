@@ -8,14 +8,14 @@ import {
   useEditContactType,
 } from '@/features/contact-types'
 import { useApp } from '@/hooks/use-app'
-import { ContactType } from '@/types/contact-type'
+import { PersonContactType } from '@/types/contact-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<ContactType[]>([])
+  const [selectedItems, setSelectedItems] = useState<PersonContactType[]>([])
   const formEdit = useRef<any>(null)
 
   const { mutate: createContactType } = useCreateContactType()
@@ -52,7 +52,7 @@ export default function Page() {
           ]}
           form={form}
           button={{ text: 'Criar' }}
-          onSubmit={(data: ContactType) => {
+          onSubmit={(data: PersonContactType) => {
             createContactType({
               id: Number(data.id),
               name: data.name,
@@ -66,11 +66,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: ContactType[]) => {
+  const openDeleteDialog = (items: PersonContactType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: ContactType) => (
+          {items.map((item: PersonContactType) => (
             <div key={item.name} className='mb-5'>
               <h3 className='text-md font-semibold'>
                 {item.id} - {item.name}
@@ -104,7 +104,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: ContactType) => {
+  const openEditDialog = (item: PersonContactType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -138,7 +138,7 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data: ContactType) => {
+                  onSubmit={(data: PersonContactType) => {
                     editContactType({ id: String(data.id), data })
                     closeSheet(id)
                   }}
@@ -175,7 +175,7 @@ export default function Page() {
           { key: 'id', header: 'ID' },
           { key: 'name', header: 'Name' },
         ]}
-        selected={selectedItems as ContactType[]}
+        selected={selectedItems as PersonContactType[]}
         multiple
         hasSearch
         sortable
@@ -184,7 +184,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar os cargos selecionados',
-            handler: (items: ContactType[]) => {
+            handler: (items: PersonContactType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',

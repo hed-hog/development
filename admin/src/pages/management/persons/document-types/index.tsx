@@ -8,14 +8,14 @@ import {
   useEditDocumentType,
 } from '@/features/document-types'
 import { useApp } from '@/hooks/use-app'
-import { DocumentType } from '@/types/document-type'
+import { PersonDocumentType } from '@/types/document-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<DocumentType[]>([])
+  const [selectedItems, setSelectedItems] = useState<PersonDocumentType[]>([])
   const formEdit = useRef<any>(null)
 
   const { mutate: createDocumentType } = useCreateDocumentType()
@@ -52,7 +52,7 @@ export default function Page() {
           ]}
           form={form}
           button={{ text: 'Criar' }}
-          onSubmit={(data: DocumentType) => {
+          onSubmit={(data: PersonDocumentType) => {
             createDocumentType({
               id: Number(data.id),
               name: data.name,
@@ -66,11 +66,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: DocumentType[]) => {
+  const openDeleteDialog = (items: PersonDocumentType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: DocumentType) => (
+          {items.map((item: PersonDocumentType) => (
             <div key={item.name} className='mb-5'>
               <h3 className='text-md font-semibold'>
                 {item.id} - {item.name}
@@ -105,7 +105,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: DocumentType) => {
+  const openEditDialog = (item: PersonDocumentType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -139,7 +139,7 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data: DocumentType) => {
+                  onSubmit={(data: PersonDocumentType) => {
                     editDocumentType({ id: String(data.id), data })
                     closeSheet(id)
                   }}
@@ -176,7 +176,7 @@ export default function Page() {
           { key: 'id', header: 'ID' },
           { key: 'name', header: 'Name' },
         ]}
-        selected={selectedItems as DocumentType[]}
+        selected={selectedItems as PersonDocumentType[]}
         multiple
         hasSearch
         sortable
@@ -185,7 +185,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar os tipos de documento selecionados',
-            handler: (items: DocumentType[]) => {
+            handler: (items: PersonDocumentType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',

@@ -39,9 +39,27 @@ export class PersonService {
         },
         include: {
           person_addresses: true,
-          person_contacts: true,
+          person_contacts: {
+            include: {
+              person_contact_types: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
           person_customs: true,
-          person_documents: true,
+          person_documents: {
+            include: {
+              person_document_types: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
         },
       },
     );

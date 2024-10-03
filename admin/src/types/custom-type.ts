@@ -1,4 +1,4 @@
-export type CustomType = {
+export type PersonCustomType = {
   id: number
   name: string
 }

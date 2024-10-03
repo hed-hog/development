@@ -8,14 +8,14 @@ import {
   useEditCustomType,
 } from '@/features/custom-types'
 import { useApp } from '@/hooks/use-app'
-import { CustomType } from '@/types/custom-type'
+import { PersonCustomType } from '@/types/custom-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<CustomType[]>([])
+  const [selectedItems, setSelectedItems] = useState<PersonCustomType[]>([])
   const formEdit = useRef<any>(null)
 
   const { mutate: createCustomType } = useCreateCustomType()
@@ -52,7 +52,7 @@ export default function Page() {
           ]}
           form={form}
           button={{ text: 'Criar' }}
-          onSubmit={(data: CustomType) => {
+          onSubmit={(data: PersonCustomType) => {
             createCustomType({
               id: Number(data.id),
               name: data.name,
@@ -66,11 +66,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: CustomType[]) => {
+  const openDeleteDialog = (items: PersonCustomType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: CustomType) => (
+          {items.map((item: PersonCustomType) => (
             <div key={item.name} className='mb-5'>
               <h3 className='text-md font-semibold'>
                 {item.id} - {item.name}
@@ -105,7 +105,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: CustomType) => {
+  const openEditDialog = (item: PersonCustomType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -139,7 +139,7 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data: CustomType) => {
+                  onSubmit={(data: PersonCustomType) => {
                     editCustomType({ id: String(data.id), data })
                     closeSheet(id)
                   }}
@@ -176,7 +176,7 @@ export default function Page() {
           { key: 'id', header: 'ID' },
           { key: 'name', header: 'Name' },
         ]}
-        selected={selectedItems as CustomType[]}
+        selected={selectedItems as PersonCustomType[]}
         multiple
         hasSearch
         sortable
@@ -185,7 +185,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar os tipos customizados selecionados',
-            handler: (items: CustomType[]) => {
+            handler: (items: PersonCustomType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',

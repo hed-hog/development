@@ -34,6 +34,7 @@ export class DocumentService {
         include: {
           person_document_types: {
             select: {
+              id: true,
               name: true,
             },
           },
@@ -56,6 +57,7 @@ export class DocumentService {
       include: {
         person_document_types: {
           select: {
+            id: true,
             name: true,
           },
         },

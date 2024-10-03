@@ -1,4 +1,4 @@
-export type AddressType = {
+export type PersonAddressType = {
   id: number
   name: string
 }

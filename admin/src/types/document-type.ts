@@ -1,4 +1,4 @@
-export type DocumentType = {
+export type PersonDocumentType = {
   id: number
   name: string
 }

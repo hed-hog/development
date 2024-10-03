@@ -103,7 +103,9 @@ export default function Page() {
           {items.map((item: PersonType) => (
             <div key={item.name} className='mb-5'>
               <h3 className='text-md font-semibold'>{item.name}</h3>
-              <p className='text-xs'>{String(item.birth_at)}</p>
+              <p className='text-xs'>
+                Data de nascimento: {formatDate(item.birth_at)}
+              </p>
             </div>
           ))}
         </div>
@@ -215,8 +217,11 @@ export default function Page() {
         id='persons'
         selectable
         render={(item: PersonType) => (
-          <Card className='mx-auto w-full max-w-lg rounded-lg border border-gray-200 bg-[#020817] shadow-lg'>
-            <CardHeader className='flex flex-row items-center rounded-t-lg px-6 py-4 text-white'>
+          <Card
+            className='w-full rounded-lg border-none'
+            onClick={() => openEditDialog(item)}
+          >
+            <CardHeader className='flex flex-row rounded-t-lg px-4 py-3 text-white'>
               <div className='h-10 w-10 rounded-full bg-white' />
               <div className='flex flex-col px-4' style={{ marginTop: 0 }}>
                 <CardTitle className='text-md font-semibold'>
@@ -237,24 +242,46 @@ export default function Page() {
                   {formatDate(item.birth_at)}
                 </span>
               </div>
-              <div className='my-3 flex items-center'>
-                <IconMapPin className='text-white-500 mr-3 h-5 w-5' />
-                <span className='text-white-800 text-sm font-normal'>
-                  Avenida José Versolato, 101
-                </span>
-              </div>
-              <div className='my-3 flex items-center'>
-                <IconPhone className='text-white-500 mr-3 h-5 w-5' />
-                <span className='text-white-800 text-sm font-normal'>
-                  (11) 2149-7360
-                </span>
-              </div>
-              <div className='my-3 flex items-center'>
-                <IconId className='text-white-500 mr-3 h-5 w-5' />
-                <span className='text-white-800 text-sm font-normal'>
-                  123.456.789-00
-                </span>
-              </div>
+              {item.person_addresses &&
+                Boolean(item.person_addresses.length) &&
+                item.person_addresses.map((a) => (
+                  <div className='my-3 flex items-center'>
+                    <IconMapPin className='text-white-500 mr-3 h-5 w-5' />
+                    <div className='flex flex-col'>
+                      <span className='text-white-800 max-w-[150px] text-sm font-normal'>
+                        {a.street}, {a.number}
+                      </span>
+                      <span className='text-white-800 max-w-[150px] text-sm font-normal'>
+                        {a.district}, {a.city}
+                      </span>
+                      <span className='text-white-800 max-w-[150px] text-sm font-normal'>
+                        {a.state}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+
+              {item.person_contacts &&
+                item.person_contacts.length &&
+                item.person_contacts.map((c) => (
+                  <div className='my-3 flex items-center'>
+                    <IconPhone className='text-white-500 mr-3 h-5 w-5' />
+                    <span className='text-white-800 text-sm font-normal'>
+                      {c.value} ({c.person_contact_types.name})
+                    </span>
+                  </div>
+                ))}
+
+              {item.person_documents &&
+                item.person_documents.length &&
+                item.person_documents.map((d) => (
+                  <div className='my-3 flex items-center'>
+                    <IconId className='text-white-500 mr-3 h-5 w-5' />
+                    <span className='text-white-800 text-sm font-normal'>
+                      {d.value} ({d.person_document_types.name})
+                    </span>
+                  </div>
+                ))}
             </CardContent>
           </Card>
         )}

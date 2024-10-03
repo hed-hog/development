@@ -8,14 +8,14 @@ import {
   useEditAddressType,
 } from '@/features/address-types'
 import { useApp } from '@/hooks/use-app'
-import { AddressType } from '@/types/address-type'
+import { PersonAddressType } from '@/types/address-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<AddressType[]>([])
+  const [selectedItems, setSelectedItems] = useState<PersonAddressType[]>([])
   const formEdit = useRef<any>(null)
 
   const { mutate: createAddressType } = useCreateAddressType()
@@ -52,7 +52,7 @@ export default function Page() {
           ]}
           form={form}
           button={{ text: 'Criar' }}
-          onSubmit={(data: AddressType) => {
+          onSubmit={(data: PersonAddressType) => {
             createAddressType({
               id: Number(data.id),
               name: data.name,
@@ -66,11 +66,11 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: AddressType[]) => {
+  const openDeleteDialog = (items: PersonAddressType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
-          {items.map((item: AddressType) => (
+          {items.map((item: PersonAddressType) => (
             <div key={item.name} className='mb-5'>
               <h3 className='text-md font-semibold'>
                 {item.id} - {item.name}
@@ -104,7 +104,7 @@ export default function Page() {
     return id
   }
 
-  const openEditDialog = (item: AddressType) => {
+  const openEditDialog = (item: PersonAddressType) => {
     form.reset({
       id: item.id || '',
       name: item.name || '',
@@ -138,7 +138,7 @@ export default function Page() {
                     },
                   ]}
                   form={form}
-                  onSubmit={(data: AddressType) => {
+                  onSubmit={(data: PersonAddressType) => {
                     editAddressType({ id: String(data.id), data })
                     closeSheet(id)
                   }}
@@ -175,7 +175,7 @@ export default function Page() {
           { key: 'id', header: 'ID' },
           { key: 'name', header: 'Name' },
         ]}
-        selected={selectedItems as AddressType[]}
+        selected={selectedItems as PersonAddressType[]}
         multiple
         hasSearch
         sortable
@@ -184,7 +184,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: 'Editar',
             tooltip: 'Editar os tipos de endereço selecionados',
-            handler: (items: AddressType[]) => {
+            handler: (items: PersonAddressType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',
