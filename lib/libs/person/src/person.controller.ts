@@ -13,7 +13,6 @@ import { CreatePersonDTO } from './dto/create-person.dto';
 import { UpdatePersonDTO } from './dto/update-person.dto';
 import { Pagination } from '@hedhog/pagination';
 import { DeleteDTO } from './dto/delete.dto';
-import { UpdateIdsDTO } from './dto/update-ids.dto';
 
 @Controller('persons')
 export class PersonController {
@@ -42,14 +41,6 @@ export class PersonController {
   @Delete()
   remove(@Body() data: DeleteDTO) {
     return this.personService.remove(data);
-  }
-
-  @Get(':id/documents')
-  getPersonDocuments(
-    @Param('id', ParseIntPipe) personId: number,
-    @Pagination() paginationParams,
-  ) {
-    return this.personService.listDocuments(personId, paginationParams);
   }
 
   @Get(':id/contacts')

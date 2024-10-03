@@ -82,16 +82,6 @@ export class PersonService {
     });
   }
 
-  async listDocuments(personId: number, paginationParams: PaginationDTO) {
-    return this.paginationService.paginate(
-      this.prismaService.person_documents,
-      paginationParams,
-      {
-        where: { person_id: personId },
-      },
-    );
-  }
-
   async listContacts(personId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.person_contacts,

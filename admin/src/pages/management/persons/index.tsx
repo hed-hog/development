@@ -10,6 +10,7 @@ import {
 } from '@/features/persons'
 import { useApp } from '@/hooks/use-app'
 import { formatDate } from '@/lib/date-string'
+import timeSince from '@/lib/time-since'
 import { PersonType } from '@/types/person'
 import { IconEdit, IconId, IconPlus, IconTrash } from '@tabler/icons-react'
 import { CalendarIcon, MapPinIcon } from 'lucide-react'
@@ -76,7 +77,7 @@ export default function Page() {
               id: Number(data.id),
               type_id: Number(data.type_id),
               name: data.name,
-              birth_at: formatDate(data.birth_at),
+              birth_at: new Date(data.birth_at) as unknown as string,
             })
             closeDialog(id)
           }}
@@ -207,10 +208,14 @@ export default function Page() {
         selectable
         render={(item: PersonType) => (
           <Card className='mx-auto w-full max-w-lg rounded-lg border border-gray-200 bg-[#020817] shadow-lg'>
-            <CardHeader className='rounded-t-lg bg-[#3576df] px-6 py-4 text-white'>
-              <CardTitle className='text-xl font-semibold'>
-                {item.name}
-              </CardTitle>
+            <CardHeader className='flex flex-row rounded-t-lg px-6 py-4 text-white'>
+              <div className='h-10 w-10 rounded-full bg-white' />
+              <div className='flex flex-col items-center'>
+                <CardTitle className='text-xl font-semibold'>
+                  {item.name}
+                </CardTitle>
+                <h4>Cadastrado {timeSince(String(item.created_at))}</h4>
+              </div>
             </CardHeader>
             <CardContent className='px-4 py-4'>
               <div className='mb-4 flex items-center'>

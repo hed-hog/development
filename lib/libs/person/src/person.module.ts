@@ -9,6 +9,7 @@ import { AddressTypeModule } from './address-type/address-type.module';
 import { CustomTypeModule } from './custom-type/custom-type.module';
 import { DocumentTypeModule } from './document-type/document-type.module';
 import { PersonTypeModule } from './person-type/person-type.module';
+import { DocumentModule } from './document/document.module';
 
 @Module({
   providers: [PersonService],
@@ -19,6 +20,7 @@ import { PersonTypeModule } from './person-type/person-type.module';
     forwardRef(() => AddressTypeModule),
     forwardRef(() => ContactTypeModule),
     forwardRef(() => CustomTypeModule),
+    forwardRef(() => DocumentModule),
     forwardRef(() => DocumentTypeModule),
     forwardRef(() => PersonTypeModule),
     forwardRef(() => PrismaModule),
