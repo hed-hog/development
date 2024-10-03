@@ -1,6 +1,7 @@
 import DataPanel from '@/components/custom/data-panel'
 import { FormPanel } from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
   useCreatePerson,
@@ -8,8 +9,10 @@ import {
   useEditPerson,
 } from '@/features/persons'
 import { useApp } from '@/hooks/use-app'
+import { formatDate } from '@/lib/date-string'
 import { PersonType } from '@/types/person'
-import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
+import { IconEdit, IconId, IconPlus, IconTrash } from '@tabler/icons-react'
+import { CalendarIcon, MapPinIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -73,7 +76,7 @@ export default function Page() {
               id: Number(data.id),
               type_id: Number(data.type_id),
               name: data.name,
-              birth_at: new Date(data.birth_at),
+              birth_at: formatDate(data.birth_at),
             })
             closeDialog(id)
           }}
@@ -199,19 +202,52 @@ export default function Page() {
 
       <DataPanel
         url='/persons'
-        layout='table'
+        layout='grid'
         id='persons'
         selectable
-        columns={[
-          { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
-          { key: 'type_id', header: 'TypeID' },
-          { key: 'birth_at', header: 'Birth Date' },
-        ]}
+        render={(item: PersonType) => (
+          <Card className='mx-auto w-full max-w-lg rounded-lg border border-gray-200 bg-[#020817] shadow-lg'>
+            <CardHeader className='rounded-t-lg bg-[#3576df] px-6 py-4 text-white'>
+              <CardTitle className='text-xl font-semibold'>
+                {item.name}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='px-4 py-4'>
+              <div className='mb-4 flex items-center'>
+                <CalendarIcon className='text-white-500 mr-3 h-6 w-6' />
+                <div>
+                  <span className='text-white-600 block text-sm'>
+                    Date of Birth
+                  </span>
+                  <span className='text-white-800 text-sm font-medium'>
+                    {formatDate(item.birth_at)}
+                  </span>
+                </div>
+              </div>
+              <div className='mb-4 flex items-center'>
+                <MapPinIcon className='text-white-500 mr-3 h-6 w-6' />
+                <div>
+                  <span className='text-white-600 block text-sm'>Address</span>
+                  <span className='text-white-800 text-sm font-medium'>
+                    Rua dos Cravos, 256
+                  </span>
+                </div>
+              </div>
+              <div className='flex items-center'>
+                <IconId className='text-white-500 mr-3 h-6 w-6' />
+                <div>
+                  <span className='text-white-600 block text-sm'>Document</span>
+                  <span className='text-white-800 text-sm font-medium'>
+                    123.456.789-00
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         selected={selectedItems as PersonType[]}
         multiple
         hasSearch
-        sortable
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,

@@ -67,4 +67,7 @@ export class PersonController {
   ) {
     return this.personService.listAddresses(personId, paginationParams);
   }
+
+  @Patch(':id/documents')
+  updateDocuments(@Param('id', ParseIntPipe) personId: number) {}
 }
