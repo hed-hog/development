@@ -13,6 +13,11 @@ import {
   useEditAddress,
 } from '@/features/address'
 import { useAddressTypes } from '@/features/address-types'
+import {
+  useCreateContact,
+  useDeleteContact,
+  useEditContact,
+} from '@/features/contact'
 import { useCountries } from '@/features/country'
 import { usePersonTypes } from '@/features/person-types'
 import {
@@ -24,6 +29,7 @@ import { useApp } from '@/hooks/use-app'
 import { formatDate } from '@/lib/date-string'
 import timeSince from '@/lib/time-since'
 import { PersonAddress } from '@/types/address'
+import { PersonContact } from '@/types/contact'
 import { IFormFieldOption } from '@/types/form-panel'
 import { PersonType } from '@/types/person'
 import {
@@ -51,6 +57,21 @@ export default function Page() {
     reference: '',
     type_id: 1,
   }
+
+  const formContactDefaultValues = {
+    id: 0,
+    type_id: 1,
+    primary: false,
+    value: '',
+  }
+
+  const formPersonDefaultValues = {
+    id: '',
+    name: '',
+    type_id: 0,
+    birth_at: new Date(),
+  }
+
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
   const [personTypes, setPersonTypes] = useState<IFormFieldOption[]>([])
   const [addressTypes, setAddressTypes] = useState<IFormFieldOption[]>([])
@@ -58,17 +79,17 @@ export default function Page() {
   const formEdit = useRef<any>(null)
 
   const formPerson = useForm<FieldValues>({
-    defaultValues: {
-      id: '',
-      name: '',
-      type_id: 0,
-      birth_at: new Date(),
-    },
+    defaultValues: formPersonDefaultValues,
     mode: 'onChange',
   })
 
   const formAddress = useForm<PersonAddress>({
     defaultValues: formAddressDefaultValues,
+    mode: 'onChange',
+  })
+
+  const formContact = useForm<PersonContact>({
+    defaultValues: formContactDefaultValues,
     mode: 'onChange',
   })
 
@@ -78,6 +99,9 @@ export default function Page() {
   const { mutate: createAddress } = useCreateAddress()
   const { mutate: editAddress } = useEditAddress()
   const { mutate: deleteAddress } = useDeleteAddress()
+  const { mutate: createContact } = useCreateContact()
+  const { mutate: editContact } = useEditContact()
+  const { mutate: deleteContact } = useDeleteContact()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
   const { data: personTypeData } = usePersonTypes()
   const { data: addressTypeData } = useAddressTypes()
@@ -377,6 +401,110 @@ export default function Page() {
     return id
   }
 
+  const openEditContactSheet = (
+    personId: number,
+    contactItem: PersonContact
+  ) => {
+    formContact.reset({
+      id: contactItem.id,
+      type_id: contactItem.type_id,
+      value: contactItem.value,
+    })
+
+    const sheetId = openSheet({
+      title: contactItem.id ? 'Editar Contato' : 'Adicionar Novo Contato',
+      description: contactItem.id
+        ? 'Edite as informações do contato.'
+        : 'Insira os dados do novo contato.',
+      children: () => (
+        <FormPanel
+          fields={[
+            {
+              name: 'type_id',
+              label: { text: 'Tipo de Contato' },
+              type: EnumFieldType.SELECT,
+              required: true,
+              options: addressTypes,
+              defaultValue: formAddress.watch('type_id'),
+            },
+            {
+              name: 'value',
+              label: { text: 'Valor' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: contactItem.value,
+            },
+          ]}
+          form={formContact as any}
+        />
+      ),
+      buttons: [
+        {
+          text: 'Aplicar',
+          onClick: () => {
+            const contactDataFilled = formContact.getValues()
+
+            if (contactDataFilled.id) {
+              editContact({
+                personId: Number(personId),
+                contactId: String(contactItem.id),
+                data: {
+                  ...contactDataFilled,
+                },
+              })
+            } else {
+              delete (contactDataFilled as any).id
+              createContact({
+                personId: Number(personId),
+                data: {
+                  ...contactDataFilled,
+                  type_id: Number(contactDataFilled.type_id),
+                },
+              })
+            }
+            closeSheet(sheetId)
+          },
+        },
+      ],
+    })
+  }
+
+  const openDeleteContactDialog = (item: PersonContact, sheetId: string) => {
+    const id = openDialog({
+      children: () => (
+        <ContactCard
+          contact={item}
+          className='my-2 w-full rounded-2xl border-2 border-blue-500 p-2'
+        />
+      ),
+      title: 'Excluir Contato',
+      description: 'Tem certeza de que deseja deletar este contato?',
+      buttons: [
+        {
+          variant: 'secondary',
+          text: 'Cancelar',
+          onClick: () => {
+            closeDialog(id)
+          },
+        },
+        {
+          text: 'Deletar',
+          variant: 'destructive',
+          onClick: () => {
+            deleteContact({
+              personId: formContact.getValues().id,
+              contactId: String(item.id),
+            })
+            closeDialog(id)
+            closeSheet(sheetId)
+          },
+        },
+      ],
+    })
+
+    return id
+  }
+
   const openEditPersonDialog = (item: PersonType) => {
     formPerson.reset({
       id: item.id || '',
@@ -438,6 +566,36 @@ export default function Page() {
                     closeSheet(id)
                   }}
                 />
+              ),
+            },
+            {
+              title: 'Contatos',
+              children: (
+                <div className='h-full w-full'>
+                  {item.person_contacts?.map((contact) => (
+                    <ContactCard
+                      key={contact.id}
+                      contact={contact}
+                      className='my-2 rounded-2xl border-2 border-blue-500 p-2'
+                      onClick={() => openEditContactSheet(item.id, contact)}
+                      onDelete={() => openDeleteContactDialog(contact, id)}
+                      manageable
+                    />
+                  ))}
+                  {!Boolean(item.person_contacts?.length) && (
+                    <span className='my-2 flex justify-center text-sm'>
+                      Nenhum contato cadastrado.
+                    </span>
+                  )}
+                  <Button
+                    className='absolute bottom-5 right-5 min-w-2 rounded-full p-2'
+                    onClick={() =>
+                      openEditContactSheet(item.id, formContactDefaultValues)
+                    }
+                  >
+                    <IconPlus />
+                  </Button>
+                </div>
               ),
             },
             {

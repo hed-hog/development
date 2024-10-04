@@ -23,7 +23,7 @@ export default function ContactCard({
       <div className='my-3 flex items-center'>
         <IconPhone className='text-white-500 mr-3 h-5 w-5' />
         <span className='text-white-800 text-sm font-normal'>
-          {contact.value} ({contact.person_contact_types.name})
+          {contact.value} ({contact.person_contact_types?.name})
         </span>
       </div>
       {manageable && (
