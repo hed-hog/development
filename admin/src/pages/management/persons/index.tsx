@@ -1,4 +1,7 @@
+import AddressCard from '@/components/custom/address-card'
+import ContactCard from '@/components/custom/contact-card'
 import DataPanel from '@/components/custom/data-panel'
+import DocumentCard from '@/components/custom/document-card'
 import { FormPanel } from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -27,9 +30,6 @@ import {
   IconCalendarClock,
   IconClock,
   IconEdit,
-  IconId,
-  IconMapPin,
-  IconPhone,
   IconPlus,
   IconTrash,
 } from '@tabler/icons-react'
@@ -209,6 +209,143 @@ export default function Page() {
     return id
   }
 
+  const openEditAddressSheet = (addressItem: PersonAddress) => {
+    formAddress.reset({
+      id: addressItem.id,
+      street: addressItem.street,
+      number: addressItem.number,
+      complement: addressItem.complement,
+      district: addressItem.district,
+      city: addressItem.city,
+      state: addressItem.state,
+      postal_code: addressItem.postal_code,
+      reference: addressItem.reference,
+      type_id: addressItem.type_id,
+      country_id: addressItem.country_id,
+    })
+
+    const sheetId = openSheet({
+      title: 'Editar Endereço',
+      description: 'Edite as informações do endereço.',
+      children: () => (
+        <FormPanel
+          fields={[
+            {
+              name: 'type_id',
+              label: { text: 'Tipo de Endereço' },
+              type: EnumFieldType.SELECT,
+              required: true,
+              options: addressTypes,
+              defaultValue: formAddress.watch('type_id'),
+            },
+            {
+              name: 'street',
+              label: { text: 'Rua' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: addressItem.street,
+            },
+            {
+              name: 'number',
+              label: { text: 'Número' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: addressItem.number,
+            },
+            {
+              name: 'complement',
+              label: { text: 'Complemento' },
+              type: EnumFieldType.TEXT,
+              required: false,
+              defaultValue: addressItem.complement,
+            },
+            {
+              name: 'reference',
+              label: { text: 'Referência' },
+              type: EnumFieldType.TEXT,
+              required: false,
+              defaultValue: addressItem.reference,
+            },
+            {
+              name: 'district',
+              label: { text: 'Bairro' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: addressItem.district,
+            },
+            {
+              name: 'city',
+              label: { text: 'Cidade' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: addressItem.city,
+            },
+            {
+              name: 'state',
+              label: { text: 'Estado' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: addressItem.state,
+            },
+            {
+              name: 'country_id',
+              label: { text: 'País' },
+              type: EnumFieldType.SELECT,
+              required: true,
+              options: countries,
+            },
+            {
+              name: 'postal_code',
+              label: { text: 'Código Postal' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: addressItem.postal_code,
+            },
+          ]}
+          form={formAddress as any}
+        />
+      ),
+      buttons: [
+        {
+          text: 'Aplicar',
+          onClick: () => {
+            const addressDataFilled = formAddress.getValues()
+
+            if (addressDataFilled.id) {
+              editAddress(
+                {
+                  personId: addressItem.person_id,
+                  addressId: String(addressItem.id),
+                  data: {
+                    ...addressDataFilled,
+                    number: Number(addressDataFilled.number),
+                  },
+                },
+                {
+                  onSuccess: () => {
+                    queryClient.invalidateQueries(
+                      'address' as InvalidateQueryFilters
+                    )
+                  },
+                }
+              )
+            } else {
+              delete (addressDataFilled as any).id
+              createAddress({
+                personId: addressItem.person_id,
+                data: {
+                  ...addressDataFilled,
+                  number: Number(addressDataFilled.number),
+                },
+              })
+            }
+            closeSheet(sheetId)
+          },
+        },
+      ],
+    })
+  }
+
   const openEditDialog = (item: PersonType) => {
     formPerson.reset({
       id: item.id || '',
@@ -272,142 +409,18 @@ export default function Page() {
                 />
               ),
             },
-            ...((item.person_addresses ?? []).length > 0
-              ? item.person_addresses
-              : ([formAddressDefaultValues] as any)
-            ).map((addressItem: any, i: number) => {
-              formAddress.reset({
-                id: addressItem.id,
-                country_id: addressItem.country_id,
-                street: addressItem.street,
-                number: addressItem.number,
-                complement: addressItem.complement,
-                district: addressItem.district,
-                city: addressItem.city,
-                state: addressItem.state,
-                postal_code: addressItem.postal_code,
-                reference: addressItem.reference,
-                type_id: addressItem.type_id,
-              })
-              return {
-                title: `Endereço ${i + 1}`,
-                children: (
-                  <FormPanel
-                    fields={[
-                      {
-                        name: 'type_id',
-                        label: { text: 'Tipo de Endereço' },
-                        type: EnumFieldType.SELECT,
-                        required: true,
-                        options: addressTypes,
-                        defaultValue: formAddress.watch('type_id'),
-                      },
-                      {
-                        name: 'street',
-                        label: { text: 'Rua' },
-                        type: EnumFieldType.TEXT,
-                        required: true,
-                        defaultValue: addressItem.street,
-                      },
-                      {
-                        name: 'number',
-                        label: { text: 'Número' },
-                        type: EnumFieldType.TEXT,
-                        required: true,
-                        defaultValue: addressItem.number,
-                      },
-                      {
-                        name: 'complement',
-                        label: { text: 'Complemento' },
-                        type: EnumFieldType.TEXT,
-                        required: false,
-                        defaultValue: addressItem.complement,
-                      },
-                      {
-                        name: 'reference',
-                        label: { text: 'Referência' },
-                        type: EnumFieldType.TEXT,
-                        required: false,
-                        defaultValue: addressItem.reference,
-                      },
-                      {
-                        name: 'district',
-                        label: { text: 'Bairro' },
-                        type: EnumFieldType.TEXT,
-                        required: true,
-                        defaultValue: addressItem.district,
-                      },
-                      {
-                        name: 'city',
-                        label: { text: 'Cidade' },
-                        type: EnumFieldType.TEXT,
-                        required: true,
-                        defaultValue: addressItem.city,
-                      },
-                      {
-                        name: 'state',
-                        label: { text: 'Estado' },
-                        type: EnumFieldType.TEXT,
-                        required: true,
-                        defaultValue: addressItem.state,
-                      },
-                      {
-                        name: 'country_id',
-                        label: { text: 'País' },
-                        type: EnumFieldType.SELECT,
-                        required: true,
-                        options: countries,
-                      },
-                      {
-                        name: 'postal_code',
-                        label: { text: 'Código Postal' },
-                        type: EnumFieldType.TEXT,
-                        required: true,
-                        defaultValue: addressItem.postal_code,
-                      },
-                    ]}
-                    form={formAddress as any}
-                  />
-                ),
-                buttons: [
-                  {
-                    text: 'Aplicar',
-                    onClick: () => {
-                      const addressDataFilled = formAddress.getValues()
-
-                      if (addressDataFilled.id) {
-                        editAddress(
-                          {
-                            personId: item.id,
-                            addressId: String(addressItem.id),
-                            data: {
-                              ...addressDataFilled,
-                              number: Number(addressDataFilled.number),
-                            },
-                          },
-                          {
-                            onSuccess: () => {
-                              queryClient.invalidateQueries(
-                                'address' as InvalidateQueryFilters
-                              )
-                            },
-                          }
-                        )
-                      } else {
-                        delete (addressDataFilled as any).id
-                        createAddress({
-                          personId: item.id,
-                          data: {
-                            ...addressDataFilled,
-                            number: Number(addressDataFilled.number),
-                          },
-                        })
-                      }
-                    },
-                  },
-                ],
-              }
-            }),
+            {
+              title: 'Endereços',
+              children: item.person_addresses?.map((address) => (
+                <AddressCard
+                  key={address.id}
+                  address={address}
+                  onClick={() => openEditAddressSheet(address)}
+                  className='my-2 rounded-2xl border-2 border-blue-500 p-2'
+                  editable
+                />
+              )),
+            },
           ]}
         />
       ),
@@ -462,44 +475,15 @@ export default function Page() {
               </div>
               {item.person_addresses &&
                 Boolean(item.person_addresses.length) &&
-                item.person_addresses.map((a) => (
-                  <div className='my-3 flex items-center'>
-                    <IconMapPin className='text-white-500 mr-3 h-5 w-5' />
-                    <div className='flex flex-col'>
-                      <span className='text-white-800 max-w-[150px] text-sm font-normal'>
-                        {a.street}, {a.number}
-                      </span>
-                      <span className='text-white-800 max-w-[150px] text-sm font-normal'>
-                        {a.district}, {a.city}
-                      </span>
-                      <span className='text-white-800 max-w-[150px] text-sm font-normal'>
-                        {a.state}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                item.person_addresses.map((a) => <AddressCard address={a} />)}
 
               {item.person_contacts &&
                 Boolean(item.person_contacts.length) &&
-                item.person_contacts.map((c) => (
-                  <div className='my-3 flex items-center'>
-                    <IconPhone className='text-white-500 mr-3 h-5 w-5' />
-                    <span className='text-white-800 text-sm font-normal'>
-                      {c.value} ({c.person_contact_types.name})
-                    </span>
-                  </div>
-                ))}
+                item.person_contacts.map((c) => <ContactCard contact={c} />)}
 
               {item.person_documents &&
                 Boolean(item.person_documents.length) &&
-                item.person_documents.map((d) => (
-                  <div className='my-3 flex items-center'>
-                    <IconId className='text-white-500 mr-3 h-5 w-5' />
-                    <span className='text-white-800 text-sm font-normal'>
-                      {d.value} ({d.person_document_types.name})
-                    </span>
-                  </div>
-                ))}
+                item.person_documents.map((d) => <DocumentCard document={d} />)}
             </CardContent>
           </Card>
         )}
