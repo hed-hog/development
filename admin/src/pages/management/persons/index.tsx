@@ -1,6 +1,7 @@
 import AddressCard from '@/components/custom/address-card'
 import { Button } from '@/components/custom/button'
 import ContactCard from '@/components/custom/contact-card'
+import CustomCard from '@/components/custom/custom-card'
 import DataPanel from '@/components/custom/data-panel'
 import DocumentCard from '@/components/custom/document-card'
 import { FormPanel } from '@/components/custom/form-panel'
@@ -21,6 +22,12 @@ import {
 import { useContactTypes } from '@/features/contact-types'
 import { useCountries } from '@/features/country'
 import {
+  useCreateCustom,
+  useDeleteCustom,
+  useEditCustom,
+} from '@/features/custom'
+import { useCustomTypes } from '@/features/custom-types'
+import {
   useCreateDocument,
   useDeleteDocument,
   useEditDocument,
@@ -37,6 +44,7 @@ import { formatDate } from '@/lib/date-string'
 import timeSince from '@/lib/time-since'
 import { PersonAddress } from '@/types/address'
 import { PersonContact } from '@/types/contact'
+import { PersonCustom } from '@/types/custom'
 import { PersonDocument } from '@/types/document'
 import { IFormFieldOption } from '@/types/form-panel'
 import { PersonType } from '@/types/person'
@@ -89,10 +97,18 @@ export default function Page() {
     expiry_at: '',
   }
 
+  const formCustomDefaultValues: PersonCustom = {
+    id: 0,
+    type_id: 1,
+    name: '',
+    value: '',
+  }
+
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
   const [addressTypes, setAddressTypes] = useState<IFormFieldOption[]>([])
   const [personTypes, setPersonTypes] = useState<IFormFieldOption[]>([])
   const [contactTypes, setContactTypes] = useState<IFormFieldOption[]>([])
+  const [customTypes, setCustomTypes] = useState<IFormFieldOption[]>([])
   const [documentTypes, setDocumentTypes] = useState<IFormFieldOption[]>([])
   const [countries, setCountries] = useState<IFormFieldOption[]>([])
   const formEdit = useRef<any>(null)
@@ -117,6 +133,11 @@ export default function Page() {
     mode: 'onChange',
   })
 
+  const formCustom = useForm<PersonCustom>({
+    defaultValues: formCustomDefaultValues,
+    mode: 'onChange',
+  })
+
   const { mutate: createPerson } = useCreatePerson()
   const { mutate: editPerson } = useEditPerson()
   const { mutate: deletePersons } = useDeletePerson()
@@ -126,12 +147,16 @@ export default function Page() {
   const { mutate: createContact } = useCreateContact()
   const { mutate: editContact } = useEditContact()
   const { mutate: deleteContact } = useDeleteContact()
+  const { mutate: createCustom } = useCreateCustom()
+  const { mutate: editCustom } = useEditCustom()
+  const { mutate: deleteCustom } = useDeleteCustom()
   const { mutate: createDocument } = useCreateDocument()
   const { mutate: editDocument } = useEditDocument()
   const { mutate: deleteDocument } = useDeleteDocument()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
   const { data: addressTypeData } = useAddressTypes()
   const { data: contactTypeData } = useContactTypes()
+  const { data: customTypeData } = useCustomTypes()
   const { data: documentTypeData } = useDocumentTypes()
   const { data: personTypeData } = usePersonTypes()
   const { data: countriesData } = useCountries()
@@ -168,6 +193,17 @@ export default function Page() {
     )
     setContactTypes(contactTypes)
   }, [contactTypeData])
+
+  useEffect(() => {
+    if (!customTypeData) return
+    const customTypes = (customTypeData?.data as any).data.map(
+      (type: { id: number; name: string }) => ({
+        value: type.id,
+        label: type.name,
+      })
+    )
+    setCustomTypes(customTypes)
+  }, [customTypeData])
 
   useEffect(() => {
     if (!documentTypeData) return
@@ -681,6 +717,113 @@ export default function Page() {
     return id
   }
 
+  const openEditCustomSheet = (personId: number, customItem: PersonCustom) => {
+    formCustom.reset({
+      id: customItem.id,
+      type_id: customItem.type_id,
+      name: customItem.name,
+      value: customItem.value,
+    })
+
+    const sheetId = openSheet({
+      title: customItem.id
+        ? 'Editar Atributo Personalizado'
+        : 'Adicionar Novo Atributo Personalizado',
+      description: customItem.id
+        ? 'Edite as informações do atributo personalizado.'
+        : 'Insira os dados do novo atributo personalizado.',
+      children: () => (
+        <FormPanel
+          fields={[
+            {
+              name: 'type_id',
+              label: { text: 'Tipo do Atributo' },
+              type: EnumFieldType.SELECT,
+              required: true,
+              options: customTypes,
+              defaultValue: formCustom.watch('type_id'),
+            },
+            {
+              name: 'name',
+              label: { text: 'Nome' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: customItem.name,
+            },
+            {
+              name: 'value',
+              label: { text: 'Valor' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: customItem.value,
+            },
+          ]}
+          form={formCustom as any}
+        />
+      ),
+      buttons: [
+        {
+          text: 'Aplicar',
+          onClick: () => {
+            const customDataFilled = formCustom.getValues()
+
+            if (customDataFilled.id) {
+              editCustom({
+                personId: Number(personId),
+                customId: String(customItem.id),
+                data: customDataFilled,
+              })
+            } else {
+              delete (customDataFilled as any).id
+              createCustom({
+                personId: Number(personId),
+                data: customDataFilled,
+              })
+            }
+            closeSheet(sheetId)
+          },
+        },
+      ],
+    })
+  }
+
+  const openDeleteCustomDialog = (item: PersonCustom, sheetId: string) => {
+    const id = openDialog({
+      children: () => (
+        <CustomCard
+          custom={item}
+          className='my-2 w-full rounded-2xl border-2 border-blue-500 p-2'
+        />
+      ),
+      title: 'Excluir Atributo Personalizado',
+      description:
+        'Tem certeza de que deseja deletar este atributo personalizado?',
+      buttons: [
+        {
+          variant: 'secondary',
+          text: 'Cancelar',
+          onClick: () => {
+            closeDialog(id)
+          },
+        },
+        {
+          text: 'Deletar',
+          variant: 'destructive',
+          onClick: () => {
+            deleteCustom({
+              personId: formCustom.getValues().id,
+              customId: String(item.id),
+            })
+            closeDialog(id)
+            closeSheet(sheetId)
+          },
+        },
+      ],
+    })
+
+    return id
+  }
+
   const openEditPersonDialog = (item: PersonType) => {
     formPerson.reset({
       id: item.id || '',
@@ -834,6 +977,36 @@ export default function Page() {
                 </div>
               ),
             },
+            {
+              title: 'Outros',
+              children: (
+                <div className='h-full w-full'>
+                  {item.person_customs?.map((custom) => (
+                    <CustomCard
+                      key={custom.id}
+                      custom={custom}
+                      onClick={() => openEditCustomSheet(item.id, custom)}
+                      onDelete={() => openDeleteCustomDialog(custom, id)}
+                      className='my-2 rounded-2xl border-2 border-blue-500 p-2'
+                      manageable
+                    />
+                  ))}
+                  {!Boolean(item.person_customs?.length) && (
+                    <span className='my-2 flex justify-center text-sm'>
+                      Nenhum atributo personalizado cadastrado.
+                    </span>
+                  )}
+                  <Button
+                    className='absolute bottom-5 right-5 min-w-2 rounded-full p-2'
+                    onClick={() =>
+                      openEditCustomSheet(item.id, formCustomDefaultValues)
+                    }
+                  >
+                    <IconPlus />
+                  </Button>
+                </div>
+              ),
+            },
           ]}
         />
       ),
@@ -897,6 +1070,10 @@ export default function Page() {
               {item.person_documents &&
                 Boolean(item.person_documents.length) &&
                 item.person_documents.map((d) => <DocumentCard document={d} />)}
+
+              {item.person_customs &&
+                Boolean(item.person_customs) &&
+                item.person_customs?.map((c) => <CustomCard custom={c} />)}
             </CardContent>
           </Card>
         )}

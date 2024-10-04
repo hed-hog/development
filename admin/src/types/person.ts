@@ -1,5 +1,6 @@
 import { PersonAddress } from './address'
 import { PersonContact } from './contact'
+import { PersonCustom } from './custom'
 import { PersonDocument } from './document'
 import { TimeStamp } from './timestamp'
 
@@ -11,4 +12,5 @@ export type PersonType = {
   person_addresses?: PersonAddress[]
   person_contacts?: PersonContact[]
   person_documents?: PersonDocument[]
+  person_customs?: PersonCustom[]
 } & TimeStamp

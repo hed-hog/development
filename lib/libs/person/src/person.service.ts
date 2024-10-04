@@ -49,7 +49,16 @@ export class PersonService {
               },
             },
           },
-          person_customs: true,
+          person_customs: {
+            include: {
+              person_custom_types: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
           person_documents: {
             include: {
               person_document_types: {
@@ -80,7 +89,16 @@ export class PersonService {
             },
           },
         },
-        person_customs: true,
+        person_customs: {
+          include: {
+            person_custom_types: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
         person_documents: {
           include: {
             person_document_types: {
