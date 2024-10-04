@@ -48,7 +48,7 @@ export class DocumentService {
     );
   }
 
-  async getDocumentById(personId: number, typeId: number) {
+  async getDocumentByTypeId(personId: number, typeId: number) {
     const document = await this.prismaService.person_documents.findFirst({
       where: {
         person_id: personId,
@@ -74,6 +74,27 @@ export class DocumentService {
     }
 
     return document;
+  }
+
+  async getDocumentById(documentId: number) {
+    return this.prismaService.person_documents.findFirst({
+      where: {
+        id: documentId,
+      },
+      include: {
+        person_document_types: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        countries: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   async update(documentId: number, data: UpdatePersonDocumentDTO) {

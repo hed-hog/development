@@ -7,10 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { DocumentService } from './document.service';
 import { UpdatePersonDocumentDTO } from './dto/update-document.dto';
 import { CreatePersonDocumentDTO } from './dto/create-document.dto';
+import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
 
 @Controller('persons/:personId/documents')
 export class DocumentController {
@@ -24,16 +26,18 @@ export class DocumentController {
   }
 
   @Get()
-  getDocuments(@Param('personId', ParseIntPipe) personId: number) {
-    return this.documentService.getDocuments(personId);
-  }
-
-  @Get(':documentId')
-  getDocumentById(
+  getDocuments(
     @Param('personId', ParseIntPipe) personId: number,
-    @Param('documentId', ParseIntPipe) typeId: number,
+    @Query('typeId', OptionalParseIntPipe) typeId?: number,
+    @Query('id', OptionalParseIntPipe) documentId?: number,
   ) {
-    return this.documentService.getDocumentById(personId, typeId);
+    if (documentId) {
+      return this.documentService.getDocumentById(documentId);
+    }
+    if (typeId) {
+      return this.documentService.getDocumentByTypeId(personId, typeId);
+    }
+    return this.documentService.getDocuments(personId);
   }
 
   @Patch(':documentId')

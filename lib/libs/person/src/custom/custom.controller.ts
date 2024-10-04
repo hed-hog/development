@@ -7,10 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CustomService } from './custom.service';
 import { UpdatePersonCustomDTO } from './dto/update-custom.dto';
 import { CreatePersonCustomDTO } from './dto/create-custom.dto';
+import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
 
 @Controller('persons/:personId/customs')
 export class CustomController {
@@ -24,16 +26,18 @@ export class CustomController {
   }
 
   @Get()
-  getCustoms(@Param('personId', ParseIntPipe) personId: number) {
-    return this.customService.getCustoms(personId);
-  }
-
-  @Get(':customId')
-  getCustomById(
+  getCustoms(
     @Param('personId', ParseIntPipe) personId: number,
-    @Param('customId', ParseIntPipe) customId: number,
+    @Query('typeId', OptionalParseIntPipe) typeId?: number,
+    @Query('id', OptionalParseIntPipe) customId?: number,
   ) {
-    return this.customService.getCustomById(personId, customId);
+    if (customId) {
+      return this.customService.getCustomById(customId);
+    }
+    if (typeId) {
+      return this.customService.getCustomByTypeId(personId, typeId);
+    }
+    return this.customService.getCustoms(personId);
   }
 
   @Patch(':customId')

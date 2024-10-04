@@ -42,7 +42,7 @@ export class CustomService {
     );
   }
 
-  async getCustomById(personId: number, customId: number) {
+  async getCustomByTypeId(personId: number, customId: number) {
     const custom = await this.prismaService.person_customs.findFirst({
       where: {
         person_id: personId,
@@ -63,6 +63,22 @@ export class CustomService {
     }
 
     return custom;
+  }
+
+  async getCustomById(customId: number) {
+    return this.prismaService.person_customs.findFirst({
+      where: {
+        id: customId,
+      },
+      include: {
+        person_custom_types: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   async update(customId: number, data: UpdatePersonCustomDTO) {

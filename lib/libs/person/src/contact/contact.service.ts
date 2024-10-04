@@ -42,7 +42,7 @@ export class ContactService {
     );
   }
 
-  async getContactById(personId: number, typeId: number) {
+  async getContactByTypeId(personId: number, typeId: number) {
     const contact = await this.prismaService.person_contacts.findFirst({
       where: {
         person_id: personId,
@@ -63,6 +63,22 @@ export class ContactService {
     }
 
     return contact;
+  }
+
+  async getContactById(contactId: number) {
+    return this.prismaService.person_contacts.findFirst({
+      where: {
+        id: contactId,
+      },
+      include: {
+        person_contact_types: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   async update(contactId: number, data: UpdatePersonContactDTO) {

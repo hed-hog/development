@@ -7,10 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { UpdatePersonContactDTO } from './dto/update-contact.dto';
 import { CreatePersonContactDTO } from './dto/create-contact.dto';
+import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
 
 @Controller('persons/:personId/contacts')
 export class ContactController {
@@ -24,16 +26,18 @@ export class ContactController {
   }
 
   @Get()
-  getContacts(@Param('personId', ParseIntPipe) personId: number) {
-    return this.contactService.getContacts(personId);
-  }
-
-  @Get(':contactId')
-  getContactById(
+  getContacts(
     @Param('personId', ParseIntPipe) personId: number,
-    @Param('contactId', ParseIntPipe) typeId: number,
+    @Query('typeId', OptionalParseIntPipe) typeId?: number,
+    @Query('id', OptionalParseIntPipe) contactId?: number,
   ) {
-    return this.contactService.getContactById(personId, typeId);
+    if (contactId) {
+      return this.contactService.getContactById(contactId);
+    }
+    if (typeId) {
+      return this.contactService.getContactByTypeId(personId, typeId);
+    }
+    return this.contactService.getContacts(personId);
   }
 
   @Patch(':contactId')

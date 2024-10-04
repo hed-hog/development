@@ -7,10 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { UpdatePersonAddressDTO } from './dto/update-address.dto';
 import { CreatePersonAddressDTO } from './dto/create-address.dto';
+import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
 
 @Controller('persons/:personId/address')
 export class AddressController {
@@ -24,16 +26,18 @@ export class AddressController {
   }
 
   @Get()
-  getAddress(@Param('personId', ParseIntPipe) personId: number) {
-    return this.addressService.getAddress(personId);
-  }
-
-  @Get(':addressId')
-  getAddressById(
+  getAddress(
     @Param('personId', ParseIntPipe) personId: number,
-    @Param('addressId', ParseIntPipe) typeId: number,
+    @Query('typeId', OptionalParseIntPipe) typeId?: number,
+    @Query('id', OptionalParseIntPipe) addressId?: number,
   ) {
-    return this.addressService.getAddressById(personId, typeId);
+    if (addressId) {
+      return this.addressService.getAddressById(addressId);
+    }
+    if (typeId) {
+      return this.addressService.getAddressByTypeId(personId, typeId);
+    }
+    return this.addressService.getAddress(personId);
   }
 
   @Patch(':addressId')

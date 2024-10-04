@@ -36,7 +36,7 @@ export class AddressService {
     );
   }
 
-  async getAddressById(personId: number, typeId: number) {
+  async getAddressByTypeId(personId: number, typeId: number) {
     const address = await this.prismaService.person_addresses.findFirst({
       where: {
         person_id: personId,
@@ -49,6 +49,14 @@ export class AddressService {
     }
 
     return address;
+  }
+
+  async getAddressById(addressId: number) {
+    return this.prismaService.person_addresses.findFirst({
+      where: {
+        id: addressId,
+      },
+    });
   }
 
   async update(addressId: number, data: UpdatePersonAddressDTO) {
