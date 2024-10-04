@@ -1,7 +1,20 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
 import { toast } from 'sonner'
+import { useApp } from '@/hooks/use-app'
+
+export function useAddressTypes() {
+  const { request } = useApp()
+
+  return useQuery({
+    queryKey: ['address-types'],
+    queryFn: () =>
+      request({
+        url: `/address-types`,
+      }),
+  })
+}
 
 export function useCreateAddressType() {
   const { createAddressType } = requests()

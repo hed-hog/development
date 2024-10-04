@@ -8,6 +8,7 @@ import {
   useDeleteAddress,
   useEditAddress,
 } from '@/features/address'
+import { useAddressTypes } from '@/features/address-types'
 import { usePersonTypes } from '@/features/person-types'
 import {
   useCreatePerson,
@@ -19,6 +20,7 @@ import { formatDate } from '@/lib/date-string'
 import { queryClient } from '@/lib/query-provider'
 import timeSince from '@/lib/time-since'
 import { PersonAddress } from '@/types/address'
+import { IFormFieldOption } from '@/types/form-panel'
 import { PersonType } from '@/types/person'
 import {
   IconCalendarClock,
@@ -37,8 +39,21 @@ import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
+  const formAddressDefaultValues = {
+    id: 0,
+    street: '',
+    number: 0,
+    complement: '',
+    district: '',
+    city: '',
+    state: '',
+    postal_code: '',
+    reference: '',
+    type_id: 1,
+  }
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
-  const [personTypes, setPersonTypes] = useState<any[]>([])
+  const [personTypes, setPersonTypes] = useState<IFormFieldOption[]>([])
+  const [addressTypes, setAddressTypes] = useState<IFormFieldOption[]>([])
   const formEdit = useRef<any>(null)
 
   const formPerson = useForm<FieldValues>({
@@ -52,16 +67,7 @@ export default function Page() {
   })
 
   const formAddress = useForm<PersonAddress>({
-    defaultValues: {
-      id: 1,
-      street: '',
-      number: 0,
-      complement: '',
-      district: '',
-      city: '',
-      state: '',
-      postal_code: '',
-    },
+    defaultValues: formAddressDefaultValues,
     mode: 'onChange',
   })
 
@@ -70,22 +76,32 @@ export default function Page() {
   const { mutate: deletePersons } = useDeletePerson()
   const { mutate: createAddress } = useCreateAddress()
   const { mutate: editAddress } = useEditAddress()
-  const { mutate: deleteAddresss } = useDeleteAddress()
+  const { mutate: deleteAddress } = useDeleteAddress()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
   const { data: personTypeData } = usePersonTypes()
+  const { data: addressTypeData } = useAddressTypes()
 
   useEffect(() => {
     if (!personTypeData) return
-
     const personTypes = (personTypeData?.data as any).data.map(
       (type: { id: number; name: string }) => ({
         value: type.id,
         label: type.name,
       })
     )
-
     setPersonTypes(personTypes)
   }, [personTypeData])
+
+  useEffect(() => {
+    if (!addressTypeData) return
+    const addressTypes = (addressTypeData?.data as any).data.map(
+      (type: { id: number; name: string }) => ({
+        value: type.id,
+        label: type.name,
+      })
+    )
+    setAddressTypes(addressTypes)
+  }, [addressTypeData])
 
   const openCreateDialog = () => {
     formPerson.reset({
@@ -241,15 +257,21 @@ export default function Page() {
                 />
               ),
             },
-            ...(item.person_addresses ?? []).map((addressItem, i) => {
+            ...((item.person_addresses ?? []).length > 0
+              ? item.person_addresses
+              : ([formAddressDefaultValues] as any)
+            ).map((addressItem: any, i: number) => {
               formAddress.reset({
-                street: addressItem.street || '',
-                number: addressItem.number || 0,
-                complement: addressItem.complement || '',
-                district: addressItem.district || '',
-                city: addressItem.city || '',
-                state: addressItem.state || '',
-                postal_code: addressItem.postal_code || '',
+                id: addressItem.id,
+                street: addressItem.street,
+                number: addressItem.number,
+                complement: addressItem.complement,
+                district: addressItem.district,
+                city: addressItem.city,
+                state: addressItem.state,
+                postal_code: addressItem.postal_code,
+                reference: addressItem.reference,
+                type_id: addressItem.type_id,
               })
               return {
                 title: `Endereço ${i + 1}`,
@@ -257,53 +279,68 @@ export default function Page() {
                   <FormPanel
                     fields={[
                       {
+                        name: 'type_id',
+                        label: { text: 'Tipo de Endereço' },
+                        type: EnumFieldType.SELECT,
+                        required: true,
+                        options: addressTypes,
+                        defaultValue: formAddress.watch('type_id'),
+                      },
+                      {
                         name: 'street',
                         label: { text: 'Rua' },
                         type: EnumFieldType.TEXT,
                         required: true,
-                        defaultValue: addressItem.street || '',
+                        defaultValue: addressItem.street,
                       },
                       {
                         name: 'number',
                         label: { text: 'Número' },
                         type: EnumFieldType.TEXT,
                         required: true,
-                        defaultValue: addressItem.number || '',
+                        defaultValue: addressItem.number,
                       },
                       {
                         name: 'complement',
                         label: { text: 'Complemento' },
                         type: EnumFieldType.TEXT,
                         required: false,
-                        defaultValue: addressItem.complement || '',
+                        defaultValue: addressItem.complement,
+                      },
+                      {
+                        name: 'reference',
+                        label: { text: 'Referência' },
+                        type: EnumFieldType.TEXT,
+                        required: false,
+                        defaultValue: addressItem.reference,
                       },
                       {
                         name: 'district',
                         label: { text: 'Bairro' },
                         type: EnumFieldType.TEXT,
                         required: true,
-                        defaultValue: addressItem.district || '',
+                        defaultValue: addressItem.district,
                       },
                       {
                         name: 'city',
                         label: { text: 'Cidade' },
                         type: EnumFieldType.TEXT,
                         required: true,
-                        defaultValue: addressItem.city || '',
+                        defaultValue: addressItem.city,
                       },
                       {
                         name: 'state',
                         label: { text: 'Estado' },
                         type: EnumFieldType.TEXT,
                         required: true,
-                        defaultValue: addressItem.state || '',
+                        defaultValue: addressItem.state,
                       },
                       {
                         name: 'postal_code',
                         label: { text: 'Código Postal' },
                         type: EnumFieldType.TEXT,
                         required: true,
-                        defaultValue: addressItem.postal_code || '',
+                        defaultValue: addressItem.postal_code,
                       },
                     ]}
                     form={formAddress as any}
@@ -314,12 +351,16 @@ export default function Page() {
                     text: 'Aplicar',
                     onClick: () => {
                       const addressDataFilled = formAddress.getValues()
-                      if (addressDataFilled) {
+
+                      if (addressDataFilled.id) {
                         editAddress(
                           {
                             personId: item.id,
                             addressId: String(addressItem.id),
-                            data: addressDataFilled,
+                            data: {
+                              ...addressDataFilled,
+                              number: Number(addressDataFilled.number),
+                            },
                           },
                           {
                             onSuccess: () => {
@@ -329,6 +370,16 @@ export default function Page() {
                             },
                           }
                         )
+                      } else {
+                        delete (addressDataFilled as any).id
+                        createAddress({
+                          personId: item.id,
+                          data: {
+                            ...addressDataFilled,
+                            country_id: 24,
+                            number: Number(addressDataFilled.number),
+                          },
+                        })
                       }
                     },
                   },
