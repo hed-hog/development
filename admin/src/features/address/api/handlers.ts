@@ -1,5 +1,9 @@
 import { useApp } from '@/hooks/use-app'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import {
+  InvalidateQueryFilters,
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query'
 import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
 import { toast } from 'sonner'
@@ -24,7 +28,7 @@ export function useCreateAddress() {
     mutationKey: ['post-address'],
     mutationFn: createAddress,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['address'] })
+      queryClient.invalidateQueries('address' as InvalidateQueryFilters)
       toast.success('Address created successfully!')
     },
     onError: (error: any) => {
@@ -40,7 +44,7 @@ export function useDeleteAddress() {
     mutationKey: ['delete-address'],
     mutationFn: deleteAddress,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['address'] })
+      queryClient.invalidateQueries('address' as InvalidateQueryFilters)
       toast.success('Address deleted successfully!')
     },
     onError: (error: any) => {
@@ -56,7 +60,7 @@ export function useEditAddress() {
     mutationKey: ['edit-address'],
     mutationFn: editAddress,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['address'] })
+      queryClient.invalidateQueries('address' as InvalidateQueryFilters)
       toast.success('Address edited successfully!')
     },
     onError: (error: any) => {

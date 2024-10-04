@@ -22,7 +22,6 @@ import {
 } from '@/features/persons'
 import { useApp } from '@/hooks/use-app'
 import { formatDate } from '@/lib/date-string'
-import { queryClient } from '@/lib/query-provider'
 import timeSince from '@/lib/time-since'
 import { PersonAddress } from '@/types/address'
 import { IFormFieldOption } from '@/types/form-panel'
@@ -34,8 +33,6 @@ import {
   IconPlus,
   IconTrash,
 } from '@tabler/icons-react'
-import { InvalidateQueryFilters } from '@tanstack/react-query'
-
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -200,16 +197,7 @@ export default function Page() {
           text: 'Deletar',
           variant: 'destructive',
           onClick: () => {
-            deletePersons(
-              items.map((item) => item.id),
-              {
-                onSuccess: () => {
-                  queryClient.invalidateQueries(
-                    'address' as InvalidateQueryFilters
-                  )
-                },
-              }
-            )
+            deletePersons(items.map((item) => item.id))
             closeDialog(id)
           },
         },
@@ -328,41 +316,23 @@ export default function Page() {
             const addressDataFilled = formAddress.getValues()
 
             if (addressDataFilled.id) {
-              editAddress(
-                {
-                  personId: Number(personId),
-                  addressId: String(addressItem.id),
-                  data: {
-                    ...addressDataFilled,
-                    number: Number(addressDataFilled.number),
-                  },
+              editAddress({
+                personId: Number(personId),
+                addressId: String(addressItem.id),
+                data: {
+                  ...addressDataFilled,
+                  number: Number(addressDataFilled.number),
                 },
-                {
-                  onSuccess: () => {
-                    queryClient.invalidateQueries(
-                      'address' as InvalidateQueryFilters
-                    )
-                  },
-                }
-              )
+              })
             } else {
               delete (addressDataFilled as any).id
-              createAddress(
-                {
-                  personId: Number(personId),
-                  data: {
-                    ...addressDataFilled,
-                    number: Number(addressDataFilled.number),
-                  },
+              createAddress({
+                personId: Number(personId),
+                data: {
+                  ...addressDataFilled,
+                  number: Number(addressDataFilled.number),
                 },
-                {
-                  onSuccess: () => {
-                    queryClient.invalidateQueries(
-                      'address' as InvalidateQueryFilters
-                    )
-                  },
-                }
-              )
+              })
             }
             closeSheet(sheetId)
           },
@@ -393,19 +363,10 @@ export default function Page() {
           text: 'Deletar',
           variant: 'destructive',
           onClick: () => {
-            deleteAddress(
-              {
-                personId: formAddress.getValues().id,
-                addressId: String(item.id),
-              },
-              {
-                onSuccess: () => {
-                  queryClient.invalidateQueries(
-                    'address' as InvalidateQueryFilters
-                  )
-                },
-              }
-            )
+            deleteAddress({
+              personId: formAddress.getValues().id,
+              addressId: String(item.id),
+            })
             closeDialog(id)
             closeSheet(sheetId)
           },
@@ -493,6 +454,11 @@ export default function Page() {
                       manageable
                     />
                   ))}
+                  {!Boolean(item.person_addresses?.length) && (
+                    <span className='my-2 flex justify-center text-sm'>
+                      Nenhum endereço cadastrado.
+                    </span>
+                  )}
                   <Button
                     className='absolute bottom-5 right-5 min-w-2 rounded-full p-2'
                     onClick={() =>
