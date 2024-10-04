@@ -1,6 +1,4 @@
 import { CSSProperties, useState } from 'react'
-import { format } from 'date-fns'
-
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/custom/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -10,6 +8,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { CalendarIcon } from 'lucide-react'
+import { formatDate } from '@/lib/date-string'
 
 interface IDatePickerFieldProps {
   icon?: JSX.Element
@@ -47,7 +46,7 @@ export function DatePickerField({
           )}
         >
           {icon || <CalendarIcon className='mr-2 h-4 w-4' />}
-          {date ? format(date, 'dd/MM/yyyy') : <span>{label}</span>}
+          {date ? formatDate(date.toISOString()) : <span>{label}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className='align-center flex justify-center p-0'>
