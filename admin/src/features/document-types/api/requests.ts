@@ -1,10 +1,10 @@
 import { useApp } from '@/hooks/use-app'
-import { DocumentType } from '@/types/document-type'
+import { PersonDocumentType } from '@/types/document-type'
 
 export function requests() {
   const { request } = useApp()
 
-  const createDocumentType = async (data: DocumentType) => {
+  const createDocumentType = async (data: PersonDocumentType) => {
     if (!data.id) delete (data as any).id
     return request({
       url: '/document-types',
@@ -23,7 +23,7 @@ export function requests() {
 
   const editDocumentType = async (params: {
     id: string
-    data: DocumentType
+    data: PersonDocumentType
   }) => {
     const { id, data } = params
 

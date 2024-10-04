@@ -1,10 +1,10 @@
 import { useApp } from '@/hooks/use-app'
-import { AddressType } from '@/types/address-type'
+import { PersonAddressType } from '@/types/address-type'
 
 export function requests() {
   const { request } = useApp()
 
-  const createAddressType = async (data: AddressType) => {
+  const createAddressType = async (data: PersonAddressType) => {
     if (!data.id) delete (data as any).id
 
     return request({
@@ -22,7 +22,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editAddressType = async (params: { id: string; data: AddressType }) => {
+  const editAddressType = async (params: { id: string; data: PersonAddressType }) => {
     const { id, data } = params
 
     return request({

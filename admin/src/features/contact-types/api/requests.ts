@@ -1,10 +1,10 @@
 import { useApp } from '@/hooks/use-app'
-import { ContactType } from '@/types/contact-type'
+import { PersonContactType } from '@/types/contact-type'
 
 export function requests() {
   const { request } = useApp()
 
-  const createContactType = async (data: ContactType) => {
+  const createContactType = async (data: PersonContactType) => {
     if (!data.id) delete (data as any).id
     return request({
       url: '/contact-types',
@@ -21,7 +21,10 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editContactType = async (params: { id: string; data: ContactType }) => {
+  const editContactType = async (params: {
+    id: string
+    data: PersonContactType
+  }) => {
     const { id, data } = params
 
     return request({

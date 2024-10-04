@@ -91,7 +91,7 @@ export const FormPanel = forwardRef(
     return (
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={onSubmit && form.handleSubmit(onSubmit)}
           className='w-full space-y-8'
           ref={formRef}
         >

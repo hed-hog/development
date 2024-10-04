@@ -79,7 +79,7 @@ export interface IFormPanelProps {
   button?: ITextProps
   fields: IFormFieldPropsBase[]
   form: UseFormReturn<FieldValues>
-  onSubmit: (data: any) => void
+  onSubmit?: (data: any) => void
 }
 
 export interface IFormValues {

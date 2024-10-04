@@ -4,13 +4,21 @@ import { TabPanel } from '@/components/custom/tab-panel'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
+  useCreateAddress,
+  useDeleteAddress,
+  useEditAddress,
+} from '@/features/address'
+import { usePersonTypes } from '@/features/person-types'
+import {
   useCreatePerson,
   useDeletePerson,
   useEditPerson,
 } from '@/features/persons'
 import { useApp } from '@/hooks/use-app'
 import { formatDate } from '@/lib/date-string'
+import { queryClient } from '@/lib/query-provider'
 import timeSince from '@/lib/time-since'
+import { PersonAddress } from '@/types/address'
 import { PersonType } from '@/types/person'
 import {
   IconCalendarClock,
@@ -22,15 +30,18 @@ import {
   IconPlus,
   IconTrash,
 } from '@tabler/icons-react'
-import { useRef, useState } from 'react'
+import { InvalidateQueryFilters } from '@tanstack/react-query'
+
+import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
+  const [personTypes, setPersonTypes] = useState<any[]>([])
   const formEdit = useRef<any>(null)
 
-  const form = useForm<FieldValues>({
+  const formPerson = useForm<FieldValues>({
     defaultValues: {
       id: '',
       name: '',
@@ -40,13 +51,43 @@ export default function Page() {
     mode: 'onChange',
   })
 
+  const formAddress = useForm<PersonAddress>({
+    defaultValues: {
+      street: '',
+      number: 0,
+      complement: '',
+      district: '',
+      city: '',
+      state: '',
+      postal_code: '',
+    },
+    mode: 'onChange',
+  })
+
   const { mutate: createPerson } = useCreatePerson()
   const { mutate: editPerson } = useEditPerson()
   const { mutate: deletePersons } = useDeletePerson()
+  const { mutate: createAddress } = useCreateAddress()
+  const { mutate: editAddress } = useEditAddress()
+  const { mutate: deleteAddresss } = useDeleteAddress()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+  const { data: personTypeData } = usePersonTypes()
+
+  useEffect(() => {
+    if (!personTypeData) return
+
+    const personTypes = (personTypeData?.data as any).data.map(
+      (type: { id: number; name: string }) => ({
+        value: type.id,
+        label: type.name,
+      })
+    )
+
+    setPersonTypes(personTypes)
+  }, [personTypeData])
 
   const openCreateDialog = () => {
-    form.reset({
+    formPerson.reset({
       id: '',
       name: '',
       type_id: 0,
@@ -67,18 +108,19 @@ export default function Page() {
             },
             {
               name: 'type_id',
-              label: { text: 'TypeID' },
-              type: EnumFieldType.TEXT,
+              label: { text: 'Tipo de Pessoa' },
+              type: EnumFieldType.SELECT,
               required: true,
+              options: personTypes,
             },
             {
               name: 'birth_at',
-              label: { text: 'Birth Date' },
+              label: { text: 'Data de Nascimento' },
               type: EnumFieldType.DATEPICKER,
               required: true,
             },
           ]}
-          form={form}
+          form={formPerson}
           button={{ text: 'Criar' }}
           onSubmit={(data: PersonType) => {
             createPerson({
@@ -136,7 +178,7 @@ export default function Page() {
   }
 
   const openEditDialog = (item: PersonType) => {
-    form.reset({
+    formPerson.reset({
       id: item.id || '',
       name: item.name || '',
       type_id: item.type_id || 0,
@@ -171,25 +213,129 @@ export default function Page() {
                     },
                     {
                       name: 'type_id',
-                      label: { text: 'TypeID' },
-                      type: EnumFieldType.TEXT,
+                      label: { text: 'Tipo de Pessoa' },
+                      type: EnumFieldType.SELECT,
                       required: true,
+                      options: personTypes,
+                      defaultValue: formPerson.watch('type_id'),
                     },
                     {
                       name: 'birth_at',
-                      label: { text: 'Birth Date' },
+                      label: { text: 'Data de Nascimento' },
                       type: EnumFieldType.DATEPICKER,
                       required: true,
                     },
                   ]}
-                  form={form}
+                  form={formPerson}
                   onSubmit={(data: PersonType) => {
-                    editPerson({ id: String(data.id), data })
+                    editPerson({
+                      id: String(data.id),
+                      data: {
+                        ...data,
+                        type_id: Number(data.type_id),
+                      },
+                    })
                     closeSheet(id)
                   }}
                 />
               ),
             },
+            ...(item.person_addresses ?? []).map((addressItem, i) => {
+              formAddress.reset({
+                street: addressItem.street || '',
+                number: addressItem.number || 0,
+                complement: addressItem.complement || '',
+                district: addressItem.district || '',
+                city: addressItem.city || '',
+                state: addressItem.state || '',
+                postal_code: addressItem.postal_code || '',
+              })
+
+              return {
+                title: `Endereço ${i + 1}`,
+                children: (
+                  <FormPanel
+                    fields={[
+                      {
+                        name: 'street',
+                        label: { text: 'Rua' },
+                        type: EnumFieldType.TEXT,
+                        required: true,
+                        defaultValue: addressItem.street || '',
+                      },
+                      {
+                        name: 'number',
+                        label: { text: 'Número' },
+                        type: EnumFieldType.TEXT,
+                        required: true,
+                        defaultValue: addressItem.number || '',
+                      },
+                      {
+                        name: 'complement',
+                        label: { text: 'Complemento' },
+                        type: EnumFieldType.TEXT,
+                        required: false,
+                        defaultValue: addressItem.complement || '',
+                      },
+                      {
+                        name: 'district',
+                        label: { text: 'Bairro' },
+                        type: EnumFieldType.TEXT,
+                        required: true,
+                        defaultValue: addressItem.district || '',
+                      },
+                      {
+                        name: 'city',
+                        label: { text: 'Cidade' },
+                        type: EnumFieldType.TEXT,
+                        required: true,
+                        defaultValue: addressItem.city || '',
+                      },
+                      {
+                        name: 'state',
+                        label: { text: 'Estado' },
+                        type: EnumFieldType.TEXT,
+                        required: true,
+                        defaultValue: addressItem.state || '',
+                      },
+                      {
+                        name: 'postal_code',
+                        label: { text: 'Código Postal' },
+                        type: EnumFieldType.TEXT,
+                        required: true,
+                        defaultValue: addressItem.postal_code || '',
+                      },
+                    ]}
+                    form={formAddress as any}
+                  />
+                ),
+                buttons: [
+                  {
+                    text: 'Aplicar',
+                    onClick: () => {
+                      const addressDataFilled = formAddress.getValues()
+
+                      if (addressDataFilled) {
+                        editAddress(
+                          {
+                            personId: item.id,
+                            addressId: String(addressItem.id),
+                            data: addressDataFilled,
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries(
+                                'address' as InvalidateQueryFilters
+                              )
+                            },
+                          }
+                        )
+                      }
+                    },
+                  },
+                ],
+              }
+            }),
           ]}
         />
       ),
