@@ -20,6 +20,12 @@ import {
 } from '@/features/contact'
 import { useContactTypes } from '@/features/contact-types'
 import { useCountries } from '@/features/country'
+import {
+  useCreateDocument,
+  useDeleteDocument,
+  useEditDocument,
+} from '@/features/document'
+import { useDocumentTypes } from '@/features/document-types'
 import { usePersonTypes } from '@/features/person-types'
 import {
   useCreatePerson,
@@ -31,6 +37,7 @@ import { formatDate } from '@/lib/date-string'
 import timeSince from '@/lib/time-since'
 import { PersonAddress } from '@/types/address'
 import { PersonContact } from '@/types/contact'
+import { PersonDocument } from '@/types/document'
 import { IFormFieldOption } from '@/types/form-panel'
 import { PersonType } from '@/types/person'
 import {
@@ -45,7 +52,7 @@ import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Page() {
-  const formAddressDefaultValues = {
+  const formAddressDefaultValues: PersonAddress = {
     id: 0,
     street: '',
     number: 0,
@@ -59,24 +66,34 @@ export default function Page() {
     type_id: 1,
   }
 
-  const formContactDefaultValues = {
+  const formContactDefaultValues: PersonContact = {
     id: 0,
     type_id: 1,
     primary: false,
     value: '',
   }
 
-  const formPersonDefaultValues = {
-    id: '',
+  const formPersonDefaultValues: PersonType = {
+    id: 0,
     name: '',
     type_id: 0,
-    birth_at: new Date(),
+    birth_at: String(new Date()),
+  }
+
+  const formDocumentDefaultValues: PersonDocument = {
+    id: 0,
+    type_id: 1,
+    value: '',
+    issued_at: '',
+    country_id: 24,
+    expiry_at: '',
   }
 
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
   const [addressTypes, setAddressTypes] = useState<IFormFieldOption[]>([])
   const [personTypes, setPersonTypes] = useState<IFormFieldOption[]>([])
   const [contactTypes, setContactTypes] = useState<IFormFieldOption[]>([])
+  const [documentTypes, setDocumentTypes] = useState<IFormFieldOption[]>([])
   const [countries, setCountries] = useState<IFormFieldOption[]>([])
   const formEdit = useRef<any>(null)
 
@@ -95,6 +112,11 @@ export default function Page() {
     mode: 'onChange',
   })
 
+  const formDocument = useForm<PersonDocument>({
+    defaultValues: formDocumentDefaultValues,
+    mode: 'onChange',
+  })
+
   const { mutate: createPerson } = useCreatePerson()
   const { mutate: editPerson } = useEditPerson()
   const { mutate: deletePersons } = useDeletePerson()
@@ -104,9 +126,13 @@ export default function Page() {
   const { mutate: createContact } = useCreateContact()
   const { mutate: editContact } = useEditContact()
   const { mutate: deleteContact } = useDeleteContact()
+  const { mutate: createDocument } = useCreateDocument()
+  const { mutate: editDocument } = useEditDocument()
+  const { mutate: deleteDocument } = useDeleteDocument()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
   const { data: addressTypeData } = useAddressTypes()
   const { data: contactTypeData } = useContactTypes()
+  const { data: documentTypeData } = useDocumentTypes()
   const { data: personTypeData } = usePersonTypes()
   const { data: countriesData } = useCountries()
 
@@ -142,6 +168,17 @@ export default function Page() {
     )
     setContactTypes(contactTypes)
   }, [contactTypeData])
+
+  useEffect(() => {
+    if (!documentTypeData) return
+    const documentTypes = (documentTypeData?.data as any).data.map(
+      (type: { id: number; name: string }) => ({
+        value: type.id,
+        label: type.name,
+      })
+    )
+    setDocumentTypes(documentTypes)
+  }, [documentTypeData])
 
   useEffect(() => {
     if (!countriesData) return
@@ -520,6 +557,130 @@ export default function Page() {
     return id
   }
 
+  const openEditDocumentSheet = (
+    personId: number,
+    documentItem: PersonDocument
+  ) => {
+    formDocument.reset({
+      id: documentItem.id,
+      type_id: documentItem.type_id,
+      country_id: documentItem.country_id || 24,
+      value: documentItem.value,
+      expiry_at: documentItem.expiry_at,
+      issued_at: documentItem.issued_at,
+    })
+
+    const sheetId = openSheet({
+      title: documentItem.id ? 'Editar Documento' : 'Adicionar Novo Documento',
+      description: documentItem.id
+        ? 'Edite as informações do documento.'
+        : 'Insira os dados do novo documento.',
+      children: () => (
+        <FormPanel
+          fields={[
+            {
+              name: 'type_id',
+              label: { text: 'Tipo de Documento' },
+              type: EnumFieldType.SELECT,
+              required: true,
+              options: documentTypes,
+              defaultValue: formDocument.watch('type_id'),
+            },
+            {
+              name: 'country_id',
+              label: { text: 'País' },
+              type: EnumFieldType.SELECT,
+              required: true,
+              options: countries,
+              defaultValue: documentItem.country_id,
+            },
+            {
+              name: 'value',
+              label: { text: 'Valor' },
+              type: EnumFieldType.TEXT,
+              required: true,
+              defaultValue: documentItem.value,
+            },
+            {
+              name: 'issued_at',
+              label: { text: 'Data de Emissão' },
+              type: EnumFieldType.DATEPICKER,
+              required: false,
+              defaultValue: documentItem.issued_at,
+            },
+            {
+              name: 'expiry_at',
+              label: { text: 'Data de Expiração' },
+              type: EnumFieldType.DATEPICKER,
+              required: false,
+              defaultValue: documentItem.expiry_at,
+            },
+          ]}
+          form={formDocument as any}
+        />
+      ),
+      buttons: [
+        {
+          text: 'Aplicar',
+          onClick: () => {
+            const documentDataFilled = formDocument.getValues()
+
+            if (documentDataFilled.id) {
+              editDocument({
+                personId: Number(personId),
+                documentId: String(documentItem.id),
+                data: documentDataFilled,
+              })
+            } else {
+              delete (documentDataFilled as any).id
+              createDocument({
+                personId: Number(personId),
+                data: documentDataFilled,
+              })
+            }
+            closeSheet(sheetId)
+          },
+        },
+      ],
+    })
+  }
+
+  const openDeleteDocumentDialog = (item: PersonDocument, sheetId: string) => {
+    const id = openDialog({
+      children: () => (
+        <DocumentCard
+          document={item}
+          className='my-2 w-full rounded-2xl border-2 border-blue-500 p-2'
+        />
+      ),
+      title: 'Excluir Documento',
+      description: 'Tem certeza de que deseja deletar este documento?',
+      buttons: [
+        {
+          variant: 'secondary',
+          text: 'Cancelar',
+          onClick: () => {
+            closeDialog(id)
+          },
+        },
+        {
+          text: 'Deletar',
+          variant: 'destructive',
+          onClick: () => {
+            deleteDocument({
+              personId: formDocument.getValues().id,
+              documentId: String(item.id),
+            })
+            closeDialog(id)
+            closeSheet(sheetId)
+          },
+        },
+      ],
+    })
+
+    return id
+  }
+
   const openEditPersonDialog = (item: PersonType) => {
     formPerson.reset({
       id: item.id || '',
@@ -606,6 +767,36 @@ export default function Page() {
                     className='absolute bottom-5 right-5 min-w-2 rounded-full p-2'
                     onClick={() =>
                       openEditContactSheet(item.id, formContactDefaultValues)
+                    }
+                  >
+                    <IconPlus />
+                  </Button>
+                </div>
+              ),
+            },
+            {
+              title: 'Documentos',
+              children: (
+                <div className='h-full w-full'>
+                  {item.person_documents?.map((document) => (
+                    <DocumentCard
+                      key={document.id}
+                      document={document}
+                      className='my-2 rounded-2xl border-2 border-blue-500 p-2'
+                      onClick={() => openEditDocumentSheet(item.id, document)}
+                      onDelete={() => openDeleteDocumentDialog(document, id)}
+                      manageable
+                    />
+                  ))}
+                  {!Boolean(item.person_documents?.length) && (
+                    <span className='my-2 flex justify-center text-sm'>
+                      Nenhum documento cadastrado.
+                    </span>
+                  )}
+                  <Button
+                    className='absolute bottom-5 right-5 min-w-2 rounded-full p-2'
+                    onClick={() =>
+                      openEditDocumentSheet(item.id, formContactDefaultValues)
                     }
                   >
                     <IconPlus />
