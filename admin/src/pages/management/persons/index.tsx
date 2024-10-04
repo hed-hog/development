@@ -53,6 +53,7 @@ export default function Page() {
 
   const formAddress = useForm<PersonAddress>({
     defaultValues: {
+      id: 1,
       street: '',
       number: 0,
       complement: '',
@@ -250,7 +251,6 @@ export default function Page() {
                 state: addressItem.state || '',
                 postal_code: addressItem.postal_code || '',
               })
-
               return {
                 title: `Endereço ${i + 1}`,
                 children: (
@@ -314,7 +314,6 @@ export default function Page() {
                     text: 'Aplicar',
                     onClick: () => {
                       const addressDataFilled = formAddress.getValues()
-
                       if (addressDataFilled) {
                         editAddress(
                           {
@@ -408,7 +407,7 @@ export default function Page() {
                 ))}
 
               {item.person_contacts &&
-                item.person_contacts.length &&
+                Boolean(item.person_contacts.length) &&
                 item.person_contacts.map((c) => (
                   <div className='my-3 flex items-center'>
                     <IconPhone className='text-white-500 mr-3 h-5 w-5' />
@@ -419,7 +418,7 @@ export default function Page() {
                 ))}
 
               {item.person_documents &&
-                item.person_documents.length &&
+                Boolean(item.person_documents.length) &&
                 item.person_documents.map((d) => (
                   <div className='my-3 flex items-center'>
                     <IconId className='text-white-500 mr-3 h-5 w-5' />
