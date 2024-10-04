@@ -1,4 +1,5 @@
 import AddressCard from '@/components/custom/address-card'
+import { Button } from '@/components/custom/button'
 import ContactCard from '@/components/custom/contact-card'
 import DataPanel from '@/components/custom/data-panel'
 import DocumentCard from '@/components/custom/document-card'
@@ -118,7 +119,7 @@ export default function Page() {
     setCountries(countries)
   }, [countriesData])
 
-  const openCreateDialog = () => {
+  const openCreatePersonDialog = () => {
     formPerson.reset({
       id: '',
       name: '',
@@ -170,7 +171,7 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: PersonType[]) => {
+  const openDeletePersonDialog = (items: PersonType[]) => {
     const id = openDialog({
       children: () => (
         <div className='flex flex-col'>
@@ -199,7 +200,16 @@ export default function Page() {
           text: 'Deletar',
           variant: 'destructive',
           onClick: () => {
-            deletePersons(items.map((item) => item.id))
+            deletePersons(
+              items.map((item) => item.id),
+              {
+                onSuccess: () => {
+                  queryClient.invalidateQueries(
+                    'address' as InvalidateQueryFilters
+                  )
+                },
+              }
+            )
             closeDialog(id)
           },
         },
@@ -209,7 +219,10 @@ export default function Page() {
     return id
   }
 
-  const openEditAddressSheet = (addressItem: PersonAddress) => {
+  const openEditAddressSheet = (
+    personId: number,
+    addressItem: PersonAddress
+  ) => {
     formAddress.reset({
       id: addressItem.id,
       street: addressItem.street,
@@ -218,6 +231,7 @@ export default function Page() {
       district: addressItem.district,
       city: addressItem.city,
       state: addressItem.state,
+      person_id: personId,
       postal_code: addressItem.postal_code,
       reference: addressItem.reference,
       type_id: addressItem.type_id,
@@ -225,8 +239,10 @@ export default function Page() {
     })
 
     const sheetId = openSheet({
-      title: 'Editar Endereço',
-      description: 'Edite as informações do endereço.',
+      title: addressItem.id ? 'Editar Endereço' : 'Adicionar Novo Endereço',
+      description: addressItem.id
+        ? 'Edite as informações do endereço.'
+        : 'Insira os dados do novo endereço.',
       children: () => (
         <FormPanel
           fields={[
@@ -314,7 +330,7 @@ export default function Page() {
             if (addressDataFilled.id) {
               editAddress(
                 {
-                  personId: addressItem.person_id,
+                  personId: Number(personId),
                   addressId: String(addressItem.id),
                   data: {
                     ...addressDataFilled,
@@ -331,13 +347,22 @@ export default function Page() {
               )
             } else {
               delete (addressDataFilled as any).id
-              createAddress({
-                personId: addressItem.person_id,
-                data: {
-                  ...addressDataFilled,
-                  number: Number(addressDataFilled.number),
+              createAddress(
+                {
+                  personId: Number(personId),
+                  data: {
+                    ...addressDataFilled,
+                    number: Number(addressDataFilled.number),
+                  },
                 },
-              })
+                {
+                  onSuccess: () => {
+                    queryClient.invalidateQueries(
+                      'address' as InvalidateQueryFilters
+                    )
+                  },
+                }
+              )
             }
             closeSheet(sheetId)
           },
@@ -346,7 +371,52 @@ export default function Page() {
     })
   }
 
-  const openEditDialog = (item: PersonType) => {
+  const openDeleteAddressDialog = (item: PersonAddress, sheetId: string) => {
+    const id = openDialog({
+      children: () => (
+        <AddressCard
+          address={item}
+          className='my-2 w-full rounded-2xl border-2 border-blue-500 p-2'
+        />
+      ),
+      title: 'Excluir Endereço',
+      description: 'Tem certeza de que deseja deletar este endereço?',
+      buttons: [
+        {
+          variant: 'secondary',
+          text: 'Cancelar',
+          onClick: () => {
+            closeDialog(id)
+          },
+        },
+        {
+          text: 'Deletar',
+          variant: 'destructive',
+          onClick: () => {
+            deleteAddress(
+              {
+                personId: formAddress.getValues().id,
+                addressId: String(item.id),
+              },
+              {
+                onSuccess: () => {
+                  queryClient.invalidateQueries(
+                    'address' as InvalidateQueryFilters
+                  )
+                },
+              }
+            )
+            closeDialog(id)
+            closeSheet(sheetId)
+          },
+        },
+      ],
+    })
+
+    return id
+  }
+
+  const openEditPersonDialog = (item: PersonType) => {
     formPerson.reset({
       id: item.id || '',
       name: item.name || '',
@@ -411,15 +481,28 @@ export default function Page() {
             },
             {
               title: 'Endereços',
-              children: item.person_addresses?.map((address) => (
-                <AddressCard
-                  key={address.id}
-                  address={address}
-                  onClick={() => openEditAddressSheet(address)}
-                  className='my-2 rounded-2xl border-2 border-blue-500 p-2'
-                  editable
-                />
-              )),
+              children: (
+                <div className='h-full w-full'>
+                  {item.person_addresses?.map((address) => (
+                    <AddressCard
+                      key={address.id}
+                      address={address}
+                      onClick={() => openEditAddressSheet(item.id, address)}
+                      onDelete={() => openDeleteAddressDialog(address, id)}
+                      className='my-2 rounded-2xl border-2 border-blue-500 p-2'
+                      manageable
+                    />
+                  ))}
+                  <Button
+                    className='absolute bottom-5 right-5 min-w-2 rounded-full p-2'
+                    onClick={() =>
+                      openEditAddressSheet(item.id, formAddressDefaultValues)
+                    }
+                  >
+                    <IconPlus />
+                  </Button>
+                </div>
+              ),
             },
           ]}
         />
@@ -450,7 +533,7 @@ export default function Page() {
         render={(item: PersonType) => (
           <Card
             className='w-full rounded-lg border-none'
-            onClick={() => openEditDialog(item)}
+            onClick={() => openEditPersonDialog(item)}
           >
             <CardHeader className='flex flex-row rounded-t-lg px-4 py-3 text-white'>
               <div className='h-10 w-10 rounded-full bg-white' />
@@ -496,7 +579,7 @@ export default function Page() {
             label: 'Editar',
             tooltip: 'Editar as pessoas selecionados',
             handler: (items: PersonType[]) => {
-              if (items.length === 1) openEditDialog(items[0])
+              if (items.length === 1) openEditPersonDialog(items[0])
             },
             show: 'once',
           },
@@ -505,7 +588,7 @@ export default function Page() {
             label: 'Excluir',
             variant: 'destructive',
             tooltip: 'Excluir as pessoas selecionados',
-            handler: openDeleteDialog,
+            handler: openDeletePersonDialog,
             show: 'some',
           },
           {
@@ -513,7 +596,7 @@ export default function Page() {
             label: 'Criar',
             variant: 'default',
             tooltip: 'Criar novo pessoa',
-            handler: openCreateDialog,
+            handler: openCreatePersonDialog,
             show: 'none',
           },
         ]}
