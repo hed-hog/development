@@ -18,6 +18,7 @@ import {
   useDeleteContact,
   useEditContact,
 } from '@/features/contact'
+import { useContactTypes } from '@/features/contact-types'
 import { useCountries } from '@/features/country'
 import { usePersonTypes } from '@/features/person-types'
 import {
@@ -73,8 +74,9 @@ export default function Page() {
   }
 
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
-  const [personTypes, setPersonTypes] = useState<IFormFieldOption[]>([])
   const [addressTypes, setAddressTypes] = useState<IFormFieldOption[]>([])
+  const [personTypes, setPersonTypes] = useState<IFormFieldOption[]>([])
+  const [contactTypes, setContactTypes] = useState<IFormFieldOption[]>([])
   const [countries, setCountries] = useState<IFormFieldOption[]>([])
   const formEdit = useRef<any>(null)
 
@@ -103,8 +105,9 @@ export default function Page() {
   const { mutate: editContact } = useEditContact()
   const { mutate: deleteContact } = useDeleteContact()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
-  const { data: personTypeData } = usePersonTypes()
   const { data: addressTypeData } = useAddressTypes()
+  const { data: contactTypeData } = useContactTypes()
+  const { data: personTypeData } = usePersonTypes()
   const { data: countriesData } = useCountries()
 
   useEffect(() => {
@@ -128,6 +131,17 @@ export default function Page() {
     )
     setAddressTypes(addressTypes)
   }, [addressTypeData])
+
+  useEffect(() => {
+    if (!contactTypeData) return
+    const contactTypes = (contactTypeData?.data as any).data.map(
+      (type: { id: number; name: string }) => ({
+        value: type.id,
+        label: type.name,
+      })
+    )
+    setContactTypes(contactTypes)
+  }, [contactTypeData])
 
   useEffect(() => {
     if (!countriesData) return
@@ -424,8 +438,8 @@ export default function Page() {
               label: { text: 'Tipo de Contato' },
               type: EnumFieldType.SELECT,
               required: true,
-              options: addressTypes,
-              defaultValue: formAddress.watch('type_id'),
+              options: contactTypes,
+              defaultValue: formContact.watch('type_id'),
             },
             {
               name: 'value',
@@ -450,6 +464,7 @@ export default function Page() {
                 contactId: String(contactItem.id),
                 data: {
                   ...contactDataFilled,
+                  type_id: Number(contactDataFilled.type_id),
                 },
               })
             } else {

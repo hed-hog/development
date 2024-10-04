@@ -1,7 +1,20 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
 import { toast } from 'sonner'
+import { useApp } from '@/hooks/use-app'
+
+export function useCustomTypes() {
+  const { request } = useApp()
+
+  return useQuery({
+    queryKey: ['custom-types'],
+    queryFn: () =>
+      request({
+        url: `/custom-types`,
+      }),
+  })
+}
 
 export function useCreateCustomType() {
   const { createCustomType } = requests()

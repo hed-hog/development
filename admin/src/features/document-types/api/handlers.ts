@@ -1,7 +1,20 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
 import { toast } from 'sonner'
+import { useApp } from '@/hooks/use-app'
+
+export function useDocumentTypes() {
+  const { request } = useApp()
+
+  return useQuery({
+    queryKey: ['document-types'],
+    queryFn: () =>
+      request({
+        url: `/document-types`,
+      }),
+  })
+}
 
 export function useCreateDocumentType() {
   const { createDocumentType } = requests()
