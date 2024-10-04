@@ -9,6 +9,7 @@ import {
   useEditAddress,
 } from '@/features/address'
 import { useAddressTypes } from '@/features/address-types'
+import { useCountries } from '@/features/country'
 import { usePersonTypes } from '@/features/person-types'
 import {
   useCreatePerson,
@@ -43,6 +44,7 @@ export default function Page() {
     id: 0,
     street: '',
     number: 0,
+    country_id: 24,
     complement: '',
     district: '',
     city: '',
@@ -54,6 +56,7 @@ export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
   const [personTypes, setPersonTypes] = useState<IFormFieldOption[]>([])
   const [addressTypes, setAddressTypes] = useState<IFormFieldOption[]>([])
+  const [countries, setCountries] = useState<IFormFieldOption[]>([])
   const formEdit = useRef<any>(null)
 
   const formPerson = useForm<FieldValues>({
@@ -80,6 +83,7 @@ export default function Page() {
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
   const { data: personTypeData } = usePersonTypes()
   const { data: addressTypeData } = useAddressTypes()
+  const { data: countriesData } = useCountries()
 
   useEffect(() => {
     if (!personTypeData) return
@@ -102,6 +106,17 @@ export default function Page() {
     )
     setAddressTypes(addressTypes)
   }, [addressTypeData])
+
+  useEffect(() => {
+    if (!countriesData) return
+    const countries = (countriesData.data as any).map(
+      (country: { id: number; name: string }) => ({
+        value: country.id,
+        label: country.name,
+      })
+    )
+    setCountries(countries)
+  }, [countriesData])
 
   const openCreateDialog = () => {
     formPerson.reset({
@@ -263,6 +278,7 @@ export default function Page() {
             ).map((addressItem: any, i: number) => {
               formAddress.reset({
                 id: addressItem.id,
+                country_id: addressItem.country_id,
                 street: addressItem.street,
                 number: addressItem.number,
                 complement: addressItem.complement,
@@ -336,6 +352,13 @@ export default function Page() {
                         defaultValue: addressItem.state,
                       },
                       {
+                        name: 'country_id',
+                        label: { text: 'País' },
+                        type: EnumFieldType.SELECT,
+                        required: true,
+                        options: countries,
+                      },
+                      {
                         name: 'postal_code',
                         label: { text: 'Código Postal' },
                         type: EnumFieldType.TEXT,
@@ -376,7 +399,6 @@ export default function Page() {
                           personId: item.id,
                           data: {
                             ...addressDataFilled,
-                            country_id: 24,
                             number: Number(addressDataFilled.number),
                           },
                         })
