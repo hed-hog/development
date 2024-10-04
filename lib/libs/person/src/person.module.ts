@@ -12,6 +12,7 @@ import { PersonTypeModule } from './person-type/person-type.module';
 import { DocumentModule } from './document/document.module';
 import { AddressModule } from './address/address.module';
 import { ContactModule } from './contact/contact.module';
+import { CustomModule } from './custom/custom.module';
 
 @Module({
   providers: [PersonService],
@@ -23,6 +24,7 @@ import { ContactModule } from './contact/contact.module';
     forwardRef(() => AddressTypeModule),
     forwardRef(() => ContactModule),
     forwardRef(() => ContactTypeModule),
+    forwardRef(() => CustomModule),
     forwardRef(() => CustomTypeModule),
     forwardRef(() => DocumentModule),
     forwardRef(() => DocumentTypeModule),

@@ -6,7 +6,7 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreatePersonsSchema1680000000000 implements MigrationInterface {
+export class CreatePersonsSchema1727789058683 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -494,8 +494,7 @@ export class CreatePersonsSchema1680000000000 implements MigrationInterface {
           },
           {
             name: 'number',
-            type: 'varchar',
-            length: '50',
+            type: 'int',
             isNullable: true,
           },
           {
@@ -536,9 +535,9 @@ export class CreatePersonsSchema1680000000000 implements MigrationInterface {
           },
           {
             name: 'type_id',
-            type: 'varchar',
-            length: '50',
-            isNullable: true,
+            type: 'int',
+            unsigned: true,
+            isNullable: false,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
@@ -639,6 +638,12 @@ export class CreatePersonsSchema1680000000000 implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('person_custom_types', ['name'])
+      .values([{ name: 'Preferred Language' }]);
 
     await queryRunner.createForeignKeys('person_documents', [
       new TableForeignKey({

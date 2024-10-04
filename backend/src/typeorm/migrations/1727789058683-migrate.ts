@@ -639,6 +639,12 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
       }),
     );
 
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('person_custom_types', ['name'])
+      .values([{ name: 'Preferred Language' }]);
+
     await queryRunner.createForeignKeys('person_documents', [
       new TableForeignKey({
         columnNames: ['person_id'],
