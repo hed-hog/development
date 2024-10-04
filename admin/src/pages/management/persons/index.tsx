@@ -1080,6 +1080,7 @@ export default function Page() {
         selected={selectedItems as PersonType[]}
         multiple
         hasSearch
+        responsiveColumns={{ default: 1, sm: 1, md: 1, lg: 2, xl: 4 }}
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
