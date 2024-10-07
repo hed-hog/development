@@ -85,7 +85,6 @@ export class Migrate1727197435357 implements MigrationInterface {
       }),
     );
 
-    //System Populating
     await this.insertMenu(queryRunner, 'Dashboard', '/', 0, null, 'dashboard');
     const managementId = await this.insertMenu(
       queryRunner,
@@ -98,20 +97,13 @@ export class Migrate1727197435357 implements MigrationInterface {
 
     await this.insertMenu(
       queryRunner,
-      'Persons',
-      '/persons',
-      2,
-      null,
-      'user-check',
-    );
-    await this.insertMenu(
-      queryRunner,
       'Users',
       '/management/users',
       0,
       managementId,
       'users',
     );
+
     await this.insertMenu(
       queryRunner,
       'Roles',
@@ -120,6 +112,7 @@ export class Migrate1727197435357 implements MigrationInterface {
       managementId,
       'circles',
     );
+
     await this.insertMenu(
       queryRunner,
       'Screens',
@@ -128,6 +121,7 @@ export class Migrate1727197435357 implements MigrationInterface {
       managementId,
       'device-tv',
     );
+
     await this.insertMenu(
       queryRunner,
       'Menus',
@@ -136,6 +130,7 @@ export class Migrate1727197435357 implements MigrationInterface {
       managementId,
       'menu',
     );
+
     await this.insertMenu(
       queryRunner,
       'Routes',
@@ -144,6 +139,7 @@ export class Migrate1727197435357 implements MigrationInterface {
       managementId,
       'route',
     );
+
     await this.insertMenu(
       queryRunner,
       'Settings',
@@ -151,56 +147,6 @@ export class Migrate1727197435357 implements MigrationInterface {
       5,
       managementId,
       'settings',
-    );
-
-    const personId = await this.insertMenu(
-      queryRunner,
-      'Persons',
-      null,
-      6,
-      managementId,
-      'user-check',
-    );
-
-    await this.insertMenu(
-      queryRunner,
-      'Address Types',
-      '/management/persons/address-types',
-      6,
-      personId,
-      'home-link',
-    );
-    await this.insertMenu(
-      queryRunner,
-      'Contact Types',
-      '/management/persons/contact-types',
-      7,
-      personId,
-      'address-book',
-    );
-    await this.insertMenu(
-      queryRunner,
-      'Custom Types',
-      '/management/persons/custom-types',
-      8,
-      personId,
-      'adjustments',
-    );
-    await this.insertMenu(
-      queryRunner,
-      'Document Types',
-      '/management/persons/document-types',
-      9,
-      personId,
-      'file-search',
-    );
-    await this.insertMenu(
-      queryRunner,
-      'Person Types',
-      '/management/persons/person-types',
-      10,
-      personId,
-      'id',
     );
   }
 

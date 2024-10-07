@@ -6,7 +6,32 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreatePersonsSchema1727789058683 implements MigrationInterface {
+export class Migrate implements MigrationInterface {
+  private async insertMenu(
+    queryRunner: QueryRunner,
+    name: string,
+    url: string,
+    order: number,
+    menuId: number,
+    icon: string,
+  ) {
+    const result = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('menus')
+      .values({
+        name,
+        url,
+        order,
+        menu_id: menuId,
+        icon,
+      })
+      .returning('id')
+      .execute();
+
+    return result.raw[0].id;
+  }
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -710,6 +735,282 @@ export class CreatePersonsSchema1727789058683 implements MigrationInterface {
         onDelete: 'RESTRICT',
       }),
     ]);
+
+    const managementResult = await queryRunner.manager
+      .createQueryBuilder()
+      .select('m.id')
+      .from('menus', 'm')
+      .where('m.url = :url', { url: '/management' })
+      .execute();
+
+    const managementId = managementResult ? managementResult[0].id : null;
+
+    const personsMenuId = await this.insertMenu(
+      queryRunner,
+      'Persons',
+      null,
+      6,
+      managementId,
+      'user-check',
+    );
+
+    const menuInsertions = [
+      {
+        name: 'Persons',
+        url: '/management/persons',
+        order: 2,
+        parentId: null,
+        icon: 'user-check',
+      },
+      {
+        name: 'Address Types',
+        url: '/management/persons/address-types',
+        order: 0,
+        parentId: personsMenuId,
+        icon: 'home-link',
+      },
+      {
+        name: 'Contact Types',
+        url: '/management/persons/contact-types',
+        order: 1,
+        parentId: personsMenuId,
+        icon: 'address-book',
+      },
+      {
+        name: 'Custom Types',
+        url: '/management/persons/custom-types',
+        order: 2,
+        parentId: personsMenuId,
+        icon: 'adjustments',
+      },
+      {
+        name: 'Document Types',
+        url: '/management/persons/document-types',
+        order: 3,
+        parentId: personsMenuId,
+        icon: 'file-search',
+      },
+      {
+        name: 'Person Types',
+        url: '/management/persons/person-types',
+        order: 4,
+        parentId: personsMenuId,
+        icon: 'id',
+      },
+    ];
+
+    const ids = [];
+    for (const menu of menuInsertions) {
+      const menuId = await this.insertMenu(
+        queryRunner,
+        menu.name,
+        menu.url,
+        menu.order,
+        menu.parentId,
+        menu.icon,
+      );
+
+      ids.push(menuId);
+    }
+
+    for (const id of [...ids, personsMenuId]) {
+      if (id) {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .insert()
+          .into('role_menus')
+          .values({
+            role_id: 1,
+            menu_id: id,
+          })
+          .execute();
+      }
+    }
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('screens', ['name', 'slug', 'description', 'icon'])
+      .values([
+        {
+          name: 'Persons',
+          slug: '/management/persons',
+          description: 'Check all persons registered in the system.',
+          icon: 'user-check',
+        },
+        {
+          name: 'Address Types',
+          slug: '/management/address-types',
+          description: 'Check all types of address registered in the system.',
+          icon: 'home-link',
+        },
+        {
+          name: 'Contact Types',
+          slug: '/management/contact-types',
+          description: 'Check all types of contacts registered in the system.',
+          icon: 'address-book',
+        },
+        {
+          name: 'Custom Types',
+          slug: '/management/custom-types',
+          description: 'Check all custom types registered in the system.',
+          icon: 'adjustments',
+        },
+        {
+          name: 'Document Types',
+          slug: '/management/document-types',
+          description: 'Check all types of documents registered in the system.',
+          icon: 'file-search',
+        },
+        {
+          name: 'Person Types',
+          slug: '/management/person-types',
+          description: 'Check all types of persons registered in the system.',
+          icon: 'id',
+        },
+      ])
+      .execute();
+
+    const results = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('routes', ['url', 'method'])
+      .values([
+        {
+          url: '/persons',
+          method: 'GET',
+        },
+        {
+          url: '/persons',
+          method: 'POST',
+        },
+        {
+          url: '/persons',
+          method: 'DELETE',
+        },
+        {
+          url: '/persons/:personId',
+          method: 'GET',
+        },
+        {
+          url: '/persons/:personId',
+          method: 'PATCH',
+        },
+        {
+          url: '/person-types',
+          method: 'GET',
+        },
+        {
+          url: '/person-types',
+          method: 'POST',
+        },
+        {
+          url: '/person-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/person-types/:personTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/person-types/:personTypeId',
+          method: 'PATCH',
+        },
+        {
+          url: '/address-types',
+          method: 'GET',
+        },
+        {
+          url: '/address-types',
+          method: 'POST',
+        },
+        {
+          url: '/address-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/address-types/:addressTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/address-types/:addressTypeId',
+          method: 'PATCH',
+        },
+        {
+          url: '/contact-types',
+          method: 'GET',
+        },
+        {
+          url: '/contact-types',
+          method: 'POST',
+        },
+        {
+          url: '/contact-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/contact-types/:contactTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/contact-types/:contactTypeId',
+          method: 'PATCH',
+        },
+        {
+          url: '/custom-types',
+          method: 'GET',
+        },
+        {
+          url: '/custom-types',
+          method: 'POST',
+        },
+        {
+          url: '/custom-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/custom-types/:customTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/custom-types/:customTypeId',
+          method: 'PATCH',
+        },
+        {
+          url: '/document-types',
+          method: 'GET',
+        },
+        {
+          url: '/document-types',
+          method: 'POST',
+        },
+        {
+          url: '/document-types',
+          method: 'DELETE',
+        },
+        {
+          url: '/document-types/:documentTypeId',
+          method: 'GET',
+        },
+        {
+          url: '/document-types/:documentTypeId',
+          method: 'PATCH',
+        },
+      ])
+      .returning('id')
+      .execute();
+
+    const roleRouteValues = results.raw.map((result) => ({
+      role_id: 1,
+      route_id: result.id,
+    }));
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('role_routes')
+      .values(roleRouteValues)
+      .execute();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
