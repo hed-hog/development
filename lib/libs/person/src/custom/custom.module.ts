@@ -1,7 +1,7 @@
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { Module, forwardRef } from '@nestjs/common';
-import { CustomController } from './Custom.controller';
+import { CustomController } from './custom.controller';
 import { CustomService } from './custom.service';
 import { AdminModule } from '@hedhog/admin';
 

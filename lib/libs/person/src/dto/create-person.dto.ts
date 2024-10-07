@@ -16,6 +16,6 @@ export class CreatePersonDTO {
   type_id: number;
 
   @IsOptional()
-  @IsDateString({ message: 'BirthAt needs to be a Date string.' })
+  @IsDateString()
   birth_at?: Date;
 }
