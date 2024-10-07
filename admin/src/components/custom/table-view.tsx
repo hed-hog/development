@@ -247,7 +247,8 @@ const TableView = <T extends any>({
 
   const isAllSelected = React.useMemo(() => {
     const selectedKeys = new Set(selectedItems)
-    return data.every((item) => selectedKeys.has(extractKey(item)))
+    const itemsToCheck = Array.isArray(data) ? data : []
+    return itemsToCheck.every((item) => selectedKeys.has(extractKey(item)))
   }, [selectedItems, data, extractKey])
 
   const renderCell = (key: string, item: T) => {
@@ -469,7 +470,7 @@ const TableView = <T extends any>({
                 ))}
               </TableRow>
             ))
-          : (data ?? []).map(render)}
+          : (Array.isArray(data) ? data : []).map(render)}
       </TableBody>
     </Table>
   )

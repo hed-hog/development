@@ -182,7 +182,8 @@ const GridView = <T extends any>({
 
   const isAllSelected = React.useMemo(() => {
     const selectedKeys = new Set(selectedItems)
-    return data.every((item) => selectedKeys.has(extractKey(item)))
+    const itemsToCheck = Array.isArray(data) ? data : []
+    return itemsToCheck.every((item) => selectedKeys.has(extractKey(item)))
   }, [selectedItems, data, extractKey])
 
   if (!render) {
