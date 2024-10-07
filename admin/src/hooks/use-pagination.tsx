@@ -47,7 +47,7 @@ export const usePagination = ({
       setItems(data.data)
       setTotalItems(data.total)
       setPage(data.page)
-      setPageSize(data.pageSize)
+      setPageSize(data.pageSize ?? 10)
     }
   }, [data])
 

@@ -16,7 +16,7 @@ import { MenuType } from '@/types/menu'
 import { RoleType } from '@/types/role'
 import { ScreenType } from '@/types/screen'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 
@@ -24,32 +24,9 @@ export default function Page() {
   const [selectedItems, setSelectedItems] = useState<
     (MenuType | RoleType | ScreenType)[]
   >([])
-  const [menuId, setMenuId] = useState<string>('')
   const formEdit = useRef<any>(null)
   const menuRolesRef = useRef<any>(null)
   const menuScreensRef = useRef<any>(null)
-
-  useEffect(() => {
-    const itemId = menuId.split('-')[1]
-    const categoryIds = selectedItems.map((c) => c.id)
-
-    if (menuId && menuId.startsWith('roles')) {
-      editMenuRoles({
-        menuId: itemId,
-        roleIds: categoryIds,
-      })
-    }
-
-    if (menuId && menuId.startsWith('screens')) {
-      editMenuScreens({
-        menuId: itemId,
-        screenIds: categoryIds,
-      })
-    }
-
-    setSelectedItems([])
-    setMenuId('')
-  }, [menuId])
 
   const form = useForm<FieldValues>({
     defaultValues: {

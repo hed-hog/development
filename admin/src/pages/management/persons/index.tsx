@@ -163,7 +163,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!personTypeData) return
-    const personTypes = (personTypeData?.data as any).data.map(
+    const personTypes = ((personTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
         value: type.id,
         label: type.name,
@@ -174,7 +174,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!addressTypeData) return
-    const addressTypes = (addressTypeData?.data as any).data.map(
+    const addressTypes = ((addressTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
         value: type.id,
         label: type.name,
@@ -185,7 +185,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!contactTypeData) return
-    const contactTypes = (contactTypeData?.data as any).data.map(
+    const contactTypes = ((contactTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
         value: type.id,
         label: type.name,
@@ -196,7 +196,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!customTypeData) return
-    const customTypes = (customTypeData?.data as any).data.map(
+    const customTypes = ((customTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
         value: type.id,
         label: type.name,
@@ -207,7 +207,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!documentTypeData) return
-    const documentTypes = (documentTypeData?.data as any).data.map(
+    const documentTypes = ((documentTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
         value: type.id,
         label: type.name,
@@ -218,7 +218,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!countriesData) return
-    const countries = (countriesData.data as any).map(
+    const countries = ((countriesData.data as any) ?? []).map(
       (country: { id: number; name: string }) => ({
         value: country.id,
         label: country.name,

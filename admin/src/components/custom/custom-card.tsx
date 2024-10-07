@@ -16,7 +16,6 @@ export default function CustomCard({
   onClick,
   onDelete,
 }: Props) {
-  console.log({ custom })
   return (
     <div
       className={`flex cursor-pointer flex-row items-center justify-between ${className}`}
