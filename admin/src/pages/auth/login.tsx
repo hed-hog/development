@@ -1,11 +1,18 @@
 import { Card } from '@/components/ui/card'
 import { UserAuthForm } from './components/user-auth-form'
+import { LocaleChange } from '@/components/custom/locale-change'
+import { useTranslation } from 'react-i18next'
 
 export default function SignIn2() {
+  const { t } = useTranslation('auth')
+
   return (
     <>
       <div className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8'>
+          <div className='self-end'>
+            <LocaleChange />
+          </div>
           <div className='mb-4 flex items-center justify-center'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -29,24 +36,24 @@ export default function SignIn2() {
           <Card className='p-6'>
             <div className='flex flex-col space-y-2 text-left'>
               <h1 className='mb-4 text-2xl font-semibold tracking-tight'>
-                Authentication
+                {t('authName')}
               </h1>
             </div>
             <UserAuthForm />
             <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
-              Ao clicar em login você concorda com nossos{' '}
+              {t('termsAgreement')}{' '}
               <a
                 href='/terms'
                 className='underline underline-offset-4 hover:text-primary'
               >
-                Termos de Uso
+                {t('terms')}
               </a>{' '}
-              e{' '}
+              {t('and')}{' '}
               <a
                 href='/privacy'
                 className='underline underline-offset-4 hover:text-primary'
               >
-                Politica de Privacidade
+                {t('privacyPolicy')}
               </a>
               .
             </p>
