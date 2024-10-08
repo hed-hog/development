@@ -1,0 +1,8 @@
+{
+  "emptyEmail": "Por favor, digite seu email.",
+  "invalidEmail": "Endereço de email inválido.",
+  "emptyPassword": "Por favor, digite sua senha.",
+  "minLengthPassword": "Sua senha deve conter pelo menos 7 caracteres.",
+  "invalidPasswordConfirmation": "As senhas não conferem.",
+  "emptyOTP": "Por favor, digite o código verificador."
+}

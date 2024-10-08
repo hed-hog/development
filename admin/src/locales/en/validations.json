@@ -1,0 +1,8 @@
+{
+  "emptyEmail": "Please, enter your email.",
+  "invalidEmail": "Invalid email address.",
+  "emptyPassword": "Please, enter your password.",
+  "minLengthPassword": "Password must be at least 7 characters long",
+  "invalidPasswordConfirmation": "Passwords don't match.",
+  "emptyOTP": "Please, enter your OTP code."
+}

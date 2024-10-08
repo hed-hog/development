@@ -14,14 +14,18 @@ import {
 import { Input } from '@/components/ui/input'
 import { PinInput, PinInputField } from '@/components/custom/pin-input'
 import { Separator } from '@/components/ui/separator'
+import { useTranslation } from 'react-i18next'
 
 interface OtpFormProps extends HTMLAttributes<HTMLDivElement> {}
 
-const formSchema = z.object({
-  otp: z.string().min(1, { message: 'Please enter your otp code.' }),
-})
-
 export function OtpForm({ className, ...props }: OtpFormProps) {
+  const { t: validationsT } = useTranslation('validations')
+  const { t: authT } = useTranslation('auth')
+
+  const formSchema = z.object({
+    otp: z.string().min(1, { message: validationsT('emptyOTP') }),
+  })
+
   const [isLoading, setIsLoading] = useState(false)
   const [disabledBtn, setDisabledBtn] = useState(true)
 
@@ -30,7 +34,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
     defaultValues: { otp: '' },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  function onSubmit() {
     setIsLoading(true)
 
     setTimeout(() => {
@@ -74,7 +78,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
               )}
             />
             <Button className='mt-2' disabled={disabledBtn} loading={isLoading}>
-              Verify
+              {authT('verify')}
             </Button>
           </div>
         </form>

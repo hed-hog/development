@@ -19,30 +19,32 @@ import { useTranslation } from 'react-i18next'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
 
-const formSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, { message: 'Please enter your email' })
-      .email({ message: 'Invalid email address' }),
-    password: z
-      .string()
-      .min(1, {
-        message: 'Please enter your password',
-      })
-      .min(7, {
-        message: 'Password must be at least 7 characters long',
-      }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ['confirmPassword'],
-  })
-
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
+  const { t: authT } = useTranslation('auth')
+  const { t: validationsT } = useTranslation('validations')
+
+  const formSchema = z
+    .object({
+      email: z
+        .string()
+        .min(1, { message: validationsT('emptyEmail') })
+        .email({ message: validationsT('invalidEmail') }),
+      password: z
+        .string()
+        .min(1, {
+          message: validationsT('emptyPassword'),
+        })
+        .min(7, {
+          message: validationsT('minLengthPassword'),
+        }),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: validationsT('invalidPasswordConfirmation'),
+      path: ['confirmPassword'],
+    })
+
   const [isLoading, setIsLoading] = useState(false)
-  const { t } = useTranslation('auth')
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,7 +55,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  function onSubmit() {
     setIsLoading(true)
 
     setTimeout(() => {
@@ -73,7 +75,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 <FormItem className='space-y-1'>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('emailPlaceholder')} {...field} />
+                    <Input placeholder={authT('emailPlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -84,7 +86,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               name='password'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{authT('password')}</FormLabel>
                   <FormControl>
                     <PasswordInput placeholder='********' {...field} />
                   </FormControl>
@@ -97,7 +99,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               name='confirmPassword'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{authT('confirmPassword')}</FormLabel>
                   <FormControl>
                     <PasswordInput placeholder='********' {...field} />
                   </FormControl>
@@ -106,7 +108,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               )}
             />
             <Button className='mt-2' loading={isLoading}>
-              Create Account
+              {authT('createAccount')}
             </Button>
 
             <div className='relative my-2'>
@@ -115,7 +117,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               </div>
               <div className='relative flex justify-center text-xs uppercase'>
                 <span className='bg-background px-2 text-muted-foreground'>
-                  Or continue with
+                  {authT('continueCreating')}
                 </span>
               </div>
             </div>

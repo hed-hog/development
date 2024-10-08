@@ -105,7 +105,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               )}
             />
             <Button className='mt-2' loading={isLoading} type='submit'>
-              Entrar
+              Login
             </Button>
           </div>
         </form>

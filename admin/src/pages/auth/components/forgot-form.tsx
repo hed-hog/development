@@ -13,17 +13,21 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useTranslation } from 'react-i18next'
 
 interface ForgotFormProps extends HTMLAttributes<HTMLDivElement> {}
 
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: 'Pro favor digite o seu e-mail' })
-    .email({ message: 'Endereço de e-mail inválido' }),
-})
-
 export function ForgotForm({ className, ...props }: ForgotFormProps) {
+  const { t: authT } = useTranslation('auth')
+  const { t: validationsT } = useTranslation('validations')
+
+  const formSchema = z.object({
+    email: z
+      .string()
+      .min(1, { message: validationsT('emptyEmail') })
+      .email({ message: validationsT('invalidEmail') }),
+  })
+
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -31,7 +35,7 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
     defaultValues: { email: '' },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  function onSubmit() {
     setIsLoading(true)
 
     setTimeout(() => {
@@ -51,14 +55,14 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
                 <FormItem className='space-y-1'>
                   <FormLabel>E-mail</FormLabel>
                   <FormControl>
-                    <Input placeholder='name@example.com' {...field} />
+                    <Input placeholder={authT('emailPlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Button className='mt-2' loading={isLoading}>
-              Continue
+              {authT('proceed')}
             </Button>
           </div>
         </form>

@@ -1,12 +1,16 @@
 import { Card } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
 import { OtpForm } from './components/otp-form'
+import { LocaleChange } from '@/components/custom/locale-change'
 
 export default function Otp() {
   return (
     <>
       <div className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8'>
+          <div className='self-end'>
+            <LocaleChange />
+          </div>
           <div className='mb-4 flex items-center justify-center'>
             <svg
               xmlns='http://www.w3.org/2000/svg'

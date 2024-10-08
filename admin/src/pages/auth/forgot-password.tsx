@@ -1,11 +1,18 @@
 import { Card } from '@/components/ui/card'
 import { ForgotForm } from './components/forgot-form'
+import { LocaleChange } from '@/components/custom/locale-change'
+import { useTranslation } from 'react-i18next'
 
 export default function ForgotPassword() {
+  const { t } = useTranslation('auth')
+
   return (
     <>
       <div className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8'>
+          <div className='self-end'>
+            <LocaleChange />
+          </div>
           <div className='mb-4 flex items-center justify-center'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -24,11 +31,10 @@ export default function ForgotPassword() {
           <Card className='p-6'>
             <div className='mb-2 flex flex-col space-y-2 text-left'>
               <h1 className='text-md font-semibold tracking-tight'>
-                Recuperar a senha
+                {t('recoverPassword')}
               </h1>
               <p className='text-sm text-muted-foreground'>
-                Informe o seu endereço de e-mail para receber o link de
-                recuperação de senha.
+                {t('recoverPasswordDetails')}
               </p>
             </div>
             <ForgotForm />
