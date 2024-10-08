@@ -16,6 +16,7 @@ import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input-field'
 import { cn } from '@/lib/utils'
 import { useApp } from '@/hooks/use-app'
+import { useTranslation } from 'react-i18next'
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -36,6 +37,7 @@ const formSchema = z.object({
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { login } = useApp()
+  const { t } = useTranslation('auth')
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -72,7 +74,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     <Input
                       tabIndex={0}
                       autoFocus={true}
-                      placeholder='name@example.com'
+                      placeholder={t('emailPlaceholder')}
                       {...field}
                     />
                   </FormControl>
@@ -86,13 +88,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               render={({ field }) => (
                 <FormItem className='space-y-1'>
                   <div className='flex items-center justify-between'>
-                    <FormLabel>Senha</FormLabel>
+                    <FormLabel>{t('password')}</FormLabel>
                     <Link
                       to='/forgot-password'
                       className='text-sm font-medium text-muted-foreground hover:opacity-75'
                       tabIndex={2}
                     >
-                      Esqueceu a senha?
+                      {t('forgotPassword')}
                     </Link>
                   </div>
                   <FormControl>
