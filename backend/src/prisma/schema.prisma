@@ -13,38 +13,49 @@ model migrations {
   name      String @db.VarChar
 }
 
-model multifactors {
-  id         Int      @id(map: "PK_8e88fc38e04a53be42acb939e9c") @default(autoincrement())
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  users      users[]
+model countries {
+  id               Int                @id(map: "PK_b2d7006793e8697ab3ae2deff18") @default(autoincrement())
+  name             String             @db.VarChar(50)
+  code             String             @db.Char(3)
+  created_at       DateTime           @default(now()) @db.Timestamp(6)
+  updated_at       DateTime           @default(now()) @db.Timestamp(6)
+  locales          locales[]
+  person_addresses person_addresses[]
+  person_documents person_documents[]
 }
 
-model users {
-  id             Int           @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(autoincrement())
-  name           String        @db.VarChar
-  email          String        @db.VarChar
-  password       String        @db.VarChar
-  multifactor_id Int?
-  code           String?       @db.VarChar
-  created_at     DateTime      @default(now()) @db.Timestamp(6)
-  updated_at     DateTime      @default(now()) @db.Timestamp(6)
-  role_users     role_users[]
-  multifactors   multifactors? @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users_to_multifactors_on_multifactor_id")
+model locales {
+  id           Int            @id(map: "PK_f7a42a6bd1ee3e584a11eb5b37d") @default(autoincrement())
+  name         String         @db.VarChar
+  code         String         @db.Char(2)
+  region       String         @db.Char(2)
+  country_id   Int
+  created_at   DateTime       @default(now()) @db.Timestamp(6)
+  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  countries    countries      @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1b7f006abb609825f10a4d98567")
+  translations translations[]
 }
 
-model screens {
-  id            Int             @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
-  name          String          @db.VarChar
-  slug          String          @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
-  description   String          @db.VarChar
-  icon          String?         @db.VarChar
-  created_at    DateTime        @default(now()) @db.Timestamp(6)
-  updated_at    DateTime        @default(now()) @db.Timestamp(6)
-  menu_screens  menu_screens[]
-  role_screens  role_screens[]
-  route_screens route_screens[]
+model translation_namespaces {
+  id           Int            @id(map: "PK_c7b8542f5500a5f0f15080f3fb4") @default(autoincrement())
+  name         String         @db.VarChar
+  created_at   DateTime       @default(now()) @db.Timestamp(6)
+  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  translations translations[]
+}
+
+model translations {
+  id                     Int                    @id(map: "PK_aca248c72ae1fb2390f1bf4cd87") @default(autoincrement())
+  locale_id              Int
+  namespace_id           Int
+  name                   String                 @db.VarChar
+  value                  String                 @db.VarChar
+  created_at             DateTime               @default(now()) @db.Timestamp(6)
+  updated_at             DateTime               @default(now()) @db.Timestamp(6)
+  translation_namespaces translation_namespaces @relation(fields: [namespace_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f531ade6f56a5fa6fe4285aba10")
+  locales                locales                @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_faa4b0066c5625e1abafbfae61f")
+
+  @@unique([locale_id, namespace_id, name], map: "UQ_065d58e595dace2c02111970a89")
 }
 
 model menu_screens {
@@ -67,6 +78,14 @@ model menus {
   updated_at   DateTime       @default(now()) @db.Timestamp(6)
   menu_screens menu_screens[]
   role_menus   role_menus[]
+}
+
+model multifactors {
+  id         Int      @id(map: "PK_8e88fc38e04a53be42acb939e9c") @default(autoincrement())
+  name       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  users      users[]
 }
 
 model role_menus {
@@ -148,6 +167,19 @@ model routes {
   @@unique([url, method], map: "unique_routes")
 }
 
+model screens {
+  id            Int             @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
+  name          String          @db.VarChar
+  slug          String          @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
+  description   String          @db.VarChar
+  icon          String?         @db.VarChar
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @db.Timestamp(6)
+  menu_screens  menu_screens[]
+  role_screens  role_screens[]
+  route_screens route_screens[]
+}
+
 model setting_values {
   id          Int      @id(map: "PK_c21069a3e9521c651c52051b939") @default(autoincrement())
   value       String   @db.VarChar(1023)
@@ -168,15 +200,17 @@ model settings {
   setting_values setting_values[]
 }
 
-model countries {
-  id               Int                @id(map: "PK_b2d7006793e8697ab3ae2deff18") @default(autoincrement())
-  name             String             @db.VarChar(50)
-  code             String             @db.Char(3)
-  created_at       DateTime           @default(now()) @db.Timestamp(6)
-  updated_at       DateTime           @default(now()) @db.Timestamp(6)
-  locales          locales[]
-  person_addresses person_addresses[]
-  person_documents person_documents[]
+model users {
+  id             Int           @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(autoincrement())
+  name           String        @db.VarChar
+  email          String        @db.VarChar
+  password       String        @db.VarChar
+  multifactor_id Int?
+  code           String?       @db.VarChar
+  created_at     DateTime      @default(now()) @db.Timestamp(6)
+  updated_at     DateTime      @default(now()) @db.Timestamp(6)
+  role_users     role_users[]
+  multifactors   multifactors? @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_users_to_multifactors_on_multifactor_id")
 }
 
 model person_address_types {
@@ -294,17 +328,6 @@ model persons {
   person_contacts  person_contacts[]
   person_customs   person_customs[]
   person_documents person_documents[]
-}
-
-model locales {
-  id         Int       @id(map: "PK_f7a42a6bd1ee3e584a11eb5b37d") @default(autoincrement())
-  name       String    @db.VarChar
-  code       String    @db.Char(2)
-  region     String    @db.Char(2)
-  country_id Int
-  created_at DateTime  @default(now()) @db.Timestamp(6)
-  updated_at DateTime  @default(now()) @db.Timestamp(6)
-  countries  countries @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1b7f006abb609825f10a4d98567")
 }
 
 enum routes_method_enum {

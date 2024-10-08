@@ -7,6 +7,7 @@ import { AdminModule } from '@hedhog/admin';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PersonModule } from 'libs/person/src/person.module';
+import { LocaleModule } from '@hedhog/locale';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { PersonModule } from 'libs/person/src/person.module';
     }),
     AdminModule,
     PersonModule,
+    LocaleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

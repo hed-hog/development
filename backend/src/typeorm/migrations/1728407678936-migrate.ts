@@ -3,30 +3,30 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
-} from 'typeorm';
-import { idColumn, timestampColumn } from '@hedhog/utils';
+} from "typeorm";
+import { idColumn, timestampColumn } from "@hedhog/utils";
 
-export class Migrate implements MigrationInterface {
+export class Migrate1728407678936 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'countries',
+        name: "countries",
         columns: [
           idColumn(),
           {
-            name: 'name',
-            type: 'varchar',
-            length: '50',
+            name: "name",
+            type: "varchar",
+            length: "50",
             isNullable: false,
           },
           {
-            name: 'code',
-            type: 'char',
-            length: '3',
+            name: "code",
+            type: "char",
+            length: "3",
             isNullable: false,
           },
           timestampColumn(),
-          timestampColumn('updated_at'),
+          timestampColumn("updated_at"),
         ],
       }),
       true,
@@ -228,58 +228,58 @@ export class Migrate implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: 'locales',
+        name: "locales",
         columns: [
           idColumn(),
           {
-            name: 'name',
-            type: 'varchar',
+            name: "name",
+            type: "varchar",
             isNullable: false,
           },
           {
-            name: 'code',
-            type: 'char',
-            length: '2',
+            name: "code",
+            type: "char",
+            length: "2",
             isNullable: false,
           },
           {
-            name: 'region',
-            type: 'char',
-            length: '2',
+            name: "region",
+            type: "char",
+            length: "2",
             isNullable: false,
           },
           {
-            name: 'country_id',
-            type: 'int',
+            name: "country_id",
+            type: "int",
             isNullable: false,
           },
           timestampColumn(),
-          timestampColumn('updated_at'),
+          timestampColumn("updated_at"),
         ],
       }),
     );
 
     await queryRunner.createForeignKey(
-      'locales',
+      "locales",
       new TableForeignKey({
-        columnNames: ['country_id'],
-        referencedTableName: 'countries',
-        referencedColumnNames: ['id'],
-        onDelete: 'CASCADE',
+        columnNames: ["country_id"],
+        referencedTableName: "countries",
+        referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
       }),
     );
 
     const countryUSA = await queryRunner.manager
       .createQueryBuilder()
       .select()
-      .from('countries', 'c')
-      .where('code = :code', { code: 'USA' })
+      .from("countries", "c")
+      .where("code = :code", { code: "USA" })
       .execute();
     const countryBRA = await queryRunner.manager
       .createQueryBuilder()
       .select()
-      .from('countries', 'c')
-      .where('code = :code', { code: 'BRA' })
+      .from("countries", "c")
+      .where("code = :code", { code: "BRA" })
       .execute();
 
     await queryRunner.query(`
@@ -291,6 +291,6 @@ export class Migrate implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('locales');
+    await queryRunner.dropTable("locales");
   }
 }

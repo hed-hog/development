@@ -32,7 +32,7 @@ export class LocaleService {
     const code = localeCodes[0];
     const region = localeCodes[1];
     const where: any = {
-      locale: {
+      locales: {
         code,
       },
       translation_namespaces: {
@@ -44,9 +44,21 @@ export class LocaleService {
       where.locale.region = region;
     }
 
-    return this.prismaService.translations.findMany({
+    const values = await this.prismaService.translations.findMany({
       where,
+      select: {
+        name: true,
+        value: true,
+      },
     });
+
+    const translations = {};
+
+    for (const value of values) {
+      translations[value.name] = value.value;
+    }
+
+    return translations;
   }
 
   async get(paginationParams: PaginationDTO) {
