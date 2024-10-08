@@ -19,6 +19,7 @@ import { ScreenService } from './screen.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { Role } from '../role/decorators/role.decorator';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { Locale } from '@hedhog/locale';
 
 @Role()
 @UseGuards(AuthGuard)
@@ -30,24 +31,26 @@ export class ScreenController {
   ) {}
 
   @Get()
-  async getScreens(@Pagination() paginationParams) {
-    return this.screenService.getScreens(paginationParams);
+  async getScreens(@Pagination() paginationParams, @Locale() locale) {
+    return this.screenService.getScreens(locale, paginationParams);
   }
 
   @Get(':screenId/roles')
   async listRoles(
     @Param('screenId', ParseIntPipe) screenId: number,
     @Pagination() paginationParams,
+    @Locale() locale,
   ) {
-    return this.screenService.listRoles(screenId, paginationParams);
+    return this.screenService.listRoles(locale, screenId, paginationParams);
   }
 
   @Get(':screenId/routes')
   async listRoutes(
     @Param('screenId', ParseIntPipe) screenId: number,
     @Pagination() paginationParams,
+    @Locale() locale,
   ) {
-    return this.screenService.listRoutes(screenId, paginationParams);
+    return this.screenService.listRoutes(locale, screenId, paginationParams);
   }
 
   @Patch(':screenId/roles')

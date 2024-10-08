@@ -1,9 +1,10 @@
-import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
-import { forwardRef, Module } from '@nestjs/common';
+import { forwardRef, MiddlewareConsumer, Module } from '@nestjs/common';
 import { LocaleService } from './locale.service';
 import { LocaleController } from './locale.controller';
+import { LocaleMiddleware } from './locale.middleware';
+import { AdminModule } from '@hedhog/admin';
 
 @Module({
   imports: [
@@ -15,4 +16,8 @@ import { LocaleController } from './locale.controller';
   providers: [LocaleService],
   exports: [LocaleService],
 })
-export class LocaleModule {}
+export class LocaleModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LocaleMiddleware).forRoutes('*');
+  }
+}

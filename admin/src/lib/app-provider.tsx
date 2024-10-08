@@ -124,6 +124,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           if (token) {
             cnf.headers['Authorization'] = `Bearer ${token}`
           }
+
+          cnf.headers['Accept-Language'] =
+            localStorage.getItem('i18nextLng') ?? 'en'
           return cnf
         },
         (error) => {

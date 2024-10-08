@@ -10,6 +10,7 @@ import type {
   PaginatedResult,
   PaginationParams,
 } from './types/pagination.types';
+import { itemTranslations } from '@hedhog/utils';
 
 @Injectable()
 export class PaginationService {
@@ -19,6 +20,7 @@ export class PaginationService {
     model: M,
     paginationParams: PaginationParams,
     customQuery?: FindManyArgs<M>,
+    translationKey?: string,
   ): Promise<PaginatedResult<T>> {
     try {
       if (!model) {
@@ -104,12 +106,16 @@ export class PaginationService {
         delete query.select;
       }
 
-      const [total, data] = await Promise.all([
+      let [total, data] = await Promise.all([
         model.count({ where: customQuery?.where || {} }),
         model.findMany(query),
       ]);
 
       const lastPage = Math.ceil(total / pageSize);
+
+      if (translationKey) {
+        data = data.map((item: any) => itemTranslations(translationKey, item));
+      }
 
       return {
         total,

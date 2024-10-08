@@ -45,6 +45,7 @@ type PaginationFetchProps = {
   sortOrder?: string
   fields?: string[]
   queryKey: string
+  language?: string
 }
 
 export const usePaginationFetch = (
@@ -70,7 +71,7 @@ export const usePaginationFetch = (
   }
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: [props.queryKey],
+    queryKey: [props.queryKey, props.language ?? 'en'],
     queryFn: () => fetchItems(props),
   })
 

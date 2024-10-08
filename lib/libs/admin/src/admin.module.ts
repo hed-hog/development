@@ -3,7 +3,6 @@ import { PaginationModule } from '@hedhog/pagination';
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { MenuModule } from './menu/menu.module';
-
 import { ScreenModule } from './screen/screen.module';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';

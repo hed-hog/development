@@ -63,7 +63,11 @@ export class ScreenService {
       skipDuplicates: true,
     });
   }
-  async listRoutes(screenId: number, paginationParams: PaginationDTO) {
+  async listRoutes(
+    locale: string,
+    screenId: number,
+    paginationParams: PaginationDTO,
+  ) {
     return this.paginationService.paginate(
       this.prismaService.routes,
       paginationParams,
@@ -83,7 +87,11 @@ export class ScreenService {
     );
   }
 
-  async listRoles(screenId: number, paginationParams: PaginationDTO) {
+  async listRoles(
+    locale: string,
+    screenId: number,
+    paginationParams: PaginationDTO,
+  ) {
     return this.paginationService.paginate(
       this.prismaService.roles,
       paginationParams,
@@ -103,22 +111,38 @@ export class ScreenService {
     );
   }
 
-  async getScreens(paginationParams: PaginationDTO) {
-    const fields = ['name', 'slug', 'description', 'icon'];
+  async getScreens(locale: string, paginationParams: PaginationDTO) {
+    const fields = ['slug', 'icon'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
     );
 
-    return this.paginationService.paginate(
+    const result = await this.paginationService.paginate(
       this.prismaService.screens,
       paginationParams,
       {
         where: {
           OR,
         },
+        include: {
+          screen_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+              description: true,
+            },
+          },
+        },
       },
+      'screen_translations',
     );
+
+    return result;
   }
 
   async get(screenId: number) {

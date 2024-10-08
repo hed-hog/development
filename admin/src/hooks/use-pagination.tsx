@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { usePaginationFetch } from './use-pagination-fetch'
 import { IPaginationOption } from '@/types/pagination-options'
 import { ISelectOption } from '@/types/select-options'
+import { useTranslation } from 'react-i18next'
 
 type UsePaginationProps = {
   selectOptions?: ISelectOption
@@ -20,6 +21,9 @@ export const usePagination = ({
   orderField,
   orderDirection,
 }: UsePaginationProps) => {
+  const {
+    i18n: { language },
+  } = useTranslation()
   const [sortField, setSortField] = useState<string | undefined>(orderField)
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | undefined>(
     orderDirection
@@ -40,6 +44,7 @@ export const usePagination = ({
     sortField,
     sortOrder,
     queryKey: id,
+    language,
   })
 
   useEffect(() => {

@@ -36,11 +36,11 @@ model migrations {
 }
 
 model multifactors {
-  id         Int      @id(map: "PK_8e88fc38e04a53be42acb939e9c") @default(autoincrement())
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  users      users[]
+  id                       Int                        @id(map: "PK_8e88fc38e04a53be42acb939e9c") @default(autoincrement())
+  created_at               DateTime                   @default(now()) @db.Timestamp(6)
+  updated_at               DateTime                   @default(now()) @db.Timestamp(6)
+  multifactor_translations multifactor_translations[]
+  users                    users[]
 }
 
 model role_screens {
@@ -78,16 +78,15 @@ model roles {
 }
 
 model screens {
-  id            Int             @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
-  name          String          @db.VarChar
-  slug          String          @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
-  description   String          @db.VarChar
-  icon          String?         @db.VarChar
-  created_at    DateTime        @default(now()) @db.Timestamp(6)
-  updated_at    DateTime        @default(now()) @db.Timestamp(6)
-  menu_screens  menu_screens[]
-  role_screens  role_screens[]
-  route_screens route_screens[]
+  id                  Int                   @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
+  slug                String                @unique(map: "UQ_90ab71668d0bc61cff3f669c791") @db.VarChar
+  icon                String?               @db.VarChar
+  created_at          DateTime              @default(now()) @db.Timestamp(6)
+  updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  menu_screens        menu_screens[]
+  role_screens        role_screens[]
+  route_screens       route_screens[]
+  screen_translations screen_translations[]
 }
 
 model users {
@@ -297,15 +296,17 @@ model person_document_types {
 }
 
 model locales {
-  id           Int            @id(map: "PK_f7a42a6bd1ee3e584a11eb5b37d") @default(autoincrement())
-  name         String         @db.VarChar
-  code         String         @db.Char(2)
-  region       String         @db.Char(2)
-  country_id   Int
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
-  countries    countries      @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1b7f006abb609825f10a4d98567")
-  translations translations[]
+  id                       Int                        @id(map: "PK_f7a42a6bd1ee3e584a11eb5b37d") @default(autoincrement())
+  name                     String                     @db.VarChar
+  code                     String                     @db.Char(2)
+  region                   String                     @db.Char(2)
+  country_id               Int
+  created_at               DateTime                   @default(now()) @db.Timestamp(6)
+  updated_at               DateTime                   @default(now()) @db.Timestamp(6)
+  countries                countries                  @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1b7f006abb609825f10a4d98567")
+  multifactor_translations multifactor_translations[]
+  screen_translations      screen_translations[]
+  translations             translations[]
 }
 
 model translation_namespaces {
@@ -328,6 +329,31 @@ model translations {
   locales                locales                @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_faa4b0066c5625e1abafbfae61f")
 
   @@unique([locale_id, namespace_id, name], map: "UQ_065d58e595dace2c02111970a89")
+}
+
+model multifactor_translations {
+  multifactor_id Int
+  locale_id      Int
+  name           String       @db.VarChar
+  created_at     DateTime     @default(now()) @db.Timestamp(6)
+  updated_at     DateTime     @default(now()) @db.Timestamp(6)
+  locales        locales      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_35302e1b5b57d8ed1589f7587c1")
+  multifactors   multifactors @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_731df6bc1ba60843c73771a1bd9")
+
+  @@id([multifactor_id, locale_id], map: "PK_307e89d7a201bff1feacf9e33e6")
+}
+
+model screen_translations {
+  screen_id   Int
+  locale_id   Int
+  name        String   @db.VarChar
+  description String   @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  locales     locales  @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9cbee2bf99d4279ff58a34dc3e7")
+  screens     screens  @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c0568d6f198d9283a13acec5423")
+
+  @@id([screen_id, locale_id], map: "PK_69d08f4651cf1fda11f4b7cd2b0")
 }
 
 enum routes_method_enum {

@@ -609,49 +609,113 @@ export class Migrate implements MigrationInterface {
       }
     }
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('screens', ['name', 'slug', 'description', 'icon'])
-      .values([
-        {
-          name: 'Persons',
-          slug: '/persons',
-          description: 'Check all persons registered in the system.',
-          icon: 'user-check',
-        },
-        {
-          name: 'Address Types',
-          slug: '/management/persons/address-types',
-          description: 'Check all types of address registered in the system.',
-          icon: 'home-link',
-        },
-        {
-          name: 'Contact Types',
-          slug: '/management/persons/contact-types',
-          description: 'Check all types of contacts registered in the system.',
-          icon: 'address-book',
-        },
-        {
-          name: 'Custom Types',
-          slug: '/management/persons/custom-types',
-          description: 'Check all custom types registered in the system.',
-          icon: 'adjustments',
-        },
-        {
-          name: 'Document Types',
-          slug: '/management/persons/document-types',
-          description: 'Check all types of documents registered in the system.',
-          icon: 'file-search',
-        },
-        {
-          name: 'Person Types',
-          slug: '/management/persons/person-types',
-          description: 'Check all types of persons registered in the system.',
-          icon: 'id',
-        },
-      ])
-      .execute();
+    const screens = [
+      {
+        name_en: 'Contacts',
+        description_en: 'Check all persons registered in the system.',
+        name_pt: 'Contatos',
+        description_pt: 'Verifique todas as pessoas registradas no sistema.',
+        slug: '/persons',
+        icon: 'user-check',
+      },
+      {
+        name_en: 'Address Types',
+        description_en: 'Check all types of address registered in the system.',
+        name_pt: 'Tipos de Endereço',
+        description_pt:
+          'Verifique todos os tipos de endereço registrados no sistema.',
+        slug: '/management/persons/address-types',
+        icon: 'home-link',
+      },
+      {
+        name_en: 'Contact Types',
+        description_en: 'Check all types of contacts registered in the system.',
+        name_pt: 'Tipos de Contato',
+        description_pt:
+          'Verifique todos os tipos de contato registrados no sistema.',
+        slug: '/management/persons/contact-types',
+        icon: 'address-book',
+      },
+      {
+        name_en: 'Custom Types',
+        description_en: 'Check all custom types registered in the system.',
+        name_pt: 'Tipos Personalizados',
+        description_pt:
+          'Verifique todos os tipos personalizados registrados no sistema.',
+        slug: '/management/persons/custom-types',
+        icon: 'adjustments',
+      },
+      {
+        name_en: 'Document Types',
+        description_en:
+          'Check all types of documents registered in the system.',
+        name_pt: 'Tipos de Documentos',
+        description_pt:
+          'Verifique todos os tipos de documentos registrados no sistema.',
+        slug: '/management/persons/document-types',
+        icon: 'file-search',
+      },
+      {
+        name_en: 'Person Types',
+        description_en: 'Check all types of persons registered in the system.',
+        name_pt: 'Tipos de Pessoa',
+        description_pt:
+          'Verifique todos os tipos de pessoa registrados no sistema.',
+        slug: '/management/persons/person-types',
+        icon: 'id',
+      },
+    ];
+
+    for (const screen of screens) {
+      console.log('INSERT', { screen });
+
+      const s = await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('screens', ['slug', 'icon'])
+        .values({
+          slug: screen.slug,
+          icon: screen.icon,
+        })
+        .returning('id')
+        .execute();
+
+      const screenId = s.raw[0].id;
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('role_screens')
+        .values({
+          role_id: 1,
+          screen_id: screenId,
+        });
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('screen_translations', [
+          'name',
+          'description',
+          'locale_id',
+          'screen_id',
+        ])
+        .values([
+          {
+            name: screen.name_en,
+            description: screen.description_en,
+            locale_id: 1,
+            screen_id: screenId,
+          },
+          {
+            name: screen.name_pt,
+            description: screen.description_pt,
+            locale_id: 2,
+            screen_id: screenId,
+          },
+        ])
+        .execute();
+    }
 
     const results = await queryRunner.manager
       .createQueryBuilder()

@@ -1,1 +1,0 @@
-{"version":3,"file":"user.type.d.ts","sourceRoot":"","sources":["../../../src/auth/types/user.type.ts"],"names":[],"mappings":"AAAA,MAAM,MAAM,IAAI,GAAG;IACjB,EAAE,EAAE,MAAM,CAAC;IACX,IAAI,EAAE,MAAM,CAAC;IACb,KAAK,EAAE,MAAM,CAAC;IACd,QAAQ,EAAE,MAAM,CAAC;IACjB,UAAU,EAAE,MAAM,CAAC;IACnB,UAAU,EAAE,MAAM,CAAC;CACpB,CAAA"}
