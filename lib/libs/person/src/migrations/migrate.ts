@@ -757,7 +757,7 @@ export class Migrate implements MigrationInterface {
     const menuInsertions = [
       {
         name: 'Persons',
-        url: '/management/persons',
+        url: '/persons',
         order: 2,
         parentId: null,
         icon: 'user-check',
@@ -834,37 +834,37 @@ export class Migrate implements MigrationInterface {
       .values([
         {
           name: 'Persons',
-          slug: '/management/persons',
+          slug: '/persons',
           description: 'Check all persons registered in the system.',
           icon: 'user-check',
         },
         {
           name: 'Address Types',
-          slug: '/management/address-types',
+          slug: '/management/persons/address-types',
           description: 'Check all types of address registered in the system.',
           icon: 'home-link',
         },
         {
           name: 'Contact Types',
-          slug: '/management/contact-types',
+          slug: '/management/persons/contact-types',
           description: 'Check all types of contacts registered in the system.',
           icon: 'address-book',
         },
         {
           name: 'Custom Types',
-          slug: '/management/custom-types',
+          slug: '/management/persons/custom-types',
           description: 'Check all custom types registered in the system.',
           icon: 'adjustments',
         },
         {
           name: 'Document Types',
-          slug: '/management/document-types',
+          slug: '/management/persons/document-types',
           description: 'Check all types of documents registered in the system.',
           icon: 'file-search',
         },
         {
           name: 'Person Types',
-          slug: '/management/person-types',
+          slug: '/management/persons/person-types',
           description: 'Check all types of persons registered in the system.',
           icon: 'id',
         },
