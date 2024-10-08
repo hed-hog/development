@@ -23,7 +23,11 @@
     "typeorm": "ts-node --transpile-only ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
-    "@hedhog/pagination": "^0.0.9",
+    "@hedhog/admin": "^0.0.25",
+    "@hedhog/locale": "^0.0.3",
+    "@hedhog/mail": "^0.0.13",
+    "@hedhog/pagination": "^0.0.11",
+    "@hedhog/person": "^0.0.5",
     "@hedhog/prisma": "^0.0.9",
     "@nestjs/axios": "^3.0.3",
     "@nestjs/common": "^10.4.1",
