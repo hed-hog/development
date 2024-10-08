@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react'
 import { Checkbox } from '../ui/checkbox'
 import { SearchField } from '../search-field'
 import { SelectedItems } from './select-items'
+import { useTranslation } from 'react-i18next'
 
 interface ListControlsProps {
   data: any[]
@@ -24,11 +25,12 @@ const ListControls: React.FC<ListControlsProps> = ({
   onFilterToggle,
   children,
 }) => {
+  const { t } = useTranslation('pagination')
+
   return (
     <>
       <div className='m-4 flex flex-col gap-4'>
         <SearchField
-          placeholder='Buscar...'
           value={search}
           onSearch={(value) => {
             setSearch(value)
@@ -41,7 +43,7 @@ const ListControls: React.FC<ListControlsProps> = ({
               checked={isAllSelected}
               onCheckedChange={() => handleSelectAll && handleSelectAll(data)}
             />
-            <span>Selecionar tudo</span>
+            <span>{t('selectAll')}</span>
           </div>
         )}
       </div>
