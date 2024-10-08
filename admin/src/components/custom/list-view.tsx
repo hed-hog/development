@@ -22,6 +22,16 @@ type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   onSelect?: (row: T, index: number) => void
   onUnselect?: (row: T, index: number) => void
   selectedIds?: string[]
+  onItemDoubleClick?: (
+    row: T,
+    index: number,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => void
+  onItemClick?: (
+    row: T,
+    index: number,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => void
 }
 
 const ListViewInner = <T extends any>(
@@ -47,6 +57,8 @@ const ListViewInner = <T extends any>(
       }
     },
     selectedIds = [],
+    onItemDoubleClick,
+    onItemClick,
     ...props
   }: ListViewProps<T>,
   ref: React.Ref<any>
@@ -181,9 +193,17 @@ const ListViewInner = <T extends any>(
               isChecked ? 'bg-muted/30' : '',
               selectable ? 'cursor-pointer' : '',
             ].join(' ')}
-            onClick={() => {
+            onClick={(event) => {
               if (selectable) {
                 toggleSelectItem(item)
+              }
+              if (typeof onItemClick === 'function') {
+                onItemClick(item, index, event)
+              }
+            }}
+            onDoubleClick={(event) => {
+              if (typeof onItemDoubleClick === 'function') {
+                onItemDoubleClick(item, index, event)
               }
             }}
             style={{ marginBottom: `${styleOptions.gap / 6}rem` }}

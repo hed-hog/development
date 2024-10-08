@@ -20,6 +20,11 @@ type GridViewProps<T> = {
     index: number,
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => void
+  onItemDoubleClick?: (
+    row: T,
+    index: number,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => void
   onItemContextMenu?: (
     row: T,
     index: number,
@@ -58,6 +63,7 @@ const GridView = <T extends any>({
   onSelectionChange,
   className,
   onItemClick,
+  onItemDoubleClick,
   checked,
   onItemContextMenu,
   itemClassName,
@@ -208,6 +214,11 @@ const GridView = <T extends any>({
         }
         if (typeof onItemClick === 'function') {
           onItemClick(item, index, event)
+        }
+      }}
+      onDoubleClick={(event) => {
+        if (typeof onItemDoubleClick === 'function') {
+          onItemDoubleClick(item, index, event)
         }
       }}
     >

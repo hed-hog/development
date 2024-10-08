@@ -1034,11 +1034,9 @@ export default function Page() {
         layout='grid'
         id='persons'
         selectable
+        onItemDoubleClick={(item) => openEditPersonDialog(item)}
         render={(item: PersonType) => (
-          <Card
-            className='w-full rounded-lg border-none'
-            onDoubleClick={() => openEditPersonDialog(item)}
-          >
+          <Card className='w-full rounded-lg border-none'>
             <CardHeader className='flex flex-row rounded-t-lg px-4 py-3'>
               <Avatar>
                 <AvatarImage src='' alt={item.name} />
