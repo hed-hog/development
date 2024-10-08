@@ -1034,10 +1034,7 @@ export default function Page() {
         id='persons'
         selectable
         render={(item: PersonType) => (
-          <Card
-            className='w-full rounded-lg border-none'
-            onDoubleClick={() => openEditPersonDialog(item)}
-          >
+          <Card className='w-full rounded-lg border-none'>
             <CardHeader className='flex flex-row rounded-t-lg px-4 py-3 text-white'>
               <div className='h-10 w-10 rounded-full bg-white' />
               <div className='flex flex-col px-4' style={{ marginTop: 0 }}>
@@ -1081,6 +1078,7 @@ export default function Page() {
         multiple
         hasSearch
         responsiveColumns={{ default: 1, sm: 1, md: 1, lg: 2, xl: 4 }}
+        onDoubleClick={(item: any) => openEditPersonDialog(item)}
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
