@@ -1,0 +1,15 @@
+{
+  "create": "Create Screen",
+  "createText": "Fill the screen informations.",
+  "createTooltip": "Create new screen",
+  "delete": "Delete Screen",
+  "deleteText": "Are you sure to delete these screens?",
+  "deleteTooltip": "Delete the selected screens",
+  "edit": "Edit Screen",
+  "editText": "View and edit screen information.",
+  "editTooltip": "Edit the selected screens",
+  "name": "Name",
+  "slug": "Slug",
+  "description": "Description",
+  "icon": "Icon"
+}
