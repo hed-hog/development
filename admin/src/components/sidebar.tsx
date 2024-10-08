@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useApp } from '@/hooks/use-app'
 import { getSideLinks } from '@/lib/get-sidelinks'
+import { useTranslation } from 'react-i18next'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -18,6 +19,7 @@ export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
 }: SidebarProps) {
+  const { t } = useTranslation()
   const { request } = useApp()
   const [navOpened, setNavOpened] = useState(false)
   const { data } = useQuery({
@@ -84,7 +86,7 @@ export default function Sidebar({
               className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
             >
               <span className='font-medium'>HedHog</span>
-              <span className='text-xs'>Administration Panel</span>
+              <span className='text-xs'>{t('slogan')}</span>
             </div>
           </div>
 

@@ -6,6 +6,7 @@ import { Layout } from './custom/layout'
 import { DynamicBreadcrumb } from './custom/dynamic-breadcrumb'
 import ThemeSwitch from './theme-switch'
 import { UserNav } from './user-nav'
+import { LocaleChange } from './custom/locale-change'
 
 export default function AppShell() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
@@ -21,6 +22,7 @@ export default function AppShell() {
             <Layout.Header>
               <DynamicBreadcrumb />
               <div className='ml-auto flex items-center space-x-4'>
+                <LocaleChange />
                 <ThemeSwitch />
                 <UserNav />
               </div>
