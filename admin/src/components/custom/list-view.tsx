@@ -9,6 +9,7 @@ import { IStyleOption } from '@/types/style-options'
 import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { useTranslation } from 'react-i18next'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   data: T[]
@@ -64,6 +65,7 @@ const ListViewInner = <T extends any>(
   ref: React.Ref<any>
 ) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const { t } = useTranslation('select')
 
   useEffect(() => {
     if (onSelectionChange) {
@@ -175,7 +177,7 @@ const ListViewInner = <T extends any>(
           <SelectAll
             checked={isAllSelected}
             onChange={selectAllItems}
-            label='Selecionar tudo'
+            label={t('selectAll')}
           />
         )}
       </div>

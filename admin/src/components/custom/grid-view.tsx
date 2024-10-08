@@ -5,6 +5,7 @@ import { IStyleOption } from '@/types/style-options'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
+import { useTranslation } from 'react-i18next'
 
 type GridViewProps<T> = {
   responsiveColumns?: IResponsiveColumn
@@ -76,6 +77,7 @@ const GridView = <T extends any>({
     responsiveColumns.default
   )
   const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
+  const { t } = useTranslation('select')
 
   // Atualiza o número de colunas baseado na largura da tela
   const updateColumnsBasedOnScreenSize = () => {
@@ -242,7 +244,7 @@ const GridView = <T extends any>({
         <SelectAll
           checked={isAllSelected}
           onChange={selectAllItems}
-          label='Selecionar tudo'
+          label={t('selectAll')}
         />
       )}
       <div
