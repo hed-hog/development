@@ -165,14 +165,13 @@ export default function Page() {
           <h1 className='text-2xl font-bold tracking-tight'>Address Types</h1>
         </div>
       </div>
-
       <DataPanel
         url='/address-types'
         layout='table'
         id='address-types'
         selectable
         columns={[
-          { key: 'id', header: 'ID' },
+          { key: 'id', header: 'ID', width: 50 },
           { key: 'name', header: 'Name' },
         ]}
         selected={selectedItems as PersonAddressType[]}

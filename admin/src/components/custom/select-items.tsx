@@ -5,6 +5,7 @@ interface ISelectAllProps {
   checked?: boolean
   label?: string
   onChange?: () => void
+  disableHover?: boolean
 }
 
 interface ISelectedItemsProps<T> {
@@ -16,10 +17,11 @@ export const SelectAll = ({
   checked = false,
   label = '',
   onChange = () => {},
+  disableHover = false,
 }: ISelectAllProps) => {
   return (
     <div
-      className='mx-2 flex cursor-pointer select-none items-center gap-x-2 py-2 hover:bg-muted/50'
+      className={`mx-2 flex cursor-pointer select-none items-center gap-x-2 py-2 ${disableHover === false && 'hover:bg-muted/50'}`}
       onClick={typeof onChange === 'function' ? onChange : () => {}}
     >
       <Checkbox checked={checked} />

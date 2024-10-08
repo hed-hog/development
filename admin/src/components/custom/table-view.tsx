@@ -351,13 +351,16 @@ const TableView = <T extends any>({
       <TableHeader>
         <TableHeadRow>
           {selectable && (
-            <TableHead>
+            <TableHead style={{ width: 48 }}>
               {multiple && (
-                <SelectAll checked={isAllSelected} onChange={selectAllItems} />
+                <SelectAll
+                  disableHover={true}
+                  checked={isAllSelected}
+                  onChange={selectAllItems}
+                />
               )}
             </TableHead>
           )}
-
           {visibleColumns.map((col) => (
             <TableHead
               key={'key' in col ? col.key : 'actions'}

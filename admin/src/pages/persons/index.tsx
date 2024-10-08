@@ -6,6 +6,7 @@ import DataPanel from '@/components/custom/data-panel'
 import DocumentCard from '@/components/custom/document-card'
 import { FormPanel } from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
@@ -165,7 +166,7 @@ export default function Page() {
     if (!personTypeData) return
     const personTypes = ((personTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
-        value: type.id,
+        value: String(type.id),
         label: type.name,
       })
     )
@@ -176,7 +177,7 @@ export default function Page() {
     if (!addressTypeData) return
     const addressTypes = ((addressTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
-        value: type.id,
+        value: String(type.id),
         label: type.name,
       })
     )
@@ -187,7 +188,7 @@ export default function Page() {
     if (!contactTypeData) return
     const contactTypes = ((contactTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
-        value: type.id,
+        value: String(type.id),
         label: type.name,
       })
     )
@@ -198,7 +199,7 @@ export default function Page() {
     if (!customTypeData) return
     const customTypes = ((customTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
-        value: type.id,
+        value: String(type.id),
         label: type.name,
       })
     )
@@ -209,7 +210,7 @@ export default function Page() {
     if (!documentTypeData) return
     const documentTypes = ((documentTypeData?.data as any).data ?? []).map(
       (type: { id: number; name: string }) => ({
-        value: type.id,
+        value: String(type.id),
         label: type.name,
       })
     )
@@ -220,7 +221,7 @@ export default function Page() {
     if (!countriesData) return
     const countries = ((countriesData.data as any) ?? []).map(
       (country: { id: number; name: string }) => ({
-        value: country.id,
+        value: String(country.id),
         label: country.name,
       })
     )
@@ -1038,14 +1039,19 @@ export default function Page() {
             className='w-full rounded-lg border-none'
             onDoubleClick={() => openEditPersonDialog(item)}
           >
-            <CardHeader className='flex flex-row rounded-t-lg px-4 py-3 text-white'>
-              <div className='h-10 w-10 rounded-full bg-white' />
+            <CardHeader className='flex flex-row rounded-t-lg px-4 py-3'>
+              <Avatar>
+                <AvatarImage src='' alt={item.name} />
+                <AvatarFallback>
+                  {item.name.substring(0, 2).toLocaleUpperCase()}
+                </AvatarFallback>
+              </Avatar>
               <div className='flex flex-col px-4' style={{ marginTop: 0 }}>
                 <CardTitle className='text-md font-semibold'>
                   {item.name}
                 </CardTitle>
                 <div className='flex flex-row'>
-                  <IconClock className='mr-0.5 h-4 w-4 text-white' />
+                  <IconClock className='mr-0.5 h-4 w-4' />
                   <h4 className='text-xs font-normal'>
                     Cadastrado {timeSince(String(item.created_at))}
                   </h4>

@@ -159,8 +159,8 @@ export default function Field({
       return (
         <Select
           required={required}
-          value={value}
-          onValueChange={(value) => onChange(value)}
+          value={String(value)}
+          onValueChange={(value) => onChange(String(value))}
         >
           <SelectTrigger className='w-full'>
             <SelectValue placeholder={label?.text} />
