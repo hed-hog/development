@@ -7,7 +7,6 @@ import { PrismaService } from '@hedhog/prisma';
 import { CreatePersonDTO } from './dto/create-person.dto';
 import { UpdatePersonDTO } from './dto/update-person.dto';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
-import { UpdateIdsDTO } from './dto/update-ids.dto';
 import { DeleteDTO } from './dto/delete.dto';
 
 @Injectable()

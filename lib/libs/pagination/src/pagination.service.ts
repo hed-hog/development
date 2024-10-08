@@ -21,6 +21,10 @@ export class PaginationService {
     customQuery?: FindManyArgs<M>,
   ): Promise<PaginatedResult<T>> {
     try {
+      if (!model) {
+        throw new BadRequestException('Model is required');
+      }
+
       const page = Number(paginationParams.page || DEFAULT_PAGE);
       const pageSize = Number(paginationParams.pageSize || DEFAULT_PAGE_SIZE);
       const search = paginationParams.search || null;
@@ -129,6 +133,9 @@ export class PaginationService {
 
   extractFieldNames(model: Record<string, any>): string[] {
     const fieldNames: string[] = [];
+
+    console.log('extractFieldNames', { model });
+
     const fields = model.fields;
 
     for (const key in fields) {
