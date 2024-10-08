@@ -174,6 +174,7 @@ model countries {
   code             String             @db.Char(3)
   created_at       DateTime           @default(now()) @db.Timestamp(6)
   updated_at       DateTime           @default(now()) @db.Timestamp(6)
+  locales          locales[]
   person_addresses person_addresses[]
   person_documents person_documents[]
 }
@@ -293,6 +294,17 @@ model persons {
   person_contacts  person_contacts[]
   person_customs   person_customs[]
   person_documents person_documents[]
+}
+
+model locales {
+  id         Int       @id(map: "PK_f7a42a6bd1ee3e584a11eb5b37d") @default(autoincrement())
+  name       String    @db.VarChar
+  code       String    @db.Char(2)
+  region     String    @db.Char(2)
+  country_id Int
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
+  countries  countries @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1b7f006abb609825f10a4d98567")
 }
 
 enum routes_method_enum {

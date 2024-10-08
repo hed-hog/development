@@ -1,7 +1,7 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from './dto/delete.dto';
+import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 export declare class UserService {

@@ -1,7 +1,7 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from './dto/delete.dto';
+import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 export declare class ScreenService {
@@ -9,9 +9,9 @@ export declare class ScreenService {
     private readonly paginationService;
     constructor(prismaService: PrismaService, paginationService: PaginationService);
     updateRoles(screenId: number, data: UpdateIdsDTO): Promise<any>;
-    updateRoutes(screenId: number, data: UpdateIdsDTO): Promise<any>;
-    listRoutes(screenId: number): Promise<any>;
-    listRoles(screenId: number): Promise<any>;
+    updateRoutes(screenId: number, { ids }: UpdateIdsDTO): Promise<any>;
+    listRoutes(screenId: number, paginationParams: PaginationDTO): Promise<import("@hedhog/pagination").PaginatedResult<unknown>>;
+    listRoles(screenId: number, paginationParams: PaginationDTO): Promise<import("@hedhog/pagination").PaginatedResult<unknown>>;
     getScreens(paginationParams: PaginationDTO): Promise<import("@hedhog/pagination").PaginatedResult<unknown>>;
     get(screenId: number): Promise<any>;
     create({ name, slug, description, icon }: CreateDTO): Promise<any>;
