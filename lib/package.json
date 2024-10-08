@@ -98,7 +98,8 @@
       "^@hedhog/mail(|/.*)$": "<rootDir>/libs/mail/src/$1",
       "^@hedhog/pagination(|/.*)$": "<rootDir>/libs/pagination/src/$1",
       "^@hedhog/setting(|/.*)$": "<rootDir>/libs/setting/src/$1",
-      "^@hedhog/admin(|/.*)$": "<rootDir>/libs/admin/src/$1"
+      "^@hedhog/admin(|/.*)$": "<rootDir>/libs/admin/src/$1",
+      "^@hedhog/locale(|/.*)$": "<rootDir>/libs/locale/src/$1"
     }
   }
 }

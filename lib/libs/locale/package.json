@@ -1,14 +1,17 @@
 {
-  "name": "@hedhog/person",
-  "version": "0.0.5",
+  "name": "@hedhog/locale",
+  "version": "0.0.1",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
-    "clean": "rimraf ./dist",
-    "prebuild": "npm run clean",
     "build": "tsc --project tsconfig.production.json && npm version patch",
     "prod": "npm run build && npm publish --access public"
   },
+  "files": [
+    "dist/**/*",
+    "src/migrations/**/*.ts",
+    "src/**/*.ejs"
+  ],
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -18,13 +21,11 @@
     "typescript": "^5.1.3",
     "@hedhog/admin": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/prisma": "latest",
-    "@hedhog/mail": "latest"
+    "@hedhog/prisma": "latest"
   },
   "peerDependencies": {
     "@hedhog/admin": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/prisma": "latest",
-    "@hedhog/mail": "latest"
+    "@hedhog/prisma": "latest"
   }
 }

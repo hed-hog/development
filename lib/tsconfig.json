@@ -27,7 +27,9 @@
       "@hedhog/pagination": ["libs/pagination/src"],
       "@hedhog/pagination/*": ["libs/pagination/src/*"],
       "@hedhog/admin": ["libs/admin/src"],
-      "@hedhog/admin/*": ["libs/admin/src/*"]
+      "@hedhog/admin/*": ["libs/admin/src/*"],
+      "@hedhog/locale": ["libs/locale/src"],
+      "@hedhog/locale/*": ["libs/locale/src/*"]
     }
   }
 }
