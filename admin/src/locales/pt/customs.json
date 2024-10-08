@@ -1,0 +1,15 @@
+{
+  "create": "Criar Atributo Personalizado",
+  "createText": "Preencha as informações do Atributo Personalizado.",
+  "createTooltip": "Criar novo Atributo Personalizado",
+  "delete": "Excluir Atributo Personalizado",
+  "deleteText": "Tem certeza de que deseja deletar estes Atributos Personalizados?",
+  "deleteTooltip": "Excluir os Atributos Personalizados selecionados",
+  "edit": "Editar Atributo Personalizado",
+  "editText": "Visualize e edite as informações do Atributos Personalizado.",
+  "editTooltip": "Editar os Atributos Personalizados selecionados",
+  "type": "Tipo de Atributo",
+  "name": "Nome",
+  "value": "Valor",
+  "noneRegistered": "Nenhum atributo personalizado cadastrado."
+}

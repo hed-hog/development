@@ -1,0 +1,12 @@
+{
+  "create": "Criar Tipo de Pessoa",
+  "createText": "Preencha as informações do tipo de pessoa.",
+  "createTooltip": "Criar novo tipo de pessoa",
+  "delete": "Excluir Tipo de Pessoa",
+  "deleteText": "Tem certeza de que deseja deletar estes tipos de pessoa?",
+  "deleteTooltip": "Excluir os tipos de pessoa selecionados",
+  "edit": "Editar Tipo de Pessoa",
+  "editText": "Visualize e edite as informações do tipo de pessoa.",
+  "editTooltip": "Editar os tipos de pessoa selecionados",
+  "name": "Nome"
+}

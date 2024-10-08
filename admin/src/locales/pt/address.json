@@ -1,0 +1,22 @@
+{
+  "create": "Criar Endereço",
+  "createText": "Preencha as informações do endereço.",
+  "createTooltip": "Criar novo endereço",
+  "delete": "Excluir Endereço",
+  "deleteText": "Tem certeza de que deseja deletar estes endereços?",
+  "deleteTooltip": "Excluir os endereços selecionados",
+  "edit": "Editar Endereço",
+  "editText": "Visualize e edite as informações do endereço.",
+  "editTooltip": "Editar os endereços selecionados",
+  "type": "Tipo de Endereço",
+  "street": "Rua",
+  "number": "Número",
+  "complement": "Complemento",
+  "reference": "Referência",
+  "district": "Bairro",
+  "city": "Cidade",
+  "state": "Estado",
+  "country": "País",
+  "postalCode": "CEP",
+  "noneRegistered": "Nenhum endereço cadastrado."
+}

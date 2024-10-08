@@ -19,6 +19,7 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<
@@ -39,6 +40,10 @@ export default function Page() {
 
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
 
+  const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
+  const { t: routesT } = useTranslation('routes')
+
   const { mutate: deleteRoutes } = useDeleteRoute()
   const { mutate: createRoute } = useCreateRoute()
   const { mutate: editRoute } = useEditRoute()
@@ -53,26 +58,26 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Rota',
-      description: 'Preencha as informações da rota.',
+      title: routesT('create'),
+      description: routesT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'url',
-              label: { text: 'URL' },
+              label: { text: routesT('url') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'method',
-              label: { text: 'Método' },
+              label: { text: routesT('method') },
               type: EnumFieldType.TEXT,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data) => {
             createRoute(data)
             closeDialog(id)
@@ -96,19 +101,19 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: 'Excluir Rota',
-      description: 'Tem certeza de que deseja deletar estas rotas?',
+      title: routesT('delete'),
+      description: routesT('deleteText'),
       buttons: [
         {
           variant: 'secondary',
-          text: 'Cancelar',
+          text: actionsT('cancel'),
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteRoutes(items.map((item) => item.id))
@@ -134,10 +139,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -150,13 +155,13 @@ export default function Page() {
                   fields={[
                     {
                       name: 'url',
-                      label: { text: 'URL' },
+                      label: { text: routesT('url') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'method',
-                      label: { text: 'Método' },
+                      label: { text: routesT('method') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -170,7 +175,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Cargos',
+              title: modulesT('roles'),
               children: (
                 <DataPanel
                   ref={routeRolesRef}
@@ -189,7 +194,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (routeRolesRef.current) {
@@ -216,7 +221,7 @@ export default function Page() {
               ],
             },
             {
-              title: 'Telas',
+              title: modulesT('screens'),
               children: (
                 <DataPanel
                   ref={routeScreensRef}
@@ -248,7 +253,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (routeScreensRef.current) {
@@ -277,8 +282,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Rota',
-      description: 'Visualize e edite as informações dos rotas.',
+      title: routesT('edit'),
+      description: routesT('editText'),
     })
 
     return id
@@ -287,11 +292,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Routes - Hedhog</title>
+        <title>{modulesT('routes')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Routes</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('routes')}
+          </h1>
         </div>
       </div>
 
@@ -302,8 +309,8 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'url', header: 'URL' },
-          { key: 'method', header: 'Método' },
+          { key: 'url', header: routesT('url') },
+          { key: 'method', header: routesT('method') },
         ]}
         selected={selectedItems as RouteType[]}
         multiple
@@ -313,8 +320,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar as rotas selecionados',
+            label: actionsT('edit'),
+            tooltip: routesT('editTooltip'),
             handler: (items: RouteType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -322,17 +329,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
+            tooltip: routesT('deleteTooltip'),
             variant: 'destructive',
-            tooltip: 'Excluir as rotas selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
+            tooltip: routesT('createTooltip'),
             variant: 'default',
-            tooltip: 'Criar nova rota',
             handler: openCreateDialog,
             show: 'none',
           },

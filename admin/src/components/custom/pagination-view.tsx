@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { IconChevronsLeft, IconChevronsRight } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 
 export type PaginationViewProps = {
   variant: 'default' | 'compact'
@@ -41,6 +42,8 @@ export const PaginationView = ({
   total,
   padding = 4,
 }: PaginationViewProps) => {
+  const { t } = useTranslation('pagination')
+
   const [pages, setPages] = useState<number[]>([])
   const totalPages = Math.ceil(total / pageSize)
 
@@ -74,7 +77,7 @@ export const PaginationView = ({
     >
       <Select value={pageSize.toString()} onValueChange={onPageSizeChange}>
         <SelectTrigger className='w-80'>
-          <SelectValue placeholder={`Itens por página: ${pageSize}`} />
+          <SelectValue placeholder={`${t('itemsPerPage')}: ${pageSize}`} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -160,7 +163,7 @@ export const PaginationView = ({
       ) : (
         <>
           <span className='mx-8'>
-            Página {page} de {totalPages}
+            {t('page')} {page} {t('of')} {totalPages}
           </span>
           <Pagination className='mx-0 w-fit'>
             <PaginationContent>

@@ -2,6 +2,7 @@ import { Input } from '@/components/ui/input'
 import { IconSearch } from '@tabler/icons-react'
 import { useCallback, useState } from 'react'
 import { Button } from './custom/button'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   value?: string
@@ -13,11 +14,13 @@ interface IProps {
 
 export function SearchField({
   value = '',
-  placeholder = 'Buscar...',
+  placeholder,
   icon,
-  buttonText = 'Buscar',
+  buttonText,
   onSearch = () => {},
 }: IProps) {
+  const { t } = useTranslation('search')
+
   const [search, setSearch] = useState<string>(value)
 
   const callOnSearch = useCallback(() => {
@@ -36,7 +39,7 @@ export function SearchField({
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         type='search'
-        placeholder={placeholder}
+        placeholder={placeholder || t('search')}
         onKeyUp={(e) => e.key === 'Enter' && callOnSearch()}
         className='flex-1 bg-transparent py-2 pl-8 pr-20 text-sm focus:ring-0'
       />
@@ -45,7 +48,7 @@ export function SearchField({
         onClick={callOnSearch}
         className='absolute right-0 rounded-r-lg px-4 py-2'
       >
-        {buttonText}
+        {buttonText || t('search')}
       </Button>
     </div>
   )

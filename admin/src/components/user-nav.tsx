@@ -10,9 +10,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useApp } from '../hooks/use-app'
+import { useTranslation } from 'react-i18next'
 
 export function UserNav() {
   const { user, logout } = useApp()
+  const { t } = useTranslation('auth')
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,10 +40,12 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>Conta</DropdownMenuItem>
+          <DropdownMenuItem>{t('account')}</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => logout()}>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => logout()}>
+          {t('logout')}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

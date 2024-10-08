@@ -1,5 +1,5 @@
 import { Checkbox } from '@/components/ui/checkbox'
-import { isPlural } from '@/lib/utils'
+import { useTranslation } from 'react-i18next'
 
 interface ISelectAllProps {
   checked?: boolean
@@ -34,6 +34,8 @@ export const SelectedItems = <T extends any>({
   selectedItems,
   onClick,
 }: ISelectedItemsProps<T>) => {
+  const { t } = useTranslation('pagination')
+
   return (
     <p
       className={`mt-2 ${selectedItems.length > 0 && 'cursor-pointer'} text-sm ${(selectedItems ?? []).length ? 'text-blue-500' : 'text-white'}`}
@@ -41,13 +43,10 @@ export const SelectedItems = <T extends any>({
     >
       {selectedItems && selectedItems.length > 0 && (
         <>
-          {(selectedItems ?? []).length} ite
-          {isPlural(selectedItems.length, 'm', 'ns')} selecionado
-          {isPlural(selectedItems.length)}
+          {(selectedItems ?? []).length} {t('selected')}
         </>
       )}
-      {(!selectedItems || selectedItems.length === 0) &&
-        'Nenhum item selecionado'}
+      {(!selectedItems || selectedItems.length === 0) && t('noneSelected')}
     </p>
   )
 }

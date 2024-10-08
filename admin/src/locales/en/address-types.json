@@ -1,0 +1,12 @@
+{
+  "create": "Create Address Type",
+  "createText": "Fill the address type informations.",
+  "createTooltip": "Create new address type",
+  "delete": "Delete Address Type",
+  "deleteText": "Are you sure to delete these address types?",
+  "deleteTooltip": "Delete the selected address types",
+  "edit": "Edit Address Type",
+  "editText": "View and edit address type information.",
+  "editTooltip": "Edit the selected address types",
+  "name": "Name"
+}

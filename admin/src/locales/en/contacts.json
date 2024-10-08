@@ -1,0 +1,14 @@
+{
+  "create": "Create Contact",
+  "createText": "Fill the contact informations.",
+  "createTooltip": "Create new contact",
+  "delete": "Delete Contact",
+  "deleteText": "Are you sure to delete these contacts?",
+  "deleteTooltip": "Delete the selected contacts",
+  "edit": "Edit Contact",
+  "editText": "View and edit contact information.",
+  "editTooltip": "Edit the selected contacts",
+  "type": "Contact Type",
+  "value": "Value",
+  "noneRegistered": "No contacts registered."
+}

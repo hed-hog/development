@@ -1,0 +1,18 @@
+{
+  "users": "Users",
+  "roles": "Roles",
+  "screens": "Screens",
+  "menus": "Menus",
+  "routes": "Routes",
+  "settings": "Settings",
+  "persons": "Persons",
+  "address": "Addresses",
+  "contacts": "Contacts",
+  "customs": "Custom Attributes",
+  "documents": "Documents",
+  "addressTypes": "Address Types",
+  "contactTypes": "Contact Types",
+  "customTypes": "Custom Types",
+  "documentTypes": "Document Types",
+  "personTypes": "Person Types"
+}

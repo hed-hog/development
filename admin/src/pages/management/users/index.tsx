@@ -16,6 +16,7 @@ import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 import { UserType } from '@/types/user'
 import { RoleType } from '@/types/role'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const userRolesRef = useRef<any>(null)
@@ -36,6 +37,10 @@ export default function Page() {
   const { mutate: editUser } = useEditUser()
   const { mutate: editUserRoles } = useEditUserRoles()
 
+  const { t: usersT } = useTranslation('users')
+  const { t: actionsT } = useTranslation('actions')
+  const { t: modulesT } = useTranslation('modules')
+
   const openCreateDialog = () => {
     form.reset({
       id: '',
@@ -45,32 +50,32 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Usuário',
-      description: 'Preencha as informações do usuário.',
+      title: usersT('create'),
+      description: usersT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: usersT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'email',
-              label: { text: 'Email' },
+              label: { text: usersT('email') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'password',
-              label: { text: 'Senha' },
+              label: { text: usersT('password') },
               type: EnumFieldType.PASSWORD,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data: UserType) => {
             createUser(data)
             closeDialog(id)
@@ -94,18 +99,18 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: 'Excluir Usuário',
-      description: 'Tem certeza de que deseja deletar estes usuários?',
+      title: usersT('delete'),
+      description: usersT('deleteText'),
       buttons: [
         {
           variant: 'secondary',
-          text: 'Cancelar',
+          text: actionsT('cancel'),
           onClick: () => {
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteUsers(items.map((item) => item.id))
@@ -131,10 +136,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -147,13 +152,13 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: usersT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'email',
-                      label: { text: 'Email' },
+                      label: { text: usersT('email') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -167,7 +172,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Cargos',
+              title: modulesT('roles'),
               children: (
                 <DataPanel
                   ref={userRolesRef}
@@ -181,7 +186,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (userRolesRef.current) {
@@ -210,8 +215,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Usuário',
-      description: 'Visualize e edite as informações do usuário.',
+      title: usersT('edit'),
+      description: usersT('editText'),
     })
 
     return id
@@ -220,11 +225,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Users - Hedhog</title>
+        <title>{modulesT('users')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Users</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('users')}
+          </h1>
         </div>
       </div>
       <DataPanel
@@ -234,8 +241,8 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
-          { key: 'email', header: 'Email' },
+          { key: 'name', header: usersT('name') },
+          { key: 'email', header: usersT('email') },
         ]}
         multiple
         hasSearch
@@ -244,8 +251,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar usuários selecionados',
+            label: actionsT('edit'),
+            tooltip: usersT('editTooltip'),
             handler: (items: UserType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -253,17 +260,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
             variant: 'destructive',
-            tooltip: 'Excluir os usuários selecionados',
+            tooltip: usersT('deleteTooltip'),
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
             variant: 'default',
-            tooltip: 'Criar novo usuário',
+            tooltip: usersT('createTooltip'),
             handler: openCreateDialog,
             show: 'none',
           },

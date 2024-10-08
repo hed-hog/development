@@ -1,0 +1,18 @@
+{
+  "users": "Usuários",
+  "roles": "Cargos",
+  "screens": "Telas",
+  "menus": "Menus",
+  "routes": "Rotas",
+  "settings": "Configurações",
+  "persons": "Pessoas",
+  "address": "Endereços",
+  "contacts": "Contatos",
+  "customs": "Atributos Personalizados",
+  "documents": "Documentos",
+  "addressTypes": "Tipos de Endereço",
+  "contactTypes": "Tipos de Contato",
+  "customTypes": "Tipos Personalizados",
+  "documentTypes": "Tipos de Documento",
+  "personTypes": "Tipos de Pessoa"
+}

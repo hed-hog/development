@@ -1,0 +1,15 @@
+{
+  "create": "Create Custom Attribute",
+  "createText": "Fill the Custom Attribute informations.",
+  "createTooltip": "Create new Custom Attribute",
+  "delete": "Delete Custom Attribute",
+  "deleteText": "Are you sure to delete these Custom Attributes?",
+  "deleteTooltip": "Delete the selected Custom Attributes",
+  "edit": "Edit Custom Attribute",
+  "editText": "View and edit Custom Attribute information.",
+  "editTooltip": "Edit the selected Custom Attributes",
+  "type": "Type",
+  "name": "Name",
+  "value": "Value",
+  "noneRegistered": "No custom attributes registered."
+}

@@ -397,7 +397,6 @@ const DataPanelInner = <T extends any>(
           {hasSearch && (
             <div className='w-1/4 min-w-80'>
               <SearchField
-                placeholder='Buscar...'
                 value={search}
                 onSearch={(value) => {
                   setSearch(value)

@@ -13,6 +13,7 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonCustomType[]>([])
@@ -22,6 +23,10 @@ export default function Page() {
   const { mutate: editCustomType } = useEditCustomType()
   const { mutate: deleteCustomTypes } = useDeleteCustomType()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+
+  const { t: customTypesT } = useTranslation('custom-types')
+  const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -38,20 +43,20 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Tipo de Contato',
-      description: 'Preencha as informações do tipo de contato.',
+      title: customTypesT('create'),
+      description: customTypesT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: customTypesT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data: PersonCustomType) => {
             createCustomType({
               id: Number(data.id),
@@ -79,20 +84,19 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: 'Excluir Tipo Customizado',
-      description:
-        'Tem certeza de que deseja deletar estes tipos customizados?',
+      title: customTypesT('delete'),
+      description: customTypesT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteCustomTypes(items.map((item) => item.id))
@@ -117,10 +121,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -133,7 +137,7 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: customTypesT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -149,8 +153,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Tipo Customizado',
-      description: 'Visualize e edite as informações do tipo customizado.',
+      title: customTypesT('edit'),
+      description: customTypesT('editText'),
     })
 
     return id
@@ -159,11 +163,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Custom Types - Hedhog</title>
+        <title>{modulesT('customs')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Custom Types</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('customs')}
+          </h1>
         </div>
       </div>
 
@@ -174,7 +180,7 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
+          { key: 'name', header: customTypesT('name') },
         ]}
         onItemDoubleClick={(item) => openEditDialog(item)}
         selected={selectedItems as PersonCustomType[]}
@@ -184,8 +190,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar os tipos customizados selecionados',
+            label: actionsT('edit'),
+            tooltip: actionsT('editTooltip'),
             handler: (items: PersonCustomType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -193,17 +199,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
+            tooltip: actionsT('deleteTooltip'),
             variant: 'destructive',
-            tooltip: 'Excluir os tipos customizados selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
+            tooltip: actionsT('createTooltip'),
             variant: 'default',
-            tooltip: 'Criar novo tipo customizado',
             handler: openCreateDialog,
             show: 'none',
           },
