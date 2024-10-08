@@ -59,6 +59,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const formAddressDefaultValues: PersonAddress = {
@@ -162,6 +163,14 @@ export default function Page() {
   const { data: personTypeData } = usePersonTypes()
   const { data: countriesData } = useCountries()
 
+  const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
+  const { t: personsT } = useTranslation('persons')
+  const { t: addressT } = useTranslation('address')
+  const { t: contactsT } = useTranslation('contacts')
+  const { t: documentsT } = useTranslation('documents')
+  const { t: customsT } = useTranslation('customs')
+
   useEffect(() => {
     if (!personTypeData) return
     const personTypes = ((personTypeData?.data as any).data ?? []).map(
@@ -237,33 +246,33 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Pessoa',
-      description: 'Preencha as informações do pessoa.',
+      title: personsT('create'),
+      description: personsT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: personsT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'type_id',
-              label: { text: 'Tipo de Pessoa' },
+              label: { text: personsT('type') },
               type: EnumFieldType.SELECT,
               required: true,
               options: personTypes,
             },
             {
               name: 'birth_at',
-              label: { text: 'Data de Nascimento' },
+              label: { text: personsT('birthDate') },
               type: EnumFieldType.DATEPICKER,
               required: true,
             },
           ]}
           form={formPerson}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data: PersonType) => {
             createPerson({
               id: Number(data.id),
@@ -288,25 +297,25 @@ export default function Page() {
             <div key={item.name} className='mb-5'>
               <h3 className='text-md font-semibold'>{item.name}</h3>
               <p className='text-xs'>
-                Data de nascimento: {formatDate(item.birth_at)}
+                {personsT('birthDate')}: {formatDate(item.birth_at)}
               </p>
             </div>
           ))}
         </div>
       ),
-      title: 'Excluir Pessoa',
-      description: 'Tem certeza de que deseja deletar estas pessoas?',
+      title: personsT('delete'),
+      description: personsT('deleteText'),
       buttons: [
         {
           variant: 'secondary',
-          text: 'Cancelar',
+          text: actionsT('cancel'),
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deletePersons(items.map((item) => item.id))
@@ -339,16 +348,16 @@ export default function Page() {
     })
 
     const sheetId = openSheet({
-      title: addressItem.id ? 'Editar Endereço' : 'Adicionar Novo Endereço',
+      title: addressItem.id ? addressT('edit') : addressT('create'),
       description: addressItem.id
-        ? 'Edite as informações do endereço.'
-        : 'Insira os dados do novo endereço.',
+        ? addressT('editTooltip')
+        : addressT('createTooltip'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'type_id',
-              label: { text: 'Tipo de Endereço' },
+              label: { text: addressT('type') },
               type: EnumFieldType.SELECT,
               required: true,
               options: addressTypes,
@@ -356,63 +365,63 @@ export default function Page() {
             },
             {
               name: 'street',
-              label: { text: 'Rua' },
+              label: { text: addressT('street') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: addressItem.street,
             },
             {
               name: 'number',
-              label: { text: 'Número' },
+              label: { text: addressT('number') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: addressItem.number,
             },
             {
               name: 'complement',
-              label: { text: 'Complemento' },
+              label: { text: addressT('complement') },
               type: EnumFieldType.TEXT,
               required: false,
               defaultValue: addressItem.complement,
             },
             {
               name: 'reference',
-              label: { text: 'Referência' },
+              label: { text: addressT('reference') },
               type: EnumFieldType.TEXT,
               required: false,
               defaultValue: addressItem.reference,
             },
             {
               name: 'district',
-              label: { text: 'Bairro' },
+              label: { text: addressT('district') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: addressItem.district,
             },
             {
               name: 'city',
-              label: { text: 'Cidade' },
+              label: { text: addressT('city') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: addressItem.city,
             },
             {
               name: 'state',
-              label: { text: 'Estado' },
+              label: { text: addressT('state') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: addressItem.state,
             },
             {
               name: 'country_id',
-              label: { text: 'País' },
+              label: { text: addressT('country') },
               type: EnumFieldType.SELECT,
               required: true,
               options: countries,
             },
             {
               name: 'postal_code',
-              label: { text: 'Código Postal' },
+              label: { text: addressT('postalCode') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: addressItem.postal_code,
@@ -423,7 +432,7 @@ export default function Page() {
       ),
       buttons: [
         {
-          text: 'Aplicar',
+          text: actionsT('apply'),
           onClick: () => {
             const addressDataFilled = formAddress.getValues()
 
@@ -461,18 +470,18 @@ export default function Page() {
           className='my-2 w-full rounded-2xl border-2 border-blue-500 p-2'
         />
       ),
-      title: 'Excluir Endereço',
-      description: 'Tem certeza de que deseja deletar este endereço?',
+      title: addressT('delete'),
+      description: addressT('deleteText'),
       buttons: [
         {
           variant: 'secondary',
-          text: 'Cancelar',
+          text: actionsT('cancel'),
           onClick: () => {
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteAddress({
@@ -500,16 +509,16 @@ export default function Page() {
     })
 
     const sheetId = openSheet({
-      title: contactItem.id ? 'Editar Contato' : 'Adicionar Novo Contato',
+      title: contactItem.id ? contactsT('edit') : contactsT('create'),
       description: contactItem.id
-        ? 'Edite as informações do contato.'
-        : 'Insira os dados do novo contato.',
+        ? contactsT('editTooltip')
+        : contactsT('createTooltip'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'type_id',
-              label: { text: 'Tipo de Contato' },
+              label: { text: contactsT('type') },
               type: EnumFieldType.SELECT,
               required: true,
               options: contactTypes,
@@ -517,7 +526,7 @@ export default function Page() {
             },
             {
               name: 'value',
-              label: { text: 'Valor' },
+              label: { text: contactsT('value') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: contactItem.value,
@@ -528,7 +537,7 @@ export default function Page() {
       ),
       buttons: [
         {
-          text: 'Aplicar',
+          text: actionsT('apply'),
           onClick: () => {
             const contactDataFilled = formContact.getValues()
 
@@ -566,18 +575,18 @@ export default function Page() {
           className='my-2 w-full rounded-2xl border-2 border-blue-500 p-2'
         />
       ),
-      title: 'Excluir Contato',
-      description: 'Tem certeza de que deseja deletar este contato?',
+      title: contactsT('delete'),
+      description: contactsT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteContact({
@@ -608,16 +617,16 @@ export default function Page() {
     })
 
     const sheetId = openSheet({
-      title: documentItem.id ? 'Editar Documento' : 'Adicionar Novo Documento',
+      title: documentItem.id ? documentsT('edit') : documentsT('create'),
       description: documentItem.id
-        ? 'Edite as informações do documento.'
-        : 'Insira os dados do novo documento.',
+        ? documentsT('editText')
+        : documentsT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'type_id',
-              label: { text: 'Tipo de Documento' },
+              label: { text: documentsT('type') },
               type: EnumFieldType.SELECT,
               required: true,
               options: documentTypes,
@@ -625,7 +634,7 @@ export default function Page() {
             },
             {
               name: 'country_id',
-              label: { text: 'País' },
+              label: { text: documentsT('country') },
               type: EnumFieldType.SELECT,
               required: true,
               options: countries,
@@ -633,21 +642,21 @@ export default function Page() {
             },
             {
               name: 'value',
-              label: { text: 'Valor' },
+              label: { text: documentsT('value') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: documentItem.value,
             },
             {
               name: 'issued_at',
-              label: { text: 'Data de Emissão' },
+              label: { text: documentsT('issuedDate') },
               type: EnumFieldType.DATEPICKER,
               required: false,
               defaultValue: documentItem.issued_at,
             },
             {
               name: 'expiry_at',
-              label: { text: 'Data de Expiração' },
+              label: { text: documentsT('expiryDate') },
               type: EnumFieldType.DATEPICKER,
               required: false,
               defaultValue: documentItem.expiry_at,
@@ -658,7 +667,7 @@ export default function Page() {
       ),
       buttons: [
         {
-          text: 'Aplicar',
+          text: actionsT('apply'),
           onClick: () => {
             const documentDataFilled = formDocument.getValues()
 
@@ -690,18 +699,18 @@ export default function Page() {
           className='my-2 w-full rounded-2xl border-2 border-blue-500 p-2'
         />
       ),
-      title: 'Excluir Documento',
-      description: 'Tem certeza de que deseja deletar este documento?',
+      title: documentsT('delete'),
+      description: documentsT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteDocument({
@@ -727,18 +736,16 @@ export default function Page() {
     })
 
     const sheetId = openSheet({
-      title: customItem.id
-        ? 'Editar Atributo Personalizado'
-        : 'Adicionar Novo Atributo Personalizado',
+      title: customItem.id ? customsT('edit') : customsT('create'),
       description: customItem.id
-        ? 'Edite as informações do atributo personalizado.'
-        : 'Insira os dados do novo atributo personalizado.',
+        ? customsT('editText')
+        : customsT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'type_id',
-              label: { text: 'Tipo do Atributo' },
+              label: { text: customsT('type') },
               type: EnumFieldType.SELECT,
               required: true,
               options: customTypes,
@@ -746,14 +753,14 @@ export default function Page() {
             },
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: customsT('name') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: customItem.name,
             },
             {
               name: 'value',
-              label: { text: 'Valor' },
+              label: { text: customsT('value') },
               type: EnumFieldType.TEXT,
               required: true,
               defaultValue: customItem.value,
@@ -764,7 +771,7 @@ export default function Page() {
       ),
       buttons: [
         {
-          text: 'Aplicar',
+          text: actionsT('apply'),
           onClick: () => {
             const customDataFilled = formCustom.getValues()
 
@@ -796,19 +803,18 @@ export default function Page() {
           className='my-2 w-full rounded-2xl border-2 border-blue-500 p-2'
         />
       ),
-      title: 'Excluir Atributo Personalizado',
-      description:
-        'Tem certeza de que deseja deletar este atributo personalizado?',
+      title: customsT('delete'),
+      description: customsT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteCustom({
@@ -839,10 +845,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -855,13 +861,13 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: personsT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'type_id',
-                      label: { text: 'Tipo de Pessoa' },
+                      label: { text: personsT('type') },
                       type: EnumFieldType.SELECT,
                       required: true,
                       options: personTypes,
@@ -869,7 +875,7 @@ export default function Page() {
                     },
                     {
                       name: 'birth_at',
-                      label: { text: 'Data de Nascimento' },
+                      label: { text: personsT('birthDate') },
                       type: EnumFieldType.DATEPICKER,
                       required: true,
                     },
@@ -889,7 +895,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Contatos',
+              title: modulesT('contacts'),
               children: (
                 <div className='h-full w-full'>
                   {item.person_contacts?.map((contact) => (
@@ -904,7 +910,7 @@ export default function Page() {
                   ))}
                   {!Boolean(item.person_contacts?.length) && (
                     <span className='my-2 flex justify-center text-sm'>
-                      Nenhum contato cadastrado.
+                      {contactsT('noneRegistered')}
                     </span>
                   )}
                   <Button
@@ -919,7 +925,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Documentos',
+              title: modulesT('documents'),
               children: (
                 <div className='h-full w-full'>
                   {item.person_documents?.map((document) => (
@@ -934,7 +940,7 @@ export default function Page() {
                   ))}
                   {!Boolean(item.person_documents?.length) && (
                     <span className='my-2 flex justify-center text-sm'>
-                      Nenhum documento cadastrado.
+                      {documentsT('noneRegistered')}
                     </span>
                   )}
                   <Button
@@ -949,7 +955,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Endereços',
+              title: modulesT('address'),
               children: (
                 <div className='h-full w-full'>
                   {item.person_addresses?.map((address) => (
@@ -964,7 +970,7 @@ export default function Page() {
                   ))}
                   {!Boolean(item.person_addresses?.length) && (
                     <span className='my-2 flex justify-center text-sm'>
-                      Nenhum endereço cadastrado.
+                      {addressT('noneRegistered')}
                     </span>
                   )}
                   <Button
@@ -979,7 +985,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Outros',
+              title: modulesT('customs'),
               children: (
                 <div className='h-full w-full'>
                   {item.person_customs?.map((custom) => (
@@ -994,7 +1000,7 @@ export default function Page() {
                   ))}
                   {!Boolean(item.person_customs?.length) && (
                     <span className='my-2 flex justify-center text-sm'>
-                      Nenhum atributo personalizado cadastrado.
+                      {customsT('noneRegistered')}
                     </span>
                   )}
                   <Button
@@ -1011,8 +1017,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Pessoa',
-      description: 'Visualize e edite as informações do pessoa.',
+      title: personsT('edit'),
+      description: personsT('editText'),
     })
 
     return id
@@ -1021,11 +1027,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Persons - Hedhog</title>
+        <title>{modulesT('persons')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Persons</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('persons')}
+          </h1>
         </div>
       </div>
 
@@ -1051,7 +1059,7 @@ export default function Page() {
                 <div className='flex flex-row'>
                   <IconClock className='mr-0.5 h-4 w-4' />
                   <h4 className='text-xs font-normal'>
-                    Cadastrado {timeSince(String(item.created_at))}
+                    {timeSince(String(item.created_at))}
                   </h4>
                 </div>
               </div>
@@ -1088,8 +1096,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar as pessoas selecionados',
+            label: actionsT('edit'),
+            tooltip: personsT('editTooltip'),
             handler: (items: PersonType[]) => {
               if (items.length === 1) openEditPersonDialog(items[0])
             },
@@ -1097,17 +1105,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
+            tooltip: personsT('deleteTooltip'),
             variant: 'destructive',
-            tooltip: 'Excluir as pessoas selecionados',
             handler: openDeletePersonDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
+            tooltip: personsT('createTooltip'),
             variant: 'default',
-            tooltip: 'Criar novo pessoa',
             handler: openCreatePersonDialog,
             show: 'none',
           },

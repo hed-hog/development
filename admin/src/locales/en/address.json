@@ -1,0 +1,22 @@
+{
+  "create": "Create Address",
+  "createText": "Fill the address informations.",
+  "createTooltip": "Create new address",
+  "delete": "Delete Address",
+  "deleteText": "Are you sure to delete these addresss?",
+  "deleteTooltip": "Delete the selected addresss",
+  "edit": "Edit Address",
+  "editText": "View and edit address information.",
+  "editTooltip": "Edit the selected addresss",
+  "type": "Address Type",
+  "street": "Street",
+  "number": "Number",
+  "complement": "Complement",
+  "reference": "Reference",
+  "district": "District",
+  "city": "City",
+  "state": "State",
+  "country": "Country",
+  "postalCode": "Postal Code",
+  "noneRegistered": "No addresses registered."
+}

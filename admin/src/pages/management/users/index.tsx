@@ -37,7 +37,7 @@ export default function Page() {
   const { mutate: editUser } = useEditUser()
   const { mutate: editUserRoles } = useEditUserRoles()
 
-  const { t: usersT } = useTranslation('user')
+  const { t: usersT } = useTranslation('users')
   const { t: actionsT } = useTranslation('actions')
   const { t: modulesT } = useTranslation('modules')
 

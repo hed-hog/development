@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next'
 export default function Page() {
   const { t: modulesT } = useTranslation('modules')
   const { t: actionsT } = useTranslation('actions')
-  const { t: menuT } = useTranslation('menu')
+  const { t: menuT } = useTranslation('menus')
 
   const [selectedItems, setSelectedItems] = useState<
     (MenuType | RoleType | ScreenType)[]
