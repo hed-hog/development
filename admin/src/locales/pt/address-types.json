@@ -1,0 +1,12 @@
+{
+  "create": "Criar Tipo de Endereço",
+  "createText": "Preencha as informações do tipo de endereço.",
+  "createTooltip": "Criar novo tipo de endereço",
+  "delete": "Excluir Tipo de Endereço",
+  "deleteText": "Tem certeza de que deseja deletar estes tipos de endereços?",
+  "deleteTooltip": "Excluir os tipos de endereços selecionados",
+  "edit": "Editar Tipo de Endereço",
+  "editText": "Visualize e edite as informações do tipo de endereço.",
+  "editTooltip": "Editar os tipos de endereços selecionados",
+  "name": "Nome"
+}

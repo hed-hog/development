@@ -13,6 +13,7 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonAddressType[]>([])
@@ -22,6 +23,10 @@ export default function Page() {
   const { mutate: editAddressType } = useEditAddressType()
   const { mutate: deleteAddressTypes } = useDeleteAddressType()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+
+  const { t: addressTypesT } = useTranslation('address-types')
+  const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -38,20 +43,20 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Tipo de Endereço',
-      description: 'Preencha as informações do tipo de endereço.',
+      title: addressTypesT('create'),
+      description: addressTypesT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: addressTypesT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data: PersonAddressType) => {
             createAddressType({
               id: Number(data.id),
@@ -79,19 +84,19 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: 'Excluir Tipo de Endereço',
-      description: 'Tem certeza de que deseja deletar estes tipos de endereço?',
+      title: addressTypesT('delete'),
+      description: addressTypesT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteAddressTypes(items.map((item) => item.id))
@@ -116,10 +121,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -132,7 +137,7 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: addressTypesT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -148,8 +153,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Tipo de Endereço',
-      description: 'Visualize e edite as informações do tipo de endereço.',
+      title: addressTypesT('edit'),
+      description: addressTypesT('editText'),
     })
 
     return id
@@ -158,11 +163,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Address Types - Hedhog</title>
+        <title>{modulesT('addressTypes')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Address Types</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('addressTypes')}
+          </h1>
         </div>
       </div>
       <DataPanel
@@ -172,7 +179,7 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID', width: 50 },
-          { key: 'name', header: 'Name' },
+          { key: 'name', header: addressTypesT('name') },
         ]}
         selected={selectedItems as PersonAddressType[]}
         multiple
@@ -182,8 +189,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar os tipos de endereço selecionados',
+            label: actionsT('edit'),
+            tooltip: addressTypesT('editTooltip'),
             handler: (items: PersonAddressType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -191,17 +198,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
+            tooltip: addressTypesT('deleteTooltip'),
             variant: 'destructive',
-            tooltip: 'Excluir os tipos de endereço selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
+            tooltip: addressTypesT('createTooltip'),
             variant: 'default',
-            tooltip: 'Criar novo tipo de endereço',
             handler: openCreateDialog,
             show: 'none',
           },
