@@ -13,6 +13,7 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonContactType[]>([])
@@ -22,6 +23,10 @@ export default function Page() {
   const { mutate: editContactType } = useEditContactType()
   const { mutate: deleteContactTypes } = useDeleteContactType()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+
+  const { t: contactTypesT } = useTranslation('contact-types')
+  const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -38,20 +43,20 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Tipo de Contato',
-      description: 'Preencha as informações do tipo de contato.',
+      title: contactTypesT('create'),
+      description: contactTypesT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: contactTypesT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data: PersonContactType) => {
             createContactType({
               id: Number(data.id),
@@ -79,19 +84,19 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: 'Excluir Tipo de Contato',
-      description: 'Tem certeza de que deseja deletar estes tipos de contato?',
+      title: contactTypesT('delete'),
+      description: contactTypesT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteContactTypes(items.map((item) => item.id))
@@ -116,10 +121,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -132,7 +137,7 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: contactTypesT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -148,8 +153,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Tipo de Contato',
-      description: 'Visualize e edite as informações do tipo de contato.',
+      title: contactTypesT('edit'),
+      description: contactTypesT('editText'),
     })
 
     return id
@@ -158,11 +163,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Contact Types - Hedhog</title>
+        <title>{modulesT('contactTypes')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Contact Types</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('contactTypes')}
+          </h1>
         </div>
       </div>
 
@@ -173,7 +180,7 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
+          { key: 'name', header: contactTypesT('name') },
         ]}
         selected={selectedItems as PersonContactType[]}
         multiple
@@ -183,8 +190,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar os cargos selecionados',
+            label: actionsT('edit'),
+            tooltip: contactTypesT('editTooltip'),
             handler: (items: PersonContactType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -192,17 +199,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
+            tooltip: contactTypesT('deleteTooltip'),
             variant: 'destructive',
-            tooltip: 'Excluir os cargos selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
+            tooltip: contactTypesT('createTooltip'),
             variant: 'default',
-            tooltip: 'Criar novo cargo',
             handler: openCreateDialog,
             show: 'none',
           },

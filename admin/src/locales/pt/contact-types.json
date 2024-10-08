@@ -1,0 +1,12 @@
+{
+  "create": "Criar Tipo de Contato",
+  "createText": "Preencha as informações do tipo de contato.",
+  "createTooltip": "Criar novo tipo de contato",
+  "delete": "Excluir Tipo de Contato",
+  "deleteText": "Tem certeza de que deseja deletar estes tipos de contatos?",
+  "deleteTooltip": "Excluir os tipos de contatos selecionados",
+  "edit": "Editar Tipo de Contato",
+  "editText": "Visualize e edite as informações do tipo de contato.",
+  "editTooltip": "Editar os tipos de contatos selecionados",
+  "name": "Nome"
+}
