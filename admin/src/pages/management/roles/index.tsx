@@ -23,8 +23,13 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
+  const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
+  const { t: rolesT } = useTranslation('roles')
+
   const [selectedItems, setSelectedItems] = useState<
     (RoleType | RouteType | MenuType | ScreenType)[]
   >([])
@@ -60,26 +65,26 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Cargo',
-      description: 'Preencha as informações do cargo.',
+      title: rolesT('create'),
+      description: rolesT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: rolesT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'description',
-              label: { text: 'Descrição' },
+              label: { text: rolesT('description') },
               type: EnumFieldType.TEXT,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data: RoleType) => {
             createRole(data)
             closeDialog(id)
@@ -103,19 +108,19 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: 'Excluir Cargo',
-      description: 'Tem certeza de que deseja deletar estes cargos?',
+      title: rolesT('delete'),
+      description: rolesT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteRoles(items.map((item) => item.id))
@@ -141,10 +146,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -157,13 +162,13 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: rolesT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'description',
-                      label: { text: 'Descrição' },
+                      label: { text: rolesT('description') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -177,7 +182,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Usuários',
+              title: modulesT('users'),
               children: (
                 <DataPanel
                   ref={roleUsersRef}
@@ -196,7 +201,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (roleUsersRef.current) {
@@ -223,7 +228,7 @@ export default function Page() {
               ],
             },
             {
-              title: 'Rotas',
+              title: modulesT('routes'),
               children: (
                 <DataPanel
                   ref={roleRoutesRef}
@@ -250,7 +255,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (roleRoutesRef.current) {
@@ -277,7 +282,7 @@ export default function Page() {
               ],
             },
             {
-              title: 'Menus',
+              title: modulesT('menus'),
               children: (
                 <DataPanel
                   ref={roleMenusRef}
@@ -304,7 +309,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (roleMenusRef.current) {
@@ -331,7 +336,7 @@ export default function Page() {
               ],
             },
             {
-              title: 'Telas',
+              title: modulesT('screens'),
               children: (
                 <DataPanel
                   ref={roleScreensRef}
@@ -363,7 +368,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (roleScreensRef.current) {
@@ -392,8 +397,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Cargo',
-      description: 'Visualize e edite as informações dos cargos.',
+      title: rolesT('edit'),
+      description: rolesT('editText'),
     })
 
     return id
@@ -402,11 +407,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Roles - Hedhog</title>
+        <title>{modulesT('roles')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Roles</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('roles')}
+          </h1>
         </div>
       </div>
 
@@ -417,8 +424,8 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
-          { key: 'description', header: 'Descrição' },
+          { key: 'name', header: rolesT('name') },
+          { key: 'description', header: rolesT('description') },
         ]}
         selected={selectedItems as RoleType[]}
         multiple
@@ -428,8 +435,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar os cargos selecionados',
+            label: actionsT('edit'),
+            tooltip: rolesT('editTooltip'),
             handler: (items: RoleType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -437,17 +444,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('remove'),
+            tooltip: rolesT('deleteTooltip'),
             variant: 'destructive',
-            tooltip: 'Excluir os cargos selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
+            tooltip: rolesT('createTooltip'),
             variant: 'default',
-            tooltip: 'Criar novo cargo',
             handler: openCreateDialog,
             show: 'none',
           },

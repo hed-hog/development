@@ -1,0 +1,13 @@
+{
+  "create": "Criar Cargo",
+  "createText": "Preencha as informações do cargo.",
+  "createTooltip": "Criar novo cargo",
+  "delete": "Excluir Cargo",
+  "deleteText": "Tem certeza de que deseja deletar estes cargos?",
+  "deleteTooltip": "Excluir os cargos selecionados",
+  "edit": "Editar Cargo",
+  "editText": "Visualize e edite as informações do cargo.",
+  "editTooltip": "Editar os cargos selecionados",
+  "name": "Nome",
+  "description": "Descrição"
+}

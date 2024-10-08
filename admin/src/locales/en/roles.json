@@ -1,0 +1,13 @@
+{
+  "create": "Create Role",
+  "createText": "Fill the role informations.",
+  "createTooltip": "Create new role",
+  "delete": "Delete Role",
+  "deleteText": "Are you sure to delete these roles?",
+  "deleteTooltip": "Delete the selected roles",
+  "edit": "Edit Role",
+  "editText": "View and edit role information.",
+  "editTooltip": "Edit the selected roles",
+  "name": "Name",
+  "description": "Description"
+}
