@@ -1,0 +1,12 @@
+{
+  "create": "Create Person Type",
+  "createText": "Fill the person type informations.",
+  "createTooltip": "Create new person type",
+  "delete": "Delete Person Type",
+  "deleteText": "Are you sure to delete these person types?",
+  "deleteTooltip": "Delete the selected person types",
+  "edit": "Edit Person Type",
+  "editText": "View and edit person type information.",
+  "editTooltip": "Edit the selected person types",
+  "name": "Name"
+}

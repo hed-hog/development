@@ -13,6 +13,7 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonDocumentType[]>([])
@@ -22,6 +23,10 @@ export default function Page() {
   const { mutate: editDocumentType } = useEditDocumentType()
   const { mutate: deleteDocumentTypes } = useDeleteDocumentType()
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+
+  const { t: documentTypesT } = useTranslation('document-types')
+  const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
 
   const form = useForm<FieldValues>({
     defaultValues: {
@@ -38,20 +43,20 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Tipo de Document',
-      description: 'Preencha as informações do tipo de documento.',
+      title: documentTypesT('create'),
+      description: documentTypesT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: documentTypesT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data: PersonDocumentType) => {
             createDocumentType({
               id: Number(data.id),
@@ -79,20 +84,19 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: 'Excluir Tipo de Documento',
-      description:
-        'Tem certeza de que deseja deletar estes tipos de documento?',
+      title: documentTypesT('delete'),
+      description: documentTypesT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteDocumentTypes(items.map((item) => item.id))
@@ -117,10 +121,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -133,7 +137,7 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: documentTypesT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -149,8 +153,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Tipo de Documento',
-      description: 'Visualize e edite as informações do tipo de documento.',
+      title: documentTypesT('edit'),
+      description: documentTypesT('editText'),
     })
 
     return id
@@ -159,11 +163,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Document Types - Hedhog</title>
+        <title>{modulesT('documentTypes')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Document Types</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('documentTypes')}
+          </h1>
         </div>
       </div>
 
@@ -174,7 +180,7 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
+          { key: 'name', header: documentTypesT('name') },
         ]}
         selected={selectedItems as PersonDocumentType[]}
         multiple
@@ -184,8 +190,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar os tipos de documento selecionados',
+            label: actionsT('edit'),
+            tooltip: documentTypesT('editTooltip'),
             handler: (items: PersonDocumentType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -193,17 +199,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
+            tooltip: documentTypesT('deleteTooltip'),
             variant: 'destructive',
-            tooltip: 'Excluir os tipos de documento selecionados',
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
+            tooltip: documentTypesT('createTooltip'),
             variant: 'default',
-            tooltip: 'Criar novo tipo de documento',
             handler: openCreateDialog,
             show: 'none',
           },
