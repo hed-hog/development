@@ -22,6 +22,7 @@ import { SheetPickerField } from './sheet-picker-field'
 import { ChangeEventHandler, FormEventHandler } from 'react'
 import { CheckedState } from '@radix-ui/react-checkbox'
 import { EnumFieldType } from '@/enums/EnumFieldType'
+import { FormControl } from '../ui/form'
 
 type FieldProps = (
   | {
@@ -85,12 +86,14 @@ export default function Field({
     case EnumFieldType.TEXT:
     case EnumFieldType.FILE:
       return (
-        <Input
-          required={required}
-          type={type}
-          value={value || ''}
-          onChange={onChange}
-        />
+        <FormControl>
+          <Input
+            required={required}
+            type={type}
+            value={value || ''}
+            onChange={onChange}
+          />
+        </FormControl>
       )
 
     case EnumFieldType.PASSWORD:
@@ -162,9 +165,11 @@ export default function Field({
           value={String(value)}
           onValueChange={(value) => onChange(String(value))}
         >
-          <SelectTrigger className='w-full'>
-            <SelectValue placeholder={label?.text} />
-          </SelectTrigger>
+          <FormControl>
+            <SelectTrigger className='w-full'>
+              <SelectValue placeholder={label?.text} />
+            </SelectTrigger>
+          </FormControl>
           <SelectContent>
             <SelectGroup>
               {options.map((opt, index) => (

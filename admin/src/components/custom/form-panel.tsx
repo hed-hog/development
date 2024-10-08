@@ -62,17 +62,15 @@ export const FormPanel = forwardRef(
                   {label.text}
                 </FormLabel>
               )}
-              <FormControl>
-                <Field
-                  type={type}
-                  value={field.value}
-                  onChange={field.onChange}
-                  required={required}
-                  options={options}
-                  sliderOptions={sliderOptions}
-                  label={label}
-                />
-              </FormControl>
+              <Field
+                type={type}
+                value={field.value}
+                onChange={field.onChange}
+                required={required}
+                options={options}
+                sliderOptions={sliderOptions}
+                label={label}
+              />
               {description?.text && (
                 <FormDescription
                   style={description.style}
