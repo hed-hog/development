@@ -1,0 +1,13 @@
+{
+  "create": "Criar Rota",
+  "createText": "Preencha as informações da rota.",
+  "createTooltip": "Criar nova rota",
+  "delete": "Excluir Rota",
+  "deleteText": "Tem certeza de que deseja deletar estas rotas?",
+  "deleteTooltip": "Excluir as rotas selecionadas",
+  "edit": "Editar Rota",
+  "editText": "Visualize e edite as informações da rota.",
+  "editTooltip": "Editar as rotas selecionadas",
+  "url": "URL",
+  "method": "Método"
+}
