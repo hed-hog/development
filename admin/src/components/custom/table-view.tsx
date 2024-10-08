@@ -108,6 +108,10 @@ const TableView = <T extends any>({
     null
   )
 
+  useEffectAfterFirstUpdate(() => {
+    setVisibleColumns(columns)
+  }, [columns])
+
   const handleSort = useCallback(
     (columnKey: string) => {
       console.log(`column ${columnKey} clicked1`)

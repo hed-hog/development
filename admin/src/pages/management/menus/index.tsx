@@ -19,8 +19,13 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
+  const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
+  const { t: menuT } = useTranslation('menu')
+
   const [selectedItems, setSelectedItems] = useState<
     (MenuType | RoleType | ScreenType)[]
   >([])
@@ -54,32 +59,32 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Menu',
-      description: 'Preencha as informações do menu.',
+      title: menuT('create'),
+      description: menuT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: menuT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'url',
-              label: { text: 'URL' },
+              label: { text: menuT('url') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'icon',
-              label: { text: 'Ícone' },
+              label: { text: menuT('icon') },
               type: EnumFieldType.TEXT,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data) => {
             createMenu(data)
             closeDialog(id)
@@ -102,25 +107,25 @@ export default function Page() {
                 <span className='ml-2 inline'>{getIcon(item.icon)}</span>
               </div>
               <p className='text-xs'>
-                <b>URL:</b> {item.url}
+                <b>{menuT('url')}:</b> {item.url}
               </p>
             </div>
           ))}
         </div>
       ),
-      title: 'Excluir Menu',
-      description: 'Tem certeza de que deseja deletar estes menus?',
+      title: menuT('delete'),
+      description: menuT('deleteText'),
       buttons: [
         {
           variant: 'secondary',
-          text: 'Cancelar',
+          text: actionsT('cancel'),
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteMenu(items.map((item) => item.id))
@@ -147,10 +152,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -162,19 +167,19 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: menuT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'url',
-                      label: { text: 'URL' },
+                      label: { text: menuT('url') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'icon',
-                      label: { text: 'Ícone' },
+                      label: { text: menuT('icon') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -188,7 +193,7 @@ export default function Page() {
               ),
             },
             {
-              title: 'Cargos',
+              title: modulesT('roles'),
               children: (
                 <DataPanel<RoleType>
                   ref={menuRolesRef}
@@ -207,7 +212,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (menuRolesRef.current) {
@@ -234,7 +239,7 @@ export default function Page() {
               ],
             },
             {
-              title: 'Telas',
+              title: modulesT('screens'),
               children: (
                 <DataPanel
                   ref={menuScreensRef}
@@ -266,7 +271,7 @@ export default function Page() {
               ),
               buttons: [
                 {
-                  text: 'Aplicar',
+                  text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
                     if (menuScreensRef.current) {
@@ -295,8 +300,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Menu',
-      description: 'Visualize e edite as informações do menu.',
+      title: menuT('edit'),
+      description: menuT('editText'),
     })
 
     return id
@@ -305,11 +310,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Menus - Hedhog</title>
+        <title>{modulesT('menus')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Menus</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {modulesT('menus')}
+          </h1>
         </div>
       </div>
 
@@ -320,11 +327,11 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Name' },
-          { key: 'url', header: 'URL' },
+          { key: 'name', header: menuT('name') },
+          { key: 'url', header: menuT('url') },
           {
             key: 'icon',
-            header: 'Ícone',
+            header: menuT('icon'),
             render: (item) => (
               <div className='flex flex-row gap-2'>
                 {getIcon(item.icon)} {`${item.icon}`}
@@ -340,8 +347,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar os menus selecionados',
+            label: actionsT('edit'),
+            tooltip: menuT('editTooltip'),
             handler: (items: MenuType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -349,17 +356,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
             variant: 'destructive',
-            tooltip: 'Excluir os menus selecionados',
+            tooltip: menuT('deleteTooltip'),
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
             variant: 'default',
-            tooltip: 'Criar novo menu',
+            tooltip: menuT('createTooltip'),
             handler: openCreateDialog,
             show: 'none',
           },
