@@ -1036,7 +1036,7 @@ export default function Page() {
         render={(item: PersonType) => (
           <Card
             className='w-full rounded-lg border-none'
-            onClick={() => openEditPersonDialog(item)}
+            onDoubleClick={() => openEditPersonDialog(item)}
           >
             <CardHeader className='flex flex-row rounded-t-lg px-4 py-3 text-white'>
               <div className='h-10 w-10 rounded-full bg-white' />
