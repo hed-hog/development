@@ -45,8 +45,7 @@ const router = createBrowserRouter([
           {
             index: true,
             lazy: async () => ({
-              Component: (await import('./pages/management/persons/index.tsx'))
-                .default,
+              Component: (await import('./pages/persons/index.tsx')).default,
             }),
           },
         ],
@@ -95,9 +94,8 @@ const router = createBrowserRouter([
               {
                 index: true,
                 lazy: async () => ({
-                  Component: (
-                    await import('./pages/management/persons/index.tsx')
-                  ).default,
+                  Component: (await import('./pages/persons/index.tsx'))
+                    .default,
                 }),
               },
               {

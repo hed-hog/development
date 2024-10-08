@@ -20,7 +20,7 @@ export default function AddressCard({
     <div
       className={`flex cursor-pointer flex-row items-center justify-between ${className}`}
     >
-      <div className='my-3 flex items-center'>
+      <div className='my-2 flex items-center'>
         <IconMapPin className='text-white-500 mr-3 h-5 w-5' />
         <div className='flex flex-col'>
           <span

@@ -20,7 +20,7 @@ export default function CustomCard({
     <div
       className={`flex cursor-pointer flex-row items-center justify-between ${className}`}
     >
-      <div className='my-3 flex items-center'>
+      <div className='my-2 flex items-center'>
         <IconStar className='text-white-500 mr-3 h-5 w-5' />
         <span className='text-white-800 text-sm font-normal'>
           {custom.name}: {custom.value} ({custom.person_custom_types?.name})
