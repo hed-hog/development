@@ -96,6 +96,11 @@ type DataPanelType<T> = DataPanelTypeBase<T> &
           index: number,
           e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
         ) => void
+        onItemDoubleClick?: (
+          row: T,
+          index: number,
+          e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
+        ) => void
         onItemContextMenu?: (
           row: T,
           index: number,
@@ -108,6 +113,11 @@ type DataPanelType<T> = DataPanelTypeBase<T> &
           row: T,
           index: number,
           e: React.MouseEvent<HTMLDivElement, MouseEvent>
+        ) => void
+        onItemDoubleClick?: (
+          row: T,
+          index: number,
+          e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
         ) => void
         onItemContextMenu?: (
           row: T,
@@ -176,6 +186,7 @@ const DataPanelInner = <T extends any>(
     sortable = false,
     caption,
     onItemClick,
+    onItemDoubleClick,
     onItemContextMenu,
     responsiveColumns,
     itemClassName,
@@ -566,6 +577,7 @@ const DataPanelInner = <T extends any>(
               caption={caption}
               onItemClick={onItemClick}
               onItemContextMenu={onItemContextMenu}
+              onItemDoubleClick={onItemDoubleClick}
               isLoading={isLoading}
               onSortChange={onSortChange}
               onSelect={handleSelect}
@@ -603,6 +615,7 @@ const DataPanelInner = <T extends any>(
               }}
               render={render}
               onSelect={handleSelect}
+              onItemDoubleClick={onItemDoubleClick}
               onUnselect={handleUnselect}
               selectedIds={getSelectedItems().map((item) => extractKey(item))}
               {...(props as any)}
@@ -640,6 +653,7 @@ const DataPanelInner = <T extends any>(
               render={render}
               selectedIds={getSelectedItems().map((item) => extractKey(item))}
               onSelect={handleSelect}
+              onItemDoubleClick={onItemDoubleClick}
               onUnselect={handleUnselect}
               {...(props as any)}
             />

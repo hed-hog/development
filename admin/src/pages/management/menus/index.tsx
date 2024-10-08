@@ -336,6 +336,7 @@ export default function Page() {
         multiple
         hasSearch
         sortable
+        onItemDoubleClick={(item) => openEditDialog(item)}
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,

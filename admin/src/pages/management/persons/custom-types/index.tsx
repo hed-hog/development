@@ -176,6 +176,7 @@ export default function Page() {
           { key: 'id', header: 'ID' },
           { key: 'name', header: 'Name' },
         ]}
+        onItemDoubleClick={(item) => openEditDialog(item)}
         selected={selectedItems as PersonCustomType[]}
         multiple
         hasSearch
