@@ -1,0 +1,12 @@
+{
+  "create": "Create Config",
+  "createText": "Fill the config informations.",
+  "createTooltip": "Create new config",
+  "delete": "Delete Config",
+  "deleteText": "Are you sure to delete these configs?",
+  "deleteTooltip": "Delete the selected configs",
+  "edit": "Edit Config",
+  "editText": "View and edit config information.",
+  "editTooltip": "Edit the selected configs",
+  "name": "Name"
+}
