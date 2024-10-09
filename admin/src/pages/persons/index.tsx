@@ -56,6 +56,9 @@ import {
   IconPlus,
   IconTrash,
 } from '@tabler/icons-react'
+import { Locale } from 'date-fns'
+import { enUS, ptBR } from 'date-fns/locale'
+import { format } from 'date-fns'
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -163,6 +166,9 @@ export default function Page() {
   const { data: personTypeData } = usePersonTypes()
   const { data: countriesData } = useCountries()
 
+  const {
+    i18n: { language },
+  } = useTranslation()
   const { t: modulesT } = useTranslation('modules')
   const { t: actionsT } = useTranslation('actions')
   const { t: personsT } = useTranslation('persons')
@@ -170,6 +176,19 @@ export default function Page() {
   const { t: contactsT } = useTranslation('contacts')
   const { t: documentsT } = useTranslation('documents')
   const { t: customsT } = useTranslation('customs')
+
+  const locales: { [key: string]: Locale } = {
+    en: enUS,
+    pt: ptBR,
+  }
+
+  const formatDateToUTC = (date: Date) => {
+    const utcDate = new Date(date.toUTCString())
+    if (date.getHours() >= 21) {
+      utcDate.setUTCDate(utcDate.getUTCDate() + 1)
+    }
+    return format(utcDate, 'P', { locale: locales[language] })
+  }
 
   useEffect(() => {
     if (!personTypeData) return
@@ -1068,7 +1087,7 @@ export default function Page() {
               <div className='my-3  flex items-center'>
                 <IconCalendarClock className='text-white-500 mr-3 h-5 w-5' />
                 <span className='text-white-800 text-sm font-normal'>
-                  {formatDate(item.birth_at)}
+                  {formatDateToUTC(new Date(item.birth_at))}
                 </span>
               </div>
               {item.person_addresses &&

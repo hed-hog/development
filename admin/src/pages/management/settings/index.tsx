@@ -17,6 +17,9 @@ import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const { t: modulesT } = useTranslation('modules')
+  const { t: actionsT } = useTranslation('actions')
+  const { t: settingsT } = useTranslation('settings')
+
   const formEdit = useRef<any>(null)
 
   const form = useForm<FieldValues>({
@@ -42,20 +45,20 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: 'Criar Nova Configuração',
-      description: 'Preencha as informações da configuração.',
+      title: settingsT('create'),
+      description: settingsT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: 'Nome' },
+              label: { text: settingsT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
           ]}
           form={form}
-          button={{ text: 'Criar' }}
+          button={{ text: actionsT('create') }}
           onSubmit={(data: SettingType) => {
             createSetting(data)
             closeDialog(id)
@@ -78,18 +81,18 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: 'Excluir Configuração',
-      description: 'Tem certeza de que deseja deletar estas configurações?',
+      title: settingsT('delete'),
+      description: settingsT('deleteText'),
       buttons: [
         {
+          text: actionsT('cancel'),
           variant: 'secondary',
-          text: 'Cancelar',
           onClick: () => {
             closeDialog(id)
           },
         },
         {
-          text: 'Deletar',
+          text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
             deleteSettings(items.map((item) => item.id))
@@ -114,10 +117,10 @@ export default function Page() {
           activeTabIndex={0}
           tabs={[
             {
-              title: 'Detalhes',
+              title: actionsT('details'),
               buttons: [
                 {
-                  text: 'Salvar',
+                  text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -130,7 +133,7 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: 'Nome' },
+                      label: { text: settingsT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -146,8 +149,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: 'Editar Configuração',
-      description: 'Visualize e edite as informações da configuração.',
+      title: settingsT('edit'),
+      description: settingsT('editText'),
     })
 
     return id
@@ -174,7 +177,7 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: 'Nome' },
+          { key: 'name', header: settingsT('name') },
         ]}
         multiple
         hasSearch
@@ -183,8 +186,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: 'Editar',
-            tooltip: 'Editar configurações selecionadas',
+            label: actionsT('edit'),
+            tooltip: settingsT('editTooltip'),
             handler: (items: SettingType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -192,17 +195,17 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: 'Excluir',
+            label: actionsT('delete'),
+            tooltip: settingsT('deleteTooltip'),
             variant: 'destructive',
-            tooltip: 'Excluir as configurações selecionadas',
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: 'Criar',
+            label: actionsT('create'),
+            tooltip: settingsT('createTooltip'),
             variant: 'default',
-            tooltip: 'Criar nova configuração',
             handler: openCreateDialog,
             show: 'none',
           },

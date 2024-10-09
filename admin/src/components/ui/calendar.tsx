@@ -1,9 +1,17 @@
 import * as React from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
 import { DayPicker } from 'react-day-picker'
-
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/custom/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useTranslation } from 'react-i18next'
+import { enUS, Locale, ptBR } from 'date-fns/locale'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -13,9 +21,99 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('calendar', { useSuspense: false })
+  const [selectedMonth, setSelectedMonth] = React.useState(
+    new Date().getMonth()
+  )
+  const [selectedYear, setSelectedYear] = React.useState(
+    new Date().getFullYear()
+  )
+  const currentYear = new Date().getFullYear()
+
+  const months = [
+    t('january'),
+    t('february'),
+    t('march'),
+    t('april'),
+    t('may'),
+    t('june'),
+    t('july'),
+    t('august'),
+    t('september'),
+    t('october'),
+    t('november'),
+    t('december'),
+  ]
+
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i)
+
+  const locales: { [key: string]: Locale } = {
+    en: enUS,
+    pt: ptBR,
+  }
+
+  const CustomCaption = ({ onMonthChange }: any) => {
+    return (
+      <div className='flex items-center justify-center space-x-2'>
+        {/* Select para o mês */}
+        <Select
+          value={String(selectedMonth)}
+          onValueChange={(value: string) => {
+            const month = parseInt(value, 10)
+            setSelectedMonth(month)
+            const newDate = new Date(selectedYear, month)
+            onMonthChange(newDate)
+          }}
+        >
+          <SelectTrigger className='text-sm font-medium'>
+            <SelectValue placeholder='Select month' />
+          </SelectTrigger>
+          <SelectContent>
+            {months.map((month, index) => (
+              <SelectItem key={index} value={String(index)}>
+                {month}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* Select para o ano */}
+        <Select
+          value={String(selectedYear)}
+          onValueChange={(value: string) => {
+            const year = parseInt(value, 10)
+            setSelectedYear(year)
+            const newDate = new Date(year, selectedMonth)
+            onMonthChange(newDate)
+          }}
+        >
+          <SelectTrigger className='text-sm font-medium'>
+            <SelectValue placeholder='Select year' />
+          </SelectTrigger>
+          <SelectContent>
+            {years.map((year) => (
+              <SelectItem key={year} value={String(year)}>
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    )
+  }
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      month={new Date(selectedYear, selectedMonth)}
+      onMonthChange={(date) => {
+        setSelectedMonth(date.getMonth())
+        setSelectedYear(date.getFullYear())
+      }}
+      locale={locales[language]}
       className={cn('p-3', className)}
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
@@ -50,7 +148,7 @@ function Calendar({
           'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
         day_today: 'bg-accent text-accent-foreground',
         day_outside:
-          'day-outside text-muted-foreground opacity-50  aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
+          'day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
         day_disabled: 'text-muted-foreground opacity-50',
         day_range_middle:
           'aria-selected:bg-accent aria-selected:text-accent-foreground',
@@ -60,6 +158,7 @@ function Calendar({
       components={{
         IconLeft: () => <ChevronLeftIcon className='h-4 w-4' />,
         IconRight: () => <ChevronRightIcon className='h-4 w-4' />,
+        Caption: CustomCaption,
       }}
       {...props}
     />
