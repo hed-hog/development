@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react'
 import { Checkbox } from '../ui/checkbox'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import { IStyleOption } from '@/types/style-options'
@@ -38,41 +43,44 @@ type GridViewProps<T> = {
   selectedIds?: string[]
 } & React.HTMLAttributes<HTMLDivElement>
 
-const GridView = <T extends any>({
-  extractKey = (item: T) => {
-    try {
-      return 'id' in (item as any) ? String((item as any).id) : ''
-    } catch (e) {
-      return ''
-    }
-  },
-  responsiveColumns = {
-    default: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
-  },
-  styleOptions = {
-    gap: 0,
-    padding: 0,
-  },
-  data = [],
-  render,
-  selectable = false,
-  multiple = true,
-  onSelectionChange,
-  className,
-  onItemClick,
-  onItemDoubleClick,
-  checked,
-  onItemContextMenu,
-  itemClassName,
-  onSelect,
-  onUnselect,
-  selectedIds = [],
-  ...props
-}: GridViewProps<T>) => {
+const GridViewInner = <T extends any>(
+  {
+    extractKey = (item: T) => {
+      try {
+        return 'id' in (item as any) ? String((item as any).id) : ''
+      } catch (e) {
+        return ''
+      }
+    },
+    responsiveColumns = {
+      default: 1,
+      sm: 2,
+      md: 3,
+      lg: 4,
+      xl: 5,
+    },
+    styleOptions = {
+      gap: 0,
+      padding: 0,
+    },
+    data = [],
+    render,
+    selectable = false,
+    multiple = true,
+    onSelectionChange,
+    className,
+    onItemClick,
+    onItemDoubleClick,
+    checked,
+    onItemContextMenu,
+    itemClassName,
+    onSelect,
+    onUnselect,
+    selectedIds = [],
+    ...props
+  }: GridViewProps<T>,
+  ref: React.Ref<any>
+) => {
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )
@@ -238,6 +246,25 @@ const GridView = <T extends any>({
     </div>
   ))
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      selectAllItems() {
+        selectAllItems()
+      },
+      toggleSelectItem(item: T) {
+        toggleSelectItem(item)
+      },
+      setSelectedItems(ids: string[]) {
+        setSelectedItems(ids)
+      },
+      getSelectedItems() {
+        return data.filter((item) => selectedItems.includes(extractKey(item)))
+      },
+    }),
+    [selectAllItems, toggleSelectItem]
+  )
+
   return (
     <div {...props}>
       {selectable && multiple && (
@@ -260,5 +287,9 @@ const GridView = <T extends any>({
     </div>
   )
 }
+
+const GridView = React.forwardRef(GridViewInner) as <T>(
+  props: GridViewProps<T> & { ref?: React.Ref<HTMLDivElement> }
+) => React.ReactElement
 
 export default GridView

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useImperativeHandle, useState } from 'react'
 import {
   Table,
   TableHeader,
@@ -71,32 +71,35 @@ interface ITableViewProps<T> {
   selectedIds?: string[]
 }
 
-const TableView = <T extends any>({
-  extractKey = (item: T) => {
-    try {
-      return 'id' in (item as any) ? String((item as any).id) : ''
-    } catch (e) {
-      return ''
-    }
-  },
-  itemClassName,
-  onSelectionChange,
-  selectable = false,
-  multiple = true,
-  columns,
-  data,
-  sortable = false,
-  isLoading = false,
-  onItemClick,
-  onItemDoubleClick,
-  onItemContextMenu,
-  onSortChange,
-  caption,
-  render,
-  onSelect,
-  onUnselect,
-  selectedIds = [],
-}: ITableViewProps<T>) => {
+const TableViewInner = <T extends any>(
+  {
+    extractKey = (item: T) => {
+      try {
+        return 'id' in (item as any) ? String((item as any).id) : ''
+      } catch (e) {
+        return ''
+      }
+    },
+    itemClassName,
+    onSelectionChange,
+    selectable = false,
+    multiple = true,
+    columns,
+    data,
+    sortable = false,
+    isLoading = false,
+    onItemClick,
+    onItemDoubleClick,
+    onItemContextMenu,
+    onSortChange,
+    caption,
+    render,
+    onSelect,
+    onUnselect,
+    selectedIds = [],
+  }: ITableViewProps<T>,
+  ref: React.Ref<any>
+) => {
   const [visibleColumns, setVisibleColumns] = useState<ITableColumn<T>[]>(
     columns || []
   )
@@ -349,6 +352,25 @@ const TableView = <T extends any>({
     }
   }
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      selectAllItems() {
+        selectAllItems()
+      },
+      toggleSelectItem(item: T, index: number, shiftKey: boolean) {
+        toggleSelectItem(item, index, shiftKey)
+      },
+      setSelectedItems(ids: string[]) {
+        setSelectedItems(ids)
+      },
+      getSelectedItems() {
+        return data.filter((item) => selectedItems.includes(extractKey(item)))
+      },
+    }),
+    [selectAllItems, toggleSelectItem]
+  )
+
   return (
     <Table>
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
@@ -482,5 +504,9 @@ const TableView = <T extends any>({
     </Table>
   )
 }
+
+const TableView = React.forwardRef(TableViewInner) as <T>(
+  props: ITableViewProps<T> & { ref?: React.Ref<HTMLDivElement> }
+) => React.ReactElement
 
 export default TableView

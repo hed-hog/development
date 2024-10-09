@@ -378,11 +378,24 @@ const DataPanelInner = <T extends any>(
     }
   }, [getSelectedItems])
 
+  const selectAllItems = useCallback(() => {}, [])
+
+  const toggleSelectItem = useCallback(() => {}, [])
+
   useImperativeHandle(
     ref,
     () => ({
       getSelectedItems() {
         return getSelectedItems()
+      },
+      selectAllItems() {
+        selectAllItems()
+      },
+      toggleSelectItem(item: T, index: number, shiftKey: boolean) {
+        toggleSelectItem(item, index, shiftKey)
+      },
+      setSelectedItems(ids: string[]) {
+        setSelectedItems(ids)
       },
     }),
     [getSelectedItems]
