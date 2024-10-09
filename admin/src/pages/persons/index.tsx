@@ -42,7 +42,6 @@ import {
 } from '@/features/persons'
 import { useApp } from '@/hooks/use-app'
 import { formatDate } from '@/lib/date-string'
-import timeSince from '@/lib/time-since'
 import { PersonAddress } from '@/types/address'
 import { PersonContact } from '@/types/contact'
 import { PersonCustom } from '@/types/custom'
@@ -56,7 +55,7 @@ import {
   IconPlus,
   IconTrash,
 } from '@tabler/icons-react'
-import { Locale } from 'date-fns'
+import { formatDistance, Locale } from 'date-fns'
 import { enUS, ptBR } from 'date-fns/locale'
 import { format } from 'date-fns'
 import { useEffect, useRef, useState } from 'react'
@@ -176,6 +175,7 @@ export default function Page() {
   const { t: contactsT } = useTranslation('contacts')
   const { t: documentsT } = useTranslation('documents')
   const { t: customsT } = useTranslation('customs')
+  const { t: usersT } = useTranslation('users')
 
   const locales: { [key: string]: Locale } = {
     en: enUS,
@@ -1080,7 +1080,12 @@ export default function Page() {
                 <div className='flex flex-row'>
                   <IconClock className='mr-0.5 h-4 w-4' />
                   <h4 className='text-xs font-normal'>
-                    {timeSince(String(item.created_at))}
+                    {usersT('registered')}{' '}
+                    {formatDistance(
+                      new Date(String(item.created_at)),
+                      new Date(),
+                      { addSuffix: true, locale: locales[language] }
+                    )}
                   </h4>
                 </div>
               </div>
