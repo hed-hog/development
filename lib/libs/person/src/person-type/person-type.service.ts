@@ -22,8 +22,8 @@ export class PersonTypeService {
     });
   }
 
-  async getPersonTypes(paginationParams: PaginationDTO) {
-    const fields = ['name'];
+  async getPersonTypes(locale: string, paginationParams: PaginationDTO) {
+    const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -36,7 +36,20 @@ export class PersonTypeService {
         where: {
           OR,
         },
+        include: {
+          person_type_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
+        },
       },
+      'person_type_translations',
     );
   }
 

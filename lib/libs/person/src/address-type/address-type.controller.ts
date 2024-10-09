@@ -13,6 +13,7 @@ import { CreateAddressTypeDTO } from './dto/create-address-type.dto';
 import { Pagination } from '@hedhog/pagination';
 import { UpdateAddressTypeDTO } from './dto/update-address-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
+import { Locale } from '@hedhog/locale';
 
 @Controller('address-types')
 export class AddressTypeController {
@@ -24,8 +25,8 @@ export class AddressTypeController {
   }
 
   @Get()
-  getAddressTypes(@Pagination() paginationParams) {
-    return this.addressTypeService.getAddressTypes(paginationParams);
+  getAddressTypes(@Pagination() paginationParams, @Locale() locale) {
+    return this.addressTypeService.getAddressTypes(locale, paginationParams);
   }
 
   @Get(':id')

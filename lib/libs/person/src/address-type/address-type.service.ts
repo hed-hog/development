@@ -22,8 +22,8 @@ export class AddressTypeService {
     });
   }
 
-  async getAddressTypes(paginationParams: PaginationDTO) {
-    const fields = ['name'];
+  async getAddressTypes(locale: string, paginationParams: PaginationDTO) {
+    const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -36,7 +36,20 @@ export class AddressTypeService {
         where: {
           OR,
         },
+        include: {
+          person_address_type_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
+        },
       },
+      'person_address_type_translations',
     );
   }
 

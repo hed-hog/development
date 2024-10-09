@@ -13,6 +13,7 @@ import { CreateContactTypeDTO } from './dto/create-contact-type.dto';
 import { Pagination } from '@hedhog/pagination';
 import { UpdateContactTypeDTO } from './dto/update-contact-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
+import { Locale } from '@hedhog/locale';
 
 @Controller('contact-types')
 export class ContactTypeController {
@@ -24,8 +25,8 @@ export class ContactTypeController {
   }
 
   @Get()
-  getContactTypes(@Pagination() paginationParams) {
-    return this.contactTypeService.getContactTypes(paginationParams);
+  getContactTypes(@Pagination() paginationParams, @Locale() locale) {
+    return this.contactTypeService.getContactTypes(locale, paginationParams);
   }
 
   @Get(':id')

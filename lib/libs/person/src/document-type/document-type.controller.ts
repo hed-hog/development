@@ -13,6 +13,7 @@ import { CreateDocumentTypeDTO } from './dto/create-document-type.dto';
 import { Pagination } from '@hedhog/pagination';
 import { UpdateDocumentTypeDTO } from './dto/update-document-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
+import { Locale } from '@hedhog/locale';
 
 @Controller('document-types')
 export class DocumentTypeController {
@@ -24,8 +25,8 @@ export class DocumentTypeController {
   }
 
   @Get()
-  getdocumentTypes(@Pagination() paginationParams) {
-    return this.documentTypeService.getDocumentTypes(paginationParams);
+  getdocumentTypes(@Pagination() paginationParams, @Locale() locale) {
+    return this.documentTypeService.getDocumentTypes(locale, paginationParams);
   }
 
   @Get(':id')

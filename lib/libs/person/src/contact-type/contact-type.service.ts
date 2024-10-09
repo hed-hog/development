@@ -22,8 +22,8 @@ export class ContactTypeService {
     });
   }
 
-  async getContactTypes(paginationParams: PaginationDTO) {
-    const fields = ['name'];
+  async getContactTypes(locale: string, paginationParams: PaginationDTO) {
+    const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -36,7 +36,20 @@ export class ContactTypeService {
         where: {
           OR,
         },
+        include: {
+          person_contact_type_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
+        },
       },
+      'person_contact_type_translations',
     );
   }
 

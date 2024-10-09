@@ -6,8 +6,78 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class Migrate1728432828551 implements MigrationInterface {
+export class Migrate1728497493939 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: "person_types",
+        columns: [idColumn(), timestampColumn(), timestampColumn("updated_at")],
+      }),
+      true,
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "person_type_translations",
+        columns: [
+          {
+            name: "type_id",
+            type: "int",
+            unsigned: true,
+            isPrimary: true,
+          },
+          {
+            name: "locale_id",
+            type: "int",
+            unsigned: true,
+            isPrimary: true,
+          },
+          {
+            name: "name",
+            type: "varchar",
+            length: "31",
+            isUnique: true,
+            isNullable: false,
+          },
+          timestampColumn(),
+          timestampColumn("updated_at"),
+        ],
+        foreignKeys: [
+          {
+            columnNames: ["type_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "person_types",
+            onDelete: "CASCADE",
+          },
+          {
+            columnNames: ["locale_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "locales",
+            onDelete: "CASCADE",
+          },
+        ],
+      }),
+      true,
+    );
+
+    const personTypes = [
+      {
+        id: 1,
+        name_pt: "Física",
+        name_en: "Physical",
+      },
+      {
+        id: 2,
+        name_pt: "Jurídica",
+        name_en: "Legal",
+      },
+      {
+        id: 3,
+        name_pt: "Internacional",
+        name_en: "International",
+      },
+    ];
+
     await queryRunner.createTable(
       new Table({
         name: "persons",
@@ -33,51 +103,68 @@ export class Migrate1728432828551 implements MigrationInterface {
           timestampColumn(),
           timestampColumn("updated_at"),
         ],
-      }),
-      true,
-    );
-
-    await queryRunner.createTable(
-      new Table({
-        name: "person_types",
-        columns: [
-          idColumn(),
+        foreignKeys: [
           {
-            name: "name",
-            type: "varchar",
-            length: "50",
-            isUnique: true,
-            isNullable: false,
+            columnNames: ["type_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "person_types",
+            onDelete: "RESTRICT",
           },
-          timestampColumn(),
-          timestampColumn("updated_at"),
         ],
       }),
       true,
     );
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into("person_types", ["name"])
-      .values([
-        {
-          name: "Física",
-        },
-        {
-          name: "Jurídica",
-        },
-        {
-          name: "Internacional",
-        },
-      ])
-      .execute();
+    for (const personType of personTypes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("person_types", ["id"])
+        .values({ id: personType.id })
+        .execute();
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("person_type_translations", ["type_id", "locale_id", "name"])
+        .values([
+          {
+            type_id: personType.id,
+            locale_id: 1,
+            name: personType.name_en,
+          },
+          {
+            type_id: personType.id,
+            locale_id: 2,
+            name: personType.name_pt,
+          },
+        ])
+        .execute();
+    }
 
     await queryRunner.createTable(
       new Table({
         name: "person_document_types",
+        columns: [idColumn(), timestampColumn(), timestampColumn("updated_at")],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "person_document_type_translations",
         columns: [
-          idColumn(),
+          {
+            name: "type_id",
+            type: "int",
+            unsigned: true,
+            isPrimary: true,
+          },
+          {
+            name: "locale_id",
+            type: "int",
+            unsigned: true,
+            isPrimary: true,
+          },
           {
             name: "name",
             type: "varchar",
@@ -86,28 +173,81 @@ export class Migrate1728432828551 implements MigrationInterface {
           timestampColumn(),
           timestampColumn("updated_at"),
         ],
+        foreignKeys: [
+          {
+            columnNames: ["type_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "person_document_types",
+            onDelete: "CASCADE",
+          },
+          {
+            columnNames: ["locale_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "locales",
+            onDelete: "CASCADE",
+          },
+        ],
       }),
     );
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into("person_document_types", ["name"])
-      .values([
-        {
-          name: "RG",
-        },
-        {
-          name: "CPF",
-        },
-        {
-          name: "CNPJ",
-        },
-        {
-          name: "Passaporte",
-        },
-      ])
-      .execute();
+    const documentTypes = [
+      {
+        id: 1,
+        name_pt: "RG",
+        name_en: "ID",
+      },
+      {
+        id: 2,
+        name_pt: "CPF",
+        name_en: "SSN",
+      },
+      {
+        id: 3,
+        name_pt: "CNPJ",
+        name_en: "EIN",
+      },
+      {
+        id: 4,
+        name_pt: "Passaporte",
+        name_en: "Passport",
+      },
+      {
+        id: 5,
+        name_pt: "CNH",
+        name_en: "Driver License",
+      },
+    ];
+
+    for (const documentType of documentTypes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("person_document_types", ["id"])
+        .values({ id: documentType.id })
+        .execute();
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("person_document_type_translations", [
+          "type_id",
+          "locale_id",
+          "name",
+        ])
+        .values([
+          {
+            type_id: documentType.id,
+            locale_id: 1,
+            name: documentType.name_en,
+          },
+          {
+            type_id: documentType.id,
+            locale_id: 2,
+            name: documentType.name_pt,
+          },
+        ])
+        .execute();
+    }
 
     await queryRunner.createTable(
       new Table({
@@ -169,8 +309,26 @@ export class Migrate1728432828551 implements MigrationInterface {
     await queryRunner.createTable(
       new Table({
         name: "person_contact_types",
+        columns: [idColumn(), timestampColumn(), timestampColumn("updated_at")],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "person_contact_type_translations",
         columns: [
-          idColumn(),
+          {
+            name: "type_id",
+            type: "int",
+            unsigned: true,
+            isPrimary: true,
+          },
+          {
+            name: "locale_id",
+            type: "int",
+            unsigned: true,
+            isPrimary: true,
+          },
           {
             name: "name",
             type: "varchar",
@@ -179,31 +337,81 @@ export class Migrate1728432828551 implements MigrationInterface {
           timestampColumn(),
           timestampColumn("updated_at"),
         ],
+        foreignKeys: [
+          {
+            columnNames: ["type_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "person_contact_types",
+            onDelete: "CASCADE",
+          },
+          {
+            columnNames: ["locale_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "locales",
+            onDelete: "CASCADE",
+          },
+        ],
       }),
     );
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into("person_contact_types", ["name"])
-      .values([
-        {
-          name: "Telefone",
-        },
-        {
-          name: "Email",
-        },
-        {
-          name: "Fax",
-        },
-        {
-          name: "WhatsApp",
-        },
-        {
-          name: "Telegram",
-        },
-      ])
-      .execute();
+    const contactTypes = [
+      {
+        id: 1,
+        name_en: "Phone",
+        name_pt: "Telefone",
+      },
+      {
+        id: 2,
+        name_en: "Email",
+        name_pt: "E-mail",
+      },
+      {
+        id: 3,
+        name_en: "Fax",
+        name_pt: "Fax",
+      },
+      {
+        id: 4,
+        name_en: "WhatsApp",
+        name_pt: "WhatsApp",
+      },
+      {
+        id: 5,
+        name_en: "Telegram",
+        name_pt: "Telegram",
+      },
+    ];
+
+    for (const contactType of contactTypes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("person_contact_types", ["id"])
+        .values({ id: contactType.id })
+        .execute();
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("person_contact_type_translations", [
+          "type_id",
+          "locale_id",
+          "name",
+        ])
+        .values([
+          {
+            type_id: contactType.id,
+            locale_id: 1,
+            name: contactType.name_en,
+          },
+          {
+            type_id: contactType.id,
+            locale_id: 2,
+            name: contactType.name_pt,
+          },
+        ])
+        .execute();
+    }
 
     await queryRunner.createTable(
       new Table({
@@ -331,8 +539,26 @@ export class Migrate1728432828551 implements MigrationInterface {
     await queryRunner.createTable(
       new Table({
         name: "person_address_types",
+        columns: [idColumn(), timestampColumn(), timestampColumn("updated_at")],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "person_address_type_translations",
         columns: [
-          idColumn(),
+          {
+            name: "type_id",
+            type: "int",
+            unsigned: true,
+            isPrimary: true,
+          },
+          {
+            name: "locale_id",
+            type: "int",
+            unsigned: true,
+            isPrimary: true,
+          },
           {
             name: "name",
             type: "varchar",
@@ -341,28 +567,91 @@ export class Migrate1728432828551 implements MigrationInterface {
           timestampColumn(),
           timestampColumn("updated_at"),
         ],
+        foreignKeys: [
+          {
+            columnNames: ["type_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "person_address_types",
+            onDelete: "CASCADE",
+          },
+          {
+            columnNames: ["locale_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "locales",
+            onDelete: "CASCADE",
+          },
+        ],
       }),
     );
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into("person_address_types", ["name"])
-      .values([
-        {
-          name: "Residencial",
-        },
-        {
-          name: "Comercial",
-        },
-        {
-          name: "Correspondência",
-        },
-        {
-          name: "Alternativo",
-        },
-      ])
-      .execute();
+    const addressTypes = [
+      {
+        id: 1,
+        name_en: "Residential",
+        name_pt: "Residencial",
+      },
+      {
+        id: 2,
+        name_en: "Commercial",
+        name_pt: "Comercial",
+      },
+      {
+        id: 3,
+        name_en: "Correspondence",
+        name_pt: "Correspondência",
+      },
+      {
+        id: 4,
+        name_en: "Alternative",
+        name_pt: "Alternativo",
+      },
+      {
+        id: 5,
+        name_en: "Work",
+        name_pt: "Trabalho",
+      },
+      {
+        id: 6,
+        name_en: "Billing",
+        name_pt: "Cobrança",
+      },
+      {
+        id: 7,
+        name_en: "Shipping",
+        name_pt: "Entrega",
+      },
+    ];
+
+    for (const addressType of addressTypes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("person_address_types", ["id"])
+        .values({ id: addressType.id })
+        .execute();
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("person_address_type_translations", [
+          "type_id",
+          "locale_id",
+          "name",
+        ])
+        .values([
+          {
+            type_id: addressType.id,
+            locale_id: 1,
+            name: addressType.name_en,
+          },
+          {
+            type_id: addressType.id,
+            locale_id: 2,
+            name: addressType.name_pt,
+          },
+        ])
+        .execute();
+    }
 
     await queryRunner.createTable(
       new Table({
@@ -507,7 +796,7 @@ export class Migrate1728432828551 implements MigrationInterface {
       .insert()
       .into("menus", ["url", "order", "menu_id", "icon"])
       .values({
-        url: null,
+        url: "/persons",
         order: 3,
         menu_id: null,
         icon: "user-check",
@@ -647,7 +936,7 @@ export class Migrate1728432828551 implements MigrationInterface {
       ids.push(menuId);
     }
 
-    for (const id of [...ids, personsMenuId]) {
+    for (const id of [...ids, personsMenuId, menuContacts.raw[0].id]) {
       if (id) {
         await queryRunner.manager
           .createQueryBuilder()

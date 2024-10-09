@@ -13,6 +13,7 @@ import { CreatePersonTypeDTO } from './dto/create-person-type.dto';
 import { Pagination } from '@hedhog/pagination';
 import { UpdatePersonTypeDTO } from './dto/update-person-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
+import { Locale } from '@hedhog/locale';
 
 @Controller('person-types')
 export class PersonTypeController {
@@ -24,8 +25,8 @@ export class PersonTypeController {
   }
 
   @Get()
-  getpersonTypes(@Pagination() paginationParams) {
-    return this.personTypeService.getPersonTypes(paginationParams);
+  getpersonTypes(@Pagination() paginationParams, @Locale() locale) {
+    return this.personTypeService.getPersonTypes(locale, paginationParams);
   }
 
   @Get(':id')
