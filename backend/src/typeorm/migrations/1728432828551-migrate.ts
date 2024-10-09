@@ -6,32 +6,7 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class Migrate1728413756830 implements MigrationInterface {
-  private async insertMenu(
-    queryRunner: QueryRunner,
-    name: string,
-    url: string,
-    order: number,
-    menuId: number,
-    icon: string,
-  ) {
-    const result = await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into("menus")
-      .values({
-        name,
-        url,
-        order,
-        menu_id: menuId,
-        icon,
-      })
-      .returning("id")
-      .execute();
-
-    return result.raw[0].id;
-  }
-
+export class Migrate1728432828551 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -527,70 +502,147 @@ export class Migrate1728413756830 implements MigrationInterface {
 
     const managementId = managementResult ? managementResult[0].id : null;
 
-    const personsMenuId = await this.insertMenu(
-      queryRunner,
-      "Persons",
-      null,
-      6,
-      managementId,
-      "user-check",
-    );
+    const menuContacts = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into("menus", ["url", "order", "menu_id", "icon"])
+      .values({
+        url: null,
+        order: 3,
+        menu_id: null,
+        icon: "user-check",
+      })
+      .returning("id")
+      .execute();
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into("menu_translations", ["name", "locale_id", "menu_id"])
+      .values([
+        {
+          name: "Contacts",
+          locale_id: 1,
+          menu_id: menuContacts.raw[0].id,
+        },
+        {
+          name: "Contatos",
+          locale_id: 2,
+          menu_id: menuContacts.raw[0].id,
+        },
+      ])
+      .execute();
+
+    const menuManagementPersons = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into("menus", ["url", "order", "menu_id", "icon"])
+      .values({
+        url: null,
+        order: 6,
+        menu_id: managementId,
+        icon: "user-check",
+      })
+      .returning("id")
+      .execute();
+
+    const personsMenuId = menuManagementPersons.raw[0].id;
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into("menu_translations", ["name", "locale_id", "menu_id"])
+      .values([
+        {
+          name: "Persons",
+          locale_id: 1,
+          menu_id: personsMenuId,
+        },
+        {
+          name: "Pessoas",
+          locale_id: 2,
+          menu_id: personsMenuId,
+        },
+      ])
+      .execute();
 
     const menuInsertions = [
       {
-        name: "Persons",
-        url: "/persons",
-        order: 2,
-        parentId: null,
-        icon: "user-check",
-      },
-      {
-        name: "Address Types",
+        name_en: "Address Types",
+        name_pt: "Tipos de Endereço",
         url: "/management/persons/address-types",
         order: 0,
-        parentId: personsMenuId,
+        menu_id: personsMenuId,
         icon: "home-link",
       },
       {
-        name: "Contact Types",
+        name_en: "Contact Types",
+        name_pt: "Tipos de Contato",
         url: "/management/persons/contact-types",
         order: 1,
-        parentId: personsMenuId,
+        menu_id: personsMenuId,
         icon: "address-book",
       },
       {
-        name: "Custom Types",
+        name_en: "Custom Types",
+        name_pt: "Tipos Personalizados",
         url: "/management/persons/custom-types",
         order: 2,
-        parentId: personsMenuId,
+        menu_id: personsMenuId,
         icon: "adjustments",
       },
       {
-        name: "Document Types",
+        name_en: "Document Types",
+        name_pt: "Tipos de Documentos",
         url: "/management/persons/document-types",
         order: 3,
-        parentId: personsMenuId,
+        menu_id: personsMenuId,
         icon: "file-search",
       },
       {
-        name: "Person Types",
+        name_en: "Person Types",
+        name_pt: "Tipos de Pessoa",
         url: "/management/persons/person-types",
         order: 4,
-        parentId: personsMenuId,
+        menu_id: personsMenuId,
         icon: "id",
       },
     ];
 
     const ids = [];
     for (const menu of menuInsertions) {
-      const menuId = await this.insertMenu(
-        queryRunner,
-        menu.name,
-        menu.url,
-        menu.order,
-        menu.parentId,
-        menu.icon,
-      );
+      const menuResult = await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("menus", ["url", "order", "menu_id", "icon"])
+        .values({
+          url: menu.url,
+          order: menu.order,
+          menu_id: menu.menu_id,
+          icon: menu.icon,
+        })
+        .returning("id")
+        .execute();
+
+      const menuId = menuResult.raw[0].id;
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("menu_translations", ["name", "locale_id", "menu_id"])
+        .values([
+          {
+            name: menu.name_en,
+            locale_id: 1,
+            menu_id: menuId,
+          },
+          {
+            name: menu.name_pt,
+            locale_id: 2,
+            menu_id: menuId,
+          },
+        ])
+        .execute();
 
       ids.push(menuId);
     }
@@ -667,8 +719,6 @@ export class Migrate1728413756830 implements MigrationInterface {
     ];
 
     for (const screen of screens) {
-      console.log("INSERT", { screen });
-
       const s = await queryRunner.manager
         .createQueryBuilder()
         .insert()

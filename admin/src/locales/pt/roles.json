@@ -1,13 +1,13 @@
 {
-  "create": "Criar Cargo",
-  "createText": "Preencha as informações do cargo.",
-  "createTooltip": "Criar novo cargo",
-  "delete": "Excluir Cargo",
-  "deleteText": "Tem certeza de que deseja deletar estes cargos?",
-  "deleteTooltip": "Excluir os cargos selecionados",
-  "edit": "Editar Cargo",
-  "editText": "Visualize e edite as informações do cargo.",
-  "editTooltip": "Editar os cargos selecionados",
+  "create": "Criar Função",
+  "createText": "Preencha as informações do função.",
+  "createTooltip": "Criar novo função",
+  "delete": "Excluir Função",
+  "deleteText": "Tem certeza de que deseja deletar estes funções?",
+  "deleteTooltip": "Excluir os funções selecionados",
+  "edit": "Editar Função",
+  "editText": "Visualize e edite as informações do função.",
+  "editTooltip": "Editar os funções selecionados",
   "name": "Nome",
   "description": "Descrição"
 }

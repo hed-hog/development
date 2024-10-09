@@ -13,8 +13,10 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
+  const { t: modulesT } = useTranslation('modules')
   const formEdit = useRef<any>(null)
 
   const form = useForm<FieldValues>({
@@ -154,11 +156,14 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Settings - Hedhog</title>
+        <title>{modulesT('settings')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Settings</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {' '}
+            {modulesT('settings')}
+          </h1>
         </div>
       </div>
 

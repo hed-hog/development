@@ -59,12 +59,27 @@ export class RouteService {
     });
   }
 
-  async listRoles(routeId: number, paginationParams: PaginationDTO) {
+  async listRoles(
+    locale: string,
+    routeId: number,
+    paginationParams: PaginationDTO,
+  ) {
     return this.paginationService.paginate(
       this.prismaService.roles,
       paginationParams,
       {
         include: {
+          role_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+              description: true,
+            },
+          },
           role_routes: {
             where: {
               route_id: routeId,
@@ -76,6 +91,7 @@ export class RouteService {
           },
         },
       },
+      'role_translations',
     );
   }
 
@@ -95,12 +111,26 @@ export class RouteService {
     });
   }
 
-  async listScreens(routeId: number, paginationParams: PaginationDTO) {
+  async listScreens(
+    locale: string,
+    routeId: number,
+    paginationParams: PaginationDTO,
+  ) {
     return this.paginationService.paginate(
       this.prismaService.screens,
       paginationParams,
       {
         include: {
+          screen_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
           route_screens: {
             where: {
               route_id: routeId,
@@ -112,6 +142,7 @@ export class RouteService {
           },
         },
       },
+      'screen_translations',
     );
   }
 

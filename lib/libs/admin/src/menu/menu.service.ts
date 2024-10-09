@@ -11,6 +11,7 @@ import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { OrderDTO } from './dto/order.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { itemTranslations } from '@hedhog/utils';
 
 @Injectable()
 export class MenuService {
@@ -51,12 +52,26 @@ export class MenuService {
       skipDuplicates: true,
     });
   }
-  async listScreens(menuId: number, paginationParams: PaginationDTO) {
+  async listScreens(
+    locale: string,
+    menuId: number,
+    paginationParams: PaginationDTO,
+  ) {
     return this.paginationService.paginate(
       this.prismaService.screens,
       paginationParams,
       {
         include: {
+          screen_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
           menu_screens: {
             where: {
               menu_id: menuId,
@@ -68,14 +83,30 @@ export class MenuService {
           },
         },
       },
+      'screen_translations',
     );
   }
-  async listRoles(menuId: number, paginationParams: PaginationDTO) {
+  async listRoles(
+    locale: string,
+    menuId: number,
+    paginationParams: PaginationDTO,
+  ) {
     return this.paginationService.paginate(
       this.prismaService.roles,
       paginationParams,
       {
         include: {
+          role_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+              description: true,
+            },
+          },
           role_menus: {
             where: {
               menu_id: menuId,
@@ -87,15 +118,16 @@ export class MenuService {
           },
         },
       },
+      'role_translations',
     );
   }
 
-  async getMenus(userId: number, menuId = 0) {
+  async getMenus(locale: string, userId: number, menuId = 0) {
     if (menuId === 0) {
       menuId = null;
     }
 
-    const menus = (await this.prismaService.menus.findMany({
+    let menus = (await this.prismaService.menus.findMany({
       where: {
         menu_id: menuId,
         role_menus: {
@@ -113,21 +145,35 @@ export class MenuService {
       orderBy: {
         order: 'asc',
       },
+      include: {
+        menu_translations: {
+          where: {
+            locales: {
+              code: locale,
+            },
+          },
+          select: {
+            name: true,
+          },
+        },
+      },
     })) as unknown[] as any[];
 
+    menus = menus.map((m) => itemTranslations('menu_translations', m));
+
     for (let i = 0; i < menus.length; i++) {
-      menus[i].menus = await this.getMenus(userId, menus[i].id);
+      menus[i].menus = await this.getMenus(locale, userId, menus[i].id);
     }
 
     return menus;
   }
 
-  async getSystemMenu(userId: number) {
-    return this.getMenus(userId);
+  async getSystemMenu(locale: string, userId: number) {
+    return this.getMenus(locale, userId);
   }
 
-  async getMenu(paginationParams: PaginationDTO) {
-    const fields = ['name', 'url', 'icon'];
+  async getMenu(locale: string, paginationParams: PaginationDTO) {
+    const fields = ['url', 'icon'];
     const OR = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -140,7 +186,20 @@ export class MenuService {
         where: {
           OR,
         },
+        include: {
+          menu_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
+        },
       },
+      'menu_translations',
     );
   }
 

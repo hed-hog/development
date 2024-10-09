@@ -19,6 +19,7 @@ import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { Locale } from '@hedhog/locale';
 
 @Role()
 @UseGuards(AuthGuard)
@@ -61,8 +62,9 @@ export class RouteController {
   async listRoles(
     @Param('routeId', ParseIntPipe) routeId: number,
     @Pagination() paginationParams: PaginationDTO,
+    @Locale() locale,
   ) {
-    return this.routeService.listRoles(routeId, paginationParams);
+    return this.routeService.listRoles(locale, routeId, paginationParams);
   }
 
   @Patch(':routeId/roles')
@@ -77,8 +79,9 @@ export class RouteController {
   async listScreens(
     @Param('routeId', ParseIntPipe) routeId: number,
     @Pagination() paginationParams: PaginationDTO,
+    @Locale() locale,
   ) {
-    return this.routeService.listScreens(routeId, paginationParams);
+    return this.routeService.listScreens(locale, routeId, paginationParams);
   }
 
   @Patch(':routeId/screens')

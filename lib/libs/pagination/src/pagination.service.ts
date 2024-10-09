@@ -93,6 +93,14 @@ export class PaginationService {
 
       const skip = page > 0 ? pageSize * (page - 1) : 0;
 
+      if (
+        customQuery.where &&
+        customQuery.where.OR &&
+        customQuery.where.OR.length === 0
+      ) {
+        delete customQuery.where.OR;
+      }
+
       const query: any = {
         select: selectCondition,
         where: customQuery?.where || {},

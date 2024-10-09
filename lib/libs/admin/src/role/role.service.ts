@@ -104,12 +104,26 @@ export class RoleService {
     );
   }
 
-  async listMenus(roleId: number, paginationParams: PaginationDTO) {
+  async listMenus(
+    locale: string,
+    roleId: number,
+    paginationParams: PaginationDTO,
+  ) {
     return this.paginationService.paginate(
       this.prismaService.menus,
       paginationParams,
       {
         include: {
+          menu_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
           role_menus: {
             where: {
               role_id: roleId,
@@ -121,6 +135,7 @@ export class RoleService {
           },
         },
       },
+      'menu_translations',
     );
   }
 
@@ -144,12 +159,26 @@ export class RoleService {
     );
   }
 
-  async listScreens(roleId: number, paginationParams: PaginationDTO) {
+  async listScreens(
+    locale: string,
+    roleId: number,
+    paginationParams: PaginationDTO,
+  ) {
     return this.paginationService.paginate(
       this.prismaService.screens,
       paginationParams,
       {
         include: {
+          screen_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
           role_screens: {
             where: {
               role_id: roleId,
@@ -161,11 +190,12 @@ export class RoleService {
           },
         },
       },
+      'screen_translations',
     );
   }
 
-  async getRoles(paginationParams: PaginationDTO) {
-    const fields = ['name', 'description'];
+  async getRoles(locale: string, paginationParams: PaginationDTO) {
+    const fields = [];
 
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -179,7 +209,21 @@ export class RoleService {
         where: {
           OR,
         },
+        include: {
+          role_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+              description: true,
+            },
+          },
+        },
       },
+      'role_translations',
     );
   }
 

@@ -63,11 +63,7 @@ export class ScreenService {
       skipDuplicates: true,
     });
   }
-  async listRoutes(
-    locale: string,
-    screenId: number,
-    paginationParams: PaginationDTO,
-  ) {
+  async listRoutes(screenId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
       this.prismaService.routes,
       paginationParams,

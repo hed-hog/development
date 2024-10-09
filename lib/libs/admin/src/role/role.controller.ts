@@ -19,6 +19,7 @@ import { RoleService } from './role.service';
 import { Role } from './decorators/role.decorator';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { Locale } from '@hedhog/locale';
 @Role()
 @UseGuards(AuthGuard)
 @Controller('roles')
@@ -29,8 +30,8 @@ export class RoleController {
   ) {}
 
   @Get()
-  async getRoles(@Pagination() paginationParams) {
-    return this.roleService.getRoles(paginationParams);
+  async getRoles(@Pagination() paginationParams, @Locale() locale) {
+    return this.roleService.getRoles(locale, paginationParams);
   }
 
   @Get(':roleId/users')
@@ -45,8 +46,9 @@ export class RoleController {
   async listMenus(
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
+    @Locale() locale,
   ) {
-    return this.roleService.listMenus(roleId, paginationParams);
+    return this.roleService.listMenus(locale, roleId, paginationParams);
   }
 
   @Get(':roleId/routes')
@@ -61,8 +63,9 @@ export class RoleController {
   async listScreens(
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
+    @Locale() locale,
   ) {
-    return this.roleService.listScreens(roleId, paginationParams);
+    return this.roleService.listScreens(locale, roleId, paginationParams);
   }
 
   @Patch(':roleId/users')

@@ -3,79 +3,79 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
-} from 'typeorm';
-import { idColumn, timestampColumn } from '@hedhog/utils';
+} from "typeorm";
+import { idColumn, timestampColumn } from "@hedhog/utils";
 
-export class Migrate implements MigrationInterface {
+export class Migrate1728432801747 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'menus',
+        name: "menus",
         columns: [
           idColumn(),
           {
-            name: 'url',
-            type: 'varchar',
+            name: "url",
+            type: "varchar",
             isNullable: true,
           },
           {
-            name: 'order',
-            type: 'int',
+            name: "order",
+            type: "int",
             default: 0,
             unsigned: true,
           },
           {
-            name: 'menu_id',
-            type: 'int',
+            name: "menu_id",
+            type: "int",
             isNullable: true,
             unsigned: true,
           },
           {
-            name: 'icon',
-            type: 'varchar',
+            name: "icon",
+            type: "varchar",
             isNullable: true,
           },
           timestampColumn(),
-          timestampColumn('updated_at'),
+          timestampColumn("updated_at"),
         ],
       }),
     );
 
     await queryRunner.createTable(
       new Table({
-        name: 'menu_translations',
+        name: "menu_translations",
         columns: [
           {
-            name: 'menu_id',
-            type: 'int',
+            name: "menu_id",
+            type: "int",
             unsigned: true,
             isPrimary: true,
           },
           {
-            name: 'locale_id',
-            type: 'int',
+            name: "locale_id",
+            type: "int",
             unsigned: true,
             isPrimary: true,
           },
           {
-            name: 'name',
-            type: 'varchar',
+            name: "name",
+            type: "varchar",
           },
           timestampColumn(),
-          timestampColumn('updated_at'),
+          timestampColumn("updated_at"),
         ],
         foreignKeys: [
           new TableForeignKey({
-            columnNames: ['menu_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'menus',
-            onDelete: 'CASCADE',
+            columnNames: ["menu_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "menus",
+            onDelete: "CASCADE",
           }),
           new TableForeignKey({
-            columnNames: ['locale_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'locales',
-            onDelete: 'CASCADE',
+            columnNames: ["locale_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "locales",
+            onDelete: "CASCADE",
           }),
         ],
       }),
@@ -83,17 +83,17 @@ export class Migrate implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: 'menu_screens',
+        name: "menu_screens",
         columns: [
           {
-            name: 'menu_id',
-            type: 'int',
+            name: "menu_id",
+            type: "int",
             isPrimary: true,
             unsigned: true,
           },
           {
-            name: 'screen_id',
-            type: 'int',
+            name: "screen_id",
+            type: "int",
             isPrimary: true,
             unsigned: true,
           },
@@ -102,39 +102,39 @@ export class Migrate implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'menu_screens',
+      "menu_screens",
       new TableForeignKey({
-        columnNames: ['menu_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'menus',
-        onDelete: 'CASCADE',
+        columnNames: ["menu_id"],
+        referencedColumnNames: ["id"],
+        referencedTableName: "menus",
+        onDelete: "CASCADE",
       }),
     );
 
     await queryRunner.createForeignKey(
-      'menu_screens',
+      "menu_screens",
       new TableForeignKey({
-        columnNames: ['screen_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'screens',
-        onDelete: 'CASCADE',
+        columnNames: ["screen_id"],
+        referencedColumnNames: ["id"],
+        referencedTableName: "screens",
+        onDelete: "CASCADE",
       }),
     );
 
     const menus = [
       {
-        name_en: 'Dashboard',
-        name_pt: 'Dashboard',
-        url: '/',
+        name_en: "Dashboard",
+        name_pt: "Dashboard",
+        url: "/",
         order: 0,
-        icon: 'dashboard',
+        icon: "dashboard",
       },
       {
-        name_en: 'Management',
-        name_pt: 'Gereciamento',
-        url: '/management',
+        name_en: "Management",
+        name_pt: "Gereciamento",
+        url: "/management",
         order: 1,
-        icon: 'settings',
+        icon: "settings",
       },
     ];
 
@@ -142,19 +142,19 @@ export class Migrate implements MigrationInterface {
       const m = await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('menus', ['url', 'order', 'icon'])
+        .into("menus", ["url", "order", "icon"])
         .values({
           url: menu.url,
           order: menu.order,
           icon: menu.icon,
         })
-        .returning('id')
+        .returning("id")
         .execute();
 
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('menu_translations', ['menu_id', 'locale_id', 'name'])
+        .into("menu_translations", ["menu_id", "locale_id", "name"])
         .values([
           {
             menu_id: m.raw[0].id,
@@ -172,74 +172,74 @@ export class Migrate implements MigrationInterface {
 
     const menusManagement = [
       {
-        name_en: 'Users',
-        name_pt: 'Usuários',
-        url: '/management/users',
+        name_en: "Users",
+        name_pt: "Usuários",
+        url: "/management/users",
         order: 0,
-        icon: 'users',
+        icon: "users",
       },
       {
-        name_en: 'Roles',
-        name_pt: 'Funções',
-        url: '/management/roles',
+        name_en: "Roles",
+        name_pt: "Funções",
+        url: "/management/roles",
         order: 1,
-        icon: 'circles',
+        icon: "circles",
       },
       {
-        name_en: 'Screens',
-        name_pt: 'Telas',
-        url: '/management/screens',
+        name_en: "Screens",
+        name_pt: "Telas",
+        url: "/management/screens",
         order: 2,
-        icon: 'device-tv',
+        icon: "device-tv",
       },
       {
-        name_en: 'Menus',
-        name_pt: 'Menus',
-        url: '/management/menus',
+        name_en: "Menus",
+        name_pt: "Menus",
+        url: "/management/menus",
         order: 3,
-        icon: 'menu',
+        icon: "menu",
       },
       {
-        name_en: 'Routes',
-        name_pt: 'Rotas',
-        url: '/management/routes',
+        name_en: "Routes",
+        name_pt: "Rotas",
+        url: "/management/routes",
         order: 4,
-        icon: 'route',
+        icon: "route",
       },
       {
-        name_en: 'Settings',
-        name_pt: 'Configurações',
-        url: '/management/settings',
+        name_en: "Settings",
+        name_pt: "Configurações",
+        url: "/management/settings",
         order: 5,
-        icon: 'settings',
+        icon: "settings",
       },
     ];
 
     const menuManagement = await queryRunner.manager
       .createQueryBuilder()
-      .select('id')
-      .from('menus', 'm')
-      .where('m.url = :url', { url: '/management' })
+      .select("id")
+      .from("menus", "m")
+      .where("m.url = :url", { url: "/management" })
       .execute();
 
     for (const menu of menusManagement) {
       const m = await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('menus', ['url', 'order', 'icon', 'menu_id'])
+        .into("menus", ["url", "order", "icon", "menu_id"])
         .values({
           url: menu.url,
           order: menu.order,
           icon: menu.icon,
           menu_id: menuManagement[0].id,
         })
-        .returning('id')
+        .returning("id")
         .execute();
 
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('menu_translations', ['menu_id', 'locale_id', 'name'])
+        .into("menu_translations", ["menu_id", "locale_id", "name"])
         .values([
           {
             menu_id: m.raw[0].id,
@@ -257,7 +257,7 @@ export class Migrate implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('menu_screens');
-    await queryRunner.dropTable('menus');
+    await queryRunner.dropTable("menu_screens");
+    await queryRunner.dropTable("menus");
   }
 }

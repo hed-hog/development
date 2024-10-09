@@ -17,16 +17,16 @@ model menu_screens {
 }
 
 model menus {
-  id           Int            @id(map: "PK_3fec3d93327f4538e0cbd4349c4") @default(autoincrement())
-  name         String         @db.VarChar
-  url          String?        @db.VarChar
-  order        Int            @default(0)
-  menu_id      Int?
-  icon         String?        @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
-  menu_screens menu_screens[]
-  role_menus   role_menus[]
+  id                Int                 @id(map: "PK_3fec3d93327f4538e0cbd4349c4") @default(autoincrement())
+  url               String?             @db.VarChar
+  order             Int                 @default(0)
+  menu_id           Int?
+  icon              String?             @db.VarChar
+  created_at        DateTime            @default(now()) @db.Timestamp(6)
+  updated_at        DateTime            @default(now()) @db.Timestamp(6)
+  menu_screens      menu_screens[]
+  menu_translations menu_translations[]
+  role_menus        role_menus[]
 }
 
 model migrations {
@@ -66,15 +66,14 @@ model role_users {
 }
 
 model roles {
-  id           Int            @id(map: "PK_c1433d71a4838793a49dcad46ab") @default(autoincrement())
-  name         String         @db.VarChar
-  description  String         @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
-  role_menus   role_menus[]
-  role_routes  role_routes[]
-  role_screens role_screens[]
-  role_users   role_users[]
+  id                Int                 @id(map: "PK_c1433d71a4838793a49dcad46ab") @default(autoincrement())
+  created_at        DateTime            @default(now()) @db.Timestamp(6)
+  updated_at        DateTime            @default(now()) @db.Timestamp(6)
+  role_menus        role_menus[]
+  role_routes       role_routes[]
+  role_screens      role_screens[]
+  role_translations role_translations[]
+  role_users        role_users[]
 }
 
 model screens {
@@ -304,7 +303,9 @@ model locales {
   created_at               DateTime                   @default(now()) @db.Timestamp(6)
   updated_at               DateTime                   @default(now()) @db.Timestamp(6)
   countries                countries                  @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1b7f006abb609825f10a4d98567")
+  menu_translations        menu_translations[]
   multifactor_translations multifactor_translations[]
+  role_translations        role_translations[]
   screen_translations      screen_translations[]
   translations             translations[]
 }
@@ -354,6 +355,31 @@ model screen_translations {
   screens     screens  @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c0568d6f198d9283a13acec5423")
 
   @@id([screen_id, locale_id], map: "PK_69d08f4651cf1fda11f4b7cd2b0")
+}
+
+model menu_translations {
+  menu_id    Int
+  locale_id  Int
+  name       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  menus      menus    @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_22d219b4f9b1aaf0131736e3d0d")
+  locales    locales  @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c6b09ca9e1eb832fd9b04a18ced")
+
+  @@id([menu_id, locale_id], map: "PK_16bc870180c681c47bb87cb8229")
+}
+
+model role_translations {
+  role_id     Int
+  locale_id   Int
+  name        String   @db.VarChar
+  description String   @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  roles       roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_35c7a5c1552d24e8a9503a61244")
+  locales     locales  @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_98294f131403e4e8eb111966213")
+
+  @@id([role_id, locale_id], map: "PK_55903c5cd46a591e47198bcb98a")
 }
 
 enum routes_method_enum {

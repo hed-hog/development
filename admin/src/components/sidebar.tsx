@@ -19,11 +19,11 @@ export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
 }: SidebarProps) {
-  const { t } = useTranslation()
+  const { t, i18n: {language} } = useTranslation()
   const { request } = useApp()
   const [navOpened, setNavOpened] = useState(false)
   const { data } = useQuery({
-    queryKey: ['menus-system'],
+    queryKey: ['menus-system', language],
     queryFn: () =>
       request({
         url: `/menus/system`,

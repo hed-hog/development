@@ -27,7 +27,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     const OR: any[] = [];
 
     fields.forEach((field) => {
-      if (field === 'id' && !isNaN(+searchValue)) {
+      if (field === 'id' && !isNaN(+searchValue) && +searchValue > 0) {
         OR.push({ id: { equals: +searchValue } });
       } else if (
         field === 'method' &&
@@ -47,7 +47,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       }
     });
 
-    if (!isNaN(+searchValue)) {
+    if (!isNaN(+searchValue) && +searchValue > 0) {
       OR.push({ id: { equals: +searchValue } });
     }
 

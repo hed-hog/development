@@ -21,6 +21,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../auth/decorators/user.decorator';
 import { Role } from '../role/decorators/role.decorator';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { Locale } from '@hedhog/locale';
 
 @Role()
 @UseGuards(AuthGuard)
@@ -32,29 +33,31 @@ export class MenuController {
   ) {}
 
   @Get('system')
-  async getSystemMenu(@User() { id }) {
-    return this.menuService.getSystemMenu(id);
+  async getSystemMenu(@User() { id }, @Locale() locale) {
+    return this.menuService.getSystemMenu(locale, id);
   }
 
   @Get()
-  async getMenu(@Pagination() paginationParams) {
-    return this.menuService.getMenu(paginationParams);
+  async getMenu(@Pagination() paginationParams, @Locale() locale) {
+    return this.menuService.getMenu(locale, paginationParams);
   }
 
   @Get(':menuId/roles')
   async listRoles(
     @Param('menuId', ParseIntPipe) menuId: number,
     @Pagination() paginationParams,
+    @Locale() locale,
   ) {
-    return this.menuService.listRoles(menuId, paginationParams);
+    return this.menuService.listRoles(locale, menuId, paginationParams);
   }
 
   @Get(':menuId/screens')
   async listScreens(
     @Param('menuId', ParseIntPipe) menuId: number,
     @Pagination() paginationParams,
+    @Locale() locale,
   ) {
-    return this.menuService.listScreens(menuId, paginationParams);
+    return this.menuService.listScreens(locale, menuId, paginationParams);
   }
 
   @Patch(':menuId/roles')

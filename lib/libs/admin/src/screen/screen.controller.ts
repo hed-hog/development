@@ -48,9 +48,8 @@ export class ScreenController {
   async listRoutes(
     @Param('screenId', ParseIntPipe) screenId: number,
     @Pagination() paginationParams,
-    @Locale() locale,
   ) {
-    return this.screenService.listRoutes(locale, screenId, paginationParams);
+    return this.screenService.listRoutes(screenId, paginationParams);
   }
 
   @Patch(':screenId/roles')

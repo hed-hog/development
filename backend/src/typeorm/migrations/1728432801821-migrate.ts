@@ -1,60 +1,60 @@
-import { idColumn, timestampColumn } from '@hedhog/utils';
+import { idColumn, timestampColumn } from "@hedhog/utils";
 import {
   MigrationInterface,
   QueryRunner,
   Table,
   TableForeignKey,
-} from 'typeorm';
+} from "typeorm";
 
-export class Migrate implements MigrationInterface {
+export class Migrate1728432801821 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'roles',
-        columns: [idColumn(), timestampColumn(), timestampColumn('updated_at')],
+        name: "roles",
+        columns: [idColumn(), timestampColumn(), timestampColumn("updated_at")],
       }),
     );
 
     await queryRunner.createTable(
       new Table({
-        name: 'role_translations',
+        name: "role_translations",
         columns: [
           {
-            name: 'role_id',
-            type: 'int',
+            name: "role_id",
+            type: "int",
             unsigned: true,
             isPrimary: true,
           },
           {
-            name: 'locale_id',
-            type: 'int',
+            name: "locale_id",
+            type: "int",
             unsigned: true,
             isPrimary: true,
           },
           {
-            name: 'name',
-            type: 'varchar',
+            name: "name",
+            type: "varchar",
             isNullable: false,
           },
           {
-            name: 'description',
-            type: 'varchar',
+            name: "description",
+            type: "varchar",
           },
           timestampColumn(),
-          timestampColumn('updated_at'),
+          timestampColumn("updated_at"),
         ],
         foreignKeys: [
           new TableForeignKey({
-            columnNames: ['role_id'],
-            referencedTableName: 'roles',
-            referencedColumnNames: ['id'],
-            onDelete: 'CASCADE',
+            columnNames: ["role_id"],
+            referencedTableName: "roles",
+            referencedColumnNames: ["id"],
+            onDelete: "CASCADE",
           }),
           new TableForeignKey({
-            columnNames: ['locale_id'],
-            referencedTableName: 'locales',
-            referencedColumnNames: ['id'],
-            onDelete: 'CASCADE',
+            columnNames: ["locale_id"],
+            referencedTableName: "locales",
+            referencedColumnNames: ["id"],
+            onDelete: "CASCADE",
           }),
         ],
       }),
@@ -63,17 +63,17 @@ export class Migrate implements MigrationInterface {
     const roles = [
       {
         id: 1,
-        name_en: 'Administrator',
-        name_pt: 'Administrador',
-        description_en: 'System administrator',
-        description_pt: 'Administrador do sistema',
+        name_en: "Administrator",
+        name_pt: "Administrador",
+        description_en: "System administrator",
+        description_pt: "Administrador do sistema",
       },
       {
         id: 2,
-        name_en: 'Screen Manager',
-        name_pt: 'Gerenciador de telas',
-        description_en: 'Screen manager',
-        description_pt: 'Gerenciador de telas',
+        name_en: "Screen Manager",
+        name_pt: "Gerenciador de telas",
+        description_en: "Screen manager",
+        description_pt: "Gerenciador de telas",
       },
     ];
 
@@ -81,7 +81,7 @@ export class Migrate implements MigrationInterface {
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('roles', ['id'])
+        .into("roles", ["id"])
         .values({
           id: role.id,
         })
@@ -90,11 +90,11 @@ export class Migrate implements MigrationInterface {
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('role_translations', [
-          'role_id',
-          'locale_id',
-          'name',
-          'description',
+        .into("role_translations", [
+          "role_id",
+          "locale_id",
+          "name",
+          "description",
         ])
         .values([
           {
@@ -115,6 +115,6 @@ export class Migrate implements MigrationInterface {
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('roles');
+    await queryRunner.dropTable("roles");
   }
 }
