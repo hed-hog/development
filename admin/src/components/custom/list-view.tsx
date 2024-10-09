@@ -10,6 +10,7 @@ import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { useTranslation } from 'react-i18next'
+import { v4 as uuidv4 } from 'uuid'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   data: T[]
@@ -53,8 +54,8 @@ const ListViewInner = <T extends any>(
     extractKey = (item: T) => {
       try {
         return 'id' in (item as any) ? String((item as any).id) : ''
-      } catch (e) {
-        return ''
+      } catch (error) {
+        return uuidv4()
       }
     },
     selectedIds = [],
@@ -64,6 +65,7 @@ const ListViewInner = <T extends any>(
   }: ListViewProps<T>,
   ref: React.Ref<any>
 ) => {
+  const listViewId = uuidv4()
   const [selectedItems, setSelectedItems] = useState<string[]>([])
   const { t } = useTranslation('select', {
     useSuspense: false,
@@ -187,10 +189,9 @@ const ListViewInner = <T extends any>(
       {data.map((item, index) => {
         const itemKey = extractKey(item)
         const isChecked = selectedItems.includes(itemKey)
-
         return (
           <div
-            key={itemKey}
+            key={`${listViewId}-${itemKey}`}
             className={[
               itemClassName ?? 'border-b',
               'flex flex-row items-center truncate py-2 hover:bg-muted/50',

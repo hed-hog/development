@@ -187,6 +187,7 @@ export default function Page() {
                 <DataPanel
                   ref={roleUsersRef}
                   selectable
+                  extractKey={(item) => String(item.id)}
                   multiple
                   layout='list'
                   id={`role-users-${item.id}`}
