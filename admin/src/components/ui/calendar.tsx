@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useTranslation } from 'react-i18next'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -19,6 +20,7 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const { t } = useTranslation('calendar', { useSuspense: false })
   const [selectedMonth, setSelectedMonth] = React.useState(
     new Date().getMonth()
   )
@@ -28,19 +30,20 @@ function Calendar({
   const currentYear = new Date().getFullYear()
 
   const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    t('january'),
+    t('february'),
+    t('march'),
+    t('april'),
+    t('may'),
+    t('june'),
+    t('july'),
+    t('august'),
+    t('september'),
+    t('october'),
+    t('november'),
+    t('december'),
   ]
+
   const years = Array.from({ length: 100 }, (_, i) => currentYear - i)
 
   const CustomCaption = ({ onMonthChange }: any) => {
