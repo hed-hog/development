@@ -8,6 +8,7 @@ import { CreatePersonDTO } from './dto/create-person.dto';
 import { UpdatePersonDTO } from './dto/update-person.dto';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { DeleteDTO } from './dto/delete.dto';
+import { itemTranslations } from '@hedhog/utils';
 
 @Injectable()
 export class PersonService {
@@ -22,14 +23,14 @@ export class PersonService {
     });
   }
 
-  async getPersons(paginationParams: PaginationDTO) {
+  async getPersons(locale: string, paginationParams: PaginationDTO) {
     const fields = ['name'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
     );
 
-    return this.paginationService.paginate(
+    let paginate = await this.paginationService.paginate(
       this.prismaService.persons,
       paginationParams,
       {
@@ -37,22 +38,16 @@ export class PersonService {
           OR,
         },
         include: {
-          person_addresses: true,
-          person_contacts: {
-            include: {
-              person_contact_types: {
-                select: {
-                  id: true,
-                  name: true,
+          person_types: {
+            select: {
+              id: true,
+              person_type_translations: {
+                where: {
+                  locales: {
+                    code: locale,
+                  },
                 },
-              },
-            },
-          },
-          person_customs: {
-            include: {
-              person_custom_types: {
                 select: {
-                  id: true,
                   name: true,
                 },
               },
@@ -63,7 +58,35 @@ export class PersonService {
               person_document_types: {
                 select: {
                   id: true,
-                  name: true,
+                  person_document_type_translations: {
+                    where: {
+                      locales: {
+                        code: locale,
+                      },
+                    },
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          person_contacts: {
+            include: {
+              person_contact_types: {
+                select: {
+                  id: true,
+                  person_contact_type_translations: {
+                    where: {
+                      locales: {
+                        code: locale,
+                      },
+                    },
+                    select: {
+                      name: true,
+                    },
+                  },
                 },
               },
             },
@@ -71,6 +94,41 @@ export class PersonService {
         },
       },
     );
+
+    paginate.data = paginate.data.map((person: any) => {
+      if (person.person_types) {
+        person.person_types = itemTranslations(
+          'person_type_translations',
+          person.person_types,
+        );
+      }
+      if (person.person_documents) {
+        person.person_documents = person.person_documents.map((document) => {
+          if (document.person_document_types) {
+            document.person_document_types = itemTranslations(
+              'person_document_type_translations',
+              document.person_document_types,
+            );
+          }
+          return document;
+        });
+      }
+      if (person.person_contacts) {
+        person.person_contacts = person.person_contacts.map((contact) => {
+          if (contact.person_contact_types) {
+            contact.person_contact_types = itemTranslations(
+              'person_contact_type_translations',
+              contact.person_contact_types,
+            );
+          }
+          return contact;
+        });
+      }
+
+      return person;
+    });
+
+    return paginate;
   }
 
   async getPersonById(id: number) {
@@ -78,6 +136,7 @@ export class PersonService {
       where: { id },
       include: {
         person_addresses: true,
+        /*
         person_contacts: {
           include: {
             person_contact_types: {
@@ -108,6 +167,7 @@ export class PersonService {
             },
           },
         },
+        */
       },
     });
 

@@ -22,8 +22,8 @@ export class DocumentTypeService {
     });
   }
 
-  async getDocumentTypes(paginationParams: PaginationDTO) {
-    const fields = ['name'];
+  async getDocumentTypes(locale: string, paginationParams: PaginationDTO) {
+    const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -36,7 +36,20 @@ export class DocumentTypeService {
         where: {
           OR,
         },
+        include: {
+          person_document_type_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
+        },
       },
+      'person_document_type_translations',
     );
   }
 
