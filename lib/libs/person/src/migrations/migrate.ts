@@ -796,7 +796,7 @@ export class Migrate implements MigrationInterface {
       .insert()
       .into('menus', ['url', 'order', 'menu_id', 'icon'])
       .values({
-        url: '/persons',
+        url: '/contacts',
         order: 3,
         menu_id: null,
         icon: 'user-check',
@@ -956,7 +956,7 @@ export class Migrate implements MigrationInterface {
         description_en: 'Check all persons registered in the system.',
         name_pt: 'Contatos',
         description_pt: 'Verifique todas as pessoas registradas no sistema.',
-        slug: '/persons',
+        slug: '/contacts',
         icon: 'user-check',
       },
       {

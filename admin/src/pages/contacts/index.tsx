@@ -1048,12 +1048,12 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>{modulesT('persons')} - Hedhog</title>
+        <title>{modulesT('contacts')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('persons')}
+            {modulesT('contacts')}
           </h1>
         </div>
       </div>

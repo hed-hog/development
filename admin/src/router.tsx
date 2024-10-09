@@ -40,12 +40,12 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: 'persons',
+        path: 'contacts',
         children: [
           {
             index: true,
             lazy: async () => ({
-              Component: (await import('./pages/persons/index.tsx')).default,
+              Component: (await import('./pages/contacts/index.tsx')).default,
             }),
           },
         ],
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
               {
                 index: true,
                 lazy: async () => ({
-                  Component: (await import('./pages/persons/index.tsx'))
+                  Component: (await import('./pages/contacts/index.tsx'))
                     .default,
                 }),
               },
