@@ -63,64 +63,76 @@ export function useEditRole() {
 
 export function useEditRoleRoutes() {
   const { editRoleRoutes } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role-routes'],
     mutationFn: editRoleRoutes,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] })
-      toast.success('Role routes edited successfully!')
+      toast.success(`${moduleT('roleRoute')} ${successT('edit')}`)
     },
     onError: (error: any) => {
-      toast.error('Error updating role routes: ' + error.message)
+      toast.error(`${errorT('edit')} ${moduleT('roleRoute')}` + error.message)
     },
   })
 }
 
 export function useEditRoleMenus() {
   const { editRoleMenus } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role-menus'],
     mutationFn: editRoleMenus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] })
-      toast.success('Role menus edited successfully!')
+      toast.success(`${moduleT('roleMenu')} ${successT('edit')}`)
     },
     onError: (error: any) => {
-      toast.error('Error updating role menus: ' + error.message)
+      toast.error(`${errorT('edit')} ${moduleT('roleMenu')}` + error.message)
     },
   })
 }
 
 export function useEditRoleScreens() {
   const { editRoleScreens } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role-screens'],
     mutationFn: editRoleScreens,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] })
-      toast.success('Role screens edited successfully!')
+      toast.success(`${moduleT('roleScreen')} ${successT('edit')}`)
     },
     onError: (error: any) => {
-      toast.error('Error updating role screens: ' + error.message)
+      toast.error(`${errorT('edit')} ${moduleT('roleScreen')}` + error.message)
     },
   })
 }
 
 export function useEditRoleUsers() {
   const { editRoleUsers } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role-users'],
     mutationFn: editRoleUsers,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] })
-      toast.success('Role users edited successfully!')
+      toast.success(`${moduleT('roleUser')} ${successT('edit')}`)
     },
     onError: (error: any) => {
-      toast.error('Error updating role users: ' + error.message)
+      toast.error(`${errorT('edit')} ${moduleT('roleUser')}` + error.message)
     },
   })
 }

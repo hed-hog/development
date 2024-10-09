@@ -602,9 +602,7 @@ const DataPanelInner = <T extends any>(
           {isLoading ? (
             <ListView<T>
               itemClassName={itemClassName}
-              data={Array.from({
-                length: paginationOptions?.pageSizeOptions[0] ?? 10,
-              })}
+              data={[]}
               styleOptions={{
                 gap: styleOptions.gap,
                 padding: styleOptions.padding,
@@ -639,9 +637,7 @@ const DataPanelInner = <T extends any>(
             <GridView<T>
               ref={refInner}
               itemClassName={itemClassName}
-              data={Array.from({
-                length: paginationOptions?.pageSizeOptions[0] ?? 10,
-              })}
+              data={[]}
               responsiveColumns={responsiveColumns}
               styleOptions={{
                 gap: styleOptions.gap,
