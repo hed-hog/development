@@ -11,6 +11,7 @@ import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
 import { useTranslation } from 'react-i18next'
+import { v4 as uuidv4 } from 'uuid'
 
 type GridViewProps<T> = {
   responsiveColumns?: IResponsiveColumn
@@ -48,8 +49,8 @@ const GridViewInner = <T extends any>(
     extractKey = (item: T) => {
       try {
         return 'id' in (item as any) ? String((item as any).id) : ''
-      } catch (e) {
-        return ''
+      } catch (error) {
+        return uuidv4()
       }
     },
     responsiveColumns = {
@@ -81,6 +82,7 @@ const GridViewInner = <T extends any>(
   }: GridViewProps<T>,
   ref: React.Ref<any>
 ) => {
+  const gridViewId = uuidv4()
   const [gridColumns, setGridColumns] = useState<number>(
     responsiveColumns.default
   )

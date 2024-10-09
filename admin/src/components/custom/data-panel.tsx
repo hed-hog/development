@@ -15,6 +15,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useRef,
   useState,
 } from 'react'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
@@ -49,7 +50,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
-import { removeDuplicates } from '@/lib/remove-duplicates'
+import { v4 as uuidv4 } from 'uuid'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
@@ -162,8 +163,8 @@ const DataPanelInner = <T extends any>(
     extractKey = (item: T) => {
       try {
         return 'id' in (item as any) ? String((item as any).id) : ''
-      } catch (e) {
-        return ''
+      } catch (error) {
+        return uuidv4()
       }
     },
     url,
@@ -198,6 +199,7 @@ const DataPanelInner = <T extends any>(
   }: DataPanelProps<T>,
   ref: React.Ref<DataPanelRef<T>>
 ) => {
+  const refInner = useRef<any>(null)
   const isDesktop = useMediaQuery('(min-width: 992px)')
 
   const {
@@ -222,42 +224,29 @@ const DataPanelInner = <T extends any>(
   })
 
   const [order, setOrder] = useState(`${sortOrder}-${sortField}`)
-  const [selectedItems, setSelectedItems] = useState<string>(
-    JSON.stringify(selected)
-  )
+  const [selectedItemsArr, setSelectedItemsArr] = useState<string[]>([])
   const [isOrderDrawerOpen, setIsOrderDrawerOpen] = useState(false)
   const { openDialog, closeDialog } = useApp()
 
   const getSelectedItems = useCallback(() => {
-    return removeDuplicates(JSON.parse(selectedItems)) as T[]
-  }, [selectedItems])
-
-  const applySelectedItems = useCallback(() => {
-    if (typeof checked === 'function') {
-      const checkedItems = items.filter(checked)
-      setSelectedItems(JSON.stringify([...getSelectedItems(), ...checkedItems]))
-    }
-  }, [items, selectedItems, checked])
-
-  useEffect(() => {
-    applySelectedItems()
-  }, [items])
+    return selectedItemsArr.map((item) => JSON.parse(item))
+  }, [selectedItemsArr])
 
   const handleSelect = useCallback(
-    (item: T) =>
-      setSelectedItems(JSON.stringify([...getSelectedItems(), item])),
-    [getSelectedItems]
+    (item: T) => {
+      setSelectedItemsArr((prev) => [...prev, JSON.stringify(item)])
+    },
+    [selectedItemsArr]
   )
 
   const handleUnselect = useCallback(
-    (item: T) =>
-      setSelectedItems(
-        JSON.stringify(
-          getSelectedItems().filter(
-            (v: T) => extractKey(v) !== extractKey(item)
-          )
+    (item: T) => {
+      setSelectedItemsArr((prev) => {
+        return prev.filter(
+          (i) => extractKey(JSON.parse(i) as T) !== extractKey(item)
         )
-      ),
+      })
+    },
     [extractKey, getSelectedItems]
   )
 
@@ -283,7 +272,7 @@ const DataPanelInner = <T extends any>(
           multiple,
           selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
-            setSelectedItems(JSON.stringify(items))
+            setSelectedItemsArr(items.map((item) => JSON.stringify(item)))
           },
           ...(props as any),
         }
@@ -297,7 +286,7 @@ const DataPanelInner = <T extends any>(
           multiple,
           selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
-            setSelectedItems(JSON.stringify(items))
+            setSelectedItemsArr(items.map((item) => JSON.stringify(item)))
           },
           ...(props as any),
         }
@@ -312,7 +301,7 @@ const DataPanelInner = <T extends any>(
           multiple,
           selectedIds: getSelectedItems().map((item) => extractKey(item)),
           onSelectionChange: (items: T[]) => {
-            setSelectedItems(JSON.stringify(items))
+            setSelectedItemsArr(items.map((item) => JSON.stringify(item)))
           },
           ...(props as any),
         }
@@ -341,7 +330,7 @@ const DataPanelInner = <T extends any>(
           variant: 'secondary',
           text: 'Cancelar',
           onClick: () => {
-            setSelectedItems(selectedItems)
+            setSelectedItemsArr(selectedItemsArr)
             closeDialog(id)
           },
         },
@@ -355,7 +344,7 @@ const DataPanelInner = <T extends any>(
       title: 'Itens selecionados',
       description: 'Confira ou remova os itens selecionados',
     })
-  }, [selectedItems, getSelectedItemsPanel, getSelectedItems])
+  }, [selectedItemsArr, getSelectedItemsPanel, getSelectedItems])
 
   const showButtons = useCallback(
     <T extends any>({ show }: IMenuItemAction<T>): boolean => {
@@ -372,30 +361,38 @@ const DataPanelInner = <T extends any>(
     [getSelectedItems]
   )
 
+  const setSelectedItemsInner = useCallback(() => {
+    if (refInner.current) {
+      refInner.current.setSelectedItems(
+        selectedItemsArr.map((item) => extractKey(JSON.parse(item)))
+      )
+    }
+  }, [refInner.current, selectedItemsArr])
+
+  useEffect(() => {
+    setSelectedItemsInner()
+  }, [selectedItemsArr])
+
   useEffectAfterFirstUpdate(() => {
     if (typeof onSelectionChange === 'function') {
       onSelectionChange(getSelectedItems())
     }
   }, [getSelectedItems])
 
-  const selectAllItems = useCallback(() => {}, [])
-
-  const toggleSelectItem = useCallback(() => {}, [])
-
   useImperativeHandle(
     ref,
     () => ({
       getSelectedItems() {
-        return getSelectedItems()
+        return refInner.current?.getSelectedItems()
       },
       selectAllItems() {
-        selectAllItems()
+        return refInner.current?.selectAllItems()
       },
       toggleSelectItem(item: T, index: number, shiftKey: boolean) {
-        toggleSelectItem(item, index, shiftKey)
+        return refInner.current?.toggleSelectItem(item, index, shiftKey)
       },
       setSelectedItems(ids: string[]) {
-        setSelectedItems(ids)
+        return refInner.current?.setSelectedItems(ids)
       },
     }),
     [getSelectedItems]
@@ -433,7 +430,7 @@ const DataPanelInner = <T extends any>(
                           onClick={(e) => {
                             typeof handler === 'function' &&
                               handler(getSelectedItems(), e)
-                            setSelectedItems('[]')
+                            setSelectedItemsArr([])
                           }}
                           {...props}
                         >
@@ -551,7 +548,7 @@ const DataPanelInner = <T extends any>(
                           onClick={(e) => {
                             typeof handler === 'function' &&
                               handler(getSelectedItems(), e)
-                            setSelectedItems('[]')
+                            setSelectedItemsArr([])
                           }}
                           icon={icon}
                           label={String(label)}
@@ -580,6 +577,7 @@ const DataPanelInner = <T extends any>(
             />
           ) : (
             <TableView<T>
+              ref={refInner}
               itemClassName={itemClassName}
               selectable={selectable}
               multiple={multiple}
@@ -595,7 +593,6 @@ const DataPanelInner = <T extends any>(
               onSelect={handleSelect}
               onUnselect={handleUnselect}
               extractKey={extractKey}
-              selectedIds={getSelectedItems().map((item) => extractKey(item))}
             />
           )}
         </>
@@ -615,6 +612,7 @@ const DataPanelInner = <T extends any>(
             />
           ) : (
             <ListView<T>
+              ref={refInner}
               itemClassName={itemClassName}
               selectable={selectable}
               multiple={multiple}
@@ -637,6 +635,7 @@ const DataPanelInner = <T extends any>(
         <>
           {isLoading ? (
             <GridView<T>
+              ref={refInner}
               itemClassName={itemClassName}
               data={[]}
               responsiveColumns={responsiveColumns}

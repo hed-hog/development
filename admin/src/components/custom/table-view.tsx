@@ -36,6 +36,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { formatDate, isValidDateString } from '@/lib/date-string'
+import { v4 as uuidv4 } from 'uuid'
 
 interface ITableViewProps<T> {
   columns: ITableColumn<T>[]
@@ -76,8 +77,8 @@ const TableViewInner = <T extends any>(
     extractKey = (item: T) => {
       try {
         return 'id' in (item as any) ? String((item as any).id) : ''
-      } catch (e) {
-        return ''
+      } catch (error) {
+        return uuidv4()
       }
     },
     itemClassName,
@@ -100,6 +101,7 @@ const TableViewInner = <T extends any>(
   }: ITableViewProps<T>,
   ref: React.Ref<any>
 ) => {
+  const tableViewId = uuidv4()
   const [visibleColumns, setVisibleColumns] = useState<ITableColumn<T>[]>(
     columns || []
   )
@@ -117,7 +119,6 @@ const TableViewInner = <T extends any>(
 
   const handleSort = useCallback(
     (columnKey: string) => {
-      console.log(`column ${columnKey} clicked1`)
       const order = sortDirection === 'asc' ? 'desc' : 'asc'
       setSortColumn(columnKey)
       setSortDirection(order)
@@ -216,6 +217,7 @@ const TableViewInner = <T extends any>(
             newSelection.add(id)
           }
         }
+
         return Array.from(newSelection)
       }
     })
@@ -230,12 +232,6 @@ const TableViewInner = <T extends any>(
       )
     }
   }, [selectedItems])
-
-  useEffectAfterFirstUpdate(() => {
-    if (multiple) {
-      setSelectedItems(selectedIds)
-    }
-  }, [selectedIds])
 
   const onColumnVisibilityChange = (columnKey: string) => {
     setVisibleColumns((prevColumns) => {
@@ -489,10 +485,10 @@ const TableViewInner = <T extends any>(
       <TableBody>
         {isLoading
           ? Array.from({ length: 10 }).map((_, index) => (
-              <TableRow key={index}>
+              <TableRow key={`${tableViewId}-loading-${index}`}>
                 {columns.map((col) => (
                   <TableCell
-                    key={`skeleton-${'key' in col ? col.key : 'actions'}-${index}`}
+                    key={`${tableViewId}-loading-${index}-${'key' in col ? col.key : 'actions'}`}
                   >
                     <Skeleton className='h-8 w-full' />
                   </TableCell>
