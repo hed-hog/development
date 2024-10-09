@@ -15,9 +15,15 @@
   "customType": "Tipo Personalizado",
   "documentType": "Tipo de Documento",
   "personType": "Tipo de Pessoa",
-  "menuRole": "Cargos do Menu",
-  "menuScreen": "Telas do Menu",
-  "roleRoute": "Cargos da Rota",
-  "roleMenu": "Cargos do Menu",
-  "roleScreen": "Cargos da Tela"
+  "menuRole": "Cargo do Menu",
+  "menuScreen": "Tela do Menu",
+  "roleRoute": "Cargosda Rota",
+  "roleMenu": "Cargo do Menu",
+  "roleScreen": "Cargo da Tela",
+  "roleUser": "Cargo de Usuário",
+  "routeScreen": "Rota de Tela",
+  "routeRole": "Rota de Cargo",
+  "screenRole": "Tela de Cargo",
+  "screenRoute": "Tela de Rota",
+  "userRole": "Cargo de Usuário"
 }

@@ -19,5 +19,11 @@
   "menuScreen": "Menu Screen",
   "roleRoute": "Role Route",
   "roleMenu": "Role Menu",
-  "roleScreen": "Role Screen"
+  "roleScreen": "Role Screen",
+  "roleUser": "Role User",
+  "routeScreen": "Route Screen",
+  "routeRole": "Route Role",
+  "screenRole": "Screen Role",
+  "screenRoute": "Screen Route",
+  "userRole": "User Role"
 }
