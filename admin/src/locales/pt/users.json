@@ -10,5 +10,6 @@
   "editTooltip": "Editar os usuários selecionados",
   "name": "Nome",
   "email": "Email",
-  "password": "Senha"
+  "password": "Senha",
+  "registered": "Cadastrado"
 }
