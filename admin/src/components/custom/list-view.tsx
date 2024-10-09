@@ -65,7 +65,7 @@ const ListViewInner = <T extends any>(
   ref: React.Ref<any>
 ) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([])
-  const { t } = useTranslation('select')
+  const { t } = useTranslation('select', { useSuspense: false })
 
   useEffect(() => {
     if (onSelectionChange) {

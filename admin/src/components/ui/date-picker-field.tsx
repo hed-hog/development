@@ -8,8 +8,10 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { CalendarIcon } from 'lucide-react'
-import { formatDate } from '@/lib/date-string'
 import { FormControl } from './form'
+import { format, Locale } from 'date-fns'
+import { enUS, ptBR } from 'date-fns/locale'
+import { useTranslation } from 'react-i18next'
 
 interface IDatePickerFieldProps {
   icon?: JSX.Element
@@ -32,7 +34,24 @@ export function DatePickerField({
   calendar,
   className,
 }: IDatePickerFieldProps) {
+  const {
+    i18n: { language },
+  } = useTranslation()
+
   const [open, setOpen] = useState(false)
+
+  const locales: { [key: string]: Locale } = {
+    en: enUS,
+    pt: ptBR,
+  }
+
+  const formatDateToUTC = (date: Date) => {
+    const utcDate = new Date(date.toUTCString())
+    if (date.getHours() >= 21) {
+      utcDate.setUTCDate(utcDate.getUTCDate() + 1)
+    }
+    return format(utcDate, 'P', { locale: locales[language] })
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -48,7 +67,7 @@ export function DatePickerField({
             )}
           >
             {icon || <CalendarIcon className='mr-2 h-4 w-4' />}
-            {date ? formatDate(date.toISOString()) : <span>{label}</span>}
+            {date ? formatDateToUTC(date) : <span>{label}</span>}
           </Button>
         </FormControl>
       </PopoverTrigger>

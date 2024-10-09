@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useTranslation } from 'react-i18next'
+import { enUS, Locale, ptBR } from 'date-fns/locale'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -20,7 +21,10 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
-  const { t } = useTranslation('calendar', { useSuspense: false })
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('calendar', { useSuspense: false })
   const [selectedMonth, setSelectedMonth] = React.useState(
     new Date().getMonth()
   )
@@ -45,6 +49,11 @@ function Calendar({
   ]
 
   const years = Array.from({ length: 100 }, (_, i) => currentYear - i)
+
+  const locales: { [key: string]: Locale } = {
+    en: enUS,
+    pt: ptBR,
+  }
 
   const CustomCaption = ({ onMonthChange }: any) => {
     return (
@@ -104,6 +113,7 @@ function Calendar({
         setSelectedMonth(date.getMonth())
         setSelectedYear(date.getFullYear())
       }}
+      locale={locales[language]}
       className={cn('p-3', className)}
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',

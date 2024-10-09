@@ -77,7 +77,7 @@ const GridView = <T extends any>({
     responsiveColumns.default
   )
   const [selectedItems, setSelectedItems] = useState<string[]>(selectedIds)
-  const { t } = useTranslation('select')
+  const { t } = useTranslation('select', { useSuspense: false })
 
   // Atualiza o número de colunas baseado na largura da tela
   const updateColumnsBasedOnScreenSize = () => {
