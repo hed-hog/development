@@ -7,17 +7,19 @@ import {
   BreadcrumbList,
 } from '@/components/custom/breadcrumb'
 import { useMediaQuery } from 'usehooks-ts'
-
-const formatBreadcrumb = (segment: string) => {
-  return (
-    segment.charAt(0).toUpperCase() + segment.slice(1).replace(/[-_]/g, ' ')
-  )
-}
+import { useTranslation } from 'react-i18next'
+import { toCamelCase } from '@/lib/to-camel-case'
 
 export const DynamicBreadcrumb = () => {
+  const { t } = useTranslation('modules', { useSuspense: false })
   const location = useLocation()
   const isMobile = useMediaQuery('(max-width: 768px)')
   const pathnames = location.pathname.split('/').filter((x) => x)
+
+  const formatBreadcrumb = (segment: string) => {
+    const camelCaseSegment = toCamelCase(segment)
+    return t(camelCaseSegment, { defaultValue: camelCaseSegment })
+  }
 
   return (
     <Breadcrumb>
