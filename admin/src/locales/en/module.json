@@ -1,0 +1,23 @@
+{
+  "user": "User",
+  "role": "Role",
+  "screen": "Screen",
+  "menu": "Menu",
+  "route": "Route",
+  "setting": "Setting",
+  "person": "Person",
+  "address": "Address",
+  "contact": "Contact",
+  "custom": "Custom Attribute",
+  "document": "Document",
+  "addressType": "Address Type",
+  "contactType": "Contact Type",
+  "customType": "Custom Type",
+  "documentType": "Document Type",
+  "personType": "Person Type",
+  "menuRole": "Menu Role",
+  "menuScreen": "Menu Screen",
+  "roleRoute": "Role Route",
+  "roleMenu": "Role Menu",
+  "roleScreen": "Role Screen"
+}

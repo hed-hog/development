@@ -1,0 +1,23 @@
+{
+  "user": "Usuário",
+  "role": "Cargo",
+  "screen": "Tela",
+  "menu": "Menu",
+  "route": "Rota",
+  "setting": "Configuração",
+  "person": "Pessoa",
+  "address": "Endereço",
+  "contact": "Contato",
+  "custom": "Atributo Personalizados",
+  "document": "Documento",
+  "addressType": "Tipo de Endereço",
+  "contactType": "Tipo de Contato",
+  "customType": "Tipo Personalizado",
+  "documentType": "Tipo de Documento",
+  "personType": "Tipo de Pessoa",
+  "menuRole": "Cargos do Menu",
+  "menuScreen": "Telas do Menu",
+  "roleRoute": "Cargos da Rota",
+  "roleMenu": "Cargos do Menu",
+  "roleScreen": "Cargos da Tela"
+}

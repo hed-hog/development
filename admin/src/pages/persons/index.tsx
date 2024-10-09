@@ -461,6 +461,7 @@ export default function Page() {
                 addressId: String(addressItem.id),
                 data: {
                   ...addressDataFilled,
+                  country_id: Number(addressDataFilled.country_id),
                   number: Number(addressDataFilled.number),
                 },
               })
@@ -470,6 +471,7 @@ export default function Page() {
                 personId: Number(personId),
                 data: {
                   ...addressDataFilled,
+                  country_id: Number(addressDataFilled.country_id),
                   number: Number(addressDataFilled.number),
                 },
               })

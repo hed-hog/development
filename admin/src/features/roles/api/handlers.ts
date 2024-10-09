@@ -2,51 +2,61 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 export function useCreateRole() {
   const { createRole } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['post-role'],
     mutationFn: createRole,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] })
-      toast.success('Role created successfully!')
+      toast.success(`${moduleT('role')} ${successT('create')}`)
     },
     onError: (error: any) => {
-      toast.error('Error creating role: ' + error.message)
+      toast.error(`${errorT('create')} ${moduleT('role')}` + error.message)
     },
   })
 }
 
 export function useDeleteRole<T>() {
   const { deleteRoles } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['delete-role'],
     mutationFn: deleteRoles<T>,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] })
-      toast.success('Roles deleted successfully!')
+      toast.success(`${moduleT('role')} ${successT('delete')}`)
     },
     onError: (error: any) => {
-      toast.error('Error deleting roles: ' + error.message)
+      toast.error(`${errorT('delete')} ${moduleT('role')}` + error.message)
     },
   })
 }
 
 export function useEditRole() {
   const { editRole } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role'],
     mutationFn: editRole,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] })
-      toast.success('role edited successfully!')
+      toast.success(`${moduleT('role')} ${successT('edit')}`)
     },
     onError: (error: any) => {
-      toast.error('Error updating role: ' + error.message)
+      toast.error(`${errorT('edit')} ${moduleT('role')}` + error.message)
     },
   })
 }

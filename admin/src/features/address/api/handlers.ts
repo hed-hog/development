@@ -7,6 +7,7 @@ import {
 import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 export function useAddress(personId: number) {
   const { request } = useApp()
@@ -23,48 +24,57 @@ export function useAddress(personId: number) {
 
 export function useCreateAddress() {
   const { createAddress } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['post-address'],
     mutationFn: createAddress,
     onSuccess: () => {
       queryClient.invalidateQueries('address' as InvalidateQueryFilters)
-      toast.success('Address created successfully!')
+      toast.success(`${moduleT('address')} ${successT('create')}`)
     },
     onError: (error: any) => {
-      toast.error('Error creating Address: ' + error.message)
+      toast.error(`${errorT('create')} ${moduleT('address')}` + error.message)
     },
   })
 }
 
 export function useDeleteAddress() {
   const { deleteAddress } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['delete-address'],
     mutationFn: deleteAddress,
     onSuccess: () => {
       queryClient.invalidateQueries('address' as InvalidateQueryFilters)
-      toast.success('Address deleted successfully!')
+      toast.success(`${moduleT('address')} ${successT('delete')}`)
     },
     onError: (error: any) => {
-      toast.error('Error deleting address: ' + error.message)
+      toast.error(`${errorT('delete')} ${moduleT('address')}` + error.message)
     },
   })
 }
 
 export function useEditAddress() {
   const { editAddress } = requests()
+  const { t: moduleT } = useTranslation('module')
+  const { t: successT } = useTranslation('success')
+  const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-address'],
     mutationFn: editAddress,
     onSuccess: () => {
       queryClient.invalidateQueries('address' as InvalidateQueryFilters)
-      toast.success('Address edited successfully!')
+      toast.success(`${moduleT('address')} ${successT('edit')}`)
     },
     onError: (error: any) => {
-      toast.error('Error updating Address: ' + error.message)
+      toast.error(`${errorT('edit')} ${moduleT('address')}` + error.message)
     },
   })
 }
