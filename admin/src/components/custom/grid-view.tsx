@@ -12,8 +12,10 @@ import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
+import { Skeleton } from '../ui/skeleton'
 
 type GridViewProps<T> = {
+  isLoading?: boolean
   responsiveColumns?: IResponsiveColumn
   data: T[]
   render?: (item: T, index: number) => JSX.Element
@@ -78,6 +80,7 @@ const GridViewInner = <T extends any>(
     onSelect,
     onUnselect,
     selectedIds = [],
+    isLoading = false,
     ...props
   }: GridViewProps<T>,
   ref: React.Ref<any>
@@ -284,7 +287,13 @@ const GridViewInner = <T extends any>(
         }}
         className={className}
       >
-        {gridItems}
+        {isLoading
+          ? Array.from({ length: 10 }).map((_, index) => (
+              <div key={`${gridViewId}-loading-${index}`}>
+                <Skeleton className='h-8 w-full' />
+              </div>
+            ))
+          : gridItems}
       </div>
     </div>
   )

@@ -6,13 +6,15 @@ import React, {
 } from 'react'
 import { Checkbox } from '../ui/checkbox'
 import { IStyleOption } from '@/types/style-options'
-import { objectToString } from '@/lib/utils'
 import { SelectAll } from './select-items'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
+import { Skeleton } from '../ui/skeleton'
+import { objectToString } from '@/lib/utils'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
+  isLoading?: boolean
   data: T[]
   render?: (item: T, index: number) => JSX.Element
   styleOptions?: IStyleOption
@@ -51,6 +53,7 @@ const ListViewInner = <T extends any>(
     itemClassName,
     onSelect,
     onUnselect,
+    isLoading = false,
     extractKey = (item: T) => {
       try {
         return 'id' in (item as any) ? String((item as any).id) : ''
@@ -174,6 +177,10 @@ const ListViewInner = <T extends any>(
     [selectAllItems, toggleSelectItem]
   )
 
+  if (!render) {
+    render = (item: T) => <div>{objectToString(item)}</div>
+  }
+
   return (
     <div {...props} className={`p-${styleOptions.padding} ${className}`}>
       <div className='border-b'>
@@ -220,7 +227,13 @@ const ListViewInner = <T extends any>(
                 className='mx-2'
               />
             )}
-            {render ? render(item, index) : <div>{objectToString(item)}</div>}
+            {isLoading
+              ? Array.from({ length: 10 }).map((_, index) => (
+                  <div key={`${listViewId}-loading-${index}`}>
+                    <Skeleton className='h-8 w-full' />
+                  </div>
+                ))
+              : render(item, index)}
           </div>
         )
       })}
