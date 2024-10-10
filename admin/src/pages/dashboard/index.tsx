@@ -9,175 +9,12 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
-import { useApp } from '@/hooks/use-app'
+import Test from '../tests'
 
 export default function Dashboard() {
-  const { openSheet, closeSheet } = useApp()
-
-  const handlerbutton = () => {
-    const id = openSheet({
-      title: 'Testando',
-      description: 'Só teste',
-      children: () => (
-        <div className='flex flex-col'>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-          <span>Saulo Costa</span>
-        </div>
-      ),
-      side: 'top',
-      buttons: [
-        {
-          variant: 'destructive',
-          text: 'Cancelar',
-          onClick: () => closeSheet(id),
-        },
-        {
-          text: 'Salvar',
-          onClick: () => console.log('Salvar'),
-        },
-      ],
-    })
-
-    /* const id = openDialog({
-      title: 'Testando',
-      description: 'Só teste',
-      children: <span>Saulo Costa</span>,
-      buttons: [
-        {
-          variant: 'destructive',
-          text: 'Cancelar',
-          onClick: () => closeDialog(id),
-        },
-        {
-          text: 'Salvar',
-          onClick: () => console.log('Salvar'),
-        },
-      ],
-    }) */
-  }
-
   return (
     <>
+      <Test />
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
         <div className='flex items-center space-x-2'>
@@ -191,15 +28,26 @@ export default function Dashboard() {
       >
         <div className='w-full overflow-x-auto pb-2'>
           <TabsList>
-            <TabsTrigger value='overview'>Overview</TabsTrigger>
-            <TabsTrigger value='analytics'>Analytics</TabsTrigger>
-            <TabsTrigger value='reports'>Reports</TabsTrigger>
-            <TabsTrigger value='notifications'>Notifications</TabsTrigger>
+            <TabsTrigger className='text-primary-foreground' value='overview'>
+              Overview
+            </TabsTrigger>
+            <TabsTrigger className='text-primary-foreground' value='analytics'>
+              Analytics
+            </TabsTrigger>
+            <TabsTrigger className='text-primary-foreground' value='reports'>
+              Reports
+            </TabsTrigger>
+            <TabsTrigger
+              className='text-primary-foreground'
+              value='notifications'
+            >
+              Notifications
+            </TabsTrigger>
           </TabsList>
         </div>
         <TabsContent value='overview' className='space-y-4'>
           <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-            <Card>
+            <Card className='border-primary'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                 <CardTitle className='text-sm font-medium'>
                   Total Revenue
@@ -219,12 +67,12 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className='text-2xl font-bold'>$45,231.89</div>
-                <p className='text-xs text-muted-foreground'>
+                <p className='text-background-foreground text-xs'>
                   +20.1% from last month
                 </p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className='border-primary'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                 <CardTitle className='text-sm font-medium'>
                   Subscriptions
@@ -246,12 +94,12 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className='text-2xl font-bold'>+2350</div>
-                <p className='text-xs text-muted-foreground'>
+                <p className='text-background-foreground text-xs'>
                   +180.1% from last month
                 </p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className='border-primary'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                 <CardTitle className='text-sm font-medium'>Sales</CardTitle>
                 <svg
@@ -270,12 +118,12 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className='text-2xl font-bold'>+12,234</div>
-                <p className='text-xs text-muted-foreground'>
+                <p className='text-background-foreground text-xs'>
                   +19% from last month
                 </p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className='border-primary'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                 <CardTitle className='text-sm font-medium'>
                   Active Now
@@ -295,14 +143,14 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className='text-2xl font-bold'>+573</div>
-                <p className='text-xs text-muted-foreground'>
+                <p className='text-background-foreground text-xs'>
                   +201 since last hour
                 </p>
               </CardContent>
             </Card>
           </div>
           <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
-            <Card className='col-span-1 lg:col-span-4'>
+            <Card className='col-span-1 border-primary lg:col-span-4'>
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
               </CardHeader>
@@ -310,7 +158,7 @@ export default function Dashboard() {
                 <Overview />
               </CardContent>
             </Card>
-            <Card className='col-span-1 lg:col-span-3'>
+            <Card className='col-span-1 border-primary lg:col-span-3'>
               <CardHeader>
                 <CardTitle>Recent Sales</CardTitle>
                 <CardDescription>
@@ -324,7 +172,6 @@ export default function Dashboard() {
           </div>
         </TabsContent>
       </Tabs>
-      <Button onClick={() => handlerbutton()}>Abrir Sheet</Button>
     </>
   )
 }
