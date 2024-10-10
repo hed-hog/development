@@ -9,6 +9,7 @@ import '@/index.css'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
+import ThemeEditor from 'shadcn-theme-editor'
 
 i18n.on('languageChanged', (lng) => {
   localStorage.setItem('i18nextLng', lng)
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
         <RouterProvider router={router} />
         <Toaster />
+        <ThemeEditor />
       </ThemeProvider>
     </AppProvider>
   </React.StrictMode>
