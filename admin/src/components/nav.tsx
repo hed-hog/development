@@ -125,14 +125,7 @@ function NavLink({
   )
 }
 
-function NavLinkDropdown({
-  title,
-  icon,
-  label,
-  href,
-  sub,
-  closeNav,
-}: NavLinkProps) {
+function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav()
   const isChildActive = !!sub?.find((s) => checkActiveNav(s.href))
 
@@ -235,16 +228,56 @@ function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
           {title} {label ? `(${label})` : ''}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {sub!.map(({ title, icon, label, href }) => (
-          <DropdownMenuItem key={`${title}-${href}`} asChild>
-            <Link
-              to={href}
-              className={`${checkActiveNav(href) ? 'bg-secondary' : ''}`}
-            >
-              {icon} <span className='ml-2 max-w-52 text-wrap'>{title}</span>
-              {label && <span className='ml-auto text-xs'>{label}</span>}
-            </Link>
-          </DropdownMenuItem>
+        {sub!.map(({ title, icon, label, href, sub: subSub }) => (
+          <DropdownMenu key={`${title}-${href}`}>
+            <DropdownMenuItem asChild>
+              {subSub ? (
+                <div className='relative flex items-center justify-between'>
+                  <DropdownMenuTrigger asChild>
+                    <Link
+                      to={href}
+                      className={`${
+                        checkActiveNav(href) ? 'bg-secondary' : ''
+                      } flex w-full`}
+                    >
+                      {icon}{' '}
+                      <span className='ml-2 max-w-52 text-wrap'>{title}</span>
+                      {label && (
+                        <span className='ml-auto text-xs'>{label}</span>
+                      )}
+                    </Link>
+                  </DropdownMenuTrigger>
+                  <IconChevronDown className='ml-2' size={16} />
+                </div>
+              ) : (
+                <Link
+                  to={href}
+                  className={`${
+                    checkActiveNav(href) ? 'bg-secondary' : ''
+                  } flex w-full`}
+                >
+                  {icon}{' '}
+                  <span className='ml-2 max-w-52 text-wrap'>{title}</span>
+                  {label && <span className='ml-auto text-xs'>{label}</span>}
+                </Link>
+              )}
+            </DropdownMenuItem>
+            {subSub && (
+              <DropdownMenuContent side='right' align='start' sideOffset={4}>
+                {subSub.map((subSublink) => (
+                  <DropdownMenuItem
+                    key={`${subSublink.title}-${subSublink.href}`}
+                    asChild
+                  >
+                    <Link to={subSublink.href}>
+                      {subSublink.icon}{' '}
+                      <span className='ml-2'>{subSublink.title}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            )}
+          </DropdownMenu>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
