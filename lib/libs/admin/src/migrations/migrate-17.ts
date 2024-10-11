@@ -10,15 +10,55 @@ export class Migrate implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'settings',
+        name: 'setting_groups',
         columns: [
           idColumn(),
           {
-            name: 'name',
+            name: 'icon',
             type: 'varchar',
+            length: '31',
           },
           timestampColumn(),
           timestampColumn('updated_at'),
+        ],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'setting_group_translations',
+        columns: [
+          {
+            name: 'locale_id',
+            type: 'int',
+            unsigned: true,
+          },
+          {
+            name: 'group_id',
+            type: 'int',
+            unsigned: true,
+          },
+          {
+            name: 'name',
+            type: 'varchar',
+            length: '63',
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+        foreignKeys: [
+          {
+            columnNames: ['locale_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'locales',
+            onDelete: 'CASCADE',
+          },
+          {
+            columnNames: ['group_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'setting_groups',
+            onDelete: 'CASCADE',
+          },
         ],
       }),
     );

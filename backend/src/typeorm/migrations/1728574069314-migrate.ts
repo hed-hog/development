@@ -6,11 +6,11 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class Migrate1728497461375 implements MigrationInterface {
+export class Migrate1728574069314 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: "role_users",
+        name: "role_screens",
         columns: [
           {
             name: "role_id",
@@ -19,7 +19,7 @@ export class Migrate1728497461375 implements MigrationInterface {
             unsigned: true,
           },
           {
-            name: "user_id",
+            name: "screen_id",
             type: "int",
             isPrimary: true,
             unsigned: true,
@@ -30,26 +30,25 @@ export class Migrate1728497461375 implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKeys("role_users", [
+    await queryRunner.createForeignKeys("role_screens", [
       new TableForeignKey({
         columnNames: ["role_id"],
         referencedColumnNames: ["id"],
         referencedTableName: "roles",
         onDelete: "CASCADE",
-        name: "fk_role_users_roles",
+        name: "fk_role_screens_roles",
       }),
-
       new TableForeignKey({
-        columnNames: ["user_id"],
+        columnNames: ["screen_id"],
         referencedColumnNames: ["id"],
-        referencedTableName: "users",
+        referencedTableName: "screens",
         onDelete: "CASCADE",
-        name: "fk_role_users_users",
+        name: "fk_role_screens_screens",
       }),
     ]);
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable("role_users");
+    await queryRunner.dropTable("role_screens");
   }
 }
