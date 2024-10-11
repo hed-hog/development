@@ -5,6 +5,7 @@ import { Slider } from '@/components/ui/slider'
 import { adjustHSL, hexToHSL } from '@/lib/colors'
 import { useState, useEffect } from 'react'
 import { HexColorPicker, HexColorInput } from 'react-colorful'
+import { toast } from 'sonner'
 
 export default function Test() {
   const { theme } = useTheme()
@@ -67,6 +68,22 @@ export default function Test() {
     )
   }, [theme])
 
+  const saveValues = () => {
+    const computedStyles = getComputedStyle(document.documentElement)
+
+    const savedValues = {
+      primary: computedStyles.getPropertyValue('--primary').trim(),
+      background: computedStyles.getPropertyValue('--background').trim(),
+      secondary: computedStyles.getPropertyValue('--secondary').trim(),
+      accent: computedStyles.getPropertyValue('--accent').trim(),
+      muted: computedStyles.getPropertyValue('--muted').trim(),
+      radius: computedStyles.getPropertyValue('--radius').trim(),
+    }
+
+    console.log(savedValues)
+    toast.success('Values saved! Check out the console.')
+  }
+
   return (
     <div className='flex flex-row items-start justify-center rounded-lg shadow-md'>
       <div className='mx-12 flex flex-col items-center space-y-4'>
@@ -86,7 +103,7 @@ export default function Test() {
           <HexColorInput
             color={color}
             onChange={setColor}
-            className='rounded border border-gray-300 px-2 py-1 text-black'
+            className='rounded border border-gray-300 bg-primary px-2 py-1 text-primary-foreground'
             prefixed
           />
         </div>
@@ -131,9 +148,11 @@ export default function Test() {
             step={0.1}
           />
         </div>
-        <div className='flex flex-row justify-between'>
+        <div className='mt-auto flex flex-row justify-between'>
           <ThemeSwitch />
-          <Button className='ml-auto'>Salvar</Button>
+          <Button className='ml-auto' onClick={() => saveValues()}>
+            Salvar
+          </Button>
         </div>
       </div>
     </div>
