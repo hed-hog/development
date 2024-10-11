@@ -1,6 +1,14 @@
 import { Button } from '@/components/custom/button'
 import { useTheme } from '@/components/theme-provider'
 import ThemeSwitch from '@/components/theme-switch'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
 import { adjustHSL, hexToHSL } from '@/lib/colors'
 import { useState, useEffect } from 'react'
@@ -14,6 +22,9 @@ export default function Test() {
   const [lightness, setLightness] = useState(50)
   const [radius, setRadius] = useState(0.5)
   const [textSize, setTextSize] = useState(1)
+  const [fontFamily, setFontFamily] = useState(
+    'ui-sans-serif, system-ui, sans-serif'
+  )
   const [hue, setHue] = useState(50)
 
   useEffect(() => {
@@ -85,7 +96,9 @@ export default function Test() {
       '--text-size-3xl',
       `${textSize * 1.875}rem`
     )
-  }, [color, saturation, lightness, radius, textSize, theme])
+
+    document.documentElement.style.setProperty('--font-family', fontFamily)
+  }, [color, saturation, lightness, radius, textSize, theme, fontFamily])
 
   useEffect(() => {
     document.documentElement.style.setProperty(
@@ -114,6 +127,15 @@ export default function Test() {
       accent: computedStyles.getPropertyValue('--accent').trim(),
       muted: computedStyles.getPropertyValue('--muted').trim(),
       radius: computedStyles.getPropertyValue('--radius').trim(),
+      xs: computedStyles.getPropertyValue('--text-size-xs').trim(),
+      sm: computedStyles.getPropertyValue('--text-size-sm').trim(),
+      md: computedStyles.getPropertyValue('--text-size-md').trim(),
+      base: computedStyles.getPropertyValue('--text-size-base').trim(),
+      lg: computedStyles.getPropertyValue('--text-size-lg').trim(),
+      xl: computedStyles.getPropertyValue('--text-size-xl').trim(),
+      '2xl': computedStyles.getPropertyValue('--text-size-2xl').trim(),
+      '3xl': computedStyles.getPropertyValue('--text-size-3xl').trim(),
+      fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
     }
 
     console.log(savedValues)
@@ -146,7 +168,7 @@ export default function Test() {
       </div>
       <div className='flex w-full max-w-xs flex-col space-y-6'>
         <div>
-          <label htmlFor='saturation' className='text-custom block font-medium'>
+          <label htmlFor='saturation' className='block text-sm font-medium'>
             Saturation: {saturation}
           </label>
           <Slider
@@ -196,6 +218,53 @@ export default function Test() {
             max={5}
             step={0.1}
           />
+        </div>
+        <div>
+          <label htmlFor='font-family' className='block text-sm font-medium'>
+            Font Family
+          </label>
+          <Select
+            onValueChange={(value) => setFontFamily(value)}
+            value={fontFamily}
+          >
+            <SelectTrigger className='w-full'>
+              <SelectValue placeholder='Select font family' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value='ui-sans-serif, system-ui, sans-serif'>
+                  Default
+                </SelectItem>
+                <SelectItem value='Arial' style={{ fontFamily: 'Arial' }}>
+                  Arial
+                </SelectItem>
+                <SelectItem value='Verdana' style={{ fontFamily: 'Verdana' }}>
+                  Verdana
+                </SelectItem>
+                <SelectItem
+                  value='Helvetica'
+                  style={{ fontFamily: 'Helvetica' }}
+                >
+                  Helvetica
+                </SelectItem>
+                <SelectItem value='Georgia' style={{ fontFamily: 'Georgia' }}>
+                  Georgia
+                </SelectItem>
+                <SelectItem
+                  value='Times New Roman'
+                  style={{ fontFamily: 'Times New Roman' }}
+                >
+                  Times New Roman
+                </SelectItem>
+                <SelectItem
+                  value='Courier New'
+                  style={{ fontFamily: 'Courier New' }}
+                >
+                  Courier New
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className='mt-auto flex flex-row justify-between'>
           <ThemeSwitch />

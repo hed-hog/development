@@ -9,6 +9,7 @@
   --scrollbar-track-dark: #3576df;
   --scrollbar-thumb-dark: #020817;
   --text-size: 1rem;
+  --font-family: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 }
 
 .scrollbar-hide {
@@ -18,6 +19,10 @@
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari, and Opera */
+}
+
+html {
+  font-family: var(--font-family);
 }
 
 @media (prefers-color-scheme: light) {
