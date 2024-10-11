@@ -28,15 +28,17 @@ export default function Test() {
       `${hue} ${saturation}% ${lightness}%`
     )
 
-    document.documentElement.style.setProperty(
-      '--background',
-      `${backgroundHSL.h} ${saturation}% ${lightness / 10}%`
-    )
+    theme === 'dark' &&
+      document.documentElement.style.setProperty(
+        '--background',
+        `${backgroundHSL.h} ${saturation}% ${lightness / 10}%`
+      )
 
-    document.documentElement.style.setProperty(
-      '--secondary',
-      `${secondaryHSL.h} ${saturation}% ${lightness / 10}%`
-    )
+    theme === 'dark' &&
+      document.documentElement.style.setProperty(
+        '--secondary',
+        `${secondaryHSL.h} ${saturation}% ${lightness / 10}%`
+      )
 
     document.documentElement.style.setProperty(
       '--accent',
@@ -49,7 +51,9 @@ export default function Test() {
     )
 
     document.documentElement.style.setProperty('--radius', `${radius}rem`)
-  }, [color, saturation, lightness, radius])
+
+    console.log({ color, saturation, lightness, radius })
+  }, [color, saturation, lightness, radius, theme])
 
   useEffect(() => {
     document.documentElement.style.setProperty(
