@@ -8,6 +8,7 @@
   --scrollbar-thumb-light: #d1d5db;
   --scrollbar-track-dark: #3576df;
   --scrollbar-thumb-dark: #020817;
+  --text-size: 1rem;
 }
 
 .scrollbar-hide {

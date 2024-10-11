@@ -13,6 +13,7 @@ export default function Test() {
   const [saturation, setSaturation] = useState(50)
   const [lightness, setLightness] = useState(50)
   const [radius, setRadius] = useState(0.5)
+  const [textSize, setTextSize] = useState(1)
   const [hue, setHue] = useState(50)
 
   useEffect(() => {
@@ -51,9 +52,40 @@ export default function Test() {
     )
 
     document.documentElement.style.setProperty('--radius', `${radius}rem`)
+    document.documentElement.style.setProperty(
+      '--text-size-xs',
+      `${textSize * 0.75}rem`
+    )
+    document.documentElement.style.setProperty(
+      '--text-size-sm',
+      `${textSize * 0.875}rem`
+    )
+    document.documentElement.style.setProperty(
+      '--text-size-md',
+      `${textSize}rem`
+    )
+    document.documentElement.style.setProperty(
+      '--text-size-base',
+      `${textSize}rem`
+    )
+    document.documentElement.style.setProperty(
+      '--text-size-lg',
+      `${textSize * 1.125}rem`
+    )
+    document.documentElement.style.setProperty(
+      '--text-size-xl',
+      `${textSize * 1.25}rem`
+    )
+    document.documentElement.style.setProperty(
+      '--text-size-2xl',
+      `${textSize * 1.5}rem`
+    )
 
-    console.log({ color, saturation, lightness, radius })
-  }, [color, saturation, lightness, radius, theme])
+    document.documentElement.style.setProperty(
+      '--text-size-3xl',
+      `${textSize * 1.875}rem`
+    )
+  }, [color, saturation, lightness, radius, textSize, theme])
 
   useEffect(() => {
     document.documentElement.style.setProperty(
@@ -114,7 +146,7 @@ export default function Test() {
       </div>
       <div className='flex w-full max-w-xs flex-col space-y-6'>
         <div>
-          <label htmlFor='saturation' className='block text-sm font-medium'>
+          <label htmlFor='saturation' className='text-custom block font-medium'>
             Saturation: {saturation}
           </label>
           <Slider
@@ -149,6 +181,19 @@ export default function Test() {
             defaultValue={[0.5]}
             min={0}
             max={1}
+            step={0.1}
+          />
+        </div>
+        <div>
+          <label htmlFor='size' className='block text-sm font-medium'>
+            Text Size: {textSize.toFixed(1)}rem
+          </label>
+          <Slider
+            value={[textSize]}
+            onValueChange={(value) => setTextSize(value[0])}
+            defaultValue={[1]}
+            min={0}
+            max={5}
             step={0.1}
           />
         </div>
