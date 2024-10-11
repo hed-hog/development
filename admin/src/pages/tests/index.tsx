@@ -1,5 +1,7 @@
+import { Button } from '@/components/custom/button'
 import { useTheme } from '@/components/theme-provider'
 import ThemeSwitch from '@/components/theme-switch'
+import { Slider } from '@/components/ui/slider'
 import { adjustHSL, hexToHSL } from '@/lib/colors'
 import { useState, useEffect } from 'react'
 import { HexColorPicker, HexColorInput } from 'react-colorful'
@@ -66,7 +68,7 @@ export default function Test() {
   }, [theme])
 
   return (
-    <div className='flex flex-row items-center justify-center space-y-4 rounded-lg shadow-md'>
+    <div className='flex flex-row items-start justify-center rounded-lg shadow-md'>
       <div className='mx-12 flex flex-col items-center space-y-4'>
         <HexColorPicker
           color={color}
@@ -89,51 +91,50 @@ export default function Test() {
           />
         </div>
       </div>
-      <div className='w-full max-w-xs space-y-6'>
+      <div className='flex w-full max-w-xs flex-col space-y-6'>
         <div>
           <label htmlFor='saturation' className='block text-sm font-medium'>
             Saturation: {saturation}
           </label>
-          <input
-            type='range'
-            id='saturation'
-            min='0'
-            max='100'
-            value={saturation}
-            onChange={(e) => setSaturation(parseInt(e.target.value))}
-            className='h-2 w-full cursor-pointer appearance-none rounded-lg'
+          <Slider
+            value={[saturation]}
+            onValueChange={(value) => setSaturation(value[0])}
+            defaultValue={[50]}
+            min={0}
+            max={100}
+            step={1}
           />
         </div>
         <div>
           <label htmlFor='lightness' className='block text-sm font-medium'>
             Lightness: {lightness}
           </label>
-          <input
-            type='range'
-            id='lightness'
-            min='0'
-            max='100'
-            value={lightness}
-            onChange={(e) => setLightness(parseInt(e.target.value))}
-            className='h-2 w-full cursor-pointer appearance-none rounded-lg'
+          <Slider
+            value={[lightness]}
+            onValueChange={(value) => setLightness(value[0])}
+            defaultValue={[50]}
+            min={0}
+            max={100}
+            step={1}
           />
         </div>
         <div>
           <label htmlFor='radius' className='block text-sm font-medium'>
             Radius: {radius.toFixed(1)}rem
           </label>
-          <input
-            type='range'
-            id='radius'
-            min='0'
-            max='1'
-            step='0.1'
-            value={radius}
-            onChange={(e) => setRadius(parseFloat(e.target.value))}
-            className='h-2 w-full cursor-pointer appearance-none rounded-lg'
+          <Slider
+            value={[radius]}
+            onValueChange={(value) => setRadius(value[0])}
+            defaultValue={[0.5]}
+            min={0}
+            max={1}
+            step={0.1}
           />
         </div>
-        <ThemeSwitch />
+        <div className='flex flex-row justify-between'>
+          <ThemeSwitch />
+          <Button className='ml-auto'>Salvar</Button>
+        </div>
       </div>
     </div>
   )
