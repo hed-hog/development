@@ -1,26 +1,27 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migrate1728574069333 implements MigrationInterface {
+export class Migrate1728679104846 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
-    const menus = await queryRunner.manager
+    const screens = await queryRunner.manager
       .createQueryBuilder()
       .select()
-      .from("menus", "m")
+      .from("screens", "s")
       .execute();
 
-    for (const menu of menus) {
+    for (const screen of screens) {
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into("role_menus")
+        .into("role_screens")
         .values({
           role_id: 1,
-          menu_id: menu.id,
-        });
+          screen_id: screen.id,
+        })
+        .execute();
     }
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.manager.delete("role_menus", { role_id: 1 });
+    await queryRunner.manager.delete("role_screens", { role_id: 1 });
   }
 }

@@ -6,23 +6,23 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class Migrate1728574069307 implements MigrationInterface {
+export class Migrate1728679104768 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: "route_screens",
+        name: "role_screens",
         columns: [
           {
-            name: "route_id",
+            name: "role_id",
             type: "int",
-            unsigned: true,
             isPrimary: true,
+            unsigned: true,
           },
           {
             name: "screen_id",
             type: "int",
-            unsigned: true,
             isPrimary: true,
+            unsigned: true,
           },
           timestampColumn(),
           timestampColumn("updated_at"),
@@ -30,25 +30,25 @@ export class Migrate1728574069307 implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKeys("route_screens", [
+    await queryRunner.createForeignKeys("role_screens", [
       new TableForeignKey({
-        columnNames: ["route_id"],
+        columnNames: ["role_id"],
         referencedColumnNames: ["id"],
-        referencedTableName: "routes",
+        referencedTableName: "roles",
         onDelete: "CASCADE",
-        name: "fk_route_screens_routes",
+        name: "fk_role_screens_roles",
       }),
       new TableForeignKey({
         columnNames: ["screen_id"],
         referencedColumnNames: ["id"],
         referencedTableName: "screens",
         onDelete: "CASCADE",
-        name: "fk_route_screens_screens",
+        name: "fk_role_screens_screens",
       }),
     ]);
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable("route_screens");
+    await queryRunner.dropTable("role_screens");
   }
 }

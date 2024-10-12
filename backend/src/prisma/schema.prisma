@@ -7,12 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model migrations {
-  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
-  timestamp BigInt
-  name      String @db.VarChar
-}
-
 model countries {
   id               Int                @id(map: "PK_b2d7006793e8697ab3ae2deff18") @default(autoincrement())
   name             String             @db.VarChar(50)
@@ -26,10 +20,10 @@ model countries {
 
 model locales {
   id                                Int                                 @id(map: "PK_f7a42a6bd1ee3e584a11eb5b37d") @default(autoincrement())
-  name                              String                              @db.VarChar
   code                              String                              @db.Char(2)
   region                            String                              @db.Char(2)
   country_id                        Int
+  enabled                           Boolean                             @default(true)
   created_at                        DateTime                            @default(now()) @db.Timestamp(6)
   updated_at                        DateTime                            @default(now()) @db.Timestamp(6)
   countries                         countries                           @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1b7f006abb609825f10a4d98567")
@@ -41,7 +35,15 @@ model locales {
   person_type_translations          person_type_translations[]
   role_translations                 role_translations[]
   screen_translations               screen_translations[]
+  setting_group_translations        setting_group_translations[]
+  setting_translations              setting_translations[]
   translations                      translations[]
+}
+
+model migrations {
+  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+  timestamp BigInt
+  name      String @db.VarChar
 }
 
 model translation_namespaces {
@@ -236,24 +238,52 @@ model screens {
   screen_translations screen_translations[]
 }
 
-model setting_values {
-  id          Int      @id(map: "PK_c21069a3e9521c651c52051b939") @default(autoincrement())
-  value       String   @db.VarChar(1023)
-  name        String   @unique(map: "UQ_107f182a06aebe76c709d58dfbd") @db.VarChar
-  description String?  @db.VarChar
-  label       String?  @db.VarChar
+model setting_group_translations {
+  locale_id      Int
+  group_id       Int
+  name           String         @db.VarChar(63)
+  description    String?        @db.VarChar(255)
+  created_at     DateTime       @default(now()) @db.Timestamp(6)
+  updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  setting_groups setting_groups @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_38b99c2da9e04cc5df699dd5005")
+  locales        locales        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d9e5def8e7b5aea9e0902246ac2")
+
+  @@id([locale_id, group_id], map: "PK_ca91c40f872f1abca475a9d928c")
+}
+
+model setting_groups {
+  id                         Int                          @id(map: "PK_d743b68d4f14b4f9088d17c3f95") @default(autoincrement())
+  icon                       String                       @db.VarChar(31)
+  slug                       String                       @db.VarChar(63)
+  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
+  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
+  setting_group_translations setting_group_translations[]
+  settings                   settings[]
+}
+
+model setting_translations {
+  locale_id   Int
   setting_id  Int
+  description String?  @db.VarChar(255)
+  name        String?  @db.VarChar(63)
   created_at  DateTime @default(now()) @db.Timestamp(6)
   updated_at  DateTime @default(now()) @db.Timestamp(6)
-  settings    settings @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4001238c50d670cf048b157cf9b")
+  locales     locales  @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1981fbb8d2d872a8d6613b11345")
+  settings    settings @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_bd2e921fb8cf8b3c862bca74ad1")
+
+  @@id([locale_id, setting_id], map: "PK_737d9d307d6ea39b81760328457")
 }
 
 model settings {
-  id             Int              @id(map: "PK_0669fe20e252eb692bf4d344975") @default(autoincrement())
-  name           String           @db.VarChar
-  created_at     DateTime         @default(now()) @db.Timestamp(6)
-  updated_at     DateTime         @default(now()) @db.Timestamp(6)
-  setting_values setting_values[]
+  id                   Int                    @id(map: "PK_0669fe20e252eb692bf4d344975") @default(autoincrement())
+  slug                 String                 @unique(map: "UQ_14378107ac6bb5b9577f6810d59") @db.VarChar(63)
+  group_id             Int
+  type                 settings_type_enum     @default(string)
+  value                String?                @db.VarChar(1023)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  setting_translations setting_translations[]
+  setting_groups       setting_groups         @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_35eb8ab2edefee1ddeaf85f4603")
 }
 
 model users {
@@ -444,4 +474,11 @@ enum routes_method_enum {
   PUT
   OPTIONS
   HEAD
+}
+
+enum settings_type_enum {
+  string
+  number
+  boolean
+  json
 }

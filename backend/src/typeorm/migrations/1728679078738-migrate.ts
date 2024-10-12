@@ -6,7 +6,7 @@ import {
 } from "typeorm";
 import { idColumn, timestampColumn } from "@hedhog/utils";
 
-export class Migrate1728574053389 implements MigrationInterface {
+export class Migrate1728679078738 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -232,11 +232,6 @@ export class Migrate1728574053389 implements MigrationInterface {
         columns: [
           idColumn(),
           {
-            name: "name",
-            type: "varchar",
-            isNullable: false,
-          },
-          {
             name: "code",
             type: "char",
             length: "2",
@@ -253,19 +248,22 @@ export class Migrate1728574053389 implements MigrationInterface {
             type: "int",
             isNullable: false,
           },
+          {
+            name: "enabled",
+            type: "boolean",
+            default: true,
+          },
           timestampColumn(),
           timestampColumn("updated_at"),
         ],
-      }),
-    );
-
-    await queryRunner.createForeignKey(
-      "locales",
-      new TableForeignKey({
-        columnNames: ["country_id"],
-        referencedTableName: "countries",
-        referencedColumnNames: ["id"],
-        onDelete: "CASCADE",
+        foreignKeys: [
+          {
+            columnNames: ["country_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "countries",
+            onDelete: "CASCADE",
+          },
+        ],
       }),
     );
 
@@ -282,12 +280,36 @@ export class Migrate1728574053389 implements MigrationInterface {
       .where("code = :code", { code: "BRA" })
       .execute();
 
-    await queryRunner.query(`
-      INSERT INTO locales (name, code, region, country_id)
-      VALUES 
-        ('English', 'en', 'US', ${countryUSA[0].id}),
-        ('Portuguese', 'pt', 'BR', ${countryBRA[0].id});
-    `);
+    const locales = [
+      {
+        id: 0,
+        code: "en",
+        region: "US",
+        country_id: countryUSA[0].id,
+      },
+      {
+        id: 0,
+        code: "pt",
+        region: "BR",
+        country_id: countryBRA[0].id,
+      },
+    ];
+
+    for (let index = 0; index < locales.length; index++) {
+      const localeId = await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("locales", ["code", "region", "country_id"])
+        .values({
+          code: locales[index].code,
+          region: locales[index].region,
+          country_id: locales[index].country_id,
+        })
+        .returning("id")
+        .execute();
+
+      locales[index].id = localeId.raw[0].id;
+    }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

@@ -15,6 +15,7 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { LocaleService } from './locale.service';
+import { Locale } from './locale.decorator';
 
 @Controller('locales')
 export class LocaleController {
@@ -34,6 +35,11 @@ export class LocaleController {
     @Param('namespace') namespace: string,
   ) {
     return this.localeService.getTranslations(localeCode, namespace);
+  }
+
+  @Get('system/enableds')
+  async getEnableds(@Pagination() paginationParams, @Locale() locale: string) {
+    return this.localeService.getEnableds(locale, paginationParams);
   }
 
   @Get(':id')

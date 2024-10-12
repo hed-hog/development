@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migrate1728574069382 implements MigrationInterface {
+export class Migrate1728679104853 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     const menus = await queryRunner.manager
       .createQueryBuilder()

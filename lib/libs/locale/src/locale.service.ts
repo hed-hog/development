@@ -19,6 +19,81 @@ export class LocaleService {
     private readonly paginationService: PaginationService,
   ) {}
 
+  async getEnableds(locale: string, paginationParams: PaginationDTO) {
+    const fields = ['slug', 'icon'];
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
+      fields,
+      paginationParams,
+    );
+
+    const result = await this.paginationService.paginate(
+      this.prismaService.locales,
+      paginationParams,
+      {
+        where: {
+          AND: [
+            {
+              enabled: true,
+            },
+            {
+              OR,
+            },
+          ],
+        },
+      },
+    );
+
+    const codes = [];
+
+    for (const item of result.data) {
+      codes.push((item as any).code);
+    }
+
+    const { code, region, locales } = this.parseLocale(locale);
+    const where: any = {
+      locales: {
+        code,
+      },
+      translation_namespaces: {
+        name: 'translation',
+      },
+    };
+
+    if (locales.length > 1) {
+      where.locale.region = region;
+    }
+
+    const values = await this.prismaService.translations.findMany({
+      where,
+      select: {
+        name: true,
+        value: true,
+      },
+    });
+
+    for (let i = 0; i < result.data.length; i++) {
+      for (const value of values) {
+        if (value.name === (result.data[i] as any).code) {
+          (result.data[i] as any).name = value.value;
+          break;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  parseLocale(locale: string) {
+    const localeCodes = locale.toLowerCase().split('-');
+    const code = localeCodes[0];
+    const region = localeCodes[1];
+    return {
+      code,
+      region,
+      locales: localeCodes,
+    };
+  }
+
   async getTranslations(localeCode: string, namespace: string) {
     if (!localeCode) {
       throw new BadRequestException('Locale code is required.');
@@ -28,9 +103,7 @@ export class LocaleService {
       namespace = 'translation';
     }
 
-    const localeCodes = localeCode.toLowerCase().split('-');
-    const code = localeCodes[0];
-    const region = localeCodes[1];
+    const { code, region, locales } = this.parseLocale(localeCode);
     const where: any = {
       locales: {
         code,
@@ -40,7 +113,7 @@ export class LocaleService {
       },
     };
 
-    if (localeCodes.length > 1) {
+    if (locales.length > 1) {
       where.locale.region = region;
     }
 
