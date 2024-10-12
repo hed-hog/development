@@ -1,236 +1,137 @@
-import { idColumn, timestampColumn } from '@hedhog/utils';
-
 import {
   MigrationInterface,
   QueryRunner,
   Table,
   TableForeignKey,
 } from 'typeorm';
+import { idColumn, timestampColumn } from '@hedhog/utils';
 
 export class Migrate implements MigrationInterface {
-  async up(queryRunner: QueryRunner) {
-    await queryRunner.createTable(
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await await queryRunner.createTable(
       new Table({
-        name: 'screens',
+        name: 'translation_namespaces',
         columns: [
           idColumn(),
           {
-            name: 'slug',
+            name: 'name',
             type: 'varchar',
-            isUnique: true,
-          },
-          {
-            name: 'icon',
-            type: 'varchar',
-            isNullable: true,
+            isNullable: false,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
       }),
+      true,
     );
+
+    await await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('translation_namespaces')
+      .values([{ name: 'translation' }])
+      .execute();
 
     await queryRunner.createTable(
       new Table({
-        name: 'screen_translations',
+        name: 'translations',
         columns: [
-          {
-            name: 'screen_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
+          idColumn(),
           {
             name: 'locale_id',
             type: 'int',
+            isNullable: false,
             unsigned: true,
-            isPrimary: true,
+          },
+          {
+            name: 'namespace_id',
+            type: 'int',
+            isNullable: false,
+            unsigned: true,
           },
           {
             name: 'name',
             type: 'varchar',
+            isNullable: false,
           },
           {
-            name: 'description',
+            name: 'value',
             type: 'varchar',
+            isNullable: false,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
+        uniques: [
+          {
+            columnNames: ['locale_id', 'namespace_id', 'name'],
+          },
+        ],
         foreignKeys: [
-          new TableForeignKey({
-            columnNames: ['screen_id'],
-            referencedTableName: 'screens',
-            referencedColumnNames: ['id'],
-            onDelete: 'CASCADE',
-          }),
           new TableForeignKey({
             columnNames: ['locale_id'],
             referencedTableName: 'locales',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           }),
+          new TableForeignKey({
+            columnNames: ['namespace_id'],
+            referencedTableName: 'translation_namespaces',
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
+          }),
         ],
       }),
+      true,
     );
 
-    await queryRunner.manager
+    await await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into('screens', ['slug', 'icon'])
+      .into('translations', ['locale_id', 'namespace_id', 'name', 'value'])
       .values([
         {
-          slug: '/management/users',
-          icon: 'users',
-        },
-        {
-          slug: '/management/roles',
-          icon: 'circles',
-        },
-        {
-          slug: '/management/screens',
-          icon: 'monitor',
-        },
-        {
-          slug: '/management/menus',
-          icon: 'menu',
-        },
-        {
-          slug: '/management/routes',
-          icon: 'route',
-        },
-        {
-          slug: '/management/settings',
-          icon: 'settings',
-        },
-      ])
-      .execute();
-
-    const screenUsers = await queryRunner.manager
-      .createQueryBuilder()
-      .select('id')
-      .from('screens', 's')
-      .where('s.slug = :slug', { slug: '/management/users' })
-      .execute();
-    const screenRoles = await queryRunner.manager
-      .createQueryBuilder()
-      .select('id')
-      .from('screens', 's')
-      .where('s.slug = :slug', { slug: '/management/roles' })
-      .execute();
-    const screenScreens = await queryRunner.manager
-      .createQueryBuilder()
-      .select('id')
-      .from('screens', 's')
-      .where('s.slug = :slug', { slug: '/management/screens' })
-      .execute();
-    const screenMenus = await queryRunner.manager
-      .createQueryBuilder()
-      .select('id')
-      .from('screens', 's')
-      .where('s.slug = :slug', { slug: '/management/menus' })
-      .execute();
-    const screenRoutes = await queryRunner.manager
-      .createQueryBuilder()
-      .select('id')
-      .from('screens', 's')
-      .where('s.slug = :slug', { slug: '/management/routes' })
-      .execute();
-    const screenSettings = await queryRunner.manager
-      .createQueryBuilder()
-      .select('id')
-      .from('screens', 's')
-      .where('s.slug = :slug', { slug: '/management/settings' })
-      .execute();
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('screen_translations', [
-        'screen_id',
-        'locale_id',
-        'name',
-        'description',
-      ])
-      .values([
-        {
-          screen_id: screenUsers[0].id,
           locale_id: 1,
-          name: 'Users',
-          description: 'Check all users registered in the system.',
+          namespace_id: 1,
+          name: 'slogan',
+          value: 'Administration Panel',
         },
         {
-          screen_id: screenUsers[0].id,
-          locale_id: 2,
-          name: 'Usuários',
-          description: 'Verifique todos os usuários registrados no sistema.',
-        },
-        {
-          screen_id: screenRoles[0].id,
           locale_id: 1,
-          name: 'Roles',
-          description: 'Check all roles registered in the system.',
+          namespace_id: 1,
+          name: 'en',
+          value: 'English',
         },
         {
-          screen_id: screenRoles[0].id,
-          locale_id: 2,
-          name: 'Funções',
-          description: 'Verifique todas as funções registradas no sistema.',
-        },
-        {
-          screen_id: screenScreens[0].id,
           locale_id: 1,
-          name: 'Screens',
-          description: 'Check all screens registered in the system.',
+          namespace_id: 1,
+          name: 'pt',
+          value: 'Portuguese',
         },
         {
-          screen_id: screenScreens[0].id,
           locale_id: 2,
-          name: 'Telas',
-          description: 'Verifique todas as telas registradas no sistema.',
+          namespace_id: 1,
+          name: 'slogan',
+          value: 'Painel de Administração',
         },
         {
-          screen_id: screenMenus[0].id,
-          locale_id: 1,
-          name: 'Menus',
-          description: 'Check all menus registered in the system.',
-        },
-        {
-          screen_id: screenMenus[0].id,
           locale_id: 2,
-          name: 'Menus',
-          description: 'Verifique todos os menus registrados no sistema.',
+          namespace_id: 1,
+          name: 'en',
+          value: 'Inglês',
         },
         {
-          screen_id: screenRoutes[0].id,
-          locale_id: 1,
-          name: 'Routes',
-          description: 'Check all routes registered in the system.',
-        },
-        {
-          screen_id: screenRoutes[0].id,
           locale_id: 2,
-          name: 'Rotas',
-          description: 'Verifique todas as rotas registradas no sistema.',
-        },
-        {
-          screen_id: screenSettings[0].id,
-          locale_id: 1,
-          name: 'Settings',
-          description: 'Check all settings registered in the system.',
-        },
-        {
-          screen_id: screenSettings[0].id,
-          locale_id: 2,
-          name: 'Configurações',
-          description:
-            'Verifique todas as configurações registradas no sistema.',
+          namespace_id: 1,
+          name: 'pt',
+          value: 'Português',
         },
       ])
       .execute();
   }
 
-  async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('screens');
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('translations');
+    await queryRunner.dropTable('translation_namespaces');
   }
 }

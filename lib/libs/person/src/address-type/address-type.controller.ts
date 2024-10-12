@@ -13,7 +13,7 @@ import { CreateAddressTypeDTO } from './dto/create-address-type.dto';
 import { Pagination } from '@hedhog/pagination';
 import { UpdateAddressTypeDTO } from './dto/update-address-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { Locale } from '@hedhog/locale';
+import { Locale } from '@hedhog/admin';
 
 @Controller('address-types')
 export class AddressTypeController {

@@ -13,7 +13,7 @@ import { CreatePersonTypeDTO } from './dto/create-person-type.dto';
 import { Pagination } from '@hedhog/pagination';
 import { UpdatePersonTypeDTO } from './dto/update-person-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { Locale } from '@hedhog/locale';
+import { Locale } from '@hedhog/admin';
 
 @Controller('person-types')
 export class PersonTypeController {

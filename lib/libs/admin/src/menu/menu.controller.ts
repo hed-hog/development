@@ -21,7 +21,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../auth/decorators/user.decorator';
 import { Role } from '../role/decorators/role.decorator';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
-import { Locale } from '@hedhog/locale';
+import { Locale } from '../locale';
 
 @Role()
 @UseGuards(AuthGuard)

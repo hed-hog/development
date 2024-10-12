@@ -9,6 +9,7 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
+    "allowJs": true,
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
@@ -28,8 +29,8 @@
       "@hedhog/pagination/*": ["libs/pagination/src/*"],
       "@hedhog/admin": ["libs/admin/src"],
       "@hedhog/admin/*": ["libs/admin/src/*"],
-      "@hedhog/locale": ["libs/locale/src"],
-      "@hedhog/locale/*": ["libs/locale/src/*"]
+      "@hedhog/person": ["libs/person/src"],
+      "@hedhog/person/*": ["libs/person/src/*"]
     }
   }
 }

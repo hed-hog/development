@@ -145,13 +145,9 @@ export class MailService {
     const { clientId, clientSecret, from, refreshToken } = this.mailConfig;
     const redirectURI = 'https://developers.google.com/oauthplayground';
 
-    const { google } = await import('googleapis');
+    const { auth } = await import('googleapis/build/src/apis/oauth2');
 
-    const oauth2Client = new google.auth.OAuth2(
-      clientId,
-      clientSecret,
-      redirectURI,
-    );
+    const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectURI);
 
     oauth2Client.setCredentials({
       refresh_token: refreshToken,

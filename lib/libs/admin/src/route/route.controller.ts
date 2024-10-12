@@ -19,7 +19,7 @@ import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
-import { Locale } from '@hedhog/locale';
+import { Locale } from '../locale';
 
 @Role()
 @UseGuards(AuthGuard)

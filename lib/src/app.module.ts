@@ -1,18 +1,20 @@
 import { PrismaModule } from '@hedhog/prisma';
-import { Module, MiddlewareConsumer } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AdminModule } from '@hedhog/admin';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
-import { PersonModule } from 'libs/person/src/person.module';
-import { LocaleModule } from '@hedhog/locale';
+import { PersonModule } from '@hedhog/person';
 
 @Module({
   imports: [
     PrismaModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`, // Carrega o arquivo com base no NODE_ENV
+      isGlobal: true, // Torna o ConfigModule global (não precisa importar em cada módulo)
+    }),
     PaginationModule,
     MailModule.forRoot({
       global: true,
@@ -25,7 +27,6 @@ import { LocaleModule } from '@hedhog/locale';
     }),
     AdminModule,
     PersonModule,
-    LocaleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
