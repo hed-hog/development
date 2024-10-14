@@ -115,7 +115,11 @@ async function createTestEnv() {
     'hedhog_test',
     '--force',
     '--docker-compose',
+<<<<<<< HEAD
     '--data-volume "test-data"',
+=======
+    '--data-volume "../test-data"',
+>>>>>>> 38cf4bc7b7c3d2f710b3176a0a78d43a5565a129
   );
 }
 
@@ -139,6 +143,14 @@ async function checkDockerComposeExists() {
       await run(rootPath, 'docker-compose', 'down', '-v');
     }
 
+<<<<<<< HEAD
+=======
+    await sleep(5000);
+
+    if (existsSync(join(rootPath, 'test-data'))) {
+      await run(join(rootPath), 'npx', 'rimraf', 'test-data');
+    }
+>>>>>>> 38cf4bc7b7c3d2f710b3176a0a78d43a5565a129
     return true;
   } catch (error) {
     console.error('Error:', 'checkDockerComposeExists', error);
@@ -147,7 +159,11 @@ async function checkDockerComposeExists() {
 }
 
 async function main() {
+<<<<<<< HEAD
   await checkDockerComposeExists();
+=======
+  const dockerCompose = await checkDockerComposeExists();
+>>>>>>> 38cf4bc7b7c3d2f710b3176a0a78d43a5565a129
   /*if (!dockerCompose) {
     await checkDatabaseTestExists();
   }*/
