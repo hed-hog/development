@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
 import { SettingModule } from './setting/settings.module';
+import { LocaleModule } from './locale';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SettingModule } from './setting/settings.module';
     forwardRef(() => PrismaModule),
     forwardRef(() => ScreenModule),
     forwardRef(() => SettingModule),
+    forwardRef(() => LocaleModule),
     forwardRef(() => UserModule),
   ],
   exports: [

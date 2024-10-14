@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/person",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -15,7 +15,6 @@
   "description": "",
   "devDependencies": {
     "@hedhog/admin": "latest",
-    "@hedhog/locale": "latest",
     "@hedhog/mail": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
@@ -25,7 +24,6 @@
   },
   "peerDependencies": {
     "@hedhog/admin": "latest",
-    "@hedhog/locale": "latest",
     "@hedhog/mail": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",

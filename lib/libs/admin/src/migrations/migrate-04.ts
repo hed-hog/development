@@ -1,22 +1,28 @@
 import { idColumn, timestampColumn } from '@hedhog/utils';
 
-import { MigrationInterface, QueryRunner, Table, TableUnique } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'routes',
+        name: 'screens',
         columns: [
           idColumn(),
           {
-            name: 'url',
+            name: 'slug',
             type: 'varchar',
+            isUnique: true,
           },
           {
-            name: 'method',
-            type: 'enum',
-            enum: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS', 'HEAD'],
+            name: 'icon',
+            type: 'varchar',
+            isNullable: true,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
@@ -24,243 +30,207 @@ export class Migrate implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createUniqueConstraint(
-      'routes',
-      new TableUnique({
-        columnNames: ['url', 'method'],
-        name: 'unique_routes',
+    await queryRunner.createTable(
+      new Table({
+        name: 'screen_translations',
+        columns: [
+          {
+            name: 'screen_id',
+            type: 'int',
+            unsigned: true,
+            isPrimary: true,
+          },
+          {
+            name: 'locale_id',
+            type: 'int',
+            unsigned: true,
+            isPrimary: true,
+          },
+          {
+            name: 'name',
+            type: 'varchar',
+          },
+          {
+            name: 'description',
+            type: 'varchar',
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+        foreignKeys: [
+          new TableForeignKey({
+            columnNames: ['screen_id'],
+            referencedTableName: 'screens',
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
+          }),
+          new TableForeignKey({
+            columnNames: ['locale_id'],
+            referencedTableName: 'locales',
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
+          }),
+        ],
       }),
     );
 
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into('routes', ['url', 'method'])
+      .into('screens', ['slug', 'icon'])
       .values([
         {
-          url: '/auth/verify',
-          method: 'GET',
+          slug: '/management/users',
+          icon: 'users',
         },
         {
-          url: '/menus',
-          method: 'GET',
+          slug: '/management/roles',
+          icon: 'circles',
         },
         {
-          url: '/menus/system',
-          method: 'GET',
+          slug: '/management/screens',
+          icon: 'monitor',
         },
         {
-          url: '/menus/:menuId',
-          method: 'GET',
+          slug: '/management/menus',
+          icon: 'menu',
         },
         {
-          url: '/menus',
-          method: 'POST',
+          slug: '/management/routes',
+          icon: 'route',
         },
         {
-          url: '/menus/:menuId',
-          method: 'PATCH',
+          slug: '/management/settings',
+          icon: 'settings',
+        },
+      ])
+      .execute();
+
+    const screenUsers = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('screens', 's')
+      .where('s.slug = :slug', { slug: '/management/users' })
+      .execute();
+    const screenRoles = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('screens', 's')
+      .where('s.slug = :slug', { slug: '/management/roles' })
+      .execute();
+    const screenScreens = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('screens', 's')
+      .where('s.slug = :slug', { slug: '/management/screens' })
+      .execute();
+    const screenMenus = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('screens', 's')
+      .where('s.slug = :slug', { slug: '/management/menus' })
+      .execute();
+    const screenRoutes = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('screens', 's')
+      .where('s.slug = :slug', { slug: '/management/routes' })
+      .execute();
+    const screenSettings = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('screens', 's')
+      .where('s.slug = :slug', { slug: '/management/settings' })
+      .execute();
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('screen_translations', [
+        'screen_id',
+        'locale_id',
+        'name',
+        'description',
+      ])
+      .values([
+        {
+          screen_id: screenUsers[0].id,
+          locale_id: 1,
+          name: 'Users',
+          description: 'Check all users registered in the system.',
         },
         {
-          url: '/menus/:menuId/roles',
-          method: 'GET',
+          screen_id: screenUsers[0].id,
+          locale_id: 2,
+          name: 'Usuários',
+          description: 'Verifique todos os usuários registrados no sistema.',
         },
         {
-          url: '/menus/:menuId/roles',
-          method: 'PATCH',
+          screen_id: screenRoles[0].id,
+          locale_id: 1,
+          name: 'Roles',
+          description: 'Check all roles registered in the system.',
         },
         {
-          url: '/menus/:menuId/screens',
-          method: 'GET',
+          screen_id: screenRoles[0].id,
+          locale_id: 2,
+          name: 'Funções',
+          description: 'Verifique todas as funções registradas no sistema.',
         },
         {
-          url: '/menus/:menuId/screens',
-          method: 'PATCH',
+          screen_id: screenScreens[0].id,
+          locale_id: 1,
+          name: 'Screens',
+          description: 'Check all screens registered in the system.',
         },
         {
-          url: '/menus',
-          method: 'DELETE',
+          screen_id: screenScreens[0].id,
+          locale_id: 2,
+          name: 'Telas',
+          description: 'Verifique todas as telas registradas no sistema.',
         },
         {
-          url: '/menus/order',
-          method: 'PATCH',
+          screen_id: screenMenus[0].id,
+          locale_id: 1,
+          name: 'Menus',
+          description: 'Check all menus registered in the system.',
         },
         {
-          url: '/roles',
-          method: 'GET',
+          screen_id: screenMenus[0].id,
+          locale_id: 2,
+          name: 'Menus',
+          description: 'Verifique todos os menus registrados no sistema.',
         },
         {
-          url: '/roles/:roleId',
-          method: 'GET',
+          screen_id: screenRoutes[0].id,
+          locale_id: 1,
+          name: 'Routes',
+          description: 'Check all routes registered in the system.',
         },
         {
-          url: '/roles/:roleId/users',
-          method: 'GET',
+          screen_id: screenRoutes[0].id,
+          locale_id: 2,
+          name: 'Rotas',
+          description: 'Verifique todas as rotas registradas no sistema.',
         },
         {
-          url: '/roles/:roleId/menus',
-          method: 'GET',
+          screen_id: screenSettings[0].id,
+          locale_id: 1,
+          name: 'Settings',
+          description: 'Check all settings registered in the system.',
         },
         {
-          url: '/roles/:roleId/routes',
-          method: 'GET',
-        },
-        {
-          url: '/roles/:roleId/screens',
-          method: 'GET',
-        },
-        {
-          url: '/roles/:roleId/users',
-          method: 'PATCH',
-        },
-        {
-          url: '/roles/:roleId/menus',
-          method: 'PATCH',
-        },
-        {
-          url: '/roles/:roleId/routes',
-          method: 'PATCH',
-        },
-        {
-          url: '/roles/:roleId/screens',
-          method: 'PATCH',
-        },
-        {
-          url: '/roles',
-          method: 'POST',
-        },
-        {
-          url: '/roles/:roleId',
-          method: 'PATCH',
-        },
-        {
-          url: '/roles',
-          method: 'DELETE',
-        },
-        {
-          url: '/screens',
-          method: 'GET',
-        },
-        {
-          url: '/screens/:screenId',
-          method: 'GET',
-        },
-        {
-          url: '/screens/:screenId/roles',
-          method: 'GET',
-        },
-        {
-          url: '/screens/:screenId/routes',
-          method: 'GET',
-        },
-        {
-          url: '/screens/:screenId/roles',
-          method: 'PATCH',
-        },
-        {
-          url: '/screens/:screenId/routes',
-          method: 'PATCH',
-        },
-        {
-          url: '/screens',
-          method: 'POST',
-        },
-        {
-          url: '/screens/:screenId',
-          method: 'PATCH',
-        },
-        {
-          url: '/screens',
-          method: 'DELETE',
-        },
-        {
-          url: '/settings',
-          method: 'GET',
-        },
-        {
-          url: '/settings/:settingId',
-          method: 'GET',
-        },
-        {
-          url: '/settings',
-          method: 'POST',
-        },
-        {
-          url: '/settings/:settingId',
-          method: 'PATCH',
-        },
-        {
-          url: '/settings',
-          method: 'DELETE',
-        },
-        {
-          url: '/users',
-          method: 'GET',
-        },
-        {
-          url: '/users/:userId',
-          method: 'GET',
-        },
-        {
-          url: '/users/:userId/roles',
-          method: 'GET',
-        },
-        {
-          url: '/users',
-          method: 'POST',
-        },
-        {
-          url: '/users/:userId',
-          method: 'PATCH',
-        },
-        {
-          url: '/users/:userId/roles',
-          method: 'PATCH',
-        },
-        {
-          url: '/users',
-          method: 'DELETE',
-        },
-        {
-          url: '/routes',
-          method: 'GET',
-        },
-        {
-          url: '/routes',
-          method: 'POST',
-        },
-        {
-          url: '/routes',
-          method: 'DELETE',
-        },
-        {
-          url: '/routes/:routeId',
-          method: 'GET',
-        },
-        {
-          url: '/routes/:routeId',
-          method: 'PATCH',
-        },
-        {
-          url: '/routes/:routeId/roles',
-          method: 'GET',
-        },
-        {
-          url: '/routes/:routeId/roles',
-          method: 'PATCH',
-        },
-        {
-          url: '/routes/:routeId/screens',
-          method: 'GET',
-        },
-        {
-          url: '/routes/:routeId/screens',
-          method: 'PATCH',
+          screen_id: screenSettings[0].id,
+          locale_id: 2,
+          name: 'Configurações',
+          description:
+            'Verifique todas as configurações registradas no sistema.',
         },
       ])
       .execute();
   }
+
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('routes');
+    await queryRunner.dropTable('screens');
   }
 }

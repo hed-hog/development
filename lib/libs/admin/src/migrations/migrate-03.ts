@@ -5,48 +5,24 @@ import {
   TableForeignKey,
 } from 'typeorm';
 import { idColumn, timestampColumn } from '@hedhog/utils';
+import * as bcrypt from 'bcrypt';
 
 export class Migrate implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<void> {
+  async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'menus',
-        columns: [
-          idColumn(),
-          {
-            name: 'url',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'order',
-            type: 'int',
-            default: 0,
-            unsigned: true,
-          },
-          {
-            name: 'menu_id',
-            type: 'int',
-            isNullable: true,
-            unsigned: true,
-          },
-          {
-            name: 'icon',
-            type: 'varchar',
-            isNullable: true,
-          },
-          timestampColumn(),
-          timestampColumn('updated_at'),
-        ],
+        name: 'multifactors',
+        columns: [idColumn(), timestampColumn(), timestampColumn('updated_at')],
       }),
+      true,
     );
 
     await queryRunner.createTable(
       new Table({
-        name: 'menu_translations',
+        name: 'multifactor_translations',
         columns: [
           {
-            name: 'menu_id',
+            name: 'multifactor_id',
             type: 'int',
             unsigned: true,
             isPrimary: true,
@@ -66,198 +42,128 @@ export class Migrate implements MigrationInterface {
         ],
         foreignKeys: [
           new TableForeignKey({
-            columnNames: ['menu_id'],
+            columnNames: ['multifactor_id'],
+            referencedTableName: 'multifactors',
             referencedColumnNames: ['id'],
-            referencedTableName: 'menus',
             onDelete: 'CASCADE',
           }),
           new TableForeignKey({
             columnNames: ['locale_id'],
-            referencedColumnNames: ['id'],
             referencedTableName: 'locales',
+            referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           }),
         ],
       }),
+      true,
     );
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('multifactors', ['id'])
+      .values([
+        {
+          id: 1,
+        },
+        {
+          id: 2,
+        },
+      ])
+      .execute();
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('multifactor_translations', ['multifactor_id', 'locale_id', 'name'])
+      .values([
+        {
+          multifactor_id: 1,
+          locale_id: 1,
+          name: 'Email',
+        },
+        {
+          multifactor_id: 1,
+          locale_id: 2,
+          name: 'E-mail',
+        },
+        {
+          multifactor_id: 2,
+          locale_id: 1,
+          name: 'Application',
+        },
+        {
+          multifactor_id: 2,
+          locale_id: 2,
+          name: 'Aplicativo',
+        },
+      ])
+      .execute();
 
     await queryRunner.createTable(
       new Table({
-        name: 'menu_screens',
+        name: 'users',
         columns: [
+          idColumn(),
           {
-            name: 'menu_id',
+            name: 'name',
+            type: 'varchar',
+          },
+          {
+            name: 'email',
+            type: 'varchar',
+          },
+          {
+            name: 'password',
+            type: 'varchar',
+          },
+          {
+            name: 'multifactor_id',
             type: 'int',
-            isPrimary: true,
+            isNullable: true,
             unsigned: true,
           },
           {
-            name: 'screen_id',
-            type: 'int',
-            isPrimary: true,
-            unsigned: true,
+            name: 'code',
+            type: 'varchar',
+            isNullable: true,
           },
+          timestampColumn(),
+          timestampColumn('updated_at'),
         ],
       }),
     );
 
-    await queryRunner.createForeignKey(
-      'menu_screens',
+    await queryRunner.createForeignKeys('users', [
       new TableForeignKey({
-        columnNames: ['menu_id'],
+        columnNames: ['multifactor_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'menus',
-        onDelete: 'CASCADE',
+        referencedTableName: 'multifactors',
+        name: 'fk_users_to_multifactors_on_multifactor_id',
+        onDelete: 'Cascade',
       }),
-    );
+    ]);
 
-    await queryRunner.createForeignKey(
-      'menu_screens',
-      new TableForeignKey({
-        columnNames: ['screen_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'screens',
-        onDelete: 'CASCADE',
-      }),
-    );
-
-    const menus = [
-      {
-        name_en: 'Dashboard',
-        name_pt: 'Dashboard',
-        url: '/',
-        order: 0,
-        icon: 'dashboard',
-      },
-      {
-        name_en: 'Management',
-        name_pt: 'Gereciamento',
-        url: '/management',
-        order: 1,
-        icon: 'settings',
-      },
-    ];
-
-    for (const menu of menus) {
-      const m = await queryRunner.manager
-        .createQueryBuilder()
-        .insert()
-        .into('menus', ['url', 'order', 'icon'])
-        .values({
-          url: menu.url,
-          order: menu.order,
-          icon: menu.icon,
-        })
-        .returning('id')
-        .execute();
-
-      await queryRunner.manager
-        .createQueryBuilder()
-        .insert()
-        .into('menu_translations', ['menu_id', 'locale_id', 'name'])
-        .values([
-          {
-            menu_id: m.raw[0].id,
-            locale_id: 1,
-            name: menu.name_en,
-          },
-          {
-            menu_id: m.raw[0].id,
-            locale_id: 2,
-            name: menu.name_pt,
-          },
-        ])
-        .execute();
-    }
-
-    const menusManagement = [
-      {
-        name_en: 'Users',
-        name_pt: 'Usuários',
-        url: '/management/users',
-        order: 0,
-        icon: 'users',
-      },
-      {
-        name_en: 'Roles',
-        name_pt: 'Funções',
-        url: '/management/roles',
-        order: 1,
-        icon: 'circles',
-      },
-      {
-        name_en: 'Screens',
-        name_pt: 'Telas',
-        url: '/management/screens',
-        order: 2,
-        icon: 'device-tv',
-      },
-      {
-        name_en: 'Menus',
-        name_pt: 'Menus',
-        url: '/management/menus',
-        order: 3,
-        icon: 'menu',
-      },
-      {
-        name_en: 'Routes',
-        name_pt: 'Rotas',
-        url: '/management/routes',
-        order: 4,
-        icon: 'route',
-      },
-      {
-        name_en: 'Settings',
-        name_pt: 'Configurações',
-        url: '/management/settings',
-        order: 5,
-        icon: 'settings',
-      },
-    ];
-
-    const menuManagement = await queryRunner.manager
+    await queryRunner.manager
       .createQueryBuilder()
-      .select('id')
-      .from('menus', 'm')
-      .where('m.url = :url', { url: '/management' })
+      .insert()
+      .into('users', ['name', 'email', 'password'])
+      .values([
+        {
+          name: 'Superuser',
+          email: 'root@hedhog.com',
+          password: await bcrypt.hash(`hedhog`, 12),
+        },
+        {
+          name: 'User',
+          email: 'user@hedhog.com',
+          password: await bcrypt.hash(`hedhog`, 12),
+        },
+      ])
       .execute();
-
-    for (const menu of menusManagement) {
-      const m = await queryRunner.manager
-        .createQueryBuilder()
-        .insert()
-        .into('menus', ['url', 'order', 'icon', 'menu_id'])
-        .values({
-          url: menu.url,
-          order: menu.order,
-          icon: menu.icon,
-          menu_id: menuManagement[0].id,
-        })
-        .returning('id')
-        .execute();
-
-      await queryRunner.manager
-        .createQueryBuilder()
-        .insert()
-        .into('menu_translations', ['menu_id', 'locale_id', 'name'])
-        .values([
-          {
-            menu_id: m.raw[0].id,
-            locale_id: 1,
-            name: menu.name_en,
-          },
-          {
-            menu_id: m.raw[0].id,
-            locale_id: 2,
-            name: menu.name_pt,
-          },
-        ])
-        .execute();
-    }
   }
-
-  public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('menu_screens');
-    await queryRunner.dropTable('menus');
+  async down(queryRunner: QueryRunner) {
+    await queryRunner.dropTable('multifactors');
+    await queryRunner.dropTable('users');
   }
 }

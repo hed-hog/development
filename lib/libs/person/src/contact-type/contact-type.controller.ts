@@ -13,7 +13,7 @@ import { CreateContactTypeDTO } from './dto/create-contact-type.dto';
 import { Pagination } from '@hedhog/pagination';
 import { UpdateContactTypeDTO } from './dto/update-contact-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { Locale } from '@hedhog/locale';
+import { Locale } from '@hedhog/admin';
 
 @Controller('contact-types')
 export class ContactTypeController {

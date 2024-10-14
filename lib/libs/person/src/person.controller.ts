@@ -13,7 +13,7 @@ import { CreatePersonDTO } from './dto/create-person.dto';
 import { UpdatePersonDTO } from './dto/update-person.dto';
 import { Pagination } from '@hedhog/pagination';
 import { DeleteDTO } from './dto/delete.dto';
-import { Locale } from '@hedhog/locale';
+import { Locale } from '@hedhog/admin';
 
 @Controller('persons')
 export class PersonController {

@@ -10,7 +10,7 @@ export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'role_screens',
+        name: 'role_menus',
         columns: [
           {
             name: 'role_id',
@@ -19,7 +19,7 @@ export class Migrate implements MigrationInterface {
             unsigned: true,
           },
           {
-            name: 'screen_id',
+            name: 'menu_id',
             type: 'int',
             isPrimary: true,
             unsigned: true,
@@ -30,25 +30,25 @@ export class Migrate implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKeys('role_screens', [
+    await queryRunner.createForeignKeys('role_menus', [
       new TableForeignKey({
         columnNames: ['role_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'roles',
         onDelete: 'CASCADE',
-        name: 'fk_role_screens_roles',
+        name: 'fk_role_menus_roles',
       }),
       new TableForeignKey({
-        columnNames: ['screen_id'],
+        columnNames: ['menu_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'screens',
+        referencedTableName: 'menus',
         onDelete: 'CASCADE',
-        name: 'fk_role_screens_screens',
+        name: 'fk_role_menus_menus',
       }),
     ]);
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('role_screens');
+    await queryRunner.dropTable('role_menus');
   }
 }

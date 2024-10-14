@@ -19,7 +19,8 @@ import { RoleService } from './role.service';
 import { Role } from './decorators/role.decorator';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
-import { Locale } from '@hedhog/locale';
+import { Locale } from '../locale';
+
 @Role()
 @UseGuards(AuthGuard)
 @Controller('roles')

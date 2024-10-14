@@ -1,43 +1,37 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
-import { idColumn, timestampColumn } from '@hedhog/utils';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migrate implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<void> {
-    const groups = [
-      {
-        icon: 'world',
-        name_en: 'Localization',
-        name_pt: 'Localização',
-        description_en: 'Settings related to localization',
-        description_pt: 'Definições relacionadas com a localização',
-        settings: [
-          {
-            name_en: 'Language',
-            name_pt: 'Idioma',
-            description_en: 'The language to use',
-            description_pt: 'O idioma a utilizar',
-            value: 'en',
-          },
-          {
-            name_en: 'Timezone',
-            name_pt: 'Fuso horário',
-            description_en: 'The timezone to use',
-            description_pt: 'O fuso horário a utilizar',
-            value: 'UTC',
-          },
-        ],
-      },
-      {
-        icon: 'paint-brush',
-        name_en: 'Theme',
-      },
-    ];
+  async up(queryRunner: QueryRunner) {
+    const menus = await queryRunner.manager
+      .createQueryBuilder()
+      .select()
+      .from('menus', 'm')
+      .execute();
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('role_menus', ['role_id', 'menu_id'])
+      .values(
+        menus.map((menu) => ({
+          role_id: 1,
+          menu_id: menu.id,
+        })),
+      )
+      .execute();
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('role_menus', ['role_id', 'menu_id'])
+      .values({
+        role_id: 2,
+        menu_id: 1,
+      });
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  async down(queryRunner: QueryRunner) {
+    await queryRunner.manager.delete('role_menus', { role_id: 1 });
+    await queryRunner.manager.delete('role_menus', { role_id: 2 });
+  }
 }

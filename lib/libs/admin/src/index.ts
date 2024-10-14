@@ -24,3 +24,7 @@ export * from './setting/settings.service';
 // User Module
 export * from './user/constants/user.constants';
 export * from './user/user.service';
+
+// Locale Module
+export * from './locale/locale.service';
+export * from './locale/locale.decorator';

@@ -1,79 +1,54 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { timestampColumn } from '@hedhog/utils';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
-    const screenIdScreen = await queryRunner.manager
-      .createQueryBuilder()
-      .select()
-      .from('screens', 's')
-      .where('slug = :slug', { slug: '/management/screens' })
-      .execute();
+    await queryRunner.createTable(
+      new Table({
+        name: 'role_routes',
+        columns: [
+          {
+            name: 'role_id',
+            type: 'int',
+            isPrimary: true,
+            unsigned: true,
+          },
+          {
+            name: 'route_id',
+            type: 'int',
+            isPrimary: true,
+            unsigned: true,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+      }),
+    );
 
-    const screenIdRole = await queryRunner.manager
-      .createQueryBuilder()
-      .select()
-      .from('screens', 's')
-      .where('slug = :slug', { slug: '/management/roles' })
-      .execute();
-
-    const screenIdUser = await queryRunner.manager
-      .createQueryBuilder()
-      .select()
-      .from('screens', 's')
-      .where('slug = :slug', { slug: '/management/users' })
-      .execute();
-
-    const screenIdMenu = await queryRunner.manager
-      .createQueryBuilder()
-      .select()
-      .from('screens', 's')
-      .where('slug = :slug', { slug: '/management/menus' })
-      .execute();
-
-    const screenIdRoute = await queryRunner.manager
-      .createQueryBuilder()
-      .select()
-      .from('screens', 's')
-      .where('slug = :slug', { slug: '/management/routes' })
-      .execute();
-
-    const screenIdSetting = await queryRunner.manager
-      .createQueryBuilder()
-      .select()
-      .from('screens', 's')
-      .where('slug = :slug', { slug: '/management/settings' })
-      .execute();
-
-    for (const { url, screendId } of [
-      { url: '/screens%', screendId: screenIdScreen[0].id },
-      { url: '/roles%', screendId: screenIdRole[0].id },
-      { url: '/users%', screendId: screenIdUser[0].id },
-      { url: '/menus%', screendId: screenIdMenu[0].id },
-      { url: '/routes%', screendId: screenIdRoute[0].id },
-      { url: '/settings%', screendId: screenIdSetting[0].id },
-    ]) {
-      const routesScreens = await queryRunner.manager
-        .createQueryBuilder()
-        .select()
-        .from('routes', 's')
-        .where('s.url LIKE :url', { url })
-        .execute();
-
-      for (const route of routesScreens) {
-        await queryRunner.manager
-          .createQueryBuilder()
-          .insert()
-          .into('route_screens')
-          .values({
-            route_id: route.id,
-            screen_id: screendId,
-          })
-          .execute();
-      }
-    }
+    await queryRunner.createForeignKeys('role_routes', [
+      new TableForeignKey({
+        columnNames: ['role_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'roles',
+        onDelete: 'CASCADE',
+        name: 'fk_role_routes_roles',
+      }),
+      new TableForeignKey({
+        columnNames: ['route_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'routes',
+        onDelete: 'CASCADE',
+        name: 'fk_role_routes_routes',
+      }),
+    ]);
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.manager.delete('route_screens', {});
+    await queryRunner.dropTable('role_routes');
   }
 }

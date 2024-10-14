@@ -10,19 +10,19 @@ export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'role_users',
+        name: 'route_screens',
         columns: [
           {
-            name: 'role_id',
+            name: 'route_id',
             type: 'int',
-            isPrimary: true,
             unsigned: true,
+            isPrimary: true,
           },
           {
-            name: 'user_id',
+            name: 'screen_id',
             type: 'int',
-            isPrimary: true,
             unsigned: true,
+            isPrimary: true,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
@@ -30,26 +30,25 @@ export class Migrate implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createForeignKeys('role_users', [
+    await queryRunner.createForeignKeys('route_screens', [
       new TableForeignKey({
-        columnNames: ['role_id'],
+        columnNames: ['route_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'roles',
+        referencedTableName: 'routes',
         onDelete: 'CASCADE',
-        name: 'fk_role_users_roles',
+        name: 'fk_route_screens_routes',
       }),
-
       new TableForeignKey({
-        columnNames: ['user_id'],
+        columnNames: ['screen_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'users',
+        referencedTableName: 'screens',
         onDelete: 'CASCADE',
-        name: 'fk_role_users_users',
+        name: 'fk_route_screens_screens',
       }),
     ]);
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('role_users');
+    await queryRunner.dropTable('route_screens');
   }
 }

@@ -1,26 +1,52 @@
-import { idColumn, timestampColumn } from '@hedhog/utils';
 import {
   MigrationInterface,
   QueryRunner,
   Table,
   TableForeignKey,
 } from 'typeorm';
+import { idColumn, timestampColumn } from '@hedhog/utils';
 
 export class Migrate implements MigrationInterface {
-  async up(queryRunner: QueryRunner) {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'roles',
-        columns: [idColumn(), timestampColumn(), timestampColumn('updated_at')],
+        name: 'menus',
+        columns: [
+          idColumn(),
+          {
+            name: 'url',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'order',
+            type: 'int',
+            default: 0,
+            unsigned: true,
+          },
+          {
+            name: 'menu_id',
+            type: 'int',
+            isNullable: true,
+            unsigned: true,
+          },
+          {
+            name: 'icon',
+            type: 'varchar',
+            isNullable: true,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
       }),
     );
 
     await queryRunner.createTable(
       new Table({
-        name: 'role_translations',
+        name: 'menu_translations',
         columns: [
           {
-            name: 'role_id',
+            name: 'menu_id',
             type: 'int',
             unsigned: true,
             isPrimary: true,
@@ -34,87 +60,204 @@ export class Migrate implements MigrationInterface {
           {
             name: 'name',
             type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'description',
-            type: 'varchar',
           },
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
         foreignKeys: [
           new TableForeignKey({
-            columnNames: ['role_id'],
-            referencedTableName: 'roles',
+            columnNames: ['menu_id'],
             referencedColumnNames: ['id'],
+            referencedTableName: 'menus',
             onDelete: 'CASCADE',
           }),
           new TableForeignKey({
             columnNames: ['locale_id'],
-            referencedTableName: 'locales',
             referencedColumnNames: ['id'],
+            referencedTableName: 'locales',
             onDelete: 'CASCADE',
           }),
         ],
       }),
     );
 
-    const roles = [
+    await queryRunner.createTable(
+      new Table({
+        name: 'menu_screens',
+        columns: [
+          {
+            name: 'menu_id',
+            type: 'int',
+            isPrimary: true,
+            unsigned: true,
+          },
+          {
+            name: 'screen_id',
+            type: 'int',
+            isPrimary: true,
+            unsigned: true,
+          },
+        ],
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'menu_screens',
+      new TableForeignKey({
+        columnNames: ['menu_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'menus',
+        onDelete: 'CASCADE',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'menu_screens',
+      new TableForeignKey({
+        columnNames: ['screen_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'screens',
+        onDelete: 'CASCADE',
+      }),
+    );
+
+    const menus = [
       {
-        id: 1,
-        name_en: 'Administrator',
-        name_pt: 'Administrador',
-        description_en: 'System administrator',
-        description_pt: 'Administrador do sistema',
+        name_en: 'Dashboard',
+        name_pt: 'Dashboard',
+        url: '/',
+        order: 0,
+        icon: 'dashboard',
       },
       {
-        id: 2,
-        name_en: 'Screen Manager',
-        name_pt: 'Gerenciador de telas',
-        description_en: 'Screen manager',
-        description_pt: 'Gerenciador de telas',
+        name_en: 'Management',
+        name_pt: 'Gereciamento',
+        url: '/management',
+        order: 1,
+        icon: 'settings',
       },
     ];
 
-    for (const role of roles) {
-      await queryRunner.manager
+    for (const menu of menus) {
+      const m = await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('roles', ['id'])
+        .into('menus', ['url', 'order', 'icon'])
         .values({
-          id: role.id,
+          url: menu.url,
+          order: menu.order,
+          icon: menu.icon,
         })
+        .returning('id')
         .execute();
 
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('role_translations', [
-          'role_id',
-          'locale_id',
-          'name',
-          'description',
-        ])
+        .into('menu_translations', ['menu_id', 'locale_id', 'name'])
         .values([
           {
-            role_id: role.id,
+            menu_id: m.raw[0].id,
             locale_id: 1,
-            name: role.name_en,
-            description: role.description_en,
+            name: menu.name_en,
           },
           {
-            role_id: role.id,
+            menu_id: m.raw[0].id,
             locale_id: 2,
-            name: role.name_pt,
-            description: role.description_pt,
+            name: menu.name_pt,
+          },
+        ])
+        .execute();
+    }
+
+    const menusManagement = [
+      {
+        name_en: 'Users',
+        name_pt: 'Usuários',
+        url: '/management/users',
+        order: 0,
+        icon: 'users',
+      },
+      {
+        name_en: 'Roles',
+        name_pt: 'Funções',
+        url: '/management/roles',
+        order: 1,
+        icon: 'circles',
+      },
+      {
+        name_en: 'Screens',
+        name_pt: 'Telas',
+        url: '/management/screens',
+        order: 2,
+        icon: 'device-tv',
+      },
+      {
+        name_en: 'Menus',
+        name_pt: 'Menus',
+        url: '/management/menus',
+        order: 3,
+        icon: 'menu',
+      },
+      {
+        name_en: 'Routes',
+        name_pt: 'Rotas',
+        url: '/management/routes',
+        order: 4,
+        icon: 'route',
+      },
+      {
+        name_en: 'Settings',
+        name_pt: 'Configurações',
+        url: '/management/settings',
+        order: 5,
+        icon: 'settings',
+      },
+    ];
+
+    const menuManagement = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('menus', 'm')
+      .where('m.url = :url', { url: '/management' })
+      .execute();
+
+    for (const menu of menusManagement) {
+      const m = await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('menus', ['url', 'order', 'icon', 'menu_id'])
+        .values({
+          url: menu.url,
+          order: menu.order,
+          icon: menu.icon,
+          menu_id: menuManagement[0].id,
+        })
+        .returning('id')
+        .execute();
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('menu_translations', ['menu_id', 'locale_id', 'name'])
+        .values([
+          {
+            menu_id: m.raw[0].id,
+            locale_id: 1,
+            name: menu.name_en,
+          },
+          {
+            menu_id: m.raw[0].id,
+            locale_id: 2,
+            name: menu.name_pt,
           },
         ])
         .execute();
     }
   }
 
-  async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('roles');
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('menu_screens');
+    await queryRunner.dropTable('menus');
   }
 }

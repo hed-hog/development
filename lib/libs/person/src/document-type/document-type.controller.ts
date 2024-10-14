@@ -13,7 +13,7 @@ import { CreateDocumentTypeDTO } from './dto/create-document-type.dto';
 import { Pagination } from '@hedhog/pagination';
 import { UpdateDocumentTypeDTO } from './dto/update-document-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { Locale } from '@hedhog/locale';
+import { Locale } from '@hedhog/admin';
 
 @Controller('document-types')
 export class DocumentTypeController {

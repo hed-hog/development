@@ -1,169 +1,313 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { idColumn, timestampColumn } from '@hedhog/utils';
-import * as bcrypt from 'bcrypt';
 
 export class Migrate implements MigrationInterface {
-  async up(queryRunner: QueryRunner) {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'multifactors',
-        columns: [idColumn(), timestampColumn(), timestampColumn('updated_at')],
-      }),
-      true,
-    );
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'multifactor_translations',
-        columns: [
-          {
-            name: 'multifactor_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: 'locale_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: 'name',
-            type: 'varchar',
-          },
-          timestampColumn(),
-          timestampColumn('updated_at'),
-        ],
-        foreignKeys: [
-          new TableForeignKey({
-            columnNames: ['multifactor_id'],
-            referencedTableName: 'multifactors',
-            referencedColumnNames: ['id'],
-            onDelete: 'CASCADE',
-          }),
-          new TableForeignKey({
-            columnNames: ['locale_id'],
-            referencedTableName: 'locales',
-            referencedColumnNames: ['id'],
-            onDelete: 'CASCADE',
-          }),
-        ],
-      }),
-      true,
-    );
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('multifactors', ['id'])
-      .values([
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-      ])
-      .execute();
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('multifactor_translations', ['multifactor_id', 'locale_id', 'name'])
-      .values([
-        {
-          multifactor_id: 1,
-          locale_id: 1,
-          name: 'Email',
-        },
-        {
-          multifactor_id: 1,
-          locale_id: 2,
-          name: 'E-mail',
-        },
-        {
-          multifactor_id: 2,
-          locale_id: 1,
-          name: 'Application',
-        },
-        {
-          multifactor_id: 2,
-          locale_id: 2,
-          name: 'Aplicativo',
-        },
-      ])
-      .execute();
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'users',
+        name: 'countries',
         columns: [
           idColumn(),
           {
             name: 'name',
             type: 'varchar',
-          },
-          {
-            name: 'email',
-            type: 'varchar',
-          },
-          {
-            name: 'password',
-            type: 'varchar',
-          },
-          {
-            name: 'multifactor_id',
-            type: 'int',
-            isNullable: true,
-            unsigned: true,
+            length: '50',
+            isNullable: false,
           },
           {
             name: 'code',
-            type: 'varchar',
-            isNullable: true,
+            type: 'char',
+            length: '3',
+            isNullable: false,
           },
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
       }),
+      true,
     );
 
-    await queryRunner.createForeignKeys('users', [
-      new TableForeignKey({
-        columnNames: ['multifactor_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'multifactors',
-        name: 'fk_users_to_multifactors_on_multifactor_id',
-        onDelete: 'Cascade',
-      }),
-    ]);
+    await queryRunner.query(`
+      INSERT INTO countries (name, code) VALUES 
+        ('Afghanistan', 'AFG'),
+        ('Albania', 'ALB'),
+        ('Algeria', 'DZA'),
+        ('Andorra', 'AND'),
+        ('Angola', 'AGO'),
+        ('Antigua and Barbuda', 'ATG'),
+        ('Argentina', 'ARG'),
+        ('Armenia', 'ARM'),
+        ('Australia', 'AUS'),
+        ('Austria', 'AUT'),
+        ('Azerbaijan', 'AZE'),
+        ('Bahamas', 'BHS'),
+        ('Bahrain', 'BHR'),
+        ('Bangladesh', 'BGD'),
+        ('Barbados', 'BRB'),
+        ('Belarus', 'BLR'),
+        ('Belgium', 'BEL'),
+        ('Belize', 'BLZ'),
+        ('Benin', 'BEN'),
+        ('Bhutan', 'BTN'),
+        ('Bolivia', 'BOL'),
+        ('Bosnia and Herzegovina', 'BIH'),
+        ('Botswana', 'BWA'),
+        ('Brazil', 'BRA'),
+        ('Brunei Darussalam', 'BRN'),
+        ('Bulgaria', 'BGR'),
+        ('Burkina Faso', 'BFA'),
+        ('Burundi', 'BDI'),
+        ('Cabo Verde', 'CPV'),
+        ('Cambodia', 'KHM'),
+        ('Cameroon', 'CMR'),
+        ('Canada', 'CAN'),
+        ('Central African Republic', 'CAF'),
+        ('Chad', 'TCD'),
+        ('Chile', 'CHL'),
+        ('China', 'CHN'),
+        ('Colombia', 'COL'),
+        ('Comoros', 'COM'),
+        ('Congo', 'COG'),
+        ('Congo (Democratic Republic)', 'COD'),
+        ('Costa Rica', 'CRI'),
+        ('Croatia', 'HRV'),
+        ('Cuba', 'CUB'),
+        ('Cyprus', 'CYP'),
+        ('Czech Republic', 'CZE'),
+        ('Denmark', 'DNK'),
+        ('Djibouti', 'DJI'),
+        ('Dominica', 'DMA'),
+        ('Dominican Republic', 'DOM'),
+        ('Ecuador', 'ECU'),
+        ('Egypt', 'EGY'),
+        ('El Salvador', 'SLV'),
+        ('Equatorial Guinea', 'GNQ'),
+        ('Eritrea', 'ERI'),
+        ('Estonia', 'EST'),
+        ('Eswatini', 'SWZ'),
+        ('Ethiopia', 'ETH'),
+        ('Fiji', 'FJI'),
+        ('Finland', 'FIN'),
+        ('France', 'FRA'),
+        ('Gabon', 'GAB'),
+        ('Gambia', 'GMB'),
+        ('Georgia', 'GEO'),
+        ('Germany', 'DEU'),
+        ('Ghana', 'GHA'),
+        ('Greece', 'GRC'),
+        ('Grenada', 'GRD'),
+        ('Guatemala', 'GTM'),
+        ('Guinea', 'GIN'),
+        ('Guinea-Bissau', 'GNB'),
+        ('Guyana', 'GUY'),
+        ('Haiti', 'HTI'),
+        ('Honduras', 'HND'),
+        ('Hungary', 'HUN'),
+        ('Iceland', 'ISL'),
+        ('India', 'IND'),
+        ('Indonesia', 'IDN'),
+        ('Iran', 'IRN'),
+        ('Iraq', 'IRQ'),
+        ('Ireland', 'IRL'),
+        ('Israel', 'ISR'),
+        ('Italy', 'ITA'),
+        ('Jamaica', 'JAM'),
+        ('Japan', 'JPN'),
+        ('Jordan', 'JOR'),
+        ('Kazakhstan', 'KAZ'),
+        ('Kenya', 'KEN'),
+        ('Kiribati', 'KIR'),
+        ('Kuwait', 'KWT'),
+        ('Kyrgyzstan', 'KGZ'),
+        ('Laos', 'LAO'),
+        ('Latvia', 'LVA'),
+        ('Lebanon', 'LBN'),
+        ('Lesotho', 'LSO'),
+        ('Liberia', 'LBR'),
+        ('Libya', 'LBY'),
+        ('Liechtenstein', 'LIE'),
+        ('Lithuania', 'LTU'),
+        ('Luxembourg', 'LUX'),
+        ('Madagascar', 'MDG'),
+        ('Malawi', 'MWI'),
+        ('Malaysia', 'MYS'),
+        ('Maldives', 'MDV'),
+        ('Mali', 'MLI'),
+        ('Malta', 'MLT'),
+        ('Marshall Islands', 'MHL'),
+        ('Mauritania', 'MRT'),
+        ('Mauritius', 'MUS'),
+        ('Mexico', 'MEX'),
+        ('Micronesia (Federated States)', 'FSM'),
+        ('Moldova', 'MDA'),
+        ('Monaco', 'MCO'),
+        ('Mongolia', 'MNG'),
+        ('Montenegro', 'MNE'),
+        ('Morocco', 'MAR'),
+        ('Mozambique', 'MOZ'),
+        ('Myanmar', 'MMR'),
+        ('Namibia', 'NAM'),
+        ('Nauru', 'NRU'),
+        ('Nepal', 'NPL'),
+        ('Netherlands', 'NLD'),
+        ('New Zealand', 'NZL'),
+        ('Nicaragua', 'NIC'),
+        ('Niger', 'NER'),
+        ('Nigeria', 'NGA'),
+        ('North Macedonia', 'MKD'),
+        ('Norway', 'NOR'),
+        ('Oman', 'OMN'),
+        ('Pakistan', 'PAK'),
+        ('Palau', 'PLW'),
+        ('Panama', 'PAN'),
+        ('Papua New Guinea', 'PNG'),
+        ('Paraguay', 'PRY'),
+        ('Peru', 'PER'),
+        ('Philippines', 'PHL'),
+        ('Poland', 'POL'),
+        ('Portugal', 'PRT'),
+        ('Qatar', 'QAT'),
+        ('Republic of Korea', 'KOR'),
+        ('Romania', 'ROU'),
+        ('Russian Federation', 'RUS'),
+        ('Rwanda', 'RWA'),
+        ('Saint Kitts and Nevis', 'KNA'),
+        ('Saint Lucia', 'LCA'),
+        ('Saint Vincent and the Grenadines', 'VCT'),
+        ('Samoa', 'WSM'),
+        ('San Marino', 'SMR'),
+        ('Sao Tome and Principe', 'STP'),
+        ('Saudi Arabia', 'SAU'),
+        ('Senegal', 'SEN'),
+        ('Serbia', 'SRB'),
+        ('Seychelles', 'SYC'),
+        ('Sierra Leone', 'SLE'),
+        ('Singapore', 'SGP'),
+        ('Slovakia', 'SVK'),
+        ('Slovenia', 'SVN'),
+        ('Solomon Islands', 'SLB'),
+        ('Somalia', 'SOM'),
+        ('South Africa', 'ZAF'),
+        ('Spain', 'ESP'),
+        ('Sri Lanka', 'LKA'),
+        ('Sudan', 'SDN'),
+        ('Suriname', 'SUR'),
+        ('Sweden', 'SWE'),
+        ('Switzerland', 'CHE'),
+        ('Syrian Arab Republic', 'SYR'),
+        ('Tajikistan', 'TJK'),
+        ('Thailand', 'THA'),
+        ('Timor-Leste', 'TLS'),
+        ('Togo', 'TGO'),
+        ('Tonga', 'TON'),
+        ('Trinidad and Tobago', 'TTO'),
+        ('Tunisia', 'TUN'),
+        ('Turkey', 'TUR'),
+        ('Turkmenistan', 'TKM'),
+        ('Tuvalu', 'TUV'),
+        ('Uganda', 'UGA'),
+        ('Ukraine', 'UKR'),
+        ('United Arab Emirates', 'ARE'),
+        ('United Kingdom', 'GBR'),
+        ('United Republic of Tanzania', 'TZA'),
+        ('United States of America', 'USA'),
+        ('Uruguay', 'URY'),
+        ('Uzbekistan', 'UZB'),
+        ('Vanuatu', 'VUT'),
+        ('Venezuela', 'VEN'),
+        ('Viet Nam', 'VNM'),
+        ('Yemen', 'YEM'),
+        ('Zambia', 'ZMB'),
+        ('Zimbabwe', 'ZWE');
+    `);
 
-    await queryRunner.manager
+    await queryRunner.createTable(
+      new Table({
+        name: 'locales',
+        columns: [
+          idColumn(),
+          {
+            name: 'code',
+            type: 'char',
+            length: '2',
+            isNullable: false,
+          },
+          {
+            name: 'region',
+            type: 'char',
+            length: '2',
+            isNullable: false,
+          },
+          {
+            name: 'country_id',
+            type: 'int',
+            isNullable: false,
+          },
+          {
+            name: 'enabled',
+            type: 'boolean',
+            default: true,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
+        foreignKeys: [
+          {
+            columnNames: ['country_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'countries',
+            onDelete: 'CASCADE',
+          },
+        ],
+      }),
+    );
+
+    const countryUSA = await queryRunner.manager
       .createQueryBuilder()
-      .insert()
-      .into('users', ['name', 'email', 'password'])
-      .values([
-        {
-          name: 'Superuser',
-          email: 'root@hedhog.com',
-          password: await bcrypt.hash(`hedhog`, 12),
-        },
-        {
-          name: 'User',
-          email: 'user@hedhog.com',
-          password: await bcrypt.hash(`hedhog`, 12),
-        },
-      ])
+      .select()
+      .from('countries', 'c')
+      .where('code = :code', { code: 'USA' })
       .execute();
+    const countryBRA = await queryRunner.manager
+      .createQueryBuilder()
+      .select()
+      .from('countries', 'c')
+      .where('code = :code', { code: 'BRA' })
+      .execute();
+
+    const locales = [
+      {
+        id: 0,
+        code: 'en',
+        region: 'US',
+        country_id: countryUSA[0].id,
+      },
+      {
+        id: 0,
+        code: 'pt',
+        region: 'BR',
+        country_id: countryBRA[0].id,
+      },
+    ];
+
+    for (let index = 0; index < locales.length; index++) {
+      const localeId = await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('locales', ['code', 'region', 'country_id'])
+        .values({
+          code: locales[index].code,
+          region: locales[index].region,
+          country_id: locales[index].country_id,
+        })
+        .returning('id')
+        .execute();
+
+      locales[index].id = localeId.raw[0].id;
+    }
   }
-  async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable('multifactors');
-    await queryRunner.dropTable('users');
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('locales');
   }
 }

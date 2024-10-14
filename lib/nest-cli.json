@@ -61,13 +61,13 @@
         "tsConfigPath": "libs/admin/tsconfig.lib.json"
       }
     },
-    "locale": {
+    "person": {
       "type": "library",
-      "root": "libs/locale",
+      "root": "libs/person",
       "entryFile": "index",
-      "sourceRoot": "libs/locale/src",
+      "sourceRoot": "libs/person/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/locale/tsconfig.lib.json"
+        "tsConfigPath": "libs/person/tsconfig.lib.json"
       }
     }
   }
