@@ -148,9 +148,6 @@ async function checkDockerComposeExists() {
 
 async function main() {
   await checkDockerComposeExists();
-  /*if (!dockerCompose) {
-    await checkDatabaseTestExists();
-  }*/
   await deleteTestEnv();
   await createTestEnv();
   await addhedhogModules();

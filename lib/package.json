@@ -28,7 +28,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:generate": "npx prisma generate --schema=./src/prisma/schema.prisma",
     "prisma:pull": "npx prisma db pull --schema=./src/prisma/schema.prisma",
-    "prisma:update": "npm run prisma:pull && npm run prisma:generate"
+    "prisma:update": "npm run prisma:pull && npm run prisma:generate",
+    "preinstall": "ts-node scripts/npm-install-libs.ts"
   },
   "dependencies": {
     "@hedhog/utils": "^0.0.4",
