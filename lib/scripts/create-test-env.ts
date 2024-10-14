@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { run } from './run';
-import { existsSync, rmdir } from 'fs';
+import { existsSync } from 'fs';
 import { readFile } from 'fs/promises';
 import * as dotenv from 'dotenv';
 import { createConnection } from 'mysql2/promise';
@@ -115,7 +115,7 @@ async function createTestEnv() {
     'hedhog_test',
     '--force',
     '--docker-compose',
-    '--data-volume "../test-data"',
+    '--data-volume "test-data"',
   );
 }
 
@@ -139,11 +139,6 @@ async function checkDockerComposeExists() {
       await run(rootPath, 'docker-compose', 'down', '-v');
     }
 
-    await sleep(5000);
-
-    if (existsSync(join(rootPath, 'test-data'))) {
-      await run(join(rootPath), 'npx', 'rimraf', 'test-data');
-    }
     return true;
   } catch (error) {
     console.error('Error:', 'checkDockerComposeExists', error);
@@ -152,7 +147,7 @@ async function checkDockerComposeExists() {
 }
 
 async function main() {
-  const dockerCompose = await checkDockerComposeExists();
+  await checkDockerComposeExists();
   /*if (!dockerCompose) {
     await checkDatabaseTestExists();
   }*/

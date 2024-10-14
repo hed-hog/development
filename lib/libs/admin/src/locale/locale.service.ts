@@ -114,7 +114,7 @@ export class LocaleService {
     };
 
     if (locales.length > 1) {
-      where.locale.region = region;
+      where.locales.region = region;
     }
 
     const values = await this.prismaService.translations.findMany({
