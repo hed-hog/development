@@ -62,7 +62,7 @@ describe('MenuService', () => {
         url: '/test',
         icon: 'test-icon',
         order: 1,
-        menuId: null,
+        menu_id: undefined,
       };
       mockPrismaService.menus.create.mockResolvedValue(createMenuDto);
 

@@ -63,16 +63,15 @@ describe('ScreenService', () => {
   describe('create', () => {
     it('should create a screen', async () => {
       const createDTO = {
-        id: 1,
         name: 'Test Screen',
         slug: 'test-screen',
         description: 'This is a test screen',
         icon: 'test-icon',
-        created_at: new Date(),
-        updated_at: new Date(),
       };
 
-      jest.spyOn(prismaService.screens, 'create').mockResolvedValue(createDTO);
+      jest
+        .spyOn(prismaService.screens, 'create')
+        .mockResolvedValue(createDTO as any);
 
       const result = await service.create(createDTO);
 
