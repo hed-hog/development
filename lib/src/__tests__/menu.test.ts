@@ -91,7 +91,7 @@ describe('Menu API tests', () => {
     });
 
     expect(response.status).toBe(200);
-    expect(response.data).toBeInstanceOf(Array);
+    expect(response.data.data).toBeInstanceOf(Array);
   });
 
   test('Get screens for a specific menu', async () => {
@@ -102,6 +102,6 @@ describe('Menu API tests', () => {
     });
 
     expect(response.status).toBe(200);
-    expect(response.data).toBeInstanceOf(Array);
+    expect(response.data.data).toBeInstanceOf(Array);
   });
 });

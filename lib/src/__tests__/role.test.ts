@@ -147,7 +147,7 @@ describe('Role API tests', () => {
     });
 
     expect(response.status).toBe(200);
-    expect(response.data).toBeInstanceOf(Array);
+    expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.total).toBeGreaterThan(0);
   });
 
@@ -159,7 +159,7 @@ describe('Role API tests', () => {
     });
 
     expect(response.status).toBe(200);
-    expect(response.data).toBeInstanceOf(Array);
+    expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.total).toBeGreaterThan(0);
   });
 
