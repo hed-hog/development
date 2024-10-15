@@ -14,3 +14,17 @@ export const loginUser = async (
 
   return { user, token: response.data.token };
 };
+
+const userRootData = {
+  email: 'root@hedhog.com',
+  password: 'hedhog',
+};
+
+export const getGlobalToken = async () => {
+  const { token: tokenRoot } = await loginUser(
+    userRootData.email,
+    userRootData.password,
+  );
+
+  return tokenRoot;
+};

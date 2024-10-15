@@ -104,11 +104,16 @@ describe('Test authentication with Root User', () => {
     expect(response.data.lastPage).toBeGreaterThanOrEqual(response.data.page);
     expect(response.data.pageSize).toBeGreaterThan(0);
   });
+});
+
+describe('Test authentication with normal user', () => {
   const newUser = {
+    id: 0,
     email: faker.internet.email(),
     password: faker.internet.password(),
     name: faker.person.fullName(),
   };
+  let newUserToken = '';
 
   test('Test create user', async () => {
     const response = await axios.post('/users', newUser, {
@@ -120,12 +125,30 @@ describe('Test authentication with Root User', () => {
     expect(response.status).toEqual(201);
     expect(response.data.email).toEqual(newUser.email);
     expect(response.data.name).toEqual(newUser.name);
+    newUser.id = response.data.id;
   });
 
   test('Test login with new user', async () => {
     const response = await loginUser(newUser.email, newUser.password);
-
     expect(response.user.id).toBeGreaterThan(0);
     expect(response.token).not.toBeNull();
+    newUserToken = response.token;
+  });
+
+  test('Test to access forbidden routes', async () => {
+    try {
+      await axios.get('/users', {
+        headers: {
+          Authorization: `Bearer ${newUserToken}`,
+        },
+      });
+    } catch (error) {
+      expect(error.response.status).toEqual(403);
+      expect(error.response.data).toBeInstanceOf(Object);
+      expect(error.response.data).toHaveProperty(
+        'message',
+        'Forbidden resource',
+      );
+    }
   });
 });
