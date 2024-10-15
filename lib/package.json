@@ -30,7 +30,8 @@
     "prisma:generate": "npx prisma generate --schema=./src/prisma/schema.prisma",
     "prisma:pull": "npx prisma db pull --schema=./src/prisma/schema.prisma",
     "prisma:update": "npm run prisma:pull && npm run prisma:generate",
-    "preinstall": "ts-node scripts/npm-install-libs.ts"
+    "preinstall": "ts-node scripts/npm-install-libs.ts",
+    "puppeteer": "ts-node ./src/puppeteer/main.ts"
   },
   "dependencies": {
     "@hedhog/utils": "^0.0.4",
