@@ -38,6 +38,8 @@ const userData = {
       timeout: 0,
     });
 
+    await page.waitForNavigation({ waitUntil: 'networkidle0' });
+
     await page.waitForSelector('input[name="email"]');
     await page.type('input[name="email"]', userRootData.email);
 
