@@ -8,12 +8,6 @@ const userRootData = {
   token: '',
   id: 0,
 };
-const userData = {
-  email: 'user@hedhog.com',
-  password: 'hedhog',
-  token: '',
-  id: 0,
-};
 
 (async () => {
   try {

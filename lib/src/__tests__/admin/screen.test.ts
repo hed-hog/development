@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
-import { getGlobalToken } from './utils/loginUser';
+import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
@@ -29,7 +29,7 @@ describe('Screen API tests', () => {
     expect(response.status).toEqual(201);
     expect(response.data.name).toEqual(newScreen.name);
     expect(response.data.slug).toEqual(newScreen.slug);
-    screenId = response.data.id; // Armazena o ID da nova tela
+    screenId = response.data.id;
   });
 
   test('Get all screens with pagination', async () => {
@@ -77,7 +77,7 @@ describe('Screen API tests', () => {
 
   test('Delete screen', async () => {
     const response = await axios.delete(`/screens`, {
-      data: { ids: [screenId] }, // Use o formato correto para a exclusão
+      data: { ids: [screenId] },
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -98,7 +98,7 @@ describe('Screen API tests', () => {
   });
 
   test('Update roles for a screen', async () => {
-    const roleIds = [1, 2]; // IDs fictícios de roles
+    const roleIds = [1, 2];
     const response = await axios.patch(
       `/screens/${screenId}/roles`,
       { ids: roleIds },
@@ -124,7 +124,7 @@ describe('Screen API tests', () => {
   });
 
   test('Update routes for a screen', async () => {
-    const routeIds = [1, 2]; // IDs fictícios de rotas
+    const routeIds = [1, 2];
     const response = await axios.patch(
       `/screens/${screenId}/routes`,
       { ids: routeIds },

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
-import { getGlobalToken } from './utils/loginUser';
+import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';

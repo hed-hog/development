@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
-import { getGlobalToken } from './utils/loginUser';
+import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
@@ -70,7 +70,7 @@ describe('Role API tests', () => {
 
   test('Delete role', async () => {
     const response = await axios.delete(`/roles`, {
-      data: { ids: [roleId] }, // Use o formato correto para a exclusão
+      data: { ids: [roleId] },
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -80,7 +80,7 @@ describe('Role API tests', () => {
   });
 
   test('Update users for a role', async () => {
-    const userIds = [1, 2]; // IDs fictícios de usuários
+    const userIds = [1, 2];
     const response = await axios.patch(
       `/roles/${roleId}/users`,
       { ids: userIds },
@@ -95,7 +95,7 @@ describe('Role API tests', () => {
   });
 
   test('Update screens for a role', async () => {
-    const screenIds = [1, 2]; // IDs fictícios de telas
+    const screenIds = [1, 2];
     const response = await axios.patch(
       `/roles/${roleId}/screens`,
       { ids: screenIds },
@@ -110,7 +110,7 @@ describe('Role API tests', () => {
   });
 
   test('Update routes for a role', async () => {
-    const routeIds = [1, 2]; // IDs fictícios de rotas
+    const routeIds = [1, 2];
     const response = await axios.patch(
       `/roles/${roleId}/routes`,
       { ids: routeIds },
@@ -125,7 +125,7 @@ describe('Role API tests', () => {
   });
 
   test('Update menus for a role', async () => {
-    const menuIds = [1, 2]; // IDs fictícios de menus
+    const menuIds = [1, 2];
     const response = await axios.patch(
       `/roles/${roleId}/menus`,
       { ids: menuIds },

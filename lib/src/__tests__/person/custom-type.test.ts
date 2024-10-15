@@ -1,35 +1,35 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
-import { getGlobalToken } from './utils/loginUser';
+import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let settingId = 0;
+let customTypeId = 0;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
   token = await getGlobalToken();
 });
 
-describe('Settings API tests', () => {
-  const newSetting = {
+describe('Custom Type API tests', () => {
+  const newCustomType = {
     name: faker.lorem.word(),
   };
 
-  test('Create new setting', async () => {
-    const response = await axios.post('/settings', newSetting, {
+  test('Create new custom type', async () => {
+    const response = await axios.post('/custom-types', newCustomType, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
     expect(response.status).toEqual(201);
-    expect(response.data.name).toEqual(newSetting.name);
-    settingId = response.data.id;
+    expect(response.data.name).toEqual(newCustomType.name);
+    customTypeId = response.data.id;
   });
 
-  test('Get all settings with pagination', async () => {
-    const response = await axios.get('/settings', {
+  test('Get all custom types with pagination', async () => {
+    const response = await axios.get('/custom-types', {
       params: { page: 1, pageSize: 10 },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -41,25 +41,25 @@ describe('Settings API tests', () => {
     expect(response.data.total).toBeGreaterThan(0);
   });
 
-  test('Get setting by ID', async () => {
-    const response = await axios.get(`/settings/${settingId}`, {
+  test('Get custom type by ID', async () => {
+    const response = await axios.get(`/custom-types/${customTypeId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
     expect(response.status).toBe(200);
-    expect(response.data.id).toEqual(settingId);
+    expect(response.data.id).toEqual(customTypeId);
   });
 
-  test('Update setting', async () => {
-    const updatedSetting = {
+  test('Update custom type', async () => {
+    const updatedCustomType = {
       name: faker.lorem.word(),
     };
 
     const response = await axios.patch(
-      `/settings/${settingId}`,
-      updatedSetting,
+      `/custom-types/${customTypeId}`,
+      updatedCustomType,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -68,17 +68,18 @@ describe('Settings API tests', () => {
     );
 
     expect(response.status).toEqual(200);
-    expect(response.data.name).toEqual(updatedSetting.name);
+    expect(response.data.name).toEqual(updatedCustomType.name);
   });
 
-  test('Delete setting', async () => {
-    const response = await axios.delete(`/settings`, {
-      data: { ids: [settingId] },
+  test('Delete custom type', async () => {
+    const response = await axios.delete('/custom-types', {
+      data: { ids: [customTypeId] },
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
     expect(response.status).toEqual(200);
+    expect(response.data.count).toEqual(1);
   });
 });

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
-import { getGlobalToken } from './utils/loginUser';
+import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
@@ -83,7 +83,7 @@ describe('Menu API tests', () => {
   });
 
   test('Get menus for a specific role', async () => {
-    const roleId = 1; // Replace with a valid role ID
+    const roleId = 1;
     const response = await axios.get(`/menus/roles/${roleId}`, {
       headers: {
         Authorization: `Bearer ${token}`,

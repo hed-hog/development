@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
-import { getGlobalToken } from './utils/loginUser';
+import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
@@ -14,7 +14,7 @@ beforeAll(async () => {
 describe('Route API tests', () => {
   const newRoute = {
     url: faker.internet.url(),
-    method: 'GET', // ou 'POST', 'PUT', etc.
+    method: 'GET',
   };
 
   test('Create new route', async () => {
@@ -27,7 +27,7 @@ describe('Route API tests', () => {
     expect(response.status).toEqual(201);
     expect(response.data.url).toEqual(newRoute.url);
     expect(response.data.method).toEqual(newRoute.method);
-    routeId = response.data.id; // Armazena o ID da nova rota
+    routeId = response.data.id;
   });
 
   test('Get all routes with pagination', async () => {
@@ -73,7 +73,7 @@ describe('Route API tests', () => {
 
   test('Delete route', async () => {
     const response = await axios.delete(`/routes`, {
-      data: { ids: [routeId] }, // Use o formato correto para a exclusão
+      data: { ids: [routeId] },
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -94,7 +94,7 @@ describe('Route API tests', () => {
   });
 
   test('Update roles for a route', async () => {
-    const roleIds = [1, 2]; // IDs fictícios de roles
+    const roleIds = [1, 2];
     const response = await axios.patch(
       `/routes/${routeId}/roles`,
       { ids: roleIds },
@@ -120,7 +120,7 @@ describe('Route API tests', () => {
   });
 
   test('Update screens for a route', async () => {
-    const screenIds = [1, 2]; // IDs fictícios de telas
+    const screenIds = [1, 2];
     const response = await axios.patch(
       `/routes/${routeId}/screens`,
       { ids: screenIds },
