@@ -1,27 +1,25 @@
 import { join } from 'path';
 import { run } from './run';
 import { existsSync } from 'fs';
+import { sleep } from '../src/__tests__/utils/sleep';
 
 const projectTestname = 'test';
 const rootPath = join(__dirname, '..', '..');
 
 async function deleteTestEnv() {
+  console.log('Removing test project...');
   return run(rootPath, 'npx', 'rimraf', projectTestname);
-}
-
-async function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function checkDockerComposeExists() {
   try {
     const dockerComposePath = join(rootPath, 'test', 'docker-compose.yml');
 
-    console.log('dockerComposePath:', dockerComposePath);
-    console.log('dockerComposePath exists:', existsSync(dockerComposePath));
-
     if (existsSync(dockerComposePath)) {
-      await run(rootPath, 'docker-compose', 'down', '-v');
+      console.log('Stopping docker-compose and remove volume...');
+      await run(join(rootPath, 'test'), 'docker', 'compose', 'down', '-v');
+      await sleep(5000);
+      console.log('Docker-compose stopped and volume removed!');
     }
 
     return true;
@@ -35,7 +33,6 @@ async function main() {
   if (await checkDockerComposeExists()) {
     await deleteTestEnv();
   }
-
   console.log('Test project removed!');
 }
 

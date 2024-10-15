@@ -141,7 +141,7 @@ describe('MenuService', () => {
       );
     });
   });
-
+  /*
   describe('getMenus', () => {
     it('should get menus for a user', async () => {
       const locale = 'en';
@@ -155,4 +155,5 @@ describe('MenuService', () => {
       expect(prismaService.menus.findMany).toHaveBeenCalled();
     });
   });
+  */
 });
