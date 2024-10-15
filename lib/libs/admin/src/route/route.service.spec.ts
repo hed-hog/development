@@ -201,4 +201,99 @@ describe('RouteService', () => {
       expect(res).toEqual(result);
     });
   });
+
+  describe('listRoles', () => {
+    it('should call paginate method with correct parameters', async () => {
+      const locale = 'en';
+      const routeId = 1;
+      const paginationParams: PaginationDTO = {
+        page: 1,
+        pageSize: 10,
+        search: '',
+        sortField: '',
+        sortOrder: PageOrderDirection.Asc,
+        fields: '',
+      };
+
+      paginationService.paginate = jest.fn().mockResolvedValue({
+        data: [],
+        total: 0,
+      });
+
+      await service.listRoles(locale, routeId, paginationParams);
+
+      expect(paginationService.paginate).toHaveBeenCalledWith(
+        prismaService.roles,
+        paginationParams,
+        {
+          include: {
+            role_translations: {
+              where: {
+                locales: { code: locale },
+              },
+              select: {
+                name: true,
+                description: true,
+              },
+            },
+            role_routes: {
+              where: { route_id: routeId },
+              select: {
+                route_id: true,
+                role_id: true,
+              },
+            },
+          },
+        },
+        'role_translations',
+      );
+    });
+  });
+
+  describe('listScreens', () => {
+    it('should call paginate method with correct parameters', async () => {
+      const locale = 'en';
+      const routeId = 1;
+      const paginationParams: PaginationDTO = {
+        page: 1,
+        pageSize: 10,
+        search: '',
+        sortField: '',
+        sortOrder: PageOrderDirection.Asc,
+        fields: '',
+      };
+
+      paginationService.paginate = jest.fn().mockResolvedValue({
+        data: [],
+        total: 0,
+      });
+
+      await service.listScreens(locale, routeId, paginationParams);
+
+      expect(paginationService.paginate).toHaveBeenCalledWith(
+        prismaService.screens,
+        paginationParams,
+        {
+          include: {
+            screen_translations: {
+              where: {
+                locales: { code: locale },
+              },
+              select: {
+                name: true,
+              },
+            },
+            route_screens: {
+              where: { route_id: routeId },
+              select: {
+                route_id: true,
+                screen_id: true,
+              },
+            },
+          },
+        },
+        'screen_translations',
+      );
+    });
+  });
 });
