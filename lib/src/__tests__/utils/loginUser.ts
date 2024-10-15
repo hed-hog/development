@@ -1,17 +1,16 @@
 import axios from 'axios';
+import { decodeTokenJWT } from './decodeTokenJWT';
 
 export const loginUser = async (
-  username: string,
+  email: string,
   password: string,
-): Promise<string> => {
+): Promise<any> => {
   const response = await axios.post(`http://localhost:3000/auth/login`, {
-    username,
+    email,
     password,
   });
 
-  if (response.status !== 200) {
-    throw new Error(`Login failed for ${username}`);
-  }
+  const { user } = decodeTokenJWT(response.data.token);
 
-  return response.data.token;
+  return user;
 };

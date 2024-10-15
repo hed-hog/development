@@ -18,8 +18,23 @@ const userData = {
   id: 0,
 };
 
-beforeAll(() => {
+beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
+
+  const { id: rootUserId } = await loginUser(
+    userRootData.email,
+    userRootData.password,
+  );
+
+  expect(rootUserId).toBeGreaterThan(0);
+
+  userRootData.id = rootUserId;
+
+  const { id: userId } = await loginUser(userData.email, userData.password);
+
+  expect(userId).toBeGreaterThan(0);
+
+  userData.id = userId;
 });
 
 describe('API tests with Axios', () => {
@@ -31,19 +46,6 @@ describe('API tests with Axios', () => {
 });
 
 describe('Test authentication with Root User', () => {
-  beforeAll(async () => {
-    userRootData.token = await loginUser(
-      userRootData.email,
-      userRootData.password,
-    );
-
-    const { id } = decodeTokenJWT(userRootData.token);
-
-    expect(id).toBeGreaterThan(0);
-
-    userRootData.id = id;
-  });
-
   test('Validate authentication', async () => {
     const response = await axios.get('/auth/verify', {
       headers: {
@@ -51,7 +53,7 @@ describe('Test authentication with Root User', () => {
       },
     });
 
-    expect([200, 201]).toBe(response.status);
+    expect(response.status).toEqual(200);
     expect(response.data).hasOwnProperty('id');
     expect(response.data.email).toEqual(userRootData.email);
   });
@@ -63,7 +65,7 @@ describe('Test authentication with Root User', () => {
       },
     });
 
-    expect([200, 201]).toBe(response.status);
+    expect(response.status).toEqual(200);
     expect(response.data.email).toEqual(userRootData.email);
   });
 
@@ -79,8 +81,9 @@ describe('Test authentication with Root User', () => {
       },
     );
 
-    expect([200, 201]).toBe(response.status);
+    expect(response.status).toEqual(200);
     expect(response.data.name).toEqual(newName);
+    expect(response.data.email).toEqual(userRootData.email);
   });
 
   test('Test users list', async () => {
@@ -90,7 +93,7 @@ describe('Test authentication with Root User', () => {
       },
     });
 
-    expect([200, 201]).toBe(response.status);
+    expect(response.status).toEqual(200);
     expect(response.data).toBeInstanceOf(Array);
     expect(response.data.length).toBeGreaterThan(0);
   });
