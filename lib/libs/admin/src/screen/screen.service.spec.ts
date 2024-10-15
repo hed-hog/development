@@ -181,6 +181,79 @@ describe('ScreenService', () => {
     });
   });
 
+  describe('updateRoutes', () => {
+    it('should delete existing route_screens and create new ones', async () => {
+      const screenId = 1;
+      const updateIdsDTO: UpdateIdsDTO = { ids: [1, 2, 3] };
+
+      prismaService.routes.findMany = jest
+        .fn()
+        .mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
+
+      prismaService.route_screens.deleteMany = jest.fn();
+      prismaService.route_screens.createMany = jest.fn();
+
+      await service.updateRoutes(screenId, updateIdsDTO);
+
+      expect(prismaService.routes.findMany).toHaveBeenCalledWith({
+        where: { id: { in: updateIdsDTO.ids } },
+        select: { id: true },
+      });
+
+      expect(prismaService.route_screens.deleteMany).toHaveBeenCalledWith({
+        where: { screen_id: screenId },
+      });
+
+      expect(prismaService.route_screens.createMany).toHaveBeenCalledWith({
+        data: updateIdsDTO.ids.map((routeId) => ({
+          screen_id: screenId,
+          route_id: routeId,
+        })),
+        skipDuplicates: true,
+      });
+    });
+  });
+
+  describe('listRoles', () => {
+    it('should call paginate method with correct parameters', async () => {
+      const locale = 'en';
+      const screenId = 1;
+      const paginationParams: PaginationDTO = {
+        page: 1,
+        pageSize: 10,
+        search: '',
+        sortField: '',
+        sortOrder: PageOrderDirection.Asc,
+        fields: '',
+      };
+
+      paginationService.paginate = jest.fn().mockResolvedValue({
+        data: [],
+        total: 0,
+      });
+
+      await service.listRoles(locale, screenId, paginationParams);
+
+      expect(paginationService.paginate).toHaveBeenCalledWith(
+        prismaService.roles,
+        paginationParams,
+        {
+          include: {
+            role_screens: {
+              where: {
+                screen_id: screenId,
+              },
+              select: {
+                role_id: true,
+                screen_id: true,
+              },
+            },
+          },
+        },
+      );
+    });
+  });
+
   describe('listRoutes', () => {
     it('should paginate the routes linked to a screen', async () => {
       const paginationParams: PaginationDTO = {

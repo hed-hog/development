@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RoleService } from './role.service';
 import { PrismaService } from '@hedhog/prisma';
-import { PaginationService } from '@hedhog/pagination';
+import {
+  PageOrderDirection,
+  PaginationDTO,
+  PaginationService,
+} from '@hedhog/pagination';
 import { BadRequestException } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
@@ -148,5 +152,278 @@ describe('RoleService', () => {
     });
   });
 
-  // Additional tests for updateScreens, updateRoutes, updateMenus, listUsers, listMenus, etc. can be added similarly.
+  describe('updateScreens', () => {
+    it('should update screens for a role', async () => {
+      const roleId = 1;
+      const data: UpdateIdsDTO = { ids: [1, 2] };
+
+      jest
+        .spyOn(prismaService.role_screens, 'deleteMany')
+        .mockResolvedValue({ count: 2 });
+      jest
+        .spyOn(prismaService.role_screens, 'createMany')
+        .mockResolvedValue({ count: 2 });
+
+      await roleService.updateScreens(roleId, data);
+
+      expect(prismaService.role_screens.deleteMany).toHaveBeenCalledWith({
+        where: { role_id: roleId },
+      });
+
+      expect(prismaService.role_screens.createMany).toHaveBeenCalledWith({
+        data: data.ids.map((screenId) => ({
+          role_id: roleId,
+          screen_id: screenId,
+        })),
+        skipDuplicates: true,
+      });
+    });
+  });
+
+  describe('updateRoutes', () => {
+    it('should update routes for a role', async () => {
+      const roleId = 1;
+      const data: UpdateIdsDTO = { ids: [1, 2] };
+
+      jest
+        .spyOn(prismaService.role_routes, 'deleteMany')
+        .mockResolvedValue({ count: 2 });
+      jest
+        .spyOn(prismaService.role_routes, 'createMany')
+        .mockResolvedValue({ count: 2 });
+
+      await roleService.updateRoutes(roleId, data);
+
+      expect(prismaService.role_routes.deleteMany).toHaveBeenCalledWith({
+        where: { role_id: roleId },
+      });
+
+      expect(prismaService.role_routes.createMany).toHaveBeenCalledWith({
+        data: data.ids.map((routeId) => ({
+          role_id: roleId,
+          route_id: routeId,
+        })),
+        skipDuplicates: true,
+      });
+    });
+  });
+
+  describe('updateMenus', () => {
+    it('should update menus for a role', async () => {
+      const roleId = 1;
+      const data: UpdateIdsDTO = { ids: [1, 2] };
+
+      jest
+        .spyOn(prismaService.role_menus, 'deleteMany')
+        .mockResolvedValue({ count: 2 });
+      jest
+        .spyOn(prismaService.role_menus, 'createMany')
+        .mockResolvedValue({ count: 2 });
+
+      await roleService.updateMenus(roleId, data);
+
+      expect(prismaService.role_menus.deleteMany).toHaveBeenCalledWith({
+        where: { role_id: roleId },
+      });
+
+      expect(prismaService.role_menus.createMany).toHaveBeenCalledWith({
+        data: data.ids.map((menuId) => ({
+          role_id: roleId,
+          menu_id: menuId,
+        })),
+        skipDuplicates: true,
+      });
+    });
+  });
+
+  describe('listUsers', () => {
+    it('should list users associated with a role', async () => {
+      const roleId = 1;
+      const paginationParams: PaginationDTO = {
+        page: 1,
+        pageSize: 10,
+        search: '',
+        sortField: '',
+        sortOrder: PageOrderDirection.Asc,
+        fields: '',
+      };
+      const mockPaginationResult = {
+        data: [],
+        total: 10,
+        lastPage: 1,
+        page: 1,
+        prev: 0,
+        next: 2,
+        pageSize: 10,
+      };
+
+      jest
+        .spyOn(paginationService, 'paginate')
+        .mockResolvedValue(mockPaginationResult);
+
+      await roleService.listUsers(roleId, paginationParams);
+
+      expect(paginationService.paginate).toHaveBeenCalledWith(
+        prismaService.users,
+        paginationParams,
+        {
+          include: {
+            role_users: {
+              where: { role_id: roleId },
+              select: { user_id: true, role_id: true },
+            },
+          },
+        },
+      );
+    });
+  });
+
+  describe('listMenus', () => {
+    it('should list menus associated with a role', async () => {
+      const locale = 'en';
+      const roleId = 1;
+      const paginationParams: PaginationDTO = {
+        page: 1,
+        pageSize: 10,
+        search: '',
+        sortField: '',
+        sortOrder: PageOrderDirection.Asc,
+        fields: '',
+      };
+      const mockPaginationResult = {
+        data: [],
+        total: 10,
+        lastPage: 1,
+        page: 1,
+        prev: 0,
+        next: 2,
+        pageSize: 10,
+      };
+
+      jest
+        .spyOn(paginationService, 'paginate')
+        .mockResolvedValue(mockPaginationResult);
+
+      await roleService.listMenus(locale, roleId, paginationParams);
+
+      expect(paginationService.paginate).toHaveBeenCalledWith(
+        prismaService.menus,
+        paginationParams,
+        {
+          include: {
+            menu_translations: {
+              where: { locales: { code: locale } },
+              select: { name: true },
+            },
+            role_menus: {
+              where: { role_id: roleId },
+              select: { menu_id: true, role_id: true },
+            },
+          },
+        },
+        'menu_translations',
+      );
+    });
+  });
+
+  describe('listRoutes', () => {
+    it('should list routes associated with a role', async () => {
+      const roleId = 1;
+      const paginationParams: PaginationDTO = {
+        page: 1,
+        pageSize: 10,
+        search: '',
+        sortField: '',
+        sortOrder: PageOrderDirection.Asc,
+        fields: '',
+      };
+      const mockPaginationResult = {
+        data: [],
+        total: 10,
+        lastPage: 1,
+        page: 1,
+        prev: 0,
+        next: 2,
+        pageSize: 10,
+      };
+
+      jest
+        .spyOn(paginationService, 'paginate')
+        .mockResolvedValue(mockPaginationResult);
+
+      await roleService.listRoutes(roleId, paginationParams);
+
+      expect(paginationService.paginate).toHaveBeenCalledWith(
+        prismaService.routes,
+        paginationParams,
+        {
+          include: {
+            role_routes: {
+              where: { role_id: roleId },
+              select: { route_id: true, role_id: true },
+            },
+          },
+        },
+      );
+    });
+  });
+
+  describe('listScreens', () => {
+    it('should list screens associated with a role', async () => {
+      const locale = 'en';
+      const roleId = 1;
+      const paginationParams: PaginationDTO = {
+        page: 1,
+        pageSize: 10,
+        search: '',
+        sortField: '',
+        sortOrder: PageOrderDirection.Asc,
+        fields: '',
+      };
+      const mockPaginationResult = {
+        data: [],
+        total: 10,
+        lastPage: 1,
+        page: 1,
+        prev: 0,
+        next: 2,
+        pageSize: 10,
+      };
+
+      jest
+        .spyOn(paginationService, 'paginate')
+        .mockResolvedValue(mockPaginationResult);
+
+      await roleService.listScreens(locale, roleId, paginationParams);
+
+      expect(paginationService.paginate).toHaveBeenCalledWith(
+        prismaService.screens,
+        paginationParams,
+        {
+          include: {
+            screen_translations: {
+              where: { locales: { code: locale } },
+              select: { name: true },
+            },
+            role_screens: {
+              where: { role_id: roleId },
+              select: { screen_id: true, role_id: true },
+            },
+          },
+        },
+        'screen_translations',
+      );
+    });
+  });
+
+  describe('get', () => {
+    it('should get a specific role by ID', async () => {
+      const roleId = 1;
+      const result = { id: roleId, name: 'Admin', description: 'Admin role' };
+
+      jest.spyOn(prismaService.roles, 'findUnique').mockResolvedValue(result);
+
+      expect(await roleService.get(roleId)).toEqual(result);
+    });
+  });
 });

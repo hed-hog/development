@@ -141,6 +141,98 @@ describe('MenuService', () => {
       );
     });
   });
+
+  describe('updateScreens', () => {
+    it('should update screens associated with a menu', async () => {
+      const menuId = 1;
+      const updateData = { ids: [1, 2, 3] };
+
+      jest
+        .spyOn(prismaService.menu_screens, 'deleteMany')
+        .mockResolvedValue(null);
+      jest
+        .spyOn(prismaService.menu_screens, 'createMany')
+        .mockResolvedValue(null);
+
+      await menuService.updateScreens(menuId, updateData);
+
+      expect(prismaService.menu_screens.deleteMany).toHaveBeenCalledWith({
+        where: { menu_id: menuId },
+      });
+
+      expect(prismaService.menu_screens.createMany).toHaveBeenCalledWith({
+        data: updateData.ids.map((screenId) => ({
+          menu_id: menuId,
+          screen_id: screenId,
+        })),
+        skipDuplicates: true,
+      });
+    });
+  });
+
+  describe('updateRoles', () => {
+    it('should update roles associated with a menu', async () => {
+      const menuId = 1;
+      const updateData = { ids: [1, 2] };
+
+      jest
+        .spyOn(prismaService.role_menus, 'deleteMany')
+        .mockResolvedValue(null);
+      jest
+        .spyOn(prismaService.role_menus, 'createMany')
+        .mockResolvedValue(null);
+
+      await menuService.updateRoles(menuId, updateData);
+
+      expect(prismaService.role_menus.deleteMany).toHaveBeenCalledWith({
+        where: { menu_id: menuId },
+      });
+
+      expect(prismaService.role_menus.createMany).toHaveBeenCalledWith({
+        data: updateData.ids.map((roleId) => ({
+          menu_id: menuId,
+          role_id: roleId,
+        })),
+        skipDuplicates: true,
+      });
+    });
+  });
+
+  describe('updateOrder', () => {
+    it('should update the order of menus', async () => {
+      const orderData = { ids: [1, 2, 3] };
+
+      jest.spyOn(prismaService.menus, 'count').mockResolvedValue(3);
+      jest.spyOn(prismaService.menus, 'update').mockResolvedValue(null);
+
+      await menuService.updateOrder(orderData);
+
+      expect(prismaService.menus.count).toHaveBeenCalledWith({
+        where: { id: { in: orderData.ids } },
+      });
+
+      expect(prismaService.menus.update).toHaveBeenCalledTimes(
+        orderData.ids.length,
+      );
+
+      orderData.ids.forEach((id, index) => {
+        expect(prismaService.menus.update).toHaveBeenCalledWith({
+          where: { id },
+          data: { order: index + 1 },
+        });
+      });
+    });
+
+    it('should throw BadRequestException if IDs are invalid', async () => {
+      const orderData = { ids: [1, 2, 3] };
+
+      jest.spyOn(prismaService.menus, 'count').mockResolvedValue(2); // IDs não batem com o número esperado
+
+      await expect(menuService.updateOrder(orderData)).rejects.toThrow(
+        BadRequestException,
+      );
+    });
+  });
   /*
   describe('getMenus', () => {
     it('should get menus for a user', async () => {
