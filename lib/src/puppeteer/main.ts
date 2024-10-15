@@ -34,7 +34,9 @@ const userData = {
 
     await page.setViewport({ width, height: height - 100 });
 
-    await page.goto('http://localhost:3100');
+    await page.goto('http://localhost:3100', {
+      timeout: 0,
+    });
 
     await page.waitForSelector('input[name="email"]');
     await page.type('input[name="email"]', userRootData.email);

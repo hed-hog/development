@@ -104,4 +104,28 @@ describe('Test authentication with Root User', () => {
     expect(response.data.lastPage).toBeGreaterThanOrEqual(response.data.page);
     expect(response.data.pageSize).toBeGreaterThan(0);
   });
+  const newUser = {
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    name: faker.person.fullName(),
+  };
+
+  test('Test create user', async () => {
+    const response = await axios.post('/users', newUser, {
+      headers: {
+        Authorization: `Bearer ${userRootData.token}`,
+      },
+    });
+
+    expect(response.status).toEqual(201);
+    expect(response.data.email).toEqual(newUser.email);
+    expect(response.data.name).toEqual(newUser.name);
+  });
+
+  test('Test login with new user', async () => {
+    const response = await loginUser(newUser.email, newUser.password);
+
+    expect(response.user.id).toBeGreaterThan(0);
+    expect(response.token).not.toBeNull();
+  });
 });

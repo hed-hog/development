@@ -146,6 +146,8 @@ async function startLoopToCheckPortInUse(port: number, sleepTime = 2000) {
 }
 
 async function startJest() {
+  console.log('Starting Jest...');
+
   const testProcess = spawn('npm', ['run', 'jest'], {
     stdio: 'pipe',
     shell: true,
@@ -172,6 +174,8 @@ async function startJest() {
 }
 
 async function startBackEnd() {
+  console.log('Starting back-end...');
+
   const serverProcess = spawn('npm', ['run', 'create-test-env'], {
     stdio: 'pipe',
     shell: true,
@@ -217,6 +221,7 @@ async function startBackEnd() {
 }
 
 async function main() {
+  console.log('Starting test environment...');
   await startBackEnd();
 }
 
