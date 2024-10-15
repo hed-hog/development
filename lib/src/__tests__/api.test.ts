@@ -21,19 +21,24 @@ const userData = {
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
 
-  const { id: rootUserId } = await loginUser(
-    userRootData.email,
-    userRootData.password,
-  );
+  const {
+    user: { id: rootUserId },
+    token: tokenRoot,
+  } = await loginUser(userRootData.email, userRootData.password);
 
   expect(rootUserId).toBeGreaterThan(0);
 
+  userRootData.token = tokenRoot;
   userRootData.id = rootUserId;
 
-  const { id: userId } = await loginUser(userData.email, userData.password);
+  const {
+    user: { id: userId },
+    token: tokenUser,
+  } = await loginUser(userData.email, userData.password);
 
   expect(userId).toBeGreaterThan(0);
 
+  userData.token = tokenUser;
   userData.id = userId;
 });
 
@@ -71,7 +76,7 @@ describe('Test authentication with Root User', () => {
 
   test('Update Root User Data', async () => {
     const newName = faker.person.fullName();
-    const response = await axios.put(
+    const response = await axios.patch(
       `/users/${userRootData.id}`,
       { name: newName },
       {
@@ -94,7 +99,10 @@ describe('Test authentication with Root User', () => {
     });
 
     expect(response.status).toEqual(200);
-    expect(response.data).toBeInstanceOf(Array);
-    expect(response.data.length).toBeGreaterThan(0);
+    expect(response.data.data).toBeInstanceOf(Array);
+    expect(response.data.total).toBeGreaterThan(0);
+    expect(response.data.data.length).toBeGreaterThan(0);
+    expect(response.data.lastPage).toBeGreaterThanOrEqual(response.data.page);
+    expect(response.data.pageSize).toBeGreaterThan(0);
   });
 });

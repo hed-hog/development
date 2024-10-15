@@ -12,5 +12,5 @@ export const loginUser = async (
 
   const { user } = decodeTokenJWT(response.data.token);
 
-  return user;
+  return { user, token: response.data.token };
 };
