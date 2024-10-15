@@ -72,7 +72,7 @@ export const killProcessesInDirectory = async (
 };
 
 (async () => {
-  const targetDirectory = process.argv[2]; // Recebe o caminho do diretório a partir da linha de comando
+  const targetDirectory = process.argv[2];
   if (!targetDirectory) {
     console.error('Please, provide a valid directory.');
     process.exit(1);
