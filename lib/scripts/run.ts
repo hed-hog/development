@@ -1,6 +1,9 @@
 import { spawn } from 'child_process';
 
 export async function run(cwd: string, bin: string, ...args: string[]) {
+  console.log(`Running ${bin} ${args.join(' ')}`, {
+    cwd,
+  });
   return new Promise<void>(async (resolve, reject) => {
     const child = spawn(bin, args, {
       cwd,

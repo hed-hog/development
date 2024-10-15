@@ -32,6 +32,12 @@ const serverProcess = spawn('npm', ['run', 'create-test-env'], {
   shell: true,
 });
 
+serverProcess.on('close', async (code, signal) => {
+  console.log('serverProcess', { code, signal });
+
+  await run(process.cwd(), 'npm', 'run', 'test:clear');
+});
+
 serverProcess.stdout.on('data', async (data) => {
   console.info(data.toString().replace(/\r\n|\n/, ''));
 
@@ -40,24 +46,25 @@ serverProcess.stdout.on('data', async (data) => {
       const testProcess = spawn('npm', ['run', 'jest'], {
         stdio: 'pipe',
         shell: true,
+        cwd: process.cwd(),
       });
 
-      testProcess.stdout.on('data', async (data) => {
-        console.info(data.toString().replace(/\r\n|\n/, ''));
+      console.log({ testProcess });
+
+      testProcess.stdout.on('data', async (data2) => {
+        console.info(data2.toString().replace(/\r\n|\n/, ''));
+      });
+
+      testProcess.stderr.on('data', async (data2) => {
+        console.info(data2.toString().replace(/\r\n|\n/, ''));
       });
 
       testProcess.on('close', async (code) => {
         console.log('Test process exited with code', code);
 
-        if (code === 0) {
+        if (!serverProcess.killed) {
+          console.log('Killing server process...');
           serverProcess.kill('SIGINT');
-
-          await run(
-            process.cwd(),
-            'npx',
-            'run',
-            'ts-node scripts/clear-test-env.ts',
-          );
         }
       });
     }

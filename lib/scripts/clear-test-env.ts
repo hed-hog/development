@@ -6,6 +6,8 @@ import { sleep } from '../src/__tests__/utils/sleep';
 const projectTestname = 'test';
 const rootPath = join(__dirname, '..', '..');
 
+console.log('Root path:', rootPath);
+
 async function deleteTestEnv() {
   console.log('Removing test project...');
   return run(rootPath, 'npx', 'rimraf', projectTestname);
