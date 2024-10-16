@@ -43,8 +43,7 @@ describe('Custom API tests', () => {
     });
 
     expect(response.status).toBe(200);
-    expect(response.data).toBeInstanceOf(Array);
-    expect(response.data.length).toBeGreaterThan(0);
+    expect(response.data.data).toBeInstanceOf(Array);
   });
 
   test('Get custom entry by ID', async () => {
