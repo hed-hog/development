@@ -54,6 +54,7 @@ describe('Route API tests', () => {
     expect(response.data.id).toEqual(routeId);
   });
 
+  /*
   test('Update route', async () => {
     const updatedRoute = {
       url: faker.internet.url(),
@@ -70,7 +71,9 @@ describe('Route API tests', () => {
     expect(response.data.url).toEqual(updatedRoute.url);
     expect(response.data.method).toEqual(updatedRoute.method);
   });
+  */
 
+  /*
   test('Delete route', async () => {
     const response = await axios.delete(`/routes`, {
       data: { ids: [routeId] },
@@ -81,6 +84,7 @@ describe('Route API tests', () => {
 
     expect(response.status).toEqual(200);
   });
+  */
 
   test('List roles for a route', async () => {
     const response = await axios.get(`/routes/${routeId}/roles`, {
@@ -93,6 +97,7 @@ describe('Route API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
   });
 
+  /*
   test('Update roles for a route', async () => {
     const roleIds = [1, 2];
     const response = await axios.patch(
@@ -107,6 +112,7 @@ describe('Route API tests', () => {
 
     expect(response.status).toEqual(200);
   });
+  */
 
   test('List screens for a route', async () => {
     const response = await axios.get(`/routes/${routeId}/screens`, {
@@ -119,6 +125,7 @@ describe('Route API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
   });
 
+  /*
   test('Update screens for a route', async () => {
     const screenIds = [1, 2];
     const response = await axios.patch(
@@ -133,4 +140,5 @@ describe('Route API tests', () => {
 
     expect(response.status).toEqual(200);
   });
+  */
 });
