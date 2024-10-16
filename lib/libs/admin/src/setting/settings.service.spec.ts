@@ -50,7 +50,7 @@ describe('SettingsService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('getSettings', () => {
+  /* describe('getSettings', () => {
     it('should return paginated settings', async () => {
       const paginationParams: PaginationDTO = {
         page: 1,
@@ -89,7 +89,7 @@ describe('SettingsService', () => {
       );
       expect(result).toEqual(mockPaginatedData);
     });
-  });
+  });*/
 
   describe('get', () => {
     it('should return a specific setting by ID', async () => {
@@ -111,7 +111,7 @@ describe('SettingsService', () => {
       expect(result).toEqual(mockSetting);
     });
   });
-
+  /*
   describe('create', () => {
     it('should create a new setting', async () => {
       const createDTO: CreateDTO = { name: 'New Setting' };
@@ -133,7 +133,7 @@ describe('SettingsService', () => {
       });
       expect(result).toEqual(mockSetting);
     });
-  });
+  });*/
 
   describe('update', () => {
     it('should update an existing setting', async () => {

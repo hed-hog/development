@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  Put,
   Inject,
   Param,
   ParseIntPipe,
@@ -18,6 +19,7 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { SettingsService } from './settings.service';
+import { Locale } from '../locale';
 
 @Role()
 @Controller('settings')
@@ -28,9 +30,29 @@ export class SettingsController {
   ) {}
 
   @UseGuards(AuthGuard)
+  @Get('groups/:slug')
+  async getSettingFromGroup(
+    @Pagination() paginationParams,
+    @Locale() locale,
+    @Param('slug') slug: string,
+  ) {
+    return this.settingsService.getSettingFromGroup(
+      locale,
+      paginationParams,
+      slug,
+    );
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('groups')
+  async getSettingGroups(@Pagination() paginationParams, @Locale() locale) {
+    return this.settingsService.getSettingGroups(locale, paginationParams);
+  }
+
+  @UseGuards(AuthGuard)
   @Get()
-  async getSettings(@Pagination() paginationParams) {
-    return this.settingsService.getSettings(paginationParams);
+  async getSettings(@Pagination() paginationParams, @Locale() locale) {
+    return this.settingsService.getSettings(locale, paginationParams);
   }
 
   @UseGuards(AuthGuard)
@@ -43,6 +65,12 @@ export class SettingsController {
   @Post()
   create(@Body() data: CreateDTO) {
     return this.settingsService.create(data);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(':slug')
+  async updateFromSlug(@Param('slug') slug: string, @Body() data: UpdateDTO) {
+    return this.settingsService.updateFromSlug(slug, data);
   }
 
   @UseGuards(AuthGuard)

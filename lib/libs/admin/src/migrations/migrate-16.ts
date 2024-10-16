@@ -20,6 +20,20 @@ export class Migrate implements MigrationInterface {
         .execute();
     }
 
+    const adminAccessRoutes = [88, 1, 3];
+
+    for (const routeId of adminAccessRoutes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('role_routes')
+        .values({
+          role_id: 3,
+          route_id: routeId,
+        })
+        .execute();
+    }
+
     await queryRunner.manager
       .createQueryBuilder()
       .insert()

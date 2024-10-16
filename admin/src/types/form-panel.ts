@@ -45,6 +45,8 @@ export interface IFormFieldPropsBase {
   name: string
   type: FieldType
   defaultValue?: any
+  value?: any
+  onChange?: (value: any) => void
   label?: ILabelProps
   description?: ILabelProps
   input?: IStylingProps

@@ -23,7 +23,7 @@
     "typeorm": "ts-node --transpile-only ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
-    "@hedhog/admin": "^0.0.39",
+    "@hedhog/admin": "^0.0.42",
     "@hedhog/mail": "^0.0.13",
     "@hedhog/pagination": "^0.0.14",
     "@hedhog/person": "^0.0.15",

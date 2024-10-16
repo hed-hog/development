@@ -12,11 +12,26 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editSetting = async (params: { id: string; data: SettingType }) => {
+  const editSetting = async (params: {
+    id: string
+    data: Partial<SettingType>
+  }) => {
     const { id, data } = params
     return request({
       url: `/settings/${id}`,
       method: 'patch',
+      data,
+    }).then((res) => res.data)
+  }
+
+  const editSettingSlug = async (params: {
+    slug: string
+    data: Partial<SettingType>
+  }) => {
+    const { slug, data } = params
+    return request({
+      url: `/settings/${slug}`,
+      method: 'put',
       data,
     }).then((res) => res.data)
   }
@@ -32,6 +47,7 @@ export function requests() {
   return {
     createSetting,
     editSetting,
+    editSettingSlug,
     deleteSettings,
   }
 }

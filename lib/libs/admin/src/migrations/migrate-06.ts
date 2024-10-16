@@ -190,6 +190,18 @@ export class Migrate implements MigrationInterface {
           method: 'PATCH',
         },
         {
+          url: '/settings/groups',
+          method: 'GET',
+        },
+        {
+          url: '"/settings/groups/:slug"',
+          method: 'GET',
+        },
+        {
+          url: '"/settings/:slug"',
+          method: 'PUT',
+        },
+        {
           url: '/settings',
           method: 'DELETE',
         },

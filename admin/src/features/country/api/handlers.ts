@@ -7,7 +7,7 @@ export function useCountries() {
   return useQuery({
     queryKey: ['countries'],
     queryFn: () =>
-      request({
+      request<any[]>({
         url: `/countries`,
       }),
   })

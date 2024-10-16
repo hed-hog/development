@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migrate1729084861197 implements MigrationInterface {
+export class Migrate1729100057577 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const groups = [
       {

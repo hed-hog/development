@@ -8,5 +8,7 @@
   "edit": "Edit Config",
   "editText": "View and edit config information.",
   "editTooltip": "Edit the selected configs",
-  "name": "Name"
+  "name": "Name",
+  "value": "Value",
+  "group": "Group"
 }

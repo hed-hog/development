@@ -42,7 +42,16 @@ export const FormPanel = forwardRef(
     )
 
     const renderField = (field: IFormFieldProps, index: number) => {
-      const { label, description, required, type, name, options = [] } = field
+      const {
+        label,
+        description,
+        required,
+        type,
+        name,
+        value,
+        onChange,
+        options = [],
+      } = field
 
       const sliderOptions = (field as ISliderProps).sliderOptions || {
         defaultValue: [50],
@@ -55,7 +64,7 @@ export const FormPanel = forwardRef(
           control={form.control}
           name={name}
           key={index}
-          render={({ field }: { field: any }) => (
+          render={({ field }) => (
             <FormItem>
               {label?.text && (
                 <FormLabel style={label.style} className={label.className}>
@@ -63,9 +72,10 @@ export const FormPanel = forwardRef(
                 </FormLabel>
               )}
               <Field
+                {...field}
                 type={type}
-                value={field.value}
-                onChange={field.onChange}
+                value={value}
+                onChange={onChange as any}
                 required={required}
                 options={options}
                 sliderOptions={sliderOptions}

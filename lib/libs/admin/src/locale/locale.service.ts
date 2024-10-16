@@ -135,17 +135,14 @@ export class LocaleService {
   }
 
   async get(paginationParams: PaginationDTO) {
-    const OR: any[] = [
-      {
-        name: { contains: paginationParams.search, mode: 'insensitive' },
-      },
-    ];
+    const fields = [];
 
-    if (!isNaN(+paginationParams.search)) {
-      OR.push({ id: { equals: +paginationParams.search } });
-    }
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
+      fields,
+      paginationParams,
+    );
 
-    return this.paginationService.paginate(
+    let result = await this.paginationService.paginate(
       this.prismaService.locales,
       paginationParams,
       {
@@ -154,6 +151,8 @@ export class LocaleService {
         },
       },
     );
+
+    return result;
   }
 
   async getById(localesId: number) {

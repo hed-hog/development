@@ -169,6 +169,17 @@ const router = createBrowserRouter([
               Component: (await import('./pages/management/settings/index.tsx'))
                 .default,
             }),
+            children: [
+              {
+                index: true,
+                path: ':slug',
+                lazy: async () => ({
+                  Component: (
+                    await import('./pages/management/settings/forms.tsx')
+                  ).default,
+                }),
+              },
+            ],
           },
           {
             path: 'settings-options',

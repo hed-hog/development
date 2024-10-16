@@ -7,7 +7,7 @@ import {
 import { idColumn, timestampColumn } from "@hedhog/utils";
 import * as bcrypt from "bcrypt";
 
-export class Migrate1729084860876 implements MigrationInterface {
+export class Migrate1729100057294 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({

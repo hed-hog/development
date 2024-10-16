@@ -24,11 +24,6 @@ export class LocaleController {
     private readonly localeService: LocaleService,
   ) {}
 
-  @Get()
-  async get(@Pagination() paginationParams) {
-    return this.localeService.get(paginationParams);
-  }
-
   @Get(':localeCode/:namespace')
   async getTranslations(
     @Param('localeCode') localeCode: string,
@@ -40,6 +35,11 @@ export class LocaleController {
   @Get('system/enableds')
   async getEnableds(@Pagination() paginationParams, @Locale() locale: string) {
     return this.localeService.getEnableds(locale, paginationParams);
+  }
+
+  @Get()
+  async get(@Pagination() paginationParams) {
+    return this.localeService.get(paginationParams);
   }
 
   @Get(':id')

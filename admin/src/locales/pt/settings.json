@@ -8,5 +8,7 @@
   "edit": "Editar Configuração",
   "editText": "Visualize e edite as informações da configuração.",
   "editTooltip": "Editar as configuraçãos selecionadas",
-  "name": "Nome"
+  "name": "Nome",
+  "value": "Valor",
+  "group": "Grupo"
 }

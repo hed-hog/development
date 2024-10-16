@@ -7,12 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model migrations {
-  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
-  timestamp BigInt
-  name      String @db.VarChar
-}
-
 model countries {
   id               Int                @id(map: "PK_b2d7006793e8697ab3ae2deff18") @default(autoincrement())
   name             String             @db.VarChar(50)
@@ -78,6 +72,12 @@ model menus {
   menu_screens      menu_screens[]
   menu_translations menu_translations[]
   role_menus        role_menus[]
+}
+
+model migrations {
+  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+  timestamp BigInt
+  name      String @db.VarChar
 }
 
 model multifactor_translations {

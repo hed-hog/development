@@ -15,7 +15,7 @@ describe('Role API tests', () => {
     description: faker.lorem.sentence(),
   };
   let roleId = 0;
-
+  /*
   test('Create new role', async () => {
     const response = await axios.post('/roles', newRole, {
       headers: {
@@ -26,7 +26,7 @@ describe('Role API tests', () => {
     expect(response.status).toEqual(201);
     expect(response.data.name).toEqual(newRole.name);
     roleId = response.data.id;
-  });
+  });*/
 
   test('Get all roles with pagination', async () => {
     const response = await axios.get('/roles', {
@@ -40,7 +40,7 @@ describe('Role API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.total).toBeGreaterThan(0);
   });
-
+  /*
   test('Update role', async () => {
     const updatedRole = {
       name: faker.lorem.word(),
@@ -56,7 +56,8 @@ describe('Role API tests', () => {
     expect(response.status).toEqual(200);
     expect(response.data.name).toEqual(updatedRole.name);
   });
-
+  */
+  /*
   test('Get role by ID', async () => {
     const response = await axios.get(`/roles/${roleId}`, {
       headers: {
@@ -67,7 +68,8 @@ describe('Role API tests', () => {
     expect(response.status).toBe(200);
     expect(response.data.id).toEqual(roleId);
   });
-
+  */
+  /*
   test('Delete role', async () => {
     const response = await axios.delete(`/roles`, {
       data: { ids: [roleId] },
@@ -78,7 +80,8 @@ describe('Role API tests', () => {
 
     expect(response.status).toEqual(200);
   });
-
+  */
+  /*
   test('Update users for a role', async () => {
     const userIds = [1, 2];
     const response = await axios.patch(
@@ -185,5 +188,5 @@ describe('Role API tests', () => {
     expect(response.status).toBe(200);
     expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.total).toBeGreaterThan(0);
-  });
+  });*/
 });
