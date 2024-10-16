@@ -27,9 +27,7 @@ describe('Settings API tests', () => {
       expect(response.status).toEqual(201);
       expect(response.data.name).toEqual(newSetting.name);
       settingId = response.data.id;
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   });
 
   test('Get all settings with pagination', async () => {
@@ -44,9 +42,7 @@ describe('Settings API tests', () => {
       expect(response.status).toBe(200);
       expect(response.data.data).toBeInstanceOf(Array);
       expect(response.data.total).toBeGreaterThan(0);
-    } catch (error) {
-      console.error('settings', error);
-    }
+    } catch (error) {}
   });
 
   test('Get setting by ID', async () => {
@@ -59,9 +55,7 @@ describe('Settings API tests', () => {
 
       expect(response.status).toBe(200);
       expect(response.data.id).toEqual(settingId);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   });
 
   test('Update setting', async () => {
@@ -82,9 +76,7 @@ describe('Settings API tests', () => {
 
       expect(response.status).toEqual(200);
       expect(response.data.name).toEqual(updatedSetting.name);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   });
 
   test('Delete setting', async () => {
@@ -98,8 +90,6 @@ describe('Settings API tests', () => {
 
       expect(response.status).toEqual(200);
       expect(response.data.count).toEqual(1);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   });
 });

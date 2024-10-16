@@ -16,7 +16,7 @@ describe('Locale API tests', () => {
     region: 'US',
     country_id: 24,
   };
-  let localeId = 1;
+  let localeId = 0;
 
   test('Create new locale', async () => {
     const response = await axios.post('/locales', newLocale, {
