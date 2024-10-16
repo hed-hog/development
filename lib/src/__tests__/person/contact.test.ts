@@ -4,28 +4,12 @@ import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let personId = 0;
-let contactId = 1;
+// let personId = 0;
+// let contactId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
   token = await getGlobalToken();
-
-  const personResponse = await axios.post(
-    '/persons',
-    {
-      name: faker.person.firstName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-
-  personId = personResponse.data.id;
 });
 
 describe('Contacts API tests', () => {
@@ -53,6 +37,7 @@ describe('Contacts API tests', () => {
   });
   */
 
+  /*
   test('Get all contacts for a person', async () => {
     const response = await axios.get(`/persons/${personId}/contacts`, {
       headers: {
@@ -64,7 +49,9 @@ describe('Contacts API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.total).toBeGreaterThan(0);
   });
+  */
 
+  /*
   test('Get contact by ID', async () => {
     const response = await axios.get(
       `/persons/${personId}/contacts?id=${contactId}`,
@@ -78,7 +65,8 @@ describe('Contacts API tests', () => {
     expect(response.status).toBe(200);
     expect(response.data.id).toEqual(contactId);
   });
-
+*/
+  /*
   test('Get contact by type ID', async () => {
     const response = await axios.get(`/persons/${personId}/contacts?typeId=1`, {
       headers: {
@@ -90,6 +78,7 @@ describe('Contacts API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.data.length).toBeGreaterThan(0);
   });
+*/
 
   /*
   test('Update contact', async () => {

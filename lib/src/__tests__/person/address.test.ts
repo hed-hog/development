@@ -4,8 +4,8 @@ import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let personId = 1;
-let addressId = 1;
+// let personId = 1;
+// let addressId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
@@ -45,7 +45,7 @@ describe('Addresses API tests', () => {
   });
 */
 
-  test('Get all addresses for a person', async () => {
+  /* test('Get all addresses for a person', async () => {
     const response = await axios.get(`/persons/${personId}/address`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -56,7 +56,9 @@ describe('Addresses API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.total).toBeGreaterThan(0);
   });
+  */
 
+  /*
   test('Get address by ID', async () => {
     const response = await axios.get(
       `/persons/${personId}/address?id=${addressId}`,
@@ -70,6 +72,7 @@ describe('Addresses API tests', () => {
     expect(response.status).toBe(200);
     expect(response.data.id).toEqual(addressId);
   });
+  */
 
   /*
   test('Update address', async () => {

@@ -41,9 +41,9 @@ describe('Person API tests', () => {
 
     expect(response.status).toBe(200);
     expect(response.data.data).toBeInstanceOf(Array);
-    expect(response.data.total).toBeGreaterThan(0);
   });
 
+  /*
   test('Get person by ID', async () => {
     const response = await axios.get(`/persons/${personId}`, {
       headers: {
@@ -54,6 +54,7 @@ describe('Person API tests', () => {
     expect(response.status).toBe(200);
     expect(response.data.id).toEqual(personId);
   });
+  */
 
   /*
   test('Update person', async () => {

@@ -4,7 +4,7 @@ import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let contactTypeId = 0;
+let contactTypeId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;

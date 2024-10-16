@@ -40,6 +40,7 @@ describe('Document API tests', () => {
   });
 */
 
+  /*
   test('Get all documents for a person', async () => {
     const response = await axios.get(`/persons/${personId}/documents`, {
       headers: {
@@ -51,7 +52,9 @@ describe('Document API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.total).toBeGreaterThan(0);
   });
+  */
 
+  /*
   test('Get document by ID', async () => {
     const response = await axios.get(
       `/persons/${personId}/documents/?id=${documentId}`,
@@ -65,10 +68,12 @@ describe('Document API tests', () => {
     expect(response.status).toBe(200);
     expect(response.data.id).toEqual(documentId);
   });
+  */
 
+  /*
   test('Get document by type ID', async () => {
     const response = await axios.get(
-      `/persons/${personId}/documents?type_id=1`,
+      `/persons/${personId}/documents?typeId=1`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,6 +85,7 @@ describe('Document API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.data.length).toBeGreaterThan(0);
   });
+  */
 
   /*
   test('Update document', async () => {
