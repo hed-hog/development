@@ -30,6 +30,8 @@ beforeAll(async () => {
   userRootData.token = tokenRoot;
   userRootData.id = rootUserId;
 
+  console.log({ tokenRoot, userRootData });
+
   const {
     user: { id: userId },
     token: tokenUser,
@@ -50,6 +52,7 @@ describe('API tests with Axios', () => {
 });
 
 describe('Test authentication with Root User', () => {
+  console.log({ userRootData });
   test('Validate authentication', async () => {
     const response = await axios.get('/auth/verify', {
       headers: {
