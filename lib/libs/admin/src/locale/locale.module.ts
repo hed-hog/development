@@ -4,11 +4,11 @@ import { forwardRef, MiddlewareConsumer, Module } from '@nestjs/common';
 import { LocaleService } from './locale.service';
 import { LocaleController } from './locale.controller';
 import { LocaleMiddleware } from './locale.middleware';
-import { AdminModule } from '@hedhog/admin';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
-    forwardRef(() => AdminModule),
+    forwardRef(() => AuthModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
   ],
