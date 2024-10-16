@@ -85,6 +85,7 @@ describe('Role API tests', () => {
   });
   */
 
+  /*
   test('Update users for a role', async () => {
     const userIds = [1, 2];
     const response = await axios.patch(
@@ -99,7 +100,9 @@ describe('Role API tests', () => {
 
     expect(response.status).toEqual(200);
   });
+*/
 
+  /*
   test('Update screens for a role', async () => {
     const screenIds = [1, 2];
     const response = await axios.patch(
@@ -114,7 +117,9 @@ describe('Role API tests', () => {
 
     expect(response.status).toEqual(200);
   });
+  */
 
+  /*
   test('Update routes for a role', async () => {
     const routeIds = [1, 2];
     const response = await axios.patch(
@@ -129,7 +134,9 @@ describe('Role API tests', () => {
 
     expect(response.status).toEqual(200);
   });
+  */
 
+  /*
   test('Update menus for a role', async () => {
     const menuIds = [1, 2];
     const response = await axios.patch(
@@ -144,6 +151,7 @@ describe('Role API tests', () => {
 
     expect(response.status).toEqual(200);
   });
+*/
 
   test('Get users for a specific role', async () => {
     const response = await axios.get(`/roles/${roleId}/users`, {

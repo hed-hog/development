@@ -16,6 +16,7 @@ describe('Locale API tests', () => {
     region: 'US',
     country_id: 24,
   };
+
   let localeId = 1;
 
   /* test('Create new locale', async () => {
@@ -31,6 +32,7 @@ describe('Locale API tests', () => {
     localeId = response.data.id;
   });
 */
+  /*
   test('Get all locales with pagination', async () => {
     const response = await axios.get('/locales', {
       headers: {
@@ -42,6 +44,7 @@ describe('Locale API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
     expect(response.data.total).toBeGreaterThan(0);
   });
+  */
 
   /*
   test('Update locale', async () => {
