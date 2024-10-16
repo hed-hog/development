@@ -13,7 +13,7 @@ beforeAll(async () => {
 
 describe('Person API tests', () => {
   const newPerson = {
-    name: faker.name.fullName(),
+    name: faker.person.fullName(),
     type_id: 1,
     birth_at: faker.date.birthdate(),
   };

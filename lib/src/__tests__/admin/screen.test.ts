@@ -9,6 +9,7 @@ let screenId = 1;
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
   token = await getGlobalToken();
+  console.log({ token });
 });
 
 describe('Screen API tests', () => {
@@ -41,6 +42,8 @@ describe('Screen API tests', () => {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    console.log({ token });
 
     expect(response.status).toBe(200);
     expect(response.data.data).toBeInstanceOf(Array);

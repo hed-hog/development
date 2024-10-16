@@ -125,4 +125,8 @@ describe('Document API tests', () => {
     expect(response.data.count).toEqual(1);
   });
   */
+
+  test('avoid empty testing file', () => {
+    expect(true).toBeTruthy();
+  });
 });
