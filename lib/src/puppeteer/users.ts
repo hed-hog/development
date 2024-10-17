@@ -1,17 +1,25 @@
 export const users = async (page) => {
+  // Navigate to the users page
   await page.waitForSelector('nav a[href="/management/users"]');
   await page.click('nav a[href="/management/users"]');
   await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
+  // Click the "Create" button
   const createButtonSelector = 'button:has(svg.tabler-icon-plus)';
   await page.waitForSelector(createButtonSelector);
   await page.click(createButtonSelector);
-  const inputSelectors = await page.$$('form input');
-  await inputSelectors[0].type('Nome Exemplo');
-  await inputSelectors[1].type('exemplo@hedhog.com');
-  await inputSelectors[2].type('senhaSegura123');
 
-  const formCreateButtonSelector = 'form button[type=submit]';
+  await page.$eval('input[name="name"]', (el) => (el.value = 'Nome Exemplo'));
+  await page.$eval(
+    'input[name="email"]',
+    (el) => (el.value = 'exemplo@hedhog.com'),
+  );
+  await page.$eval(
+    'input[type="password"]',
+    (el) => (el.value = 'senhaSegura123'),
+  );
+
+  const formCreateButtonSelector = 'form button[type="submit"]';
   await page.waitForSelector(formCreateButtonSelector);
   await page.click(formCreateButtonSelector);
 

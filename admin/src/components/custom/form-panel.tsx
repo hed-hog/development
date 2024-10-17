@@ -74,8 +74,8 @@ export const FormPanel = forwardRef(
               <Field
                 {...field}
                 type={type}
-                value={value}
-                onChange={onChange as any}
+                value={field.value}
+                onChange={field.onChange}
                 required={required}
                 options={options}
                 sliderOptions={sliderOptions}

@@ -32,6 +32,7 @@ type FieldProps = (
     }
   | {
       type: EnumFieldType.TEXT | EnumFieldType.FILE | EnumFieldType.PASSWORD
+      name: string
       value: string
       onChange: ChangeEventHandler<HTMLInputElement>
     }
@@ -62,6 +63,7 @@ type FieldProps = (
   FieldPropsForm
 
 export default function Field({
+  name,
   type,
   value,
   onChange,
@@ -88,6 +90,7 @@ export default function Field({
       return (
         <FormControl>
           <Input
+            name={name}
             required={required}
             type={type}
             value={value || ''}
@@ -99,6 +102,7 @@ export default function Field({
     case EnumFieldType.PASSWORD:
       return (
         <PasswordInput
+          name={name}
           required={required}
           value={value || ''}
           onChange={onChange}

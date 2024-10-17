@@ -102,6 +102,7 @@ export interface IFormValues {
 
 export type FieldProps = {
   value: string
+  name?: string
   onChange: (value: string) => void
   required: boolean
   label?: ILabelProps
