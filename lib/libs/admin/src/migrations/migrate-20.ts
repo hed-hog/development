@@ -182,10 +182,9 @@ export class Migrate implements MigrationInterface {
           icon: group.icon,
           slug: group.slug,
         })
-        .returning('id')
         .execute();
 
-      const settingGroupId = settingGroup.raw[0].id;
+      const settingGroupId = settingGroup.raw.insertId;
 
       await queryRunner.manager
         .createQueryBuilder()
@@ -223,10 +222,9 @@ export class Migrate implements MigrationInterface {
             type: s.type,
             value: s.value,
           })
-          .returning('id')
           .execute();
 
-        const settingId = setting.raw[0].id;
+        const settingId = setting.raw.insertId;
 
         await queryRunner.manager
           .createQueryBuilder()

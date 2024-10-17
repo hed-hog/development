@@ -4,7 +4,7 @@ import {
   Table,
   TableForeignKey,
 } from 'typeorm';
-import { idColumn, timestampColumn } from '@hedhog/utils';
+import { foreignColumn, idColumn, timestampColumn } from '@hedhog/utils';
 
 export class Migrate implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -37,18 +37,8 @@ export class Migrate implements MigrationInterface {
         name: 'translations',
         columns: [
           idColumn(),
-          {
-            name: 'locale_id',
-            type: 'int',
-            isNullable: false,
-            unsigned: true,
-          },
-          {
-            name: 'namespace_id',
-            type: 'int',
-            isNullable: false,
-            unsigned: true,
-          },
+          foreignColumn({ name: 'locale_id' }),
+          foreignColumn({ name: 'namespace_id' }),
           {
             name: 'name',
             type: 'varchar',

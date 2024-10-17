@@ -1,4 +1,4 @@
-import { idColumn, timestampColumn } from '@hedhog/utils';
+import { idColumn, timestampColumn, foreignColumn } from '@hedhog/utils';
 import {
   MigrationInterface,
   QueryRunner,
@@ -20,18 +20,8 @@ export class Migrate implements MigrationInterface {
       new Table({
         name: 'person_type_translations',
         columns: [
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: 'locale_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: 'type_id', isPrimary: true }),
+          foreignColumn({ name: 'locale_id', isPrimary: true }),
           {
             name: 'name',
             type: 'varchar',
@@ -89,12 +79,7 @@ export class Migrate implements MigrationInterface {
             length: '255',
             isNullable: false,
           },
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
+          foreignColumn({ name: 'type_id' }),
           {
             name: 'birth_at',
             type: 'date',
@@ -153,18 +138,8 @@ export class Migrate implements MigrationInterface {
       new Table({
         name: 'person_document_type_translations',
         columns: [
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: 'locale_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: 'type_id', isPrimary: true }),
+          foreignColumn({ name: 'locale_id', isPrimary: true }),
           {
             name: 'name',
             type: 'varchar',
@@ -254,18 +229,9 @@ export class Migrate implements MigrationInterface {
         name: 'person_documents',
         columns: [
           idColumn(),
-          {
-            name: 'person_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
+          foreignColumn({ name: 'person_id' }),
+          foreignColumn({ name: 'type_id' }),
+          foreignColumn({ name: 'country_id', isNullable: true }),
           {
             name: 'primary',
             type: 'boolean',
@@ -276,12 +242,6 @@ export class Migrate implements MigrationInterface {
             type: 'varchar',
             length: '63',
             isNullable: false,
-          },
-          {
-            name: 'country_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: true,
           },
           {
             name: 'issued_at',
@@ -317,18 +277,8 @@ export class Migrate implements MigrationInterface {
       new Table({
         name: 'person_contact_type_translations',
         columns: [
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: 'locale_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: 'type_id', isPrimary: true }),
+          foreignColumn({ name: 'locale_id', isPrimary: true }),
           {
             name: 'name',
             type: 'varchar',
@@ -418,18 +368,8 @@ export class Migrate implements MigrationInterface {
         name: 'person_contacts',
         columns: [
           idColumn(),
-          {
-            name: 'person_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
+          foreignColumn({ name: 'person_id' }),
+          foreignColumn({ name: 'type_id' }),
           {
             name: 'primary',
             type: 'boolean',
@@ -459,18 +399,9 @@ export class Migrate implements MigrationInterface {
         name: 'person_addresses',
         columns: [
           idColumn(),
-          {
-            name: 'person_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
-          {
-            name: 'country_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
+          foreignColumn({ name: 'person_id' }),
+          foreignColumn({ name: 'country_id' }),
+          foreignColumn({ name: 'type_id' }),
           {
             name: 'primary',
             type: 'boolean',
@@ -523,12 +454,6 @@ export class Migrate implements MigrationInterface {
             length: '60',
             isNullable: true,
           },
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
@@ -547,18 +472,8 @@ export class Migrate implements MigrationInterface {
       new Table({
         name: 'person_address_type_translations',
         columns: [
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: 'locale_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: 'type_id', isPrimary: true }),
+          foreignColumn({ name: 'locale_id', isPrimary: true }),
           {
             name: 'name',
             type: 'varchar',
@@ -658,18 +573,8 @@ export class Migrate implements MigrationInterface {
         name: 'person_customs',
         columns: [
           idColumn(),
-          {
-            name: 'person_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
-          {
-            name: 'type_id',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
+          foreignColumn({ name: 'person_id' }),
+          foreignColumn({ name: 'type_id' }),
           {
             name: 'name',
             type: 'varchar',

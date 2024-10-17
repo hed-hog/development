@@ -4,7 +4,7 @@ import {
   Table,
   TableForeignKey,
 } from 'typeorm';
-import { idColumn, timestampColumn } from '@hedhog/utils';
+import { foreignColumn, idColumn, timestampColumn } from '@hedhog/utils';
 import * as bcrypt from 'bcrypt';
 
 export class Migrate implements MigrationInterface {
@@ -21,18 +21,8 @@ export class Migrate implements MigrationInterface {
       new Table({
         name: 'multifactor_translations',
         columns: [
-          {
-            name: 'multifactor_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: 'locale_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: 'multifactor_id', isPrimary: true }),
+          foreignColumn({ name: 'locale_id', isPrimary: true }),
           {
             name: 'name',
             type: 'varchar',
@@ -105,6 +95,7 @@ export class Migrate implements MigrationInterface {
         name: 'users',
         columns: [
           idColumn(),
+          foreignColumn({ name: 'multifactor_id', isNullable: true }),
           {
             name: 'name',
             type: 'varchar',
@@ -116,12 +107,6 @@ export class Migrate implements MigrationInterface {
           {
             name: 'password',
             type: 'varchar',
-          },
-          {
-            name: 'multifactor_id',
-            type: 'int',
-            isNullable: true,
-            unsigned: true,
           },
           {
             name: 'code',

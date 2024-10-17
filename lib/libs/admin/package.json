@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/admin",
-  "version": "0.0.44",
+  "version": "0.0.47",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,8 @@
   "files": [
     "dist/**/*",
     "src/migrations/**/*.ts",
-    "src/**/*.ejs"
+    "src/**/*.ejs",
+    "hedhog.yaml"
   ],
   "keywords": [],
   "author": "",

@@ -4,7 +4,7 @@ import {
   Table,
   TableForeignKey,
 } from 'typeorm';
-import { idColumn, timestampColumn } from '@hedhog/utils';
+import { foreignColumn, idColumn, timestampColumn } from '@hedhog/utils';
 
 export class Migrate implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -13,6 +13,7 @@ export class Migrate implements MigrationInterface {
         name: 'menus',
         columns: [
           idColumn(),
+          foreignColumn({ name: 'menu_id' }),
           {
             name: 'url',
             type: 'varchar',
@@ -22,12 +23,6 @@ export class Migrate implements MigrationInterface {
             name: 'order',
             type: 'int',
             default: 0,
-            unsigned: true,
-          },
-          {
-            name: 'menu_id',
-            type: 'int',
-            isNullable: true,
             unsigned: true,
           },
           {
@@ -85,18 +80,8 @@ export class Migrate implements MigrationInterface {
       new Table({
         name: 'menu_screens',
         columns: [
-          {
-            name: 'menu_id',
-            type: 'int',
-            isPrimary: true,
-            unsigned: true,
-          },
-          {
-            name: 'screen_id',
-            type: 'int',
-            isPrimary: true,
-            unsigned: true,
-          },
+          foreignColumn({ name: 'menu_id', isPrimary: true }),
+          foreignColumn({ name: 'screen_id', isPrimary: true }),
         ],
       }),
     );
@@ -148,7 +133,6 @@ export class Migrate implements MigrationInterface {
           order: menu.order,
           icon: menu.icon,
         })
-        .returning('id')
         .execute();
 
       await queryRunner.manager
@@ -157,12 +141,12 @@ export class Migrate implements MigrationInterface {
         .into('menu_translations', ['menu_id', 'locale_id', 'name'])
         .values([
           {
-            menu_id: m.raw[0].id,
+            menu_id: m.raw.insertId,
             locale_id: 1,
             name: menu.name_en,
           },
           {
-            menu_id: m.raw[0].id,
+            menu_id: m.raw.insertId,
             locale_id: 2,
             name: menu.name_pt,
           },
@@ -233,7 +217,6 @@ export class Migrate implements MigrationInterface {
           icon: menu.icon,
           menu_id: menuManagement[0].id,
         })
-        .returning('id')
         .execute();
 
       await queryRunner.manager
@@ -242,12 +225,12 @@ export class Migrate implements MigrationInterface {
         .into('menu_translations', ['menu_id', 'locale_id', 'name'])
         .values([
           {
-            menu_id: m.raw[0].id,
+            menu_id: m.raw.insertId,
             locale_id: 1,
             name: menu.name_en,
           },
           {
-            menu_id: m.raw[0].id,
+            menu_id: m.raw.insertId,
             locale_id: 2,
             name: menu.name_pt,
           },

@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migrate1729100057490 implements MigrationInterface {
+export class Migrate1729113244540 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     const screenIdScreen = await queryRunner.manager
       .createQueryBuilder()

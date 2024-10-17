@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
-import { idColumn, timestampColumn } from '@hedhog/utils';
+import { idColumn, timestampColumn, foreignColumn } from '@hedhog/utils';
 
 export class Migrate implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -226,6 +226,7 @@ export class Migrate implements MigrationInterface {
         name: 'locales',
         columns: [
           idColumn(),
+          foreignColumn({ name: 'country_id' }),
           {
             name: 'code',
             type: 'char',
@@ -236,11 +237,6 @@ export class Migrate implements MigrationInterface {
             name: 'region',
             type: 'char',
             length: '2',
-            isNullable: false,
-          },
-          {
-            name: 'country_id',
-            type: 'int',
             isNullable: false,
           },
           {
@@ -300,10 +296,9 @@ export class Migrate implements MigrationInterface {
           region: locales[index].region,
           country_id: locales[index].country_id,
         })
-        .returning('id')
         .execute();
 
-      locales[index].id = localeId.raw[0].id;
+      locales[index].id = localeId.raw.insertId;
     }
   }
 

@@ -1,8 +1,73 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migrate1729100057577 implements MigrationInterface {
+export class Migrate1729113244598 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const groups = [
+      {
+        slug: "file-storage",
+        icon: "folder",
+        name_en: "File Storage",
+        name_pt: "Armazenamento de Arquivos",
+        description_en: "Settings related to file storage",
+        description_pt:
+          "Definições relacionadas com o armazenamento de arquivos",
+        settings: [
+          {
+            slug: "storage",
+            type: "string",
+            name_en: "Storage Provider",
+            name_pt: "Provedor de Armazenamento",
+            description_en: "The storage to use",
+            description_pt: "O armazenamento a utilizar",
+            value: "local",
+          },
+          {
+            slug: "storage-local-path",
+            type: "string",
+            name_en: "Local Path",
+            name_pt: "Caminho Local",
+            description_en: "The local path to store files",
+            description_pt: "O caminho local para armazenar arquivos",
+            value: "storage",
+          },
+          {
+            slug: "storage-s3-key",
+            type: "string",
+            name_en: "S3 Key",
+            name_pt: "Chave S3",
+            description_en: "The S3 key",
+            description_pt: "A chave S3",
+            value: "",
+          },
+          {
+            slug: "storage-s3-secret",
+            type: "string",
+            name_en: "S3 Secret",
+            name_pt: "Segredo S3",
+            description_en: "The S3 secret",
+            description_pt: "O segredo S3",
+            value: "",
+          },
+          {
+            slug: "storage-s3-region",
+            type: "string",
+            name_en: "S3 Region",
+            name_pt: "Região S3",
+            description_en: "The S3 region",
+            description_pt: "A região S3",
+            value: "",
+          },
+          {
+            slug: "storage-s3-bucket",
+            type: "string",
+            name_en: "S3 Bucket",
+            name_pt: "Bucket S3",
+            description_en: "The S3 bucket",
+            description_pt: "O bucket S3",
+            value: "",
+          },
+        ],
+      },
       {
         icon: "world",
         slug: "localization",
@@ -14,10 +79,12 @@ export class Migrate1729100057577 implements MigrationInterface {
           {
             slug: "language",
             type: "string",
-            name_en: "Language",
-            name_pt: "Idioma",
-            description_en: "The language to use",
-            description_pt: "O idioma a utilizar",
+            name_en: "Default Language",
+            name_pt: "Idioma Padrão",
+            description_en:
+              "The system default language, each user can have their own preferred language",
+            description_pt:
+              "O idioma padrão do sistema, cada usuário pode ter o seu próprio idioma preferido",
             value: "en",
           },
           {
@@ -32,7 +99,7 @@ export class Migrate1729100057577 implements MigrationInterface {
         ],
       },
       {
-        icon: "paint-brush",
+        icon: "palette",
         slug: "appearance",
         name_en: "Appearance",
         name_pt: "Aparência",

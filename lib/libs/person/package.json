@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/person",
-  "version": "0.0.15",
+  "version": "0.0.19",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -13,6 +13,12 @@
   "author": "",
   "license": "MIT",
   "description": "",
+  "files": [
+    "dist/**/*",
+    "src/migrations/**/*.ts",
+    "src/**/*.ejs",
+    "hedhog.yaml"
+  ],
   "devDependencies": {
     "@hedhog/admin": "latest",
     "@hedhog/mail": "latest",

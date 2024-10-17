@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migrate1729100057512 implements MigrationInterface {
+export class Migrate1729113244557 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     const routes = await queryRunner.manager
       .createQueryBuilder()
@@ -16,6 +16,20 @@ export class Migrate1729100057512 implements MigrationInterface {
         .values({
           role_id: 1,
           route_id: route.id,
+        })
+        .execute();
+    }
+
+    const adminAccessRoutes = [88, 1, 3];
+
+    for (const routeId of adminAccessRoutes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("role_routes")
+        .values({
+          role_id: 3,
+          route_id: routeId,
         })
         .execute();
     }

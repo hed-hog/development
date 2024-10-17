@@ -6,7 +6,7 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class Migrate1729100057440 implements MigrationInterface {
+export class Migrate1729113244488 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
@@ -74,6 +74,13 @@ export class Migrate1729100057440 implements MigrationInterface {
         name_pt: "Gerenciador de telas",
         description_en: "Screen manager",
         description_pt: "Gerenciador de telas",
+      },
+      {
+        id: 3,
+        name_en: "Admin Access",
+        name_pt: "Acesso de administrador",
+        description_en: "Function to access the admin panel",
+        description_pt: "Função para ter acesso ao painel de administração",
       },
     ];
 

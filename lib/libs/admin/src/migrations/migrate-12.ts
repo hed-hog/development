@@ -1,4 +1,4 @@
-import { timestampColumn } from '@hedhog/utils';
+import { foreignColumn, timestampColumn } from '@hedhog/utils';
 import {
   MigrationInterface,
   QueryRunner,
@@ -12,18 +12,8 @@ export class Migrate implements MigrationInterface {
       new Table({
         name: 'role_routes',
         columns: [
-          {
-            name: 'role_id',
-            type: 'int',
-            isPrimary: true,
-            unsigned: true,
-          },
-          {
-            name: 'route_id',
-            type: 'int',
-            isPrimary: true,
-            unsigned: true,
-          },
+          foreignColumn({ name: 'role_id', isPrimary: true }),
+          foreignColumn({ name: 'route_id', isPrimary: true }),
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
