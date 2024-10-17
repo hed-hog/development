@@ -36,12 +36,14 @@ PaginationItem.displayName = 'PaginationItem'
 
 type PaginationLinkProps = {
   isActive?: boolean
+  page?: number
 } & Pick<ButtonProps, 'size'> &
   React.ComponentProps<'a'>
 
 const PaginationLink = ({
   className,
   isActive,
+  page,
   size = 'icon',
   ...props
 }: PaginationLinkProps) => (
@@ -55,6 +57,7 @@ const PaginationLink = ({
       'min-w-4',
       className
     )}
+    id={String(`page-${page}`)}
     {...props}
   />
 )

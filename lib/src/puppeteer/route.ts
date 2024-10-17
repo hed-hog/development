@@ -1,34 +1,37 @@
-export const users = async (page) => {
-  // Creating user
-  await page.waitForSelector('nav a[href="/management/users"]');
-  await page.click('nav a[href="/management/users"]');
+export const route = async (page) => {
+  // Creating route
+  await page.waitForSelector('nav a[href="/management/routes"]');
+  await page.click('nav a[href="/management/routes"]');
   await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
   const createButtonSelector = 'button:has(svg.tabler-icon-plus)';
   await page.waitForSelector(createButtonSelector);
   await page.click(createButtonSelector);
 
-  await page.type('input[name="name"]', 'Nome Exemplo');
-  await page.type('input[name="email"]', 'exemplo@hedhog.com');
-  await page.type('input[type="password"', 'senhaSegura123');
+  await page.type('input[name="url"]', '/exemplo');
+  await page.type('input[name="method"]', 'GET');
 
   const formCreateButtonSelector = 'form button[type="submit"]';
   await page.waitForSelector(formCreateButtonSelector);
   await page.click(formCreateButtonSelector);
 
+  await page.waitForSelector('nav ul li a#page-9');
+  await page.click('nav ul li a#page-9');
   await page.waitForFunction(
-    (name, email) => {
+    (url, method) => {
       const tdElements = Array.from(document.querySelectorAll('td'));
-      const nameExists = tdElements.some((td) => td.innerText.includes(name));
-      const emailExists = tdElements.some((td) => td.innerText.includes(email));
-      return nameExists && emailExists;
+      const urlExists = tdElements.some((td) => td.innerText.includes(url));
+      const methodExists = tdElements.some((td) =>
+        td.innerText.includes(method),
+      );
+      return urlExists && methodExists;
     },
     {},
-    'Nome Exemplo',
-    'exemplo@hedhog.com',
+    '/exemplo',
+    'GET',
   );
 
-  // editing user
+  // editing route
   const checkboxSelector = 'table tbody tr:last-of-type td button';
   await page.waitForSelector(checkboxSelector);
   await page.click(checkboxSelector);
@@ -37,23 +40,23 @@ export const users = async (page) => {
   await page.waitForSelector(editButtonSelector);
   await page.click(editButtonSelector);
 
-  await page.type('input[name="name"]', ' Atualizado');
+  await page.type('input[name="url"]', '-atualizado');
 
   const formEditButtonSelector = 'button[name="save"]';
   await page.waitForSelector(formEditButtonSelector);
   await page.click(formEditButtonSelector);
 
   await page.waitForFunction(
-    (name) => {
+    (url) => {
       const tdElements = Array.from(document.querySelectorAll('td'));
-      const nameExists = tdElements.some((td) => td.innerText.includes(name));
-      return nameExists;
+      const urlExists = tdElements.some((td) => td.innerText.includes(url));
+      return urlExists;
     },
     {},
-    'Nome Exemplo Atualizado',
+    '/exemplo-atualizado',
   );
 
-  // deleting user
+  // deleting route
   await page.waitForSelector(checkboxSelector);
   await page.click(checkboxSelector);
 
@@ -66,12 +69,12 @@ export const users = async (page) => {
   await page.click(formDeleteButtonSelector);
 
   await page.waitForFunction(
-    (name) => {
+    (url) => {
       const tdElements = Array.from(document.querySelectorAll('td'));
-      const nameExists = tdElements.some((td) => td.innerText.includes(name));
-      return !nameExists;
+      const urlExists = tdElements.some((td) => td.innerText.includes(url));
+      return !urlExists;
     },
     {},
-    'Nome Exemplo Atualizado',
+    '/exemplo-atualizado',
   );
 };
