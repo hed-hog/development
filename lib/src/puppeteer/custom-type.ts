@@ -2,7 +2,6 @@ export const customType = async (page) => {
   // Creating custom type
   await page.waitForSelector('nav a[href="/management/persons/custom-types"]');
   await page.click('nav a[href="/management/persons/custom-types"]');
-  await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
   const createButtonSelector = 'button:has(svg.tabler-icon-plus)';
   await page.waitForSelector(createButtonSelector);

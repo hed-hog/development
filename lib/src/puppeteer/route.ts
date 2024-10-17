@@ -2,7 +2,6 @@ export const route = async (page) => {
   // Creating route
   await page.waitForSelector('nav a[href="/management/routes"]');
   await page.click('nav a[href="/management/routes"]');
-  await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
   const createButtonSelector = 'button:has(svg.tabler-icon-plus)';
   await page.waitForSelector(createButtonSelector);

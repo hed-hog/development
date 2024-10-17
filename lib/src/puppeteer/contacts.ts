@@ -2,7 +2,6 @@ export const contacts = async (page) => {
   // Creating contact
   await page.waitForSelector('nav a[href="/contacts"]');
   await page.click('nav a[href="/contacts"]');
-  await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
   const createButtonSelector = 'button:has(svg.tabler-icon-plus)';
   await page.waitForSelector(createButtonSelector);

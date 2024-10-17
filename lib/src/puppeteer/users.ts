@@ -2,7 +2,6 @@ export const users = async (page) => {
   // Creating user
   await page.waitForSelector('nav a[href="/management/users"]');
   await page.click('nav a[href="/management/users"]');
-  await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
   const createButtonSelector = 'button:has(svg.tabler-icon-plus)';
   await page.waitForSelector(createButtonSelector);
