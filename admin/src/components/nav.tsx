@@ -130,7 +130,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
   const isChildActive = !!sub?.find((s) => checkActiveNav(s.href))
 
   return (
-    <Collapsible defaultOpen={isChildActive}>
+    <Collapsible defaultOpen={true}>
       <CollapsibleTrigger
         className={cn(
           buttonVariants({ variant: 'ghost', size: 'sm' }),
