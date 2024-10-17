@@ -14,6 +14,7 @@ import { enUS, ptBR } from 'date-fns/locale'
 import { useTranslation } from 'react-i18next'
 
 interface IDatePickerFieldProps {
+  name?: string
   icon?: JSX.Element
   label?: string
   date?: Date
@@ -26,6 +27,7 @@ interface IDatePickerFieldProps {
 }
 
 export function DatePickerField({
+  name,
   label,
   icon,
   date,
@@ -60,6 +62,7 @@ export function DatePickerField({
           <Button
             variant={'outline'}
             style={style}
+            name={name}
             className={cn(
               'w-full justify-start text-left font-normal',
               !date && 'text-muted-foreground',
@@ -73,6 +76,7 @@ export function DatePickerField({
       </PopoverTrigger>
       <PopoverContent className='align-center flex justify-center p-0'>
         <Calendar
+          name={String(name)}
           style={calendar?.style}
           mode='single'
           selected={date}

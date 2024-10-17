@@ -5,6 +5,7 @@ import { login } from './login';
 import { users } from './users';
 import { route } from './route';
 import { customType } from './custom-type';
+import { contacts } from './contacts';
 
 const userRootData = {
   email: 'root@hedhog.com',
@@ -19,7 +20,7 @@ const userRootData = {
       headless: false,
       args: ['--start-maximized'],
       timeout: 0,
-      slowMo: 15,
+      slowMo: 20,
     });
     const page = await browser.newPage();
     const pages = await browser.pages();
@@ -38,6 +39,7 @@ const userRootData = {
     await users(page);
     await route(page);
     await customType(page);
+    await contacts(page);
     await sleep(60000);
     await browser.close();
   } catch (error) {

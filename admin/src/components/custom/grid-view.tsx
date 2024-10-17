@@ -215,6 +215,7 @@ const GridViewInner = <T extends any>(
   const gridItems = data.map((item, index) => (
     <div
       key={extractKey(item)}
+      id={`grid-item`}
       style={{ marginBottom: `${styleOptions.gap / 4}rem` }}
       className={[
         itemClassName ?? 'border p-2',

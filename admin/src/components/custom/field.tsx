@@ -19,7 +19,7 @@ import {
 import { MultiSelectField } from '@/components/ui/multi-select-field'
 import { DatePickerField } from '@/components/ui/date-picker-field'
 import { SheetPickerField } from './sheet-picker-field'
-import { ChangeEventHandler, FormEventHandler, useEffect } from 'react'
+import { ChangeEventHandler, FormEventHandler } from 'react'
 import { CheckedState } from '@radix-ui/react-checkbox'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FormControl } from '../ui/form'
@@ -167,6 +167,7 @@ export default function Field({
         <Select
           required={required}
           value={String(value)}
+          name={name}
           onValueChange={(value) => onChange(String(value))}
         >
           <FormControl>
@@ -199,6 +200,7 @@ export default function Field({
     case EnumFieldType.DATEPICKER:
       return (
         <DatePickerField
+          name={name}
           label={String(label?.text)}
           date={value ? new Date(value) : undefined}
           onDateChange={(date) => onChange(date)}
