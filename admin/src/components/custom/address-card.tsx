@@ -42,8 +42,8 @@ export default function AddressCard({
       </div>
       {manageable && (
         <div className='flex flex-row items-center justify-center'>
-          <IconPencil onClick={onClick} />
-          <IconTrash onClick={onDelete} />
+          <IconPencil onClick={onClick} name='edit-address' />
+          <IconTrash onClick={onDelete} name='delete-address' />
         </div>
       )}
     </div>

@@ -28,8 +28,8 @@ export default function ContactCard({
       </div>
       {manageable && (
         <div className='flex flex-row items-center justify-center'>
-          <IconPencil onClick={onClick} />
-          <IconTrash onClick={onDelete} />
+          <IconPencil onClick={onClick} name='edit-contact' />
+          <IconTrash onClick={onDelete} name='delete-contact' />
         </div>
       )}
     </div>

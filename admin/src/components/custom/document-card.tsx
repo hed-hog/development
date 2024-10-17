@@ -28,8 +28,8 @@ export default function DocumentCard({
       </div>
       {manageable && (
         <div className='flex flex-row items-center justify-center'>
-          <IconPencil onClick={onClick} />
-          <IconTrash onClick={onDelete} />
+          <IconPencil onClick={onClick} name='edit-document' />
+          <IconTrash onClick={onDelete} name='delete-document' />
         </div>
       )}
     </div>

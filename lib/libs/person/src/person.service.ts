@@ -91,6 +91,25 @@ export class PersonService {
               },
             },
           },
+          person_addresses: {
+            include: {
+              person_address_types: {
+                select: {
+                  id: true,
+                  person_address_type_translations: {
+                    where: {
+                      locales: {
+                        code: locale,
+                      },
+                    },
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     );
