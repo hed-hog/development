@@ -106,6 +106,7 @@ export const TabPanel = ({
             key={`tab-trigger-${index}`}
             className='flex-1'
             value={`tab-${index}`}
+            name={title}
           >
             {title}
           </TabsTrigger>

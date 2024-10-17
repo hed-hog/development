@@ -20,7 +20,7 @@ const userRootData = {
       headless: false,
       args: ['--start-maximized'],
       timeout: 0,
-      slowMo: 20,
+      slowMo: 30,
     });
     const page = await browser.newPage();
     const pages = await browser.pages();

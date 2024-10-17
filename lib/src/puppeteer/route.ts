@@ -56,6 +56,53 @@ export const route = async (page) => {
     '/exemplo-atualizado',
   );
 
+  // Verify invalid method
+  await page.click(createButtonSelector);
+  await page.type('input[name="url"]', '/invalid-method-test');
+  await page.type('input[name="method"]', 'INVALID');
+  await page.click(formCreateButtonSelector);
+
+  const invalidMethodErrorSelector = 'div.text-sm.opacity-90:last-of-type';
+  await page.waitForSelector(invalidMethodErrorSelector, { visible: true });
+  const errorMessage = await page.$eval(
+    invalidMethodErrorSelector,
+    (el) => el.innerText,
+  );
+  console.log('Error Message for Invalid Method:', errorMessage);
+
+  // editing route roles
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector);
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  const roleButtonSelector = 'button[name="Roles"]';
+  await page.waitForSelector(roleButtonSelector);
+  await page.click(roleButtonSelector);
+
+  const checkboxListSelector = 'button#list-item';
+  await page.waitForSelector(checkboxListSelector);
+  await page.click(checkboxListSelector);
+
+  await page.waitForSelector(formEditButtonSelector);
+  await page.click(formEditButtonSelector);
+
+  // editing route screens
+  const screenButtonSelector = 'button[name="Screens"]';
+  await page.waitForSelector(screenButtonSelector);
+  await page.click(screenButtonSelector);
+
+  await page.waitForSelector(checkboxListSelector);
+  await page.click(checkboxListSelector);
+
+  await page.waitForSelector(formEditButtonSelector);
+  await page.click(formEditButtonSelector);
+
+  const closeButtonSelector = 'button[name="close"]';
+  await page.waitForSelector(closeButtonSelector);
+  await page.click(closeButtonSelector);
+
   // deleting route
   await page.waitForSelector(checkboxSelector);
   await page.click(checkboxSelector);
