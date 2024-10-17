@@ -57,7 +57,60 @@ export const contacts = async (page) => {
     'Gabriel Lima Atualizado',
   );
 
+  // adding new contact
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  const contactTabSelector = 'button[name="Contacts"]';
+  await page.waitForSelector(contactTabSelector);
+  await page.click(contactTabSelector);
+
+  const newContactButtonSelector = 'button[name="add-contact"]';
+  await page.waitForSelector(newContactButtonSelector);
+  await page.click(newContactButtonSelector);
+
+  await page.type('input[name="value"', '123456789');
+  await page.waitForSelector(formEditButtonSelector);
+  await page.click(formEditButtonSelector);
+
+  // adding new document
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  const documentTabSelector = 'button[name="Documents"]';
+  await page.waitForSelector(documentTabSelector);
+  await page.click(documentTabSelector);
+
+  const newDocumentButtonSelector = 'button[name="add-document"]';
+  await page.waitForSelector(newDocumentButtonSelector);
+  await page.click(newDocumentButtonSelector);
+
+  await page.type('input[name="value"', '123456789');
+
+  const issueCalendarButtonSelector = 'button[name="issued_at"]';
+  await page.waitForSelector(issueCalendarButtonSelector);
+  await page.click(issueCalendarButtonSelector);
+  await page.waitForSelector(dayButton);
+  await page.click(dayButton);
+
+  const expiryCalendarButtonSelector = 'button[name="expiry_at"]';
+  await page.waitForSelector(expiryCalendarButtonSelector);
+  await page.click(expiryCalendarButtonSelector);
+  await page.waitForSelector(dayButton);
+  await page.click(dayButton);
+
+  await page.waitForSelector(formEditButtonSelector);
+  await page.click(formEditButtonSelector);
+
   // deleting contact
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector);
   const deleteButtonSelector = 'button:has(svg.tabler-icon-trash)';
   await page.waitForSelector(deleteButtonSelector);
   await page.click(deleteButtonSelector);

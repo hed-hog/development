@@ -954,6 +954,7 @@ export default function Page() {
                     onClick={() =>
                       openEditContactSheet(item.id, formContactDefaultValues)
                     }
+                    name='add-contact'
                   >
                     <IconPlus />
                   </Button>
@@ -982,8 +983,9 @@ export default function Page() {
                   <Button
                     className='absolute bottom-5 right-5 min-w-2 rounded-full p-2'
                     onClick={() =>
-                      openEditDocumentSheet(item.id, formContactDefaultValues)
+                      openEditDocumentSheet(item.id, formDocumentDefaultValues)
                     }
+                    name='add-document'
                   >
                     <IconPlus />
                   </Button>
@@ -1014,6 +1016,7 @@ export default function Page() {
                     onClick={() =>
                       openEditAddressSheet(item.id, formAddressDefaultValues)
                     }
+                    name='add-address'
                   >
                     <IconPlus />
                   </Button>
@@ -1044,6 +1047,7 @@ export default function Page() {
                     onClick={() =>
                       openEditCustomSheet(item.id, formCustomDefaultValues)
                     }
+                    name='add-custom'
                   >
                     <IconPlus />
                   </Button>
