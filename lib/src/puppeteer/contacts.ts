@@ -72,9 +72,44 @@ export const contacts = async (page) => {
   await page.waitForSelector(newContactButtonSelector);
   await page.click(newContactButtonSelector);
 
-  await page.type('input[name="value"', '123456789');
+  await page.type('input[name="value"]', '123456789');
   await page.waitForSelector(formEditButtonSelector);
   await page.click(formEditButtonSelector);
+
+  // editing a contact
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  await page.waitForSelector(contactTabSelector);
+  await page.click(contactTabSelector);
+
+  const editContactButtonSelector = 'svg[name="edit-contact"]';
+  await page.waitForSelector(editContactButtonSelector);
+  await page.click(editContactButtonSelector);
+
+  await page.type('input[name="value"]', '987654321');
+  await page.click(formEditButtonSelector);
+
+  // deleting a contact
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  await page.waitForSelector(contactTabSelector);
+  await page.click(contactTabSelector);
+
+  const deleteContactButtonSelector = 'svg[name="delete-contact"]';
+  await page.waitForSelector(deleteContactButtonSelector);
+  await page.click(deleteContactButtonSelector);
+
+  const formDeleteButtonSelector = 'button[name="delete"]';
+  await page.waitForSelector(formDeleteButtonSelector);
+  await page.click(formDeleteButtonSelector);
 
   // adding new document
   await page.waitForSelector(checkboxSelector);
@@ -91,8 +126,6 @@ export const contacts = async (page) => {
   await page.waitForSelector(newDocumentButtonSelector);
   await page.click(newDocumentButtonSelector);
 
-  await page.type('input[name="value"', '123456789');
-
   const issueCalendarButtonSelector = 'button[name="issued_at"]';
   await page.waitForSelector(issueCalendarButtonSelector);
   await page.click(issueCalendarButtonSelector);
@@ -105,17 +138,113 @@ export const contacts = async (page) => {
   await page.waitForSelector(dayButton);
   await page.click(dayButton);
 
+  await page.type('input[name="value"]', '123456789');
+
   await page.waitForSelector(formEditButtonSelector);
   await page.click(formEditButtonSelector);
 
-  // deleting contact
+  // editing a document
   await page.waitForSelector(checkboxSelector);
-  await page.click(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  await page.waitForSelector(documentTabSelector);
+  await page.click(documentTabSelector);
+
+  const editDocumentButtonSelector = 'svg[name="edit-document"]';
+  await page.waitForSelector(editDocumentButtonSelector);
+  await page.click(editDocumentButtonSelector);
+
+  await page.type('input[name="value"]', '987654321');
+  await page.waitForSelector(formEditButtonSelector);
+  await page.click(formEditButtonSelector);
+
+  // deleting a document
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  await page.waitForSelector(documentTabSelector);
+  await page.click(documentTabSelector);
+
+  const deleteDocumentButtonSelector = 'svg[name="delete-document"]';
+  await page.waitForSelector(deleteDocumentButtonSelector);
+  await page.click(deleteDocumentButtonSelector);
+
+  await page.waitForSelector(formDeleteButtonSelector);
+  await page.click(formDeleteButtonSelector);
+
+  // adding new address
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  const addressTabSelector = 'button[name="Addresses"]';
+  await page.waitForSelector(addressTabSelector);
+  await page.click(addressTabSelector);
+
+  const newAddressButtonSelector = 'button[name="add-address"]';
+  await page.waitForSelector(newAddressButtonSelector);
+  await page.click(newAddressButtonSelector);
+
+  await page.type('input[name="street"]', 'Rua Teste');
+  await page.type('input[name="number"]', '100');
+  await page.type('input[name="complement"]', 'Just testing');
+  await page.type('input[name="reference"]', 'Testing');
+  await page.type('input[name="district"]', 'Ouriço');
+  await page.type('input[name="city"]', 'Hcodelândia');
+  await page.type('input[name="state"]', 'São Paulo');
+  await page.type('input[name="postal_code"]', '00000-000');
+
+  await page.waitForSelector(formEditButtonSelector);
+  await page.click(formEditButtonSelector);
+
+  // editing an address
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  await page.waitForSelector(addressTabSelector);
+  await page.click(addressTabSelector);
+
+  const editAddressButtonSelector = 'svg[name="edit-address"]';
+  await page.waitForSelector(editAddressButtonSelector);
+  await page.click(editAddressButtonSelector);
+
+  await page.type('input[name="street"]', 'Rua Teste Atualizada');
+  await page.waitForSelector(formEditButtonSelector);
+  await page.click(formEditButtonSelector);
+
+  // deleting an address
+  await page.waitForSelector(checkboxSelector);
+  await page.click(checkboxSelector, { clickCount: 2 });
+
+  await page.waitForSelector(editButtonSelector);
+  await page.click(editButtonSelector);
+
+  await page.waitForSelector(addressTabSelector);
+  await page.click(addressTabSelector);
+
+  const deleteAddressButtonSelector = 'svg[name="delete-address"]';
+  await page.waitForSelector(deleteAddressButtonSelector);
+  await page.click(deleteAddressButtonSelector);
+
+  await page.waitForSelector(formDeleteButtonSelector);
+  await page.click(formDeleteButtonSelector);
+
+  // deleting contact
   const deleteButtonSelector = 'button:has(svg.tabler-icon-trash)';
   await page.waitForSelector(deleteButtonSelector);
   await page.click(deleteButtonSelector);
 
-  const formDeleteButtonSelector = 'button[name="delete"]';
   await page.waitForSelector(formDeleteButtonSelector);
   await page.click(formDeleteButtonSelector);
 

@@ -28,8 +28,8 @@ export default function CustomCard({
       </div>
       {manageable && (
         <div className='flex flex-row items-center justify-center'>
-          <IconPencil onClick={onClick} />
-          <IconTrash onClick={onDelete} />
+          <IconPencil onClick={onClick} name='edit-custom' />
+          <IconTrash onClick={onDelete} name='delete-custom' />
         </div>
       )}
     </div>
