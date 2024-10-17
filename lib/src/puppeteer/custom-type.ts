@@ -1,33 +1,29 @@
-export const users = async (page) => {
-  // Creating user
-  await page.waitForSelector('nav a[href="/management/users"]');
-  await page.click('nav a[href="/management/users"]');
+export const customType = async (page) => {
+  // Creating custom type
+  await page.waitForSelector('nav a[href="/management/persons/custom-types"]');
+  await page.click('nav a[href="/management/persons/custom-types"]');
 
   const createButtonSelector = 'button:has(svg.tabler-icon-plus)';
   await page.waitForSelector(createButtonSelector);
   await page.click(createButtonSelector);
 
-  await page.type('input[name="name"]', 'Nome Exemplo');
-  await page.type('input[name="email"]', 'exemplo@hedhog.com');
-  await page.type('input[type="password"', 'senhaSegura123');
+  await page.type('input[name="name"]', 'Exemplo');
 
   const formCreateButtonSelector = 'form button[type="submit"]';
   await page.waitForSelector(formCreateButtonSelector);
   await page.click(formCreateButtonSelector);
 
   await page.waitForFunction(
-    (name, email) => {
+    (name) => {
       const tdElements = Array.from(document.querySelectorAll('td'));
       const nameExists = tdElements.some((td) => td.innerText.includes(name));
-      const emailExists = tdElements.some((td) => td.innerText.includes(email));
-      return nameExists && emailExists;
+      return nameExists;
     },
     {},
-    'Nome Exemplo',
-    'exemplo@hedhog.com',
+    'Exemplo',
   );
 
-  // editing user
+  // editing custom type
   const checkboxSelector = 'table tbody tr:last-of-type td button';
   await page.waitForSelector(checkboxSelector);
   await page.click(checkboxSelector);
@@ -49,10 +45,10 @@ export const users = async (page) => {
       return nameExists;
     },
     {},
-    'Nome Exemplo Atualizado',
+    'Exemplo Atualizado',
   );
 
-  // deleting user
+  // deleting custom type
   await page.waitForSelector(checkboxSelector);
   await page.click(checkboxSelector);
 
@@ -71,6 +67,6 @@ export const users = async (page) => {
       return !nameExists;
     },
     {},
-    'Nome Exemplo Atualizado',
+    'Exemplo Atualizado',
   );
 };

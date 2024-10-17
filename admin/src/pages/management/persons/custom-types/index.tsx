@@ -88,6 +88,7 @@ export default function Page() {
       description: customTypesT('deleteText'),
       buttons: [
         {
+          name: 'cancel',
           text: actionsT('cancel'),
           variant: 'secondary',
           onClick: () => {
@@ -96,6 +97,7 @@ export default function Page() {
           },
         },
         {
+          name: 'delete',
           text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
@@ -124,6 +126,7 @@ export default function Page() {
               title: actionsT('details'),
               buttons: [
                 {
+                  name: 'save',
                   text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {

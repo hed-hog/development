@@ -222,6 +222,7 @@ const ListViewInner = <T extends any>(
           >
             {selectable && (
               <Checkbox
+                id={`list-item`}
                 checked={isChecked}
                 onCheckedChange={() => toggleSelectItem(item)}
                 className='mx-2'

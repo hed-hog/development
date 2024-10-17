@@ -139,7 +139,10 @@ export const PaginationView = ({
                   className='cursor-pointer'
                   onClick={() => handlerPageChange(totalPages)}
                 >
-                  <PaginationLink isActive={totalPages === page}>
+                  <PaginationLink
+                    page={totalPages}
+                    isActive={totalPages === page}
+                  >
                     {totalPages}
                   </PaginationLink>
                 </PaginationItem>

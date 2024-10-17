@@ -13,9 +13,12 @@ import {
 import { useTranslation } from 'react-i18next'
 import { enUS, Locale, ptBR } from 'date-fns/locale'
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+  name: string
+}
 
 function Calendar({
+  name,
   className,
   classNames,
   showOutsideDays = true,
@@ -60,6 +63,7 @@ function Calendar({
       <div className='flex items-center justify-center space-x-2'>
         {/* Select para o mês */}
         <Select
+          name={name}
           value={String(selectedMonth)}
           onValueChange={(value: string) => {
             const month = parseInt(value, 10)

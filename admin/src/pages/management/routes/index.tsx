@@ -105,6 +105,7 @@ export default function Page() {
       description: routesT('deleteText'),
       buttons: [
         {
+          name: 'cancel',
           variant: 'secondary',
           text: actionsT('cancel'),
           onClick: () => {
@@ -113,6 +114,7 @@ export default function Page() {
           },
         },
         {
+          name: 'delete',
           text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
@@ -142,6 +144,7 @@ export default function Page() {
               title: actionsT('details'),
               buttons: [
                 {
+                  name: 'save',
                   text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
@@ -194,6 +197,7 @@ export default function Page() {
               ),
               buttons: [
                 {
+                  name: 'save',
                   text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {
@@ -253,6 +257,7 @@ export default function Page() {
               ),
               buttons: [
                 {
+                  name: 'save',
                   text: actionsT('apply'),
                   variant: 'default',
                   onClick: () => {

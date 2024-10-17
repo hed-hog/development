@@ -326,14 +326,16 @@ export default function Page() {
       description: personsT('deleteText'),
       buttons: [
         {
-          variant: 'secondary',
+          name: 'cancel',
           text: actionsT('cancel'),
+          variant: 'secondary',
           onClick: () => {
             setSelectedItems(items)
             closeDialog(id)
           },
         },
         {
+          name: 'delete',
           text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
@@ -451,6 +453,7 @@ export default function Page() {
       ),
       buttons: [
         {
+          name: 'save',
           text: actionsT('apply'),
           onClick: () => {
             const addressDataFilled = formAddress.getValues()
@@ -495,6 +498,7 @@ export default function Page() {
       description: addressT('deleteText'),
       buttons: [
         {
+          name: 'cancel',
           variant: 'secondary',
           text: actionsT('cancel'),
           onClick: () => {
@@ -502,6 +506,7 @@ export default function Page() {
           },
         },
         {
+          name: 'delete',
           text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
@@ -558,6 +563,7 @@ export default function Page() {
       ),
       buttons: [
         {
+          name: 'save',
           text: actionsT('apply'),
           onClick: () => {
             const contactDataFilled = formContact.getValues()
@@ -600,6 +606,7 @@ export default function Page() {
       description: contactsT('deleteText'),
       buttons: [
         {
+          name: 'cancel',
           text: actionsT('cancel'),
           variant: 'secondary',
           onClick: () => {
@@ -607,6 +614,7 @@ export default function Page() {
           },
         },
         {
+          name: 'delete',
           text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
@@ -688,6 +696,7 @@ export default function Page() {
       ),
       buttons: [
         {
+          name: 'save',
           text: actionsT('apply'),
           onClick: () => {
             const documentDataFilled = formDocument.getValues()
@@ -724,6 +733,7 @@ export default function Page() {
       description: documentsT('deleteText'),
       buttons: [
         {
+          name: 'cancel',
           text: actionsT('cancel'),
           variant: 'secondary',
           onClick: () => {
@@ -731,6 +741,7 @@ export default function Page() {
           },
         },
         {
+          name: 'delete',
           text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
@@ -792,6 +803,7 @@ export default function Page() {
       ),
       buttons: [
         {
+          name: 'save',
           text: actionsT('apply'),
           onClick: () => {
             const customDataFilled = formCustom.getValues()
@@ -828,6 +840,7 @@ export default function Page() {
       description: customsT('deleteText'),
       buttons: [
         {
+          name: 'cancel',
           text: actionsT('cancel'),
           variant: 'secondary',
           onClick: () => {
@@ -835,6 +848,7 @@ export default function Page() {
           },
         },
         {
+          name: 'delete',
           text: actionsT('delete'),
           variant: 'destructive',
           onClick: () => {
@@ -869,6 +883,7 @@ export default function Page() {
               title: actionsT('details'),
               buttons: [
                 {
+                  name: 'save',
                   text: actionsT('save'),
                   variant: 'default',
                   onClick: () => {
@@ -939,6 +954,7 @@ export default function Page() {
                     onClick={() =>
                       openEditContactSheet(item.id, formContactDefaultValues)
                     }
+                    name='add-contact'
                   >
                     <IconPlus />
                   </Button>
@@ -967,8 +983,9 @@ export default function Page() {
                   <Button
                     className='absolute bottom-5 right-5 min-w-2 rounded-full p-2'
                     onClick={() =>
-                      openEditDocumentSheet(item.id, formContactDefaultValues)
+                      openEditDocumentSheet(item.id, formDocumentDefaultValues)
                     }
+                    name='add-document'
                   >
                     <IconPlus />
                   </Button>
@@ -999,6 +1016,7 @@ export default function Page() {
                     onClick={() =>
                       openEditAddressSheet(item.id, formAddressDefaultValues)
                     }
+                    name='add-address'
                   >
                     <IconPlus />
                   </Button>
@@ -1029,6 +1047,7 @@ export default function Page() {
                     onClick={() =>
                       openEditCustomSheet(item.id, formCustomDefaultValues)
                     }
+                    name='add-custom'
                   >
                     <IconPlus />
                   </Button>

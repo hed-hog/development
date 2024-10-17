@@ -12,7 +12,7 @@ import {
 export type TabPanelItem = {
   title: string
   children: ReactNode
-  buttons?: (ButtonProps & { text: string })[]
+  buttons?: (ButtonProps & { text: string; name?: string })[]
 }
 
 export type TabPanelProps = {
@@ -106,6 +106,7 @@ export const TabPanel = ({
             key={`tab-trigger-${index}`}
             className='flex-1'
             value={`tab-${index}`}
+            name={title}
           >
             {title}
           </TabsTrigger>
@@ -121,8 +122,9 @@ export const TabPanel = ({
           {buttons && buttons?.length > 0 && (
             <TabsFooter>
               <div className='flex justify-end gap-2'>
-                {(buttons ?? []).map(({ text, ...props }, index) => (
+                {(buttons ?? []).map(({ text, name, ...props }, index) => (
                   <Button
+                    name={name}
                     key={`tab-content-${index}-button-${index}`}
                     {...props}
                   >

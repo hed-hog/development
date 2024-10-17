@@ -3,6 +3,9 @@ import { sleep } from '../__tests__/utils/sleep';
 import { getScreenSize } from '../__tests__/utils/getScreenSize';
 import { login } from './login';
 import { users } from './users';
+import { route } from './route';
+import { customType } from './custom-type';
+import { contacts } from './contacts';
 
 const userRootData = {
   email: 'root@hedhog.com',
@@ -17,7 +20,7 @@ const userRootData = {
       headless: false,
       args: ['--start-maximized'],
       timeout: 0,
-      slowMo: 10,
+      slowMo: 30,
     });
     const page = await browser.newPage();
     const pages = await browser.pages();
@@ -34,6 +37,9 @@ const userRootData = {
 
     await login(page, userRootData);
     await users(page);
+    await route(page);
+    await contacts(page);
+    await customType(page);
     await sleep(60000);
     await browser.close();
   } catch (error) {
