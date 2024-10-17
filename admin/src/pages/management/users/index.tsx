@@ -104,6 +104,7 @@ export default function Page() {
       buttons: [
         {
           variant: 'secondary',
+          name: 'cancel',
           text: actionsT('cancel'),
           onClick: () => {
             closeDialog(id)
@@ -111,6 +112,7 @@ export default function Page() {
         },
         {
           text: actionsT('delete'),
+          name: 'delete',
           variant: 'destructive',
           onClick: () => {
             deleteUsers(items.map((item) => item.id))
@@ -140,6 +142,7 @@ export default function Page() {
               buttons: [
                 {
                   text: actionsT('save'),
+                  name: 'save',
                   variant: 'default',
                   onClick: () => {
                     formEdit.current?.submit()
@@ -187,6 +190,7 @@ export default function Page() {
               buttons: [
                 {
                   text: actionsT('apply'),
+                  name: 'save',
                   variant: 'default',
                   onClick: () => {
                     if (userRolesRef.current) {
