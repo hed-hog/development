@@ -52,9 +52,10 @@ export class Migrate implements MigrationInterface {
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
-        uniques: [
+        indices: [
           {
             columnNames: ['locale_id', 'namespace_id', 'name'],
+            isUnique: true,
           },
         ],
         foreignKeys: [

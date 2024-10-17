@@ -12,7 +12,7 @@ export class Migrate implements MigrationInterface {
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('role_routes')
+        .into('role_routes', ['role_id', 'route_id'])
         .values({
           role_id: 1,
           route_id: route.id,
@@ -20,24 +20,10 @@ export class Migrate implements MigrationInterface {
         .execute();
     }
 
-    const adminAccessRoutes = [88, 1, 3];
-
-    for (const routeId of adminAccessRoutes) {
-      await queryRunner.manager
-        .createQueryBuilder()
-        .insert()
-        .into('role_routes')
-        .values({
-          role_id: 3,
-          route_id: routeId,
-        })
-        .execute();
-    }
-
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into('role_routes')
+      .into('role_routes', ['role_id', 'route_id'])
       .values({
         role_id: 2,
         route_id: 3,
@@ -55,7 +41,7 @@ export class Migrate implements MigrationInterface {
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('role_routes')
+        .into('role_routes', ['role_id', 'route_id'])
         .values({
           role_id: 2,
           route_id: route.id,

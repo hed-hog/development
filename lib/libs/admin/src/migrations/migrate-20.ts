@@ -252,6 +252,49 @@ export class Migrate implements MigrationInterface {
           .execute();
       }
     }
+
+    const routesGetRole3 = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('routes', 'r')
+      .where('r.url IN (:...urls)', {
+        urls: [
+          '/settings/groups',
+          '/settings/groups/:slug',
+          '/auth/verify',
+          '/menus/system',
+        ],
+      })
+      .where('r.method = :method', { method: 'GET' })
+      .execute();
+
+    const routesPutRole3 = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('routes', 'r')
+      .where('r.url IN (:...urls)', {
+        urls: ['/settings/:slug'],
+      })
+      .where('r.method = :method', { method: 'PUT' })
+      .execute();
+
+    const adminAccessRoutes = [];
+
+    for (const route of [...routesGetRole3, ...routesPutRole3]) {
+      adminAccessRoutes.push(route.id);
+    }
+
+    for (const routeId of adminAccessRoutes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('role_routes', ['role_id', 'route_id'])
+        .values({
+          role_id: 3,
+          route_id: routeId,
+        })
+        .execute();
+    }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

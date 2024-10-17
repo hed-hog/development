@@ -13,7 +13,12 @@ export class Migrate implements MigrationInterface {
         name: 'menus',
         columns: [
           idColumn(),
-          foreignColumn({ name: 'menu_id' }),
+          foreignColumn({ name: 'menu_id', isNullable: true }),
+          {
+            name: 'slug',
+            type: 'varchar',
+            isUnique: true,
+          },
           {
             name: 'url',
             type: 'varchar',
@@ -33,6 +38,7 @@ export class Migrate implements MigrationInterface {
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
+        indices: [{ columnNames: ['slug'], isUnique: true }],
       }),
     );
 
@@ -40,18 +46,8 @@ export class Migrate implements MigrationInterface {
       new Table({
         name: 'menu_translations',
         columns: [
-          {
-            name: 'menu_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: 'locale_id',
-            type: 'int',
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: 'menu_id', isPrimary: true }),
+          foreignColumn({ name: 'locale_id', isPrimary: true }),
           {
             name: 'name',
             type: 'varchar',
@@ -113,6 +109,7 @@ export class Migrate implements MigrationInterface {
         url: '/',
         order: 0,
         icon: 'dashboard',
+        slug: 'dashboard',
       },
       {
         name_en: 'Management',
@@ -120,6 +117,7 @@ export class Migrate implements MigrationInterface {
         url: '/management',
         order: 1,
         icon: 'settings',
+        slug: 'management',
       },
     ];
 
@@ -127,11 +125,12 @@ export class Migrate implements MigrationInterface {
       const m = await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('menus', ['url', 'order', 'icon'])
+        .into('menus', ['url', 'order', 'icon', 'slug'])
         .values({
           url: menu.url,
           order: menu.order,
           icon: menu.icon,
+          slug: menu.slug,
         })
         .execute();
 
@@ -161,6 +160,7 @@ export class Migrate implements MigrationInterface {
         url: '/management/users',
         order: 0,
         icon: 'users',
+        slug: 'management/users',
       },
       {
         name_en: 'Roles',
@@ -168,6 +168,7 @@ export class Migrate implements MigrationInterface {
         url: '/management/roles',
         order: 1,
         icon: 'circles',
+        slug: 'management/roles',
       },
       {
         name_en: 'Screens',
@@ -175,6 +176,7 @@ export class Migrate implements MigrationInterface {
         url: '/management/screens',
         order: 2,
         icon: 'device-tv',
+        slug: 'management/screens',
       },
       {
         name_en: 'Menus',
@@ -182,6 +184,7 @@ export class Migrate implements MigrationInterface {
         url: '/management/menus',
         order: 3,
         icon: 'menu',
+        slug: 'management/menus',
       },
       {
         name_en: 'Routes',
@@ -189,6 +192,7 @@ export class Migrate implements MigrationInterface {
         url: '/management/routes',
         order: 4,
         icon: 'route',
+        slug: 'management/routes',
       },
       {
         name_en: 'Settings',
@@ -196,6 +200,7 @@ export class Migrate implements MigrationInterface {
         url: '/management/settings',
         order: 5,
         icon: 'settings',
+        slug: 'management/settings',
       },
     ];
 
@@ -210,12 +215,13 @@ export class Migrate implements MigrationInterface {
       const m = await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('menus', ['url', 'order', 'icon', 'menu_id'])
+        .into('menus', ['url', 'order', 'icon', 'menu_id', 'slug'])
         .values({
           url: menu.url,
           order: menu.order,
           icon: menu.icon,
           menu_id: menuManagement[0].id,
+          slug: menu.slug,
         })
         .execute();
 
