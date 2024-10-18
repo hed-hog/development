@@ -10,10 +10,17 @@ import { addAddress } from './add-address';
 import { editAddress } from './edit-address';
 import { deleteAddress } from './delete-address';
 import { deleteContact } from './delete-contact';
+import { addCustom } from './add-custom';
+import { editCustom } from './edit-custom';
+import { deleteCustom } from './delete-custom';
 
 export const contacts = async (page) => {
   await createContact(page);
   await editContact(page);
+
+  await addCustom(page);
+  await editCustom(page)
+  await deleteCustom(page)
 
   await addTelephone(page);
   await editTelephone(page);

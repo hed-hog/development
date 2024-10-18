@@ -36,10 +36,10 @@ const userRootData = {
     });
 
     await login(page, userRootData);
+    await contacts(page);
     await users(page);
     await route(page);
     await customType(page);
-    await contacts(page);
     await sleep(60000);
     await browser.close();
   } catch (error) {

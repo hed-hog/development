@@ -1,9 +1,9 @@
-export const editAddress = async (page) => {
-  const addressTabSelector = 'button[name="Addresses"]';
+export const editCustom = async (page) => {
+  const customTabSelector = 'button[name="Custom Attributes"]';
   const checkboxSelector = 'div#grid-item:first-of-type';
   const editButtonSelector = 'button:has(svg.tabler-icon-edit)';
   const formEditButtonSelector = 'button[name="save"]';
-  const editAddressButtonSelector = 'svg[name="edit-address"]';
+  const editCustomButtonSelector = 'svg[name="edit-custom"]';
 
   await page.waitForSelector(checkboxSelector);
   await page.click(checkboxSelector, { clickCount: 2 });
@@ -11,13 +11,13 @@ export const editAddress = async (page) => {
   await page.waitForSelector(editButtonSelector);
   await page.click(editButtonSelector);
 
-  await page.waitForSelector(addressTabSelector);
-  await page.click(addressTabSelector);
+  await page.waitForSelector(customTabSelector);
+  await page.click(customTabSelector);
 
-  await page.waitForSelector(editAddressButtonSelector);
-  await page.click(editAddressButtonSelector);
+  await page.waitForSelector(editCustomButtonSelector);
+  await page.click(editCustomButtonSelector);
 
-  await page.type('input[name="street"]', ' Atualizada');
+  await page.type('input[name="value"]', ' Atualizado');
   await page.waitForSelector(formEditButtonSelector);
   await page.click(formEditButtonSelector);
 };

@@ -812,13 +812,19 @@ export default function Page() {
               editCustom({
                 personId: Number(personId),
                 customId: String(customItem.id),
-                data: customDataFilled,
+                data: {
+                  ...customDataFilled,
+                  type_id: Number(customDataFilled.type_id),
+                },
               })
             } else {
               delete (customDataFilled as any).id
               createCustom({
                 personId: Number(personId),
-                data: customDataFilled,
+                data: {
+                  ...customDataFilled,
+                  type_id: Number(customDataFilled.type_id),
+                },
               })
             }
             closeSheet(sheetId)

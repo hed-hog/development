@@ -92,6 +92,11 @@ export class PersonService {
             },
           },
           person_addresses: true,
+          person_customs: {
+            include: {
+              person_custom_types: true,
+            },
+          },
         },
       },
     );
