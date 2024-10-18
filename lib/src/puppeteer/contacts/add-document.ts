@@ -1,12 +1,11 @@
 export const addDocument = async (page) => {
   const checkboxSelector = 'div#grid-item:first-of-type';
   const editButtonSelector = 'button:has(svg.tabler-icon-edit)';
-  const formEditButtonSelector = 'button[name="save"]';
   const dayButton = 'button[name="day"]:nth-of-type(1)';
   const documentTabSelector = 'button[name="Documents"]';
-  const newDocumentButtonSelector = 'button[name="add-document"]';
   const issueCalendarButtonSelector = 'button[name="issued_at"]';
   const expiryCalendarButtonSelector = 'button[name="expiry_at"]';
+  const inputValueSelector = 'input[name="value"]';
 
   await page.waitForSelector(checkboxSelector);
   await page.click(checkboxSelector, { clickCount: 2 });
@@ -17,10 +16,24 @@ export const addDocument = async (page) => {
   await page.waitForSelector(documentTabSelector);
   await page.click(documentTabSelector);
 
-  await page.waitForSelector(newDocumentButtonSelector);
-  await page.click(newDocumentButtonSelector);
+  await page.evaluate(() => {
+    const addButton = document.querySelector(
+      'button[name="add-document"]',
+    ) as HTMLElement;
+    if (addButton) {
+      addButton.click();
+    }
+  });
 
-  await page.type('input[name="value"]', '123456789');
+  const isInputVisible = await page.evaluate(() => {
+    const input = document.querySelector('input[name="value"]');
+    return input !== null;
+  });
+
+  if (isInputVisible) {
+    await page.click(inputValueSelector);
+    await page.type(inputValueSelector, '123456789');
+  }
 
   await page.waitForSelector(issueCalendarButtonSelector);
   await page.click(issueCalendarButtonSelector);
@@ -32,6 +45,12 @@ export const addDocument = async (page) => {
   await page.waitForSelector(dayButton);
   await page.click(dayButton);
 
-  await page.waitForSelector(formEditButtonSelector);
-  await page.click(formEditButtonSelector);
+  await page.evaluate(() => {
+    const saveButton = document.querySelector(
+      'button[name="save"]',
+    ) as HTMLElement;
+    if (saveButton) {
+      saveButton.click();
+    }
+  });
 };

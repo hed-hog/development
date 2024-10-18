@@ -2,6 +2,9 @@ export const deleteContact = async (page) => {
   const formDeleteButtonSelector = 'button[name="delete"]';
   const deleteButtonSelector = 'button:has(svg.tabler-icon-trash)';
 
+  await page.waitForSelector('nav a[href="/contacts"]');
+  await page.click('nav a[href="/contacts"]');
+
   await page.waitForSelector(deleteButtonSelector);
   await page.click(deleteButtonSelector);
 

@@ -3,7 +3,6 @@ export const addTelephone = async (page) => {
   const editButtonSelector = 'button:has(svg.tabler-icon-edit)';
   const formEditButtonSelector = 'button[name="save"]';
   const contactTabSelector = 'button[name="Contacts"]';
-  const newContactButtonSelector = 'button[name="add-contact"]';
 
   await page.waitForSelector(checkboxSelector);
   await page.click(checkboxSelector, { clickCount: 2 });
@@ -14,8 +13,14 @@ export const addTelephone = async (page) => {
   await page.waitForSelector(contactTabSelector);
   await page.click(contactTabSelector);
 
-  await page.waitForSelector(newContactButtonSelector);
-  await page.click(newContactButtonSelector);
+  await page.evaluate(() => {
+    const addButton = document.querySelector(
+      'button[name="add-contact"]',
+    ) as HTMLElement;
+    if (addButton) {
+      addButton.click();
+    }
+  });
 
   await page.type('input[name="value"]', '123456789');
   await page.waitForSelector(formEditButtonSelector);

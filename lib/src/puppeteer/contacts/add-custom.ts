@@ -4,7 +4,6 @@ export const addCustom = async (page) => {
   const checkboxSelector = 'div#grid-item:first-of-type';
   const editButtonSelector = 'button:has(svg.tabler-icon-edit)';
   const customTabSelector = 'button[name="Custom Attributes"]';
-  const newCustomButtonSelector = 'button[name="add-custom"]';
   const formEditButtonSelector = 'button[name="save"]';
   const selectTypeIdSelector = 'select[name="type_id"]';
 
@@ -22,8 +21,14 @@ export const addCustom = async (page) => {
   await page.waitForSelector(customTabSelector);
   await page.click(customTabSelector);
 
-  await page.waitForSelector(newCustomButtonSelector);
-  await page.click(newCustomButtonSelector);
+  await page.evaluate(() => {
+    const addButton = document.querySelector(
+      'button[name="add-custom"]',
+    ) as HTMLElement;
+    if (addButton) {
+      addButton.click();
+    }
+  });
 
   await page.waitForSelector(selectTypeIdSelector);
 

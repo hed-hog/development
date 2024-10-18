@@ -18,10 +18,6 @@ export const contacts = async (page) => {
   await createContact(page);
   await editContact(page);
 
-  await addCustom(page);
-  await editCustom(page)
-  await deleteCustom(page)
-
   await addTelephone(page);
   await editTelephone(page);
   await deleteTelephone(page);
@@ -33,6 +29,10 @@ export const contacts = async (page) => {
   await addAddress(page);
   await editAddress(page);
   await deleteAddress(page);
+
+  await addCustom(page);
+  await editCustom(page);
+  await deleteCustom(page);
 
   await deleteContact(page);
 };
