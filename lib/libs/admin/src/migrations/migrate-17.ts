@@ -12,7 +12,7 @@ export class Migrate implements MigrationInterface {
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('role_screens')
+        .into('role_screens', ['role_id', 'screen_id'])
         .values({
           role_id: 1,
           screen_id: screen.id,

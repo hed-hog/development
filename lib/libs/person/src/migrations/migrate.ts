@@ -691,7 +691,7 @@ export class Migrate implements MigrationInterface {
       .createQueryBuilder()
       .select('m.id')
       .from('menus', 'm')
-      .where('m.url = :url', { url: '/management' })
+      .where('m.slug = :slug', { slug: 'management' })
       .execute();
 
     const managementId = managementResult ? managementResult[0].id : null;
@@ -699,12 +699,13 @@ export class Migrate implements MigrationInterface {
     const menuContacts = await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into('menus', ['url', 'order', 'menu_id', 'icon'])
+      .into('menus', ['url', 'order', 'menu_id', 'icon', 'slug'])
       .values({
         url: '/contacts',
         order: 3,
         menu_id: null,
         icon: 'user-check',
+        slug: 'person:contacts',
       })
       .returning('id')
       .execute();
@@ -730,12 +731,13 @@ export class Migrate implements MigrationInterface {
     const menuManagementPersons = await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into('menus', ['url', 'order', 'menu_id', 'icon'])
+      .into('menus', ['url', 'order', 'menu_id', 'icon', 'slug'])
       .values({
         url: null,
         order: 6,
         menu_id: managementId,
         icon: 'user-check',
+        slug: 'person:persons',
       })
       .returning('id')
       .execute();
@@ -768,6 +770,7 @@ export class Migrate implements MigrationInterface {
         order: 0,
         menu_id: personsMenuId,
         icon: 'home-link',
+        slug: 'person:persons/address-types',
       },
       {
         name_en: 'Contact Types',
@@ -776,6 +779,7 @@ export class Migrate implements MigrationInterface {
         order: 1,
         menu_id: personsMenuId,
         icon: 'address-book',
+        slug: 'person:persons/contact-types',
       },
       {
         name_en: 'Custom Types',
@@ -784,6 +788,7 @@ export class Migrate implements MigrationInterface {
         order: 2,
         menu_id: personsMenuId,
         icon: 'adjustments',
+        slug: 'person:persons/custom-types',
       },
       {
         name_en: 'Document Types',
@@ -792,6 +797,7 @@ export class Migrate implements MigrationInterface {
         order: 3,
         menu_id: personsMenuId,
         icon: 'file-search',
+        slug: 'person:persons/document-types',
       },
       {
         name_en: 'Person Types',
@@ -800,6 +806,7 @@ export class Migrate implements MigrationInterface {
         order: 4,
         menu_id: personsMenuId,
         icon: 'id',
+        slug: 'person:persons/person-types',
       },
     ];
 
@@ -808,12 +815,13 @@ export class Migrate implements MigrationInterface {
       const menuResult = await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('menus', ['url', 'order', 'menu_id', 'icon'])
+        .into('menus', ['url', 'order', 'menu_id', 'icon', ' slug'])
         .values({
           url: menu.url,
           order: menu.order,
           menu_id: menu.menu_id,
           icon: menu.icon,
+          slug: menu.slug,
         })
         .returning('id')
         .execute();

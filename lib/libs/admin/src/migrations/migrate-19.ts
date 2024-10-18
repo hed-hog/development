@@ -17,6 +17,7 @@ export class Migrate implements MigrationInterface {
             name: 'slug',
             type: 'varchar',
             length: '63',
+            isUnique: true,
           },
           timestampColumn(),
           timestampColumn('updated_at'),

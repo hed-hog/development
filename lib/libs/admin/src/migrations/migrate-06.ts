@@ -21,14 +21,12 @@ export class Migrate implements MigrationInterface {
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
-      }),
-    );
-
-    await queryRunner.createUniqueConstraint(
-      'routes',
-      new TableUnique({
-        columnNames: ['url', 'method'],
-        name: 'unique_routes',
+        indices: [
+          {
+            columnNames: ['url', 'method'],
+            isUnique: true,
+          },
+        ],
       }),
     );
 
