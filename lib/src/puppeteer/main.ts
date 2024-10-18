@@ -3,8 +3,8 @@ import { sleep } from '../__tests__/utils/sleep';
 import { getScreenSize } from '../__tests__/utils/getScreenSize';
 import { login } from './login';
 import { users } from './users';
-import { route } from './route';
-import { customType } from './custom-type';
+import { route } from './routes';
+import { customType } from './custom-types';
 import { contacts } from './contacts';
 
 const userRootData = {
@@ -36,10 +36,10 @@ const userRootData = {
     });
 
     await login(page, userRootData);
-    await contacts(page);
     await users(page);
     await route(page);
     await customType(page);
+    await contacts(page);
     await sleep(60000);
     await browser.close();
   } catch (error) {
