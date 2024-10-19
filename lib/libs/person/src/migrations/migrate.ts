@@ -707,7 +707,6 @@ export class Migrate implements MigrationInterface {
         icon: 'user-check',
         slug: 'person:contacts',
       })
-      .returning('id')
       .execute();
 
     await queryRunner.manager
@@ -718,12 +717,12 @@ export class Migrate implements MigrationInterface {
         {
           name: 'Contacts',
           locale_id: 1,
-          menu_id: menuContacts.raw[0].id,
+          menu_id: menuContacts.raw.insertId,
         },
         {
           name: 'Contatos',
           locale_id: 2,
-          menu_id: menuContacts.raw[0].id,
+          menu_id: menuContacts.raw.insertId,
         },
       ])
       .execute();
@@ -739,10 +738,9 @@ export class Migrate implements MigrationInterface {
         icon: 'user-check',
         slug: 'person:persons',
       })
-      .returning('id')
       .execute();
 
-    const personsMenuId = menuManagementPersons.raw[0].id;
+    const personsMenuId = menuManagementPersons.raw.insertId;
 
     await queryRunner.manager
       .createQueryBuilder()
@@ -815,7 +813,7 @@ export class Migrate implements MigrationInterface {
       const menuResult = await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('menus', ['url', 'order', 'menu_id', 'icon', ' slug'])
+        .into('menus', ['url', 'order', 'menu_id', 'icon', 'slug'])
         .values({
           url: menu.url,
           order: menu.order,
@@ -823,10 +821,9 @@ export class Migrate implements MigrationInterface {
           icon: menu.icon,
           slug: menu.slug,
         })
-        .returning('id')
         .execute();
 
-      const menuId = menuResult.raw[0].id;
+      const menuId = menuResult.raw.insertId;
 
       await queryRunner.manager
         .createQueryBuilder()
@@ -849,7 +846,7 @@ export class Migrate implements MigrationInterface {
       ids.push(menuId);
     }
 
-    for (const id of [...ids, personsMenuId, menuContacts.raw[0].id]) {
+    for (const id of [...ids, personsMenuId, menuContacts.raw.insertId]) {
       if (id) {
         await queryRunner.manager
           .createQueryBuilder()
@@ -929,10 +926,9 @@ export class Migrate implements MigrationInterface {
           slug: screen.slug,
           icon: screen.icon,
         })
-        .returning('id')
         .execute();
 
-      const screenId = s.raw[0].id;
+      const screenId = s.raw.insertId;
 
       await queryRunner.manager
         .createQueryBuilder()
@@ -969,146 +965,147 @@ export class Migrate implements MigrationInterface {
         .execute();
     }
 
-    const results = await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('routes', ['url', 'method'])
-      .values([
-        {
-          url: '/persons',
-          method: 'GET',
-        },
-        {
-          url: '/persons',
-          method: 'POST',
-        },
-        {
-          url: '/persons',
-          method: 'DELETE',
-        },
-        {
-          url: '/persons/:personId',
-          method: 'GET',
-        },
-        {
-          url: '/persons/:personId',
-          method: 'PATCH',
-        },
-        {
-          url: '/person-types',
-          method: 'GET',
-        },
-        {
-          url: '/person-types',
-          method: 'POST',
-        },
-        {
-          url: '/person-types',
-          method: 'DELETE',
-        },
-        {
-          url: '/person-types/:personTypeId',
-          method: 'GET',
-        },
-        {
-          url: '/person-types/:personTypeId',
-          method: 'PATCH',
-        },
-        {
-          url: '/address-types',
-          method: 'GET',
-        },
-        {
-          url: '/address-types',
-          method: 'POST',
-        },
-        {
-          url: '/address-types',
-          method: 'DELETE',
-        },
-        {
-          url: '/address-types/:addressTypeId',
-          method: 'GET',
-        },
-        {
-          url: '/address-types/:addressTypeId',
-          method: 'PATCH',
-        },
-        {
-          url: '/contact-types',
-          method: 'GET',
-        },
-        {
-          url: '/contact-types',
-          method: 'POST',
-        },
-        {
-          url: '/contact-types',
-          method: 'DELETE',
-        },
-        {
-          url: '/contact-types/:contactTypeId',
-          method: 'GET',
-        },
-        {
-          url: '/contact-types/:contactTypeId',
-          method: 'PATCH',
-        },
-        {
-          url: '/custom-types',
-          method: 'GET',
-        },
-        {
-          url: '/custom-types',
-          method: 'POST',
-        },
-        {
-          url: '/custom-types',
-          method: 'DELETE',
-        },
-        {
-          url: '/custom-types/:customTypeId',
-          method: 'GET',
-        },
-        {
-          url: '/custom-types/:customTypeId',
-          method: 'PATCH',
-        },
-        {
-          url: '/document-types',
-          method: 'GET',
-        },
-        {
-          url: '/document-types',
-          method: 'POST',
-        },
-        {
-          url: '/document-types',
-          method: 'DELETE',
-        },
-        {
-          url: '/document-types/:documentTypeId',
-          method: 'GET',
-        },
-        {
-          url: '/document-types/:documentTypeId',
-          method: 'PATCH',
-        },
-      ])
-      .returning('id')
-      .execute();
+    const routes = [
+      {
+        url: '/persons',
+        method: 'GET',
+      },
+      {
+        url: '/persons',
+        method: 'POST',
+      },
+      {
+        url: '/persons',
+        method: 'DELETE',
+      },
+      {
+        url: '/persons/:personId',
+        method: 'GET',
+      },
+      {
+        url: '/persons/:personId',
+        method: 'PATCH',
+      },
+      {
+        url: '/person-types',
+        method: 'GET',
+      },
+      {
+        url: '/person-types',
+        method: 'POST',
+      },
+      {
+        url: '/person-types',
+        method: 'DELETE',
+      },
+      {
+        url: '/person-types/:personTypeId',
+        method: 'GET',
+      },
+      {
+        url: '/person-types/:personTypeId',
+        method: 'PATCH',
+      },
+      {
+        url: '/address-types',
+        method: 'GET',
+      },
+      {
+        url: '/address-types',
+        method: 'POST',
+      },
+      {
+        url: '/address-types',
+        method: 'DELETE',
+      },
+      {
+        url: '/address-types/:addressTypeId',
+        method: 'GET',
+      },
+      {
+        url: '/address-types/:addressTypeId',
+        method: 'PATCH',
+      },
+      {
+        url: '/contact-types',
+        method: 'GET',
+      },
+      {
+        url: '/contact-types',
+        method: 'POST',
+      },
+      {
+        url: '/contact-types',
+        method: 'DELETE',
+      },
+      {
+        url: '/contact-types/:contactTypeId',
+        method: 'GET',
+      },
+      {
+        url: '/contact-types/:contactTypeId',
+        method: 'PATCH',
+      },
+      {
+        url: '/custom-types',
+        method: 'GET',
+      },
+      {
+        url: '/custom-types',
+        method: 'POST',
+      },
+      {
+        url: '/custom-types',
+        method: 'DELETE',
+      },
+      {
+        url: '/custom-types/:customTypeId',
+        method: 'GET',
+      },
+      {
+        url: '/custom-types/:customTypeId',
+        method: 'PATCH',
+      },
+      {
+        url: '/document-types',
+        method: 'GET',
+      },
+      {
+        url: '/document-types',
+        method: 'POST',
+      },
+      {
+        url: '/document-types',
+        method: 'DELETE',
+      },
+      {
+        url: '/document-types/:documentTypeId',
+        method: 'GET',
+      },
+      {
+        url: '/document-types/:documentTypeId',
+        method: 'PATCH',
+      },
+    ];
 
-    const roleRouteValues = results.raw.map((result) => ({
-      role_id: 1,
-      route_id: result.id,
-    }));
+    for (const route of routes) {
+      const results = await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('routes', ['url', 'method'])
+        .values(route)
+        .execute();
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('role_routes')
-      .values(roleRouteValues)
-      .execute();
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('role_routes', ['role_id', 'route_id'])
+        .values({
+          role_id: 1,
+          route_id: results.raw.insertId,
+        })
+        .execute();
+    }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

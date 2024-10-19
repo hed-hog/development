@@ -12,7 +12,16 @@ export class Migrate implements MigrationInterface {
     await queryRunner.createTable(
       new Table({
         name: 'multifactors',
-        columns: [idColumn(), timestampColumn(), timestampColumn('updated_at')],
+        columns: [
+          idColumn(),
+          {
+            name: 'slug',
+            type: 'varchar',
+            isUnique: true,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
       }),
       true,
     );
@@ -51,13 +60,15 @@ export class Migrate implements MigrationInterface {
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into('multifactors', ['id'])
+      .into('multifactors', ['id', 'slug'])
       .values([
         {
           id: 1,
+          slug: 'email',
         },
         {
           id: 2,
+          slug: 'application',
         },
       ])
       .execute();

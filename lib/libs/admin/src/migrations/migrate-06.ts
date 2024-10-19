@@ -1,9 +1,149 @@
 import { idColumn, timestampColumn } from '@hedhog/utils';
 
 import { MigrationInterface, QueryRunner, Table, TableUnique } from 'typeorm';
+import { Menu } from '../entities';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
+    const menus = [
+      {
+        name_en: 'Dashboard',
+        name_pt: 'Dashboard',
+        url: '/',
+        order: 0,
+        icon: 'dashboard',
+        slug: 'dashboard',
+      },
+      {
+        name_en: 'Management',
+        name_pt: 'Gereciamento',
+        url: '/management',
+        order: 1,
+        icon: 'settings',
+        slug: 'management',
+      },
+    ];
+
+    for (const menu of menus) {
+      const m = await queryRunner.connection.getRepository(Menu).save({
+        url: menu.url,
+        order: menu.order,
+        icon: menu.icon,
+        slug: menu.slug,
+      });
+
+      console.log('menuInserted', m);
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('menu_translations', ['menu_id', 'locale_id', 'name'])
+        .values([
+          {
+            menu_id: m.id,
+            locale_id: 1,
+            name: menu.name_en,
+          },
+          {
+            menu_id: m.id,
+            locale_id: 2,
+            name: menu.name_pt,
+          },
+        ])
+        .execute();
+    }
+
+    const menusManagement = [
+      {
+        name_en: 'Users',
+        name_pt: 'Usuários',
+        url: '/management/users',
+        order: 0,
+        icon: 'users',
+        slug: 'management/users',
+      },
+      {
+        name_en: 'Roles',
+        name_pt: 'Funções',
+        url: '/management/roles',
+        order: 1,
+        icon: 'circles',
+        slug: 'management/roles',
+      },
+      {
+        name_en: 'Screens',
+        name_pt: 'Telas',
+        url: '/management/screens',
+        order: 2,
+        icon: 'device-tv',
+        slug: 'management/screens',
+      },
+      {
+        name_en: 'Menus',
+        name_pt: 'Menus',
+        url: '/management/menus',
+        order: 3,
+        icon: 'menu',
+        slug: 'management/menus',
+      },
+      {
+        name_en: 'Routes',
+        name_pt: 'Rotas',
+        url: '/management/routes',
+        order: 4,
+        icon: 'route',
+        slug: 'management/routes',
+      },
+      {
+        name_en: 'Settings',
+        name_pt: 'Configurações',
+        url: '/management/settings',
+        order: 5,
+        icon: 'settings',
+        slug: 'management/settings',
+      },
+    ];
+
+    const menuManagement = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('menus', 'm')
+      .where('m.url = :url', { url: '/management' })
+      .execute();
+
+    for (const menu of menusManagement) {
+      const m = await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('menus', ['url', 'order', 'icon', 'menu_id', 'slug'])
+        .values({
+          url: menu.url,
+          order: menu.order,
+          icon: menu.icon,
+          menu_id: menuManagement[0].id,
+          slug: menu.slug,
+        })
+        .execute();
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('menu_translations', ['menu_id', 'locale_id', 'name'])
+        .values([
+          {
+            menu_id: m.raw.insertId,
+            locale_id: 1,
+            name: menu.name_en,
+          },
+          {
+            menu_id: m.raw.insertId,
+            locale_id: 2,
+            name: menu.name_pt,
+          },
+        ])
+        .execute();
+    }
+
     await queryRunner.createTable(
       new Table({
         name: 'routes',

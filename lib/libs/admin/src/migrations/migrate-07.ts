@@ -11,7 +11,16 @@ export class Migrate implements MigrationInterface {
     await queryRunner.createTable(
       new Table({
         name: 'roles',
-        columns: [idColumn(), timestampColumn(), timestampColumn('updated_at')],
+        columns: [
+          idColumn(),
+          {
+            name: 'slug',
+            type: 'varchar',
+            isUnique: true,
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
       }),
     );
 
@@ -57,6 +66,7 @@ export class Migrate implements MigrationInterface {
         name_pt: 'Administrador',
         description_en: 'System administrator',
         description_pt: 'Administrador do sistema',
+        slug: 'admin',
       },
       {
         id: 2,
@@ -64,6 +74,7 @@ export class Migrate implements MigrationInterface {
         name_pt: 'Gerenciador de telas',
         description_en: 'Screen manager',
         description_pt: 'Gerenciador de telas',
+        slug: 'screen-manager',
       },
       {
         id: 3,
@@ -71,6 +82,7 @@ export class Migrate implements MigrationInterface {
         name_pt: 'Acesso de administrador',
         description_en: 'Function to access the admin panel',
         description_pt: 'Função para ter acesso ao painel de administração',
+        slug: 'admin-access',
       },
     ];
 
@@ -78,9 +90,10 @@ export class Migrate implements MigrationInterface {
       await queryRunner.manager
         .createQueryBuilder()
         .insert()
-        .into('roles', ['id'])
+        .into('roles', ['id', 'slug'])
         .values({
           id: role.id,
+          slug: role.slug,
         })
         .execute();
 

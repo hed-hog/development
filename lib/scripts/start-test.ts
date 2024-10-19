@@ -38,7 +38,6 @@ function finishProcess() {
 
       console.log('Clearing test environment...');
       console.warn(chalk.bgYellow('Remove comment to run the script below:'));
-      ///await run(process.cwd(), 'npm', 'run', 'test:clear');
     }
   }, 1000);
 
