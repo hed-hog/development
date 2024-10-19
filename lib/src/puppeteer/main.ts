@@ -3,8 +3,8 @@ import { sleep } from '../__tests__/utils/sleep';
 import { getScreenSize } from '../__tests__/utils/getScreenSize';
 import { login } from './login';
 import { users } from './users';
-import { route } from './route';
-import { customType } from './custom-type';
+import { route } from './routes';
+import { customType } from './custom-types';
 import { contacts } from './contacts';
 
 const userRootData = {

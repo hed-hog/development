@@ -91,23 +91,10 @@ export class PersonService {
               },
             },
           },
-          person_addresses: {
+          person_addresses: true,
+          person_customs: {
             include: {
-              person_address_types: {
-                select: {
-                  id: true,
-                  person_address_type_translations: {
-                    where: {
-                      locales: {
-                        code: locale,
-                      },
-                    },
-                    select: {
-                      name: true,
-                    },
-                  },
-                },
-              },
+              person_custom_types: true,
             },
           },
         },

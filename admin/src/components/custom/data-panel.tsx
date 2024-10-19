@@ -346,6 +346,13 @@ const DataPanelInner = <T extends any>(
     })
   }, [selectedItemsArr, getSelectedItemsPanel, getSelectedItems])
 
+  useEffect(() => {
+    if (checked) {
+      const initiallySelected = items.filter((item) => checked(item))
+      setSelectedItemsArr(initiallySelected.map((item) => JSON.stringify(item)))
+    }
+  }, [items, checked])
+
   const showButtons = useCallback(
     <T extends any>({ show }: IMenuItemAction<T>): boolean => {
       if (
