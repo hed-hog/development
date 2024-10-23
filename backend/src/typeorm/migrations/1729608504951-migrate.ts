@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migrate1729113244598 implements MigrationInterface {
+export class Migrate1729608504951 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const groups = [
       {
@@ -182,10 +182,9 @@ export class Migrate1729113244598 implements MigrationInterface {
           icon: group.icon,
           slug: group.slug,
         })
-        .returning("id")
         .execute();
 
-      const settingGroupId = settingGroup.raw[0].id;
+      const settingGroupId = settingGroup.raw.insertId;
 
       await queryRunner.manager
         .createQueryBuilder()
@@ -223,10 +222,9 @@ export class Migrate1729113244598 implements MigrationInterface {
             type: s.type,
             value: s.value,
           })
-          .returning("id")
           .execute();
 
-        const settingId = setting.raw[0].id;
+        const settingId = setting.raw.insertId;
 
         await queryRunner.manager
           .createQueryBuilder()
@@ -253,6 +251,49 @@ export class Migrate1729113244598 implements MigrationInterface {
           ])
           .execute();
       }
+    }
+
+    const routesGetRole3 = await queryRunner.manager
+      .createQueryBuilder()
+      .select("id")
+      .from("routes", "r")
+      .where("r.url IN (:...urls)", {
+        urls: [
+          "/settings/groups",
+          "/settings/groups/:slug",
+          "/auth/verify",
+          "/menus/system",
+        ],
+      })
+      .where("r.method = :method", { method: "GET" })
+      .execute();
+
+    const routesPutRole3 = await queryRunner.manager
+      .createQueryBuilder()
+      .select("id")
+      .from("routes", "r")
+      .where("r.url IN (:...urls)", {
+        urls: ["/settings/:slug"],
+      })
+      .where("r.method = :method", { method: "PUT" })
+      .execute();
+
+    const adminAccessRoutes = [];
+
+    for (const route of [...routesGetRole3, ...routesPutRole3]) {
+      adminAccessRoutes.push(route.id);
+    }
+
+    for (const routeId of adminAccessRoutes) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into("role_routes", ["role_id", "route_id"])
+        .values({
+          role_id: 3,
+          route_id: routeId,
+        })
+        .execute();
     }
   }
 

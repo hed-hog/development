@@ -4,15 +4,24 @@ import {
   Table,
   TableForeignKey,
 } from "typeorm";
-import { idColumn, timestampColumn } from "@hedhog/utils";
+import { foreignColumn, idColumn, timestampColumn } from "@hedhog/utils";
 import * as bcrypt from "bcrypt";
 
-export class Migrate1729113244364 implements MigrationInterface {
+export class Migrate1729608504770 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
         name: "multifactors",
-        columns: [idColumn(), timestampColumn(), timestampColumn("updated_at")],
+        columns: [
+          idColumn(),
+          {
+            name: "slug",
+            type: "varchar",
+            isUnique: true,
+          },
+          timestampColumn(),
+          timestampColumn("updated_at"),
+        ],
       }),
       true,
     );
@@ -21,18 +30,8 @@ export class Migrate1729113244364 implements MigrationInterface {
       new Table({
         name: "multifactor_translations",
         columns: [
-          {
-            name: "multifactor_id",
-            type: "int",
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: "locale_id",
-            type: "int",
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: "multifactor_id", isPrimary: true }),
+          foreignColumn({ name: "locale_id", isPrimary: true }),
           {
             name: "name",
             type: "varchar",
@@ -58,53 +57,12 @@ export class Migrate1729113244364 implements MigrationInterface {
       true,
     );
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into("multifactors", ["id"])
-      .values([
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-      ])
-      .execute();
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into("multifactor_translations", ["multifactor_id", "locale_id", "name"])
-      .values([
-        {
-          multifactor_id: 1,
-          locale_id: 1,
-          name: "Email",
-        },
-        {
-          multifactor_id: 1,
-          locale_id: 2,
-          name: "E-mail",
-        },
-        {
-          multifactor_id: 2,
-          locale_id: 1,
-          name: "Application",
-        },
-        {
-          multifactor_id: 2,
-          locale_id: 2,
-          name: "Aplicativo",
-        },
-      ])
-      .execute();
-
     await queryRunner.createTable(
       new Table({
         name: "users",
         columns: [
           idColumn(),
+          foreignColumn({ name: "multifactor_id", isNullable: true }),
           {
             name: "name",
             type: "varchar",
@@ -116,12 +74,6 @@ export class Migrate1729113244364 implements MigrationInterface {
           {
             name: "password",
             type: "varchar",
-          },
-          {
-            name: "multifactor_id",
-            type: "int",
-            isNullable: true,
-            unsigned: true,
           },
           {
             name: "code",
@@ -143,24 +95,6 @@ export class Migrate1729113244364 implements MigrationInterface {
         onDelete: "Cascade",
       }),
     ]);
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into("users", ["name", "email", "password"])
-      .values([
-        {
-          name: "Superuser",
-          email: "root@hedhog.com",
-          password: await bcrypt.hash(`hedhog`, 12),
-        },
-        {
-          name: "User",
-          email: "user@hedhog.com",
-          password: await bcrypt.hash(`hedhog`, 12),
-        },
-      ])
-      .execute();
   }
   async down(queryRunner: QueryRunner) {
     await queryRunner.dropTable("multifactors");

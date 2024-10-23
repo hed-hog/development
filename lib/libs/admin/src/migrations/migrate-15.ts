@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
+    /*
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
@@ -12,6 +13,7 @@ export class Migrate implements MigrationInterface {
         { role_id: 3, user_id: 2 },
       ])
       .execute();
+      */
   }
 
   async down(queryRunner: QueryRunner) {

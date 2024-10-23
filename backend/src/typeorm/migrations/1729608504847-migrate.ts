@@ -1,4 +1,4 @@
-import { timestampColumn } from "@hedhog/utils";
+import { foreignColumn, timestampColumn } from "@hedhog/utils";
 import {
   MigrationInterface,
   QueryRunner,
@@ -6,24 +6,14 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class Migrate1729113244506 implements MigrationInterface {
+export class Migrate1729608504847 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
         name: "route_screens",
         columns: [
-          {
-            name: "route_id",
-            type: "int",
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: "screen_id",
-            type: "int",
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: "route_id", isPrimary: true }),
+          foreignColumn({ name: "screen_id", isPrimary: true }),
           timestampColumn(),
           timestampColumn("updated_at"),
         ],

@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migrate1729113244551 implements MigrationInterface {
+export class Migrate1729608504890 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into("role_users")
+      .into("role_users", ["role_id", "user_id"])
       .values([
         { role_id: 1, user_id: 1 },
         { role_id: 2, user_id: 2 },

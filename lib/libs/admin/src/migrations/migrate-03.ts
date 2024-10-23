@@ -57,50 +57,6 @@ export class Migrate implements MigrationInterface {
       true,
     );
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('multifactors', ['id', 'slug'])
-      .values([
-        {
-          id: 1,
-          slug: 'email',
-        },
-        {
-          id: 2,
-          slug: 'application',
-        },
-      ])
-      .execute();
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('multifactor_translations', ['multifactor_id', 'locale_id', 'name'])
-      .values([
-        {
-          multifactor_id: 1,
-          locale_id: 1,
-          name: 'Email',
-        },
-        {
-          multifactor_id: 1,
-          locale_id: 2,
-          name: 'E-mail',
-        },
-        {
-          multifactor_id: 2,
-          locale_id: 1,
-          name: 'Application',
-        },
-        {
-          multifactor_id: 2,
-          locale_id: 2,
-          name: 'Aplicativo',
-        },
-      ])
-      .execute();
-
     await queryRunner.createTable(
       new Table({
         name: 'users',
@@ -139,24 +95,6 @@ export class Migrate implements MigrationInterface {
         onDelete: 'Cascade',
       }),
     ]);
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('users', ['name', 'email', 'password'])
-      .values([
-        {
-          name: 'Superuser',
-          email: 'root@hedhog.com',
-          password: await bcrypt.hash(`hedhog`, 12),
-        },
-        {
-          name: 'User',
-          email: 'user@hedhog.com',
-          password: await bcrypt.hash(`hedhog`, 12),
-        },
-      ])
-      .execute();
   }
   async down(queryRunner: QueryRunner) {
     await queryRunner.dropTable('multifactors');

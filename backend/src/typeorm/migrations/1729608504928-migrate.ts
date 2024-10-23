@@ -1,12 +1,7 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from "typeorm";
-import { idColumn, timestampColumn } from "@hedhog/utils";
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { foreignColumn, idColumn, timestampColumn } from "@hedhog/utils";
 
-export class Migrate1729113244582 implements MigrationInterface {
+export class Migrate1729608504928 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -22,6 +17,7 @@ export class Migrate1729113244582 implements MigrationInterface {
             name: "slug",
             type: "varchar",
             length: "63",
+            isUnique: true,
           },
           timestampColumn(),
           timestampColumn("updated_at"),
@@ -33,18 +29,8 @@ export class Migrate1729113244582 implements MigrationInterface {
       new Table({
         name: "setting_group_translations",
         columns: [
-          {
-            name: "locale_id",
-            type: "int",
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: "group_id",
-            type: "int",
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: "locale_id", isPrimary: true }),
+          foreignColumn({ name: "group_id", isPrimary: true }),
           {
             name: "name",
             type: "varchar",
@@ -81,16 +67,12 @@ export class Migrate1729113244582 implements MigrationInterface {
         name: "settings",
         columns: [
           idColumn(),
+          foreignColumn({ name: "group_id" }),
           {
             name: "slug",
             type: "varchar",
             isUnique: true,
             length: "63",
-          },
-          {
-            name: "group_id",
-            type: "int",
-            unsigned: true,
           },
           {
             name: "type",
@@ -103,6 +85,11 @@ export class Migrate1729113244582 implements MigrationInterface {
             type: "varchar",
             length: "1023",
             isNullable: true,
+          },
+          {
+            name: "userOverride",
+            type: "boolean",
+            default: false,
           },
           timestampColumn(),
           timestampColumn("updated_at"),
@@ -122,18 +109,8 @@ export class Migrate1729113244582 implements MigrationInterface {
       new Table({
         name: "setting_translations",
         columns: [
-          {
-            name: "locale_id",
-            type: "int",
-            unsigned: true,
-            isPrimary: true,
-          },
-          {
-            name: "setting_id",
-            type: "int",
-            unsigned: true,
-            isPrimary: true,
-          },
+          foreignColumn({ name: "locale_id", isPrimary: true }),
+          foreignColumn({ name: "setting_id", isPrimary: true }),
           {
             name: "description",
             type: "varchar",
@@ -165,9 +142,42 @@ export class Migrate1729113244582 implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "setting_users",
+        columns: [
+          foreignColumn({ name: "user_id", isPrimary: true }),
+          foreignColumn({ name: "setting_id", isPrimary: true }),
+          {
+            name: "value",
+            type: "varchar",
+            length: "1023",
+            isNullable: true,
+          },
+          timestampColumn(),
+          timestampColumn("updated_at"),
+        ],
+        foreignKeys: [
+          {
+            columnNames: ["user_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "users",
+            onDelete: "CASCADE",
+          },
+          {
+            columnNames: ["setting_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "settings",
+            onDelete: "CASCADE",
+          },
+        ],
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable("setting_users");
     await queryRunner.dropTable("setting_translations");
     await queryRunner.dropTable("settings");
     await queryRunner.dropTable("setting_group_translations");

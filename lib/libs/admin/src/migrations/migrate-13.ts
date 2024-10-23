@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
+    /*
     const menus = await queryRunner.manager
       .createQueryBuilder()
       .select()
@@ -18,6 +19,7 @@ export class Migrate implements MigrationInterface {
           menu_id: menu.id,
         });
     }
+        */
   }
 
   async down(queryRunner: QueryRunner) {

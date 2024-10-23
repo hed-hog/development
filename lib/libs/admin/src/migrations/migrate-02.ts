@@ -25,13 +25,6 @@ export class Migrate implements MigrationInterface {
       true,
     );
 
-    await await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('translation_namespaces')
-      .values([{ name: 'translation' }])
-      .execute();
-
     await queryRunner.createTable(
       new Table({
         name: 'translations',
@@ -75,50 +68,6 @@ export class Migrate implements MigrationInterface {
       }),
       true,
     );
-
-    await await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('translations', ['locale_id', 'namespace_id', 'name', 'value'])
-      .values([
-        {
-          locale_id: 1,
-          namespace_id: 1,
-          name: 'slogan',
-          value: 'Administration Panel',
-        },
-        {
-          locale_id: 1,
-          namespace_id: 1,
-          name: 'en',
-          value: 'English',
-        },
-        {
-          locale_id: 1,
-          namespace_id: 1,
-          name: 'pt',
-          value: 'Portuguese',
-        },
-        {
-          locale_id: 2,
-          namespace_id: 1,
-          name: 'slogan',
-          value: 'Painel de Administração',
-        },
-        {
-          locale_id: 2,
-          namespace_id: 1,
-          name: 'en',
-          value: 'Inglês',
-        },
-        {
-          locale_id: 2,
-          namespace_id: 1,
-          name: 'pt',
-          value: 'Português',
-        },
-      ])
-      .execute();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

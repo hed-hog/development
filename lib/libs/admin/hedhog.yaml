@@ -1,210 +1,1061 @@
 data:
   routes:
-    - url: '/auth/verify'
-      method: 'GET'
-    - url: '/menus/system'
-      method: 'GET'
-    - url: '/menus'
-      method: 'GET'
-    - url: '/menus/:menuId/roles'
-      method: 'GET'
-    - url: '/menus/:menuId/screens'
-      method: 'GET'
-    - url: '/menus/:menuId/roles'
-      method: 'PATCH'
-    - url: '/menus/:menuId/screens'
-      method: 'PATCH'
-    - url: '/menus/:menuId'
-      method: 'GET'
-    - url: '/menus'
-      method: 'POST'
-    - url: '/menus/:menuId'
-      method: 'PATCH'
-    - url: '/menus'
-      method: 'DELETE'
-    - url: '/menus/order'
-      method: 'PATCH'
-    - url: '/roles'
-      method: 'GET'
-    - url: '/roles/:roleId/users'
-      method: 'GET'
-    - url: '/roles/:roleId/menus'
-      method: 'GET'
-    - url: '/roles/:roleId/routes'
-      method: 'GET'
-    - url: '/roles/:roleId/screens'
-      method: 'GET'
-    - url: '/roles/:roleId/users'
-      method: 'PATCH'
-    - url: '/roles/:roleId/menus'
-      method: 'PATCH'
-    - url: '/roles/:roleId/routes'
-      method: 'PATCH'
-    - url: '/roles/:roleId/screens'
-      method: 'PATCH'
-    - url: '/roles/:roleId'
-      method: 'GET'
-    - url: '/roles'
-      method: 'POST'
-    - url: '/roles/:roleId'
-      method: 'PATCH'
-    - url: '/roles'
-      method: 'DELETE'
-    - url: '/routes'
-      method: 'GET'
-    - url: '/routes/:routeId'
-      method: 'GET'
-    - url: '/routes'
-      method: 'POST'
-    - url: '/routes/:routeId'
-      method: 'PATCH'
-    - url: '/routes'
-      method: 'DELETE'
-    - url: '/routes/:routeId/roles'
-      method: 'GET'
-    - url: '/routes/:routeId/roles'
-      method: 'PATCH'
-    - url: '/routes/:routeId/screens'
-      method: 'GET'
-    - url: '/routes/:routeId/screens'
-      method: 'PATCH'
-    - url: '/screens'
-      method: 'GET'
-    - url: '/screens/:screenId/roles'
-      method: 'GET'
-    - url: '/screens/:screenId/routes'
-      method: 'GET'
-    - url: '/screens/:screenId/roles'
-      method: 'PATCH'
-    - url: '/screens/:screenId/routes'
-      method: 'PATCH'
-    - url: '/screens/:screenId'
-      method: 'GET'
-    - url: '/screens'
-      method: 'POST'
-    - url: '/screens/:screenId'
-      method: 'PATCH'
-    - url: '/screens'
-      method: 'DELETE'
-    - url: '/settings'
-      method: 'GET'
-    - url: '/settings/groups/:slug'
-      method: 'GET'
-    - url: '/settings/groups'
-      method: 'GET'
-    - url: '/settings/:settingId'
-      method: 'GET'
-    - url: '/settings'
-      method: 'POST'
-    - url: '/settings/:slug'
-      method: 'PUT'
-    - url: '/settings/:settingId'
-      method: 'PATCH'
-    - url: '/settings'
-      method: 'DELETE'
-    - url: '/users'
-      method: 'GET'
-    - url: '/users/:userId/roles'
-      method: 'GET'
-    - url: '/users/:userId/roles'
-      method: 'PATCH'
-    - url: '/users/:userId'
-      method: 'GET'
-    - url: '/users'
-      method: 'POST'
-    - url: '/users/:userId'
-      method: 'PATCH'
-    - url: '/users'
-      method: 'DELETE'
+    - url: /auth/verify
+      method: GET
+    - url: /menus/system
+      method: GET
+    - url: /menus
+      method: GET
+    - url: /menus/:menuId/roles
+      method: GET
+    - url: /menus/:menuId/screens
+      method: GET
+    - url: /menus/:menuId/roles
+      method: PATCH
+    - url: /menus/:menuId/screens
+      method: PATCH
+    - url: /menus/:menuId
+      method: GET
+    - url: /menus
+      method: POST
+    - url: /menus/:menuId
+      method: PATCH
+    - url: /menus
+      method: DELETE
+    - url: /menus/order
+      method: PATCH
+    - url: /roles
+      method: GET
+    - url: /roles/:roleId/users
+      method: GET
+    - url: /roles/:roleId/menus
+      method: GET
+    - url: /roles/:roleId/routes
+      method: GET
+    - url: /roles/:roleId/screens
+      method: GET
+    - url: /roles/:roleId/users
+      method: PATCH
+    - url: /roles/:roleId/menus
+      method: PATCH
+    - url: /roles/:roleId/routes
+      method: PATCH
+    - url: /roles/:roleId/screens
+      method: PATCH
+    - url: /roles/:roleId
+      method: GET
+    - url: /roles
+      method: POST
+    - url: /roles/:roleId
+      method: PATCH
+    - url: /roles
+      method: DELETE
+    - url: /routes
+      method: GET
+    - url: /routes/:routeId
+      method: GET
+    - url: /routes
+      method: POST
+    - url: /routes/:routeId
+      method: PATCH
+    - url: /routes
+      method: DELETE
+    - url: /routes/:routeId/roles
+      method: GET
+    - url: /routes/:routeId/roles
+      method: PATCH
+    - url: /routes/:routeId/screens
+      method: GET
+    - url: /routes/:routeId/screens
+      method: PATCH
+    - url: /screens
+      method: GET
+    - url: /screens/:screenId/roles
+      method: GET
+    - url: /screens/:screenId/routes
+      method: GET
+    - url: /screens/:screenId/roles
+      method: PATCH
+    - url: /screens/:screenId/routes
+      method: PATCH
+    - url: /screens/:screenId
+      method: GET
+    - url: /screens
+      method: POST
+    - url: /screens/:screenId
+      method: PATCH
+    - url: /screens
+      method: DELETE
+    - url: /settings
+      method: GET
+    - url: /settings/groups/:slug
+      method: GET
+    - url: /settings/groups
+      method: GET
+    - url: /settings/:settingId
+      method: GET
+    - url: /settings
+      method: POST
+    - url: /settings/:slug
+      method: PUT
+    - url: /settings/:settingId
+      method: PATCH
+    - url: /settings
+      method: DELETE
+    - url: /users
+      method: GET
+    - url: /users/:userId/roles
+      method: GET
+    - url: /users/:userId/roles
+      method: PATCH
+    - url: /users/:userId
+      method: GET
+    - url: /users
+      method: POST
+    - url: /users/:userId
+      method: PATCH
+    - url: /users
+      method: DELETE
   menus:
     - menu_id:
-        url: '/management'
-      url: '/management/users'
-      icon: 'users'
+        where:
+          url: /management
+      url: /management/users
+      icon: users
       name:
-        en: 'Users'
-        pt: 'Usuários'
+        en: Users
+        pt: Usuários
+      slug: /management/users
     - menu_id:
-        url: '/management'
-      url: '/management/roles'
-      icon: 'circles'
+        url: /management
+      url: /management/roles
+      icon: circles
       name:
-        en: 'Roles'
-        pt: 'Cargos'
+        en: Roles
+        pt: Cargos
     - menu_id:
-        url: '/management'
-      url: '/management/screens'
-      icon: 'device-tv'
+        url: /management
+      url: /management/screens
+      icon: device-tv
       name:
-        en: 'Screens'
-        pt: 'Telas'
+        en: Screens
+        pt: Telas
     - menu_id:
-        url: '/management'
-      url: '/management/menus'
-      icon: 'menu'
+        url: /management
+      url: /management/menus
+      icon: menu
       name:
-        en: 'Menus'
-        pt: 'Menus'
+        en: Menus
+        pt: Menus
     - menu_id:
-        url: '/management'
-      url: '/management/routes'
-      icon: 'route'
+        url: /management
+      url: /management/routes
+      icon: route
       name:
-        en: 'Routes'
-        pt: 'Rotas'
+        en: Routes
+        pt: Rotas
     - menu_id:
-        url: '/management'
-      url: '/management/settings'
-      icon: 'settings'
+        url: /management
+      url: /management/settings
+      icon: settings
       name:
-        en: 'Settings'
-        pt: 'Configurações'
+        en: Settings
+        pt: Configurações
   screens:
-    - slug: '/management/users'
-      icon: 'users'
+    - slug: /management/users
+      icon: users
       name:
-        en: 'Users'
-        pt: 'Usuários'
+        en: Users
+        pt: Usuários
       description:
-        en: 'Manage users in the system.'
-        pt: 'Gerenciar usuários no sistema.'
-    - slug: '/management/roles'
-      icon: 'circles'
+        en: Manage users in the system.
+        pt: Gerenciar usuários no sistema.
+    - slug: /management/roles
+      icon: circles
       name:
-        en: 'Roles'
-        pt: 'Funções'
+        en: Roles
+        pt: Funções
       description:
-        en: 'Manage roles assigned to users.'
-        pt: 'Gerenciar funções atribuídas a usuários.'
-    - slug: '/management/screens'
-      icon: 'monitor'
+        en: Manage roles assigned to users.
+        pt: Gerenciar funções atribuídas a usuários.
+    - slug: /management/screens
+      icon: monitor
       name:
-        en: 'Screens'
-        pt: 'Telas'
+        en: Screens
+        pt: Telas
       description:
-        en: 'Manage the screens available in the system.'
-        pt: 'Gerenciar as telas disponíveis no sistema.'
-    - slug: '/management/menus'
-      icon: 'menu'
+        en: Manage the screens available in the system.
+        pt: Gerenciar as telas disponíveis no sistema.
+    - slug: /management/menus
+      icon: menu
       name:
-        en: 'Menus'
-        pt: 'Menus'
+        en: Menus
+        pt: Menus
       description:
-        en: 'Manage the menus in the system.'
-        pt: 'Gerenciar os menus no sistema.'
-    - slug: '/management/routes'
-      icon: 'route'
+        en: Manage the menus in the system.
+        pt: Gerenciar os menus no sistema.
+    - slug: /management/routes
+      icon: route
       name:
-        en: 'Routes'
-        pt: 'Rotas'
+        en: Routes
+        pt: Rotas
       description:
-        en: 'Manage routes for navigation within the system.'
-        pt: 'Gerenciar rotas para navegação dentro do sistema.'
-    - slug: '/management/settings'
-      icon: 'settings'
+        en: Manage routes for navigation within the system.
+        pt: Gerenciar rotas para navegação dentro do sistema.
+    - slug: /management/settings
+      icon: settings
       name:
-        en: 'Settings'
-        pt: 'Configurações'
+        en: Settings
+        pt: Configurações
       description:
-        en: 'Manage system settings and configurations.'
-        pt: 'Gerenciar configurações e definições do sistema.'
+        en: Manage system settings and configurations.
+        pt: Gerenciar configurações e definições do sistema.
+  countries:
+    - name:
+        en: Afghanistan
+        pt: Afeganistão
+      code: AFG
+    - name:
+        en: Albania
+        pt: Albânia
+      code: ALB
+    - name:
+        en: Algeria
+        pt: Argélia
+      code: DZA
+    - name:
+        en: Andorra
+        pt: Andorra
+      code: AND
+    - name:
+        en: Angola
+        pt: Angola
+      code: AGO
+    - name:
+        en: Antigua and Barbuda
+        pt: Antígua e Barbuda
+      code: ATG
+    - name:
+        en: Argentina
+        pt: Argentina
+      code: ARG
+    - name:
+        en: Armenia
+        pt: Armênia
+      code: ARM
+    - name:
+        en: Australia
+        pt: Austrália
+      code: AUS
+    - name:
+        en: Austria
+        pt: Áustria
+      code: AUT
+    - name:
+        en: Azerbaijan
+        pt: Azerbaijão
+      code: AZE
+    - name:
+        en: Bahamas
+        pt: Bahamas
+      code: BHS
+    - name:
+        en: Bahrain
+        pt: Bahrein
+      code: BHR
+    - name:
+        en: Bangladesh
+        pt: Bangladesh
+      code: BGD
+    - name:
+        en: Barbados
+        pt: Barbados
+      code: BRB
+    - name:
+        en: Belarus
+        pt: Bielorrússia
+      code: BLR
+    - name:
+        en: Belgium
+        pt: Bélgica
+      code: BEL
+    - name:
+        en: Belize
+        pt: Belize
+      code: BLZ
+    - name:
+        en: Benin
+        pt: Benim
+      code: BEN
+    - name:
+        en: Bhutan
+        pt: Butão
+      code: BTN
+    - name:
+        en: Bolivia
+        pt: Bolívia
+      code: BOL
+    - name:
+        en: Bosnia and Herzegovina
+        pt: Bósnia e Herzegovina
+      code: BIH
+    - name:
+        en: Botswana
+        pt: Botsuana
+      code: BWA
+    - name:
+        en: Brazil
+        pt: Brasil
+      code: BRA
+    - name:
+        en: Brunei Darussalam
+        pt: Brunei
+      code: BRN
+    - name:
+        en: Bulgaria
+        pt: Bulgária
+      code: BGR
+    - name:
+        en: Burkina Faso
+        pt: Burkina Faso
+      code: BFA
+    - name:
+        en: Burundi
+        pt: Burundi
+      code: BDI
+    - name:
+        en: Cabo Verde
+        pt: Cabo Verde
+      code: CPV
+    - name:
+        en: Cambodia
+        pt: Camboja
+      code: KHM
+    - name:
+        en: Cameroon
+        pt: Camarões
+      code: CMR
+    - name:
+        en: Canada
+        pt: Canadá
+      code: CAN
+    - name:
+        en: Central African Republic
+        pt: República Centro-Africana
+      code: CAF
+    - name:
+        en: Chad
+        pt: Chade
+      code: TCD
+    - name:
+        en: Chile
+        pt: Chile
+      code: CHL
+    - name:
+        en: China
+        pt: China
+      code: CHN
+    - name:
+        en: Colombia
+        pt: Colômbia
+      code: COL
+    - name:
+        en: Comoros
+        pt: Comores
+      code: COM
+    - name:
+        en: Congo
+        pt: Congo
+      code: COG
+    - name:
+        en: Congo (Democratic Republic)
+        pt: República Democrática do Congo
+      code: COD
+    - name:
+        en: Costa Rica
+        pt: Costa Rica
+      code: CRI
+    - name:
+        en: Croatia
+        pt: Croácia
+      code: HRV
+    - name:
+        en: Cuba
+        pt: Cuba
+      code: CUB
+    - name:
+        en: Cyprus
+        pt: Chipre
+      code: CYP
+    - name:
+        en: Czech Republic
+        pt: República Tcheca
+      code: CZE
+    - name:
+        en: Denmark
+        pt: Dinamarca
+      code: DNK
+    - name:
+        en: Djibouti
+        pt: Djibouti
+      code: DJI
+    - name:
+        en: Dominica
+        pt: Dominica
+      code: DMA
+    - name:
+        en: Dominican Republic
+        pt: República Dominicana
+      code: DOM
+    - name:
+        en: Ecuador
+        pt: Equador
+      code: ECU
+    - name:
+        en: Egypt
+        pt: Egito
+      code: EGY
+    - name:
+        en: El Salvador
+        pt: El Salvador
+      code: SLV
+    - name:
+        en: Equatorial Guinea
+        pt: Guiné Equatorial
+      code: GNQ
+    - name:
+        en: Eritrea
+        pt: Eritreia
+      code: ERI
+    - name:
+        en: Estonia
+        pt: Estônia
+      code: EST
+    - name:
+        en: Eswatini
+        pt: Essuatíni
+      code: SWZ
+    - name:
+        en: Ethiopia
+        pt: Etiópia
+      code: ETH
+    - name:
+        en: Fiji
+        pt: Fiji
+      code: FJI
+    - name:
+        en: Finland
+        pt: Finlândia
+      code: FIN
+    - name:
+        en: France
+        pt: França
+      code: FRA
+    - name:
+        en: Gabon
+        pt: Gabão
+      code: GAB
+    - name:
+        en: Gambia
+        pt: Gâmbia
+      code: GMB
+    - name:
+        en: Georgia
+        pt: Geórgia
+      code: GEO
+    - name:
+        en: Germany
+        pt: Alemanha
+      code: DEU
+    - name:
+        en: Ghana
+        pt: Gana
+      code: GHA
+    - name:
+        en: Greece
+        pt: Grécia
+      code: GRC
+    - name:
+        en: Grenada
+        pt: Granada
+      code: GRD
+    - name:
+        en: Guatemala
+        pt: Guatemala
+      code: GTM
+    - name:
+        en: Guinea
+        pt: Guiné
+      code: GIN
+    - name:
+        en: Guinea-Bissau
+        pt: Guiné-Bissau
+      code: GNB
+    - name:
+        en: Guyana
+        pt: Guiana
+      code: GUY
+    - name:
+        en: Haiti
+        pt: Haiti
+      code: HTI
+    - name:
+        en: Honduras
+        pt: Honduras
+      code: HND
+    - name:
+        en: Hungary
+        pt: Hungria
+      code: HUN
+    - name:
+        en: Iceland
+        pt: Islândia
+      code: ISL
+    - name:
+        en: India
+        pt: Índia
+      code: IND
+    - name:
+        en: Indonesia
+        pt: Indonésia
+      code: IDN
+    - name:
+        en: Iran
+        pt: Irã
+      code: IRN
+    - name:
+        en: Iraq
+        pt: Iraque
+      code: IRQ
+    - name:
+        en: Ireland
+        pt: Irlanda
+      code: IRL
+    - name:
+        en: Israel
+        pt: Israel
+      code: ISR
+    - name:
+        en: Italy
+        pt: Itália
+      code: ITA
+    - name:
+        en: Jamaica
+        pt: Jamaica
+      code: JAM
+    - name:
+        en: Japan
+        pt: Japão
+      code: JPN
+    - name:
+        en: Jordan
+        pt: Jordânia
+      code: JOR
+    - name:
+        en: Kazakhstan
+        pt: Cazaquistão
+      code: KAZ
+    - name:
+        en: Kenya
+        pt: Quênia
+      code: KEN
+    - name:
+        en: Kiribati
+        pt: Kiribati
+      code: KIR
+    - name:
+        en: Kuwait
+        pt: Kuwait
+      code: KWT
+    - name:
+        en: Kyrgyzstan
+        pt: Quirguistão
+      code: KGZ
+    - name:
+        en: Laos
+        pt: Laos
+      code: LAO
+    - name:
+        en: Latvia
+        pt: Letônia
+      code: LVA
+    - name:
+        en: Lebanon
+        pt: Líbano
+      code: LBN
+    - name:
+        en: Lesotho
+        pt: Lesoto
+      code: LSO
+    - name:
+        en: Liberia
+        pt: Libéria
+      code: LBR
+    - name:
+        en: Libya
+        pt: Líbia
+      code: LBY
+    - name:
+        en: Liechtenstein
+        pt: Liechtenstein
+      code: LIE
+    - name:
+        en: Lithuania
+        pt: Lituânia
+      code: LTU
+    - name:
+        en: Luxembourg
+        pt: Luxemburgo
+      code: LUX
+    - name:
+        en: Madagascar
+        pt: Madagascar
+      code: MDG
+    - name:
+        en: Malawi
+        pt: Maláui
+      code: MWI
+    - name:
+        en: Malaysia
+        pt: Malásia
+      code: MYS
+    - name:
+        en: Maldives
+        pt: Maldivas
+      code: MDV
+    - name:
+        en: Mali
+        pt: Mali
+      code: MLI
+    - name:
+        en: Malta
+        pt: Malta
+      code: MLT
+    - name:
+        en: Marshall Islands
+        pt: Ilhas Marshall
+      code: MHL
+    - name:
+        en: Mauritania
+        pt: Mauritânia
+      code: MRT
+    - name:
+        en: Mauritius
+        pt: Maurício
+      code: MUS
+    - name:
+        en: Mexico
+        pt: México
+      code: MEX
+    - name:
+        en: Micronesia (Federated States)
+        pt: Micronésia (Estados Federados)
+      code: FSM
+    - name:
+        en: Moldova
+        pt: Moldávia
+      code: MDA
+    - name:
+        en: Monaco
+        pt: Mônaco
+      code: MCO
+    - name:
+        en: Mongolia
+        pt: Mongólia
+      code: MNG
+    - name:
+        en: Montenegro
+        pt: Montenegro
+      code: MNE
+    - name:
+        en: Morocco
+        pt: Marrocos
+      code: MAR
+    - name:
+        en: Mozambique
+        pt: Moçambique
+      code: MOZ
+    - name:
+        en: Myanmar
+        pt: Mianmar
+      code: MMR
+    - name:
+        en: Namibia
+        pt: Namíbia
+      code: NAM
+    - name:
+        en: Nauru
+        pt: Nauru
+      code: NRU
+    - name:
+        en: Nepal
+        pt: Nepal
+      code: NPL
+    - name:
+        en: Netherlands
+        pt: Países Baixos
+      code: NLD
+    - name:
+        en: New Zealand
+        pt: Nova Zelândia
+      code: NZL
+    - name:
+        en: Nicaragua
+        pt: Nicarágua
+      code: NIC
+    - name:
+        en: Niger
+        pt: Níger
+      code: NER
+    - name:
+        en: Nigeria
+        pt: Nigéria
+      code: NGA
+    - name:
+        en: North Macedonia
+        pt: Macedônia do Norte
+      code: MKD
+    - name:
+        en: Norway
+        pt: Noruega
+      code: NOR
+    - name:
+        en: Oman
+        pt: Omã
+      code: OMN
+    - name:
+        en: Pakistan
+        pt: Paquistão
+      code: PAK
+    - name:
+        en: Palau
+        pt: Palau
+      code: PLW
+    - name:
+        en: Panama
+        pt: Panamá
+      code: PAN
+    - name:
+        en: Papua New Guinea
+        pt: Papua Nova Guiné
+      code: PNG
+    - name:
+        en: Paraguay
+        pt: Paraguai
+      code: PRY
+    - name:
+        en: Peru
+        pt: Peru
+      code: PER
+    - name:
+        en: Philippines
+        pt: Filipinas
+      code: PHL
+    - name:
+        en: Poland
+        pt: Polônia
+      code: POL
+    - name:
+        en: Portugal
+        pt: Portugal
+      code: PRT
+    - name:
+        en: Qatar
+        pt: Catar
+      code: QAT
+    - name:
+        en: Republic of Korea
+        pt: Coreia do Sul
+      code: KOR
+    - name:
+        en: Romania
+        pt: Romênia
+      code: ROU
+    - name:
+        en: Russian Federation
+        pt: Rússia
+      code: RUS
+    - name:
+        en: Rwanda
+        pt: Ruanda
+      code: RWA
+    - name:
+        en: Saint Kitts and Nevis
+        pt: São Cristóvão e Neves
+      code: KNA
+    - name:
+        en: Saint Lucia
+        pt: Santa Lúcia
+      code: LCA
+    - name:
+        en: Saint Vincent and the Grenadines
+        pt: São Vicente e Granadinas
+      code: VCT
+    - name:
+        en: Samoa
+        pt: Samoa
+      code: WSM
+    - name:
+        en: San Marino
+        pt: San Marino
+      code: SMR
+    - name:
+        en: Sao Tome and Principe
+        pt: São Tomé e Príncipe
+      code: STP
+    - name:
+        en: Saudi Arabia
+        pt: Arábia Saudita
+      code: SAU
+    - name:
+        en: Senegal
+        pt: Senegal
+      code: SEN
+    - name:
+        en: Serbia
+        pt: Sérvia
+      code: SRB
+    - name:
+        en: Seychelles
+        pt: Seicheles
+      code: SYC
+    - name:
+        en: Sierra Leone
+        pt: Serra Leoa
+      code: SLE
+    - name:
+        en: Singapore
+        pt: Singapura
+      code: SGP
+    - name:
+        en: Slovakia
+        pt: Eslováquia
+      code: SVK
+    - name:
+        en: Slovenia
+        pt: Eslovênia
+      code: SVN
+    - name:
+        en: Solomon Islands
+        pt: Ilhas Salomão
+      code: SLB
+    - name:
+        en: Somalia
+        pt: Somália
+      code: SOM
+    - name:
+        en: South Africa
+        pt: África do Sul
+      code: ZAF
+    - name:
+        en: Spain
+        pt: Espanha
+      code: ESP
+    - name:
+        en: Sri Lanka
+        pt: Sri Lanka
+      code: LKA
+    - name:
+        en: Sudan
+        pt: Sudão
+      code: SDN
+    - name:
+        en: Suriname
+        pt: Suriname
+      code: SUR
+    - name:
+        en: Sweden
+        pt: Suécia
+      code: SWE
+    - name:
+        en: Switzerland
+        pt: Suíça
+      code: CHE
+    - name:
+        en: Syrian Arab Republic
+        pt: Síria
+      code: SYR
+    - name:
+        en: Tajikistan
+        pt: Tadjiquistão
+      code: TJK
+    - name:
+        en: Thailand
+        pt: Tailândia
+      code: THA
+    - name:
+        en: Timor-Leste
+        pt: Timor-Leste
+      code: TLS
+    - name:
+        en: Togo
+        pt: Togo
+      code: TGO
+    - name:
+        en: Tonga
+        pt: Tonga
+      code: TON
+    - name:
+        en: Trinidad and Tobago
+        pt: Trinidad e Tobago
+      code: TTO
+    - name:
+        en: Tunisia
+        pt: Tunísia
+      code: TUN
+    - name:
+        en: Turkey
+        pt: Turquia
+      code: TUR
+    - name:
+        en: Turkmenistan
+        pt: Turcomenistão
+      code: TKM
+    - name:
+        en: Tuvalu
+        pt: Tuvalu
+      code: TUV
+    - name:
+        en: Uganda
+        pt: Uganda
+      code: UGA
+    - name:
+        en: Ukraine
+        pt: Ucrânia
+      code: UKR
+    - name:
+        en: United Arab Emirates
+        pt: Emirados Árabes Unidos
+      code: ARE
+    - name:
+        en: United Kingdom
+        pt: Reino Unido
+      code: GBR
+    - name:
+        en: United Republic of Tanzania
+        pt: Tanzânia
+      code: TZA
+    - name:
+        en: United States of America
+        pt: Estados Unidos
+      code: USA
+    - name:
+        en: Uruguay
+        pt: Uruguai
+      code: URY
+    - name:
+        en: Uzbekistan
+        pt: Uzbequistão
+      code: UZB
+    - name:
+        en: Vanuatu
+        pt: Vanuatu
+      code: VUT
+    - name:
+        en: Venezuela
+        pt: Venezuela
+      code: VEN
+    - name:
+        en: Viet Nam
+        pt: Vietnã
+      code: VNM
+    - name:
+        en: Yemen
+        pt: Iémen
+      code: YEM
+    - name:
+        en: Zambia
+        pt: Zâmbia
+      code: ZMB
+    - name:
+        en: Zimbabwe
+        pt: Zimbábue
+      code: ZWE
+  multifactors:
+    - name:
+        en: Email
+        pt: E-mail
+      slug: email
+    - name:
+        en: Authenticator
+        pt: Autenticador
+      slug: authenticator
+  users:
+    - name:
+        en: Administrator
+        pt: Administrador
+      email: root@hedhog.com
+      password: changeme
+    - name:
+        en: User
+        pt: Usuário
+      email: user@hedhog.com
+      password: changeme
+  roles:
+    - slug: admin
+      name:
+        en: Administrator
+        pt: Administrador
+      description:
+        en: System administrator with full access.
+        pt: Administrador do sistema com acesso total.
+      relations:
+        - role_users:
+            - email: root@hedhog.com
+    - slug: screen-manager
+      name:
+        en: Screen Manager
+        pt: Gerente de Telas
+      description:
+        en: Manage screens in the system.
+        pt: Gerenciar telas no sistema.
+      relations:
+        - users:
+            - email: user@hedhog.com
+    - slug: admin-access
+      name:
+        en: Admin Access
+        pt: Acesso de Administrador
+      description:
+        en: Access to administrative features.
+        pt: Acesso a funcionalidades administrativas.
+      relations:
+        - users:
+            - email: root@hedhog.com
+            - email: user@hedhog.com
+  locales:
+    - code: en
+      region: US
+      country_id:
+        code: USA
+    - code: pt
+      region: BR
+      country_id:
+        code: BRA
+  translations:
+    - name: translation
+      translations:
+        - locale_id:
+            code: en
+          name: slogan
+          value: Administration Panel
+        - locale_id:
+            code: pt
+          name: slogan
+          value: Painel de Administração
+        - locale_id:
+            code: en
+          name: en
+          value: English
+        - locale_id:
+            code: en
+          name: pt
+          value: Portuguese
+        - locale_id:
+            code: pt
+          name: en
+          value: Inglês
+        - locale_id:
+            code: pt
+          name: pt
+          value: Português

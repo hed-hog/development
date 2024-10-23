@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migrate implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    /*
     const groups = [
       {
         slug: 'file-storage',
@@ -295,6 +296,7 @@ export class Migrate implements MigrationInterface {
         })
         .execute();
     }
+        */
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

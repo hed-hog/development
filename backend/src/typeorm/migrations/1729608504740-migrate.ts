@@ -4,9 +4,9 @@ import {
   Table,
   TableForeignKey,
 } from "typeorm";
-import { idColumn, timestampColumn } from "@hedhog/utils";
+import { foreignColumn, idColumn, timestampColumn } from "@hedhog/utils";
 
-export class Migrate1729113244326 implements MigrationInterface {
+export class Migrate1729608504740 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await await queryRunner.createTable(
       new Table({
@@ -37,18 +37,8 @@ export class Migrate1729113244326 implements MigrationInterface {
         name: "translations",
         columns: [
           idColumn(),
-          {
-            name: "locale_id",
-            type: "int",
-            isNullable: false,
-            unsigned: true,
-          },
-          {
-            name: "namespace_id",
-            type: "int",
-            isNullable: false,
-            unsigned: true,
-          },
+          foreignColumn({ name: "locale_id" }),
+          foreignColumn({ name: "namespace_id" }),
           {
             name: "name",
             type: "varchar",
@@ -62,9 +52,10 @@ export class Migrate1729113244326 implements MigrationInterface {
           timestampColumn(),
           timestampColumn("updated_at"),
         ],
-        uniques: [
+        indices: [
           {
             columnNames: ["locale_id", "namespace_id", "name"],
+            isUnique: true,
           },
         ],
         foreignKeys: [

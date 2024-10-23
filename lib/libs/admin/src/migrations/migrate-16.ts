@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
+    /*
     const routes = await queryRunner.manager
       .createQueryBuilder()
       .select()
@@ -48,6 +49,7 @@ export class Migrate implements MigrationInterface {
         })
         .execute();
     }
+        */
   }
 
   async down(queryRunner: QueryRunner) {
