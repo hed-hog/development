@@ -127,35 +127,40 @@ data:
         pt: Usuários
       slug: /management/users
     - menu_id:
-        url: /management
+        where:
+          url: /management
       url: /management/roles
       icon: circles
       name:
         en: Roles
         pt: Cargos
     - menu_id:
-        url: /management
+        where:
+          url: /management
       url: /management/screens
       icon: device-tv
       name:
         en: Screens
         pt: Telas
     - menu_id:
-        url: /management
+        where:
+          url: /management
       url: /management/menus
       icon: menu
       name:
         en: Menus
         pt: Menus
     - menu_id:
-        url: /management
+        where:
+          url: /management
       url: /management/routes
       icon: route
       name:
         en: Routes
         pt: Rotas
     - menu_id:
-        url: /management
+        where:
+          url: /management
       url: /management/settings
       icon: settings
       name:
