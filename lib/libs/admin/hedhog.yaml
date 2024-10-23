@@ -1001,7 +1001,8 @@ data:
         pt: Administrador do sistema com acesso total.
       relations:
         - role_users:
-            - email: root@hedhog.com
+            - where:
+                email: root@hedhog.com
     - slug: screen-manager
       name:
         en: Screen Manager
