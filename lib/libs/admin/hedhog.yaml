@@ -1042,26 +1042,32 @@ data:
     - name: translation
       translations:
         - locale_id:
-            code: en
+            where:
+              code: en
           name: slogan
           value: Administration Panel
         - locale_id:
+            where:
             code: pt
           name: slogan
           value: Painel de Administração
         - locale_id:
-            code: en
+            where:
+              code: en
           name: en
           value: English
         - locale_id:
-            code: en
+            where:
+              code: en
           name: pt
           value: Portuguese
         - locale_id:
-            code: pt
+            where:
+              code: pt
           name: en
           value: Inglês
         - locale_id:
-            code: pt
+            where:
+              code: pt
           name: pt
           value: Português
