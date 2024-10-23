@@ -1033,11 +1033,13 @@ data:
     - code: en
       region: US
       country_id:
-        code: USA
+        where:
+          code: USA
     - code: pt
       region: BR
       country_id:
-        code: BRA
+        where:
+          code: BRA
   translations:
     - name: translation
       translations:
