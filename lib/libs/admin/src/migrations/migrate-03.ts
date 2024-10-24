@@ -5,7 +5,6 @@ import {
   TableForeignKey,
 } from 'typeorm';
 import { foreignColumn, idColumn, timestampColumn } from '@hedhog/utils';
-import * as bcrypt from 'bcrypt';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {

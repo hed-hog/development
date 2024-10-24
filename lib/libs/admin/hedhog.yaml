@@ -117,9 +117,21 @@ data:
     - url: /users
       method: DELETE
   menus:
+    - url: /
+      icon: dashboard
+      name:
+        en: Dashboard
+        pt: Dashboard
+      slug: /
+    - url: /management
+      icon: management
+      name:
+        en: Management
+        pt: Gerenciamento
+      slug: /management
     - menu_id:
         where:
-          url: /management
+          slug: /management
       url: /management/users
       icon: users
       name:
@@ -128,44 +140,49 @@ data:
       slug: /management/users
     - menu_id:
         where:
-          url: /management
+          slug: /management
       url: /management/roles
       icon: circles
       name:
         en: Roles
         pt: Cargos
+      slug: /management/roles
     - menu_id:
         where:
-          url: /management
+          slug: /management
       url: /management/screens
       icon: device-tv
       name:
         en: Screens
         pt: Telas
+      slug: /management/screens
     - menu_id:
         where:
-          url: /management
+          slug: /management
       url: /management/menus
       icon: menu
       name:
         en: Menus
         pt: Menus
+      slug: /management/menus
     - menu_id:
         where:
-          url: /management
+          slug: /management
       url: /management/routes
       icon: route
       name:
         en: Routes
         pt: Rotas
+      slug: /management/routes
     - menu_id:
         where:
-          url: /management
+          slug: /management
       url: /management/settings
       icon: settings
       name:
         en: Settings
         pt: Configurações
+      slug: /management/settings
   screens:
     - slug: /management/users
       icon: users
@@ -175,6 +192,11 @@ data:
       description:
         en: Manage users in the system.
         pt: Gerenciar usuários no sistema.
+      relations:
+        routes:
+          - where:
+              url:
+                like: /users%
     - slug: /management/roles
       icon: circles
       name:
@@ -183,6 +205,11 @@ data:
       description:
         en: Manage roles assigned to users.
         pt: Gerenciar funções atribuídas a usuários.
+      relations:
+        routes:
+          - where:
+              url:
+                like: /roles%
     - slug: /management/screens
       icon: monitor
       name:
@@ -191,6 +218,11 @@ data:
       description:
         en: Manage the screens available in the system.
         pt: Gerenciar as telas disponíveis no sistema.
+      relations:
+        routes:
+          - where:
+              url:
+                like: /screens%
     - slug: /management/menus
       icon: menu
       name:
@@ -199,6 +231,11 @@ data:
       description:
         en: Manage the menus in the system.
         pt: Gerenciar os menus no sistema.
+      relations:
+        routes:
+          - where:
+              url:
+                like: /menus%
     - slug: /management/routes
       icon: route
       name:
@@ -207,6 +244,11 @@ data:
       description:
         en: Manage routes for navigation within the system.
         pt: Gerenciar rotas para navegação dentro do sistema.
+      relations:
+        routes:
+          - where:
+              url:
+                like: /routes%
     - slug: /management/settings
       icon: settings
       name:
@@ -215,6 +257,11 @@ data:
       description:
         en: Manage system settings and configurations.
         pt: Gerenciar configurações e definições do sistema.
+      relations:
+        routes:
+          - where:
+              url:
+                like: /settings%
   countries:
     - name:
         en: Afghanistan
@@ -986,14 +1033,10 @@ data:
         pt: Autenticador
       slug: authenticator
   users:
-    - name:
-        en: Administrator
-        pt: Administrador
+    - name: Administrator
       email: root@hedhog.com
       password: changeme
-    - name:
-        en: User
-        pt: Usuário
+    - name: User
       email: user@hedhog.com
       password: changeme
   roles:
@@ -1005,9 +1048,21 @@ data:
         en: System administrator with full access.
         pt: Administrador do sistema com acesso total.
       relations:
-        - role_users:
-            - where:
-                email: root@hedhog.com
+        users:
+          - where:
+              email: root@hedhog.com
+        menus:
+          - where:
+              id:
+                gte: 0
+        routes:
+          - where:
+              id:
+                gte: 0
+        screens:
+          - where:
+              id:
+                gte: 0
     - slug: screen-manager
       name:
         en: Screen Manager
@@ -1016,8 +1071,16 @@ data:
         en: Manage screens in the system.
         pt: Gerenciar telas no sistema.
       relations:
-        - users:
-            - email: user@hedhog.com
+        users:
+          - where:
+              email: user@hedhog.com
+        routes:
+          - where:
+              url:
+                like: /screens%
+        menus:
+          - where:
+              slug: /
     - slug: admin-access
       name:
         en: Admin Access
@@ -1026,50 +1089,229 @@ data:
         en: Access to administrative features.
         pt: Acesso a funcionalidades administrativas.
       relations:
-        - users:
-            - email: root@hedhog.com
-            - email: user@hedhog.com
+        users:
+          - where:
+              email: root@hedhog.com
+          - where:
+              email: user@hedhog.com
+        routes:
+          - where:
+              method: GET
+              url:
+                in:
+                  - /menus/system
+                  - /auth/verify
+                  - /settings/groups/:slug
+                  - /settings/groups
+          - where:
+              method: PUT
+              url:
+                in:
+                  - /settings/:slug
   locales:
     - code: en
       region: US
-      country_id:
-        where:
-          code: USA
     - code: pt
       region: BR
-      country_id:
-        where:
-          code: BRA
-  translations:
+    - code: fr
+      region: FR
+  translation_namespaces:
     - name: translation
-      translations:
-        - locale_id:
-            where:
-              code: en
-          name: slogan
-          value: Administration Panel
-        - locale_id:
-            where:
-            code: pt
-          name: slogan
-          value: Painel de Administração
-        - locale_id:
-            where:
-              code: en
-          name: en
-          value: English
-        - locale_id:
-            where:
-              code: en
-          name: pt
-          value: Portuguese
-        - locale_id:
-            where:
-              code: pt
-          name: en
-          value: Inglês
-        - locale_id:
-            where:
-              code: pt
-          name: pt
-          value: Português
+      relations:
+        translations:
+          - locale_id:
+              where:
+                code: en
+            name: slogan
+            value: Administration Panel
+          - locale_id:
+              where:
+                code: pt
+            name: slogan
+            value: Painel de Administração
+          - locale_id:
+              where:
+                code: en
+            name: en
+            value: English
+          - locale_id:
+              where:
+                code: en
+            name: pt
+            value: Portuguese
+          - locale_id:
+              where:
+                code: pt
+            name: en
+            value: Inglês
+          - locale_id:
+              where:
+                code: pt
+            name: pt
+            value: Português
+  setting_groups:
+    - slug: file-storage
+      icon: folder
+      name:
+        en: File Storage
+        pt: Armazenamento de Arquivos
+      description:
+        en: Configure the file storage settings.
+        pt: Configurar as definições de armazenamento de arquivos.
+      relations:
+        settings:
+          - slug: storage
+            type: string
+            name:
+              en: Storage Provider
+              pt: Provedor de Armazenamento
+            description:
+              en: The storage to use
+              pt: O armazenamento a utilizar
+            value: local
+          - slug: storage-local-path
+            type: string
+            name:
+              en: Local Path
+              pt: Caminho Local
+            description:
+              en: The local path to store files
+              pt: O caminho local para armazenar arquivos
+            value: storage
+          - slug: storage-s3-key
+            type: string
+            name:
+              en: S3 Key
+              pt: Chave S3
+            description:
+              en: The S3 key
+              pt: A chave S3
+            value: ''
+          - slug: storage-s3-secret
+            type: string
+            name:
+              en: S3 Secret
+              pt: Segredo S3
+            description:
+              en: The S3 secret
+              pt: O segredo S3
+            value: ''
+          - slug: storage-s3-region
+            type: string
+            name:
+              en: S3 Region
+              pt: Região S3
+            description:
+              en: The S3 region
+              pt: A região S3
+            value: ''
+          - slug: storage-s3-bucket
+            type: string
+            name:
+              en: S3 Bucket
+              pt: Bucket S3
+            description:
+              en: The S3 bucket
+              pt: O bucket S3
+            value: ''
+    - slug: localization
+      icon: world
+      name:
+        en: Localization
+        pt: Localização
+      description:
+        en: Configure the localization settings.
+        pt: Configurar as definições de localização.
+      relations:
+        settings:
+          - slug: language
+            type: string
+            name:
+              en: Default Language
+              pt: Idioma Padrão
+            description:
+              en: The system default language, each user can have their own preferred language
+              pt: O idioma padrão do sistema, cada usuário pode ter o seu próprio idioma preferido
+            value: en
+          - slug: timezone
+            type: string
+            name:
+              en: Timezone
+              pt: Fuso Horário
+            description:
+              en: The timezone to use
+              pt: O fuso horário a utilizar
+            value: UTC
+    - slug: appearance
+      icon: palette
+      name:
+        en: Appearance
+        pt: Aparência
+      description:
+        en: Configure the appearance settings.
+        pt: Configurar as definições de aparência.
+      relations:
+        settings:
+          - slug: primary
+            type: string
+            name:
+              en: Primary Color
+              pt: Cor Primária
+            description:
+              en: The primary color to use
+              pt: A cor primária a utilizar
+            value: '#000000'
+          - slug: secondary
+            type: string
+            name:
+              en: Secondary Color
+              pt: Cor Secundária
+            description:
+              en: The secondary color to use
+              pt: A cor secundária a utilizar
+            value: '#FFFFFF'
+          - slug: accent
+            type: string
+            name:
+              en: Accent Color
+              pt: Cor de Realce
+            description:
+              en: The accent color to use
+              pt: A cor de realce a utilizar
+            value: '#FF0000'
+          - slug: background
+            type: string
+            name:
+              en: Background Color
+              pt: Cor de Fundo
+            description:
+              en: The background color to use
+              pt: A cor de fundo a utilizar
+            value: '#FFFFFF'
+          - slug: muted
+            type: string
+            name:
+              en: Muted Color
+              pt: Cor Suave
+            description:
+              en: The muted color to use
+              pt: A cor suave a utilizar
+            value: '#F0F0F0'
+          - slug: radius
+            type: string
+            name:
+              en: Radius
+              pt: Raio
+            description:
+              en: The radius to use
+              pt: O raio a utilizar
+            value: '4px'
+          - slug: font
+            type: string
+            name:
+              en: Font Family
+              pt: Família de Fontes
+            description:
+              en: The font to use
+              pt: A fonte a utilizar
+            value: 'Arial, sans-serif'

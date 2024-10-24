@@ -9,12 +9,6 @@ export class Migrate implements MigrationInterface {
         columns: [
           idColumn(),
           {
-            name: 'name',
-            type: 'varchar',
-            length: '50',
-            isNullable: false,
-          },
-          {
             name: 'code',
             type: 'char',
             length: '3',
@@ -32,7 +26,6 @@ export class Migrate implements MigrationInterface {
         name: 'locales',
         columns: [
           idColumn(),
-          foreignColumn({ name: 'country_id' }),
           {
             name: 'code',
             type: 'char',
@@ -53,11 +46,33 @@ export class Migrate implements MigrationInterface {
           timestampColumn(),
           timestampColumn('updated_at'),
         ],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'country_translations',
+        columns: [
+          foreignColumn({ name: 'country_id', isPrimary: true }),
+          foreignColumn({ name: 'locale_id', isPrimary: true }),
+          {
+            name: 'name',
+            type: 'varchar',
+          },
+          timestampColumn(),
+          timestampColumn('updated_at'),
+        ],
         foreignKeys: [
           {
             columnNames: ['country_id'],
             referencedColumnNames: ['id'],
             referencedTableName: 'countries',
+            onDelete: 'CASCADE',
+          },
+          {
+            columnNames: ['locale_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'locales',
             onDelete: 'CASCADE',
           },
         ],

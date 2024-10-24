@@ -40,6 +40,14 @@ export class Migrate implements MigrationInterface {
           timestampColumn('updated_at'),
         ],
         indices: [{ columnNames: ['slug'], isUnique: true }],
+        foreignKeys: [
+          {
+            columnNames: ['menu_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'menus',
+            onDelete: 'CASCADE',
+          },
+        ],
       }),
     );
 
