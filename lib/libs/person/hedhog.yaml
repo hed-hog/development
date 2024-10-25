@@ -381,11 +381,11 @@ tables:
       - type: created_at
       - type: updated_at
     indices:
-      columns:
-        - person_id
-        - type_id
-        - value
-      isUnique: true
+      - columns:
+          - person_id
+          - type_id
+          - value
+        isUnique: true
     ifNotExists: true
   person_contact_types:
     columns:
@@ -438,11 +438,11 @@ tables:
       - type: created_at
       - type: updated_at
     indices:
-      columns:
-        - person_id
-        - type_id
-        - value
-      isUnique: true
+      - columns:
+          - person_id
+          - type_id
+          - value
+        isUnique: true
     ifNotExists: true
   person_address_types:
     columns:
@@ -573,10 +573,10 @@ tables:
       - type: created_at
       - type: updated_at
     indices:
-      columns:
-        - person_id
-        - name
-      isUnique: true
+      - columns:
+          - person_id
+          - name
+        isUnique: true
     ifNotExists: true
   person_custom_translations:
     columns:
