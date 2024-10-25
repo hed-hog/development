@@ -1035,10 +1035,12 @@ data:
   users:
     - name: Administrator
       email: root@hedhog.com
-      password: changeme
+      password:
+        hash: changeme
     - name: User
       email: user@hedhog.com
-      password: changeme
+      password:
+        hash: changeme
   roles:
     - slug: admin
       name:
