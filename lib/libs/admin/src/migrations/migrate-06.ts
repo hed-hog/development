@@ -1,7 +1,5 @@
 import { idColumn, timestampColumn } from '@hedhog/utils';
-
 import { MigrationInterface, QueryRunner, Table, TableUnique } from 'typeorm';
-import { Menu } from '../entities';
 
 export class Migrate implements MigrationInterface {
   async up(queryRunner: QueryRunner) {

@@ -1317,3 +1317,490 @@ data:
               en: The font to use
               pt: A fonte a utilizar
             value: 'Arial, sans-serif'
+
+tables:
+  countries:
+    columns:
+      - type: pk
+      - name: code
+        type: char
+        length: 3
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  locales:
+    columns:
+      - type: pk
+      - name: code
+        type: char
+        length: 2
+      - name: region
+        type: char
+        length: 2
+      - name: enabled
+        type: boolean
+        default: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  country_translations:
+    columns:
+      - name: country_id
+        type: fk
+        isPrimary: true
+        references:
+          table: countries
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        isPrimary: true
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  translation_namespaces:
+    columns:
+      - type: pk
+      - name: name
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  translations:
+    columns:
+      - type: pk
+      - name: locale_id
+        type: fk
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: namespace_id
+        type: fk
+        references:
+          table: translation_namespaces
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - name: value
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns:
+          - locale_id
+          - namespace_id
+          - name
+        isUnique: true
+    ifNotExists: true
+
+  multifactors:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  multifactor_translations:
+    columns:
+      - name: multifactor_id
+        type: fk
+        isPrimary: true
+        references:
+          table: multifactors
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  users:
+    columns:
+      - type: pk
+      - name: multifactor_id
+        type: fk
+        isNullable: true
+        references:
+          table: multifactors
+          column: id
+          onDelete: SET NULL
+      - name: name
+      - name: email
+      - name: password
+      - name: code
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  screens:
+    columns:
+      - type: pk
+      - type: slug
+      - name: icon
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  screen_translations:
+    columns:
+      - name: screen_id
+        type: fk
+        isPrimary: true
+        references:
+          table: screens
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - name: description
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  menus:
+    columns:
+      - type: pk
+      - name: menu_id
+        type: fk
+        isNullable: true
+        references:
+          table: menus
+          column: id
+          onDelete: CASCADE
+      - type: slug
+      - name: url
+        isNullable: true
+      - name: order
+        type: int
+        default: 0
+        unsigned: true
+      - name: icon
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  menu_translations:
+    columns:
+      - name: menu_id
+        type: fk
+        isPrimary: true
+        references:
+          table: menus
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  menu_screens:
+    columns:
+      - name: menu_id
+        type: fk
+        isPrimary: true
+        references:
+          table: menus
+          column: id
+          onDelete: CASCADE
+      - name: screen_id
+        type: fk
+        isPrimary: true
+        references:
+          table: screens
+          column: id
+          onDelete: CASCADE
+    ifNotExists: true
+
+  routes:
+    columns:
+      - type: pk
+      - name: url
+      - name: method
+        type: enum
+        enum:
+          - GET
+          - POST
+          - PATCH
+          - DELETE
+          - PUT
+          - OPTIONS
+          - HEAD
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns: ['url', 'method']
+        isUnique: true
+    ifNotExists: true
+
+  roles:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  role_translations:
+    columns:
+      - name: role_id
+        type: fk
+        isPrimary: true
+        references:
+          table: roles
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - name: description
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  role_menus:
+    columns:
+      - name: role_id
+        type: fk
+        isPrimary: true
+        references:
+          table: roles
+          column: id
+          onDelete: CASCADE
+      - name: menu_id
+        type: fk
+        isPrimary: true
+        references:
+          table: menus
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  route_screens:
+    columns:
+      - name: route_id
+        type: fk
+        isPrimary: true
+        references:
+          table: routes
+          column: id
+          onDelete: CASCADE
+      - name: screen_id
+        type: fk
+        isPrimary: true
+        references:
+          table: screens
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  role_screens:
+    columns:
+      - name: role_id
+        type: fk
+        isPrimary: true
+        references:
+          table: roles
+          column: id
+          onDelete: CASCADE
+      - name: screen_id
+        type: fk
+        isPrimary: true
+        references:
+          table: screens
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  role_users:
+    columns:
+      - name: role_id
+        type: fk
+        isPrimary: true
+        references:
+          table: roles
+          column: id
+          onDelete: CASCADE
+      - name: user_id
+        type: fk
+        isPrimary: true
+        references:
+          table: users
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  role_routes:
+    columns:
+      - name: role_id
+        type: fk
+        isPrimary: true
+        references:
+          table: roles
+          column: id
+          onDelete: CASCADE
+      - name: route_id
+        type: fk
+        isPrimary: true
+        references:
+          table: routes
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  setting_groups:
+    columns:
+      - type: pk
+      - name: icon
+        length: 31
+      - type: slug
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  setting_group_translations:
+    columns:
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: group_id
+        type: fk
+        isPrimary: true
+        references:
+          table: setting_groups
+          column: id
+          onDelete: CASCADE
+      - name: name
+        length: 63
+      - name: description
+        length: 255
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  settings:
+    columns:
+      - type: pk
+      - name: group_id
+        type: fk
+        references:
+          table: setting_groups
+          column: id
+          onDelete: CASCADE
+      - type: slug
+      - name: type
+        type: enum
+        enum:
+          - string
+          - number
+          - boolean
+          - json
+        default: string
+      - name: value
+        length: 1023
+        isNullable: true
+      - name: userOverride
+        type: boolean
+        default: false
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  setting_translations:
+    columns:
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: setting_id
+        type: fk
+        isPrimary: true
+        references:
+          table: settings
+          column: id
+          onDelete: CASCADE
+      - name: description
+        length: 255
+        isNullable: true
+      - name: name
+        length: 63
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  setting_users:
+    columns:
+      - name: user_id
+        type: fk
+        isPrimary: true
+        references:
+          table: users
+          column: id
+          onDelete: CASCADE
+      - name: setting_id
+        type: fk
+        isPrimary: true
+        references:
+          table: settings
+          column: id
+          onDelete: CASCADE
+      - name: value
+        length: 1023
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true

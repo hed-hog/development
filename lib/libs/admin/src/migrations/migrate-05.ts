@@ -5,7 +5,6 @@ import {
   TableForeignKey,
 } from 'typeorm';
 import { foreignColumn, idColumn, timestampColumn } from '@hedhog/utils';
-import { Menu } from '../entities';
 
 export class Migrate implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
