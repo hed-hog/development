@@ -575,7 +575,7 @@ tables:
     indices:
       - columns:
           - person_id
-          - name
+          - type_id
         isUnique: true
     ifNotExists: true
   person_custom_translations:
