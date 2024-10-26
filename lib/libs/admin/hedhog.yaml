@@ -1476,10 +1476,7 @@ tables:
       - type: slug
       - name: url
         isNullable: true
-      - name: order
-        type: int
-        default: 0
-        unsigned: true
+      - type: order
       - name: icon
         isNullable: true
       - type: created_at

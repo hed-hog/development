@@ -321,6 +321,12 @@ tables:
   person_document_types:
     columns:
       - type: pk
+      - type: fk
+        name: country_id
+        references:
+          table: countries
+          column: id
+          onDelete: RESTRICT
       - type: slug
       - type: created_at
       - type: updated_at
