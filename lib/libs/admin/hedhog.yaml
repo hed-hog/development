@@ -1115,8 +1115,6 @@ data:
       region: US
     - code: pt
       region: BR
-    - code: fr
-      region: FR
   translation_namespaces:
     - name: translation
       relations:
@@ -1339,6 +1337,7 @@ tables:
           column: id
           onDelete: CASCADE
       - name: locale_id
+        type: fk
         isPrimary: true
         references:
           table: locales
