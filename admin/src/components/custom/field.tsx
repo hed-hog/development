@@ -110,7 +110,7 @@ export default function Field(props: FieldProps) {
             required={props.required}
             type={props.type}
             value={value || ''}
-            onChange={props.onChange}
+            onChange={(event) => props.onChange(event.target.value)}
           />
         </FormControl>
       )

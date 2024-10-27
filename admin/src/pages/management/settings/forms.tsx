@@ -1,24 +1,11 @@
-import Field from '@/components/custom/field'
 import SettingLanguage from '@/components/custom/setting-language'
 import SettingTimezone from '@/components/custom/setting-timezone'
 import { Skeleton } from '@/components/ui/skeleton'
-import { EnumFieldType } from '@/enums/EnumFieldType'
 import { useSettingsFromGroup } from '@/features/settings'
 import { useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import { Fragment } from 'react'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
-import { FormPanel } from '@/components/custom/form-panel'
 import SettingColor from '@/components/custom/setting-color'
+import SettingText from '@/components/custom/setting-text'
 
 interface SettingItem {
   slug: string
@@ -40,7 +27,7 @@ const getComponentFromSlug = (item: SettingItem) => {
     case 'muted':
       return <SettingColor key={key} setting={item} />
     default:
-      return <Fragment key={key} />
+      return <SettingText key={key} setting={item} />
   }
 }
 

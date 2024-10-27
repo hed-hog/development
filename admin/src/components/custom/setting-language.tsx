@@ -38,13 +38,19 @@ const SettingLanguage = ({ setting }: SettingLanguageProps) => {
 
   const onChange = useCallback(
     (value: string) => {
-      setValue(value)
-      mutateAsync({
-        id: setting.id,
-        data: {
+      if (value !== setting.value) {
+        console.log('save LANGUAGE', {
           value,
-        },
-      }).then(() => i18n.changeLanguage(value))
+          setting,
+        })
+        setValue(value)
+        mutateAsync({
+          id: setting.id,
+          data: {
+            value,
+          },
+        }).then(() => i18n.changeLanguage(value))
+      }
     },
     [setting]
   )
@@ -68,7 +74,7 @@ const SettingLanguage = ({ setting }: SettingLanguageProps) => {
           fields={[
             {
               type: EnumFieldType.SELECT,
-              name: 'language',
+              name: setting.slug,
               label: {
                 text: setting.name,
               },

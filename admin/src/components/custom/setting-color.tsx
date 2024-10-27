@@ -20,13 +20,19 @@ const SettingColor = ({ setting }: SettingColorProps) => {
 
   const onChange = useCallback(
     (value: string) => {
-      setValue(value)
-      mutateAsync({
-        id: setting.id,
-        data: {
+      if (value !== setting.value) {
+        console.log('save COLOR', {
           value,
-        },
-      })
+          setting,
+        })
+        setValue(value)
+        mutateAsync({
+          id: setting.id,
+          data: {
+            value,
+          },
+        })
+      }
     },
     [setting]
   )
@@ -46,7 +52,7 @@ const SettingColor = ({ setting }: SettingColorProps) => {
           fields={[
             {
               type: EnumFieldType.COLOR,
-              name: 'Color',
+              name: setting.slug,
               label: {
                 text: setting.name,
               },

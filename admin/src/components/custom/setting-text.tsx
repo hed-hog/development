@@ -1,45 +1,53 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FormPanel } from './form-panel'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useLocalesTranslations } from '@/features/locales/api/handlers'
 import { useEditSetting } from '@/features/settings'
-import { timezone } from '@/data/timezone.json'
+import { useDebounceValue } from 'usehooks-ts'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 
-type SettingTimezoneProps = {
+type SettingTextProps = {
   setting: any
 }
 
-const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
+const SettingText = ({ setting }: SettingTextProps) => {
   const { mutateAsync } = useEditSetting()
   const { isLoading } = useLocalesTranslations()
   const form = useForm<FieldValues>({
-    defaultValues: {},
+    defaultValues: {
+      [setting.slug]: setting.value,
+    },
     mode: 'onChange',
   })
-  const [options] = React.useState<any[]>(
-    timezone.map((item) => ({ value: item, label: item }))
+  const [valueFinal, setValueFinal] = useDebounceValue<string>(
+    setting.value,
+    500
   )
   const [value, setValue] = useState<string>(setting.value)
 
   const onChange = useCallback(
     (value: string) => {
-      if (value !== setting.value) {
-        console.log('save TIMEZONE', {
-          value,
-          setting,
-        })
-        setValue(value)
-        mutateAsync({
-          id: setting.id,
-          data: {
-            value,
-          },
-        })
-      }
+      setValue(value)
+      setValueFinal(value)
     },
     [setting]
   )
+
+  useEffectAfterFirstUpdate(() => {
+    if (valueFinal === setting.value) {
+      console.log('save TEXT', {
+        value,
+        setting,
+      })
+      mutateAsync({
+        id: setting.id,
+        data: {
+          value: valueFinal,
+        },
+      })
+    }
+  }, [valueFinal])
 
   useEffect(() => {
     setValue(setting.value)
@@ -55,7 +63,7 @@ const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
         <FormPanel
           fields={[
             {
-              type: EnumFieldType.COMBOBOX,
+              type: EnumFieldType.TEXT,
               name: setting.slug,
               label: {
                 text: setting.name,
@@ -65,7 +73,6 @@ const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
                 text: setting.description,
               },
               value,
-              options,
               onChange,
             },
           ]}
@@ -76,4 +83,4 @@ const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
   }
 }
 
-export default SettingTimezone
+export default SettingText

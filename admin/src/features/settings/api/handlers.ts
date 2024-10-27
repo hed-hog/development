@@ -87,6 +87,7 @@ export function useEditSetting() {
     mutationKey: ['edit-setting'],
     mutationFn: editSetting,
     onSuccess: () => {
+      console.log('edit setting success')
       queryClient.invalidateQueries({
         queryKey: ['settings-from-groups', language],
       })
