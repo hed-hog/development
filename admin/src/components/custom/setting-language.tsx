@@ -18,7 +18,7 @@ const SettingLanguage = ({ setting }: SettingLanguageProps) => {
   const { i18n } = useTranslation()
   const { data: dataLocales } = useLocales()
   const { data: localeTranslations, isLoading } = useLocalesTranslations()
-  const formPerson = useForm<FieldValues>({
+  const form = useForm<FieldValues>({
     defaultValues: {},
     mode: 'onChange',
   })
@@ -81,7 +81,7 @@ const SettingLanguage = ({ setting }: SettingLanguageProps) => {
               onChange,
             },
           ]}
-          form={formPerson}
+          form={form}
         />
       </>
     )

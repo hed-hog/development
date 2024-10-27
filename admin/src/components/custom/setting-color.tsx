@@ -1,33 +1,25 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FormPanel } from './form-panel'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useLocalesTranslations } from '@/features/locales/api/handlers'
 import { useEditSetting } from '@/features/settings'
-import { timezone } from '@/data/timezone.json'
 
-type SettingTimezoneProps = {
+type SettingColorProps = {
   setting: any
 }
 
-const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
+const SettingColor = ({ setting }: SettingColorProps) => {
   const { mutateAsync } = useEditSetting()
   const { isLoading } = useLocalesTranslations()
   const form = useForm<FieldValues>({
     defaultValues: {},
     mode: 'onChange',
   })
-  const [options] = React.useState<any[]>(
-    timezone.map((item) => ({ value: item, label: item }))
-  )
   const [value, setValue] = useState<string>(setting.value)
 
   const onChange = useCallback(
     (value: string) => {
-      console.log('SettingTimezone onChange', {
-        value,
-      })
-
       setValue(value)
       mutateAsync({
         id: setting.id,
@@ -53,8 +45,8 @@ const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
         <FormPanel
           fields={[
             {
-              type: EnumFieldType.COMBOBOX,
-              name: 'Timezone',
+              type: EnumFieldType.COLOR,
+              name: 'Color',
               label: {
                 text: setting.name,
               },
@@ -63,7 +55,6 @@ const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
                 text: setting.description,
               },
               value,
-              options,
               onChange,
             },
           ]}
@@ -74,4 +65,4 @@ const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
   }
 }
 
-export default SettingTimezone
+export default SettingColor
