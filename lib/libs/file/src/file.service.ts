@@ -18,7 +18,7 @@ export class FileService {
   ) {}
 
   async getFiles(paginationParams: PaginationDTO) {
-    const fields = ['name', 'url', 'extension'];
+    const fields = ['filename', 'path'];
     const OR = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,

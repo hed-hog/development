@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PersonModule } from '@hedhog/person';
+import { FileModule } from '@hedhog/file';
 import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { MailModule } from '@hedhog/mail';
@@ -23,6 +24,7 @@ import { PrismaModule } from '@hedhog/prisma';
     }),
     PaginationModule,
     AdminModule,
+    FileModule,
     PersonModule,
   ],
   controllers: [AppController],

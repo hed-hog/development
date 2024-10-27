@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/file",
-  "version": "0.0.3",
+  "version": "0.0.9",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,6 @@
     "@hedhog/prisma": "latest",
     "@hedhog/admin": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/setting": "latest",
     "@nestjs/jwt": "^10.2.0",
     "@prisma/client": "^5.17.0",
     "typeorm": "^0.3.20",
@@ -25,13 +24,15 @@
   },
   "files": [
     "dist/**/*",
-    "src/migrations/**/*.ts"
+    "src/entities/**/*.ts",
+    "src/migrations/**/*.ts",
+    "src/**/*.ejs",
+    "hedhog.yaml"
   ],
   "devDependencies": {
     "@hedhog/admin": "latest",
     "@hedhog/prisma": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/utils": "latest",
-    "@hedhog/setting": "latest"
+    "@hedhog/utils": "latest"
   }
 }

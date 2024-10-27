@@ -1150,70 +1150,6 @@ data:
             name: pt
             value: Português
   setting_groups:
-    - slug: file-storage
-      icon: folder
-      name:
-        en: File Storage
-        pt: Armazenamento
-      description:
-        en: Configure the file storage settings.
-        pt: Configurar as definições de armazenamento de arquivos.
-      relations:
-        settings:
-          - slug: storage
-            type: string
-            name:
-              en: Storage Provider
-              pt: Provedor de Armazenamento
-            description:
-              en: The storage to use
-              pt: O armazenamento a utilizar
-            value: local
-          - slug: storage-local-path
-            type: string
-            name:
-              en: Local Path
-              pt: Caminho Local
-            description:
-              en: The local path to store files
-              pt: O caminho local para armazenar arquivos
-            value: storage
-          - slug: storage-s3-key
-            type: string
-            name:
-              en: S3 Key
-              pt: Chave S3
-            description:
-              en: The S3 key
-              pt: A chave S3
-            value: ''
-          - slug: storage-s3-secret
-            type: string
-            name:
-              en: S3 Secret
-              pt: Segredo S3
-            description:
-              en: The S3 secret
-              pt: O segredo S3
-            value: ''
-          - slug: storage-s3-region
-            type: string
-            name:
-              en: S3 Region
-              pt: Região S3
-            description:
-              en: The S3 region
-              pt: A região S3
-            value: ''
-          - slug: storage-s3-bucket
-            type: string
-            name:
-              en: S3 Bucket
-              pt: Bucket S3
-            description:
-              en: The S3 bucket
-              pt: O bucket S3
-            value: ''
     - slug: localization
       icon: world
       name:
@@ -1326,7 +1262,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   country_translations:
     columns:
       - name: country_id
@@ -1347,7 +1282,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   translation_namespaces:
     columns:
       - type: pk
@@ -1355,7 +1289,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   translations:
     columns:
       - type: pk
@@ -1382,7 +1315,6 @@ tables:
           - name
         isUnique: true
     ifNotExists: true
-
   multifactors:
     columns:
       - type: pk
@@ -1390,7 +1322,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   multifactor_translations:
     columns:
       - name: multifactor_id
@@ -1411,7 +1342,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   users:
     columns:
       - type: pk
@@ -1430,7 +1360,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   screens:
     columns:
       - type: pk
@@ -1440,7 +1369,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   screen_translations:
     columns:
       - name: screen_id
@@ -1462,7 +1390,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   menus:
     columns:
       - type: pk
@@ -1482,7 +1409,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   menu_translations:
     columns:
       - name: menu_id
@@ -1503,7 +1429,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   menu_screens:
     columns:
       - name: menu_id
@@ -1521,7 +1446,6 @@ tables:
           column: id
           onDelete: CASCADE
     ifNotExists: true
-
   routes:
     columns:
       - type: pk
@@ -1542,7 +1466,6 @@ tables:
       - columns: ['url', 'method']
         isUnique: true
     ifNotExists: true
-
   roles:
     columns:
       - type: pk
@@ -1550,7 +1473,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   role_translations:
     columns:
       - name: role_id
@@ -1572,7 +1494,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   role_menus:
     columns:
       - name: role_id
@@ -1592,7 +1513,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   route_screens:
     columns:
       - name: route_id

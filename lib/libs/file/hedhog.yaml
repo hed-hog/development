@@ -1,0 +1,173 @@
+tables:
+  file_providers:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - name: slug
+      - type: created_at
+      - type: updated_at
+
+  file_provider_translations:
+    ifNotExists: true
+    columns:
+      - name: provider_id
+        type: fk
+        isPrimary: true
+        references:
+          table: file_providers
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locales
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+
+  file_mimetypes:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - name: name
+      - type: created_at
+      - type: updated_at
+
+  files:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - name: filename # nome original do arquivo
+      - name: path # caminho relativo ou URL do arquivo
+      - name: provider_id
+        type: fk
+        references:
+          table: file_providers
+          column: id
+          onDelete: CASCADE
+      - name: location
+      - name: mimetype_id
+        type: fk
+        references:
+          table: file_mimetypes
+          column: id
+          onDelete: CASCADE
+      - name: size
+        type: int
+        unsigned: true
+        default: 0
+      - type: created_at
+      - type: updated_at
+
+data:
+  setting_groups:
+    - slug: file-storage
+      icon: folder
+      name:
+        en: File Storage
+        pt: Armazenamento
+      description:
+        en: Configure the file storage settings.
+        pt: Configurar as definições de armazenamento de arquivos.
+      relations:
+        settings:
+          - slug: storage
+            type: string
+            name:
+              en: Storage Provider
+              pt: Provedor de Armazenamento
+            description:
+              en: The storage to use
+              pt: O armazenamento a utilizar
+            value: local
+          - slug: storage-local-path
+            type: string
+            name:
+              en: Local Path
+              pt: Caminho Local
+            description:
+              en: The local path to store files
+              pt: O caminho local para armazenar arquivos
+            value: storage
+          - slug: storage-s3-key
+            type: string
+            name:
+              en: S3 Key
+              pt: Chave S3
+            description:
+              en: The S3 key
+              pt: A chave S3
+            value: ''
+          - slug: storage-s3-secret
+            type: string
+            name:
+              en: S3 Secret
+              pt: Segredo S3
+            description:
+              en: The S3 secret
+              pt: O segredo S3
+            value: ''
+          - slug: storage-s3-region
+            type: string
+            name:
+              en: S3 Region
+              pt: Região S3
+            description:
+              en: The S3 region
+              pt: A região S3
+            value: ''
+          - slug: storage-s3-bucket
+            type: string
+            name:
+              en: S3 Bucket
+              pt: Bucket S3
+            description:
+              en: The S3 bucket
+              pt: O bucket S3
+            value: ''
+
+  file_providers:
+    - slug: local
+      name:
+        en: Local
+        pt: Local
+    - slug: s3
+      name:
+        en: Amazon S3
+        pt: Amazon S3
+    - slug: abs
+      name:
+        en: Azure Blob Storage
+        pt: Azure Blob Storage
+
+  file_mimetypes:
+    - name: application/pdf
+    - name: image/jpeg
+    - name: image/png
+    - name: image/gif
+    - name: image/webp
+    - name: image/svg+xml
+    - name: audio/mp3
+    - name: video/mp4
+    - name: video/mpeg
+    - name: video/webm
+    - name: audio/mpeg
+    - name: audio/ogg
+    - name: text/plain
+    - name: text/html
+    - name: text/css
+    - name: text/javascript
+    - name: application/json
+    - name: application/xml
+    - name: application/zip
+    - name: application/x-rar-compressed
+    - name: application/x-tar
+    - name: application/vnd.ms-excel
+    - name: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    - name: application/msword
+    - name: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    - name: application/vnd.ms-powerpoint
+    - name: application/vnd.openxmlformats-officedocument.presentationml.presentation
