@@ -20,8 +20,4 @@ export class UpdateDTO {
   @IsString()
   @IsOptional()
   region?: string;
-
-  @IsInt()
-  @IsOptional()
-  country_id?: number;
 }

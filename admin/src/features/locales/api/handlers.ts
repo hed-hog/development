@@ -13,7 +13,7 @@ export function useLocales() {
     queryKey: [`locales-${language}`],
     queryFn: () =>
       request<PaginationResult<any>>({
-        url: `/locales`,
+        url: `/locales/system/enables`,
       }),
   })
 }

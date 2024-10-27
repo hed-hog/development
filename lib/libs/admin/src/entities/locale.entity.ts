@@ -9,12 +9,6 @@ export class Locale {
   })
   id: number;
 
-  @JoinColumn()
-  @Column({
-    unsigned: true,
-  })
-  country_id: number;
-
   @Column({
     length: 2,
   })

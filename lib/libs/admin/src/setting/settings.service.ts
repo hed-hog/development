@@ -231,4 +231,77 @@ export class SettingsService {
       },
     });
   }
+
+  async setSettingUserValue(slug: string, value: string) {
+    const setting = await this.prismaService.settings.findFirst({
+      where: {
+        slug,
+        userOverride: true,
+      },
+    });
+
+    if (!setting) {
+      throw new BadRequestException(
+        `Setting with slug ${slug} not found or user can not override.`,
+      );
+    }
+
+    return await this.prismaService.settings_user.upsert({
+      where: {
+        settingId: setting.id,
+      },
+      create: {
+        settingId: setting.id,
+        value,
+      },
+      update: {
+        value,
+      },
+    });
+  }
+
+  async getSettingValues(slug: string | string[]) {
+    slug = Array.isArray(slug) ? slug : [slug];
+
+    let settings = await this.prismaService.settings.findMany({
+      where: {
+        slug: {
+          in: slug,
+        },
+      },
+      select: {
+        id: true,
+        value: true,
+        slug: true,
+        type: true,
+        userOverride: true,
+      },
+    });
+
+    const slugUserOverride = settings.filter((setting) => setting.userOverride);
+
+    const settingsUser = await this.prismaService.settings_user.findMany({
+      where: {
+        settingId: {
+          in: slugUserOverride.map((setting) => setting.id),
+        },
+      },
+      select: {
+        value: true,
+        settingId: true,
+      },
+    });
+
+    settings = settings.map((setting) => {
+      const settingUser = settingsUser.find(
+        (settingUser) => settingUser.settingId === setting.id,
+      );
+      if (settingUser) {
+        setting.value = settingUser.value;
+      }
+      return setting;
+    });
+
+    return settings;
+  }
 }

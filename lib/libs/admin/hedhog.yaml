@@ -1154,7 +1154,7 @@ data:
       icon: folder
       name:
         en: File Storage
-        pt: Armazenamento de Arquivos
+        pt: Armazenamento
       description:
         en: Configure the file storage settings.
         pt: Configurar as definições de armazenamento de arquivos.

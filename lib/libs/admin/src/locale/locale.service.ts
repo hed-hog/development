@@ -19,8 +19,8 @@ export class LocaleService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async getEnableds(locale: string, paginationParams: PaginationDTO) {
-    const fields = ['slug', 'icon'];
+  async getEnables(locale: string, paginationParams: PaginationDTO) {
+    const fields = ['code', 'region'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -50,6 +50,7 @@ export class LocaleService {
     }
 
     const { code, region, locales } = this.parseLocale(locale);
+
     const where: any = {
       locales: {
         code,

@@ -16,8 +16,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
 import { queryClient } from '@/lib/query-provider'
 import { useEditSettingSlug } from '@/features/settings'
+import { useApp } from '@/hooks/use-app'
 
 export const LocaleChange = () => {
+  const { user } = useApp()
   const { mutateAsync, isPending } = useEditSettingSlug()
   const { i18n, t } = useTranslation()
   const [languages, setLanguages] = useState<any[]>([])
@@ -38,20 +40,23 @@ export const LocaleChange = () => {
 
   const save = useCallback(
     (value: string) => {
-      for (const language of languages) {
-        queryClient.invalidateQueries({
-          queryKey: [`settings-from-groups-localization-${language.value}`],
+      i18n.changeLanguage(value)
+
+      if (user?.id) {
+        for (const language of languages) {
+          queryClient.invalidateQueries({
+            queryKey: [`settings-from-groups-localization-${language.value}`],
+          })
+        }
+        mutateAsync({
+          slug: 'language',
+          data: {
+            value,
+          },
         })
       }
-
-      mutateAsync({
-        slug: 'language',
-        data: {
-          value,
-        },
-      }).then(() => i18n.changeLanguage(value))
     },
-    [languages]
+    [languages, user]
   )
 
   useEffect(() => {
@@ -60,39 +65,43 @@ export const LocaleChange = () => {
 
   return (
     <>
-      {isLoading || (isPending && <Skeleton className='h-9 w-[80px]' />)}
-      {!isLoading && !isPending && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant='ghost'
-              size='icon'
-              className='scale-95 px-2'
-              style={{ width: 'auto' }}
-            >
-              <IconLanguage size={16} className='mr-2 h-4 w-4' />
-              {t(i18n.language)}
-              <span className='sr-only'>Toggle Locale</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            {languages.map((language) => (
-              <DropdownMenuItem
-                key={String(language.id)}
-                onClick={() => save(language.value)}
-              >
-                {language.label}{' '}
-                <IconCheck
-                  size={14}
-                  className={cn(
-                    'ml-auto',
-                    i18n.language !== language.value && 'hidden'
-                  )}
-                />
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      {languages.length > 1 && (
+        <>
+          {isLoading || (isPending && <Skeleton className='h-9 w-[80px]' />)}
+          {!isLoading && !isPending && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='scale-95 px-2'
+                  style={{ width: 'auto' }}
+                >
+                  <IconLanguage size={16} className='mr-2 h-4 w-4' />
+                  {t(i18n.language)}
+                  <span className='sr-only'>Toggle Locale</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                {languages.map((language) => (
+                  <DropdownMenuItem
+                    key={String(language.id)}
+                    onClick={() => save(language.value)}
+                  >
+                    {language.label}{' '}
+                    <IconCheck
+                      size={14}
+                      className={cn(
+                        'ml-auto',
+                        i18n.language !== language.value && 'hidden'
+                      )}
+                    />
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </>
       )}
     </>
   )

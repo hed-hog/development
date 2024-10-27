@@ -17,7 +17,4 @@ export class CreateDTO {
 
   @IsString()
   region: string;
-
-  @IsInt()
-  country_id: number;
 }

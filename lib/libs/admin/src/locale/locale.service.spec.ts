@@ -121,7 +121,6 @@ describe('LocaleService', () => {
         name: 'English',
         code: 'en',
         region: 'us',
-        country_id: 1,
         created_at: new Date(),
         updated_at: new Date(),
       };
@@ -140,14 +139,12 @@ describe('LocaleService', () => {
         name: 'English',
         code: 'en',
         region: 'us',
-        country_id: 1,
       };
       const mockLocale = {
         id: 1,
         name: 'English',
         code: 'en',
         region: 'us',
-        country_id: 1,
         created_at: new Date(),
         updated_at: new Date(),
       };
@@ -164,14 +161,12 @@ describe('LocaleService', () => {
         name: 'English Updated',
         code: 'en',
         region: 'us',
-        country_id: 1,
       };
       const mockLocale = {
         id: 1,
         name: 'English Updated',
         code: 'en',
         region: 'us',
-        country_id: 1,
         created_at: new Date(),
         updated_at: new Date(),
       };
