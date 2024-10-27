@@ -97,7 +97,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const { openSheet, closeSheet } = useSheet(sheets, setSheets)
 
   const handleError = (error: any) => {
-    console.log('handleError', error)
     switch (error.code) {
       case 'ERR_NETWORK':
         toast({

@@ -19,7 +19,12 @@ import {
 import { MultiSelectField } from '@/components/ui/multi-select-field'
 import { DatePickerField } from '@/components/ui/date-picker-field'
 import { SheetPickerField } from './sheet-picker-field'
-import { ChangeEventHandler, FormEventHandler } from 'react'
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useEffect,
+  useState,
+} from 'react'
 import { CheckedState } from '@radix-ui/react-checkbox'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FormControl } from '../ui/form'
@@ -62,26 +67,23 @@ type FieldProps = (
 ) &
   FieldPropsForm
 
-export default function Field({
-  name,
-  type,
-  value,
-  onChange,
-  required,
-  options = [],
-  label,
-  sliderOptions,
-}: FieldProps) {
-  switch (type) {
+export default function Field(props: FieldProps) {
+  const [value, setValue] = useState<string>(props.value)
+
+  useEffect(() => {
+    setValue(props.value)
+  }, [props.value])
+
+  switch (props.type) {
     case EnumFieldType.RICHTEXT:
-      return <RichTextField value={value} onChange={onChange} />
+      return <RichTextField value={value} onChange={props.onChange} />
 
     case EnumFieldType.COLOR:
       return (
         <ColorPickerField
           value={value}
-          onChange={onChange}
-          required={required}
+          onChange={props.onChange}
+          required={props.required}
         />
       )
 
@@ -90,11 +92,11 @@ export default function Field({
       return (
         <FormControl>
           <Input
-            name={name}
-            required={required}
-            type={type}
+            name={props.name}
+            required={props.required}
+            type={props.type}
             value={value || ''}
-            onChange={onChange}
+            onChange={props.onChange}
           />
         </FormControl>
       )
@@ -102,10 +104,10 @@ export default function Field({
     case EnumFieldType.PASSWORD:
       return (
         <PasswordInput
-          name={name}
-          required={required}
+          name={props.name}
+          required={props.required}
           value={value || ''}
-          onChange={onChange}
+          onChange={props.onChange}
         />
       )
 
@@ -114,9 +116,9 @@ export default function Field({
         <RadioGroup
           defaultValue='comfortable'
           value={value}
-          onChange={(value) => onChange(value)}
+          onChange={(value) => props.onChange(value)}
         >
-          {options.map((option) => (
+          {(props.options ?? []).map((option) => (
             <div className={`flex items-center space-x-2`} key={option.label}>
               <RadioGroupItem value={option.value} id={option.value} />
               <Label htmlFor={option.value}>{option.label}</Label>
@@ -126,7 +128,7 @@ export default function Field({
       )
 
     case EnumFieldType.CHECKBOX:
-      return options.map((option) => {
+      return (props.options ?? []).map((option) => {
         const randomNum = String(Math.random() + option.value)
 
         return (
@@ -134,7 +136,7 @@ export default function Field({
             <Checkbox
               checked={value as CheckedState}
               onCheckedChange={(checked) => {
-                onChange(checked as string)
+                props.onChange(checked as string)
               }}
               id={randomNum}
             />
@@ -152,32 +154,36 @@ export default function Field({
       return (
         <div className={`flex items-center space-x-2`}>
           <Slider
-            defaultValue={sliderOptions?.defaultValue || [50]}
-            max={sliderOptions?.max || 100}
-            step={sliderOptions?.step || 1}
-            value={value || sliderOptions?.defaultValue || [50]}
-            onValueChange={(value) => onChange(value)}
+            defaultValue={props.sliderOptions?.defaultValue || [50]}
+            max={props.sliderOptions?.max || 100}
+            step={props.sliderOptions?.step || 1}
+            value={
+              Array.isArray(value)
+                ? value
+                : props.sliderOptions?.defaultValue || [50]
+            }
+            onValueChange={(value) => props.onChange(value)}
           />
-          <Label>{value || sliderOptions?.defaultValue || [50]}</Label>
+          <Label>{value || props.sliderOptions?.defaultValue || [50]}</Label>
         </div>
       )
 
     case EnumFieldType.SELECT:
       return (
         <Select
-          required={required}
+          required={props.required}
           value={String(value)}
-          name={name}
-          onValueChange={(value) => onChange(String(value))}
+          name={props.name}
+          onValueChange={(value) => props.onChange(String(value))}
         >
           <FormControl>
             <SelectTrigger className='w-full'>
-              <SelectValue placeholder={label?.text} />
+              <SelectValue placeholder={props.label?.text} />
             </SelectTrigger>
           </FormControl>
           <SelectContent>
             <SelectGroup>
-              {options.map((opt, index) => (
+              {(props.options ?? []).map((opt, index) => (
                 <SelectItem key={index} value={opt.value}>
                   {opt.label}
                 </SelectItem>
@@ -190,29 +196,29 @@ export default function Field({
     case EnumFieldType.MULTISELECT:
       return (
         <MultiSelectField
-          value={value || []}
-          onChange={onChange}
-          options={options}
-          required={required}
+          value={Array.isArray(value) ? value : []}
+          onChange={props.onChange}
+          options={props.options || []}
+          required={props.required}
         />
       )
 
     case EnumFieldType.DATEPICKER:
       return (
         <DatePickerField
-          name={name}
-          label={String(label?.text)}
+          name={props.name}
+          label={String(props.label?.text)}
           date={value ? new Date(value) : undefined}
-          onDateChange={(date) => onChange(date)}
+          onDateChange={(date) => props.onChange(date)}
         />
       )
 
     case EnumFieldType.SHEETPICKER:
       return (
         <SheetPickerField
-          onValueChange={onChange}
-          options={options}
-          title={String(label?.text)}
+          onValueChange={props.onChange}
+          options={props.options || []}
+          title={String(props.label?.text)}
           buttonText='Salvar'
         />
       )

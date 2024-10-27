@@ -138,7 +138,6 @@ export default function Test() {
       fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
     }
 
-    console.log(savedValues)
     toast.success('Values saved! Check out the console.')
   }
 
