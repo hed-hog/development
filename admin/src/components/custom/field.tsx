@@ -28,10 +28,15 @@ import {
 import { CheckedState } from '@radix-ui/react-checkbox'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FormControl } from '../ui/form'
+import { Combobox } from './combo-box'
 
 type FieldProps = (
   | {
-      type: EnumFieldType.RICHTEXT | EnumFieldType.COLOR | EnumFieldType.SELECT
+      type:
+        | EnumFieldType.RICHTEXT
+        | EnumFieldType.COLOR
+        | EnumFieldType.SELECT
+        | EnumFieldType.COMBOBOX
       value: string
       onChange: (value: string) => void
     }
@@ -75,6 +80,15 @@ export default function Field(props: FieldProps) {
   }, [props.value])
 
   switch (props.type) {
+    case EnumFieldType.COMBOBOX:
+      return (
+        <Combobox
+          value={String(value)}
+          onChange={props.onChange}
+          options={props.options || []}
+        />
+      )
+
     case EnumFieldType.RICHTEXT:
       return <RichTextField value={value} onChange={props.onChange} />
 

@@ -1,4 +1,5 @@
 import SettingLanguage from '@/components/custom/setting-language'
+import SettingTimezone from '@/components/custom/setting-timezone'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSettingsFromGroup } from '@/features/settings'
 import { useParams } from 'react-router-dom'
@@ -11,6 +12,8 @@ const getComponentFromSlug = (item: any) => {
   switch (item.slug) {
     case 'language':
       return <SettingLanguage key={key} setting={item} />
+    case 'timezone':
+      return <SettingTimezone key={key} setting={item} />
     default:
       return <Fragment key={key} />
   }
@@ -30,5 +33,9 @@ export default function Page() {
     )
   }
 
-  return <>{data?.data.data.map((item) => getComponentFromSlug(item))}</>
+  return (
+    <div className='flex w-full flex-col gap-4'>
+      {data?.data.data.map((item) => getComponentFromSlug(item))}
+    </div>
+  )
 }

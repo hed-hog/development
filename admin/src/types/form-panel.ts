@@ -40,6 +40,7 @@ export type FieldType =
   | EnumFieldType.RANGE
   | EnumFieldType.FILE
   | EnumFieldType.PASSWORD
+  | EnumFieldType.COMBOBOX
 
 export interface IFormFieldPropsBase {
   name: string

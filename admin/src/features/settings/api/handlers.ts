@@ -28,7 +28,7 @@ export function useSettingGroups() {
   const { request } = useApp()
 
   return useQuery({
-    queryKey: [`setting-groups-${language}`],
+    queryKey: ['settings-from-groups', language],
     queryFn: () =>
       request<PaginationResult<any>>({
         url: '/settings/groups',
@@ -79,12 +79,17 @@ export function useEditSetting() {
   //const { t: moduleT } = useTranslation('module')
   //const { t: successT } = useTranslation('success')
   //const { t: errorT } = useTranslation('error')
+  const {
+    i18n: { language },
+  } = useTranslation()
 
   return useMutation({
     mutationKey: ['edit-setting'],
     mutationFn: editSetting,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['settings'] })
+      queryClient.invalidateQueries({
+        queryKey: ['settings-from-groups', language],
+      })
       toast.success(`edit setting success`)
     },
     onError: (error: any) => {

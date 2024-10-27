@@ -76,6 +76,7 @@ export const FormPanel = forwardRef(
                 options={options}
                 sliderOptions={sliderOptions}
                 label={label}
+                onChange={renderField.onChange || (() => {})}
               />
               {description?.text && (
                 <FormDescription
