@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.addMissingImports.ts": "explicit"
+  },
+  "yaml.schemas": {
+    "./hedhog.schema.json": ["hedhog.yaml"]
+  },
+  "yaml.validate": true,
+  "yaml.format.enable": true,
+  "yaml.hover": true,
+  "yaml.completion": true,
+  "eslint.validate": ["typescript"],
+  "prettier.requireConfig": true
+}
