@@ -127,6 +127,8 @@ data:
       method: GET
     - url: /locales
       method: POST
+    - url: /locales
+      method: PUT
     - url: /locales/:localeId
       method: PATCH
     - url: /locales

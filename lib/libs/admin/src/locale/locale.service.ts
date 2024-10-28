@@ -19,6 +19,32 @@ export class LocaleService {
     private readonly paginationService: PaginationService,
   ) {}
 
+  async setEnabled(codes: string[]) {
+    if (!codes || codes.length < 1) {
+      throw new BadRequestException('You must select at least one item code.');
+    }
+
+    await this.prismaService.locales.updateMany({
+      where: {
+        enabled: true,
+      },
+      data: {
+        enabled: false,
+      },
+    });
+
+    return this.prismaService.locales.updateMany({
+      where: {
+        code: {
+          in: codes,
+        },
+      },
+      data: {
+        enabled: true,
+      },
+    });
+  }
+
   async getEnables(locale: string, paginationParams: PaginationDTO) {
     const fields = ['code', 'region'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
@@ -135,15 +161,14 @@ export class LocaleService {
     return translations;
   }
 
-  async get(paginationParams: PaginationDTO) {
-    const fields = [];
-
+  async get(locale: string, paginationParams: PaginationDTO) {
+    const fields = ['code', 'region'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
     );
 
-    let result = await this.paginationService.paginate(
+    const result = await this.paginationService.paginate(
       this.prismaService.locales,
       paginationParams,
       {
@@ -152,6 +177,44 @@ export class LocaleService {
         },
       },
     );
+
+    const codes = [];
+
+    for (const item of result.data) {
+      codes.push((item as any).code);
+    }
+
+    const { code, region, locales } = this.parseLocale(locale);
+
+    const where: any = {
+      locales: {
+        code,
+      },
+      translation_namespaces: {
+        name: 'translation',
+      },
+    };
+
+    if (locales.length > 1) {
+      where.locale.region = region;
+    }
+
+    const values = await this.prismaService.translations.findMany({
+      where,
+      select: {
+        name: true,
+        value: true,
+      },
+    });
+
+    for (let i = 0; i < result.data.length; i++) {
+      for (const value of values) {
+        if (value.name === (result.data[i] as any).code) {
+          (result.data[i] as any).name = value.value;
+          break;
+        }
+      }
+    }
 
     return result;
   }

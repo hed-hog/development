@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
@@ -17,6 +18,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { LocaleService } from './locale.service';
 import { Locale } from './locale.decorator';
 import { Public } from '../auth/decorators/public.decorator';
+import { SetEnabledDTO } from './dto/set-enabled.dto';
 
 @Controller('locales')
 export class LocaleController {
@@ -41,8 +43,8 @@ export class LocaleController {
   }
 
   @Get()
-  async get(@Pagination() paginationParams) {
-    return this.localeService.get(paginationParams);
+  async get(@Pagination() paginationParams, @Locale() locale: string) {
+    return this.localeService.get(locale, paginationParams);
   }
 
   @Get(':id')
@@ -53,6 +55,11 @@ export class LocaleController {
   @Post()
   create(@Body() data: CreateDTO) {
     return this.localeService.create(data);
+  }
+
+  @Put()
+  async setEnabled(@Body() { codes }: SetEnabledDTO) {
+    return this.localeService.setEnabled(codes);
   }
 
   @Patch(':id')

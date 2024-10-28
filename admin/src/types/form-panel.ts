@@ -41,6 +41,7 @@ export type FieldType =
   | EnumFieldType.FILE
   | EnumFieldType.PASSWORD
   | EnumFieldType.COMBOBOX
+  | EnumFieldType.SWITCH
 
 export interface IFormFieldPropsBase {
   name: string
@@ -81,7 +82,7 @@ export interface IFormPanelProps {
   subtitle?: ITextProps
   button?: ITextProps
   fields: IFormFieldPropsBase[]
-  form: UseFormReturn<FieldValues>
+  form?: UseFormReturn<FieldValues>
   onSubmit?: (data: any) => void
 }
 
