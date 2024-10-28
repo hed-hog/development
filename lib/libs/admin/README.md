@@ -8,10 +8,12 @@
 
 - [Overview](#overview)
 - [Hedhog Auth](#hedhog-auth)
+- [Hedhog Locale](#hedhog-locale)
 - [Hedhog Menu](#hedhog-menu)
 - [Hedhog Role](#hedhog-role)
 - [Hedhog Route](#hedhog-route)
 - [Hedhog Screen](#hedhog-screen)
+- [Hedhog Setting](#hedhog-setting)
 - [Hedhog User](#hedhog-user)
 
 # Overview
@@ -23,9 +25,11 @@ Whether you need to secure access to resources, manage user roles, or handle fil
 ### Included Modules<
 
 - **@hedhog/auth**: Provides authentication and authorization mechanisms, ensuring secure access to application resources.
+- **@hedhog/locale**: Provides solution for managing locales and translations across applications.
 - **@hedhog/menu**: Allows for the creation and management of dynamic menus within the application interface.
 - **@hedhog/role**: Facilitates the management of roles, controlling access to specific features or areas.
 - **@hedhog/route**: Provides a comprehensive system for managing routes within your application.
+- **@hedhog/setting**: Provides a solution for managing application settings.
 - **@hedhog/screen**: Provides a structure for managing different screens and UI components.
 - **@hedhog/user**: Manages user accounts, including creation, updates, and deletion, along with password encryption and secure access.
 
@@ -91,6 +95,7 @@ The `AuthService` provides methods for:
 ```plaintext
 ├── auth.controller.ts         # Defines routes for authentication
 ├── auth.service.ts            # Contains authentication logic
+├── auth.service.spec.ts      # Testing file for auth service
 ├── auth.module.ts             # Authentication module
 ├── dto/
 │   ├── forget.dto.ts          # Data Transfer Object for password reset
@@ -105,6 +110,131 @@ The `AuthService` provides methods for:
 │   └── multifactor-type.enum.ts # Enumeration for multi-factor authentication types
 ├── guards/
 │   └── auth.guard.ts          # Guard for protecting routes
+```
+
+---
+
+# Hedhog Locale
+
+**Hedhog Locale** module provides a powerful solution for managing locales and translations across applications. It includes functionalities to retrieve, create, update, and delete locale data, with support for pagination and localization. The module integrates seamlessly within the HedHog ecosystem, using @hedhog/pagination for handling paginated responses and @hedhog/prisma for database interactions.
+
+### Controller Endpoints
+
+#### `GET /locales/system/enables`
+
+- **Description**: Retrieve a paginated list of enabled locales.
+- **Authentication**: Not required (public endpoint).
+- **Parameters**:
+  - `locale (string)`: Locale code for filtering.
+  - Pagination parameters (optional).
+
+#### `GET /locales/:localeCode/:namespace`
+
+- **Description**: Retrieve translations for a specific locale and namespace.
+- **Authentication**: Not required (public endpoint).
+- **Parameters**:
+  - `localeCode (string)`: The locale code to fetch translations for.
+  - `namespace (string)`: The namespace to fetch translations from.
+
+#### `GET /locales`
+
+- **Description**: Retrieve a paginated list of locales.
+- **Authentication**: Required.
+- **Pagination**: Supports pagination through query parameters.
+
+#### `GET /locales/:id`
+
+- **Description**: Retrieve a specific locale by its ID.
+- **Authentication**: Required.
+- **Parameters**:
+  - `id (number)`: The ID of the locale to retrieve.
+
+#### `POST /locales`
+
+- **Description**: Create a new locale entry.
+- **Authentication**: Required.
+- **Body**:
+  - `code (string)`: The code of the locale.
+  - `region (string)`: The region of the locale.
+
+#### `PATCH /locales/:id`
+
+- **Description**: Update an existing locale entry.
+- **Authentication**: Required.
+- **Parameters**:
+  - `id (number)`: The ID of the locale to update.
+- **Body**:
+  - `code (string, optional)`: Updated code of the locale.
+  - `region (string, optional)`: Updated region of the locale.
+
+#### `DELETE /locales`
+
+- **Description**: Delete one or more locales.
+- **Authentication**: Required.
+- **Body**:
+  - `ids (number[])`: Array of locale IDs to delete.
+
+### Service Methods
+
+#### `getEnables(locale: string, paginationParams: PaginationDTO)`
+
+- **Description**: Retrieves a paginated list of enabled locales based on locale code and pagination parameters.
+- **Parameters**:
+  - `locale (string)`: Locale code for filtering.
+  - `paginationParams (PaginationDTO)`: Includes pagination criteria.
+
+#### `getTranslations(localeCode: string, namespace: string)`
+
+- **Description**: Retrieves translations for a given locale code and namespace.
+- **Parameters**:
+  - `localeCode (string)`: The locale code to fetch translations for.
+  - `namespace (string)`: The namespace to fetch translations from.
+
+#### `get(paginationParams: PaginationDTO)`
+
+- **Description**: Retrieves a paginated list of all locales.
+- **Parameters**:
+  - `paginationParams (PaginationDTO)`: Includes pagination criteria.
+
+#### `getById(localeId: number)`
+
+- **Description**: Retrieves a specific locale by its ID.
+- **Parameters**:
+  - `localeId (number)`: ID of the locale to retrieve.
+
+#### `create(data: CreateDTO)`
+
+- **Description**: Creates a new locale entry.
+- **Parameters**:
+  - `data (CreateDTO)`: Includes code and region of the new locale.
+
+#### `update(id: number, data: UpdateDTO)`
+
+- **Description**: Updates an existing locale entry.
+- **Parameters**:
+  - `id (number)`: ID of the locale to update.
+  - `data (UpdateDTO)`: Includes updated code and region.
+
+#### `delete(data: DeleteDTO)`
+
+- **Description**: Deletes one or more locale entries.
+- **Parameters**:
+  - `data (DeleteDTO)`: Includes array of IDs to delete.
+
+### Folder Structure
+
+```plaintext
+|── dto/                         # Data Transfer Objects
+│   ├── create.dto.ts            # DTO for creating locales
+│   ├── delete.dto.ts            # DTO for deleting locales
+│   └── update.dto.ts            # DTO for updating locales
+|── locale.controller.ts         # Controller for locales
+|── locale.decorator.ts          # Decorator for injecting locale into requests
+|── locale.middleware.ts         # Middleware to handle locale-specific processing
+|── locale.module.ts             # Module definition for locales
+|── locale.service.ts            # Service class for locales logic
+├── locale.service.spec.ts       # Testing file for locale service
+|── index.ts                     # Main export file for the module
 ```
 
 ---
@@ -146,6 +276,7 @@ The `MenuService` class contains the business logic for handling menu operations
 ```plaintext
 ├── menu.controller.ts       # Handles HTTP requests related to menus
 ├── menu.service.ts          # Contains business logic for menu operations
+├── menu.service.spec.ts     # Testing file for menu service
 ├── menu.module.ts           # Module definition for menu functionalities
 ├── dto/
 │   ├── create.dto.ts          # Data Transfer Object for creating a menu
@@ -371,6 +502,7 @@ The `MenuService` class contains the business logic for handling menu operations
 ├── role.controller.ts        # Handles HTTP requests related to roles
 ├── role.module.ts            # Module definition for the role
 └── role.service.ts           # Service class for role-related logic
+└── role.service.spec.ts      # Testing file for role service
 ```
 
 ---
@@ -526,7 +658,8 @@ The `MenuService` class contains the business logic for handling menu operations
 │   └── route.guard.ts         # Guard for routes
 ├── route.controller.ts        # Handles HTTP requests related to routes
 ├── route.module.ts            # Module definition for the route
-└── route.service.ts           # Service class for route-related logic
+├── route.service.ts           # Service class for route-related logic
+└── route.service.spec.ts      # Testing file for route service
 ```
 
 ---
@@ -535,29 +668,29 @@ The `MenuService` class contains the business logic for handling menu operations
 
 **Hedhog Setting** module provides a comprehensive solution for managing application settings. It includes functionalities to create, read, update, and delete settings, along with support for pagination and search capabilities. This module integrates with the HedHog ecosystem, utilizing @hedhog/pagination for managing paginated results and @hedhog/prisma for database interactions.
 
-## Controller Endpoints
+### Controller Endpoints
 
-### `GET /settings`
+#### `GET /settings`
 
 - **Description**: Retrieve a paginated list of settings.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Pagination**: Supports pagination through query parameters.
 
-### `GET /settings/:settingId`
+#### `GET /settings/:settingId`
 
 - **Description**: Retrieve a specific setting by its ID.
 - **Authentication**: Required (uses AuthGuard).
 - **Parameters**:
   - **settingId** (number): The ID of the setting to retrieve.
 
-### `POST /settings`
+#### `POST /settings`
 
 - **Description**: Create a new setting.
 - **Authentication**: Required (uses AuthGuard).
 - **Body**:
   - **name** (string): Name of the setting.
 
-### `PATCH /settings/:settingId`
+#### `PATCH /settings/:settingId`
 
 - **Description**: Update an existing setting.
 - **Authentication**: Required (uses AuthGuard).
@@ -566,44 +699,45 @@ The `MenuService` class contains the business logic for handling menu operations
 - **Body**:
   - **name** (string, optional): Updated name of the setting.
 
-### `DELETE /settings`
+#### `DELETE /settings`
 
 - **Description**: Delete one or more settings.
 - **Authentication**: Required (uses AuthGuard).
 - **Body**:
   - **ids** (number[]): Array of setting IDs to delete.
 
-## Service Methods
+### Service Methods
 
-- **getSettings(paginationParams: PaginationDTO)**
+#### `getSettings(paginationParams: PaginationDTO)`
 
-  - **Description**: Retrieves a paginated list of settings with optional search functionality.
-  - **Parameters**:
-    - **paginationParams**: Includes pagination and search criteria.
+- **Description**: Retrieves a paginated list of settings with optional search functionality.
+- **Parameters**:
+  - **paginationParams**: Includes pagination and search criteria.
 
-- **get(settingId: number)**
+#### `get(settingId: number)`
 
-  - **Description**: Retrieves a specific setting by its ID.
-  - **Parameters**:
-    - **settingId**: ID of the setting to retrieve.
+- **Description**: Retrieves a specific setting by its ID.
+- **Parameters**:
+  - **settingId**: ID of the setting to retrieve.
 
-- **create(data: CreateDTO)**
+#### `create(data: CreateDTO)`
 
-  - **Description**: Creates a new setting.
-  - **Parameters**:
-    - **data**: Includes name of the setting.
+- **Description**: Creates a new setting.
+- **Parameters**:
+  - **data**: Includes name of the setting.
 
-- **update(id: number, data: UpdateDTO)**
+#### `update(id: number, data: UpdateDTO)`
 
-  - **Description**: Updates an existing setting.
-  - **Parameters**:
-    - **id**: ID of the setting to update.
-    - **data**: Includes updated name of the setting.
+- **Description**: Updates an existing setting.
+- **Parameters**:
+  - **id**: ID of the setting to update.
+  - **data**: Includes updated name of the setting.
 
-- **delete(data: DeleteDTO)**
-  - **Description**: Deletes one or more settings.
-  - **Parameters**:
-    - **data**: Includes array of ids to delete.
+#### `delete(data: DeleteDTO)`
+
+- **Description**: Deletes one or more settings.
+- **Parameters**:
+  - **data**: Includes array of ids to delete.
 
 ## Folder Structure
 
@@ -615,6 +749,7 @@ The `MenuService` class contains the business logic for handling menu operations
 |── setting.controller.ts    # Controller for settings
 |── setting.module.ts        # Module definition for settings
 |── setting.service.ts       # Service class for settings logic
+|── setting.service.spec.ts  # Testing file for setting service
 ```
 
 ---
@@ -715,6 +850,7 @@ The `MenuService` class contains the business logic for handling menu operations
 ├── screen.controller.ts        # Handles HTTP requests related to screens
 ├── screen.module.ts            # Module definition for the screen
 └── screen.service.ts           # Service class for screen-related logic
+└── screen.service.spec.ts      # Testing file for screen service
 ```
 
 ---
@@ -773,38 +909,38 @@ The **Hedhog User** module in HedHog provides functionality to manage user data 
 
 ### Service Methods
 
-**getUsers(paginationParams: PaginationDTO)**
+#### `getUsers(paginationParams: PaginationDTO)`
 
 - **Description**: Retrieves a paginated list of users with optional search functionality.
 - **Parameters**:
   - **paginationParams**: Includes pagination and search criteria.
 
-**get(userId: number)**
+#### `get(userId: number)`
 
 - **Description**: Retrieves a specific user by its ID.
 - **Parameters**:
   - **userId**: ID of the user to retrieve.
 
-**hashPassword(password: string): Promise<string>**
+#### `hashPassword(password: string): Promise<string>`
 
 - **Description**: Hashes a password using bcrypt.
 - **Parameters**:
   - **password**: The password to be hashed.
 
-**create(data: CreateDTO)**
+#### `create(data: CreateDTO)`
 
 - **Description**: Creates a new user.
 - **Parameters**:
   - **data**: Includes email, name, and password.
 
-**update(id: number, data: UpdateDTO)**
+#### `update(id: number, data: UpdateDTO)`
 
 - **Description**: Updates an existing user.
 - **Parameters**:
   - **id**: ID of the user to update.
   - **data**: Includes updated email, name, and password.
 
-**delete(data: DeleteDTO)**
+#### `delete(data: DeleteDTO)`
 
 - **Description**: Deletes one or more users.
 - **Parameters**:
