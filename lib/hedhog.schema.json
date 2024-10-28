@@ -2,8 +2,112 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "data": {
-      "type": "object"
+    "tables": {
+      "type": "object",
+      "patternProperties": {
+        "^\\w+$": {
+          "type": "object",
+          "properties": {
+            "ifNotExists": {
+              "type": "boolean",
+              "default": false
+            },
+            "columns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "pk",
+                      "fk",
+                      "created_at",
+                      "updated_at",
+                      "deleted_at",
+                      "slug",
+                      "order",
+                      "bit",
+                      "int",
+                      "integer",
+                      "tinyint",
+                      "smallint",
+                      "mediumint",
+                      "bigint",
+                      "float",
+                      "double",
+                      "double precision",
+                      "decimal",
+                      "numeric",
+                      "fixed",
+                      "bool",
+                      "boolean",
+                      "date",
+                      "datetime",
+                      "timestamp",
+                      "time",
+                      "year",
+                      "char",
+                      "nchar",
+                      "varchar",
+                      "nvarchar",
+                      "text",
+                      "blob",
+                      "json",
+                      "binary",
+                      "varbinary",
+                      "geometry",
+                      "point",
+                      "linestring",
+                      "polygon",
+                      "uuid",
+                      "inet",
+                      "macaddr",
+                      "money",
+                      "character varying",
+                      "citext",
+                      "hstore",
+                      "bytea",
+                      "timetz",
+                      "timestamptz",
+                      "interval",
+                      "tsvector",
+                      "tsquery",
+                      "xml",
+                      "jsonb",
+                      "int4range",
+                      "int8range",
+                      "numrange",
+                      "tsrange",
+                      "tstzrange",
+                      "daterange",
+                      "geography",
+                      "cube",
+                      "ltree"
+                    ]
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "length": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [],
+                "additionalProperties": true
+              }
+            }
+          },
+          "required": [
+            "columns"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
-  }
+  },
+  "required": [],
+  "additionalProperties": false
 }
