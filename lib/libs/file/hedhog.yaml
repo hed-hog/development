@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/hed-hog/development/refs/heads/master/lib/hedhog.schema.json
+# yaml-language-server: $schema=../../hedhog.schema.json
 tables:
   file_providers:
     ifNotExists: true
@@ -26,6 +26,7 @@ tables:
           column: id
           onDelete: CASCADE
       - name: name
+        type: varchar
       - type: created_at
       - type: updated_at
 
