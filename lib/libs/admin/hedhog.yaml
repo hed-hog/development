@@ -1288,7 +1288,7 @@ tables:
         references:
           table: countries
           column: id
-          onDelete: zxczxc
+          onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
