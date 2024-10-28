@@ -17,8 +17,63 @@
               "items": {
                 "type": "object",
                 "properties": {
+                  "references": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "table": {
+                        "type": "string"
+                      },
+                      "column": {
+                        "type": "string"
+                      },
+                      "referencedDatabase": {
+                        "type": "string"
+                      },
+                      "referencedSchema": {
+                        "type": "string"
+                      },
+                      "deferrable": {
+                        "type": "string"
+                      },
+                      "onDelete": {
+                        "type": "string",
+                        "anyOf": [
+                          {
+                            "enum": [
+                              "CASCADE",
+                              "SET NULL",
+                              "NO ACTION",
+                              "RESTRICT"
+                            ]
+                          }
+                        ]
+                      },
+                      "onUpdate": {
+                        "type": "string",
+                        "anyOf": [
+                          {
+                            "enum": [
+                              "CASCADE",
+                              "SET NULL",
+                              "NO ACTION",
+                              "RESTRICT"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "table",
+                      "column"
+                    ]
+                  },
+                  "name": {
+                    "type": "string"
+                  },
                   "type": {
-                    "type": "string",
                     "enum": [
                       "pk",
                       "fk",
@@ -83,18 +138,102 @@
                       "daterange",
                       "geography",
                       "cube",
-                      "ltree"
+                      "ltree",
+                      "enum"
                     ]
                   },
-                  "name": {
+                  "default": {},
+                  "onUpdate": {
+                    "type": "string"
+                  },
+                  "isNullable": {
+                    "type": "boolean"
+                  },
+                  "isGenerated": {
+                    "type": "boolean"
+                  },
+                  "generationStrategy": {
+                    "enum": [
+                      "uuid",
+                      "increment"
+                    ]
+                  },
+                  "isPrimary": {
+                    "type": "boolean"
+                  },
+                  "isUnique": {
+                    "type": "boolean"
+                  },
+                  "isArray": {
+                    "type": "boolean"
+                  },
+                  "comment": {
                     "type": "string"
                   },
                   "length": {
-                    "type": "integer",
-                    "minimum": 1
+                    "type": "number"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "charset": {
+                    "type": "string"
+                  },
+                  "collation": {
+                    "type": "string"
+                  },
+                  "precision": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "scale": {
+                    "type": "number"
+                  },
+                  "zerofill": {
+                    "type": "boolean"
+                  },
+                  "unsigned": {
+                    "type": "boolean"
+                  },
+                  "enum": {
+                    "type": "array",
+                    "items": {}
+                  },
+                  "asExpression": {
+                    "type": "string"
+                  },
+                  "generatedType": {
+                    "enum": [
+                      "VIRTUAL",
+                      "STORED"
+                    ]
                   }
                 },
                 "required": [],
+                "additionalProperties": true
+              }
+            },
+            "indices": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "columns": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "isUnique": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "columns"
+                ],
                 "additionalProperties": true
               }
             }
@@ -103,6 +242,41 @@
             "columns"
           ],
           "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "data": {
+      "type": "object",
+      "patternProperties": {
+        "^\\w+$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "enum": [
+                      "GET",
+                      "POST",
+                      "PATCH",
+                      "DELETE"
+                    ]
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            "required": [],
+            "additionalProperties": true
+          }
         }
       },
       "additionalProperties": false
