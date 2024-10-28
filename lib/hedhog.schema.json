@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "routes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string",
+                "enum": ["GET", "POST", "PATCH", "DELETE"]
+              }
+            },
+            "required": ["url", "method"]
+          }
+        },
+        "menus": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "menu_id": {
+                "type": "object",
+                "properties": {
+                  "where": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  }
+                },
+                "required": ["where"]
+              },
+              "url": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              },
+              "name": {
+                "type": "object",
+                "properties": {
+                  "en": {
+                    "type": "string"
+                  },
+                  "pt": {
+                    "type": "string"
+                  }
+                },
+                "required": ["en", "pt"]
+              },
+              "slug": {
+                "type": "string"
+              }
+            },
+            "required": ["menu_id", "url", "icon", "name", "slug"]
+          }
+        },
+        "screens": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "slug": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              },
+              "name": {
+                "type": "object",
+                "properties": {
+                  "en": {
+                    "type": "string"
+                  },
+                  "pt": {
+                    "type": "string"
+                  }
+                },
+                "required": ["en", "pt"]
+              },
+              "description": {
+                "type": "object",
+                "properties": {
+                  "en": {
+                    "type": "string"
+                  },
+                  "pt": {
+                    "type": "string"
+                  }
+                },
+                "required": ["en", "pt"]
+              }
+            },
+            "required": ["slug", "icon", "name", "description"]
+          }
+        },
+        "countries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "object",
+                "properties": {
+                  "en": {
+                    "type": "string"
+                  },
+                  "pt": {
+                    "type": "string"
+                  }
+                },
+                "required": ["en", "pt"]
+              },
+              "code": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 3
+              }
+            },
+            "required": ["name", "code"]
+          }
+        }
+      },
+      "required": ["routes", "menus", "screens", "countries"]
+    }
+  },
+  "required": ["data"]
+}
