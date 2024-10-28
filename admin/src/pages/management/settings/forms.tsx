@@ -34,6 +34,7 @@ export default function Page() {
             name: item.slug,
             type: EnumFieldType.SELECT,
             defaultValue: item.value,
+            value: item.value,
             required: false,
             label: {
               text: item.name,
@@ -61,7 +62,7 @@ export default function Page() {
           }
       }
     },
-    [locales]
+    [locales, slug]
   )
 
   if (isLoading) {

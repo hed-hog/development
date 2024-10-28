@@ -86,6 +86,7 @@ export const FormPanel = forwardRef(
                 options={options}
                 sliderOptions={sliderOptions}
                 label={label}
+                value={field.value || renderField.value}
                 onChange={(value: string) => {
                   if (typeof field.onChange === 'function') {
                     field.onChange(value)
