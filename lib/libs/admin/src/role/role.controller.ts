@@ -9,15 +9,14 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseGuards,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { RoleService } from './role.service';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '../locale';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { RoleService } from './role.service';
 
 @Controller('roles')
 export class RoleController {

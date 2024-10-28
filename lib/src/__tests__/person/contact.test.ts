@@ -1,23 +1,19 @@
-import axios from 'axios';
-import { faker } from '@faker-js/faker';
-import { getGlobalToken } from '../utils/loginUser';
-
-const baseUrl = 'http://localhost:3000';
-let token = '';
+// const baseUrl = 'http://localhost:3000';
+// let token = '';
 // let personId = 0;
 // let contactId = 1;
 
 beforeAll(async () => {
-  axios.defaults.baseURL = baseUrl;
-  token = await getGlobalToken();
+  // axios.defaults.baseURL = baseUrl;
+  // token = await getGlobalToken();
 });
 
 describe('Contacts API tests', () => {
-  const newContact = {
-    type_id: 1,
-    primary: true,
-    value: faker.phone.number(),
-  };
+  // const newContact = {
+  //   type_id: 1,
+  //   primary: true,
+  //   value: faker.phone.number(),
+  // };
 
   /*
   test('Create new contact', async () => {

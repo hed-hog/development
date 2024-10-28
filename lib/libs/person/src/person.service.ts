@@ -30,7 +30,7 @@ export class PersonService {
       paginationParams,
     );
 
-    let paginate = await this.paginationService.paginate(
+    const paginate = await this.paginationService.paginate(
       this.prismaService.persons,
       paginationParams,
       {

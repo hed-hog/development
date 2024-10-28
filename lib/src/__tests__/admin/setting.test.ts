@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let settingId = 1;
+const settingId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
@@ -12,9 +11,9 @@ beforeAll(async () => {
 });
 
 describe('Settings API tests', () => {
-  const newSetting = {
-    name: faker.lorem.word(),
-  };
+  // const newSetting = {
+  //   name: faker.lorem.word(),
+  // };
 
   /*
   test('Create new setting', async () => {

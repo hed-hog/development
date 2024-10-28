@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../../hedhog.schema.json
+
 tables:
   file_providers:
     ifNotExists: true

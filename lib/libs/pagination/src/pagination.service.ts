@@ -1,3 +1,4 @@
+import { itemTranslations } from '@hedhog/utils';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import {
   DEFAULT_PAGE,
@@ -10,7 +11,6 @@ import type {
   PaginatedResult,
   PaginationParams,
 } from './types/pagination.types';
-import { itemTranslations } from '@hedhog/utils';
 
 @Injectable()
 export class PaginationService {
@@ -114,15 +114,20 @@ export class PaginationService {
         delete query.select;
       }
 
-      let [total, data] = await Promise.all([
+      const result: any = await Promise.all([
         model.count({ where: customQuery?.where || {} }),
         model.findMany(query),
       ]);
 
+      const total = result.total;
+      let data = result.data;
+
       const lastPage = Math.ceil(total / pageSize);
 
       if (translationKey) {
-        data = data.map((item: any) => itemTranslations(translationKey, item));
+        data = result.data.map((item: any) =>
+          itemTranslations(translationKey, item),
+        );
       }
 
       return {

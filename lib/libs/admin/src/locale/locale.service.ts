@@ -143,7 +143,7 @@ export class LocaleService {
       paginationParams,
     );
 
-    let result = await this.paginationService.paginate(
+    const result = await this.paginationService.paginate(
       this.prismaService.locales,
       paginationParams,
       {

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
@@ -10,11 +9,11 @@ beforeAll(async () => {
 });
 
 describe('Role API tests', () => {
-  const newRole = {
-    name: faker.lorem.word(),
-    description: faker.lorem.sentence(),
-  };
-  let roleId = 1;
+  // const newRole = {
+  //   name: faker.lorem.word(),
+  //   description: faker.lorem.sentence(),
+  // };
+  const roleId = 1;
 
   /*
   test('Create new role', async () => {

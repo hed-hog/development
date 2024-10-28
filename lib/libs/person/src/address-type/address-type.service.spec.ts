@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AddressTypeService } from './address-type.service';
-import { PrismaService } from '@hedhog/prisma';
 import { PaginationService } from '@hedhog/pagination';
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { PrismaService } from '@hedhog/prisma';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { DeleteDTO } from '../dto/delete.dto';
+import { AddressTypeService } from './address-type.service';
 import { CreateAddressTypeDTO } from './dto/create-address-type.dto';
 import { UpdateAddressTypeDTO } from './dto/update-address-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
 
 interface PersonAddressTypesMock {
   create: jest.Mock;
@@ -17,7 +17,7 @@ interface PersonAddressTypesMock {
 describe('AddressTypeService', () => {
   let service: AddressTypeService;
   let prismaService: PrismaService;
-  let paginationService: PaginationService;
+  // let paginationService: PaginationService;
 
   const addressTypeMock = {
     id: 1,
@@ -50,7 +50,7 @@ describe('AddressTypeService', () => {
 
     service = module.get<AddressTypeService>(AddressTypeService);
     prismaService = module.get<PrismaService>(PrismaService);
-    paginationService = module.get<PaginationService>(PaginationService);
+    // paginationService = module.get<PaginationService>(PaginationService);
   });
 
   it('should be defined', () => {

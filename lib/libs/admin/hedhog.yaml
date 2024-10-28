@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../hedhog.schema.json
 data:
   routes:
     - url: /auth/verify
@@ -1287,7 +1286,7 @@ tables:
         references:
           table: countries
           column: id
-          onDelete: CASCADE
+          onDelete: zxczxc
       - name: locale_id
         type: fk
         isPrimary: true

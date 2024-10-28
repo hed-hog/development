@@ -1,17 +1,16 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
+import { itemTranslations } from '@hedhog/utils';
 import {
   BadRequestException,
   Inject,
   Injectable,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { itemTranslations } from '@hedhog/utils';
+import { CreateDTO } from './dto/create.dto';
 import { SettingsDTO } from './dto/settings.dto';
-import { Prisma } from '@prisma/client';
+import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class SettingsService {
@@ -47,7 +46,7 @@ export class SettingsService {
       paginationParams,
     );
 
-    let result = await this.paginationService.paginate(
+    const result = await this.paginationService.paginate(
       this.prismaService.settings,
       paginationParams,
       {
@@ -112,7 +111,7 @@ export class SettingsService {
       paginationParams,
     );
 
-    let result = await this.paginationService.paginate(
+    const result = await this.paginationService.paginate(
       this.prismaService.setting_groups,
       paginationParams,
       {
@@ -147,7 +146,7 @@ export class SettingsService {
       paginationParams,
     );
 
-    let result = await this.paginationService.paginate(
+    const result = await this.paginationService.paginate(
       this.prismaService.settings,
       paginationParams,
       {

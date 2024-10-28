@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let contactTypeId = 1;
+const contactTypeId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
@@ -12,9 +11,9 @@ beforeAll(async () => {
 });
 
 describe('Contact Types API tests', () => {
-  const newContactType = {
-    name: faker.commerce.productName(),
-  };
+  // const newContactType = {
+  //   name: faker.commerce.productName(),
+  // };
 
   /*
   test('Create new contact type', async () => {

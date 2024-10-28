@@ -1,12 +1,4 @@
-import {
-  IsString,
-  IsInt,
-  IsOptional,
-  Length,
-  IsDate,
-  IsDecimal,
-  IsBoolean,
-} from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateDTO {
   @IsString()

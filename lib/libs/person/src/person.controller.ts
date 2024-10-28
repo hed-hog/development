@@ -1,19 +1,19 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-} from '@nestjs/common';
-import { PersonService } from './person.service';
-import { CreatePersonDTO } from './dto/create-person.dto';
-import { UpdatePersonDTO } from './dto/update-person.dto';
-import { Pagination } from '@hedhog/pagination';
-import { DeleteDTO } from './dto/delete.dto';
 import { Locale } from '@hedhog/admin';
+import { Pagination } from '@hedhog/pagination';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { CreatePersonDTO } from './dto/create-person.dto';
+import { DeleteDTO } from './dto/delete.dto';
+import { UpdatePersonDTO } from './dto/update-person.dto';
+import { PersonService } from './person.service';
 
 @Controller('persons')
 export class PersonController {
@@ -45,5 +45,7 @@ export class PersonController {
   }
 
   @Patch(':id/documents')
-  updateDocuments(@Param('id', ParseIntPipe) personId: number) {}
+  updateDocuments(@Param('id', ParseIntPipe) personId: number) {
+    return { personId };
+  }
 }
