@@ -15,6 +15,7 @@ import Field from './field'
 import { Button } from './button'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
+import { v4 as uuidv4 } from 'uuid'
 
 export const FormPanel = forwardRef(
   (
@@ -50,7 +51,9 @@ export const FormPanel = forwardRef(
       [formSubmitRef, formRef]
     )
 
-    const renderField = (renderField: IFormFieldProps, index: number) => {
+    const renderField = (renderField: IFormFieldProps) => {
+      const id = uuidv4()
+
       const {
         label,
         description,
@@ -70,7 +73,7 @@ export const FormPanel = forwardRef(
         <FormField
           control={form.control}
           name={name}
-          key={index}
+          key={id}
           defaultValue={renderField.value}
           render={({ field }) => (
             <FormItem>
@@ -86,7 +89,7 @@ export const FormPanel = forwardRef(
                 options={options}
                 sliderOptions={sliderOptions}
                 label={label}
-                value={field.value || renderField.value}
+                value={field.value ?? renderField.value ?? ''}
                 onChange={(value: string) => {
                   if (typeof field.onChange === 'function') {
                     field.onChange(value)
@@ -128,7 +131,7 @@ export const FormPanel = forwardRef(
               {subtitle.text}
             </h3>
           )}
-          {fields.map((field, index) => renderField(field, index))}
+          {fields.map((field, index) => renderField(field))}
           {button.text ? (
             <Button
               type='submit'

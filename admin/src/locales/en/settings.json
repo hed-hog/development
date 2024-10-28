@@ -10,5 +10,11 @@
   "editTooltip": "Edit the selected configs",
   "name": "Name",
   "value": "Value",
-  "group": "Group"
+  "group": "Group",
+  "storage is required": "Storage is required",
+  "storage-s3-key is required": "Storage S3 Key is required for S3 storage",
+  "storage-s3-secret is required": "Storage S3 Secret is required for S3 storage",
+  "storage-s3-region is required": "Storage S3 Region is required for S3 storage",
+  "storage-s3-bucket is required": "Storage S3 Bucket is required for S3 storage",
+  "storage-local-path is required": "Storage Local Path is required for Local storage"
 }

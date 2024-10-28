@@ -10,5 +10,11 @@
   "editTooltip": "Editar as configuraçãos selecionadas",
   "name": "Nome",
   "value": "Valor",
-  "group": "Grupo"
+  "group": "Grupo",
+  "storage is required": "Armazenamento é obrigatório",
+  "storage-s3-key is required": "Chave de armazenamento S3 é obrigatória para armazenamento S3",
+  "storage-s3-secret is required": "Segredo de armazenamento S3 é obrigatório para armazenamento S3",
+  "storage-s3-region is required": "Região de armazenamento S3 é obrigatória para armazenamento S3",
+  "storage-s3-bucket is required": "Bucket de armazenamento S3 é obrigatório para armazenamento S3",
+  "storage-local-path is required": "Caminho de armazenamento local é obrigatório para armazenamento local"
 }
