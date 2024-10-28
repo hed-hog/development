@@ -14,6 +14,7 @@ import {
 import Field from './field'
 import { Button } from './button'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
 
 export const FormPanel = forwardRef(
   (
@@ -27,6 +28,15 @@ export const FormPanel = forwardRef(
     }: IFormPanelProps,
     ref
   ) => {
+    if (!form) {
+      form = useForm<FieldValues>({
+        mode: 'onSubmit',
+        values: {
+          ...(fields.map((field) => ({ [field.name]: field.value })) as any),
+        },
+      })
+    }
+
     const formRef = useRef<HTMLFormElement>(null)
     const formSubmitRef = useRef<HTMLButtonElement>(null)
 
@@ -76,6 +86,7 @@ export const FormPanel = forwardRef(
                 options={options}
                 sliderOptions={sliderOptions}
                 label={label}
+                value={field.value || renderField.value}
                 onChange={(value: string) => {
                   if (typeof field.onChange === 'function') {
                     field.onChange(value)

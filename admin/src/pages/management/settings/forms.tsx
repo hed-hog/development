@@ -6,25 +6,25 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { IFormFieldPropsBase } from '@/types/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { Button } from '@/components/custom/button'
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocales } from '@/features/locales/api/handlers'
-import { SettingLocaleEnables } from '@/components/custom/setting-locale-enables'
+import { useLocales, useLocalesEnabled } from '@/features/locales/api/handlers'
+import { SettingLocaleEnabled } from '@/components/custom/setting-locale-enabled'
 
 export default function Page() {
   const { t } = useTranslation()
   const { data: locales } = useLocales()
   const { mutate, isPending } = useSettings()
+  const { mutateAsync: mutateLocale, isPending: isPendingLocale } =
+    useLocalesEnabled()
   const formRef = useRef<HTMLFormElement>(null)
   const form = useForm<FieldValues>({
     defaultValues: {},
     mode: 'onSubmit',
-    values: {
-      language: 'en',
-    },
   })
   const { slug } = useParams()
   const { data, isLoading } = useSettingsFromGroup(String(slug))
+  const [localesEnabled, setLocalesEnabled] = useState<string[]>([])
 
   const getField = useCallback(
     (item: any): IFormFieldPropsBase => {
@@ -34,6 +34,7 @@ export default function Page() {
             name: item.slug,
             type: EnumFieldType.SELECT,
             defaultValue: item.value,
+            value: item.value,
             required: false,
             label: {
               text: item.name,
@@ -61,7 +62,7 @@ export default function Page() {
           }
       }
     },
-    [locales]
+    [locales, slug]
   )
 
   if (isLoading) {
@@ -76,7 +77,9 @@ export default function Page() {
 
   return (
     <div className='flex w-full flex-col gap-4'>
-      {slug === 'localization' && <SettingLocaleEnables />}
+      {slug === 'localization' && (
+        <SettingLocaleEnabled onChange={setLocalesEnabled} />
+      )}
       <FormPanel
         ref={formRef}
         fields={
@@ -84,6 +87,28 @@ export default function Page() {
         }
         form={form}
         onSubmit={(data) => {
+          mutateLocale({
+            codes: localesEnabled,
+          }).then(() => {
+            if (!localesEnabled.includes(data.language)) {
+              data.language = localesEnabled[0]
+            }
+
+            mutate(
+              Object.keys(data)
+                .map((key) => ({
+                  slug: key,
+                  value: data[key],
+                }))
+                .filter(
+                  (item) =>
+                    item.value !== undefined &&
+                    item.value !== null &&
+                    item.value !== ''
+                )
+            )
+          })
+
           mutate(
             Object.keys(data)
               .map((key) => ({
@@ -101,8 +126,8 @@ export default function Page() {
       />
       <div>
         <Button
-          loading={isPending}
-          disabled={isPending}
+          loading={isPending || isPendingLocale}
+          disabled={isPending || isPendingLocale}
           onClick={() => formRef.current?.submit()}
         >
           {t('apply')}

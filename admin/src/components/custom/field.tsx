@@ -6,7 +6,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Slider } from '@/components/ui/slider'
-
 import { FieldProps as FieldPropsForm } from '@/types/form-panel'
 import {
   Select,
@@ -29,6 +28,7 @@ import { CheckedState } from '@radix-ui/react-checkbox'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FormControl } from '../ui/form'
 import { Combobox } from './combo-box'
+import { Switch } from '../ui/switch'
 
 export type FieldProps = (
   | {
@@ -56,8 +56,10 @@ export type FieldProps = (
         | EnumFieldType.CHECKBOX
         | EnumFieldType.SHEETPICKER
         | EnumFieldType.MULTISELECT
-      value: string[]
-      onChange: (value: string[]) => void
+        | EnumFieldType.SWITCH
+
+      value: string[] | boolean
+      onChange: (value: string[] | boolean) => void
     }
   | {
       type: EnumFieldType.RANGE
@@ -73,11 +75,16 @@ export type FieldProps = (
   FieldPropsForm
 
 export default function Field(props: FieldProps) {
-  const [value, setValue] = useState<string>(props.value)
+  const [value, setValue] = useState<string | string[]>(props.value)
+  const [options, setOptions] = useState(props.options)
 
   useEffect(() => {
     setValue(props.value)
   }, [props.value])
+
+  useEffect(() => {
+    setOptions(props.options)
+  }, [props.options])
 
   switch (props.type) {
     case EnumFieldType.COMBOBOX:
@@ -85,17 +92,17 @@ export default function Field(props: FieldProps) {
         <Combobox
           value={String(value)}
           onChange={props.onChange}
-          options={props.options || []}
+          options={options || []}
         />
       )
 
     case EnumFieldType.RICHTEXT:
-      return <RichTextField value={value} onChange={props.onChange} />
+      return <RichTextField value={value as string} onChange={props.onChange} />
 
     case EnumFieldType.COLOR:
       return (
         <ColorPickerField
-          value={value}
+          value={value as string}
           onChange={props.onChange}
           required={props.required}
         />
@@ -129,10 +136,10 @@ export default function Field(props: FieldProps) {
       return (
         <RadioGroup
           defaultValue='comfortable'
-          value={value}
+          value={value as string}
           onChange={(value) => props.onChange(value)}
         >
-          {(props.options ?? []).map((option) => (
+          {(options ?? []).map((option) => (
             <div className={`flex items-center space-x-2`} key={option.label}>
               <RadioGroupItem value={option.value} id={option.value} />
               <Label htmlFor={option.value}>{option.label}</Label>
@@ -142,7 +149,7 @@ export default function Field(props: FieldProps) {
       )
 
     case EnumFieldType.CHECKBOX:
-      return (props.options ?? []).map((option) => {
+      return (options ?? []).map((option) => {
         const randomNum = String(Math.random() + option.value)
 
         return (
@@ -164,6 +171,18 @@ export default function Field(props: FieldProps) {
         )
       })
 
+    case EnumFieldType.SWITCH:
+      return (
+        <div>
+          <FormControl>
+            <Switch
+              value={value as unknown as string}
+              onCheckedChange={(value) => props.onChange(value)}
+            />
+          </FormControl>
+        </div>
+      )
+
     case EnumFieldType.RANGE:
       return (
         <div className={`flex items-center space-x-2`}>
@@ -173,7 +192,9 @@ export default function Field(props: FieldProps) {
             step={props.sliderOptions?.step || 1}
             value={
               Array.isArray(value)
-                ? value
+                ? ((value as string[]).map((v) =>
+                    Number(v)
+                  ) as unknown as number[])
                 : props.sliderOptions?.defaultValue || [50]
             }
             onValueChange={(value) => props.onChange(value)}
@@ -197,7 +218,7 @@ export default function Field(props: FieldProps) {
           </FormControl>
           <SelectContent>
             <SelectGroup>
-              {(props.options ?? []).map((opt, index) => (
+              {(options ?? []).map((opt, index) => (
                 <SelectItem key={index} value={opt.value}>
                   {opt.label}
                 </SelectItem>
@@ -212,7 +233,7 @@ export default function Field(props: FieldProps) {
         <MultiSelectField
           value={Array.isArray(value) ? value : []}
           onChange={props.onChange}
-          options={props.options || []}
+          options={options || []}
           required={props.required}
         />
       )
@@ -222,7 +243,7 @@ export default function Field(props: FieldProps) {
         <DatePickerField
           name={props.name}
           label={String(props.label?.text)}
-          date={value ? new Date(value) : undefined}
+          date={value ? new Date(value as string) : undefined}
           onDateChange={(date) => props.onChange(date)}
         />
       )
@@ -231,7 +252,7 @@ export default function Field(props: FieldProps) {
       return (
         <SheetPickerField
           onValueChange={props.onChange}
-          options={props.options || []}
+          options={options || []}
           title={String(props.label?.text)}
           buttonText='Salvar'
         />
