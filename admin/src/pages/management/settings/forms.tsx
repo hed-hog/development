@@ -1,37 +1,43 @@
-import SettingLanguage from '@/components/custom/setting-language'
-import SettingTimezone from '@/components/custom/setting-timezone'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useSettingsFromGroup } from '@/features/settings'
+import { useSettings, useSettingsFromGroup } from '@/features/settings'
 import { useParams } from 'react-router-dom'
-import { v4 as uuidv4 } from 'uuid'
-import SettingColor from '@/components/custom/setting-color'
-import SettingText from '@/components/custom/setting-text'
+import { FormPanel } from '@/components/custom/form-panel'
+import { FieldValues, useForm } from 'react-hook-form'
+import { IFormFieldPropsBase } from '@/types/form-panel'
+import { EnumFieldType } from '@/enums/EnumFieldType'
+import { Button } from '@/components/custom/button'
+import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
-interface SettingItem {
-  slug: string
-  value: string
-}
-
-const getComponentFromSlug = (item: SettingItem) => {
-  const key = uuidv4()
-
+const getField = (item: any): IFormFieldPropsBase => {
   switch (item.slug) {
-    case 'language':
-      return <SettingLanguage key={key} setting={item} />
-    case 'timezone':
-      return <SettingTimezone key={key} setting={item} />
-    case 'primary':
-    case 'secondary':
-    case 'accent':
-    case 'background':
-    case 'muted':
-      return <SettingColor key={key} setting={item} />
     default:
-      return <SettingText key={key} setting={item} />
+      return {
+        name: item.slug,
+        type: EnumFieldType.TEXT,
+        defaultValue: item.value,
+        required: false,
+        label: {
+          text: item.name,
+        },
+        description: {
+          text: item.description,
+        },
+      }
   }
 }
 
 export default function Page() {
+  const { t } = useTranslation()
+  const { mutate, isPending } = useSettings()
+  const formRef = useRef<HTMLFormElement>(null)
+  const form = useForm<FieldValues>({
+    defaultValues: {},
+    mode: 'onSubmit',
+    values: {
+      language: 'en',
+    },
+  })
   const { slug } = useParams()
   const { data, isLoading } = useSettingsFromGroup(String(slug))
 
@@ -47,7 +53,37 @@ export default function Page() {
 
   return (
     <div className='flex w-full flex-col gap-4'>
-      {data?.data.data.map((item) => getComponentFromSlug(item))}
+      <FormPanel
+        ref={formRef}
+        fields={
+          data?.data.data.map((item) => getField(item)) as IFormFieldPropsBase[]
+        }
+        form={form}
+        onSubmit={(data) => {
+          mutate(
+            Object.keys(data)
+              .map((key) => ({
+                slug: key,
+                value: data[key],
+              }))
+              .filter(
+                (item) =>
+                  item.value !== undefined &&
+                  item.value !== null &&
+                  item.value !== ''
+              )
+          )
+        }}
+      />
+      <div>
+        <Button
+          loading={isPending}
+          disabled={isPending}
+          onClick={() => formRef.current?.submit()}
+        >
+          {t('apply')}
+        </Button>
+      </div>
     </div>
   )
 }

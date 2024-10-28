@@ -2,5 +2,6 @@
   "en": "English",
   "pt": "Portuguese",
   "slogan": "Administration Panel",
-  "selectTimezone": "Select Timezone"
+  "selectTimezone": "Select Timezone",
+  "apply": "Apply"
 }

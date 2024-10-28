@@ -15,12 +15,12 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
 import { queryClient } from '@/lib/query-provider'
-import { useEditSettingSlug } from '@/features/settings'
+import { useEditUserSettingSlug } from '@/features/settings'
 import { useApp } from '@/hooks/use-app'
 
 export const LocaleChange = () => {
   const { user } = useApp()
-  const { mutateAsync, isPending } = useEditSettingSlug()
+  const { mutateAsync, isPending } = useEditUserSettingSlug()
   const { i18n, t } = useTranslation()
   const [languages, setLanguages] = useState<any[]>([])
   const { data: dataLocales } = useLocales()
@@ -50,9 +50,7 @@ export const LocaleChange = () => {
         }
         mutateAsync({
           slug: 'language',
-          data: {
-            value,
-          },
+          value,
         })
       }
     },

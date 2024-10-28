@@ -30,7 +30,7 @@ import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FormControl } from '../ui/form'
 import { Combobox } from './combo-box'
 
-type FieldProps = (
+export type FieldProps = (
   | {
       type:
         | EnumFieldType.RICHTEXT

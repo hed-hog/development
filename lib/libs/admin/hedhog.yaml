@@ -96,7 +96,11 @@ data:
       method: GET
     - url: /settings
       method: POST
+    - url: /settings
+      method: PUT
     - url: /settings/:slug
+      method: PUT
+    - url: /settings/users/:slug
       method: PUT
     - url: /settings/:settingId
       method: PATCH
@@ -115,6 +119,16 @@ data:
     - url: /users/:userId
       method: PATCH
     - url: /users
+      method: DELETE
+    - url: /locales
+      method: GET
+    - url: /locales/:localeId
+      method: GET
+    - url: /locales
+      method: POST
+    - url: /locales/:localeId
+      method: PATCH
+    - url: /locales
       method: DELETE
   menus:
     - url: /
@@ -1169,6 +1183,7 @@ data:
               en: The system default language, each user can have their own preferred language
               pt: O idioma padrão do sistema, cada usuário pode ter o seu próprio idioma preferido
             value: en
+            user_override: true
           - slug: timezone
             type: string
             name:
@@ -1178,6 +1193,7 @@ data:
               en: The timezone to use
               pt: O fuso horário a utilizar
             value: UTC
+            user_override: true
     - slug: appearance
       icon: palette
       name:
@@ -1649,7 +1665,7 @@ tables:
       - name: value
         length: 1023
         isNullable: true
-      - name: userOverride
+      - name: user_override
         type: boolean
         default: false
       - type: created_at

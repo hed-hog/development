@@ -10,6 +10,8 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { itemTranslations } from '@hedhog/utils';
+import { SettingsDTO } from './dto/settings.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SettingsService {
@@ -19,6 +21,21 @@ export class SettingsService {
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
   ) {}
+
+  async setManySettings(data: SettingsDTO) {
+    for (const { slug, value } of data.settings) {
+      await this.prismaService.settings.updateMany({
+        where: {
+          slug,
+        },
+        data: {
+          value,
+        },
+      });
+    }
+
+    return { success: true };
+  }
 
   async getSettingFromGroup(locale: any, paginationParams: any, slug: string) {
     const fields = ['slug', 'value'];
@@ -232,11 +249,24 @@ export class SettingsService {
     });
   }
 
-  async setSettingUserValue(slug: string, value: string) {
+  async setSettingUserValue(user_id: number, slug: string, value: string) {
+    const user = await this.prismaService.users.findUnique({
+      where: {
+        id: user_id,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException(`User with id ${user_id} not found.`);
+    }
+
     const setting = await this.prismaService.settings.findFirst({
       where: {
         slug,
-        userOverride: true,
+        user_override: true,
       },
     });
 
@@ -246,16 +276,25 @@ export class SettingsService {
       );
     }
 
-    return await this.prismaService.settings_user.upsert({
+    return await this.prismaService.setting_users.upsert({
       where: {
-        settingId: setting.id,
+        user_id_setting_id: {
+          setting_id: setting.id,
+          user_id: user.id,
+        },
       },
       create: {
-        settingId: setting.id,
+        setting_id: setting.id,
         value,
+        user_id: user.id,
       },
       update: {
         value,
+      },
+      select: {
+        setting_id: true,
+        user_id: true,
+        value: true,
       },
     });
   }
@@ -274,7 +313,7 @@ export class SettingsService {
         value: true,
         slug: true,
         type: true,
-        userOverride: true,
+        user_override: true,
       },
     });
 

@@ -117,3 +117,41 @@ export function useEditSettingSlug() {
     },
   })
 }
+
+export function useEditUserSettingSlug() {
+  const { editUserSettingSlug } = requests()
+  //const { t: moduleT } = useTranslation('module')
+  //const { t: successT } = useTranslation('success')
+  //const { t: errorT } = useTranslation('error')
+
+  return useMutation({
+    mutationKey: ['edit-setting-slug'],
+    mutationFn: editUserSettingSlug,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['settings'] })
+      toast.success(`edit setting success`)
+    },
+    onError: (error: any) => {
+      toast.error(`error` + error.message)
+    },
+  })
+}
+
+export function useSettings() {
+  const { editMultipleSettings } = requests()
+  //const { t: moduleT } = useTranslation('module')
+  //const { t: successT } = useTranslation('success')
+  //const { t: errorT } = useTranslation('error')
+
+  return useMutation({
+    mutationKey: ['edit-settings'],
+    mutationFn: editMultipleSettings,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['settings'] })
+      toast.success(`edit setting success`)
+    },
+    onError: (error: any) => {
+      toast.error(`error` + error.message)
+    },
+  })
+}

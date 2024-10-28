@@ -17,14 +17,10 @@ import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { MenuService } from './menu.service';
 import { OrderDTO } from './dto/order.dto';
-import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../auth/decorators/user.decorator';
-import { Role } from '../role/decorators/role.decorator';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '../locale';
 
-@Role()
-@UseGuards(AuthGuard)
 @Controller('menus')
 export class MenuController {
   constructor(

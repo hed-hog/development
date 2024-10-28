@@ -10,18 +10,17 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseGuards,
   forwardRef,
 } from '@nestjs/common';
-import { AuthGuard } from '../auth/guards/auth.guard';
-import { Role } from '../role/decorators/role.decorator';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { SettingsService } from './settings.service';
 import { Locale } from '../locale';
+import { SettingsDTO } from './dto/settings.dto';
+import { User } from '../auth/decorators/user.decorator';
+import { SettingUserDTO } from './dto/setting-user.dto';
 
-@Role()
 @Controller('settings')
 export class SettingsController {
   constructor(
@@ -29,7 +28,6 @@ export class SettingsController {
     private readonly settingsService: SettingsService,
   ) {}
 
-  @UseGuards(AuthGuard)
   @Get('groups/:slug')
   async getSettingFromGroup(
     @Pagination() paginationParams,
@@ -43,37 +41,45 @@ export class SettingsController {
     );
   }
 
-  @UseGuards(AuthGuard)
   @Get('groups')
   async getSettingGroups(@Pagination() paginationParams, @Locale() locale) {
     return this.settingsService.getSettingGroups(locale, paginationParams);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   async getSettings(@Pagination() paginationParams, @Locale() locale) {
     return this.settingsService.getSettings(locale, paginationParams);
   }
 
-  @UseGuards(AuthGuard)
   @Get(':settingId')
   async show(@Param('settingId', ParseIntPipe) settingId: number) {
     return this.settingsService.get(settingId);
   }
 
-  @UseGuards(AuthGuard)
   @Post()
   create(@Body() data: CreateDTO) {
     return this.settingsService.create(data);
   }
 
-  @UseGuards(AuthGuard)
+  @Put('users/:slug')
+  async updateUserFromSlug(
+    @Param('slug') slug: string,
+    @Body() { value }: SettingUserDTO,
+    @User() { id },
+  ) {
+    return this.settingsService.setSettingUserValue(id, slug, value);
+  }
+
   @Put(':slug')
   async updateFromSlug(@Param('slug') slug: string, @Body() data: UpdateDTO) {
     return this.settingsService.updateFromSlug(slug, data);
   }
 
-  @UseGuards(AuthGuard)
+  @Put()
+  async setManySettings(@Body() data: SettingsDTO) {
+    return this.settingsService.setManySettings(data);
+  }
+
   @Patch(':settingId')
   async update(
     @Param('settingId', ParseIntPipe) settingId: number,
@@ -85,7 +91,6 @@ export class SettingsController {
     });
   }
 
-  @UseGuards(AuthGuard)
   @Delete()
   async delete(@Body() data: DeleteDTO) {
     return this.settingsService.delete(data);

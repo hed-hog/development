@@ -16,13 +16,9 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { RoleService } from './role.service';
-import { Role } from './decorators/role.decorator';
-import { AuthGuard } from '../auth/guards/auth.guard';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '../locale';
 
-@Role()
-@UseGuards(AuthGuard)
 @Controller('roles')
 export class RoleController {
   constructor(

@@ -36,6 +36,31 @@ export function requests() {
     }).then((res) => res.data)
   }
 
+  const editUserSettingSlug = async (params: {
+    slug: string
+    value: string
+  }) => {
+    const { slug, value } = params
+    return request({
+      url: `/settings/users/${slug}`,
+      method: 'put',
+      data: { value },
+    }).then((res) => res.data)
+  }
+
+  const editMultipleSettings = async (
+    params: {
+      slug: string
+      value: string
+    }[]
+  ) => {
+    return request({
+      url: `/settings`,
+      method: 'put',
+      data: { settings: params },
+    }).then((res) => res.data)
+  }
+
   const deleteSettings = async <T>(settingIds: T[]) => {
     return request({
       url: '/settings',
@@ -49,5 +74,7 @@ export function requests() {
     editSetting,
     editSettingSlug,
     deleteSettings,
+    editMultipleSettings,
+    editUserSettingSlug,
   }
 }

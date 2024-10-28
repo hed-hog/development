@@ -9,20 +9,15 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseGuards,
   forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { ScreenService } from './screen.service';
-import { AuthGuard } from '../auth/guards/auth.guard';
-import { Role } from '../role/decorators/role.decorator';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '../locale';
 
-@Role()
-@UseGuards(AuthGuard)
 @Controller('screens')
 export class ScreenController {
   constructor(

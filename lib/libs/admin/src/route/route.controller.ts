@@ -9,10 +9,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
-import { Role } from '../role/decorators/role.decorator';
-import { AuthGuard } from '../auth/guards/auth.guard';
 import { Pagination, PaginationDTO } from '@hedhog/pagination';
 import { RouteService } from './route.service';
 import { CreateDTO } from './dto/create.dto';
@@ -21,8 +18,6 @@ import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '../locale';
 
-@Role()
-@UseGuards(AuthGuard)
 @Controller('routes')
 export class RouteController {
   constructor(
