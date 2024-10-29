@@ -126,7 +126,10 @@ export function GradientPicker({
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value='solid' className='mt-0 flex flex-wrap gap-1'>
+          <TabsContent
+            value='solid'
+            className='mt-0 flex flex-row flex-wrap gap-1'
+          >
             {solids.map((s) => (
               <div
                 key={s}
