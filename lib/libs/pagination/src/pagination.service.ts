@@ -148,8 +148,6 @@ export class PaginationService {
   extractFieldNames(model: Record<string, any>): string[] {
     const fieldNames: string[] = [];
 
-    console.log('extractFieldNames', { model });
-
     const fields = model.fields;
 
     for (const key in fields) {

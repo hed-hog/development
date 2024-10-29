@@ -9,7 +9,6 @@ export class ProviderFactory {
     providerType: EnumProvider,
     settings: Record<string, string>,
   ): AbstractProvider {
-    console.log('providerType', providerType);
     switch (providerType) {
       case EnumProvider.S3:
         return new S3Provider(settings);

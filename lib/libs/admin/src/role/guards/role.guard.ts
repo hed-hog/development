@@ -23,14 +23,10 @@ export class RoleGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log('RoleGuard');
-
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
-
-    console.log('isPublic', isPublic);
 
     if (isPublic) {
       return true;
@@ -40,8 +36,6 @@ export class RoleGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-
-    console.log('withRole', withRole);
 
     if (!withRole) {
       return true;

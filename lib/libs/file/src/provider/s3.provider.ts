@@ -1,5 +1,5 @@
-import { AbstractProvider } from './abstract,provider';
 import { S3 } from 'aws-sdk';
+import { AbstractProvider } from './abstract,provider';
 
 export class S3Provider extends AbstractProvider {
   private S3: S3;
@@ -120,12 +120,6 @@ export class S3Provider extends AbstractProvider {
     if (!url.pathname) {
       throw new Error(`Invalid filepath "${filepath}" for S3`);
     }
-
-    console.log({
-      Bucket: this.settings['storage-s3-bucket'],
-      Key: url.pathname.split('/').slice(1).join('/'),
-      Expires: expires,
-    });
 
     return s3.getSignedUrlPromise('getObject', {
       Bucket: this.settings['storage-s3-bucket'],

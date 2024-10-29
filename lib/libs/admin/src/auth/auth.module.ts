@@ -1,11 +1,11 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { PrismaModule } from '@hedhog/prisma';
-import { JwtModule } from '@nestjs/jwt';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './guards/auth.guard';
 import { MailModule } from '@hedhog/mail';
+import { PrismaModule } from '@hedhog/prisma';
+import { forwardRef, Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -13,10 +13,6 @@ import { MailModule } from '@hedhog/mail';
       JwtModule.registerAsync({
         global: true,
         useFactory: () => {
-          console.log(
-            'AuthModule -> process.env.JWT_SECRET',
-            process.env.JWT_SECRET,
-          );
           return {
             secret: String(process.env.JWT_SECRET),
             global: true,

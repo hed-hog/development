@@ -1,10 +1,10 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { FileService } from './file.service';
-import { PrismaModule } from '@hedhog/prisma';
-import { PaginationModule } from '@hedhog/pagination';
 import { AdminModule } from '@hedhog/admin';
-import { FileController } from './file.controller';
+import { PaginationModule } from '@hedhog/pagination';
+import { PrismaModule } from '@hedhog/prisma';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
+import { FileController } from './file.controller';
+import { FileService } from './file.service';
 
 @Module({
   imports: [
@@ -15,10 +15,6 @@ import { JwtModule } from '@nestjs/jwt';
       JwtModule.registerAsync({
         global: true,
         useFactory: () => {
-          console.log(
-            'AuthModule -> process.env.JWT_SECRET',
-            process.env.JWT_SECRET,
-          );
           return {
             secret: String(process.env.JWT_SECRET),
           };
