@@ -5,7 +5,7 @@ export class CreatePersonAddressDTO {
   type_id: number;
 
   @IsBoolean({ message: 'Primary must be a boolean.' })
-  primary: boolean = false;
+  primary = false;
 
   @IsString({ message: 'Street must be a string.' })
   street: string;

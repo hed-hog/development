@@ -1,3 +1,5 @@
+import { Locale, Role } from '@hedhog/admin';
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -8,13 +10,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { DeleteDTO } from '../dto/delete.dto';
 import { DocumentTypeService } from './document-type.service';
 import { CreateDocumentTypeDTO } from './dto/create-document-type.dto';
-import { Pagination } from '@hedhog/pagination';
 import { UpdateDocumentTypeDTO } from './dto/update-document-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
-import { Locale } from '@hedhog/admin';
 
+@Role()
 @Controller('document-types')
 export class DocumentTypeController {
   constructor(private readonly documentTypeService: DocumentTypeService) {}

@@ -1,16 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PersonService } from './person.service';
-import { PrismaService } from '@hedhog/prisma';
 import {
   PageOrderDirection,
   PaginationDTO,
   PaginationService,
 } from '@hedhog/pagination';
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { PrismaService } from '@hedhog/prisma';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import { CreatePersonDTO } from './dto/create-person.dto';
-import { UpdatePersonDTO } from './dto/update-person.dto';
 import { DeleteDTO } from './dto/delete.dto';
-import { itemTranslations } from '@hedhog/utils';
+import { UpdatePersonDTO } from './dto/update-person.dto';
+import { PersonService } from './person.service';
 
 describe('PersonService', () => {
   let service: PersonService;

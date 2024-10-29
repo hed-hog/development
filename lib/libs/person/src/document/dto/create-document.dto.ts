@@ -11,7 +11,7 @@ export class CreatePersonDocumentDTO {
   type_id: number;
 
   @IsBoolean({ message: 'Primary must be a boolean. ' })
-  primary: boolean = false;
+  primary = false;
 
   @IsString({ message: 'Value must be a string. ' })
   value: string;

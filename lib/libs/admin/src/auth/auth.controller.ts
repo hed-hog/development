@@ -6,6 +6,7 @@ import {
   Inject,
   Post,
 } from '@nestjs/common';
+import { Role } from '../role/decorators/role.decorator';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { User } from './decorators/user.decorator';
@@ -21,6 +22,7 @@ export class AuthController {
     private readonly service: AuthService,
   ) {}
 
+  @Role()
   @Get('verify')
   async verify(@User() { id }: UserType) {
     return this.service.verify(id);

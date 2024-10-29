@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let personId = 1;
+// const personId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
@@ -12,11 +11,11 @@ beforeAll(async () => {
 });
 
 describe('Person API tests', () => {
-  const newPerson = {
-    name: faker.person.fullName(),
-    type_id: 1,
-    birth_at: faker.date.birthdate(),
-  };
+  // const newPerson = {
+  //   name: faker.person.fullName(),
+  //   type_id: 1,
+  //   birth_at: faker.date.birthdate(),
+  // };
 
   /*
   test('Create new person', async () => {

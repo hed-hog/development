@@ -1,4 +1,4 @@
-import { IsEnum, IsIn, IsString } from 'class-validator';
+import { IsIn, IsString } from 'class-validator';
 import { HttpMethod } from '../../types/http-method';
 
 export class CreateDTO {

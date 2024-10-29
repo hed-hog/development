@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
-let token;
+let token: string;
 
 beforeAll(async () => {
   token = await getGlobalToken();
@@ -10,14 +10,14 @@ beforeAll(async () => {
 });
 
 describe('Locale API tests', () => {
-  const newLocale = {
-    name: 'english',
-    code: 'en',
-    region: 'US',
-    country_id: 24,
-  };
+  // const newLocale = {
+  //   name: 'english',
+  //   code: 'en',
+  //   region: 'US',
+  //   country_id: 24,
+  // };
 
-  let localeId = 1;
+  const localeId = 1;
 
   /* test('Create new locale', async () => {
     const response = await axios.post('/locales', newLocale, {

@@ -1,31 +1,29 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
-import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
-let token = '';
+// let token = '';
 // let personId = 1;
 // let addressId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
-  token = await getGlobalToken();
+  // token = await getGlobalToken();
 });
 
 describe('Addresses API tests', () => {
-  const newAddress = {
-    country_id: 1,
-    type_id: 1,
-    primary: true,
-    street: faker.location.street(),
-    number: faker.number.int({ min: 1, max: 999 }),
-    complement: faker.location.secondaryAddress(),
-    district: faker.location.city(),
-    city: faker.location.city(),
-    state: faker.location.state(),
-    postal_code: faker.location.zipCode(),
-    reference: faker.location.streetAddress(),
-  };
+  // const newAddress = {
+  //   country_id: 1,
+  //   type_id: 1,
+  //   primary: true,
+  //   street: faker.location.street(),
+  //   number: faker.number.int({ min: 1, max: 999 }),
+  //   complement: faker.location.secondaryAddress(),
+  //   district: faker.location.city(),
+  //   city: faker.location.city(),
+  //   state: faker.location.state(),
+  //   postal_code: faker.location.zipCode(),
+  //   reference: faker.location.streetAddress(),
+  // };
 
   /*
   test('Create new address', async () => {

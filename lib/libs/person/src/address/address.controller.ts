@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/admin';
 import {
   Body,
   Controller,
@@ -9,11 +10,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { AddressService } from './address.service';
-import { UpdatePersonAddressDTO } from './dto/update-address.dto';
-import { CreatePersonAddressDTO } from './dto/create-address.dto';
 import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
+import { AddressService } from './address.service';
+import { CreatePersonAddressDTO } from './dto/create-address.dto';
+import { UpdatePersonAddressDTO } from './dto/update-address.dto';
 
+@Role()
 @Controller('persons/:personId/address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}

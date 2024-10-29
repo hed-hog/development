@@ -1,3 +1,5 @@
+import { Locale, Role } from '@hedhog/admin';
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -8,12 +10,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { DeleteDTO } from '../dto/delete.dto';
 import { CustomTypeService } from './custom-type.service';
 import { CreateCustomTypeDTO } from './dto/create-custom-type.dto';
-import { Pagination } from '@hedhog/pagination';
 import { UpdateCustomTypeDTO } from './dto/update-custom-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
 
+@Role()
 @Controller('custom-types')
 export class CustomTypeController {
   constructor(private readonly customTypeService: CustomTypeService) {}
@@ -24,13 +26,13 @@ export class CustomTypeController {
   }
 
   @Get()
-  getCustomTypes(@Pagination() paginationParams) {
-    return this.customTypeService.getcustomTypes(paginationParams);
+  getCustomTypes(@Pagination() paginationParams, @Locale() locale: string) {
+    return this.customTypeService.getCustomTypes(locale, paginationParams);
   }
 
   @Get(':id')
   getCustomTypeById(@Param('id', ParseIntPipe) id: number) {
-    return this.customTypeService.getcustomTypeById(id);
+    return this.customTypeService.getCustomTypeById(id);
   }
 
   @Patch(':id')

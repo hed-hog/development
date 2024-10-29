@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/admin';
 import {
   Body,
   Controller,
@@ -9,11 +10,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CustomService } from './custom.service';
-import { UpdatePersonCustomDTO } from './dto/update-custom.dto';
-import { CreatePersonCustomDTO } from './dto/create-custom.dto';
 import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
+import { CustomService } from './custom.service';
+import { CreatePersonCustomDTO } from './dto/create-custom.dto';
+import { UpdatePersonCustomDTO } from './dto/update-custom.dto';
 
+@Role()
 @Controller('persons/:personId/customs')
 export class CustomController {
   constructor(private readonly customService: CustomService) {}

@@ -1,3 +1,4 @@
+import { Pagination, PaginationDTO } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -10,14 +11,15 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { Pagination, PaginationDTO } from '@hedhog/pagination';
-import { RouteService } from './route.service';
-import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '../locale';
+import { Role } from '../role/decorators/role.decorator';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { RouteService } from './route.service';
 
+@Role()
 @Controller('routes')
 export class RouteController {
   constructor(

@@ -1,3 +1,4 @@
+import { itemTranslations } from '@hedhog/utils';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import {
   DEFAULT_PAGE,
@@ -10,7 +11,6 @@ import type {
   PaginatedResult,
   PaginationParams,
 } from './types/pagination.types';
-import { itemTranslations } from '@hedhog/utils';
 
 @Injectable()
 export class PaginationService {

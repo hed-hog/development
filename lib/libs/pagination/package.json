@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/pagination",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -12,13 +12,15 @@
   "license": "MIT",
   "description": "",
   "peerDependencies": {
-    "@prisma/client": "^5.17.0",
-    "@hedhog/utils": "latest",
     "@hedhog/prisma": "latest",
+    "@hedhog/utils": "latest",
+    "@prisma/client": "^5.17.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1"
   },
   "devDependencies": {
-    "@hedhog/utils": "latest"
+    "@hedhog/utils": "latest",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1"
   }
 }

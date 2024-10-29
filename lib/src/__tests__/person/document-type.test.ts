@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let documentTypeId = 1;
+const documentTypeId = 1;
 const locale = 'en';
 
 beforeAll(async () => {
@@ -13,9 +12,9 @@ beforeAll(async () => {
 });
 
 describe('DocumentType API tests', () => {
-  const newDocumentType = {
-    name: faker.commerce.productName(),
-  };
+  // const newDocumentType = {
+  //   name: faker.commerce.productName(),
+  // };
 
   /*
   test('Create new document type', async () => {

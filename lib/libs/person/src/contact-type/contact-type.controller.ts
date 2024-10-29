@@ -1,3 +1,5 @@
+import { Locale, Role } from '@hedhog/admin';
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -8,13 +10,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { DeleteDTO } from '../dto/delete.dto';
 import { ContactTypeService } from './contact-type.service';
 import { CreateContactTypeDTO } from './dto/create-contact-type.dto';
-import { Pagination } from '@hedhog/pagination';
 import { UpdateContactTypeDTO } from './dto/update-contact-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
-import { Locale } from '@hedhog/admin';
 
+@Role()
 @Controller('contact-types')
 export class ContactTypeController {
   constructor(private readonly contactTypeService: ContactTypeService) {}

@@ -1,20 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { SettingsService } from './settings.service';
+import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import {
-  PaginationService,
-  PaginationDTO,
-  PageOrderDirection,
-} from '@hedhog/pagination';
 import { BadRequestException } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
+import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteDTO } from '../dto/delete.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { SettingsService } from './settings.service';
 
 describe('SettingsService', () => {
   let service: SettingsService;
   let prismaService: PrismaService;
-  let paginationService: PaginationService;
+  // let paginationService: PaginationService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -43,7 +38,7 @@ describe('SettingsService', () => {
 
     service = module.get<SettingsService>(SettingsService);
     prismaService = module.get<PrismaService>(PrismaService);
-    paginationService = module.get<PaginationService>(PaginationService);
+    // paginationService = module.get<PaginationService>(PaginationService);
   });
 
   it('should be defined', () => {

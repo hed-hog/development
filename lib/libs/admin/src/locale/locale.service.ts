@@ -46,6 +46,7 @@ export class LocaleService {
   }
 
   async getEnables(locale: string, paginationParams: PaginationDTO) {
+    console.log('getEnables', locale, paginationParams);
     const fields = ['code', 'region'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -68,6 +69,8 @@ export class LocaleService {
         },
       },
     );
+
+    console.log('result', result);
 
     const codes = [];
 

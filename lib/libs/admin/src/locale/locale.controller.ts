@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  forwardRef,
   Get,
   Inject,
   Param,
@@ -10,16 +11,17 @@ import {
   Patch,
   Post,
   Put,
-  forwardRef,
 } from '@nestjs/common';
+import { Public } from '../auth/decorators/public.decorator';
+import { Role } from '../role/decorators/role.decorator';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { LocaleService } from './locale.service';
-import { Locale } from './locale.decorator';
-import { Public } from '../auth/decorators/public.decorator';
 import { SetEnabledDTO } from './dto/set-enabled.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { Locale } from './locale.decorator';
+import { LocaleService } from './locale.service';
 
+@Role()
 @Controller('locales')
 export class LocaleController {
   constructor(

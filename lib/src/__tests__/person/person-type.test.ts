@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let personTypeId = 1;
+const personTypeId = 1;
 const locale = 'en';
 
 beforeAll(async () => {
@@ -13,9 +12,9 @@ beforeAll(async () => {
 });
 
 describe('PersonType API tests', () => {
-  const newPersonType = {
-    name: faker.lorem.word(),
-  };
+  // const newPersonType = {
+  //   name: faker.lorem.word(),
+  // };
 
   /*
   test('Create new person type', async () => {

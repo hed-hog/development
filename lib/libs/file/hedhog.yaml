@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../hedhog.schema.json
 tables:
   file_providers:
     ifNotExists: true
@@ -218,3 +217,41 @@ data:
     - name: application/vnd.openxmlformats-officedocument.wordprocessingml.document
     - name: application/vnd.ms-powerpoint
     - name: application/vnd.openxmlformats-officedocument.presentationml.presentation
+
+  routes:
+    - url: /files
+      method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
+    - url: /files/:id
+      method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
+    - url: /files/download/:token
+      method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
+    - url: /files/download/:id
+      method: PUT
+      relations:
+        roles:
+          - where:
+              slug: admin
+    - url: /files
+      method: POST
+      relations:
+        roles:
+          - where:
+              slug: admin
+    - url: /files
+      method: DELETE
+      relations:
+        roles:
+          - where:
+              slug: admin

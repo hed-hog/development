@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/admin';
 import {
   Body,
   Controller,
@@ -9,11 +10,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { DocumentService } from './document.service';
-import { UpdatePersonDocumentDTO } from './dto/update-document.dto';
-import { CreatePersonDocumentDTO } from './dto/create-document.dto';
 import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
+import { DocumentService } from './document.service';
+import { CreatePersonDocumentDTO } from './dto/create-document.dto';
+import { UpdatePersonDocumentDTO } from './dto/update-document.dto';
 
+@Role()
 @Controller('persons/:personId/documents')
 export class DocumentController {
   constructor(private readonly documentService: DocumentService) {}

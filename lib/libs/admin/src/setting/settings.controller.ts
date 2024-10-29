@@ -4,23 +4,25 @@ import {
   Controller,
   Delete,
   Get,
-  Put,
   Inject,
   Param,
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
+import { User } from '../auth/decorators/user.decorator';
 import { DeleteDTO } from '../dto/delete.dto';
+import { Locale } from '../locale';
+import { Role } from '../role/decorators/role.decorator';
+import { CreateDTO } from './dto/create.dto';
+import { SettingUserDTO } from './dto/setting-user.dto';
+import { SettingsDTO } from './dto/settings.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { SettingsService } from './settings.service';
-import { Locale } from '../locale';
-import { SettingsDTO } from './dto/settings.dto';
-import { User } from '../auth/decorators/user.decorator';
-import { SettingUserDTO } from './dto/setting-user.dto';
 
+@Role()
 @Controller('settings')
 export class SettingsController {
   constructor(

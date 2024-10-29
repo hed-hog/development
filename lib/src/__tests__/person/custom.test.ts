@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
@@ -13,11 +12,11 @@ beforeAll(async () => {
 });
 
 describe('Custom API tests', () => {
-  const newCustom = {
-    type_id: 1,
-    name: faker.lorem.word(),
-    value: faker.lorem.sentence(),
-  };
+  // const newCustom = {
+  //   type_id: 1,
+  //   name: faker.lorem.word(),
+  //   value: faker.lorem.sentence(),
+  // };
 
   /*
   test('Create new custom entry', async () => {

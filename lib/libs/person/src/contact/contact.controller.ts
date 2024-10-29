@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/admin';
 import {
   Body,
   Controller,
@@ -9,11 +10,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ContactService } from './contact.service';
-import { UpdatePersonContactDTO } from './dto/update-contact.dto';
-import { CreatePersonContactDTO } from './dto/create-contact.dto';
 import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
+import { ContactService } from './contact.service';
+import { CreatePersonContactDTO } from './dto/create-contact.dto';
+import { UpdatePersonContactDTO } from './dto/update-contact.dto';
 
+@Role()
 @Controller('persons/:personId/contacts')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}

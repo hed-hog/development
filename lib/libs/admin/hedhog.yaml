@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../hedhog.schema.json
 data:
   routes:
     - url: /auth/verify

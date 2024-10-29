@@ -1,3 +1,5 @@
+import { Locale, Role } from '@hedhog/admin';
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -8,13 +10,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { PersonTypeService } from './person-type.service';
-import { CreatePersonTypeDTO } from './dto/create-person-type.dto';
-import { Pagination } from '@hedhog/pagination';
-import { UpdatePersonTypeDTO } from './dto/update-person-type.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { Locale } from '@hedhog/admin';
+import { CreatePersonTypeDTO } from './dto/create-person-type.dto';
+import { UpdatePersonTypeDTO } from './dto/update-person-type.dto';
+import { PersonTypeService } from './person-type.service';
 
+@Role()
 @Controller('person-types')
 export class PersonTypeController {
   constructor(private readonly personTypeService: PersonTypeService) {}

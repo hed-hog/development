@@ -1,3 +1,4 @@
+import { PrismaService } from '@hedhog/prisma';
 import {
   CanActivate,
   ExecutionContext,
@@ -7,12 +8,11 @@ import {
   RequestMethod,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Request } from 'express';
-import { Reflector } from '@nestjs/core';
 import { METHOD_METADATA } from '@nestjs/common/constants';
-import { WITH_ROLE } from '../decorators/role.decorator';
-import { PrismaService } from '@hedhog/prisma';
+import { Reflector } from '@nestjs/core';
+import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../../auth/decorators/public.decorator';
+import { WITH_ROLE } from '../decorators/role.decorator';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -23,10 +23,14 @@ export class RoleGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('RoleGuard');
+
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
+
+    console.log('isPublic', isPublic);
 
     if (isPublic) {
       return true;
@@ -36,6 +40,8 @@ export class RoleGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+
+    console.log('withRole', withRole);
 
     if (!withRole) {
       return true;

@@ -11,12 +11,14 @@ import {
   Post,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { Role } from '../role/decorators/role.decorator';
+import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
-import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
+@Role()
 @Controller('users')
 export class UserController {
   constructor(

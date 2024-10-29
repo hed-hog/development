@@ -5,9 +5,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { DeleteDTO } from '../dto/delete.dto';
 import { CreateCustomTypeDTO } from './dto/create-custom-type.dto';
 import { UpdateCustomTypeDTO } from './dto/update-custom-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
 
 @Injectable()
 export class CustomTypeService {
@@ -22,8 +22,8 @@ export class CustomTypeService {
     });
   }
 
-  async getcustomTypes(paginationParams: PaginationDTO) {
-    const fields = ['name'];
+  async getCustomTypes(locale: string, paginationParams: PaginationDTO) {
+    const fields = ['slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -36,11 +36,24 @@ export class CustomTypeService {
         where: {
           OR,
         },
+        include: {
+          person_custom_type_translations: {
+            where: {
+              locales: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
+        },
       },
+      'person_custom_type_translations',
     );
   }
 
-  async getcustomTypeById(id: number) {
+  async getCustomTypeById(id: number) {
     const customType = await this.prismaService.person_custom_types.findUnique({
       where: { id },
     });

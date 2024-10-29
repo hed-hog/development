@@ -1,20 +1,22 @@
+import { Role } from '@hedhog/admin';
+import { Pagination } from '@hedhog/pagination';
 import {
-  Controller,
-  Post,
-  Delete,
-  UploadedFile,
   Body,
-  Param,
-  Put,
+  Controller,
+  Delete,
   Get,
-  UseInterceptors,
+  Param,
   ParseIntPipe,
+  Post,
+  Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileService } from './file.service';
 import { DeleteDTO } from './dto/delete.dto';
-import { Pagination } from '@hedhog/pagination';
+import { FileService } from './file.service';
 
+@Role()
 @Controller('files')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
@@ -27,6 +29,15 @@ export class FileController {
   @Get(':id')
   async show(@Param('id', ParseIntPipe) id) {
     return this.fileService.get(id);
+  }
+
+  @Put('download/:id')
+  async getTempURL(@Param('id', ParseIntPipe) id) {
+    return {
+      url: await this.fileService.tempURL(
+        (await this.fileService.get(id)).path,
+      ),
+    };
   }
 
   @Get('download/:token')

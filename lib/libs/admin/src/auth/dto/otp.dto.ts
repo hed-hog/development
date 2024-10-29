@@ -1,7 +1,6 @@
-import { IsInt, IsJWT, Max, Min } from "class-validator";
+import { IsInt, IsJWT, Max, Min } from 'class-validator';
 
 export class OtpDTO {
-
   @Min(0)
   @Max(999999)
   @IsInt()
@@ -9,5 +8,4 @@ export class OtpDTO {
 
   @IsJWT()
   token: string;
-
 }

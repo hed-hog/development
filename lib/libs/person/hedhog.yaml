@@ -1,66 +1,191 @@
-# yaml-language-server: $schema=../../hedhog.schema.json
 data:
   routes:
+    - url: /countries
+      method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /persons
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /persons
       method: POST
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /persons
       method: DELETE
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /persons/:personId
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /persons/:personId
       method: PATCH
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /person-types
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /person-types
       method: POST
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /person-types
       method: DELETE
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /person-types/:personTypeId
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /person-types/:personTypeId
       method: PATCH
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /address-types
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /address-types
       method: POST
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /address-types
       method: DELETE
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /address-types/:addressTypeId
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /address-types/:addressTypeId
       method: PATCH
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /contact-types
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /contact-types
       method: POST
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /contact-types
       method: DELETE
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /contact-types/:contactTypeId
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /contact-types/:contactTypeId
       method: PATCH
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /custom-types
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /custom-types
       method: POST
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /custom-types
       method: DELETE
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /custom-types/:customTypeId
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /custom-types/:customTypeId
       method: PATCH
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /document-types
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /document-types
       method: POST
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /document-types
       method: DELETE
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /document-types/:documentTypeId
       method: GET
+      relations:
+        roles:
+          - where:
+              slug: admin
     - url: /document-types/:documentTypeId
       method: PATCH
+      relations:
+        roles:
+          - where:
+              slug: admin
   menus:
     - url: /contacts
       icon: user-check
@@ -68,6 +193,10 @@ data:
         en: Contacts
         pt: Contatos
       slug: /contacts
+      relations:
+        roles:
+          - where:
+              slug: admin
     - menu_id:
         where:
           slug: /management
@@ -76,6 +205,10 @@ data:
         en: Persons
         pt: Pessoas
       slug: /management/persons
+      relations:
+        roles:
+          - where:
+              slug: admin
     - menu_id:
         where:
           slug: /management/persons
@@ -85,6 +218,10 @@ data:
         en: Address Types
         pt: Tipos de Endereço
       slug: /management/persons/address-types
+      relations:
+        roles:
+          - where:
+              slug: admin
     - menu_id:
         where:
           slug: /management/persons
@@ -94,6 +231,10 @@ data:
         en: Contact Types
         pt: Tipos de Contato
       slug: /management/persons/contact-types
+      relations:
+        roles:
+          - where:
+              slug: admin
     - menu_id:
         where:
           slug: /management/persons
@@ -103,6 +244,10 @@ data:
         en: Custom Types
         pt: Tipos Personalizados
       slug: /management/persons/custom-types
+      relations:
+        roles:
+          - where:
+              slug: admin
     - menu_id:
         where:
           slug: /management/persons
@@ -112,6 +257,10 @@ data:
         en: Document Types
         pt: Tipos de Documento
       slug: /management/persons/document-types
+      relations:
+        roles:
+          - where:
+              slug: admin
     - menu_id:
         where:
           slug: /management/persons
@@ -121,6 +270,10 @@ data:
         en: Person Types
         pt: Tipos de Pessoa
       slug: /management/persons/person-types
+      relations:
+        roles:
+          - where:
+              slug: admin
   screens:
     - slug: /contacts
       icon: user-check
@@ -306,6 +459,13 @@ tables:
       - name: name
         type: varchar
         length: 255
+      - name: photo_id
+        type: fk
+        isNullable: true
+        references:
+          table: files
+          column: id
+          onDelete: SET NULL
       - name: type_id
         type: fk
         isPrimary: false

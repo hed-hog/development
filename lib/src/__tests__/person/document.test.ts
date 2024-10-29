@@ -1,26 +1,22 @@
-import axios from 'axios';
-import { faker } from '@faker-js/faker';
-import { getGlobalToken } from '../utils/loginUser';
-
-const baseUrl = 'http://localhost:3000';
-let token = '';
-let documentId = 1;
-const personId = 1;
+// const baseUrl = 'http://localhost:3000';
+// let token = '';
+// const documentId = 1;
+// const personId = 1;
 
 beforeAll(async () => {
-  axios.defaults.baseURL = baseUrl;
-  token = await getGlobalToken();
+  // axios.defaults.baseURL = baseUrl;
+  // token = await getGlobalToken();
 });
 
 describe('Document API tests', () => {
-  const newDocument = {
-    type_id: 1,
-    primary: true,
-    value: faker.number.int({ min: 999999 }),
-    country_id: 1,
-    issued_at: new Date(),
-    expiry_at: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-  };
+  // const newDocument = {
+  //   type_id: 1,
+  //   primary: true,
+  //   value: faker.number.int({ min: 999999 }),
+  //   country_id: 1,
+  //   issued_at: new Date(),
+  //   expiry_at: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+  // };
 
   /*
   test('Create new document', async () => {

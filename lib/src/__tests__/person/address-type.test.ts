@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let addressTypeId = 1;
+const addressTypeId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
@@ -12,9 +11,9 @@ beforeAll(async () => {
 });
 
 describe('Address Types API tests', () => {
-  const newAddressType = {
-    name: faker.commerce.productName(),
-  };
+  // const newAddressType = {
+  //   name: faker.commerce.productName(),
+  // };
 
   /*
   test('Create new address type', async () => {

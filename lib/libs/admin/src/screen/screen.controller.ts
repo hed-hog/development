@@ -11,13 +11,15 @@ import {
   Post,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { ScreenService } from './screen.service';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '../locale';
+import { Role } from '../role/decorators/role.decorator';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { ScreenService } from './screen.service';
 
+@Role()
 @Controller('screens')
 export class ScreenController {
   constructor(

@@ -9,18 +9,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseGuards,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '../dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { MenuService } from './menu.service';
-import { OrderDTO } from './dto/order.dto';
 import { User } from '../auth/decorators/user.decorator';
+import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '../locale';
+import { Role } from '../role/decorators/role.decorator';
+import { CreateDTO } from './dto/create.dto';
+import { OrderDTO } from './dto/order.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { MenuService } from './menu.service';
 
+@Role()
 @Controller('menus')
 export class MenuController {
   constructor(

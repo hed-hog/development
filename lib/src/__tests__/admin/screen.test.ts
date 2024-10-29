@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
 let token = '';
-let screenId = 1;
+const screenId = 1;
 
 beforeAll(async () => {
   axios.defaults.baseURL = baseUrl;
@@ -12,12 +11,12 @@ beforeAll(async () => {
 });
 
 describe('Screen API tests', () => {
-  const newScreen = {
-    name: faker.commerce.productName(),
-    slug: faker.lorem.slug(),
-    description: faker.lorem.sentence(),
-    icon: faker.lorem.word(),
-  };
+  // const newScreen = {
+  //   name: faker.commerce.productName(),
+  //   slug: faker.lorem.slug(),
+  //   description: faker.lorem.sentence(),
+  //   icon: faker.lorem.word(),
+  // };
 
   /*
   test('Create new screen', async () => {

@@ -95,7 +95,7 @@ export class ContactService {
           id: contactId,
         },
       })
-      .then((data) => {
+      .then(() => {
         return { count: 1 };
       });
   }

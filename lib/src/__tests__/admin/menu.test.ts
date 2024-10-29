@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { faker } from '@faker-js/faker';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
@@ -10,14 +9,14 @@ beforeAll(async () => {
 });
 
 describe('Menu API tests', () => {
-  const newMenu = {
-    name: faker.lorem.word({ length: 8 }),
-    url: faker.internet.url(),
-    icon: faker.lorem.word({ length: 8 }),
-    order: 0,
-    menuId: null,
-  };
-  let menuId = 1;
+  // const newMenu = {
+  //   name: faker.lorem.word({ length: 8 }),
+  //   url: faker.internet.url(),
+  //   icon: faker.lorem.word({ length: 8 }),
+  //   order: 0,
+  //   menuId: null,
+  // };
+  const menuId = 1;
 
   /*
   test('Create new menu', async () => {
