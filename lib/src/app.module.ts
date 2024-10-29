@@ -7,6 +7,7 @@ import { AdminModule } from '@hedhog/admin';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PersonModule } from '@hedhog/person';
+import { FileModule } from '@hedhog/file';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PersonModule } from '@hedhog/person';
     }),
     AdminModule,
     PersonModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

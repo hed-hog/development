@@ -13,6 +13,10 @@ import { MailModule } from '@hedhog/mail';
       JwtModule.registerAsync({
         global: true,
         useFactory: () => {
+          console.log(
+            'AuthModule -> process.env.JWT_SECRET',
+            process.env.JWT_SECRET,
+          );
           return {
             secret: String(process.env.JWT_SECRET),
             global: true,

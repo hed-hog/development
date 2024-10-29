@@ -1661,6 +1661,7 @@ tables:
         type: enum
         enum:
           - string
+          - array
           - number
           - boolean
           - json

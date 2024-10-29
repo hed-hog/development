@@ -11,7 +11,6 @@ import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { itemTranslations } from '@hedhog/utils';
 import { SettingsDTO } from './dto/settings.dto';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SettingsService {
@@ -319,28 +318,29 @@ export class SettingsService {
 
     const slugUserOverride = settings.filter((setting) => setting.userOverride);
 
-    const settingsUser = await this.prismaService.settings_user.findMany({
+    const settingsUser = await this.prismaService.setting_users.findMany({
       where: {
-        settingId: {
+        setting_id: {
           in: slugUserOverride.map((setting) => setting.id),
         },
       },
       select: {
         value: true,
-        settingId: true,
+        setting_id: true,
       },
     });
 
-    settings = settings.map((setting) => {
-      const settingUser = settingsUser.find(
-        (settingUser) => settingUser.settingId === setting.id,
-      );
-      if (settingUser) {
-        setting.value = settingUser.value;
-      }
-      return setting;
+    const data: Record<string, any> = {};
+
+    settings.forEach((setting) => {
+      data[setting.slug] = setting.value;
     });
 
-    return settings;
+    settingsUser.forEach((setting) => {
+      data[slugUserOverride.find((s) => s.id === setting.setting_id).slug] =
+        setting.value;
+    });
+
+    return data;
   }
 }

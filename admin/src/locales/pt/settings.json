@@ -16,5 +16,8 @@
   "storage-s3-secret is required": "Segredo de armazenamento S3 é obrigatório para armazenamento S3",
   "storage-s3-region is required": "Região de armazenamento S3 é obrigatória para armazenamento S3",
   "storage-s3-bucket is required": "Bucket de armazenamento S3 é obrigatório para armazenamento S3",
-  "storage-local-path is required": "Caminho de armazenamento local é obrigatório para armazenamento local"
+  "storage-local-path is required": "Caminho de armazenamento local é obrigatório para armazenamento local",
+  "storage-abs-account is required": "Conta de armazenamento ABS é obrigatória para armazenamento ABS",
+  "storage-abs-key is required": "Chave de armazenamento ABS é obrigatória para armazenamento ABS",
+  "storage-abs-container is required": "Container de armazenamento ABS é obrigatório para armazenamento ABS"
 }

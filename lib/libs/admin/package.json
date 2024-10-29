@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/admin",
-  "version": "0.0.94",
+  "version": "0.0.95",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "@hedhog/mail": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
-    "@hedhog/utils": "latest"
+    "@hedhog/utils": "latest",
+    "@nestjs/jwt": "latest"
   }
 }

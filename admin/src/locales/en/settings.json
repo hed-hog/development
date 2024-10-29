@@ -16,5 +16,8 @@
   "storage-s3-secret is required": "Storage S3 Secret is required for S3 storage",
   "storage-s3-region is required": "Storage S3 Region is required for S3 storage",
   "storage-s3-bucket is required": "Storage S3 Bucket is required for S3 storage",
-  "storage-local-path is required": "Storage Local Path is required for Local storage"
+  "storage-local-path is required": "Storage Local Path is required for Local storage",
+  "storage-abs-account is required": "Storage ABS Account is required for ABS storage",
+  "storage-abs-key is required": "Storage ABS Key is required for ABS storage",
+  "storage-abs-container is required": "Storage ABS Container is required for ABS storage"
 }

@@ -142,6 +142,39 @@ export default function Page() {
                     hasErrors = true
                   }
                   break
+
+                case 'abs':
+                  if (!data['storage-abs-account']) {
+                    form.setError('storage-abs-account', {
+                      type: 'required',
+                      message: t('storage-abs-account is required', {
+                        ns: 'settings',
+                      }),
+                    })
+                    hasErrors = true
+                  }
+
+                  if (!data['storage-abs-key']) {
+                    form.setError('storage-abs-key', {
+                      type: 'required',
+                      message: t('storage-abs-key is required', {
+                        ns: 'settings',
+                      }),
+                    })
+                    hasErrors = true
+                  }
+
+                  if (!data['storage-abs-container']) {
+                    form.setError('storage-abs-container', {
+                      type: 'required',
+                      message: t('storage-abs-container is required', {
+                        ns: 'settings',
+                      }),
+                    })
+                    hasErrors = true
+                  }
+                  break
+
                 case 's3':
                   if (!data['storage-s3-key']) {
                     form.setError('storage-s3-key', {

@@ -85,6 +85,24 @@ data:
               en: The storage to use
               pt: O armazenamento a utilizar
             value: local
+          - slug: storage-accept-mimetypes
+            type: string
+            name:
+              en: Accept Mime Types
+              pt: Aceitar Tipos MIME
+            description:
+              en: The accepted mime types
+              pt: Os tipos MIME aceitos
+            value: application/pdf,image/jpeg,image/png,image/gif,image/webp,audio/mp3,video/mp4
+          - slug: storage-max-size
+            type: number
+            name:
+              en: Max File Size
+              pt: Tamanho Máximo do Arquivo
+            description:
+              en: The maximum file size in bytes
+              pt: O tamanho máximo do arquivo em bytes
+            value: 10485760
           - slug: storage-local-path
             type: string
             name:
@@ -129,6 +147,33 @@ data:
             description:
               en: The S3 bucket
               pt: O bucket S3
+            value: ''
+          - slug: storage-abs-account
+            type: string
+            name:
+              en: ABS Account
+              pt: Conta ABS
+            description:
+              en: The Azure Blob Storage account
+              pt: A conta de armazenamento de blob do Azure
+            value: ''
+          - slug: storage-abs-key
+            type: string
+            name:
+              en: ABS Key
+              pt: Chave ABS
+            description:
+              en: The Azure Blob Storage key
+              pt: A chave de armazenamento de blob do Azure
+            value: ''
+          - slug: storage-abs-container
+            type: string
+            name:
+              en: ABS Container
+              pt: Container ABS
+            description:
+              en: The Azure Blob Storage container
+              pt: O contêiner de armazenamento de blob do Azure
             value: ''
 
   file_providers:
