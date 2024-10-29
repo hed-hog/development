@@ -15,7 +15,11 @@ import { useState, useEffect } from 'react'
 import { HexColorPicker, HexColorInput } from 'react-colorful'
 import { toast } from 'sonner'
 
-export default function Test() {
+interface IProps {
+  onChange: (items: any) => void
+}
+
+export default function ColorTheme({ onChange }: IProps) {
   const { theme } = useTheme()
   const [color, setColor] = useState('#bfaa40')
   const [saturation, setSaturation] = useState(50)
@@ -157,7 +161,7 @@ export default function Test() {
       fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
     }
 
-    toast.success('Values saved! Check out the console.')
+    onChange(savedValues)
   }
 
   return (

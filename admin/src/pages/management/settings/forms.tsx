@@ -10,6 +10,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocales, useLocalesEnabled } from '@/features/locales/api/handlers'
 import { SettingLocaleEnabled } from '@/components/custom/setting-locale-enabled'
+import ColorTheme from '@/pages/tests'
 
 export default function Page() {
   const { t } = useTranslation(['translation', 'settings'])
@@ -25,6 +26,10 @@ export default function Page() {
   const { slug } = useParams()
   const { data, isLoading } = useSettingsFromGroup(String(slug))
   const [localesEnabled, setLocalesEnabled] = useState<string[]>([])
+
+  const getValues = (values: any) => {
+    console.log({ values })
+  }
 
   const getField = useCallback(
     (item: any): IFormFieldPropsBase => {
@@ -77,6 +82,84 @@ export default function Page() {
             ],
           }
 
+        case 'theme-primary':
+        case 'theme-secondary':
+        case 'theme-background':
+        case 'theme-muted':
+        case 'theme-accent':
+          return {
+            name: item.slug,
+            type: EnumFieldType.COLOR,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+          }
+
+        case 'theme-radius':
+          return {
+            name: item.slug,
+            type: EnumFieldType.RANGE,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+          }
+
+        case 'theme-font':
+          return {
+            name: item.slug,
+            type: EnumFieldType.SELECT,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            options: [
+              {
+                value: 'ui-sans-serif, system-ui, sans-serif',
+                label: 'Default',
+              },
+              {
+                value: 'Arial',
+                label: 'Arial',
+              },
+              {
+                value: 'Verdana',
+                label: 'Verdana',
+              },
+              {
+                value: 'Georgia',
+                label: 'Georgia',
+              },
+              {
+                value: 'Helvetica',
+                label: 'Helvetica',
+              },
+              {
+                value: 'Times New Roman',
+                label: 'Times New Roman',
+              },
+              {
+                value: 'Courier New',
+                label: 'Courier New',
+              },
+            ],
+          }
         default:
           return {
             name: item.slug,
@@ -111,6 +194,7 @@ export default function Page() {
       {slug === 'localization' && (
         <SettingLocaleEnabled onChange={setLocalesEnabled} />
       )}
+      {slug === 'appearance' && <ColorTheme onChange={getValues} />}
       <FormPanel
         ref={formRef}
         fields={

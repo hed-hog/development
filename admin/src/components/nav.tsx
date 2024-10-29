@@ -73,7 +73,7 @@ export default function Nav({
     <div
       data-collapsed={isCollapsed}
       className={cn(
-        'group border-b bg-background py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none',
+        'group border-b py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none',
         className
       )}
     >
@@ -117,7 +117,7 @@ function NavLink({
       <div className='mr-2'>{icon}</div>
       {title}
       {label && (
-        <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>
+        <div className='ml-2 rounded-lg px-1 text-[0.625rem] text-primary-foreground'>
           {label}
         </div>
       )}
@@ -140,7 +140,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
         <div className='mr-2'>{icon}</div>
         {title}
         {label && (
-          <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>
+          <div className='ml-2 rounded-lg px-1 text-[0.625rem] text-primary-foreground'>
             {label}
           </div>
         )}

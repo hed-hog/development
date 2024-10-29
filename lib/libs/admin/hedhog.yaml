@@ -1206,7 +1206,7 @@ data:
         pt: Configurar as definições de aparência.
       relations:
         settings:
-          - slug: primary
+          - slug: theme-primary
             type: string
             name:
               en: Primary Color
@@ -1215,7 +1215,7 @@ data:
               en: The primary color to use
               pt: A cor primária a utilizar
             value: '#000000'
-          - slug: secondary
+          - slug: theme-secondary
             type: string
             name:
               en: Secondary Color
@@ -1224,7 +1224,7 @@ data:
               en: The secondary color to use
               pt: A cor secundária a utilizar
             value: '#FFFFFF'
-          - slug: accent
+          - slug: theme-accent
             type: string
             name:
               en: Accent Color
@@ -1233,7 +1233,7 @@ data:
               en: The accent color to use
               pt: A cor de realce a utilizar
             value: '#FF0000'
-          - slug: background
+          - slug: theme-background
             type: string
             name:
               en: Background Color
@@ -1242,7 +1242,7 @@ data:
               en: The background color to use
               pt: A cor de fundo a utilizar
             value: '#FFFFFF'
-          - slug: muted
+          - slug: theme-muted
             type: string
             name:
               en: Muted Color
@@ -1251,7 +1251,7 @@ data:
               en: The muted color to use
               pt: A cor suave a utilizar
             value: '#F0F0F0'
-          - slug: radius
+          - slug: theme-radius
             type: string
             name:
               en: Radius
@@ -1260,7 +1260,7 @@ data:
               en: The radius to use
               pt: O raio a utilizar
             value: '4px'
-          - slug: font
+          - slug: theme-font
             type: string
             name:
               en: Font Family
