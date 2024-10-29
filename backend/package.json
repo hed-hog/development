@@ -25,6 +25,9 @@
   },
   "dependencies": {
     "@hedhog/admin": "^0.0.98",
+    "@hedhog/file": "^0.0.20",
+    "@hedhog/mail": "^0.0.13",
+    "@hedhog/pagination": "^0.0.16",
     "@hedhog/person": "^0.0.39",
     "@hedhog/prisma": "^0.0.10",
     "@nestjs/axios": "^3.0.3",
