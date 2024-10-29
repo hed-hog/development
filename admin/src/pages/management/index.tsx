@@ -15,7 +15,7 @@ export default function Management() {
       }),
   })
 
-  let sideLinks = getSideLinks((data?.data as any[]) || [])
+  const sideLinks = getSideLinks((data?.data as any[]) || [])
 
   return (
     <>

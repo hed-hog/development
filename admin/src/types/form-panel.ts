@@ -20,6 +20,7 @@ export interface IStylingProps {
 
 export interface ILabelProps extends IStylingProps {
   text?: string
+  small?: string
 }
 
 export interface ITextProps {

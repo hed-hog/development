@@ -29,11 +29,12 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:generate": "npx prisma generate --schema=./src/prisma/schema.prisma",
     "prisma:pull": "npx prisma db pull --schema=./src/prisma/schema.prisma",
-    "prisma:update": "npm run prisma:pull && npm run prisma:generate",
+    "prisma:update": "npm run prisma:pull && npm run prisma:generate && ts-node scripts/create-types.ts",
     "preinstall": "ts-node scripts/npm-install-libs.ts",
     "puppeteer": "ts-node ./src/puppeteer/main.ts"
   },
   "dependencies": {
+    "@hedhog/utils": "^0.0.8",
     "@nestjs/axios": "^3.0.3",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.3",
@@ -61,7 +62,6 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.3",
-    "@hedhog/utils": "^0.0.7",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.4.4",

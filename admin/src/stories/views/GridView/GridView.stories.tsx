@@ -16,7 +16,7 @@ const meta = {
         <ul>
           <li>**Responsive Grid**: Adjusts the number of columns based on screen size.</li>
           <li>**Data Customization**: Easily pass in an array of objects to display in the grid.</li>
-          <li>**Styling Options**: Control padding and gap between items with \`styleOptions\.</li>
+          <li>**Styling Options**: Control padding and gap between items with styleOptions.</li>
         </ul>
         `,
       },

@@ -99,8 +99,8 @@ export class RoleController {
   }
 
   @Get(':roleId')
-  async show(@Param('roleId', ParseIntPipe) roleId: number) {
-    return this.roleService.get(roleId);
+  async show(@Param('roleId', ParseIntPipe) roleId: number, @Locale() locale) {
+    return this.roleService.get(locale, roleId);
   }
 
   @Post()

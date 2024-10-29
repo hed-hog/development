@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
 import { adjustHSL, hexToHSL } from '@/lib/colors'
-import { useState, useEffect } from 'react'
-import { HexColorPicker, HexColorInput } from 'react-colorful'
+import { useEffect, useState } from 'react'
+import { HexColorInput, HexColorPicker } from 'react-colorful'
 import { toast } from 'sonner'
 
 export default function Test() {
@@ -141,6 +141,8 @@ export default function Test() {
       '3xl': computedStyles.getPropertyValue('--text-size-3xl').trim(),
       fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
     }
+
+    console.log({ savedValues })
 
     toast.success('Values saved! Check out the console.')
   }

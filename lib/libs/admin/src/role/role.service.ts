@@ -1,15 +1,16 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
+import { getWithLocale } from '@hedhog/utils';
 import {
   BadRequestException,
   Inject,
   Injectable,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class RoleService {
@@ -227,10 +228,32 @@ export class RoleService {
     );
   }
 
-  async get(roleId: number) {
-    return this.prismaService.roles.findUnique({
-      where: { id: roleId },
-    });
+  async get(locale: string, roleId: number) {
+    return getWithLocale(
+      locale,
+      'role_translations',
+      await this.prismaService.roles.findUnique({
+        where: { id: roleId },
+        include: {
+          role_translations: {
+            where: {
+              locales: {
+                enabled: true,
+              },
+            },
+            select: {
+              name: true,
+              description: true,
+              locales: {
+                select: {
+                  code: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+    );
   }
 
   async create({ name, description }: CreateDTO) {

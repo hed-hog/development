@@ -60,18 +60,19 @@ model file_providers {
 }
 
 model files {
-  id             Int            @id(map: "PK_6c16b9093a142e0e7613b04a3d9") @default(autoincrement())
-  filename       String         @db.VarChar
-  path           String         @db.VarChar
-  provider_id    Int
-  location       String         @db.VarChar
-  mimetype_id    Int
-  size           Int            @default(0)
-  created_at     DateTime       @default(now()) @db.Timestamp(6)
-  updated_at     DateTime       @default(now()) @db.Timestamp(6)
-  file_providers file_providers @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_72c4fa102fb56ad2071b17a9b22")
-  file_mimetypes file_mimetypes @relation(fields: [mimetype_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c1246a57812024596c006cfee60")
-  persons        persons[]
+  id                              Int            @id(map: "PK_6c16b9093a142e0e7613b04a3d9") @default(autoincrement())
+  filename                        String         @db.VarChar
+  path                            String         @db.VarChar
+  provider_id                     Int
+  location                        String         @db.VarChar
+  mimetype_id                     Int
+  size                            Int            @default(0)
+  created_at                      DateTime       @default(now()) @db.Timestamp(6)
+  updated_at                      DateTime       @default(now()) @db.Timestamp(6)
+  file_providers                  file_providers @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_72c4fa102fb56ad2071b17a9b22")
+  file_mimetypes                  file_mimetypes @relation(fields: [mimetype_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c1246a57812024596c006cfee60")
+  persons                         persons[]
+  persons_persons_cover_idTofiles persons[]      @relation("persons_cover_idTofiles")
 }
 
 model locales {
@@ -344,19 +345,21 @@ model person_types {
 }
 
 model persons {
-  id               Int                @id(map: "PK_74278d8812a049233ce41440ac7") @default(autoincrement())
-  name             String             @db.VarChar(255)
-  photo_id         Int?
-  type_id          Int
-  birth_at         DateTime?          @db.Date
-  created_at       DateTime           @default(now()) @db.Timestamp(6)
-  updated_at       DateTime           @default(now()) @db.Timestamp(6)
-  person_addresses person_addresses[]
-  person_contacts  person_contacts[]
-  person_customs   person_customs[]
-  person_documents person_documents[]
-  person_types     person_types       @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_279db59ec1744e71c6c1014ba57")
-  files            files?             @relation(fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_3c8b7213b6f70590e8ede17a88b")
+  id                            Int                @id(map: "PK_74278d8812a049233ce41440ac7") @default(autoincrement())
+  name                          String             @db.VarChar(255)
+  photo_id                      Int?
+  cover_id                      Int?
+  type_id                       Int
+  birth_at                      DateTime?          @db.Date
+  created_at                    DateTime           @default(now()) @db.Timestamp(6)
+  updated_at                    DateTime           @default(now()) @db.Timestamp(6)
+  person_addresses              person_addresses[]
+  person_contacts               person_contacts[]
+  person_customs                person_customs[]
+  person_documents              person_documents[]
+  person_types                  person_types       @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_279db59ec1744e71c6c1014ba57")
+  files                         files?             @relation(fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_3c8b7213b6f70590e8ede17a88b")
+  files_persons_cover_idTofiles files?             @relation("persons_cover_idTofiles", fields: [cover_id], references: [id], onUpdate: NoAction, map: "FK_e6a4663410a2a5f295d12db80fd")
 }
 
 model role_menus {

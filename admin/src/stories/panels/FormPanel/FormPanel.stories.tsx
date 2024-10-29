@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react'
 import FormPanel from '@/components/custom/form-panel'
-import { useForm } from 'react-hook-form'
 import { EnumFieldType } from '@/enums/EnumFieldType'
+import { Meta, StoryObj } from '@storybook/react'
+import { useForm } from 'react-hook-form'
 
 const meta: Meta<typeof FormPanel> = {
   title: 'Panels/FormPanel',
@@ -210,7 +210,7 @@ const fields = [
 ]
 
 const Template: Story = {
-  render: (args) => {
+  render: (args: { onSubmit: any }) => {
     const form = useForm()
     return <FormPanel {...args} form={form} onSubmit={args.onSubmit} />
   },

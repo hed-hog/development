@@ -11,11 +11,12 @@ import {
   IFormPanelProps,
   ISliderProps,
 } from '@/types/form-panel'
-import Field from './field'
-import { Button } from './button'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
+import { Badge } from '../ui/badge'
+import { Button } from './button'
+import Field from './field'
 
 export const FormPanel = forwardRef(
   (
@@ -80,6 +81,11 @@ export const FormPanel = forwardRef(
               {label?.text && (
                 <FormLabel style={label.style} className={label.className}>
                   {label.text}
+                  {label.small && (
+                    <Badge variant='secondary' className='ml-2 text-[0.7rem]'>
+                      {label.small}
+                    </Badge>
+                  )}
                 </FormLabel>
               )}
               <Field

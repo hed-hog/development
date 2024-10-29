@@ -14,11 +14,8 @@ import {
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
-import { MenuType } from '@/types/menu'
-import { RoleType } from '@/types/role'
-import { RouteType } from '@/types/route'
-import { ScreenType } from '@/types/screen'
-import { UserType } from '@/types/user'
+import { FieldType } from '@/types/form-panel'
+import { Menus, Roles, Routes, Screens } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -31,7 +28,7 @@ export default function Page() {
   const { t: rolesT } = useTranslation('roles')
 
   const [selectedItems, setSelectedItems] = useState<
-    (RoleType | RouteType | MenuType | ScreenType)[]
+    (Roles | Routes | Menus | Screens)[]
   >([])
   const formEdit = useRef<any>(null)
   const roleScreensRef = useRef<any>(null)
@@ -133,12 +130,47 @@ export default function Page() {
     return id
   }
 
+  const itemLocalesToObject = (item: RoleType) => {
+    const obj: any = {}
+
+    for (const itemLocale of (item as any).locales ?? []) {
+      for (const key in itemLocale) {
+        if (key !== 'locales') {
+          obj[`${itemLocale.locales.code}.${key}`] = itemLocale[key]
+        }
+      }
+    }
+
+    return obj
+  }
+
+  const getLocaleFields = (item: RoleType) => {
+    console.log('getLocaleFields', { item })
+    const fields: { fieldName: string; localeCode: string }[] = []
+
+    for (const itemLocale of (item as any).locales ?? []) {
+      for (const key in itemLocale) {
+        if (key !== 'locales') {
+          fields.push({
+            fieldName: `${itemLocale.locales.code}.${key}`,
+            localeCode: itemLocale.locales.code,
+          })
+        }
+      }
+    }
+
+    return fields
+  }
+
   const openEditDialog = (item: RoleType) => {
     form.reset({
       id: item.id || '',
-      name: item.name || '',
       description: item.description || '',
+      ...itemLocalesToObject(item),
     })
+
+    console.log('getLocaleFields', getLocaleFields(item))
+    console.log('itemLocalesToObject', itemLocalesToObject(item))
 
     const id = openSheet({
       children: () => (
@@ -160,12 +192,15 @@ export default function Page() {
                 <FormPanel
                   ref={formEdit}
                   fields={[
-                    {
-                      name: 'name',
-                      label: { text: rolesT('name') },
-                      type: EnumFieldType.TEXT,
+                    ...getLocaleFields(item).map((field) => ({
+                      name: field.fieldName,
+                      label: {
+                        text: rolesT('name'),
+                        small: field.localeCode,
+                      },
+                      type: EnumFieldType.TEXT as FieldType,
                       required: false,
-                    },
+                    })),
                     {
                       name: 'description',
                       label: { text: rolesT('description') },
@@ -398,6 +433,7 @@ export default function Page() {
           ]}
         />
       ),
+
       title: rolesT('edit'),
       description: rolesT('editText'),
     })
