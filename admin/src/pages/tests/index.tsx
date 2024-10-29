@@ -20,6 +20,8 @@ export default function Test() {
   const [color, setColor] = useState('#bfaa40')
   const [saturation, setSaturation] = useState(50)
   const [lightness, setLightness] = useState(50)
+  const [mutedSaturation, setMutedSaturation] = useState(100)
+  const [mutedLightness, setMutedLightness] = useState(100)
   const [radius, setRadius] = useState(0.5)
   const [textSize, setTextSize] = useState(1)
   const [fontFamily, setFontFamily] = useState(
@@ -35,6 +37,9 @@ export default function Test() {
   }, [color])
 
   useEffect(() => {
+    const adjustedMutedSaturation = saturation * (mutedSaturation / 100)
+    const adjustedMutedLightness = lightness * (mutedLightness / 100)
+
     const backgroundHSL = adjustHSL(hsl, 0, -20, 90)
     const secondaryHSL = adjustHSL(hsl, 0, -30, 85)
     const accentHSL = adjustHSL(hsl, 0, -10, 95)
@@ -63,7 +68,7 @@ export default function Test() {
 
     document.documentElement.style.setProperty(
       '--muted',
-      `${hue} ${saturation}% ${lightness}%`
+      `${hue} ${adjustedMutedSaturation}% ${adjustedMutedLightness}%`
     )
 
     document.documentElement.style.setProperty('--radius', `${radius}rem`)
@@ -102,7 +107,17 @@ export default function Test() {
     )
 
     document.documentElement.style.setProperty('--font-family', fontFamily)
-  }, [color, saturation, lightness, radius, textSize, theme, fontFamily])
+  }, [
+    color,
+    saturation,
+    lightness,
+    mutedLightness,
+    mutedSaturation,
+    radius,
+    textSize,
+    theme,
+    fontFamily,
+  ])
 
   useEffect(() => {
     document.documentElement.style.setProperty(
@@ -192,6 +207,35 @@ export default function Test() {
             onValueChange={(value) => setLightness(value[0])}
             defaultValue={[50]}
             min={0}
+            max={100}
+            step={1}
+          />
+        </div>
+        <div>
+          <label
+            htmlFor='mutedSaturation'
+            className='block text-sm font-medium'
+          >
+            Muted Saturation: {mutedSaturation}
+          </label>
+          <Slider
+            value={[mutedSaturation]}
+            onValueChange={(value) => setMutedSaturation(value[0])}
+            defaultValue={[100]}
+            min={1}
+            max={100}
+            step={1}
+          />
+        </div>
+        <div>
+          <label htmlFor='mutedLightness' className='block text-sm font-medium'>
+            Muted Lightness: {mutedLightness}
+          </label>
+          <Slider
+            value={[mutedLightness]}
+            onValueChange={(value) => setMutedLightness(value[0])}
+            defaultValue={[50]}
+            min={1}
             max={100}
             step={1}
           />
