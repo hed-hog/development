@@ -26,11 +26,15 @@ export default function Test() {
     'ui-sans-serif, system-ui, sans-serif'
   )
   const [hue, setHue] = useState(50)
+  const hsl = hexToHSL(color)
 
   useEffect(() => {
-    const hsl = hexToHSL(color)
     setHue(hsl.h)
+    setSaturation(hsl.s)
+    setLightness(hsl.l)
+  }, [color])
 
+  useEffect(() => {
     const backgroundHSL = adjustHSL(hsl, 0, -20, 90)
     const secondaryHSL = adjustHSL(hsl, 0, -30, 85)
     const accentHSL = adjustHSL(hsl, 0, -10, 95)
