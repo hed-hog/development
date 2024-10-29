@@ -1,10 +1,10 @@
-import { AbstractProvider } from './abstract,provider';
 import {
   BlobServiceClient,
   ContainerSASPermissions,
   generateBlobSASQueryParameters,
   StorageSharedKeyCredential,
 } from '@azure/storage-blob';
+import { AbstractProvider } from './abstract,provider';
 
 export class AzureProvider extends AbstractProvider {
   constructor(private settings: Record<string, string>) {

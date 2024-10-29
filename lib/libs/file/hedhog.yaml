@@ -1,6 +1,7 @@
 tables:
   file_providers:
     ifNotExists: true
+
     columns:
       - type: pk
       - name: slug
