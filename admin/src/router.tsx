@@ -26,7 +26,7 @@ const router = createBrowserRouter([
   {
     path: '/tests',
     lazy: async () => ({
-      Component: (await import('./pages/tests/index.tsx')).default,
+      Component: (await import('./components/custom/color-theme.tsx')).default,
     }),
   },
 

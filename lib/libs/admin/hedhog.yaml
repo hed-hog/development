@@ -1259,7 +1259,7 @@ data:
             description:
               en: The radius to use
               pt: O raio a utilizar
-            value: '4px'
+            value: '0.5'
           - slug: theme-font
             type: string
             name:
@@ -1269,6 +1269,33 @@ data:
               en: The font to use
               pt: A fonte a utilizar
             value: 'Arial, sans-serif'
+          - slug: theme-text-size
+            type: string
+            name:
+              en: Text Size
+              pt: Tamanho do Texto
+            description:
+              en: Text size of the application
+              pt: Tamanho do texto da aplicação
+            value: '1'
+          - slug: theme-muted-saturation
+            type: string
+            name:
+              en: Muted Color Saturation
+              pt: Saturação da Cor Suave
+            description:
+              en: Saturação da Cor Suave a utilizar
+              pt: Muted Color Saturation to use
+            value: '100'
+          - slug: theme-muted-lightness
+            type: string
+            name:
+              en: Muted Color Lightness
+              pt: Luminância da Cor Suave
+            description:
+              en: Luminância da Cor Suave a utilizar
+              pt: Muted Color Lightness to use
+            value: '100'
 
 tables:
   countries:

@@ -1,3 +1,4 @@
+export * from './PersonDocumentTypeTranslations';
 export * from './Countries';
 export * from './Users';
 export * from './MenuScreens';
@@ -7,7 +8,6 @@ export * from './SettingUsers';
 export * from './FileMimetypes';
 export * from './PersonTypeTranslations';
 export * from './PersonDocumentTypes';
-export * from './PersonDocumentTypeTranslations';
 export * from './PersonDocuments';
 export * from './PersonContactTypes';
 export * from './PersonContactTypeTranslations';

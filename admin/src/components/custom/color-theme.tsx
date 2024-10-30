@@ -10,16 +10,19 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
+import { useSetProperties } from '@/hooks/use-set-properties'
 import { adjustHSL, hexToHSL } from '@/lib/colors'
-import { useEffect, useState } from 'react'
-import { HexColorInput, HexColorPicker } from 'react-colorful'
+import { useState, useEffect } from 'react'
+import { HexColorPicker, HexColorInput } from 'react-colorful'
 
 interface IProps {
-  onChange: (items: any) => void
+  onChange?: (values: any) => void
+  onSubmit?: (values: any) => void
 }
 
-export default function ColorTheme({ onChange }: IProps) {
+export default function ColorTheme({ onChange, onSubmit }: IProps) {
   const { theme } = useTheme()
+  const { setText, setFont, setBorderRadius } = useSetProperties()
   const [color, setColor] = useState('#bfaa40')
   const [saturation, setSaturation] = useState(50)
   const [lightness, setLightness] = useState(50)
@@ -43,9 +46,14 @@ export default function ColorTheme({ onChange }: IProps) {
     const adjustedMutedSaturation = saturation * (mutedSaturation / 100)
     const adjustedMutedLightness = lightness * (mutedLightness / 100)
 
-    const backgroundHSL = adjustHSL(hsl, 0, -20, 90)
-    const secondaryHSL = adjustHSL(hsl, 0, -30, 85)
-    const accentHSL = adjustHSL(hsl, 0, -10, 95)
+    const backgroundHSL = adjustHSL(hsl, 0, 15, -30)
+    const secondaryHSL = adjustHSL(hsl, -20, -10, 10)
+    const accentHSL = adjustHSL(hsl, 0, -10, 20)
+    const mutedHSL = {
+      h: hue,
+      s: adjustedMutedSaturation,
+      l: adjustedMutedLightness,
+    }
 
     document.documentElement.style.setProperty(
       '--primary',
@@ -71,45 +79,33 @@ export default function ColorTheme({ onChange }: IProps) {
 
     document.documentElement.style.setProperty(
       '--muted',
-      `${hue} ${adjustedMutedSaturation}% ${adjustedMutedLightness}%`
+      `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
     )
 
-    document.documentElement.style.setProperty('--radius', `${radius}rem`)
-    document.documentElement.style.setProperty(
-      '--text-size-xs',
-      `${textSize * 0.75}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-sm',
-      `${textSize * 0.875}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-md',
-      `${textSize}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-base',
-      `${textSize}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-lg',
-      `${textSize * 1.125}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-xl',
-      `${textSize * 1.25}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-2xl',
-      `${textSize * 1.5}rem`
-    )
+    setBorderRadius(radius)
+    setText(textSize)
+    setFont(fontFamily)
 
-    document.documentElement.style.setProperty(
-      '--text-size-3xl',
-      `${textSize * 1.875}rem`
-    )
+    const computedStyles = getComputedStyle(document.documentElement)
+    const savedValues = {
+      primary: computedStyles.getPropertyValue('--primary').trim(),
+      background: `${backgroundHSL.h} ${backgroundHSL.s}% ${backgroundHSL.l}%`,
+      secondary: `${secondaryHSL.h} ${secondaryHSL.s}% ${secondaryHSL.l}%`,
+      accent: `${accentHSL.h} ${accentHSL.s}% ${accentHSL.l}%`,
+      muted: computedStyles.getPropertyValue('--muted').trim(),
+      radius: computedStyles.getPropertyValue('--radius').trim(),
+      xs: computedStyles.getPropertyValue('--text-size-xs').trim(),
+      sm: computedStyles.getPropertyValue('--text-size-sm').trim(),
+      md: computedStyles.getPropertyValue('--text-size-md').trim(),
+      base: computedStyles.getPropertyValue('--text-size-base').trim(),
+      lg: computedStyles.getPropertyValue('--text-size-lg').trim(),
+      xl: computedStyles.getPropertyValue('--text-size-xl').trim(),
+      '2xl': computedStyles.getPropertyValue('--text-size-2xl').trim(),
+      '3xl': computedStyles.getPropertyValue('--text-size-3xl').trim(),
+      fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
+    }
 
-    document.documentElement.style.setProperty('--font-family', fontFamily)
+    onChange && onChange(savedValues)
   }, [
     color,
     saturation,
@@ -138,30 +134,6 @@ export default function ColorTheme({ onChange }: IProps) {
       `210 40% ${theme === 'dark' ? '0' : '100'}%`
     )
   }, [theme])
-
-  const saveValues = () => {
-    const computedStyles = getComputedStyle(document.documentElement)
-
-    const savedValues = {
-      primary: computedStyles.getPropertyValue('--primary').trim(),
-      background: computedStyles.getPropertyValue('--background').trim(),
-      secondary: computedStyles.getPropertyValue('--secondary').trim(),
-      accent: computedStyles.getPropertyValue('--accent').trim(),
-      muted: computedStyles.getPropertyValue('--muted').trim(),
-      radius: computedStyles.getPropertyValue('--radius').trim(),
-      xs: computedStyles.getPropertyValue('--text-size-xs').trim(),
-      sm: computedStyles.getPropertyValue('--text-size-sm').trim(),
-      md: computedStyles.getPropertyValue('--text-size-md').trim(),
-      base: computedStyles.getPropertyValue('--text-size-base').trim(),
-      lg: computedStyles.getPropertyValue('--text-size-lg').trim(),
-      xl: computedStyles.getPropertyValue('--text-size-xl').trim(),
-      '2xl': computedStyles.getPropertyValue('--text-size-2xl').trim(),
-      '3xl': computedStyles.getPropertyValue('--text-size-3xl').trim(),
-      fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
-    }
-
-    onChange(savedValues)
-  }
 
   return (
     <div className='flex flex-row items-start justify-center rounded-lg shadow-md'>
@@ -318,7 +290,7 @@ export default function ColorTheme({ onChange }: IProps) {
         </div>
         <div className='mt-auto flex flex-row justify-between'>
           <ThemeSwitch />
-          <Button className='ml-auto' onClick={() => saveValues()}>
+          <Button className='ml-auto' onClick={() => onSubmit && onSubmit('')}>
             Salvar
           </Button>
         </div>

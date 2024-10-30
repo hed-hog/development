@@ -9,12 +9,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
-import Test from '../tests'
 
 export default function Dashboard() {
   return (
     <>
-      <Test />
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
         <div className='flex items-center space-x-2'>
