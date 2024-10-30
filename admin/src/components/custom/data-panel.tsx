@@ -1,38 +1,3 @@
-import { IPaginationOption } from '@/types/pagination-options'
-import { ISelectOption } from '@/types/select-options'
-import { ITableColumn } from '@/types/table-column'
-import TableView from './table-view'
-import ListView from './list-view'
-import GridView from './grid-view'
-import { usePagination } from '@/hooks/use-pagination'
-import { IStyleOption } from '@/types/style-options'
-import { IResponsiveColumn } from '@/types/responsive-columns'
-import { SkeletonCard } from './skeleton-card'
-import { PaginationView } from './pagination-view'
-import { SearchField } from '../search-field'
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react'
-import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import { SelectedItems } from './select-items'
-import { useApp } from '@/hooks/use-app'
-import { Button, ButtonProps } from './button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { useMediaQuery } from 'usehooks-ts'
-import {
-  IconAdjustmentsHorizontal,
-  IconDotsVertical,
-} from '@tabler/icons-react'
 import {
   Drawer,
   DrawerContent,
@@ -41,8 +6,36 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import MenuItem from './menu-item'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { useApp } from '@/hooks/use-app'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { usePagination } from '@/hooks/use-pagination'
 import { isPlural } from '@/lib/utils'
+import { IPaginationOption } from '@/types/pagination-options'
+import { IResponsiveColumn } from '@/types/responsive-columns'
+import { ISelectOption } from '@/types/select-options'
+import { IStyleOption } from '@/types/style-options'
+import { ITableColumn } from '@/types/table-column'
+import {
+  IconAdjustmentsHorizontal,
+  IconDotsVertical,
+} from '@tabler/icons-react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
+import { useMediaQuery } from 'usehooks-ts'
+import { v4 as uuidv4 } from 'uuid'
+import { SearchField } from '../search-field'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,7 +43,14 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
-import { v4 as uuidv4 } from 'uuid'
+import { Button, ButtonProps } from './button'
+import GridView from './grid-view'
+import ListView from './list-view'
+import MenuItem from './menu-item'
+import { PaginationView } from './pagination-view'
+import { SelectedItems } from './select-items'
+import { SkeletonCard } from './skeleton-card'
+import TableView from './table-view'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
@@ -223,6 +223,7 @@ const DataPanelInner = <T extends any>(
     selectOptions,
   })
 
+  const [drawerActionsMobile, setDrawerActionsMobile] = useState(false)
   const [order, setOrder] = useState(`${sortOrder}-${sortField}`)
   const [selectedItemsArr, setSelectedItemsArr] = useState<string[]>([])
   const [isOrderDrawerOpen, setIsOrderDrawerOpen] = useState(false)
@@ -482,8 +483,41 @@ const DataPanelInner = <T extends any>(
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
+            <Drawer
+              open={isOrderDrawerOpen}
+              onOpenChange={setIsOrderDrawerOpen}
+            >
+              <DrawerContent className='w-full gap-4 pb-4'>
+                <DrawerHeader className='text-left'>
+                  <DrawerTitle>Ordenar por</DrawerTitle>
+                </DrawerHeader>
+                <div className='space-y-2'>
+                  <DropdownMenuRadioGroup
+                    value={order}
+                    onValueChange={setOrder}
+                  >
+                    {menuOrders.map((order) => (
+                      <MenuItem
+                        key={`${order.order}-${order.field}`}
+                        aria-label={order.label}
+                        onClick={() => {
+                          setIsOrderDrawerOpen(false)
+                          setSortField(order.field)
+                          setSortOrder(order.order)
+                          setOrder(`${order.order}-${order.field}`)
+                        }}
+                        label={order.label}
+                      />
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </div>
+              </DrawerContent>
+            </Drawer>
             {!isDesktop && (
-              <Drawer>
+              <Drawer
+                open={drawerActionsMobile}
+                onOpenChange={setDrawerActionsMobile}
+              >
                 <DrawerTrigger asChild>
                   <Button variant='outline' size='icon'>
                     <IconDotsVertical className='h-4 w-4' />
@@ -500,44 +534,16 @@ const DataPanelInner = <T extends any>(
                     </DrawerDescription>
                   </DrawerHeader>
                   {!isDesktop && (
-                    <Drawer
-                      open={isOrderDrawerOpen}
-                      onOpenChange={setIsOrderDrawerOpen}
-                    >
-                      <DrawerTrigger asChild>
-                        <MenuItem
-                          label={'Ordenar'}
-                          icon={
-                            <IconAdjustmentsHorizontal className='mr-1 w-8 cursor-pointer' />
-                          }
-                        />
-                      </DrawerTrigger>
-                      <DrawerContent className='w-full gap-4 pb-4'>
-                        <DrawerHeader className='text-left'>
-                          <DrawerTitle>Ordenar por</DrawerTitle>
-                        </DrawerHeader>
-                        <div className='space-y-2'>
-                          <DropdownMenuRadioGroup
-                            value={order}
-                            onValueChange={setOrder}
-                          >
-                            {menuOrders.map((order) => (
-                              <MenuItem
-                                key={`${order.order}-${order.field}`}
-                                aria-label={order.label}
-                                onClick={() => {
-                                  setIsOrderDrawerOpen(false)
-                                  setSortField(order.field)
-                                  setSortOrder(order.order)
-                                  setOrder(`${order.order}-${order.field}`)
-                                }}
-                                label={order.label}
-                              />
-                            ))}
-                          </DropdownMenuRadioGroup>
-                        </div>
-                      </DrawerContent>
-                    </Drawer>
+                    <MenuItem
+                      label={'Ordenar'}
+                      icon={
+                        <IconAdjustmentsHorizontal className='mr-1 w-8 cursor-pointer' />
+                      }
+                      onClick={() => {
+                        setIsOrderDrawerOpen(true)
+                        setDrawerActionsMobile(false)
+                      }}
+                    />
                   )}
                   {menuActions
                     .filter((btn) => !showButtons(btn))
@@ -556,6 +562,7 @@ const DataPanelInner = <T extends any>(
                             typeof handler === 'function' &&
                               handler(getSelectedItems(), e)
                             setSelectedItemsArr([])
+                            setDrawerActionsMobile(false)
                           }}
                           icon={icon}
                           label={String(label)}
