@@ -1215,6 +1215,15 @@ data:
               en: The primary color to use
               pt: A cor primária a utilizar
             value: '#000000'
+          - slug: theme-primary-foreground
+            type: string
+            name:
+              en: Primary Color Foreground
+              pt: Contraste da Cor Primária
+            description:
+              en: The primary color foreground to use
+              pt: O contraste da cor primária a utilizar
+            value: '#ffffff'
           - slug: theme-secondary
             type: string
             name:
@@ -1224,6 +1233,15 @@ data:
               en: The secondary color to use
               pt: A cor secundária a utilizar
             value: '#FFFFFF'
+          - slug: theme-secondary-foreground
+            type: string
+            name:
+              en: Secondary Color Foreground
+              pt: Contraste da Cor Secundária
+            description:
+              en: The secondary color foreground to use
+              pt: O contraste da cor secundária a utilizar
+            value: '#000000'
           - slug: theme-accent
             type: string
             name:
@@ -1233,6 +1251,15 @@ data:
               en: The accent color to use
               pt: A cor de realce a utilizar
             value: '#FF0000'
+          - slug: theme-accent-foreground
+            type: string
+            name:
+              en: Accent Color Foreground
+              pt: Contraste da Cor de Realce
+            description:
+              en: The accent color foreground to use
+              pt: O contraste da cor de realce a utilizar
+            value: '#000000'
           - slug: theme-background
             type: string
             name:
@@ -1242,6 +1269,15 @@ data:
               en: The background color to use
               pt: A cor de fundo a utilizar
             value: '#FFFFFF'
+          - slug: theme-background-foreground
+            type: string
+            name:
+              en: Background Color Foreground
+              pt: Contraste da Cor de Fundo
+            description:
+              en: The background color foreground to use
+              pt: O contraste da cor de fundo a utilizar
+            value: '#000000'
           - slug: theme-muted
             type: string
             name:
@@ -1251,6 +1287,15 @@ data:
               en: The muted color to use
               pt: A cor suave a utilizar
             value: '#F0F0F0'
+          - slug: theme-muted-foreground
+            type: string
+            name:
+              en: Muted Color Foreground
+              pt: Contraste da Cor Suave
+            description:
+              en: The muted color foreground to use
+              pt: O contraste da cor suave a utilizar
+            value: '#000000'
           - slug: theme-radius
             type: string
             name:
@@ -1296,6 +1341,24 @@ data:
               en: Luminância da Cor Suave a utilizar
               pt: Muted Color Lightness to use
             value: '100'
+          - slug: theme-light-dark-enabled
+            type: boolean
+            name:
+              en: Light/Dark Themes Enabled
+              pt: Tema Claro/Escuro Habilitado
+            description:
+              en: Enable or disable toggling of light/dark themes
+              pt: Habilite ou desabilite a troca de tema claro/escuro
+            value: true
+          - slug: theme-light-dark-default
+            type: string
+            name:
+              en: Default Theme
+              pt: Tema Padrão
+            description:
+              en: System default theme
+              pt: Tema Padrão do sistema
+            value: 'dark'
 
 tables:
   countries:

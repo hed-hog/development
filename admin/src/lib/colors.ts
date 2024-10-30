@@ -16,6 +16,20 @@ export const adjustHSL = (
   return { h, s, l }
 }
 
+export const getContrastColor = (hexColor: string) => {
+  // Remove o "#" se estiver presente
+  hexColor = hexColor.replace('#', '')
+
+  // Converte o hex para RGB
+  const r = parseInt(hexColor.slice(0, 2), 16)
+  const g = parseInt(hexColor.slice(2, 4), 16)
+  const b = parseInt(hexColor.slice(4, 6), 16)
+
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+  return luminance > 128 ? '#000000' : '#FFFFFF'
+}
+
 export const hexToHSL = (hex: string) => {
   hex = hex.replace(/^#/, '')
   let r = parseInt(hex.substring(0, 2), 16) / 255
