@@ -44,9 +44,9 @@ export default function ColorTheme({ onChange, onSubmit }: IProps) {
     const adjustedMutedSaturation = saturation * (mutedSaturation / 100)
     const adjustedMutedLightness = lightness * (mutedLightness / 100)
 
-    const backgroundHSL = adjustHSL(hsl, 0, -20, 90)
-    const secondaryHSL = adjustHSL(hsl, 0, -50, 85)
-    const accentHSL = adjustHSL(hsl, 0, -10, 105)
+    const backgroundHSL = adjustHSL(hsl, 0, 15, -30)
+    const secondaryHSL = adjustHSL(hsl, -20, -10, 10)
+    const accentHSL = adjustHSL(hsl, 0, -10, 20)
     const mutedHSL = {
       h: hue,
       s: adjustedMutedSaturation,
@@ -119,25 +119,28 @@ export default function ColorTheme({ onChange, onSubmit }: IProps) {
 
     const computedStyles = getComputedStyle(document.documentElement)
 
-    const savedValues = {
-      primary: computedStyles.getPropertyValue('--primary').trim(),
-      background: computedStyles.getPropertyValue('--background').trim(),
-      secondary: computedStyles.getPropertyValue('--secondary').trim(),
-      accent: computedStyles.getPropertyValue('--accent').trim(),
-      muted: computedStyles.getPropertyValue('--muted').trim(),
-      radius: computedStyles.getPropertyValue('--radius').trim(),
-      xs: computedStyles.getPropertyValue('--text-size-xs').trim(),
-      sm: computedStyles.getPropertyValue('--text-size-sm').trim(),
-      md: computedStyles.getPropertyValue('--text-size-md').trim(),
-      base: computedStyles.getPropertyValue('--text-size-base').trim(),
-      lg: computedStyles.getPropertyValue('--text-size-lg').trim(),
-      xl: computedStyles.getPropertyValue('--text-size-xl').trim(),
-      '2xl': computedStyles.getPropertyValue('--text-size-2xl').trim(),
-      '3xl': computedStyles.getPropertyValue('--text-size-3xl').trim(),
-      fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
-    }
+    setTimeout(() => {
+      const savedValues = {
+        primary: computedStyles.getPropertyValue('--primary').trim(),
+        background: `${backgroundHSL.h} ${backgroundHSL.s}% ${backgroundHSL.l}%`,
+        secondary: `${secondaryHSL.h} ${secondaryHSL.s}% ${secondaryHSL.l}%`,
+        accent: `${accentHSL.h} ${accentHSL.s}% ${accentHSL.l}%`,
+        muted: computedStyles.getPropertyValue('--muted').trim(),
+        radius: computedStyles.getPropertyValue('--radius').trim(),
+        xs: computedStyles.getPropertyValue('--text-size-xs').trim(),
+        sm: computedStyles.getPropertyValue('--text-size-sm').trim(),
+        md: computedStyles.getPropertyValue('--text-size-md').trim(),
+        base: computedStyles.getPropertyValue('--text-size-base').trim(),
+        lg: computedStyles.getPropertyValue('--text-size-lg').trim(),
+        xl: computedStyles.getPropertyValue('--text-size-xl').trim(),
+        '2xl': computedStyles.getPropertyValue('--text-size-2xl').trim(),
+        '3xl': computedStyles.getPropertyValue('--text-size-3xl').trim(),
+        fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
+      }
 
-    onChange && onChange(savedValues)
+      console.log({ savedValues })
+      onChange && onChange(savedValues)
+    }, 1000)
   }, [
     color,
     saturation,

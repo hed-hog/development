@@ -57,7 +57,7 @@ export const hexToHSL = (hex: string) => {
 }
 
 export const hslToHex = (hsl: string) => {
-  const regex = /^(\d{1,3})\s+(\d{1,3}%)\s+(\d{1,3}%)$/
+  const regex = /^(\d{1,3})\s+(\d{1,3}%)\s+(\d{1,3}(?:\.\d+)?%)$/
   const match = hsl.match(regex)
 
   if (!match) {

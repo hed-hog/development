@@ -3,7 +3,7 @@ import { useSettings, useSettingsFromGroup } from '@/features/settings'
 import { useParams } from 'react-router-dom'
 import { FormPanel } from '@/components/custom/form-panel'
 import { FieldValues, useForm } from 'react-hook-form'
-import { IFormFieldPropsBase } from '@/types/form-panel'
+import { IFormFieldPropsBase, ISliderProps } from '@/types/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { Button } from '@/components/custom/button'
 import { useCallback, useRef, useState } from 'react'
@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocales, useLocalesEnabled } from '@/features/locales/api/handlers'
 import { SettingLocaleEnabled } from '@/components/custom/setting-locale-enabled'
 import ColorTheme from '@/components/custom/color-theme'
-import { hslToHex } from '@/lib/colors'
+import { hexToHSL, hslToHex } from '@/lib/colors'
 
 export default function Page() {
   const { t } = useTranslation(['translation', 'settings'])
@@ -28,19 +28,43 @@ export default function Page() {
   const { data, isLoading } = useSettingsFromGroup(String(slug))
   const [localesEnabled, setLocalesEnabled] = useState<string[]>([])
 
-  const getValues = (values: any) => {
-    console.log({ values })
-  }
+  const handleDataChange = (dataValues: any) => {
+    Object.keys(dataValues).forEach((key) => {
+      const value = dataValues[key]
 
-  const handleColorChange = (colorValues: any) => {
-    Object.keys(colorValues).forEach((key) => {
-      console.log({ key, value: colorValues[key] })
-      form.setValue(`theme-${key}`, hslToHex(colorValues[key]))
+      switch (key) {
+        case 'fontFamily':
+          form.setValue(`theme-${key}`, value)
+          break
+
+        case 'primary':
+        case 'background':
+        case 'secondary':
+        case 'accent':
+        case 'muted':
+          form.setValue(`theme-${key}`, hslToHex(value))
+          break
+
+        case 'radius':
+        case 'xs':
+        case 'sm':
+        case 'md':
+        case 'lg':
+        case 'xl':
+        case '2xl':
+        case '3xl':
+          form.setValue(`theme-${key}`, value)
+          break
+
+        default:
+          form.setValue(`theme-${key}`, value)
+          break
+      }
     })
   }
 
   const getField = useCallback(
-    (item: any): IFormFieldPropsBase => {
+    (item: any): IFormFieldPropsBase & ISliderProps => {
       switch (item.slug) {
         case 'language':
           return {
@@ -107,6 +131,14 @@ export default function Page() {
             description: {
               text: item.description,
             },
+            onChange: (value: string) => {
+              form.setValue(item.slug, value)
+              console.log({ slug: item, value })
+              document.documentElement.style.setProperty(
+                `--${item.slug.split('-')[1]}`,
+                `${hexToHSL(value).h} ${hexToHSL(value).s}% ${hexToHSL(value).l}%`
+              )
+            },
           }
 
         case 'theme-radius':
@@ -121,6 +153,18 @@ export default function Page() {
             },
             description: {
               text: item.description,
+            },
+            sliderOptions: {
+              defaultValue: [0.5],
+              max: 1,
+              step: 0.1,
+            },
+            onChange: (value: number) => {
+              if (value) form.setValue(`theme-radius`, value)
+              document.documentElement.style.setProperty(
+                '--radius',
+                `${value}rem`
+              )
             },
           }
 
@@ -167,6 +211,10 @@ export default function Page() {
                 label: 'Courier New',
               },
             ],
+            onChange: (value: string) => {
+              form.setValue(`theme-font`, value)
+              document.documentElement.style.setProperty('--font-family', value)
+            },
           }
         default:
           return {
@@ -202,9 +250,7 @@ export default function Page() {
       {slug === 'localization' && (
         <SettingLocaleEnabled onChange={setLocalesEnabled} />
       )}
-      {slug === 'appearance' && (
-        <ColorTheme onChange={handleColorChange} onSubmit={getValues} />
-      )}
+      {slug === 'appearance' && <ColorTheme onChange={handleDataChange} />}
       <FormPanel
         ref={formRef}
         fields={
