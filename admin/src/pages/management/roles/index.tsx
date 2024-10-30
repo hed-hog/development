@@ -1,14 +1,12 @@
 import { DataPanel } from '@/components/custom/data-panel'
-import { FormPanel } from '@/components/custom/form-panel'
+import { RoleCreatePanel } from '@/components/custom/role-create-panel'
 import { RoleEditPanel } from '@/components/custom/role-edit-panel'
-import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useCreateRole, useDeleteRole } from '@/features/roles/api'
+import { useDeleteRole } from '@/features/roles/api'
 import { useApp } from '@/hooks/use-app'
 import { Menus, Roles, Routes, Screens } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 export default function Page() {
@@ -20,54 +18,15 @@ export default function Page() {
     (Roles | Routes | Menus | Screens)[]
   >([])
 
-  const form = useForm<FieldValues>({
-    defaultValues: {
-      id: '',
-      name: '',
-      description: '',
-    },
-    mode: 'onChange',
-  })
-
-  const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+  const { openDialog, closeDialog, openSheet } = useApp()
 
   const { mutate: deleteRoles } = useDeleteRole()
-  const { mutate: createRole } = useCreateRole()
 
   const openCreateDialog = () => {
-    form.reset({
-      id: '',
-      name: '',
-      description: '',
-    })
-
     const id = openDialog({
       title: rolesT('create'),
       description: rolesT('createText'),
-      children: () => (
-        <FormPanel
-          fields={[
-            {
-              name: 'name',
-              label: { text: rolesT('name') },
-              type: EnumFieldType.TEXT,
-              required: true,
-            },
-            {
-              name: 'description',
-              label: { text: rolesT('description') },
-              type: EnumFieldType.TEXT,
-              required: true,
-            },
-          ]}
-          form={form}
-          button={{ text: actionsT('create') }}
-          onSubmit={(data: Roles) => {
-            createRole(data)
-            closeDialog(id)
-          }}
-        />
-      ),
+      children: () => <RoleCreatePanel onCreate={() => closeDialog(id)} />,
     })
 
     return id

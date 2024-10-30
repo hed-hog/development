@@ -259,13 +259,13 @@ export class RoleService {
     );
   }
 
-  async create({ name, description }: CreateDTO) {
-    return this.prismaService.roles.create({
-      data: {
-        name,
-        description,
-      },
-    });
+  async create({ slug, locales }: CreateDTO) {
+    return this.localeService.createModelWithLocales(
+      'roles',
+      'role_id',
+      { slug },
+      locales,
+    );
   }
 
   async update({

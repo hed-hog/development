@@ -8,7 +8,7 @@ export function requests() {
   const createRole = async (data: Roles) => {
     return request({
       url: '/roles',
-      data,
+      data: formatDataWithLocale(data),
       method: 'post',
     }).then((res) => res.data)
   }

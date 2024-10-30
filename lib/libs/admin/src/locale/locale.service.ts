@@ -266,6 +266,66 @@ export class LocaleService {
     });
   }
 
+  private getTableNameTranslations(modelName: string) {
+    const modelNames = modelName.split('_');
+    modelNames[modelNames.length - 1] = pluralToSingular(
+      modelNames[modelNames.length - 1],
+    );
+    modelNames.push('translations');
+    return modelNames.join('_');
+  }
+
+  async createModelWithLocales<T>(
+    modelName: string,
+    foreginKeyName: string,
+    data: T,
+    locales: Record<string, string>,
+  ) {
+    const model = await this.prismaService[modelName].create({
+      data,
+    });
+
+    for (const localeCode of Object.keys(locales)) {
+      const locale = await this.getByCode(localeCode);
+
+      const data: any = {};
+
+      for (const key of Object.keys(locales[localeCode])) {
+        data[key] = locales[localeCode][key];
+      }
+
+      await this.prismaService[this.getTableNameTranslations(modelName)].create(
+        {
+          data: {
+            [foreginKeyName]: model.id,
+            locale_id: locale.id,
+            ...data,
+          },
+        },
+      );
+    }
+
+    return this.prismaService[modelName].findUnique({
+      where: { id: model.id },
+      include: {
+        [this.getTableNameTranslations(modelName)]: {
+          where: {
+            locales: {
+              enabled: true,
+            },
+          },
+          include: {
+            locales: {
+              select: {
+                code: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   async updateModelWithLocales<T extends any>(
     modelName: string,
     foreginKeyName: string,
@@ -282,29 +342,24 @@ export class LocaleService {
         data[key] = locales[localeCode][key];
       }
 
-      const modelNames = modelName.split('_');
-      modelNames[modelNames.length - 1] = pluralToSingular(
-        modelNames[modelNames.length - 1],
-      );
-      modelNames.push('translations');
-      const tableNameTranslations = modelNames.join('_');
-
-      await this.prismaService[tableNameTranslations].upsert({
-        where: {
-          [`${foreginKeyName}_locale_id`]: {
+      await this.prismaService[this.getTableNameTranslations(modelName)].upsert(
+        {
+          where: {
+            [`${foreginKeyName}_locale_id`]: {
+              [foreginKeyName]: id,
+              locale_id: locale.id,
+            },
+          },
+          create: {
             [foreginKeyName]: id,
             locale_id: locale.id,
+            ...data,
+          },
+          update: {
+            ...data,
           },
         },
-        create: {
-          [foreginKeyName]: id,
-          locale_id: locale.id,
-          ...data,
-        },
-        update: {
-          ...data,
-        },
-      });
+      );
     }
 
     return this.prismaService[modelName].update({

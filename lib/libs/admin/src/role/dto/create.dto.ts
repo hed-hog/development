@@ -1,11 +1,7 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
+import { WithLocalesDTO } from '../../dto/with-locales.dto';
 
-export class CreateDTO {
-  @IsString({ message: 'O nome deve ser uma string' })
-  @IsNotEmpty({ message: 'O nome é obrigatório.' })
-  name: string;
-
-  @IsString({ message: 'A descrição deve ser uma string' })
-  @IsNotEmpty({ message: 'A descrição é obrigatória.' })
-  description: string;
+export class CreateDTO extends WithLocalesDTO {
+  @IsString()
+  slug: string;
 }

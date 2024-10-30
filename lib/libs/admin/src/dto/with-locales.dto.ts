@@ -1,6 +1,6 @@
 import { IsObject, IsOptional, ValidateNested } from 'class-validator';
 
-export class UpdateLocalesDTO {
+export class WithLocalesDTO {
   @IsOptional()
   @IsObject()
   @ValidateNested({ each: true })

@@ -16,7 +16,7 @@ import {
   getLocalesFromItem,
   getObjectFromLocaleFields,
 } from '@hedhog/utils'
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import DataPanel from './data-panel'
@@ -32,10 +32,6 @@ export type RoleEditPanelProps = {
 export const RoleEditPanel = forwardRef(
   ({ data, onEdit }: RoleEditPanelProps) => {
     const { t } = useTranslation(['actions', 'roles', 'modules', 'translation'])
-
-    const [selectedItems, setSelectedItems] = useState<
-      (Roles | Routes | Menus | Screens)[]
-    >([])
 
     const { data: item, isLoading } = useRolesShow(data.id as number)
     const { mutate: editRoleRoutes } = useEditRoleRoutes()
@@ -128,9 +124,6 @@ export const RoleEditPanel = forwardRef(
                     checked={(item: Roles) => {
                       return Boolean((item.role_users ?? []).length)
                     }}
-                    onSelectionChange={(selectedItems) => {
-                      //setSelectedItems((prev) => [...prev, ...selectedItems])
-                    }}
                   />
                 ),
                 buttons: [
@@ -182,9 +175,6 @@ export const RoleEditPanel = forwardRef(
                     checked={(item: Routes) => {
                       return Boolean((item.role_routes ?? []).length)
                     }}
-                    onSelectionChange={(selectedItems) => {
-                      //setSelectedItems((prev) => [...prev, ...selectedItems])
-                    }}
                   />
                 ),
                 buttons: [
@@ -235,9 +225,6 @@ export const RoleEditPanel = forwardRef(
                     )}
                     checked={(item: Menus) => {
                       return Boolean((item.role_menus ?? []).length)
-                    }}
-                    onSelectionChange={(selectedItems) => {
-                      //setSelectedItems((prev) => [...prev, ...selectedItems])
                     }}
                   />
                 ),
@@ -294,9 +281,6 @@ export const RoleEditPanel = forwardRef(
                     )}
                     checked={(item: Screens) => {
                       return Boolean((item.role_screens ?? []).length)
-                    }}
-                    onSelectionChange={(selectedItems) => {
-                      //setSelectedItems((prev) => [...prev, ...selectedItems])
                     }}
                   />
                 ),

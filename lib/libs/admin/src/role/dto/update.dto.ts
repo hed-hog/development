@@ -1,7 +1,4 @@
-import { UpdateLocalesDTO } from '@hedhog/admin/dto/update-locales';
-import { IsString } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateDTO } from './create.dto';
 
-export class UpdateDTO extends UpdateLocalesDTO {
-  @IsString()
-  slug: string;
-}
+export class UpdateDTO extends PartialType(CreateDTO) {}
