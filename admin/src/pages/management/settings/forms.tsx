@@ -10,7 +10,8 @@ import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocales, useLocalesEnabled } from '@/features/locales/api/handlers'
 import { SettingLocaleEnabled } from '@/components/custom/setting-locale-enabled'
-import ColorTheme from '@/pages/tests'
+import ColorTheme from '@/components/custom/color-theme'
+import { hslToHex } from '@/lib/colors'
 
 export default function Page() {
   const { t } = useTranslation(['translation', 'settings'])
@@ -29,6 +30,13 @@ export default function Page() {
 
   const getValues = (values: any) => {
     console.log({ values })
+  }
+
+  const handleColorChange = (colorValues: any) => {
+    Object.keys(colorValues).forEach((key) => {
+      console.log({ key, value: colorValues[key] })
+      form.setValue(`theme-${key}`, hslToHex(colorValues[key]))
+    })
   }
 
   const getField = useCallback(
@@ -194,7 +202,9 @@ export default function Page() {
       {slug === 'localization' && (
         <SettingLocaleEnabled onChange={setLocalesEnabled} />
       )}
-      {slug === 'appearance' && <ColorTheme onChange={getValues} />}
+      {slug === 'appearance' && (
+        <ColorTheme onChange={handleColorChange} onSubmit={getValues} />
+      )}
       <FormPanel
         ref={formRef}
         fields={
