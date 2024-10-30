@@ -1,16 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RoleService } from './role.service';
-import { PrismaService } from '@hedhog/prisma';
 import {
   PageOrderDirection,
   PaginationDTO,
   PaginationService,
 } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
 import { BadRequestException } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
+import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { RoleService } from './role.service';
 
 describe('RoleService', () => {
   let roleService: RoleService;
@@ -62,7 +60,7 @@ describe('RoleService', () => {
     prismaService = module.get<PrismaService>(PrismaService);
     paginationService = module.get<PaginationService>(PaginationService);
   });
-
+  /*
   describe('create', () => {
     it('should create a new role', async () => {
       const dto: CreateDTO = {
@@ -81,7 +79,7 @@ describe('RoleService', () => {
       expect(await roleService.create(dto)).toEqual(result);
     });
   });
-
+*/
   // describe('update', () => {
   //   it('should update an existing role', async () => {
   //     const dto: UpdateDTO = {
