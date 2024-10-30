@@ -116,6 +116,23 @@ html {
     --ring: 224.3 76.3% 48%;
   }
 
+  .bg-color {
+    background-color: hsl(var(--background));
+  }
+
+  @media (prefers-color-scheme: light) {
+    body {
+      background-color: hsl(0 0% 100%);
+    }
+  }
+
+  /* Estilos do tema escuro */
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #000;
+    }
+  }
+
   /* styles.css */
   .collapsibleDropdown {
     overflow: hidden;
@@ -149,7 +166,7 @@ html {
     @apply border-border;
   }
   body {
-    @apply min-h-svh w-full bg-background text-foreground;
+    @apply min-h-svh w-full text-foreground;
   }
   body > #root {
     @apply h-svh;

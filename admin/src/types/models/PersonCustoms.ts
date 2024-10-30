@@ -12,4 +12,5 @@ export type PersonCustoms = {
   persons?: Persons;
   person_custom_types?: PersonCustomTypes;
   person_custom_translations?: PersonCustomTranslations[];
+  name?: string;
 }

@@ -8,4 +8,5 @@ export type PersonTypes = {
   updated_at?: string;
   person_type_translations?: PersonTypeTranslations[];
   persons?: Persons[];
+  name?: string;
 }

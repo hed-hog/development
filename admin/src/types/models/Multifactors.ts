@@ -8,4 +8,5 @@ export type Multifactors = {
   updated_at?: string;
   users?: Users[];
   multifactor_translations?: MultifactorTranslations[];
+  name?: string;
 }

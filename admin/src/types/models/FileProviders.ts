@@ -8,4 +8,5 @@ export type FileProviders = {
   updated_at?: string;
   files?: Files[];
   file_provider_translations?: FileProviderTranslations[];
+  name?: string;
 }

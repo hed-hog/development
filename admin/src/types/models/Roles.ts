@@ -14,4 +14,6 @@ export type Roles = {
   role_translations?: RoleTranslations[];
   role_routes?: RoleRoutes[];
   role_menus?: RoleMenus[];
+  name?: string;
+  description?: string;
 }

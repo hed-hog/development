@@ -12,7 +12,7 @@ export default function AppShell() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   return (
     <Private>
-      <div className='relative h-full overflow-hidden bg-background'>
+      <div className='relative h-full overflow-hidden'>
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         <main
           id='content'

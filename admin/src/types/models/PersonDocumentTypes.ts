@@ -11,4 +11,5 @@ export type PersonDocumentTypes = {
   countries?: Countries;
   person_document_type_translations?: PersonDocumentTypeTranslations[];
   person_documents?: PersonDocuments[];
+  name?: string;
 }

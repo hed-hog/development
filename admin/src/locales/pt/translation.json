@@ -3,5 +3,8 @@
   "pt": "Português",
   "slogan": "Painel de Administração",
   "selectTimezone": "Selecione o Fuso Horário",
-  "apply": "Aplicar"
+  "apply": "Aplicar",
+  "name": "Nome",
+  "description": "Descrição",
+  "slug": "Slug"
 }

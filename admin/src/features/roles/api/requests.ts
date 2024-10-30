@@ -1,10 +1,11 @@
 import { useApp } from '@/hooks/use-app'
-import { RoleType } from '@/types/role'
+import { Roles } from '@/types/models'
+import { formatDataWithLocale } from '@hedhog/utils'
 
 export function requests() {
   const { request } = useApp()
 
-  const createRole = async (data: RoleType) => {
+  const createRole = async (data: Roles) => {
     return request({
       url: '/roles',
       data,
@@ -20,12 +21,19 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editRole = async (params: { id: string; data: RoleType }) => {
+  const showRole = async (id: number) => {
+    return request<Roles>({
+      url: `/roles/${id}`,
+      method: 'get',
+    }).then((res) => res.data)
+  }
+
+  const editRole = async (params: { id: string; data: Roles }) => {
     const { id, data } = params
     return request({
       url: `/roles/${id}`,
       method: 'patch',
-      data,
+      data: formatDataWithLocale(data),
     }).then((res) => res.data)
   }
 
@@ -133,5 +141,6 @@ export function requests() {
     getRoleRoutes,
     getRoleScreens,
     getRoleUsers,
+    showRole,
   }
 }

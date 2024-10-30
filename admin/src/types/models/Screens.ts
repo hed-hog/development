@@ -13,4 +13,6 @@ export type Screens = {
   route_screens?: RouteScreens[];
   role_screens?: RoleScreens[];
   screen_translations?: ScreenTranslations[];
+  name?: string;
+  description?: string;
 }

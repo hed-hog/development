@@ -12,4 +12,5 @@ export type Countries = {
   person_documents?: PersonDocuments[];
   country_translations?: CountryTranslations[];
   person_addresses?: PersonAddresses[];
+  name?: string;
 }

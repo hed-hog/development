@@ -16,4 +16,5 @@ export type Menus = {
   other_menus?: Menus[];
   menu_translations?: MenuTranslations[];
   role_menus?: RoleMenus[];
+  name?: string;
 }

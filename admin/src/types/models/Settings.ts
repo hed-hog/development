@@ -15,4 +15,6 @@ export type Settings = {
   setting_groups?: SettingGroups;
   setting_users?: SettingUsers[];
   setting_translations?: SettingTranslations[];
+  description?: string;
+  name?: string;
 }

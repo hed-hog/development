@@ -1,8 +1,8 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
-import { toast } from 'sonner'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
+import { requests } from './requests'
 
 export function useCreateRole() {
   const { createRole } = requests()
@@ -143,6 +143,17 @@ export function useGetRoles() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['roles'],
     queryFn: () => getRoles(),
+  })
+
+  return { data, isLoading, refetch }
+}
+
+export function useRolesShow(id: number) {
+  const { showRole } = requests()
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => showRole(id),
   })
 
   return { data, isLoading, refetch }

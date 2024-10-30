@@ -3,5 +3,8 @@
   "pt": "Portuguese",
   "slogan": "Administration Panel",
   "selectTimezone": "Select Timezone",
-  "apply": "Apply"
+  "apply": "Apply",
+  "name": "Name",
+  "description": "Description",
+  "slug": "Slug"
 }

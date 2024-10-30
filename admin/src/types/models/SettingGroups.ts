@@ -9,4 +9,6 @@ export type SettingGroups = {
   updated_at?: string;
   setting_group_translations?: SettingGroupTranslations[];
   settings?: Settings[];
+  name?: string;
+  description?: string;
 }
