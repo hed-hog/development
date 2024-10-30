@@ -11,7 +11,11 @@ import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
 import { FieldType } from '@/types/form-panel'
 import { Menus, Roles, Routes, Screens, Users } from '@/types/models'
-import { getLocaleFields, getObjectFromLocaleFields } from '@hedhog/utils'
+import {
+  getLocaleFields,
+  getLocalesFromItem,
+  getObjectFromLocaleFields,
+} from '@hedhog/utils'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -93,7 +97,9 @@ export const RoleEditPanel = forwardRef(
                         type: EnumFieldType.TEXT as FieldType,
                         label: {
                           text: t(field.fieldName, { ns: 'translation' }),
-                          small: field.localeCode,
+                          ...(getLocalesFromItem(item).length > 1
+                            ? { small: field.localeCode }
+                            : {}),
                         },
                       })),
                     ]}
