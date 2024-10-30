@@ -346,8 +346,8 @@ export default function Page() {
           return {
             name: item.slug,
             type: EnumFieldType.SWITCH,
-            defaultValue: item.value === 'true',
-            value: item.value === 'true',
+            defaultValue: item.value,
+            value: item.value,
             required: false,
             label: {
               text: item.name,
