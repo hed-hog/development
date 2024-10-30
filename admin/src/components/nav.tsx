@@ -23,6 +23,7 @@ import {
 import { cn } from '@/lib/utils'
 import useCheckActiveNav from '@/hooks/use-check-active-nav'
 import { SideLink } from '@/data/sidelinks'
+import { useTheme } from './theme-provider'
 
 interface NavProps extends React.HTMLAttributes<HTMLDivElement> {
   isCollapsed: boolean
@@ -73,7 +74,7 @@ export default function Nav({
     <div
       data-collapsed={isCollapsed}
       className={cn(
-        'group border-b py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none',
+        `bg-color group border-b py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none`,
         className
       )}
     >

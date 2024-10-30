@@ -12,8 +12,6 @@ export default function ThemeSwitch() {
     const themeColor = theme === 'dark' ? '#000' : '#fff'
     const metaThemeColor = document.querySelector("meta[name='theme-color']")
     metaThemeColor && metaThemeColor.setAttribute('content', themeColor)
-
-    document.body.style.backgroundColor = theme === 'dark' ? '#000' : '#fff'
   }, [theme])
 
   return (
