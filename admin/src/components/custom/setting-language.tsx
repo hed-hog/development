@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { FormPanel } from './form-panel'
-import { FieldValues, useForm } from 'react-hook-form'
 import {
   useLocales,
   useLocalesTranslations,
 } from '@/features/locales/api/handlers'
-import { useTranslation } from 'react-i18next'
 import { useEditSetting } from '@/features/settings'
+import React, { useCallback, useEffect, useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import FormPanel from './form-panel'
 
 type SettingLanguageProps = {
   setting: any

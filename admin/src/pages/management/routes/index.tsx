@@ -1,5 +1,5 @@
 import DataPanel from '@/components/custom/data-panel'
-import { FormPanel } from '@/components/custom/form-panel'
+import FormPanel from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {

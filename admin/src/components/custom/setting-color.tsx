@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { FormPanel } from './form-panel'
-import { FieldValues, useForm } from 'react-hook-form'
 import { useLocalesTranslations } from '@/features/locales/api/handlers'
 import { useEditSetting } from '@/features/settings'
+import { useCallback, useEffect, useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+import FormPanel from './form-panel'
 
 type SettingColorProps = {
   setting: any

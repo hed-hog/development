@@ -1,5 +1,5 @@
 import { DataPanel } from '@/components/custom/data-panel'
-import { FormPanel } from '@/components/custom/form-panel'
+import FormPanel from '@/components/custom/form-panel'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
@@ -8,28 +8,21 @@ import {
   useEditUser,
   useEditUserRoles,
 } from '@/features/users'
-import { queryClient } from '@/lib/query-provider'
 import { useApp } from '@/hooks/use-app'
+import { queryClient } from '@/lib/query-provider'
+import { RoleType } from '@/types/role'
+import { UserType } from '@/types/user'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
-import { UserType } from '@/types/user'
-import { RoleType } from '@/types/role'
 import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const userRolesRef = useRef<any>(null)
   const formEdit = useRef<any>(null)
 
-  const form = useForm<FieldValues>({
-    defaultValues: {
-      id: '',
-      name: '',
-      email: '',
-    },
-    mode: 'onChange',
-  })
+  const form = useForm<FieldValues>({})
 
   const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
   const { mutate: deleteUsers } = useDeleteUser()
@@ -42,13 +35,6 @@ export default function Page() {
   const { t: modulesT } = useTranslation('modules')
 
   const openCreateDialog = () => {
-    form.reset({
-      id: '',
-      name: '',
-      email: '',
-      password: '',
-    })
-
     const id = openDialog({
       title: usersT('create'),
       description: usersT('createText'),

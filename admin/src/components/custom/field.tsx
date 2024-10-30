@@ -1,12 +1,11 @@
-import { RichTextField } from '@/components/custom/rich-text-field'
 import { ColorPickerField } from '@/components/custom/color-picker-field'
-import { Input } from '@/components/ui/input'
-import { PasswordInput } from './password-input-field'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
+import { RichTextField } from '@/components/custom/rich-text-field'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Slider } from '@/components/ui/slider'
-import { FieldProps as FieldPropsForm } from '@/types/form-panel'
+import { DatePickerField } from '@/components/ui/date-picker-field'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { MultiSelectField } from '@/components/ui/multi-select-field'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Select,
   SelectContent,
@@ -15,20 +14,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { MultiSelectField } from '@/components/ui/multi-select-field'
-import { DatePickerField } from '@/components/ui/date-picker-field'
-import { SheetPickerField } from './sheet-picker-field'
+import { Slider } from '@/components/ui/slider'
+import { EnumFieldType } from '@/enums/EnumFieldType'
+import { FieldProps as FieldPropsForm } from '@/types/form-panel'
+import { CheckedState } from '@radix-ui/react-checkbox'
 import {
   ChangeEventHandler,
   FormEventHandler,
+  forwardRef,
   useEffect,
   useState,
 } from 'react'
-import { CheckedState } from '@radix-ui/react-checkbox'
-import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FormControl } from '../ui/form'
-import { Combobox } from './combo-box'
 import { Switch } from '../ui/switch'
+import { Combobox } from './combo-box'
+import { PasswordInput } from './password-input-field'
+import { SheetPickerField } from './sheet-picker-field'
 
 export type FieldProps = (
   | {
@@ -57,7 +58,6 @@ export type FieldProps = (
         | EnumFieldType.SHEETPICKER
         | EnumFieldType.MULTISELECT
         | EnumFieldType.SWITCH
-
       value: string[] | boolean
       onChange: (value: string[] | boolean) => void
     }
@@ -74,7 +74,7 @@ export type FieldProps = (
 ) &
   FieldPropsForm
 
-export default function Field(props: FieldProps) {
+const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
   const [value, setValue] = useState<string | string[]>(props.value)
   const [options, setOptions] = useState(props.options)
 
@@ -257,5 +257,12 @@ export default function Field(props: FieldProps) {
           buttonText='Salvar'
         />
       )
+
+    default:
+      return null
   }
-}
+})
+
+Field.displayName = 'Field'
+
+export default Field

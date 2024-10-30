@@ -6,7 +6,7 @@ import { Roles } from '@/types/models'
 import { forwardRef } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { FormPanel } from './form-panel'
+import FormPanel from './form-panel'
 
 export type RoleCreateProps = {
   onCreate?: (data: Roles) => void
@@ -18,6 +18,12 @@ export const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps) => {
   const { mutate: createRole } = useCreateRole()
   const form = useForm<FieldValues>({
     mode: 'onSubmit',
+    values: {
+      slug: '',
+    },
+    defaultValues: {
+      slug: '',
+    },
   })
 
   return (

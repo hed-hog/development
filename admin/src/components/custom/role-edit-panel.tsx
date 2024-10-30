@@ -20,7 +20,7 @@ import { forwardRef, useEffect, useRef } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import DataPanel from './data-panel'
-import { FormPanel } from './form-panel'
+import FormPanel from './form-panel'
 import { Overlay } from './overlay'
 import { TabPanel } from './tab-panel'
 
