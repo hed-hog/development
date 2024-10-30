@@ -1,16 +1,7 @@
-import {
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { UpdateLocalesDTO } from '@hedhog/admin/dto/update-locales';
+import { IsString } from 'class-validator';
 
-export class UpdateDTO {
+export class UpdateDTO extends UpdateLocalesDTO {
   @IsString()
   slug: string;
-
-  @IsOptional()
-  @IsObject()
-  @ValidateNested({ each: true })
-  locales: Record<string, string>;
 }
