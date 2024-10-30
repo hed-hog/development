@@ -16,7 +16,11 @@ export default function CalendarDemo() {
       name='demo'
       mode='range'
       selected={range}
-      onSelect={(range) => setRange(range as any)}
+      onSelect={(range) => {
+        if (range && range.from && range.to) {
+          setRange({ from: range.from, to: range.to })
+        }
+      }}
       className='rounded-md border bg-background'
     />
   )
