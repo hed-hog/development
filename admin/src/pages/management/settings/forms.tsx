@@ -142,6 +142,32 @@ export default function Page() {
             },
           }
 
+        case 'theme-primary-foreground':
+        case 'theme-secondary-foreground':
+        case 'theme-background-foreground':
+        case 'theme-muted-foreground':
+        case 'theme-accent-foreground':
+          return {
+            name: item.slug,
+            type: EnumFieldType.COLOR,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            onChange: (value: string) => {
+              form.setValue(item.slug, value)
+              document.documentElement.style.setProperty(
+                `--${item.slug.split('-')[1]}-foreground`,
+                value
+              )
+            },
+          }
+
         case 'theme-radius':
           return {
             name: item.slug,

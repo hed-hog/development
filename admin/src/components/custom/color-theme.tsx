@@ -41,6 +41,11 @@ export default function ColorTheme({ onChange }: IProps) {
       `${hue} ${saturation}% ${lightness}%`
     )
 
+    document.documentElement.style.setProperty(
+      '--primary-foreground',
+      `${hue} ${saturation}% ${lightness > 50 ? 20 : 80}%`
+    )
+
     theme === 'dark' &&
       document.documentElement.style.setProperty(
         '--background',
@@ -49,8 +54,20 @@ export default function ColorTheme({ onChange }: IProps) {
 
     theme === 'dark' &&
       document.documentElement.style.setProperty(
+        '--background-foreground',
+        `${backgroundHSL.h} ${saturation}% ${lightness > 50 ? 20 : 80}%`
+      )
+
+    theme === 'dark' &&
+      document.documentElement.style.setProperty(
         '--secondary',
         `${secondaryHSL.h} ${saturation}% ${lightness / 10}%`
+      )
+
+    theme === 'dark' &&
+      document.documentElement.style.setProperty(
+        '--secondary-foreground',
+        `${secondaryHSL.h} ${saturation}% ${lightness > 50 ? 20 : 80}%`
       )
 
     document.documentElement.style.setProperty(
@@ -59,8 +76,18 @@ export default function ColorTheme({ onChange }: IProps) {
     )
 
     document.documentElement.style.setProperty(
+      '--accent-foreground',
+      `${accentHSL.h} ${saturation}% ${lightness > 50 ? 20 : 80}%`
+    )
+
+    document.documentElement.style.setProperty(
       '--muted',
       `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
+    )
+
+    document.documentElement.style.setProperty(
+      '--muted-foreground',
+      `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l > 50 ? 20 : 80}%`
     )
 
     const computedStyles = getComputedStyle(document.documentElement)
