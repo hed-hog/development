@@ -76,12 +76,7 @@ export function GradientPicker({
     'linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)',
   ]
 
-  const images = [
-    'url(https://images.unsplash.com/photo-1688822863426-8c5f9b257090?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2532&q=90)',
-  ]
-
   const defaultTab = useMemo(() => {
-    if (background.includes('url')) return 'image'
     if (background.includes('gradient')) return 'gradient'
     return 'solid'
   }, [background])
@@ -121,8 +116,8 @@ export function GradientPicker({
             <TabsTrigger className='flex-1' value='gradient'>
               Gradient
             </TabsTrigger>
-            <TabsTrigger className='flex-1' value='image'>
-              Image
+            <TabsTrigger className='flex-1' value='custom'>
+              Custom
             </TabsTrigger>
           </TabsList>
 
@@ -153,16 +148,18 @@ export function GradientPicker({
             </div>
           </TabsContent>
 
-          <TabsContent value='image' className='mt-0'>
-            <div className='mb-2 grid grid-cols-2 gap-1'>
-              {images.map((s) => (
-                <div
-                  key={s}
-                  style={{ backgroundImage: s }}
-                  className='h-12 w-full cursor-pointer rounded-md bg-cover bg-center active:scale-105'
-                  onClick={() => setBackground(s)}
-                />
-              ))}
+          <TabsContent value='custom' className='mt-0'>
+            <div className='flex flex-col items-center'>
+              <input
+                type='color'
+                value={
+                  background.includes('rgb') || background.includes('#')
+                    ? background
+                    : '#ffffff'
+                }
+                onChange={(e) => setBackground(e.target.value)}
+                className='h-12 w-full cursor-pointer'
+              />
             </div>
           </TabsContent>
         </Tabs>

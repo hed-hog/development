@@ -1296,6 +1296,24 @@ data:
               en: Luminância da Cor Suave a utilizar
               pt: Muted Color Lightness to use
             value: '100'
+          - slug: theme-light-dark-enabled
+            type: boolean
+            name:
+              en: Light/Dark Themes Enabled
+              pt: Tema Claro/Escuro Habilitado
+            description:
+              en: Enable or disable toggling of light/dark themes
+              pt: Habilite ou desabilite a troca de tema claro/escuro
+            value: true
+          - slug: theme-light-dark-default
+            type: string
+            name:
+              en: Default Theme
+              pt: Tema Padrão
+            description:
+              en: System default theme
+              pt: Tema Padrão do sistema
+            value: 'dark'
 
 tables:
   countries:
