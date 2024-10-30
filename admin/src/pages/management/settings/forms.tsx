@@ -12,11 +12,13 @@ import { useLocales, useLocalesEnabled } from '@/features/locales/api/handlers'
 import { SettingLocaleEnabled } from '@/components/custom/setting-locale-enabled'
 import ColorTheme from '@/components/custom/color-theme'
 import { hexToHSL, hslToHex } from '@/lib/colors'
+import { useSetProperties } from '@/hooks/use-set-properties'
 
 export default function Page() {
   const { t } = useTranslation(['translation', 'settings'])
   const { data: locales } = useLocales()
   const { mutate, isPending } = useSettings()
+  const { setText } = useSetProperties()
   const { mutateAsync: mutateLocale, isPending: isPendingLocale } =
     useLocalesEnabled()
   const formRef = useRef<HTMLFormElement>(null)
@@ -133,7 +135,6 @@ export default function Page() {
             },
             onChange: (value: string) => {
               form.setValue(item.slug, value)
-              console.log({ slug: item, value })
               document.documentElement.style.setProperty(
                 `--${item.slug.split('-')[1]}`,
                 `${hexToHSL(value).h} ${hexToHSL(value).s}% ${hexToHSL(value).l}%`
@@ -160,7 +161,7 @@ export default function Page() {
               step: 0.1,
             },
             onChange: (value: number) => {
-              if (value) form.setValue(`theme-radius`, value)
+              form.setValue(`theme-radius`, value)
               document.documentElement.style.setProperty(
                 '--radius',
                 `${value}rem`
@@ -214,6 +215,120 @@ export default function Page() {
             onChange: (value: string) => {
               form.setValue(`theme-font`, value)
               document.documentElement.style.setProperty('--font-family', value)
+            },
+          }
+
+        case 'theme-text-size':
+          return {
+            name: item.slug,
+            type: EnumFieldType.RANGE,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            sliderOptions: {
+              defaultValue: [1],
+              max: 5,
+              step: 0.1,
+            },
+            onChange: (value: number) => {
+              form.setValue(`theme-text-size`, value)
+              setText(value)
+            },
+          }
+
+        case 'theme-muted-saturation':
+          return {
+            name: item.slug,
+            type: EnumFieldType.RANGE,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            sliderOptions: {
+              defaultValue: [100],
+              max: 100,
+              step: 1,
+            },
+            onChange: (value: number) => {
+              // Use a default hue if not available
+              const defaultHue = 240 // Example hue value; adjust as necessary
+              // Calculate the adjusted muted saturation
+              const adjustedMutedSaturation = value * (100 / 100) // Default saturation at 100%
+
+              // Assume lightness is defined somewhere, you can provide a default if necessary
+              const defaultLightness = 50 // Example lightness value; adjust as necessary
+
+              // Create muted HSL based on the defaults
+              const mutedHSL = {
+                h: defaultHue, // Using a default hue
+                s: adjustedMutedSaturation,
+                l: defaultLightness, // Using a default lightness
+              }
+
+              // Define the CSS variable
+              document.documentElement.style.setProperty(
+                '--muted',
+                `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
+              )
+
+              // Update the form value
+              form.setValue(item.slug, value)
+            },
+          }
+
+        case 'theme-muted-lightness':
+          return {
+            name: item.slug,
+            type: EnumFieldType.RANGE,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            sliderOptions: {
+              defaultValue: [100],
+              max: 100,
+              step: 1,
+            },
+            onChange: (value: number) => {
+              // Use a default hue if not available
+              const defaultHue = 240 // Example hue value; adjust as necessary
+              // Assume saturation is defined somewhere, you can provide a default if necessary
+              const defaultSaturation = 50 // Example saturation value; adjust as necessary
+              const defaultLightness = 50
+              // Calculate the adjusted muted lightness
+              const adjustedMutedLightness = defaultLightness * (value / 100) // Default lightness at 50%
+
+              // Create muted HSL based on the defaults
+              const mutedHSL = {
+                h: defaultHue, // Using a default hue
+                s: defaultSaturation, // Using a default saturation
+                l: adjustedMutedLightness,
+              }
+
+              // Define the CSS variable
+              document.documentElement.style.setProperty(
+                '--muted',
+                `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
+              )
+
+              // Update the form value
+              form.setValue(item.slug, value)
             },
           }
         default:

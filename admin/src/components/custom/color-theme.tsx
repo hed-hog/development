@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
+import { useSetProperties } from '@/hooks/use-set-properties'
 import { adjustHSL, hexToHSL } from '@/lib/colors'
 import { useState, useEffect } from 'react'
 import { HexColorPicker, HexColorInput } from 'react-colorful'
@@ -21,6 +22,7 @@ interface IProps {
 
 export default function ColorTheme({ onChange, onSubmit }: IProps) {
   const { theme } = useTheme()
+  const { setText, setFont, setBorderRadius } = useSetProperties()
   const [color, setColor] = useState('#bfaa40')
   const [saturation, setSaturation] = useState(50)
   const [lightness, setLightness] = useState(50)
@@ -80,67 +82,30 @@ export default function ColorTheme({ onChange, onSubmit }: IProps) {
       `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
     )
 
-    document.documentElement.style.setProperty('--radius', `${radius}rem`)
-    document.documentElement.style.setProperty(
-      '--text-size-xs',
-      `${textSize * 0.75}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-sm',
-      `${textSize * 0.875}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-md',
-      `${textSize}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-base',
-      `${textSize}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-lg',
-      `${textSize * 1.125}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-xl',
-      `${textSize * 1.25}rem`
-    )
-    document.documentElement.style.setProperty(
-      '--text-size-2xl',
-      `${textSize * 1.5}rem`
-    )
-
-    document.documentElement.style.setProperty(
-      '--text-size-3xl',
-      `${textSize * 1.875}rem`
-    )
-
-    document.documentElement.style.setProperty('--font-family', fontFamily)
+    setBorderRadius(radius)
+    setText(textSize)
+    setFont(fontFamily)
 
     const computedStyles = getComputedStyle(document.documentElement)
+    const savedValues = {
+      primary: computedStyles.getPropertyValue('--primary').trim(),
+      background: `${backgroundHSL.h} ${backgroundHSL.s}% ${backgroundHSL.l}%`,
+      secondary: `${secondaryHSL.h} ${secondaryHSL.s}% ${secondaryHSL.l}%`,
+      accent: `${accentHSL.h} ${accentHSL.s}% ${accentHSL.l}%`,
+      muted: computedStyles.getPropertyValue('--muted').trim(),
+      radius: computedStyles.getPropertyValue('--radius').trim(),
+      xs: computedStyles.getPropertyValue('--text-size-xs').trim(),
+      sm: computedStyles.getPropertyValue('--text-size-sm').trim(),
+      md: computedStyles.getPropertyValue('--text-size-md').trim(),
+      base: computedStyles.getPropertyValue('--text-size-base').trim(),
+      lg: computedStyles.getPropertyValue('--text-size-lg').trim(),
+      xl: computedStyles.getPropertyValue('--text-size-xl').trim(),
+      '2xl': computedStyles.getPropertyValue('--text-size-2xl').trim(),
+      '3xl': computedStyles.getPropertyValue('--text-size-3xl').trim(),
+      fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
+    }
 
-    setTimeout(() => {
-      const savedValues = {
-        primary: computedStyles.getPropertyValue('--primary').trim(),
-        background: `${backgroundHSL.h} ${backgroundHSL.s}% ${backgroundHSL.l}%`,
-        secondary: `${secondaryHSL.h} ${secondaryHSL.s}% ${secondaryHSL.l}%`,
-        accent: `${accentHSL.h} ${accentHSL.s}% ${accentHSL.l}%`,
-        muted: computedStyles.getPropertyValue('--muted').trim(),
-        radius: computedStyles.getPropertyValue('--radius').trim(),
-        xs: computedStyles.getPropertyValue('--text-size-xs').trim(),
-        sm: computedStyles.getPropertyValue('--text-size-sm').trim(),
-        md: computedStyles.getPropertyValue('--text-size-md').trim(),
-        base: computedStyles.getPropertyValue('--text-size-base').trim(),
-        lg: computedStyles.getPropertyValue('--text-size-lg').trim(),
-        xl: computedStyles.getPropertyValue('--text-size-xl').trim(),
-        '2xl': computedStyles.getPropertyValue('--text-size-2xl').trim(),
-        '3xl': computedStyles.getPropertyValue('--text-size-3xl').trim(),
-        fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
-      }
-
-      console.log({ savedValues })
-      onChange && onChange(savedValues)
-    }, 1000)
+    onChange && onChange(savedValues)
   }, [
     color,
     saturation,

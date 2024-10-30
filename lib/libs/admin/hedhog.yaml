@@ -1259,7 +1259,7 @@ data:
             description:
               en: The radius to use
               pt: O raio a utilizar
-            value: '4px'
+            value: '0.5'
           - slug: theme-font
             type: string
             name:
@@ -1277,7 +1277,7 @@ data:
             description:
               en: Text size of the application
               pt: Tamanho do texto da aplicação
-            value: '1rem'
+            value: '1'
           - slug: theme-muted-saturation
             type: string
             name:
