@@ -4,6 +4,7 @@ import { createDirectoryRecursive } from './create-directory-recursive';
 import { databaseTypeToJavascriptType } from './database-type-to-javascript-type';
 import { getTableColumns } from './get-table-columns';
 import { getTables } from './get-tables';
+import { singularToPlural } from './singular-to-plural';
 import { snakeCaseToPascalCase } from './snake-case-topascal-case';
 
 async function emptyDirectory(path: string) {
@@ -148,7 +149,7 @@ async function createTypeFile(
     }
   }
 
-  files[typeName] = { fields, fks, imports, props };
+  files[typeName] = { fields, fks, imports, props, tableName, columns };
 }
 
 async function writeFiles(path: string) {
@@ -185,12 +186,49 @@ async function createIndex(path: string) {
   await writeFile(join(path, 'index.ts'), lines.join('\n'), 'utf-8');
 }
 
+async function addLocaleFields(path: string) {
+  for (const file of Object.keys(files)
+    .map((f) => files[f])
+    .filter(
+      (f) =>
+        f.tableName.split('_')[f.tableName.split('_').length - 1] ===
+        'translations',
+    )) {
+    for (const column of file.columns) {
+      if (
+        column.pk ||
+        column.fk ||
+        column.default ||
+        (databaseTypeToJavascriptType(column.type) as string) !== 'string'
+      ) {
+        continue;
+      }
+
+      const names = file.tableName.split('_');
+      names.pop();
+      if (names.length) {
+        names[names.length - 1] = singularToPlural(names[names.length - 1]);
+      }
+      const tableNameRelated = names.join('_');
+
+      if (tableNameRelated) {
+        files[snakeCaseToPascalCase(tableNameRelated)].props.push({
+          name: column.name,
+          optional: true,
+          type: 'string',
+        });
+      }
+    }
+  }
+}
+
 async function main() {
   const pathAdmin = join(__dirname, '../../admin/src/types/models');
 
   await createDirectoryRecursive(pathAdmin);
   await emptyDirectory(pathAdmin);
   await createTypes(pathAdmin);
+  await addLocaleFields(pathAdmin);
   await writeFiles(pathAdmin);
   await createIndex(pathAdmin);
 }

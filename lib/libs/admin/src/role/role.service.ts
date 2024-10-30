@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { LocaleService } from '../locale';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 
@@ -19,6 +20,8 @@ export class RoleService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
+    @Inject(forwardRef(() => LocaleService))
+    private readonly localeService: LocaleService,
   ) {}
 
   async updateUsers(roleId: number, { ids }: UpdateIdsDTO) {
@@ -265,11 +268,20 @@ export class RoleService {
     });
   }
 
-  async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.roles.update({
-      where: { id },
-      data,
-    });
+  async update({
+    id,
+    data: { locales, slug },
+  }: {
+    id: number;
+    data: UpdateDTO;
+  }) {
+    return this.localeService.updateModelWithLocales(
+      'roles',
+      'role_id',
+      id,
+      { slug },
+      locales,
+    );
   }
 
   async delete({ ids }: DeleteDTO) {

@@ -1,11 +1,16 @@
-import { IsOptional, IsString } from 'class-validator';
+import {
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 export class UpdateDTO {
-  @IsOptional()
-  @IsString({ message: 'O nome deve ser uma string' })
-  name?: string;
+  @IsString()
+  slug: string;
 
   @IsOptional()
-  @IsString({ message: 'A descrição deve ser uma string' })
-  description?: string;
+  @IsObject()
+  @ValidateNested({ each: true })
+  locales: Record<string, string>;
 }

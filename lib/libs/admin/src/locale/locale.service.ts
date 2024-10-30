@@ -1,5 +1,6 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
+import { pluralToSingular } from '@hedhog/utils';
 import {
   BadRequestException,
   Inject,
@@ -12,6 +13,8 @@ import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class LocaleService {
+  private codes: any = {};
+
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -219,6 +222,15 @@ export class LocaleService {
     return result;
   }
 
+  async getByCode(code: string) {
+    if (this.codes[code]) {
+      return this.codes[code];
+    }
+    return (this.codes[code] = await this.prismaService.locales.findFirst({
+      where: { code },
+    }));
+  }
+
   async getById(localesId: number) {
     return this.prismaService.locales.findUnique({
       where: { id: localesId },
@@ -251,6 +263,53 @@ export class LocaleService {
           in: ids,
         },
       },
+    });
+  }
+
+  async updateModelWithLocales<T extends any>(
+    modelName: string,
+    foreginKeyName: string,
+    id: number,
+    data: T,
+    locales: Record<string, string>,
+  ) {
+    for (const localeCode of Object.keys(locales)) {
+      const locale = await this.getByCode(localeCode);
+
+      const data: any = {};
+
+      for (const key of Object.keys(locales[localeCode])) {
+        data[key] = locales[localeCode][key];
+      }
+
+      const modelNames = modelName.split('_');
+      modelNames[modelNames.length - 1] = pluralToSingular(
+        modelNames[modelNames.length - 1],
+      );
+      modelNames.push('translations');
+      const tableNameTranslations = modelNames.join('_');
+
+      await this.prismaService[tableNameTranslations].upsert({
+        where: {
+          [`${foreginKeyName}_locale_id`]: {
+            [foreginKeyName]: id,
+            locale_id: locale.id,
+          },
+        },
+        create: {
+          [foreginKeyName]: id,
+          locale_id: locale.id,
+          ...data,
+        },
+        update: {
+          ...data,
+        },
+      });
+    }
+
+    return this.prismaService[modelName].update({
+      where: { id },
+      data,
     });
   }
 }
