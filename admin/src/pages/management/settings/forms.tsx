@@ -260,29 +260,27 @@ export default function Page() {
               max: 100,
               step: 1,
             },
-            onChange: (value: number) => {
-              // Use a default hue if not available
-              const defaultHue = 240 // Example hue value; adjust as necessary
-              // Calculate the adjusted muted saturation
-              const adjustedMutedSaturation = value * (100 / 100) // Default saturation at 100%
+            onChange: (value: number[]) => {
+              const computedStyles = getComputedStyle(document.documentElement)
+              const mutedHSL = computedStyles.getPropertyValue('--muted').trim()
 
-              // Assume lightness is defined somewhere, you can provide a default if necessary
-              const defaultLightness = 50 // Example lightness value; adjust as necessary
+              // Extrair HSL do valor atual
+              const [hue, saturation, lightness] = mutedHSL
+                .replace(/%/g, '')
+                .split(' ')
+                .map(Number)
 
-              // Create muted HSL based on the defaults
-              const mutedHSL = {
-                h: defaultHue, // Using a default hue
-                s: adjustedMutedSaturation,
-                l: defaultLightness, // Using a default lightness
+              const newMutedHSL = {
+                h: hue,
+                s: value[0],
+                l: lightness,
               }
 
-              // Define the CSS variable
               document.documentElement.style.setProperty(
                 '--muted',
-                `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
+                `${newMutedHSL.h} ${newMutedHSL.s}% ${newMutedHSL.l}%`
               )
 
-              // Update the form value
               form.setValue(item.slug, value)
             },
           }
@@ -305,32 +303,30 @@ export default function Page() {
               max: 100,
               step: 1,
             },
-            onChange: (value: number) => {
-              // Use a default hue if not available
-              const defaultHue = 240 // Example hue value; adjust as necessary
-              // Assume saturation is defined somewhere, you can provide a default if necessary
-              const defaultSaturation = 50 // Example saturation value; adjust as necessary
-              const defaultLightness = 50
-              // Calculate the adjusted muted lightness
-              const adjustedMutedLightness = defaultLightness * (value / 100) // Default lightness at 50%
+            onChange: (value: number[]) => {
+              const computedStyles = getComputedStyle(document.documentElement)
+              const mutedHSL = computedStyles.getPropertyValue('--muted').trim()
 
-              // Create muted HSL based on the defaults
-              const mutedHSL = {
-                h: defaultHue, // Using a default hue
-                s: defaultSaturation, // Using a default saturation
-                l: adjustedMutedLightness,
+              const [hue, saturation, lightness] = mutedHSL
+                .replace(/%/g, '')
+                .split(' ')
+                .map(Number)
+
+              const newMutedHSL = {
+                h: hue,
+                s: saturation,
+                l: value[0],
               }
 
-              // Define the CSS variable
               document.documentElement.style.setProperty(
                 '--muted',
-                `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
+                `${newMutedHSL.h} ${newMutedHSL.s}% ${newMutedHSL.l}%`
               )
 
-              // Update the form value
               form.setValue(item.slug, value)
             },
           }
+
         default:
           return {
             name: item.slug,
