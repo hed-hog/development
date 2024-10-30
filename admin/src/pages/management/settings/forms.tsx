@@ -47,17 +47,6 @@ export default function Page() {
           form.setValue(`theme-${key}`, hslToHex(value))
           break
 
-        case 'radius':
-        case 'xs':
-        case 'sm':
-        case 'md':
-        case 'lg':
-        case 'xl':
-        case '2xl':
-        case '3xl':
-          form.setValue(`theme-${key}`, value)
-          break
-
         default:
           form.setValue(`theme-${key}`, value)
           break
@@ -307,7 +296,7 @@ export default function Page() {
                 `${newMutedHSL.h} ${newMutedHSL.s}% ${newMutedHSL.l}%`
               )
 
-              form.setValue(item.slug, value)
+              form.setValue(item.slug, value[0])
             },
           }
 
@@ -349,8 +338,55 @@ export default function Page() {
                 `${newMutedHSL.h} ${newMutedHSL.s}% ${newMutedHSL.l}%`
               )
 
-              form.setValue(item.slug, value)
+              form.setValue(item.slug, value[0])
             },
+          }
+
+        case 'theme-light-dark-enabled':
+          return {
+            name: item.slug,
+            type: EnumFieldType.SWITCH,
+            defaultValue: item.value === 'true',
+            value: item.value === 'true',
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            onChange: (value: boolean) => {
+              form.setValue('theme-light-dark-enabled', value)
+            },
+          }
+
+        case 'theme-light-dark-default':
+          return {
+            name: item.slug,
+            type: EnumFieldType.SELECT,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            options: [
+              {
+                value: 'light',
+                label: 'Light',
+              },
+              {
+                value: 'dark',
+                label: 'Dark',
+              },
+              {
+                value: 'Same as system',
+                label: 'Same as system',
+              },
+            ],
           }
 
         default:
