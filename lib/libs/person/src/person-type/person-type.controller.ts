@@ -16,7 +16,7 @@ import { UpdatePersonTypeDTO } from './dto/update-person-type.dto';
 import { PersonTypeService } from './person-type.service';
 
 @Role()
-@Controller('person-types')
+@Controller('person-type')
 export class PersonTypeController {
   constructor(private readonly personTypeService: PersonTypeService) {}
 

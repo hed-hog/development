@@ -61,6 +61,7 @@ export default function Page() {
             createPersonType({
               id: Number(data.id),
               name: data.name,
+              slug: '',
             })
             closeDialog(id)
           }}
@@ -144,7 +145,10 @@ export default function Page() {
                   ]}
                   form={form}
                   onSubmit={(data: Person) => {
-                    editPersonType({ id: String(data.id), data })
+                    editPersonType({
+                      id: String(data.id),
+                      data: { ...data, slug: '' },
+                    })
                     closeSheet(id)
                   }}
                 />
@@ -174,9 +178,9 @@ export default function Page() {
       </div>
 
       <DataPanel
-        url='/person-types'
+        url='/person-type'
         layout='table'
-        id='person-types'
+        id='person-type'
         selectable
         columns={[
           { key: 'id', header: 'ID' },

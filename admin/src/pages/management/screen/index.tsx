@@ -220,7 +220,7 @@ export default function Page() {
                   multiple
                   layout='list'
                   id={`screen-role-${item.id}`}
-                  url={`/screens/${item.id}/role`}
+                  url={`/screen/${item.id}/role`}
                   checked={(item: Role) => {
                     return Boolean((item.role_screen ?? []).length)
                   }}
@@ -266,7 +266,7 @@ export default function Page() {
                   multiple
                   layout='list'
                   id={`screen-route-${item.id}`}
-                  url={`/screens/${item.id}/route`}
+                  url={`/screen/${item.id}/route`}
                   checked={(item: Route) => {
                     return Boolean((item.route_screen ?? []).length)
                   }}
@@ -335,9 +335,9 @@ export default function Page() {
       </div>
 
       <DataPanel
-        url='/screens'
+        url='/screen'
         layout='table'
-        id='screens'
+        id='screen'
         selectable
         columns={[
           { key: 'id', header: 'ID' },

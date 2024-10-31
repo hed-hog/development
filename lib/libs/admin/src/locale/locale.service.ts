@@ -83,7 +83,7 @@ export class LocaleService {
       locale: {
         code,
       },
-      translation_namespaces: {
+      translation_namespace: {
         name: 'translation',
       },
     };
@@ -137,7 +137,7 @@ export class LocaleService {
       locale: {
         code,
       },
-      translation_namespaces: {
+      translation_namespace: {
         name: namespace,
       },
     };
@@ -192,7 +192,7 @@ export class LocaleService {
       locale: {
         code,
       },
-      translation_namespaces: {
+      translation_namespace: {
         name: 'translation',
       },
     };

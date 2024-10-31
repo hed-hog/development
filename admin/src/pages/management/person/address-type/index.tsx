@@ -60,7 +60,7 @@ export default function Page() {
           onSubmit={(data: PersonAddress) => {
             createAddressType({
               id: Number(data.id),
-              name: data.name,
+              name: data.street,
             })
             closeDialog(id)
           }}
@@ -76,9 +76,9 @@ export default function Page() {
       children: () => (
         <div className='flex flex-col'>
           {items.map((item: PersonAddress) => (
-            <div key={item.name} className='mb-5'>
+            <div key={item.id} className='mb-5'>
               <h3 className='text-md font-semibold'>
-                {item.id} - {item.name}
+                {item.id} - {item.street}
               </h3>
             </div>
           ))}
@@ -112,7 +112,7 @@ export default function Page() {
   const openEditDialog = (item: PersonAddress) => {
     form.reset({
       id: item.id || '',
-      name: item.name || '',
+      name: item.street || '',
     })
 
     const id = openSheet({
@@ -173,9 +173,9 @@ export default function Page() {
         </div>
       </div>
       <DataPanel
-        url='/address-types'
+        url='/address-type'
         layout='table'
-        id='address-types'
+        id='address-type'
         selectable
         columns={[
           { key: 'id', header: 'ID', width: 50 },

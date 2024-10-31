@@ -175,7 +175,7 @@ export default function Page() {
       </div>
 
       <DataPanel
-        url='/contact-types'
+        url='/contact-type'
         layout='table'
         id='contact-types'
         selectable

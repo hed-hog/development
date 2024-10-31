@@ -16,7 +16,7 @@ import { CreateDocumentTypeDTO } from './dto/create-document-type.dto';
 import { UpdateDocumentTypeDTO } from './dto/update-document-type.dto';
 
 @Role()
-@Controller('document-types')
+@Controller('document-type')
 export class DocumentTypeController {
   constructor(private readonly documentTypeService: DocumentTypeService) {}
 

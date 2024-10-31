@@ -16,7 +16,7 @@ import { CreateAddressTypeDTO } from './dto/create-address-type.dto';
 import { UpdateAddressTypeDTO } from './dto/update-address-type.dto';
 
 @Role()
-@Controller('address-types')
+@Controller('address-type')
 export class AddressTypeController {
   constructor(private readonly addressTypeService: AddressTypeService) {}
 

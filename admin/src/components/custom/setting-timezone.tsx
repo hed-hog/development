@@ -1,6 +1,6 @@
 import { timezone } from '@/data/timezone.json'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocalesTranslations } from '@/features/locale/api/handlers'
+import { useLocaleTranslations } from '@/features/locale/api/handlers'
 import { useEditSetting } from '@/features/setting'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -12,7 +12,7 @@ type SettingTimezoneProps = {
 
 const SettingTimezone = ({ setting }: SettingTimezoneProps) => {
   const { mutateAsync } = useEditSetting()
-  const { isLoading } = useLocalesTranslations()
+  const { isLoading } = useLocaleTranslations()
   const form = useForm<FieldValues>({
     defaultValues: {},
     mode: 'onChange',

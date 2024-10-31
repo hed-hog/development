@@ -16,7 +16,7 @@ import { CreateContactTypeDTO } from './dto/create-contact-type.dto';
 import { UpdateContactTypeDTO } from './dto/update-contact-type.dto';
 
 @Role()
-@Controller('contact-types')
+@Controller('contact-type')
 export class ContactTypeController {
   constructor(private readonly contactTypeService: ContactTypeService) {}
 

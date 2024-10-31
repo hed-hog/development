@@ -118,7 +118,7 @@ export function useEditSettinglug() {
   })
 }
 
-export function useEditUserSettinglug() {
+export function useEditUserSettingSlug() {
   const { editUserSettingSlug } = requests()
   //const { t: moduleT } = useTranslation('module')
   //const { t: successT } = useTranslation('success')

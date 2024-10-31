@@ -247,7 +247,7 @@ export default function Page() {
                   multiple
                   layout='list'
                   id={`menu-screens-${item.id}`}
-                  url={`/menu/${item.id}/screens`}
+                  url={`/menu/${item.id}/screen`}
                   render={(item: Screen) => (
                     <div className='flex flex-col'>
                       <div className='flex flex-row'>

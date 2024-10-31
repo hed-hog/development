@@ -16,7 +16,7 @@ import { CreateCustomTypeDTO } from './dto/create-custom-type.dto';
 import { UpdateCustomTypeDTO } from './dto/update-custom-type.dto';
 
 @Role()
-@Controller('custom-types')
+@Controller('custom-type')
 export class CustomTypeController {
   constructor(private readonly customTypeService: CustomTypeService) {}
 

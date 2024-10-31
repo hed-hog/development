@@ -30,7 +30,7 @@ export class SettingsController {
     private readonly settingService: SettingService,
   ) {}
 
-  @Get('groups/:slug')
+  @Get('group/:slug')
   async getSettingFromGroup(
     @Pagination() paginationParams,
     @Locale() locale,
@@ -43,7 +43,7 @@ export class SettingsController {
     );
   }
 
-  @Get('groups')
+  @Get('group')
   async listSettingGroups(@Pagination() paginationParams, @Locale() locale) {
     return this.settingService.listSettingGroups(locale, paginationParams);
   }

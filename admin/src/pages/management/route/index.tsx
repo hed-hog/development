@@ -231,7 +231,7 @@ export default function Page() {
                   multiple
                   layout='list'
                   id={`route-screens-${item.id}`}
-                  url={`/route/${item.id}/screens`}
+                  url={`/route/${item.id}/screen`}
                   checked={(item: Screen) => {
                     return Boolean((item.route_screen ?? []).length)
                   }}

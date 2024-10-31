@@ -1,5 +1,5 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocalesTranslations } from '@/features/locale/api/handlers'
+import { useLocaleTranslations } from '@/features/locale/api/handlers'
 import { useEditSetting } from '@/features/setting'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { useCallback, useEffect, useState } from 'react'
@@ -13,7 +13,7 @@ type SettingTextProps = {
 
 const SettingText = ({ setting }: SettingTextProps) => {
   const { mutateAsync } = useEditSetting()
-  const { isLoading } = useLocalesTranslations()
+  const { isLoading } = useLocaleTranslations()
   const form = useForm<FieldValues>({
     defaultValues: {
       [setting.slug]: setting.value,

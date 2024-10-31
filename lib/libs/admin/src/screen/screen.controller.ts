@@ -20,7 +20,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { ScreenService } from './screen.service';
 
 @Role()
-@Controller('screens')
+@Controller('screen')
 export class ScreenController {
   constructor(
     @Inject(forwardRef(() => ScreenService))

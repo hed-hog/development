@@ -70,7 +70,7 @@ export default function Page() {
             description: {
               text: item.description,
             },
-            options: locale?.data.data.map((l: any) => ({
+            options: (locale?.data.data ?? []).map((l: any) => ({
               value: l.code,
               label: l.name,
             })),

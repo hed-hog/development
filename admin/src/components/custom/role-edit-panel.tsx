@@ -254,7 +254,7 @@ export const RoleEditPanel = forwardRef(
                     multiple
                     layout='list'
                     id={`role-screens-${item.id}`}
-                    url={`/role/${item.id}/screens`}
+                    url={`/role/${item.id}/screen`}
                     render={(item: Screen) => (
                       <div className='flex flex-col'>
                         <div className='flex flex-row'>

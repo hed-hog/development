@@ -61,7 +61,9 @@ export default function Page() {
           onSubmit={(data: PersonCustom) => {
             createCustomType({
               id: Number(data.id),
-              name: data.name,
+              name: data.name ?? '',
+              person_id: 0,
+              type_id: 0,
             })
             closeDialog(id)
           }}
@@ -178,7 +180,7 @@ export default function Page() {
       </div>
 
       <DataPanel
-        url='/custom-types'
+        url='/custom-type'
         layout='table'
         id='custom-types'
         selectable

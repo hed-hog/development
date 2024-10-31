@@ -1,5 +1,5 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocalesTranslations } from '@/features/locale/api/handlers'
+import { useLocaleTranslations } from '@/features/locale/api/handlers'
 import { useEditSetting } from '@/features/setting'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -11,7 +11,7 @@ type SettingColorProps = {
 
 const SettingColor = ({ setting }: SettingColorProps) => {
   const { mutateAsync } = useEditSetting()
-  const { isLoading } = useLocalesTranslations()
+  const { isLoading } = useLocaleTranslations()
   const form = useForm<FieldValues>({
     defaultValues: {},
     mode: 'onChange',
