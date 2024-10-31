@@ -70,12 +70,12 @@ const FormPanelForm = forwardRef(
                   options={renderField.options}
                   sliderOptions={Object.assign(
                     {},
-                    (renderField as ISliderProps).sliderOptions,
                     {
                       defaultValue: [50],
                       max: 100,
                       step: 1,
-                    }
+                    },
+                    (renderField as ISliderProps).sliderOptions
                   )}
                   label={renderField.label}
                   value={field.value ?? renderField.value ?? ''}
