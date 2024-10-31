@@ -17,15 +17,15 @@ export function usePersonType() {
   })
 }
 
-export function useCreatePersonType() {
-  const { createPersonType } = requests()
+export function usePersonTypeCreate() {
+  const { personTypeCreate } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['post-person-type'],
-    mutationFn: createPersonType,
+    mutationFn: personTypeCreate,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['person-type'] })
       toast.success(`${moduleT('personType')} ${successT('create')}`)
@@ -38,15 +38,15 @@ export function useCreatePersonType() {
   })
 }
 
-export function useDeletePersonType<T>() {
-  const { deletePersonType } = requests()
+export function usePersonTypeDelete<T>() {
+  const { personTypeDelete } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['delete-person-type'],
-    mutationFn: deletePersonType<T>,
+    mutationFn: personTypeDelete<T>,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['person-type'] })
       toast.success(`${moduleT('personType')} ${successT('delete')}`)
@@ -59,15 +59,15 @@ export function useDeletePersonType<T>() {
   })
 }
 
-export function useEditPersonType() {
-  const { editPersonType } = requests()
+export function usePersonTypeUpdate() {
+  const { personTypeUpdate } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-person-type'],
-    mutationFn: editPersonType,
+    mutationFn: personTypeUpdate,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['person-type'] })
       toast.success(`${moduleT('personType')} ${successT('edit')}`)

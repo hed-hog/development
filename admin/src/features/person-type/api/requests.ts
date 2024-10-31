@@ -1,40 +1,55 @@
 import { useApp } from '@/hooks/use-app'
 import { Delete } from '@/types/delete'
+import { HttpMethod } from '@/types/http-method'
 import { PersonType } from '@/types/models'
+import { Pagination } from '@/types/pagination'
 
 export function requests() {
   const { request } = useApp()
 
-  const createPersonType = async (data: PersonType) => {
+  const personTypeList = async (params: Pagination) => {
+    return request<PersonType>({
+      url: '/person-type',
+      params,
+    }).then((res) => res.data)
+  }
+
+  const personTypeGet = async (id: number) => {
+    return request<PersonType>({
+      url: `/person-type/${id}`,
+    }).then((res) => res.data)
+  }
+
+  const personTypeCreate = async (data: PersonType) => {
     if (!data.id) delete (data as any).id
     return request<PersonType>({
       url: '/person-type',
-      method: 'post',
+      method: HttpMethod.POST,
       data,
     }).then((res) => res.data)
   }
 
-  const deletePersonType = async <T>(personTypeIds: T[]) => {
+  const personTypeDelete = async (ids: number[]) => {
     return request<Delete>({
       url: '/person-type',
-      data: { ids: personTypeIds },
-      method: 'delete',
+      data: { ids },
+      method: HttpMethod.DELETE,
     }).then((res) => res.data)
   }
 
-  const editPersonType = async (params: { id: string; data: PersonType }) => {
-    const { id, data } = params
-
+  const personTypeUpdate = async (id: number, data: PersonType) => {
     return request<PersonType>({
       url: `/person-type/${id}`,
-      method: 'patch',
+      method: HttpMethod.PATCH,
       data,
     }).then((res) => res.data)
   }
 
   return {
-    createPersonType,
-    deletePersonType,
-    editPersonType,
+    personTypeCreate,
+    personTypeDelete,
+    personTypeUpdate,
+    personTypeGet,
+    personTypeList,
   }
 }

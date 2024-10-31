@@ -2,7 +2,7 @@ import DataPanel from '@/components/custom/data-panel'
 import { PageTitle } from '@/components/custom/page-title'
 import { useDeletePersonType } from '@/features/person-type'
 import { useApp } from '@/hooks/use-app'
-import { Person } from '@/types/models'
+import { PersonType } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -10,7 +10,7 @@ import { PersonTypeCreatePanel } from './components/person-type-create-panel'
 import { PersonTypeUpdatePanel } from './components/person-type-update-panel'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<Person[]>([])
+  const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
 
   const { mutate: deletePersonTypes } = useDeletePersonType()
   const { openDialog, closeDialog, openSheet, confirm } = useApp()
@@ -29,7 +29,7 @@ export default function Page() {
     return id
   }
 
-  const openDeleteDialog = (items: Person[]) => {
+  const openDeleteDialog = (items: PersonType[]) => {
     return confirm({
       title: t('delete', { ns: 'person-types' }),
       description: t('deleteText', { ns: 'person-types' }),
@@ -38,10 +38,10 @@ export default function Page() {
       .catch(() => setSelectedItems(items))
   }
 
-  const openEditDialog = (item: Person) => {
+  const openEditDialog = (item: PersonType) => {
     const id = openSheet({
       children: () => (
-        <PersonTypeUpdatePanel onUpdated={() => closeDialog(id)} />
+        <PersonTypeUpdatePanel data={item} onUpdated={() => closeDialog(id)} />
       ),
       title: t('edit', { ns: 'person-types' }),
       description: t('editText', { ns: 'person-types' }),
@@ -62,7 +62,7 @@ export default function Page() {
           { key: 'id', header: 'ID', width: 64 },
           { key: 'name', header: t('name', { ns: 'person-types' }) },
         ]}
-        selected={selectedItems as Person[]}
+        selected={selectedItems as PersonType[]}
         multiple
         hasSearch
         sortable
@@ -72,7 +72,7 @@ export default function Page() {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: t('edit', { ns: 'actions' }),
             tooltip: t('editTooltip', { ns: 'person-types' }),
-            handler: (items: Person[]) => {
+            handler: (items: PersonType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
             show: 'once',
