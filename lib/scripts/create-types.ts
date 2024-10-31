@@ -4,7 +4,6 @@ import { createDirectoryRecursive } from './create-directory-recursive';
 import { databaseTypeToJavascriptType } from './database-type-to-javascript-type';
 import { getTableColumns } from './get-table-columns';
 import { getTables } from './get-tables';
-import { singularToPlural } from './singular-to-plural';
 import { snakeCaseToPascalCase } from './snake-case-topascal-case';
 
 async function emptyDirectory(path: string) {
@@ -206,9 +205,6 @@ async function addLocaleFields(path: string) {
 
       const names = file.tableName.split('_');
       names.pop();
-      if (names.length) {
-        names[names.length - 1] = singularToPlural(names[names.length - 1]);
-      }
       const tableNameRelated = names.join('_');
 
       if (tableNameRelated) {
