@@ -63,11 +63,6 @@ type AppContextType = {
     action: string,
     error?: any
   ) => void
-  makeRequest: <T extends {}>(
-    url: string,
-    method: 'post' | 'patch' | 'delete' | 'get',
-    data?: any
-  ) => Promise<T>
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -80,7 +75,6 @@ export const AppContext = createContext<AppContextType>({
   openSheet: () => '',
   closeSheet: () => {},
   showToastHandler: () => {},
-  makeRequest: () => new Promise(() => {}),
 })
 
 type RequestLoginType = {
@@ -154,29 +148,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [token]
   )
-
-  const makeRequest = async <T extends {}>({
-    url,
-    method,
-    data,
-    params,
-  }: {
-    url: string
-    method?: 'POST' | 'PATCH' | 'DELETE' | 'GET'
-    data?: Record<string, any>
-    params?: Record<string, any>
-  }) => {
-    if (!method) {
-      method = 'GET'
-    }
-
-    return request<T>({
-      url,
-      method,
-      data,
-      params,
-    }).then((res) => res.data)
-  }
 
   const parseToken = (token: string) => {
     if (token) {
@@ -264,7 +235,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           openSheet,
           closeSheet,
           showToastHandler,
-          makeRequest,
         }}
       >
         <QueryClientProvider>
