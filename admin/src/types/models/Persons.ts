@@ -9,11 +9,13 @@ export type Persons = {
   id?: number;
   name: string;
   photo_id?: number;
+  cover_id?: number;
   type_id: number;
   birth_at?: string;
   created_at?: string;
   updated_at?: string;
   files?: Files;
+  files_persons_cover_idTofiles?: Files;
   person_types?: PersonTypes;
   person_documents?: PersonDocuments[];
   person_contacts?: PersonContacts[];

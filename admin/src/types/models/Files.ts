@@ -15,4 +15,5 @@ export type Files = {
   file_providers?: FileProviders;
   file_mimetypes?: FileMimetypes;
   persons?: Persons[];
+  persons_persons_cover_idTofiles?: Persons[];
 }

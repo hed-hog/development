@@ -1,5 +1,4 @@
 export const singularToPlural = (singular: string) => {
-  console.log('singularToPlural', singular);
   if (singular.endsWith('s')) {
     return `${singular}es`;
   }
