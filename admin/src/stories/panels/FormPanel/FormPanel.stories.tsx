@@ -51,7 +51,7 @@ const meta: Meta<typeof FormPanel> = {
         <li>**Integration with React Hook Form**: Easily integrates with React Hook Form for efficient form handling and validation.</li>
         <li>**Customizable UI**: Customize form title, subtitle, button text, and individual field labels and descriptions.</li>
       </ul>
-      Ideal for use in applications requiring complex forms with various input types and validation requirements, such as user registration, surveys, and settings forms.
+      Ideal for use in applications requiring complex forms with various input types and validation requirements, such as user registration, surveys, and setting forms.
       `,
       },
     },
@@ -156,7 +156,7 @@ const fields = [
     options: cityOptionExample,
   },
   {
-    name: 'files',
+    name: 'file',
     label: {
       text: 'Arquivos',
       style: { fontWeight: 'bold' },

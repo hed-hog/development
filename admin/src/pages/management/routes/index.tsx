@@ -42,7 +42,7 @@ export default function Page() {
 
   const { t: modulesT } = useTranslation('modules')
   const { t: actionsT } = useTranslation('actions')
-  const { t: routesT } = useTranslation('routes')
+  const { t: routeT } = useTranslation('route')
 
   const { mutate: deleteRoutes } = useDeleteRoute()
   const { mutate: createRoute } = useCreateRoute()
@@ -58,20 +58,20 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: routesT('create'),
-      description: routesT('createText'),
+      title: routeT('create'),
+      description: routeT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'url',
-              label: { text: routesT('url') },
+              label: { text: routeT('url') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'method',
-              label: { text: routesT('method') },
+              label: { text: routeT('method') },
               type: EnumFieldType.TEXT,
               required: true,
             },
@@ -101,8 +101,8 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: routesT('delete'),
-      description: routesT('deleteText'),
+      title: routeT('delete'),
+      description: routeT('deleteText'),
       buttons: [
         {
           name: 'cancel',
@@ -158,13 +158,13 @@ export default function Page() {
                   fields={[
                     {
                       name: 'url',
-                      label: { text: routesT('url') },
+                      label: { text: routeT('url') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'method',
-                      label: { text: routesT('method') },
+                      label: { text: routeT('method') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -178,17 +178,17 @@ export default function Page() {
               ),
             },
             {
-              title: modulesT('roles'),
+              title: modulesT('role'),
               children: (
                 <DataPanel
                   ref={routeRolesRef}
                   selectable
                   multiple
                   layout='list'
-                  id={`route-roles-${item.id}`}
-                  url={`/routes/${item.id}/roles`}
+                  id={`route-role-${item.id}`}
+                  url={`/route/${item.id}/role`}
                   checked={(item: RoleType) => {
-                    return Boolean((item.role_routes ?? []).length)
+                    return Boolean((item.role_route ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -213,7 +213,7 @@ export default function Page() {
                           {
                             onSuccess: () => {
                               queryClient.invalidateQueries({
-                                queryKey: [`route-roles-${item.id}`],
+                                queryKey: [`route-role-${item.id}`],
                               })
                             },
                           }
@@ -233,7 +233,7 @@ export default function Page() {
                   multiple
                   layout='list'
                   id={`route-screens-${item.id}`}
-                  url={`/routes/${item.id}/screens`}
+                  url={`/route/${item.id}/screens`}
                   checked={(item: ScreenType) => {
                     return Boolean((item.route_screens ?? []).length)
                   }}
@@ -287,8 +287,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: routesT('edit'),
-      description: routesT('editText'),
+      title: routeT('edit'),
+      description: routeT('editText'),
     })
 
     return id
@@ -297,25 +297,25 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>{modulesT('routes')} - Hedhog</title>
+        <title>{modulesT('route')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('routes')}
+            {modulesT('route')}
           </h1>
         </div>
       </div>
 
       <DataPanel
-        url='/routes'
+        url='/route'
         layout='table'
-        id='routes'
+        id='route'
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'url', header: routesT('url') },
-          { key: 'method', header: routesT('method') },
+          { key: 'url', header: routeT('url') },
+          { key: 'method', header: routeT('method') },
         ]}
         selected={selectedItems as RouteType[]}
         multiple
@@ -326,7 +326,7 @@ export default function Page() {
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('edit'),
-            tooltip: routesT('editTooltip'),
+            tooltip: routeT('editTooltip'),
             handler: (items: RouteType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -335,7 +335,7 @@ export default function Page() {
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('delete'),
-            tooltip: routesT('deleteTooltip'),
+            tooltip: routeT('deleteTooltip'),
             variant: 'destructive',
             handler: openDeleteDialog,
             show: 'some',
@@ -343,7 +343,7 @@ export default function Page() {
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('create'),
-            tooltip: routesT('createTooltip'),
+            tooltip: routeT('createTooltip'),
             variant: 'default',
             handler: openCreateDialog,
             show: 'none',

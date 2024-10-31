@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import { PaginationView } from '@/components/custom/pagination-view'
 import type { Meta, StoryObj } from '@storybook/react'
+import { useState } from 'react'
 
 const meta = {
   title: 'Views/PaginationView',
@@ -14,7 +14,7 @@ The \`PaginationView\` component offers a user-friendly pagination control for n
 
 ### Key Features:
 - **Default & Compact Variants**: Choose between a detailed pagination view or a more concise, compact view.
-- **Customizable Page Size**: Allow users to select the number of items displayed per page.
+- **Customizable Page Size**: Allow user to select the number of items displayed per page.
 - **Responsive Design**: Adjusts to fit various screen sizes and layouts.
 - **Interactive Pagination**: Navigate through pages with easy-to-use controls.
 - **Dynamic Page Handling**: Handles dynamic page numbers and adjusts to user input.

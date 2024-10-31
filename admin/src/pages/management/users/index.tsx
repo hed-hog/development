@@ -30,32 +30,32 @@ export default function Page() {
   const { mutate: editUser } = useEditUser()
   const { mutate: editUserRoles } = useEditUserRoles()
 
-  const { t: usersT } = useTranslation('users')
+  const { t: userT } = useTranslation('user')
   const { t: actionsT } = useTranslation('actions')
   const { t: modulesT } = useTranslation('modules')
 
   const openCreateDialog = () => {
     const id = openDialog({
-      title: usersT('create'),
-      description: usersT('createText'),
+      title: userT('create'),
+      description: userT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: usersT('name') },
+              label: { text: userT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'email',
-              label: { text: usersT('email') },
+              label: { text: userT('email') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'password',
-              label: { text: usersT('password') },
+              label: { text: userT('password') },
               type: EnumFieldType.PASSWORD,
               required: true,
             },
@@ -85,8 +85,8 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: usersT('delete'),
-      description: usersT('deleteText'),
+      title: userT('delete'),
+      description: userT('deleteText'),
       buttons: [
         {
           variant: 'secondary',
@@ -141,13 +141,13 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: usersT('name') },
+                      label: { text: userT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'email',
-                      label: { text: usersT('email') },
+                      label: { text: userT('email') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
@@ -161,16 +161,16 @@ export default function Page() {
               ),
             },
             {
-              title: modulesT('roles'),
+              title: modulesT('role'),
               children: (
                 <DataPanel
                   ref={userRolesRef}
                   selectable
-                  checked={(item: RoleType) => item.role_users.length > 0}
+                  checked={(item: RoleType) => item.role_user.length > 0}
                   multiple
                   layout='list'
-                  id={`user-roles-${item.id}`}
-                  url={`/users/${item.id}/roles`}
+                  id={`user-role-${item.id}`}
+                  url={`/user/${item.id}/role`}
                 />
               ),
               buttons: [
@@ -191,7 +191,7 @@ export default function Page() {
                           {
                             onSuccess: () => {
                               queryClient.invalidateQueries({
-                                queryKey: [`user-roles-${item.id}`],
+                                queryKey: [`user-role-${item.id}`],
                               })
                             },
                           }
@@ -205,8 +205,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: usersT('edit'),
-      description: usersT('editText'),
+      title: userT('edit'),
+      description: userT('editText'),
     })
 
     return id
@@ -215,24 +215,24 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>{modulesT('users')} - Hedhog</title>
+        <title>{modulesT('user')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('users')}
+            {modulesT('user')}
           </h1>
         </div>
       </div>
       <DataPanel
-        url='/users'
+        url='/user'
         layout='table'
-        id='users'
+        id='user'
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: usersT('name') },
-          { key: 'email', header: usersT('email') },
+          { key: 'name', header: userT('name') },
+          { key: 'email', header: userT('email') },
         ]}
         multiple
         hasSearch
@@ -242,7 +242,7 @@ export default function Page() {
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('edit'),
-            tooltip: usersT('editTooltip'),
+            tooltip: userT('editTooltip'),
             handler: (items: UserType[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -252,7 +252,7 @@ export default function Page() {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('delete'),
             variant: 'destructive',
-            tooltip: usersT('deleteTooltip'),
+            tooltip: userT('deleteTooltip'),
             handler: openDeleteDialog,
             show: 'some',
           },
@@ -260,7 +260,7 @@ export default function Page() {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('create'),
             variant: 'default',
-            tooltip: usersT('createTooltip'),
+            tooltip: userT('createTooltip'),
             handler: openCreateDialog,
             show: 'none',
           },

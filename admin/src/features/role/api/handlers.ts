@@ -68,7 +68,7 @@ export function useEditRoleRoutes() {
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
-    mutationKey: ['edit-role-routes'],
+    mutationKey: ['edit-role-route'],
     mutationFn: editRoleRoutes,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['role'] })
@@ -87,7 +87,7 @@ export function useEditRoleMenus() {
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
-    mutationKey: ['edit-role-menus'],
+    mutationKey: ['edit-role-menu'],
     mutationFn: editRoleMenus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['role'] })
@@ -125,7 +125,7 @@ export function useEditRoleUsers() {
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
-    mutationKey: ['edit-role-users'],
+    mutationKey: ['edit-role-user'],
     mutationFn: editRoleUsers,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['role'] })

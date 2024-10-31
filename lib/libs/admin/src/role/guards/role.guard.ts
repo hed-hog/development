@@ -98,10 +98,10 @@ export class RoleGuard implements CanActivate {
       where: {
         method: httpMethod,
         url: fullPath,
-        role_routes: {
+        role_route: {
           some: {
-            roles: {
-              role_users: {
+            role: {
+              role_user: {
                 some: {
                   user_id: Number(userId),
                 },

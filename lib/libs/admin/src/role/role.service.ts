@@ -94,7 +94,7 @@ export class RoleService {
       paginationParams,
       {
         include: {
-          role_users: {
+          role_user: {
             where: {
               role_id: roleId,
             },
@@ -128,7 +128,7 @@ export class RoleService {
               name: true,
             },
           },
-          role_menus: {
+          role_menu: {
             where: {
               role_id: roleId,
             },
@@ -149,7 +149,7 @@ export class RoleService {
       paginationParams,
       {
         include: {
-          role_routes: {
+          role_route: {
             where: {
               role_id: roleId,
             },
@@ -183,7 +183,7 @@ export class RoleService {
               name: true,
             },
           },
-          role_screens: {
+          role_screen: {
             where: {
               role_id: roleId,
             },
@@ -261,7 +261,7 @@ export class RoleService {
 
   async create({ slug, locale }: CreateDTO) {
     return this.localeService.createModelWithLocale(
-      'roles',
+      'role',
       'role_id',
       { slug },
       locale,
@@ -276,7 +276,7 @@ export class RoleService {
     data: UpdateDTO;
   }) {
     return this.localeService.updateModelWithLocale(
-      'roles',
+      'role',
       'role_id',
       id,
       { slug },

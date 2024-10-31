@@ -169,12 +169,12 @@ export default function Page() {
   } = useTranslation()
   const { t: modulesT } = useTranslation('modules')
   const { t: actionsT } = useTranslation('actions')
-  const { t: personsT } = useTranslation('persons')
+  const { t: personT } = useTranslation('person')
   const { t: addressT } = useTranslation('address')
   const { t: contactsT } = useTranslation('contacts')
   const { t: documentsT } = useTranslation('documents')
   const { t: customsT } = useTranslation('customs')
-  const { t: usersT } = useTranslation('users')
+  const { t: userT } = useTranslation('user')
 
   const locale: { [key: string]: Locale } = {
     en: enUS,
@@ -264,27 +264,27 @@ export default function Page() {
     })
 
     const id = openDialog({
-      title: personsT('create'),
-      description: personsT('createText'),
+      title: personT('create'),
+      description: personT('createText'),
       children: () => (
         <FormPanel
           fields={[
             {
               name: 'name',
-              label: { text: personsT('name') },
+              label: { text: personT('name') },
               type: EnumFieldType.TEXT,
               required: true,
             },
             {
               name: 'type_id',
-              label: { text: personsT('type') },
+              label: { text: personT('type') },
               type: EnumFieldType.SELECT,
               required: true,
               options: personTypes,
             },
             {
               name: 'birth_at',
-              label: { text: personsT('birthDate') },
+              label: { text: personT('birthDate') },
               type: EnumFieldType.DATEPICKER,
               required: true,
             },
@@ -315,14 +315,14 @@ export default function Page() {
             <div key={item.name} className='mb-5'>
               <h3 className='text-md font-semibold'>{item.name}</h3>
               <p className='text-xs'>
-                {personsT('birthDate')}: {formatDate(item.birth_at)}
+                {personT('birthDate')}: {formatDate(item.birth_at)}
               </p>
             </div>
           ))}
         </div>
       ),
-      title: personsT('delete'),
-      description: personsT('deleteText'),
+      title: personT('delete'),
+      description: personT('deleteText'),
       buttons: [
         {
           name: 'cancel',
@@ -902,13 +902,13 @@ export default function Page() {
                   fields={[
                     {
                       name: 'name',
-                      label: { text: personsT('name') },
+                      label: { text: personT('name') },
                       type: EnumFieldType.TEXT,
                       required: false,
                     },
                     {
                       name: 'type_id',
-                      label: { text: personsT('type') },
+                      label: { text: personT('type') },
                       type: EnumFieldType.SELECT,
                       required: true,
                       options: personTypes,
@@ -916,7 +916,7 @@ export default function Page() {
                     },
                     {
                       name: 'birth_at',
-                      label: { text: personsT('birthDate') },
+                      label: { text: personT('birthDate') },
                       type: EnumFieldType.DATEPICKER,
                       required: true,
                     },
@@ -939,7 +939,7 @@ export default function Page() {
               title: modulesT('contacts'),
               children: (
                 <div className='h-full w-full'>
-                  {item.person_contacts?.map((contact) => (
+                  {item.person_contact?.map((contact) => (
                     <ContactCard
                       key={contact.id}
                       contact={contact}
@@ -949,7 +949,7 @@ export default function Page() {
                       manageable
                     />
                   ))}
-                  {!Boolean(item.person_contacts?.length) && (
+                  {!Boolean(item.person_contact?.length) && (
                     <span className='my-2 flex justify-center text-sm'>
                       {contactsT('noneRegistered')}
                     </span>
@@ -970,7 +970,7 @@ export default function Page() {
               title: modulesT('documents'),
               children: (
                 <div className='h-full w-full'>
-                  {item.person_documents?.map((document) => (
+                  {item.person_document?.map((document) => (
                     <DocumentCard
                       key={document.id}
                       document={document}
@@ -980,7 +980,7 @@ export default function Page() {
                       manageable
                     />
                   ))}
-                  {!Boolean(item.person_documents?.length) && (
+                  {!Boolean(item.person_document?.length) && (
                     <span className='my-2 flex justify-center text-sm'>
                       {documentsT('noneRegistered')}
                     </span>
@@ -1001,7 +1001,7 @@ export default function Page() {
               title: modulesT('address'),
               children: (
                 <div className='h-full w-full'>
-                  {item.person_addresses?.map((address) => (
+                  {item.person_address?.map((address) => (
                     <AddressCard
                       key={address.id}
                       address={address}
@@ -1011,7 +1011,7 @@ export default function Page() {
                       manageable
                     />
                   ))}
-                  {!Boolean(item.person_addresses?.length) && (
+                  {!Boolean(item.person_address?.length) && (
                     <span className='my-2 flex justify-center text-sm'>
                       {addressT('noneRegistered')}
                     </span>
@@ -1032,7 +1032,7 @@ export default function Page() {
               title: modulesT('customs'),
               children: (
                 <div className='h-full w-full'>
-                  {item.person_customs?.map((custom) => (
+                  {item.person_custom?.map((custom) => (
                     <CustomCard
                       key={custom.id}
                       custom={custom}
@@ -1042,7 +1042,7 @@ export default function Page() {
                       manageable
                     />
                   ))}
-                  {!Boolean(item.person_customs?.length) && (
+                  {!Boolean(item.person_custom?.length) && (
                     <span className='my-2 flex justify-center text-sm'>
                       {customsT('noneRegistered')}
                     </span>
@@ -1062,8 +1062,8 @@ export default function Page() {
           ]}
         />
       ),
-      title: personsT('edit'),
-      description: personsT('editText'),
+      title: personT('edit'),
+      description: personT('editText'),
     })
 
     return id
@@ -1083,9 +1083,9 @@ export default function Page() {
       </div>
 
       <DataPanel
-        url='/persons'
+        url='/person'
         layout='grid'
-        id='persons'
+        id='person'
         selectable
         onItemDoubleClick={(item) => openEditPersonDialog(item)}
         render={(item: PersonType) => (
@@ -1104,7 +1104,7 @@ export default function Page() {
                 <div className='flex flex-row'>
                   <IconClock className='mr-0.5 h-4 w-4' />
                   <h4 className='text-xs font-normal'>
-                    {usersT('registered')}{' '}
+                    {userT('registered')}{' '}
                     {formatDistance(
                       new Date(String(item.created_at)),
                       new Date(),
@@ -1121,21 +1121,21 @@ export default function Page() {
                   {formatDateToUTC(new Date(item.birth_at))}
                 </span>
               </div>
-              {item.person_addresses &&
-                Boolean(item.person_addresses.length) &&
-                item.person_addresses.map((a) => <AddressCard address={a} />)}
+              {item.person_address &&
+                Boolean(item.person_address.length) &&
+                item.person_address.map((a) => <AddressCard address={a} />)}
 
-              {item.person_contacts &&
-                Boolean(item.person_contacts.length) &&
-                item.person_contacts.map((c) => <ContactCard contact={c} />)}
+              {item.person_contact &&
+                Boolean(item.person_contact.length) &&
+                item.person_contact.map((c) => <ContactCard contact={c} />)}
 
-              {item.person_documents &&
-                Boolean(item.person_documents.length) &&
-                item.person_documents.map((d) => <DocumentCard document={d} />)}
+              {item.person_document &&
+                Boolean(item.person_document.length) &&
+                item.person_document.map((d) => <DocumentCard document={d} />)}
 
-              {item.person_customs &&
-                Boolean(item.person_customs) &&
-                item.person_customs?.map((c) => <CustomCard custom={c} />)}
+              {item.person_custom &&
+                Boolean(item.person_custom) &&
+                item.person_custom?.map((c) => <CustomCard custom={c} />)}
             </CardContent>
           </Card>
         )}
@@ -1147,7 +1147,7 @@ export default function Page() {
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('edit'),
-            tooltip: personsT('editTooltip'),
+            tooltip: personT('editTooltip'),
             handler: (items: PersonType[]) => {
               if (items.length === 1) openEditPersonDialog(items[0])
             },
@@ -1156,7 +1156,7 @@ export default function Page() {
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('delete'),
-            tooltip: personsT('deleteTooltip'),
+            tooltip: personT('deleteTooltip'),
             variant: 'destructive',
             handler: openDeletePersonDialog,
             show: 'some',
@@ -1164,7 +1164,7 @@ export default function Page() {
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('create'),
-            tooltip: personsT('createTooltip'),
+            tooltip: personT('createTooltip'),
             variant: 'default',
             handler: openCreatePersonDialog,
             show: 'none',

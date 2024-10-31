@@ -47,14 +47,14 @@ export function requests() {
 
   const getRoleUsers = async ({ roleId }: { roleId: string }) => {
     return request({
-      url: `/role/${roleId}/users`,
+      url: `/role/${roleId}/user`,
       method: 'get',
     }).then((res) => res.data)
   }
 
   const getRoleRoutes = async ({ roleId }: { roleId: string }) => {
     return request({
-      url: `/role/${roleId}/routes`,
+      url: `/role/${roleId}/route`,
       method: 'get',
     }).then((res) => res.data)
   }
@@ -68,7 +68,7 @@ export function requests() {
 
   const getRoleMenus = async ({ roleId }: { roleId: string }) => {
     return request({
-      url: `/role/${roleId}/menus`,
+      url: `/role/${roleId}/menu`,
       method: 'get',
     }).then((res) => res.data)
   }
@@ -81,7 +81,7 @@ export function requests() {
     routeIds: number[]
   }) => {
     return request({
-      url: `/role/${roleId}/routes`,
+      url: `/role/${roleId}/route`,
       data: { ids: routeIds },
       method: 'patch',
     }).then((res) => res.data)
@@ -95,7 +95,7 @@ export function requests() {
     userIds: number[]
   }) => {
     return request({
-      url: `/role/${roleId}/users`,
+      url: `/role/${roleId}/user`,
       data: { ids: userIds },
       method: 'patch',
     }).then((res) => res.data)
@@ -123,7 +123,7 @@ export function requests() {
     menuIds: number[]
   }) => {
     return request({
-      url: `/role/${roleId}/menus`,
+      url: `/role/${roleId}/menu`,
       data: { ids: menuIds },
       method: 'patch',
     }).then((res) => res.data)

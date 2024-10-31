@@ -8,10 +8,10 @@ export default function Management() {
   const { request } = useApp()
 
   const { data } = useQuery({
-    queryKey: ['menus-system'],
+    queryKey: ['menu-system'],
     queryFn: () =>
       request({
-        url: `/menus/system`,
+        url: `/menu/system`,
       }),
   })
 

@@ -64,7 +64,7 @@ export function useLocaleEnabled() {
     mutationKey: ['set-locale-enabled'],
     mutationFn: setEnabled,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['settings'] })
+      queryClient.invalidateQueries({ queryKey: ['setting'] })
       queryClient.invalidateQueries({ queryKey: [`locale-${language}`] })
       toast.success(`set locale enabled`)
     },

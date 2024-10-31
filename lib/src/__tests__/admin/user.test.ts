@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
+import axios from 'axios';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
@@ -19,7 +19,7 @@ describe('Users API tests', () => {
   };
 
   test('Create new user', async () => {
-    const response = await axios.post('/users', newUser, {
+    const response = await axios.post('/user', newUser, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,8 +31,8 @@ describe('Users API tests', () => {
     userId = response.data.id;
   });
 
-  test('Get all users with pagination', async () => {
-    const response = await axios.get('/users', {
+  test('Get all user with pagination', async () => {
+    const response = await axios.get('/user', {
       params: { page: 1, pageSize: 10 },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ describe('Users API tests', () => {
   });
 
   test('Get user by ID', async () => {
-    const response = await axios.get(`/users/${userId}`, {
+    const response = await axios.get(`/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -61,7 +61,7 @@ describe('Users API tests', () => {
       email: faker.internet.email(),
     };
 
-    const response = await axios.patch(`/users/${userId}`, updatedUser, {
+    const response = await axios.patch(`/user/${userId}`, updatedUser, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -73,7 +73,7 @@ describe('Users API tests', () => {
   });
 
   test('Delete user', async () => {
-    const response = await axios.delete(`/users`, {
+    const response = await axios.delete(`/user`, {
       data: { ids: [userId] },
       headers: {
         Authorization: `Bearer ${token}`,

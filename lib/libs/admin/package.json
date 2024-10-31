@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/admin",
-  "version": "0.0.104",
+  "version": "0.0.105",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "tsc --project tsconfig.production.json && npm version patch",
     "prod": "npm run build && npm publish --access public"
   },
-  "files": [
+  "file": [
     "dist/**/*",
     "src/entities/**/*.ts",
     "src/migrations/**/*.ts",

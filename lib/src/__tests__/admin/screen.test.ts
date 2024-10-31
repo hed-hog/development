@@ -91,8 +91,8 @@ describe('Screen API tests', () => {
   });
 */
 
-  test('List roles for a screen', async () => {
-    const response = await axios.get(`/screens/${screenId}/roles`, {
+  test('List role for a screen', async () => {
+    const response = await axios.get(`/screens/${screenId}/role`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -102,10 +102,10 @@ describe('Screen API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
   });
 
-  test('Update roles for a screen', async () => {
+  test('Update role for a screen', async () => {
     const roleIds = [1, 2];
     const response = await axios.patch(
-      `/screens/${screenId}/roles`,
+      `/screens/${screenId}/role`,
       { ids: roleIds },
       {
         headers: {
@@ -117,8 +117,8 @@ describe('Screen API tests', () => {
     expect(response.status).toEqual(200);
   });
 
-  test('List routes for a screen', async () => {
-    const response = await axios.get(`/screens/${screenId}/routes`, {
+  test('List route for a screen', async () => {
+    const response = await axios.get(`/screens/${screenId}/route`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -128,10 +128,10 @@ describe('Screen API tests', () => {
     expect(response.data.data).toBeInstanceOf(Array);
   });
 
-  test('Update routes for a screen', async () => {
+  test('Update route for a screen', async () => {
     const routeIds = [1, 2];
     const response = await axios.patch(
-      `/screens/${screenId}/routes`,
+      `/screens/${screenId}/route`,
       { ids: routeIds },
       {
         headers: {

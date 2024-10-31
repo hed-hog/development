@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/file",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -18,12 +18,13 @@
     "@hedhog/utils": "latest",
     "@nestjs/jwt": "^10.2.0",
     "@prisma/client": "^5.17.0",
+    "@nestjs/mapped-types": "^2.0.5",
     "aws-sdk": "2.1691.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "typeorm": "^0.3.20"
   },
-  "files": [
+  "file": [
     "dist/**/*",
     "src/entities/**/*.ts",
     "src/migrations/**/*.ts",
@@ -32,11 +33,12 @@
   ],
   "devDependencies": {
     "@azure/storage-blob": "^12.25.0",
-    "@hedhog/admin": "latest",
-    "@hedhog/pagination": "latest",
-    "@hedhog/prisma": "latest",
-    "@hedhog/utils": "latest",
+    "@hedhog/admin": "^0.0.105",
+    "@hedhog/pagination": "^0.0.17",
+    "@hedhog/prisma": "^0.0.11",
+    "@hedhog/utils": "^0.0.13",
     "@nestjs/jwt": "^10.2.0",
+    "@nestjs/mapped-types": "^2.0.5",
     "aws-sdk": "^2.1691.0"
   },
   "peerDependenciesMeta": {

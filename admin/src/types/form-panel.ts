@@ -96,7 +96,7 @@ export interface IFormValues {
   description?: string
   city?: string[]
   cities?: string[]
-  files?: FileList
+  file?: FileList
   cidades?: string
   terms?: boolean
   percentage?: number

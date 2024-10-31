@@ -2,8 +2,8 @@ export const createUser = async (page) => {
   const createButtonSelector = 'button:has(svg.tabler-icon-plus)';
   const formCreateButtonSelector = 'form button[type="submit"]';
 
-  await page.waitForSelector('nav a[href="/management/users"]');
-  await page.click('nav a[href="/management/users"]');
+  await page.waitForSelector('nav a[href="/management/user"]');
+  await page.click('nav a[href="/management/user"]');
 
   await page.waitForSelector(createButtonSelector);
   await page.click(createButtonSelector);

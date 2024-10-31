@@ -33,7 +33,7 @@ hedhog/
 ├── admin/                # Where the user's administration interface resides
 │   ├── .storybook/       # Storybook configuration for stories
 │   ├── node_modules/     # Discardable folder with all admin dependencies
-│   ├── public/           # Public assets and static files
+│   ├── public/           # Public assets and static file
 │   ├── src/              # Source code for the admin interface
 │   │   ├── components/  # Reusable React components
 │   │   ├── enums/       # Enumeration types
@@ -47,7 +47,7 @@ hedhog/
 │   ├── main.tsx          # Main entry point for the React application
 │   ├── router.tsx        # Application routing configuration
 │   ├── .eslintrc.cjs     # ESLint configuration for admin code
-│   ├── .gitignore        # File specifying which files Git should ignore
+│   ├── .gitignore        # File specifying which file Git should ignore
 │   ├── .prettierignore   # Files and directories ignored by Prettier
 │   ├── .prettierrc       # Prettier configuration for admin code
 │   ├── docker-compose.yml # Docker compose file for managing containers
@@ -69,7 +69,7 @@ hedhog/
 │   ├── src/              # Source code for the shared library
 │   ├── libs/             # Additional utility libraries shared across the project
 │   ├── .eslintrc.js      # ESLint configuration for the library
-│   ├── .gitignore        # Specifies files to ignore for the library
+│   ├── .gitignore        # Specifies file to ignore for the library
 │   ├── .prettierrc       # Prettier configuration for the library
 │   ├── nest-cli.json     # NestJS CLI configuration for the library
 │   ├── package.json      # Manages the dependencies and scripts for the library
@@ -77,7 +77,7 @@ hedhog/
 │   ├── README.md         # Documentation for the shared library
 │   ├── tsconfig.build.json # TypeScript build configuration for the library
 │   └── tsconfig.json     # TypeScript configuration for the library
-├── .gitignore            # Specifies which files Git should ignore
+├── .gitignore            # Specifies which file Git should ignore
 ├── package.json          # Manages the dependencies and scripts for the entire project
 ├── node_modules/         # Discardable folder with all project dependencies
 └── README.md             # Documentation for the entire project

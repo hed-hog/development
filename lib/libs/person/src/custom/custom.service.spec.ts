@@ -37,7 +37,7 @@ describe('CustomService', () => {
         {
           provide: PrismaService,
           useValue: {
-            person_customs: personCustomsMock,
+            person_custom: personCustomsMock,
           },
         },
         {
@@ -65,7 +65,7 @@ describe('CustomService', () => {
 
     const result = await service.create(1, createCustomDto);
 
-    expect(prismaService.person_customs.create).toHaveBeenCalledWith({
+    expect(prismaService.person_custom.create).toHaveBeenCalledWith({
       data: {
         person_id: 1,
         ...createCustomDto,
@@ -80,7 +80,7 @@ describe('CustomService', () => {
     const result = await service.getCustoms(personId);
 
     expect(paginationService.paginate).toHaveBeenCalledWith(
-      prismaService.person_customs,
+      prismaService.person_custom,
       {
         fields: 'id,person_id,type_id,name,value',
       },
@@ -107,7 +107,7 @@ describe('CustomService', () => {
 
     const result = await service.getCustomByTypeId(personId, customId);
 
-    expect(prismaService.person_customs.findFirst).toHaveBeenCalledWith({
+    expect(prismaService.person_custom.findFirst).toHaveBeenCalledWith({
       where: {
         person_id: personId,
         id: customId,
@@ -128,7 +128,7 @@ describe('CustomService', () => {
     const personId = 1;
     const customId = 999; // Non-existent ID
 
-    (prismaService.person_customs.findFirst as jest.Mock).mockResolvedValue(
+    (prismaService.person_custom.findFirst as jest.Mock).mockResolvedValue(
       null,
     );
 
@@ -150,7 +150,7 @@ describe('CustomService', () => {
 
     const result = await service.update(customId, updateCustomDto);
 
-    expect(prismaService.person_customs.update).toHaveBeenCalledWith({
+    expect(prismaService.person_custom.update).toHaveBeenCalledWith({
       where: { id: customId },
       data: updateCustomDto,
     });
@@ -162,7 +162,7 @@ describe('CustomService', () => {
 
     const result = await service.remove(customId);
 
-    expect(prismaService.person_customs.delete).toHaveBeenCalledWith({
+    expect(prismaService.person_custom.delete).toHaveBeenCalledWith({
       where: {
         id: customId,
       },

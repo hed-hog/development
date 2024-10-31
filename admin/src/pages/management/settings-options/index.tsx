@@ -1,4 +1,8 @@
-import { Outlet } from 'react-router-dom'
+import { Layout } from '@/components/custom/layout'
+import { SearchField } from '@/components/search-field'
+import ThemeSwitch from '@/components/theme-switch'
+import { Separator } from '@/components/ui/separator'
+import { UserNav } from '@/components/user-nav'
 import {
   IconBrowserCheck,
   IconExclamationCircle,
@@ -7,13 +11,9 @@ import {
   IconTool,
   IconUser,
 } from '@tabler/icons-react'
-import { Layout } from '@/components/custom/layout'
-import { SearchField } from '@/components/search-field'
-import { Separator } from '@/components/ui/separator'
-import ThemeSwitch from '@/components/theme-switch'
-import { UserNav } from '@/components/user-nav'
-import SidebarNav from './components/sidebar-nav'
 import { Helmet } from 'react-helmet'
+import { Outlet } from 'react-router-dom'
+import SidebarNav from './components/sidebar-nav'
 
 export default function Settings() {
   return (
@@ -57,31 +57,31 @@ const sidebarNavItems = [
   {
     title: 'Profile',
     icon: <IconUser size={18} />,
-    href: '/management/settings',
+    href: '/management/setting',
   },
   {
     title: 'Account',
     icon: <IconTool size={18} />,
-    href: '/management/settings/account',
+    href: '/management/setting/account',
   },
   {
     title: 'Appearance',
     icon: <IconPalette size={18} />,
-    href: '/management/settings/appearance',
+    href: '/management/setting/appearance',
   },
   {
     title: 'Notifications',
     icon: <IconNotification size={18} />,
-    href: '/management/settings/notifications',
+    href: '/management/setting/notifications',
   },
   {
     title: 'Display',
     icon: <IconBrowserCheck size={18} />,
-    href: '/management/settings/display',
+    href: '/management/setting/display',
   },
   {
     title: 'Error Example',
     icon: <IconExclamationCircle size={18} />,
-    href: '/management/settings/error-example',
+    href: '/management/setting/error-example',
   },
 ]

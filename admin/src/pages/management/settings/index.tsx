@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import SidebarNav from '../settings-options/components/sidebar-nav'
+import SidebarNav from '../setting-options/components/sidebar-nav'
 
 export default function Page() {
   const { t: modulesT } = useTranslation('modules')
@@ -21,7 +21,7 @@ export default function Page() {
           return {
             title: name,
             icon: getIcon(icon),
-            href: `/management/settings/${slug}`,
+            href: `/management/setting/${slug}`,
           }
         })
       )
@@ -31,13 +31,13 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>{modulesT('settings')} - Hedhog</title>
+        <title>{modulesT('setting')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>
             {' '}
-            {modulesT('settings')}
+            {modulesT('setting')}
           </h1>
         </div>
       </div>

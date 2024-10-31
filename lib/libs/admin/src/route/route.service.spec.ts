@@ -17,13 +17,13 @@ describe('RouteService', () => {
   let paginationService: PaginationService;
 
   const mockPrismaService = {
-    routes: {
+    route: {
       findUnique: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       deleteMany: jest.fn(),
     },
-    role_routes: {
+    role_route: {
       deleteMany: jest.fn(),
       createMany: jest.fn(),
     },
@@ -57,7 +57,7 @@ describe('RouteService', () => {
   });
 
   describe('getRoutes', () => {
-    it('should paginate routes', async () => {
+    it('should paginate route', async () => {
       const paginationParams: PaginationDTO = {
         page: 1,
         pageSize: 10,
@@ -78,7 +78,7 @@ describe('RouteService', () => {
         paginationParams,
       );
       expect(mockPaginationService.paginate).toHaveBeenCalledWith(
-        mockPrismaService.routes,
+        mockPrismaService.route,
         paginationParams,
         { where: { OR: [] } },
       );
@@ -91,11 +91,11 @@ describe('RouteService', () => {
       const routeId = 1;
       const route = { id: routeId, url: '/test', method: 'GET' };
 
-      mockPrismaService.routes.findUnique.mockResolvedValue(route);
+      mockPrismaService.route.findUnique.mockResolvedValue(route);
 
       const res = await service.getRouteById(routeId);
 
-      expect(mockPrismaService.routes.findUnique).toHaveBeenCalledWith({
+      expect(mockPrismaService.route.findUnique).toHaveBeenCalledWith({
         where: { id: routeId },
       });
       expect(res).toEqual(route);
@@ -107,11 +107,11 @@ describe('RouteService', () => {
       const createDto: CreateDTO = { url: '/test', method: 'GET' };
       const route = { id: 1, ...createDto };
 
-      mockPrismaService.routes.create.mockResolvedValue(route);
+      mockPrismaService.route.create.mockResolvedValue(route);
 
       const res = await service.create(createDto);
 
-      expect(mockPrismaService.routes.create).toHaveBeenCalledWith({
+      expect(mockPrismaService.route.create).toHaveBeenCalledWith({
         data: createDto,
       });
       expect(res).toEqual(route);
@@ -124,11 +124,11 @@ describe('RouteService', () => {
       const routeId = 1;
       const updatedRoute = { id: routeId, ...updateDto };
 
-      mockPrismaService.routes.update.mockResolvedValue(updatedRoute);
+      mockPrismaService.route.update.mockResolvedValue(updatedRoute);
 
       const res = await service.update({ id: routeId, data: updateDto });
 
-      expect(mockPrismaService.routes.update).toHaveBeenCalledWith({
+      expect(mockPrismaService.route.update).toHaveBeenCalledWith({
         where: { id: routeId },
         data: updateDto,
       });
@@ -137,15 +137,15 @@ describe('RouteService', () => {
   });
 
   describe('delete', () => {
-    it('should delete routes by ids', async () => {
+    it('should delete route by ids', async () => {
       const deleteDto: DeleteDTO = { ids: [1, 2] };
       const result = { count: 2 };
 
-      mockPrismaService.routes.deleteMany.mockResolvedValue(result);
+      mockPrismaService.route.deleteMany.mockResolvedValue(result);
 
       const res = await service.delete(deleteDto);
 
-      expect(mockPrismaService.routes.deleteMany).toHaveBeenCalledWith({
+      expect(mockPrismaService.route.deleteMany).toHaveBeenCalledWith({
         where: { id: { in: deleteDto.ids } },
       });
       expect(res).toEqual(result);
@@ -153,20 +153,20 @@ describe('RouteService', () => {
   });
 
   describe('updateRoles', () => {
-    it('should update roles for a route', async () => {
+    it('should update role for a route', async () => {
       const routeId = 1;
       const updateIdsDto: UpdateIdsDTO = { ids: [1, 2] };
       const result = { count: 2 };
 
-      mockPrismaService.role_routes.deleteMany.mockResolvedValue({});
-      mockPrismaService.role_routes.createMany.mockResolvedValue(result);
+      mockPrismaService.role_route.deleteMany.mockResolvedValue({});
+      mockPrismaService.role_route.createMany.mockResolvedValue(result);
 
       const res = await service.updateRoles(routeId, updateIdsDto);
 
-      expect(mockPrismaService.role_routes.deleteMany).toHaveBeenCalledWith({
+      expect(mockPrismaService.role_route.deleteMany).toHaveBeenCalledWith({
         where: { route_id: routeId },
       });
-      expect(mockPrismaService.role_routes.createMany).toHaveBeenCalledWith({
+      expect(mockPrismaService.role_route.createMany).toHaveBeenCalledWith({
         data: updateIdsDto.ids.map((roleId) => ({
           role_id: roleId,
           route_id: routeId,
@@ -223,7 +223,7 @@ describe('RouteService', () => {
       await service.listRoles(locale, routeId, paginationParams);
 
       expect(paginationService.paginate).toHaveBeenCalledWith(
-        prismaService.roles,
+        prismaService.role,
         paginationParams,
         {
           include: {
@@ -236,7 +236,7 @@ describe('RouteService', () => {
                 description: true,
               },
             },
-            role_routes: {
+            role_route: {
               where: { route_id: routeId },
               select: {
                 route_id: true,

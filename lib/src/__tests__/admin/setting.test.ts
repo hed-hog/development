@@ -18,7 +18,7 @@ describe('Settings API tests', () => {
   /*
   test('Create new setting', async () => {
     try {
-      const response = await axios.post('/settings', newSetting, {
+      const response = await axios.post('/setting', newSetting, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,9 +31,9 @@ describe('Settings API tests', () => {
   });
   */
 
-  test('Get all settings with pagination', async () => {
+  test('Get all setting with pagination', async () => {
     try {
-      const response = await axios.get('/settings', {
+      const response = await axios.get('/setting', {
         params: { page: 1, pageSize: 10 },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ describe('Settings API tests', () => {
 
   test('Get setting by ID', async () => {
     try {
-      const response = await axios.get(`/settings/${settingId}`, {
+      const response = await axios.get(`/setting/${settingId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -67,7 +67,7 @@ describe('Settings API tests', () => {
       };
 
       const response = await axios.patch(
-        `/settings/${settingId}`,
+        `/setting/${settingId}`,
         updatedSetting,
         {
           headers: {
@@ -85,7 +85,7 @@ describe('Settings API tests', () => {
   /*
   test('Delete setting', async () => {
     try {
-      const response = await axios.delete(`/settings`, {
+      const response = await axios.delete(`/setting`, {
         data: { ids: [settingId] },
         headers: {
           Authorization: `Bearer ${token}`,

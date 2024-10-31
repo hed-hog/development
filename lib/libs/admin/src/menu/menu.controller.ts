@@ -22,7 +22,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { MenuService } from './menu.service';
 
 @Role()
-@Controller('menus')
+@Controller('menu')
 export class MenuController {
   constructor(
     @Inject(forwardRef(() => MenuService))
@@ -39,7 +39,7 @@ export class MenuController {
     return this.menuService.getMenu(locale, paginationParams);
   }
 
-  @Get(':menuId/roles')
+  @Get(':menuId/role')
   async listRoles(
     @Param('menuId', ParseIntPipe) menuId: number,
     @Pagination() paginationParams,
@@ -57,7 +57,7 @@ export class MenuController {
     return this.menuService.listScreens(locale, menuId, paginationParams);
   }
 
-  @Patch(':menuId/roles')
+  @Patch(':menuId/role')
   async updateRoles(
     @Param('menuId', ParseIntPipe) menuId: number,
     @Body() data: UpdateIdsDTO,

@@ -19,7 +19,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
 
 @Role()
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(
     @Inject(forwardRef(() => UserService))
@@ -31,7 +31,7 @@ export class UserController {
     return this.userService.getUsers(paginationParams);
   }
 
-  @Get(':userId/roles')
+  @Get(':userId/role')
   async listRoles(
     @Param('userId', ParseIntPipe) userId: number,
     @Pagination() paginationParams,
@@ -39,7 +39,7 @@ export class UserController {
     return this.userService.listRoles(userId, paginationParams);
   }
 
-  @Patch(':userId/roles')
+  @Patch(':userId/role')
   async updateRoles(
     @Param('userId', ParseIntPipe) userId: number,
     @Body() data: UpdateIdsDTO,

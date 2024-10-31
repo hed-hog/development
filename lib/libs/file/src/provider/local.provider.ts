@@ -1,14 +1,13 @@
-import { AbstractProvider } from './abstract,provider';
-import { mkdir, unlink, writeFile } from 'fs/promises';
-import { existsSync } from 'fs';
-import { join } from 'path';
 import { BadRequestException } from '@nestjs/common';
-import { createReadStream } from 'fs';
-import { Stream } from 'stream';
+import { createReadStream, existsSync } from 'fs';
+import { mkdir, unlink, writeFile } from 'fs/promises';
 import * as jsonwebtoken from 'jsonwebtoken';
+import { join } from 'path';
+import { Stream } from 'stream';
+import { AbstractProvider } from './abstract,provider';
 
 export class LocalProvider extends AbstractProvider {
-  constructor(private settings: Record<string, string>) {
+  constructor(private setting: Record<string, string>) {
     super();
   }
 
@@ -24,11 +23,11 @@ export class LocalProvider extends AbstractProvider {
   }
 
   async upload(destination: string, file: Express.Multer.File): Promise<any> {
-    const storagePath = join(this.settings['storage-local-path'], destination);
+    const storagePath = join(this.setting['storage-local-path'], destination);
 
     if (!storagePath) {
       throw new BadRequestException(
-        `You must set the storage-local-path in the settings.`,
+        `You must set the storage-local-path in the setting.`,
       );
     }
 
@@ -88,7 +87,7 @@ export class LocalProvider extends AbstractProvider {
         },
       );
 
-      return `http://localhost:5000/files/download/${token}`;
+      return `http://localhost:5000/file/download/${token}`;
     } catch (error) {
       throw new BadRequestException(error);
     }

@@ -19,7 +19,7 @@ describe('LocaleService', () => {
         {
           provide: PrismaService,
           useValue: {
-            translations: {
+            translation: {
               findMany: jest.fn(),
             },
             locale: {
@@ -55,7 +55,7 @@ describe('LocaleService', () => {
       );
     });
 
-    it('should return translations for a given localeCode and namespace', async () => {
+    it('should return translation for a given localeCode and namespace', async () => {
       const mockTranslations = [
         {
           id: 1,
@@ -68,7 +68,7 @@ describe('LocaleService', () => {
         },
       ];
       jest
-        .spyOn(prismaService.translations, 'findMany')
+        .spyOn(prismaService.translation, 'findMany')
         .mockResolvedValue(mockTranslations);
 
       const result = await service.getTranslations('en-US', 'namespace');

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
-import { Layout } from './custom/layout'
-import { Button } from './custom/button'
-import Nav from './nav'
-import { cn } from '@/lib/utils'
-import { useQuery } from '@tanstack/react-query'
 import { useApp } from '@/hooks/use-app'
 import { getSideLinks } from '@/lib/get-sidelinks'
+import { cn } from '@/lib/utils'
+import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
+import { useQuery } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Button } from './custom/button'
+import { Layout } from './custom/layout'
+import Nav from './nav'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -26,10 +26,10 @@ export default function Sidebar({
   const { request } = useApp()
   const [navOpened, setNavOpened] = useState(false)
   const { data } = useQuery({
-    queryKey: ['menus-system', language],
+    queryKey: ['menu-system', language],
     queryFn: () =>
       request({
-        url: `/menus/system`,
+        url: `/menu/system`,
       }),
   })
 

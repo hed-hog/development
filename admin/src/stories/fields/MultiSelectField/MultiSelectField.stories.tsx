@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react'
 import { MultiSelectField } from '@/components/ui/multi-select-field'
+import { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 
 const meta: Meta<typeof MultiSelectField> = {
@@ -42,7 +42,7 @@ const meta: Meta<typeof MultiSelectField> = {
     },
     readOnly: {
       description:
-        "If true, the multi-select field will be read-only and users won't be able to select or deselect options.",
+        "If true, the multi-select field will be read-only and user won't be able to select or deselect options.",
       control: 'boolean',
       type: 'boolean',
     },

@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: "setting_groups",
+  name: 'setting_group',
 })
 export class SettingGroup {
   @PrimaryGeneratedColumn()

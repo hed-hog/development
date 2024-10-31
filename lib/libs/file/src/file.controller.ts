@@ -17,7 +17,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { FileService } from './file.service';
 
 @Role()
-@Controller('files')
+@Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 

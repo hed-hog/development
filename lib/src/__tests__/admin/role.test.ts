@@ -17,7 +17,7 @@ describe('Role API tests', () => {
 
   /*
   test('Create new role', async () => {
-    const response = await axios.post('/roles', newRole, {
+    const response = await axios.post('/role', newRole, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -29,8 +29,8 @@ describe('Role API tests', () => {
   });
   */
 
-  test('Get all roles with pagination', async () => {
-    const response = await axios.get('/roles', {
+  test('Get all role with pagination', async () => {
+    const response = await axios.get('/role', {
       params: { page: 1, pageSize: 10 },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ describe('Role API tests', () => {
       description: faker.lorem.sentence(),
     };
 
-    const response = await axios.patch(`/roles/${roleId}`, updatedRole, {
+    const response = await axios.patch(`/role/${roleId}`, updatedRole, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -59,7 +59,7 @@ describe('Role API tests', () => {
   });
   */
   test('Get role by ID', async () => {
-    const response = await axios.get(`/roles/${roleId}`, {
+    const response = await axios.get(`/role/${roleId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -70,7 +70,7 @@ describe('Role API tests', () => {
   });
   /*
   test('Delete role', async () => {
-    const response = await axios.delete(`/roles`, {
+    const response = await axios.delete(`/role`, {
       data: { ids: [roleId] },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -81,10 +81,10 @@ describe('Role API tests', () => {
   });
   */
   /*
-  test('Update users for a role', async () => {
+  test('Update user for a role', async () => {
     const userIds = [1, 2];
     const response = await axios.patch(
-      `/roles/${roleId}/users`,
+      `/role/${roleId}/user`,
       { ids: userIds },
       {
         headers: {
@@ -101,7 +101,7 @@ describe('Role API tests', () => {
   test('Update screens for a role', async () => {
     const screenIds = [1, 2];
     const response = await axios.patch(
-      `/roles/${roleId}/screens`,
+      `/role/${roleId}/screens`,
       { ids: screenIds },
       {
         headers: {
@@ -115,10 +115,10 @@ describe('Role API tests', () => {
   */
 
   /*
-  test('Update routes for a role', async () => {
+  test('Update route for a role', async () => {
     const routeIds = [1, 2];
     const response = await axios.patch(
-      `/roles/${roleId}/routes`,
+      `/role/${roleId}/route`,
       { ids: routeIds },
       {
         headers: {
@@ -132,10 +132,10 @@ describe('Role API tests', () => {
   */
 
   /*
-  test('Update menus for a role', async () => {
+  test('Update menu for a role', async () => {
     const menuIds = [1, 2];
     const response = await axios.patch(
-      `/roles/${roleId}/menus`,
+      `/role/${roleId}/menu`,
       { ids: menuIds },
       {
         headers: {
@@ -148,8 +148,8 @@ describe('Role API tests', () => {
   });
 */
 
-  test('Get users for a specific role', async () => {
-    const response = await axios.get(`/roles/${roleId}/users`, {
+  test('Get user for a specific role', async () => {
+    const response = await axios.get(`/role/${roleId}/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -160,8 +160,8 @@ describe('Role API tests', () => {
     expect(response.data.total).toBeGreaterThan(0);
   });
 
-  test('Get menus for a specific role', async () => {
-    const response = await axios.get(`/roles/${roleId}/menus`, {
+  test('Get menu for a specific role', async () => {
+    const response = await axios.get(`/role/${roleId}/menu`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -173,7 +173,7 @@ describe('Role API tests', () => {
   });
 
   test('Get screens for a specific role', async () => {
-    const response = await axios.get(`/roles/${roleId}/screens`, {
+    const response = await axios.get(`/role/${roleId}/screens`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -184,8 +184,8 @@ describe('Role API tests', () => {
     expect(response.data.total).toBeGreaterThan(0);
   });
 
-  test('Get routes for a specific role', async () => {
-    const response = await axios.get(`/roles/${roleId}/routes`, {
+  test('Get route for a specific role', async () => {
+    const response = await axios.get(`/role/${roleId}/route`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

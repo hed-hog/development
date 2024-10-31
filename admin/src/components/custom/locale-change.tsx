@@ -45,7 +45,7 @@ export const LocaleChange = () => {
       if (user?.id) {
         for (const language of languages) {
           queryClient.invalidateQueries({
-            queryKey: [`settings-from-groups-localization-${language.value}`],
+            queryKey: [`setting-from-groups-localization-${language.value}`],
           })
         }
         mutateAsync({

@@ -20,7 +20,7 @@ describe('Menu API tests', () => {
 
   /*
   test('Create new menu', async () => {
-    const response = await axios.post('/menus', newMenu, {
+    const response = await axios.post('/menu', newMenu, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -33,8 +33,8 @@ describe('Menu API tests', () => {
   });
   */
 
-  test('Get all menus with pagination', async () => {
-    const response = await axios.get('/menus', {
+  test('Get all menu with pagination', async () => {
+    const response = await axios.get('/menu', {
       params: { page: 1, pageSize: 10 },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ describe('Menu API tests', () => {
   test('Update menu', async () => {
     const updatedName = faker.lorem.word();
     const response = await axios.patch(
-      `/menus/${menuId}`,
+      `/menu/${menuId}`,
       { name: updatedName },
       {
         headers: {
@@ -65,7 +65,7 @@ describe('Menu API tests', () => {
   */
 
   test('Get menu by ID', async () => {
-    const response = await axios.get(`/menus/${menuId}`, {
+    const response = await axios.get(`/menu/${menuId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -77,7 +77,7 @@ describe('Menu API tests', () => {
 
   /*
   test('Delete menu', async () => {
-    const response = await axios.delete(`/menus/${menuId}`, {
+    const response = await axios.delete(`/menu/${menuId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -88,7 +88,7 @@ describe('Menu API tests', () => {
 */
 
   test('Get screens for a specific menu', async () => {
-    const response = await axios.get(`/menus/${menuId}/screens`, {
+    const response = await axios.get(`/menu/${menuId}/screens`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

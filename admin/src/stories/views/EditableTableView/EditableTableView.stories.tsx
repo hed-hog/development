@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component: `**EditableTableView** is a flexible and highly customizable table component that allows inline editing of data in a tabular format. 
-        It supports multiple field types (text, select, date picker, color picker, etc.) to accommodate various types of data, and it is suitable for forms, admin panels, or any UI where users need to view and edit multiple rows of data. 
+        It supports multiple field types (text, select, date picker, color picker, etc.) to accommodate various types of data, and it is suitable for forms, admin panels, or any UI where user need to view and edit multiple rows of data. 
         <br/><br/>
         <h3>Key Features:</h3>
         <ul style={{ listStyle: 'none '}}>

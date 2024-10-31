@@ -14,7 +14,7 @@ describe('MenuService', () => {
   let paginationService: PaginationService;
 
   const mockPrismaService = {
-    menus: {
+    menu: {
       create: jest.fn(),
       update: jest.fn(),
       deleteMany: jest.fn(),
@@ -22,11 +22,11 @@ describe('MenuService', () => {
       findMany: jest.fn(),
       count: jest.fn(),
     },
-    role_menus: {
+    role_menu: {
       deleteMany: jest.fn(),
       createMany: jest.fn(),
     },
-    menu_screens: {
+    menu_screen: {
       deleteMany: jest.fn(),
       createMany: jest.fn(),
     },
@@ -64,12 +64,12 @@ describe('MenuService', () => {
         order: 1,
         menu_id: undefined,
       };
-      mockPrismaService.menus.create.mockResolvedValue(createMenuDto);
+      mockPrismaService.menu.create.mockResolvedValue(createMenuDto);
 
       const result = await menuService.create(createMenuDto);
 
       expect(result).toEqual(createMenuDto);
-      expect(prismaService.menus.create).toHaveBeenCalledWith({
+      expect(prismaService.menu.create).toHaveBeenCalledWith({
         data: createMenuDto,
       });
     });
@@ -78,12 +78,12 @@ describe('MenuService', () => {
   describe('update', () => {
     it('should update a menu', async () => {
       const updateDto = { id: 1, data: { name: 'Updated Menu' } };
-      mockPrismaService.menus.update.mockResolvedValue(updateDto.data);
+      mockPrismaService.menu.update.mockResolvedValue(updateDto.data);
 
       const result = await menuService.update(updateDto);
 
       expect(result).toEqual(updateDto.data);
-      expect(prismaService.menus.update).toHaveBeenCalledWith({
+      expect(prismaService.menu.update).toHaveBeenCalledWith({
         where: { id: updateDto.id },
         data: updateDto.data,
       });
@@ -91,14 +91,14 @@ describe('MenuService', () => {
   });
 
   describe('delete', () => {
-    it('should delete menus', async () => {
+    it('should delete menu', async () => {
       const deleteDto = { ids: [1, 2, 3] };
-      mockPrismaService.menus.deleteMany.mockResolvedValue({ count: 3 });
+      mockPrismaService.menu.deleteMany.mockResolvedValue({ count: 3 });
 
       const result = await menuService.delete(deleteDto);
 
       expect(result).toEqual({ count: 3 });
-      expect(prismaService.menus.deleteMany).toHaveBeenCalledWith({
+      expect(prismaService.menu.deleteMany).toHaveBeenCalledWith({
         where: { id: { in: deleteDto.ids } },
       });
     });
@@ -148,19 +148,19 @@ describe('MenuService', () => {
       const updateData = { ids: [1, 2, 3] };
 
       jest
-        .spyOn(prismaService.menu_screens, 'deleteMany')
+        .spyOn(prismaService.menu_screen, 'deleteMany')
         .mockResolvedValue(null);
       jest
-        .spyOn(prismaService.menu_screens, 'createMany')
+        .spyOn(prismaService.menu_screen, 'createMany')
         .mockResolvedValue(null);
 
       await menuService.updateScreens(menuId, updateData);
 
-      expect(prismaService.menu_screens.deleteMany).toHaveBeenCalledWith({
+      expect(prismaService.menu_screen.deleteMany).toHaveBeenCalledWith({
         where: { menu_id: menuId },
       });
 
-      expect(prismaService.menu_screens.createMany).toHaveBeenCalledWith({
+      expect(prismaService.menu_screen.createMany).toHaveBeenCalledWith({
         data: updateData.ids.map((screenId) => ({
           menu_id: menuId,
           screen_id: screenId,
@@ -171,24 +171,20 @@ describe('MenuService', () => {
   });
 
   describe('updateRoles', () => {
-    it('should update roles associated with a menu', async () => {
+    it('should update role associated with a menu', async () => {
       const menuId = 1;
       const updateData = { ids: [1, 2] };
 
-      jest
-        .spyOn(prismaService.role_menus, 'deleteMany')
-        .mockResolvedValue(null);
-      jest
-        .spyOn(prismaService.role_menus, 'createMany')
-        .mockResolvedValue(null);
+      jest.spyOn(prismaService.role_menu, 'deleteMany').mockResolvedValue(null);
+      jest.spyOn(prismaService.role_menu, 'createMany').mockResolvedValue(null);
 
       await menuService.updateRoles(menuId, updateData);
 
-      expect(prismaService.role_menus.deleteMany).toHaveBeenCalledWith({
+      expect(prismaService.role_menu.deleteMany).toHaveBeenCalledWith({
         where: { menu_id: menuId },
       });
 
-      expect(prismaService.role_menus.createMany).toHaveBeenCalledWith({
+      expect(prismaService.role_menu.createMany).toHaveBeenCalledWith({
         data: updateData.ids.map((roleId) => ({
           menu_id: menuId,
           role_id: roleId,
@@ -199,24 +195,24 @@ describe('MenuService', () => {
   });
 
   describe('updateOrder', () => {
-    it('should update the order of menus', async () => {
+    it('should update the order of menu', async () => {
       const orderData = { ids: [1, 2, 3] };
 
-      jest.spyOn(prismaService.menus, 'count').mockResolvedValue(3);
-      jest.spyOn(prismaService.menus, 'update').mockResolvedValue(null);
+      jest.spyOn(prismaService.menu, 'count').mockResolvedValue(3);
+      jest.spyOn(prismaService.menu, 'update').mockResolvedValue(null);
 
       await menuService.updateOrder(orderData);
 
-      expect(prismaService.menus.count).toHaveBeenCalledWith({
+      expect(prismaService.menu.count).toHaveBeenCalledWith({
         where: { id: { in: orderData.ids } },
       });
 
-      expect(prismaService.menus.update).toHaveBeenCalledTimes(
+      expect(prismaService.menu.update).toHaveBeenCalledTimes(
         orderData.ids.length,
       );
 
       orderData.ids.forEach((id, index) => {
-        expect(prismaService.menus.update).toHaveBeenCalledWith({
+        expect(prismaService.menu.update).toHaveBeenCalledWith({
           where: { id },
           data: { order: index + 1 },
         });
@@ -226,7 +222,7 @@ describe('MenuService', () => {
     it('should throw BadRequestException if IDs are invalid', async () => {
       const orderData = { ids: [1, 2, 3] };
 
-      jest.spyOn(prismaService.menus, 'count').mockResolvedValue(2); // IDs não batem com o número esperado
+      jest.spyOn(prismaService.menu, 'count').mockResolvedValue(2); // IDs não batem com o número esperado
 
       await expect(menuService.updateOrder(orderData)).rejects.toThrow(
         BadRequestException,
@@ -235,16 +231,16 @@ describe('MenuService', () => {
   });
   /*
   describe('getMenus', () => {
-    it('should get menus for a user', async () => {
+    it('should get menu for a user', async () => {
       const locale = 'en';
       const userId = 1;
       const mockMenus = [{ id: 1, name: 'Menu 1' }];
-      mockPrismaService.menus.findMany.mockResolvedValue(mockMenus);
+      mockPrismaService.menu.findMany.mockResolvedValue(mockMenus);
 
       const result = await menuService.getMenus(locale, userId);
 
       expect(result).toEqual(mockMenus);
-      expect(prismaService.menus.findMany).toHaveBeenCalled();
+      expect(prismaService.menu.findMany).toHaveBeenCalled();
     });
   });
   */

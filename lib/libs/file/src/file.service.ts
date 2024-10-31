@@ -1,4 +1,4 @@
-import { SettingsService } from '@hedhog/admin';
+import { SettingService } from '@hedhog/admin';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
@@ -17,21 +17,21 @@ import { ProviderFactory } from './provider/provider.factory';
 export class FileService {
   private providerId: number;
   private mimetypes: Record<string, number> = {};
-  private settings: Record<string, string>;
+  private setting: Record<string, string>;
 
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-    @Inject(forwardRef(() => SettingsService))
-    private readonly settingsService: SettingsService,
+    @Inject(forwardRef(() => SettingService))
+    private readonly settingService: SettingService,
     @Inject(forwardRef(() => JwtService))
     private readonly jwtService: JwtService,
   ) {}
 
   async getProvider(): Promise<AbstractProvider> {
-    this.settings = await this.settingsService.getSettingValues([
+    this.setting = await this.settingService.getSettingValues([
       'storage',
       'storage-local-path',
       'storage-s3-key',
@@ -45,16 +45,16 @@ export class FileService {
       'storage-abs-container',
     ]);
 
-    if (!this.settings['storage']) {
+    if (!this.setting['storage']) {
       throw new BadRequestException(
-        `You must set the storage provider in the settings.`,
+        `You must set the storage provider in the setting.`,
       );
     }
 
-    const providerName = this.settings['storage'];
+    const providerName = this.setting['storage'];
     const provider = ProviderFactory.create(
       providerName as EnumProvider,
-      this.settings,
+      this.setting,
     );
 
     const providerData = await this.prismaService.file_provider.findFirst({
@@ -98,21 +98,21 @@ export class FileService {
   }
 
   async acceptMimetypes(mimetype: string) {
-    if (!this.settings || !this.settings['storage-accept-mimetypes']) {
+    if (!this.setting || !this.setting['storage-accept-mimetypes']) {
       await this.getProvider();
     }
 
-    const acceptMimetypes = this.settings['storage-accept-mimetypes'];
+    const acceptMimetypes = this.setting['storage-accept-mimetypes'];
 
     return acceptMimetypes.split(',').indexOf(mimetype) !== -1;
   }
 
   async maxFileSize(size: number) {
-    if (!this.settings || !this.settings['storage-max-size']) {
+    if (!this.setting || !this.setting['storage-max-size']) {
       await this.getProvider();
     }
 
-    const maxSize = this.settings['storage-max-size'];
+    const maxSize = this.setting['storage-max-size'];
 
     return size <= Number(maxSize);
   }

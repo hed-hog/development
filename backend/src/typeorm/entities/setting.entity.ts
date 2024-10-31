@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: "settings",
+  name: 'setting',
 })
 export class Setting {
   @PrimaryGeneratedColumn()
@@ -14,7 +14,7 @@ export class Setting {
   slug: string;
 
   @Column({
-    enum: ["string", "number", "boolean", "json"],
+    enum: ['string', 'number', 'boolean', 'json'],
   })
   type: string;
 

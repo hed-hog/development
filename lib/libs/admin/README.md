@@ -20,16 +20,16 @@
 
 The **Hedhog Admin** module is a collection of core modules essential for managing and administering applications within the HedHog framework. It brings together various modules that provide key functionalities such as authentication, menu configuration, permissions, screen management and user management.
 
-Whether you need to secure access to resources, manage user roles, or handle file uploads, the `@hedhog/admin` module provides everything required to manage a modern web application’s backend with minimal setup.
+Whether you need to secure access to resources, manage user role, or handle file uploads, the `@hedhog/admin` module provides everything required to manage a modern web application’s backend with minimal setup.
 
 ### Included Modules<
 
 - **@hedhog/auth**: Provides authentication and authorization mechanisms, ensuring secure access to application resources.
-- **@hedhog/locale**: Provides solution for managing locale and translations across applications.
-- **@hedhog/menu**: Allows for the creation and management of dynamic menus within the application interface.
-- **@hedhog/role**: Facilitates the management of roles, controlling access to specific features or areas.
-- **@hedhog/route**: Provides a comprehensive system for managing routes within your application.
-- **@hedhog/setting**: Provides a solution for managing application settings.
+- **@hedhog/locale**: Provides solution for managing locale and translation across applications.
+- **@hedhog/menu**: Allows for the creation and management of dynamic menu within the application interface.
+- **@hedhog/role**: Facilitates the management of role, controlling access to specific features or areas.
+- **@hedhog/route**: Provides a comprehensive system for managing route within your application.
+- **@hedhog/setting**: Provides a solution for managing application setting.
 - **@hedhog/screen**: Provides a structure for managing different screens and UI components.
 - **@hedhog/user**: Manages user accounts, including creation, updates, and deletion, along with password encryption and secure access.
 
@@ -54,7 +54,7 @@ import { AdminModule } from '@hedhog/admin';
 export class AppModule {}
 ```
 
-By importing the AdminModule, you gain access to all the functionality provided by the individual modules, making it easier to manage authentication, permissions, users, and more.
+By importing the AdminModule, you gain access to all the functionality provided by the individual modules, making it easier to manage authentication, permissions, user, and more.
 
 ---
 
@@ -64,8 +64,8 @@ By importing the AdminModule, you gain access to all the functionality provided 
 
 ### Features
 
-- **Token Verification**: Verify authentication tokens for users.
-- **Login**: Authenticate users with email and password, and handle multi-factor authentication if required.
+- **Token Verification**: Verify authentication tokens for user.
+- **Login**: Authenticate user with email and password, and handle multi-factor authentication if required.
 - **OTP Management**: Manage one-time passwords (OTP) for multi-factor authentication.
 - **Password Reset**: Facilitate password reset requests through email.
 
@@ -85,7 +85,7 @@ The `AuthService` provides methods for:
 - `verifyToken(token: string)`: Verify the provided JWT token.
 - `generateRandomString(length: number)`: Generate a random string of specified length.
 - `generateRandomNumber()`: Generate a random 6-digit number.
-- `loginWithEmailAndPassword(email: string, password: string)`: Authenticate users with email and password and handle multi-factor authentication if required.
+- `loginWithEmailAndPassword(email: string, password: string)`: Authenticate user with email and password and handle multi-factor authentication if required.
 - `getToken(user)`: Generate a JWT token for the authenticated user.
 - `forget({ email }: ForgetDTO)`: Initiate a password reset process for the specified email.
 - `otp({ token, code }: OtpDTO)`: Verify the OTP code provided by the user.
@@ -93,7 +93,7 @@ The `AuthService` provides methods for:
 ### Folder Structure
 
 ```plaintext
-├── auth.controller.ts         # Defines routes for authentication
+├── auth.controller.ts         # Defines route for authentication
 ├── auth.service.ts            # Contains authentication logic
 ├── auth.service.spec.ts      # Testing file for auth service
 ├── auth.module.ts             # Authentication module
@@ -102,21 +102,21 @@ The `AuthService` provides methods for:
 │   ├── login.dto.ts           # Data Transfer Object for login
 │   └── otp.dto.ts             # Data Transfer Object for OTP verification
 ├── decorators/
-│   ├── public.decorator.ts    # Custom decorator to mark public routes
+│   ├── public.decorator.ts    # Custom decorator to mark public route
 │   └── user.decorator.ts      # Custom decorator to get user from request
 ├── types/
 │   └── user.type.ts           # Type definitions for user-related data
 ├── enums/
 │   └── multifactor-type.enum.ts # Enumeration for multi-factor authentication types
 ├── guards/
-│   └── auth.guard.ts          # Guard for protecting routes
+│   └── auth.guard.ts          # Guard for protecting route
 ```
 
 ---
 
 # Hedhog Locale
 
-**Hedhog Locale** module provides a powerful solution for managing locale and translations across applications. It includes functionalities to retrieve, create, update, and delete locale data, with support for pagination and localization. The module integrates seamlessly within the HedHog ecosystem, using @hedhog/pagination for handling paginated responses and @hedhog/prisma for database interactions.
+**Hedhog Locale** module provides a powerful solution for managing locale and translation across applications. It includes functionalities to retrieve, create, update, and delete locale data, with support for pagination and localization. The module integrates seamlessly within the HedHog ecosystem, using @hedhog/pagination for handling paginated responses and @hedhog/prisma for database interactions.
 
 ### Controller Endpoints
 
@@ -130,11 +130,11 @@ The `AuthService` provides methods for:
 
 #### `GET /locale/:localeCode/:namespace`
 
-- **Description**: Retrieve translations for a specific locale and namespace.
+- **Description**: Retrieve translation for a specific locale and namespace.
 - **Authentication**: Not required (public endpoint).
 - **Parameters**:
-  - `localeCode (string)`: The locale code to fetch translations for.
-  - `namespace (string)`: The namespace to fetch translations from.
+  - `localeCode (string)`: The locale code to fetch translation for.
+  - `namespace (string)`: The namespace to fetch translation from.
 
 #### `GET /locale`
 
@@ -185,10 +185,10 @@ The `AuthService` provides methods for:
 
 #### `getTranslations(localeCode: string, namespace: string)`
 
-- **Description**: Retrieves translations for a given locale code and namespace.
+- **Description**: Retrieves translation for a given locale code and namespace.
 - **Parameters**:
-  - `localeCode (string)`: The locale code to fetch translations for.
-  - `namespace (string)`: The namespace to fetch translations from.
+  - `localeCode (string)`: The locale code to fetch translation for.
+  - `namespace (string)`: The namespace to fetch translation from.
 
 #### `get(paginationParams: PaginationDTO)`
 
@@ -241,7 +241,7 @@ The `AuthService` provides methods for:
 
 # Hedhog Menu
 
-**HedHog Menu** is a library for managing menus within the HedHog framework. It provides a set of RESTful endpoints for CRUD operations on menu items, as well as functionalities to handle pagination and ordering of menus.
+**HedHog Menu** is a library for managing menu within the HedHog framework. It provides a set of RESTful endpoints for CRUD operations on menu items, as well as functionalities to handle pagination and ordering of menu.
 
 ### Features
 
@@ -253,12 +253,12 @@ The `AuthService` provides methods for:
 
 The `MenuController` exposes the following endpoints:
 
-- **GET /menus**: Retrieve a list of menus with pagination.
-- **GET /menus/:menuId**: Retrieve a specific menu by ID.
-- **POST /menus**: Create a new menu item.
-- **PATCH /menus/:menuId**: Update an existing menu item by ID.
-- **DELETE /menus**: Delete menu items based on provided IDs.
-- **PATCH /menus/order**: Update the order of menu items.
+- **GET /menu**: Retrieve a list of menu with pagination.
+- **GET /menu/:menuId**: Retrieve a specific menu by ID.
+- **POST /menu**: Create a new menu item.
+- **PATCH /menu/:menuId**: Update an existing menu item by ID.
+- **DELETE /menu**: Delete menu items based on provided IDs.
+- **PATCH /menu/order**: Update the order of menu items.
 
 ### MenuService
 
@@ -274,7 +274,7 @@ The `MenuService` class contains the business logic for handling menu operations
 ### Folder Structure
 
 ```plaintext
-├── menu.controller.ts       # Handles HTTP requests related to menus
+├── menu.controller.ts       # Handles HTTP requests related to menu
 ├── menu.service.ts          # Contains business logic for menu operations
 ├── menu.service.spec.ts     # Testing file for menu service
 ├── menu.module.ts           # Module definition for menu functionalities
@@ -288,39 +288,39 @@ The `MenuService` class contains the business logic for handling menu operations
 
 # Hedhog Role
 
-**HedHog Role** module is designed to handle role management within the HedHog framework. It allows for creating, updating, and deleting roles and managing their relationships with users, menus, routes, and screens.
+**HedHog Role** module is designed to handle role management within the HedHog framework. It allows for creating, updating, and deleting role and managing their relationships with user, menu, route, and screens.
 
 ### Features
 
-- **Role Management**: Create, update, and delete roles.
-- **User Associations**: Assign and manage users associated with roles.
-- **Menu, Route, and Screen Associations**: Manage the association between roles and menus, routes, or screens.
+- **Role Management**: Create, update, and delete role.
+- **User Associations**: Assign and manage user associated with role.
+- **Menu, Route, and Screen Associations**: Manage the association between role and menu, route, or screens.
 - **Pagination**: Handle paginated responses for all resources.
 
 ### Controller Endpoints
 
-#### `GET /roles`
+#### `GET /role`
 
-- **Description**: Retrieve a paginated list of all roles.
+- **Description**: Retrieve a paginated list of all role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `paginationParams` (optional): Standard pagination parameters.
 
-#### `GET /roles/:roleId`
+#### `GET /role/:roleId`
 
 - **Description**: Retrieve details of a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `roleId (number)`: The ID of the role to retrieve.
 
-#### `POST /roles`
+#### `POST /role`
 
 - **Description**: Create a new role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `data` (CreateDTO): The data for the new role (name, description, etc).
 
-#### `PATCH /roles/:roleId`
+#### `PATCH /role/:roleId`
 
 - **Description**: Update an existing role.
 - **Authentication**: Required (uses `AuthGuard`).
@@ -328,38 +328,38 @@ The `MenuService` class contains the business logic for handling menu operations
   - `roleId (number)`: The ID of the role to update.
   - `data` (UpdateDTO): The data to update for the role.
 
-#### `DELETE /roles`
+#### `DELETE /role`
 
-- **Description**: Delete one or more roles.
+- **Description**: Delete one or more role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `data` (DeleteDTO): List of role IDs to delete.
 
-#### `GET /roles/:roleId/users`
+#### `GET /role/:roleId/user`
 
-- **Description**: Get a list of users associated with a specific role.
+- **Description**: Get a list of user associated with a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
-  - `roleId (number)`: The ID of the role to retrieve users for.
+  - `roleId (number)`: The ID of the role to retrieve user for.
   - `paginationParams` (optional): Standard pagination parameters.
 
-#### `GET /roles/:roleId/menus`
+#### `GET /role/:roleId/menu`
 
-- **Description**: Get a list of menus associated with a specific role.
+- **Description**: Get a list of menu associated with a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
-  - `roleId (number)`: The ID of the role to retrieve menus for.
+  - `roleId (number)`: The ID of the role to retrieve menu for.
   - `paginationParams` (optional): Standard pagination parameters.
 
-#### `GET /roles/:roleId/routes`
+#### `GET /role/:roleId/route`
 
-- **Description**: Get a list of routes associated with a specific role.
+- **Description**: Get a list of route associated with a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
-  - `roleId (number)`: The ID of the role to retrieve routes for.
+  - `roleId (number)`: The ID of the role to retrieve route for.
   - `paginationParams` (optional): Standard pagination parameters.
 
-#### `GET /roles/:roleId/screens`
+#### `GET /role/:roleId/screens`
 
 - **Description**: Get a list of screens associated with a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
@@ -367,30 +367,30 @@ The `MenuService` class contains the business logic for handling menu operations
   - `roleId (number)`: The ID of the role to retrieve screens for.
   - `paginationParams` (optional): Standard pagination parameters.
 
-#### `PATCH /roles/:roleId/users`
+#### `PATCH /role/:roleId/user`
 
-- **Description**: Update the users associated with a specific role.
+- **Description**: Update the user associated with a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `roleId (number)`: The ID of the role. -`data` (UpdateIdsDTO): List of user IDs to associate with the role.
 
-#### `PATCH /roles/:roleId/menus`
+#### `PATCH /role/:roleId/menu`
 
-- **Description**: Update the menus associated with a specific role.
+- **Description**: Update the menu associated with a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `roleId (number)`: The ID of the role.
   - `data` (UpdateIdsDTO): List of menu IDs to associate with the role.
 
-#### `PATCH /roles/:roleId/routes`
+#### `PATCH /role/:roleId/route`
 
-- **Description**: Update the routes associated with a specific role.
+- **Description**: Update the route associated with a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `roleId (number)`: The ID of the role.
   - `data` (UpdateIdsDTO): List of route IDs to associate with the role.
 
-#### `PATCH /roles/:roleId/screens`
+#### `PATCH /role/:roleId/screens`
 
 - **Description**: Update the screens associated with a specific role.
 - **Authentication**: Required (uses `AuthGuard`).
@@ -402,7 +402,7 @@ The `MenuService` class contains the business logic for handling menu operations
 
 #### `updateUsers(roleId: number, { ids }: UpdateIdsDTO)`
 
-- **Description**: Updates the users associated with a specific role by deleting existing associations and creating new ones.
+- **Description**: Updates the user associated with a specific role by deleting existing associations and creating new ones.
 - **Parameters**:
   - `roleId (number)`: The ID of the role to update.
   - `data`: An object containing an array of user IDs to associate with the role.
@@ -416,37 +416,37 @@ The `MenuService` class contains the business logic for handling menu operations
 
 #### `updateRoutes(roleId: number, data: UpdateIdsDTO)`
 
-- **Description**: Updates the routes associated with a specific role by deleting existing associations and creating new ones.
+- **Description**: Updates the route associated with a specific role by deleting existing associations and creating new ones.
 - **Parameters**:
   - `roleId (number)`: The ID of the role to update.
   - `data`: An object containing an array of route IDs to associate with the role.
 
 #### `updateMenus(roleId: number, data: UpdateIdsDTO)`
 
-- **Description**: Updates the menus associated with a specific role by deleting existing associations and creating new ones.
+- **Description**: Updates the menu associated with a specific role by deleting existing associations and creating new ones.
 - **Parameters**:
   - `roleId (number)`: The ID of the role to update.
   - `data`: An object containing an array of menu IDs to associate with the role.
 
 #### `listUsers(roleId: number, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of users associated with a specific role.
+- **Description**: Retrieves a paginated list of user associated with a specific role.
 - **Parameters**:
-  - `roleId (number)`: The ID of the role to retrieve associated users.
+  - `roleId (number)`: The ID of the role to retrieve associated user.
   - `paginationParams`: Includes pagination criteria.
 
 #### `listMenus(roleId: number, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of menus associated with a specific role.
+- **Description**: Retrieves a paginated list of menu associated with a specific role.
 - **Parameters**:
-  - `roleId (number)`: The ID of the role to retrieve associated menus.
+  - `roleId (number)`: The ID of the role to retrieve associated menu.
   - `paginationParams`: Includes pagination criteria.
 
 #### `listRoutes(roleId: number, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of routes associated with a specific role.
+- **Description**: Retrieves a paginated list of route associated with a specific role.
 - **Parameters**:
-  - `roleId (number)`: The ID of the role to retrieve associated routes.
+  - `roleId (number)`: The ID of the role to retrieve associated route.
   - `paginationParams`: Includes pagination criteria.
 
 #### `listScreens(roleId: number, paginationParams: PaginationDTO)`
@@ -458,7 +458,7 @@ The `MenuService` class contains the business logic for handling menu operations
 
 #### `getRoles(paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of all roles, with optional search functionality based on name and description.
+- **Description**: Retrieves a paginated list of all role, with optional search functionality based on name and description.
 - **Parameters**:
   - `paginationParams`: Includes pagination and search criteria.
 
@@ -485,21 +485,21 @@ The `MenuService` class contains the business logic for handling menu operations
 
 #### `delete({ ids }: DeleteDTO)`
 
-- **Description**: Deletes one or more roles identified by their IDs.
+- **Description**: Deletes one or more role identified by their IDs.
 - **Parameters**:
-  - `ids (array of number)`: An array containing the IDs of the roles to delete.
+  - `ids (array of number)`: An array containing the IDs of the role to delete.
 
 ### Folder Structure
 
 ```plaintext
 ├── decorators/
-│   ├── role.decorator.ts    # Custom decorator for roles
+│   ├── role.decorator.ts    # Custom decorator for role
 ├── dto/                        # Data Transfer Objects
 │   ├── create.dto.ts           # DTO for creating a role
 │   ├── update.dto.ts           # DTO for updating a role
 ├── guards/
-│   └── role.guard.ts         # Guard for roles
-├── role.controller.ts        # Handles HTTP requests related to roles
+│   └── role.guard.ts         # Guard for role
+├── role.controller.ts        # Handles HTTP requests related to role
 ├── role.module.ts            # Module definition for the role
 └── role.service.ts           # Service class for role-related logic
 └── role.service.spec.ts      # Testing file for role service
@@ -509,38 +509,38 @@ The `MenuService` class contains the business logic for handling menu operations
 
 # Hedhog Route
 
-**Hedhog Route** module provides a comprehensive system for managing routes within your application. It allows administrators to define, modify, and control access to different routes within the application. The module also integrates with other Hedhog modules to ensure that permissions and roles are respected when accessing routes.
+**Hedhog Route** module provides a comprehensive system for managing route within your application. It allows administrators to define, modify, and control access to different route within the application. The module also integrates with other Hedhog modules to ensure that permissions and role are respected when accessing route.
 
 ### Features
 
-- **CRUD Operations**: Create, Read, Update, and Delete routes.
-- **Route Management**: Manage application routes, including their accessibility and assignment to user roles.
-- **Permissions Integration**: Integrates with Hedhog Permission to control access to specific routes based on user roles.
+- **CRUD Operations**: Create, Read, Update, and Delete route.
+- **Route Management**: Manage application route, including their accessibility and assignment to user role.
+- **Permissions Integration**: Integrates with Hedhog Permission to control access to specific route based on user role.
 
 ### Controller Endpoints
 
-#### `GET /routes`
+#### `GET /route`
 
-- **Description**: Retrieves a paginated list of all routes.
+- **Description**: Retrieves a paginated list of all route.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `paginationParams`: Includes pagination criteria.
 
-#### `GET /routes/:routeId`
+#### `GET /route/:routeId`
 
 - **Description**: Retrieves a specific route by its ID.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `routeId (number)`: The ID of the route to retrieve.
 
-#### `POST /routes`
+#### `POST /route`
 
 - **Description**: Creates a new route with the specified URL and method.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `data`: An object containing the url and method for the new route.
 
-#### `PATCH /routes/:routeId`
+#### `PATCH /route/:routeId`
 
 - **Description**: Updates an existing route identified by its ID.
 - **Authentication**: Required (uses `AuthGuard`).
@@ -548,30 +548,30 @@ The `MenuService` class contains the business logic for handling menu operations
   - `routeId (number)`: The ID of the route to update.
   - `data`: An object containing the updated information for the route.
 
-#### `DELETE /routes`
+#### `DELETE /route`
 
-- **Description**: Deletes one or more routes.
+- **Description**: Deletes one or more route.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `data`: An object containing an array of route IDs to delete.
 
-#### `GET /routes/:routeId/roles`
+#### `GET /route/:routeId/role`
 
-- **Description**: Retrieves a paginated list of roles associated with a specific route.
+- **Description**: Retrieves a paginated list of role associated with a specific route.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
-  - `routeId (number)`: The ID of the route to retrieve associated roles.
+  - `routeId (number)`: The ID of the route to retrieve associated role.
   - `paginationParams`: Includes pagination criteria.
 
-#### `PATCH /routes/:routeId/roles`
+#### `PATCH /route/:routeId/role`
 
-- **Description**: Updates the roles associated with a specific route.
+- **Description**: Updates the role associated with a specific route.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - `routeId (number)`: The ID of the route.
   - `data`: An object containing an array of role IDs to associate with the route.
 
-#### `GET /routes/:routeId/screens`
+#### `GET /route/:routeId/screens`
 
 - **Description**: Retrieves a paginated list of screens associated with a specific route.
 - **Authentication**: Required (uses `AuthGuard`).
@@ -579,7 +579,7 @@ The `MenuService` class contains the business logic for handling menu operations
   - `routeId (number)`: The ID of the route to retrieve associated screens.
   - `paginationParams`: Includes pagination criteria.
 
-#### `PATCH /routes/:routeId/screens`
+#### `PATCH /route/:routeId/screens`
 
 - **Description:** Updates the screens associated with a specific route.
 - **Authentication**: Required (uses AuthGuard).
@@ -591,7 +591,7 @@ The `MenuService` class contains the business logic for handling menu operations
 
 #### `getRoutes(paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of routes with optional search functionality based on URL and method.
+- **Description**: Retrieves a paginated list of route with optional search functionality based on URL and method.
 - **Parameters**:
   - `paginationParams`: Includes pagination and search criteria.
 
@@ -616,20 +616,20 @@ The `MenuService` class contains the business logic for handling menu operations
 
 #### `delete({ ids }: DeleteDTO)`
 
-- **Description**: Deletes one or more routes identified by their IDs.
+- **Description**: Deletes one or more route identified by their IDs.
 - **Parameters**:
 - `ids`: An object containing an array of route IDs to delete.
 
 #### `listRoles(routeId: number, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of roles associated with a specific route.
+- **Description**: Retrieves a paginated list of role associated with a specific route.
 - **Parameters**:
-  - `routeId`: The ID of the route to retrieve associated roles.
+  - `routeId`: The ID of the route to retrieve associated role.
   - `paginationParams`: Includes pagination parameters.
 
 #### `updateRoles(routeId: number, data: UpdateIdsDTO)`
 
-- **Description**: Updates the roles associated with a specific route.
+- **Description**: Updates the role associated with a specific route.
 - **Parameters**:
   - `routeId`: The ID of the route.
   - `data`: An object containing an array of role IDs to associate with the route.
@@ -655,8 +655,8 @@ The `MenuService` class contains the business logic for handling menu operations
 │   ├── create.dto.ts           # DTO for creating a route
 │   ├── update.dto.ts           # DTO for updating a route
 ├── guards/
-│   └── route.guard.ts         # Guard for routes
-├── route.controller.ts        # Handles HTTP requests related to routes
+│   └── route.guard.ts         # Guard for route
+├── route.controller.ts        # Handles HTTP requests related to route
 ├── route.module.ts            # Module definition for the route
 ├── route.service.ts           # Service class for route-related logic
 └── route.service.spec.ts      # Testing file for route service
@@ -666,31 +666,31 @@ The `MenuService` class contains the business logic for handling menu operations
 
 # Hedhog Setting
 
-**Hedhog Setting** module provides a comprehensive solution for managing application settings. It includes functionalities to create, read, update, and delete settings, along with support for pagination and search capabilities. This module integrates with the HedHog ecosystem, utilizing @hedhog/pagination for managing paginated results and @hedhog/prisma for database interactions.
+**Hedhog Setting** module provides a comprehensive solution for managing application setting. It includes functionalities to create, read, update, and delete setting, along with support for pagination and search capabilities. This module integrates with the HedHog ecosystem, utilizing @hedhog/pagination for managing paginated results and @hedhog/prisma for database interactions.
 
 ### Controller Endpoints
 
-#### `GET /settings`
+#### `GET /setting`
 
-- **Description**: Retrieve a paginated list of settings.
+- **Description**: Retrieve a paginated list of setting.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Pagination**: Supports pagination through query parameters.
 
-#### `GET /settings/:settingId`
+#### `GET /setting/:settingId`
 
 - **Description**: Retrieve a specific setting by its ID.
 - **Authentication**: Required (uses AuthGuard).
 - **Parameters**:
   - **settingId** (number): The ID of the setting to retrieve.
 
-#### `POST /settings`
+#### `POST /setting`
 
 - **Description**: Create a new setting.
 - **Authentication**: Required (uses AuthGuard).
 - **Body**:
   - **name** (string): Name of the setting.
 
-#### `PATCH /settings/:settingId`
+#### `PATCH /setting/:settingId`
 
 - **Description**: Update an existing setting.
 - **Authentication**: Required (uses AuthGuard).
@@ -699,9 +699,9 @@ The `MenuService` class contains the business logic for handling menu operations
 - **Body**:
   - **name** (string, optional): Updated name of the setting.
 
-#### `DELETE /settings`
+#### `DELETE /setting`
 
-- **Description**: Delete one or more settings.
+- **Description**: Delete one or more setting.
 - **Authentication**: Required (uses AuthGuard).
 - **Body**:
   - **ids** (number[]): Array of setting IDs to delete.
@@ -710,7 +710,7 @@ The `MenuService` class contains the business logic for handling menu operations
 
 #### `getSettings(paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of settings with optional search functionality.
+- **Description**: Retrieves a paginated list of setting with optional search functionality.
 - **Parameters**:
   - **paginationParams**: Includes pagination and search criteria.
 
@@ -735,7 +735,7 @@ The `MenuService` class contains the business logic for handling menu operations
 
 #### `delete(data: DeleteDTO)`
 
-- **Description**: Deletes one or more settings.
+- **Description**: Deletes one or more setting.
 - **Parameters**:
   - **data**: Includes array of ids to delete.
 
@@ -743,12 +743,12 @@ The `MenuService` class contains the business logic for handling menu operations
 
 ```plaintext
 |── dto/                     # Data Transfer Objects
-│   |── create.dto.ts        # DTO for creating settings
-│   |── delete.dto.ts        # DTO for deleting settings
-│   |── update.dto.ts        # DTO for updating settings
-|── setting.controller.ts    # Controller for settings
-|── setting.module.ts        # Module definition for settings
-|── setting.service.ts       # Service class for settings logic
+│   |── create.dto.ts        # DTO for creating setting
+│   |── delete.dto.ts        # DTO for deleting setting
+│   |── update.dto.ts        # DTO for updating setting
+|── setting.controller.ts    # Controller for setting
+|── setting.module.ts        # Module definition for setting
+|── setting.service.ts       # Service class for setting logic
 |── setting.service.spec.ts  # Testing file for setting service
 ```
 
@@ -863,24 +863,24 @@ The **Hedhog User** module in HedHog provides functionality to manage user data 
 
 - **Pagination**: Utilizes `@hedhog/pagination` for managing paginated results of user queries.
 - **Database Interaction**: Uses `@hedhog/prisma` to interface with the database for user data management.
-- **Authentication**: Secured with Auth Module from `@hedhog/admin` to ensure that only authorized users can access or modify user data.
+- **Authentication**: Secured with Auth Module from `@hedhog/admin` to ensure that only authorized user can access or modify user data.
 
 ### Controller Endpoints
 
-#### `GET /users`
+#### `GET /user`
 
-- **Description**: Retrieve a paginated list of users.
+- **Description**: Retrieve a paginated list of user.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Pagination**: Supports pagination through query parameters.
 
-#### `GET /users/:userId`
+#### `GET /user/:userId`
 
 - **Description**: Retrieve a specific user by its ID.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Parameters**:
   - **userId** (number): The ID of the user to retrieve.
 
-#### `POST /users`
+#### `POST /user`
 
 - **Description**: Create a new user.
 - **Authentication**: Required (uses `AuthGuard`).
@@ -889,7 +889,7 @@ The **Hedhog User** module in HedHog provides functionality to manage user data 
   - **name** (string): Name of the user.
   - **password** (string): Password of the user.
 
-#### `PATCH /users/:userId`
+#### `PATCH /user/:userId`
 
 - **Description**: Update an existing user.
 - **Authentication**: Required (uses `AuthGuard`).
@@ -900,9 +900,9 @@ The **Hedhog User** module in HedHog provides functionality to manage user data 
   - **name** (string, optional): Updated name of the user.
   - **password** (string, optional): Updated password of the user.
 
-#### `DELETE /users`
+#### `DELETE /user`
 
-- **Description**: Delete one or more users.
+- **Description**: Delete one or more user.
 - **Authentication**: Required (uses `AuthGuard`).
 - **Body**:
   - **ids** (number[]): Array of user IDs to delete.
@@ -911,7 +911,7 @@ The **Hedhog User** module in HedHog provides functionality to manage user data 
 
 #### `getUsers(paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of users with optional search functionality.
+- **Description**: Retrieves a paginated list of user with optional search functionality.
 - **Parameters**:
   - **paginationParams**: Includes pagination and search criteria.
 
@@ -942,7 +942,7 @@ The **Hedhog User** module in HedHog provides functionality to manage user data 
 
 #### `delete(data: DeleteDTO)`
 
-- **Description**: Deletes one or more users.
+- **Description**: Deletes one or more user.
 - **Parameters**:
   - **data**: Includes array of user IDs to delete.
 
@@ -956,5 +956,5 @@ The **Hedhog User** module in HedHog provides functionality to manage user data 
 │   └── update.dto.ts        # Data Transfer Object for updating a user
 ├── user.module.ts           # Module for UserService
 ├── user.controller.ts       # Controller for user-related endpoints
-└── user.service.ts          # Service handling business logic for users
+└── user.service.ts          # Service handling business logic for user
 ```

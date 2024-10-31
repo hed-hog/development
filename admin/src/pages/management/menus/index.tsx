@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next'
 export default function Page() {
   const { t: modulesT } = useTranslation('modules')
   const { t: actionsT } = useTranslation('actions')
-  const { t: menuT } = useTranslation('menus')
+  const { t: menuT } = useTranslation('menu')
 
   const [selectedItems, setSelectedItems] = useState<
     (MenuType | RoleType | ScreenType)[]
@@ -193,17 +193,17 @@ export default function Page() {
               ),
             },
             {
-              title: modulesT('roles'),
+              title: modulesT('role'),
               children: (
                 <DataPanel<RoleType>
                   ref={menuRolesRef}
                   selectable
                   multiple
                   layout='list'
-                  id={`menu-roles-${item.id}`}
-                  url={`/menus/${item.id}/roles`}
+                  id={`menu-role-${item.id}`}
+                  url={`/menu/${item.id}/role`}
                   checked={(item: RoleType) => {
-                    return Boolean((item.role_menus ?? []).length)
+                    return Boolean((item.role_menu ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -227,7 +227,7 @@ export default function Page() {
                           {
                             onSuccess: () => {
                               queryClient.invalidateQueries({
-                                queryKey: [`menu-roles-${item.id}`],
+                                queryKey: [`menu-role-${item.id}`],
                               })
                             },
                           }
@@ -247,7 +247,7 @@ export default function Page() {
                   multiple
                   layout='list'
                   id={`menu-screens-${item.id}`}
-                  url={`/menus/${item.id}/screens`}
+                  url={`/menu/${item.id}/screens`}
                   render={(item: ScreenType) => (
                     <div className='flex flex-col'>
                       <div className='flex flex-row'>
@@ -262,7 +262,7 @@ export default function Page() {
                     </div>
                   )}
                   checked={(item: ScreenType) => {
-                    return Boolean((item.menu_screens ?? []).length)
+                    return Boolean((item.menu_screen ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -310,20 +310,20 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>{modulesT('menus')} - Hedhog</title>
+        <title>{modulesT('menu')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('menus')}
+            {modulesT('menu')}
           </h1>
         </div>
       </div>
 
       <DataPanel
-        url='/menus'
+        url='/menu'
         layout='table'
-        id='menus'
+        id='menu'
         selectable
         columns={[
           { key: 'id', header: 'ID' },

@@ -38,7 +38,7 @@ describe('DocumentService', () => {
         {
           provide: PrismaService,
           useValue: {
-            person_documents: {
+            person_document: {
               create: jest.fn().mockResolvedValue(documentMock),
               findFirst: jest.fn().mockResolvedValue(documentMock),
               update: jest.fn().mockResolvedValue(documentMock),
@@ -77,7 +77,7 @@ describe('DocumentService', () => {
     const personId = 123;
     const result = await service.create(personId, createDocumentDto);
 
-    expect(prismaService.person_documents.create).toHaveBeenCalledWith({
+    expect(prismaService.person_document.create).toHaveBeenCalledWith({
       data: {
         person_id: personId,
         ...createDocumentDto,
@@ -92,7 +92,7 @@ describe('DocumentService', () => {
     const result = await service.getDocuments(personId);
 
     expect(paginationService.paginate).toHaveBeenCalledWith(
-      prismaService.person_documents,
+      prismaService.person_document,
       {
         fields:
           'id,person_id,type_id,primary,value,country_id,issued_at,expiry_at',
@@ -125,7 +125,7 @@ describe('DocumentService', () => {
 
     const result = await service.getDocumentByTypeId(personId, typeId);
 
-    expect(prismaService.person_documents.findFirst).toHaveBeenCalledWith({
+    expect(prismaService.person_document.findFirst).toHaveBeenCalledWith({
       where: {
         person_id: personId,
         type_id: typeId,
@@ -151,7 +151,7 @@ describe('DocumentService', () => {
     const personId = 123;
     const typeId = 999;
 
-    (prismaService.person_documents.findFirst as jest.Mock).mockResolvedValue(
+    (prismaService.person_document.findFirst as jest.Mock).mockResolvedValue(
       null,
     );
 
@@ -168,7 +168,7 @@ describe('DocumentService', () => {
 
     const result = await service.getDocumentById(documentId);
 
-    expect(prismaService.person_documents.findFirst).toHaveBeenCalledWith({
+    expect(prismaService.person_document.findFirst).toHaveBeenCalledWith({
       where: {
         id: documentId,
       },
@@ -202,7 +202,7 @@ describe('DocumentService', () => {
 
     const result = await service.update(documentId, updateDocumentDto);
 
-    expect(prismaService.person_documents.update).toHaveBeenCalledWith({
+    expect(prismaService.person_document.update).toHaveBeenCalledWith({
       where: { id: documentId },
       data: updateDocumentDto,
     });
@@ -214,7 +214,7 @@ describe('DocumentService', () => {
 
     const result = await service.remove(documentId);
 
-    expect(prismaService.person_documents.delete).toHaveBeenCalledWith({
+    expect(prismaService.person_document.delete).toHaveBeenCalledWith({
       where: {
         id: documentId,
       },

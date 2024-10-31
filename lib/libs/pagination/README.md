@@ -4,7 +4,7 @@
   <img src="https://avatars.githubusercontent.com/u/177489127?s=200&v=4" alt="Hedhog Avatar" />
 </p>
 
-**Hedhog Pagination** is a powerful and flexible pagination library designed for use with HedHog-based projects. It simplifies the process of paginating data results from your database queries, making it easy to handle large datasets and provide users with a smooth and efficient browsing experience.
+**Hedhog Pagination** is a powerful and flexible pagination library designed for use with HedHog-based projects. It simplifies the process of paginating data results from your database queries, making it easy to handle large datasets and provide user with a smooth and efficient browsing experience.
 
 ## Features
 
@@ -25,7 +25,7 @@ npm i @hedhog/pagination
 
 ```plaintext
 pagination/
-├── dist/                        # Compiled JavaScript files from build
+├── dist/                        # Compiled JavaScript file from build
 ├── node_modules/                # Discardable folder with all module dependencies
 ├── src/
 │   ├── constants/
@@ -38,11 +38,11 @@ pagination/
 │   │   └── pagination.enums.ts    # Enums for pagination
 │   ├── types/
 │   │   └── pagination.types.ts    # Type definitions for pagination
-│   ├── index.ts                  # Entry point for pagination files
+│   ├── index.ts                  # Entry point for pagination file
 │   ├── pagination.module.ts      # Module definition for pagination functionalities
 │   ├── pagination.service.spec.ts # Unit tests for PaginationService
 │   └── pagination.service.ts     # Service class for pagination logic
-├── .gitignore                    # Specifies which files Git should ignore
+├── .gitignore                    # Specifies which file Git should ignore
 ├── package.json                  # Manages dependencies and scripts for the library
 ├── package-lock.json             # Lock file for dependencies
 ├── README.md                     # Documentation for the library

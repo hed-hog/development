@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
-import { requests } from './requests'
 import { queryClient } from '@/lib/query-provider'
-import { toast } from 'sonner'
+import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
+import { requests } from './requests'
 
 export function useCreateMenu() {
   const { createMenu } = requests()
@@ -14,7 +14,7 @@ export function useCreateMenu() {
     mutationKey: ['post-menu'],
     mutationFn: createMenu,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['menus'] })
+      queryClient.invalidateQueries({ queryKey: ['menu'] })
       toast.success(`${moduleT('menu')} ${successT('create')}`)
     },
     onError: (error: any) => {
@@ -33,7 +33,7 @@ export function useDeleteMenu<T>() {
     mutationKey: ['delete-menu'],
     mutationFn: deleteMenus<T>,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['menus'] })
+      queryClient.invalidateQueries({ queryKey: ['menu'] })
       toast.success(`${moduleT('menu')} ${successT('delete')}`)
     },
     onError: (error: any) => {
@@ -52,7 +52,7 @@ export function useEditMenu() {
     mutationKey: ['edit-menu'],
     mutationFn: editMenu,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['menus'] })
+      queryClient.invalidateQueries({ queryKey: ['menu'] })
       toast.success(`${moduleT('menu')} ${successT('edit')}`)
     },
     onError: (error: any) => {
@@ -68,10 +68,10 @@ export function useEditMenuRoles() {
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
-    mutationKey: ['edit-menu-roles'],
+    mutationKey: ['edit-menu-role'],
     mutationFn: editMenuRoles,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['menus'] })
+      queryClient.invalidateQueries({ queryKey: ['menu'] })
       toast.success(`${moduleT('menuRole')} ${successT('edit')}`)
     },
     onError: (error: any) => {
@@ -90,7 +90,7 @@ export function useEditMenuScreens() {
     mutationKey: ['edit-menu-screens'],
     mutationFn: editMenuScreens,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['menus'] })
+      queryClient.invalidateQueries({ queryKey: ['menu'] })
       toast.success(`${moduleT('menuScreen')} ${successT('edit')}`)
     },
     onError: (error: any) => {

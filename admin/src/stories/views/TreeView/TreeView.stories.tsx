@@ -53,7 +53,7 @@ export const Example: Story = {
   parameters: {
     docs: {
       description: {
-        story: `**TreeView** displays hierarchical data in a tree structure, supporting drag-and-drop functionality and context menus for node management.
+        story: `**TreeView** displays hierarchical data in a tree structure, supporting drag-and-drop functionality and context menu for node management.
           <br/><br/>
           <h3>Key Features</h3>
           <ul>

@@ -7,15 +7,15 @@ import { S3Provider } from './s3.provider';
 export class ProviderFactory {
   static create(
     providerType: EnumProvider,
-    settings: Record<string, string>,
+    setting: Record<string, string>,
   ): AbstractProvider {
     switch (providerType) {
       case EnumProvider.S3:
-        return new S3Provider(settings);
+        return new S3Provider(setting);
       case EnumProvider.LOCAL:
-        return new LocalProvider(settings);
+        return new LocalProvider(setting);
       case EnumProvider.AZURE:
-        return new AzureProvider(settings);
+        return new AzureProvider(setting);
     }
   }
 }

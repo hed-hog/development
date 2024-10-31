@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: "routes",
+  name: 'route',
 })
 export class Route {
   @PrimaryGeneratedColumn()
@@ -11,7 +11,7 @@ export class Route {
   url: string;
 
   @Column({
-    enum: ["GET", "POST", "PATCH", "DELETE", "PUT", "OPTIONS", "HEAD"],
+    enum: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS', 'HEAD'],
   })
   method: string;
 }

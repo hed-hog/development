@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react'
 import { SheetPickerField } from '@/components/custom/sheet-picker-field'
+import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof SheetPickerField> = {
   title: 'Fields/SheetPickerField',
@@ -50,7 +50,7 @@ const meta: Meta<typeof SheetPickerField> = {
     required: {
       control: 'boolean',
       description:
-        'Indicates if the field is required. When true, users must select at least one option before submitting.',
+        'Indicates if the field is required. When true, user must select at least one option before submitting.',
     },
     placeholder: {
       control: 'text',
@@ -61,7 +61,7 @@ const meta: Meta<typeof SheetPickerField> = {
     layout: 'centered',
     docs: {
       description: {
-        component: `SheetPickerField component provides a modal (Sheet) that allows users to select options from a list. It features a multi-select field within a modal dialog, allowing users to choose multiple options and confirm their selections. 
+        component: `SheetPickerField component provides a modal (Sheet) that allows user to select options from a list. It features a multi-select field within a modal dialog, allowing user to choose multiple options and confirm their selections. 
         <br/> <br/> 
         <h3>Key Features:</h3>
         <ul style={{ listStyle: 'none '}}>
@@ -70,7 +70,7 @@ const meta: Meta<typeof SheetPickerField> = {
           <li>**Customizable**: The sheet's title, subtitle, and button text can be customized.</li>
           <li>**Required Field**: Optionally mark the field as required to ensure user input.</li>
         </ul>
-        Ideal for use in forms where users need to make multiple selections, such as filtering options, setting preferences, or selecting tags.
+        Ideal for use in forms where user need to make multiple selections, such as filtering options, setting preferences, or selecting tags.
           `,
       },
     },

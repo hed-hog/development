@@ -47,7 +47,7 @@ export class LocaleService {
     });
   }
 
-  async getEnables(locale: string, paginationParams: PaginationDTO) {
+  async getEnables(currentLocale: string, paginationParams: PaginationDTO) {
     const fields = ['code', 'region'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -77,7 +77,7 @@ export class LocaleService {
       codes.push((item as any).code);
     }
 
-    const { code, region, locale } = this.parseLocale(locale);
+    const { code, region, locale } = this.parseLocale(currentLocale);
 
     const where: any = {
       locale: {
@@ -154,16 +154,16 @@ export class LocaleService {
       },
     });
 
-    const translations = {};
+    const translation = {};
 
     for (const value of values) {
-      translations[value.name] = value.value;
+      translation[value.name] = value.value;
     }
 
-    return translations;
+    return translation;
   }
 
-  async get(locale: string, paginationParams: PaginationDTO) {
+  async get(currentLocale: string, paginationParams: PaginationDTO) {
     const fields = ['code', 'region'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -186,7 +186,7 @@ export class LocaleService {
       codes.push((item as any).code);
     }
 
-    const { code, region, locale } = this.parseLocale(locale);
+    const { code, region, locale } = this.parseLocale(currentLocale);
 
     const where: any = {
       locale: {

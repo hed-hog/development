@@ -4,7 +4,7 @@ import { AbstractProvider } from './abstract,provider';
 export class S3Provider extends AbstractProvider {
   private S3: S3;
 
-  constructor(private settings: Record<string, string>) {
+  constructor(private setting: Record<string, string>) {
     super();
   }
 
@@ -15,10 +15,10 @@ export class S3Provider extends AbstractProvider {
 
     return (this.S3 = new S3({
       credentials: {
-        accessKeyId: this.settings['storage-s3-key'],
-        secretAccessKey: this.settings['storage-s3-secret'],
+        accessKeyId: this.setting['storage-s3-key'],
+        secretAccessKey: this.setting['storage-s3-secret'],
       },
-      region: this.settings['storage-s3-region'],
+      region: this.setting['storage-s3-region'],
     }));
   }
 
@@ -27,7 +27,7 @@ export class S3Provider extends AbstractProvider {
 
     const result = await s3
       .upload({
-        Bucket: this.settings['storage-s3-bucket'],
+        Bucket: this.setting['storage-s3-bucket'],
         Key: [destination, this.getFilename(file.originalname)].join('/'),
         Body: file.buffer,
       })
@@ -47,7 +47,7 @@ export class S3Provider extends AbstractProvider {
 
     await s3
       .deleteObject({
-        Bucket: this.settings['storage-s3-bucket'],
+        Bucket: this.setting['storage-s3-bucket'],
         Key: url.pathname.split('/').slice(1).join('/'),
       })
       .promise();
@@ -66,7 +66,7 @@ export class S3Provider extends AbstractProvider {
 
     return s3
       .getObject({
-        Bucket: this.settings['storage-s3-bucket'],
+        Bucket: this.setting['storage-s3-bucket'],
         Key: url.pathname.split('/').slice(1).join('/'),
       })
       .createReadStream();
@@ -83,7 +83,7 @@ export class S3Provider extends AbstractProvider {
 
     const result = await s3
       .headObject({
-        Bucket: this.settings['storage-s3-bucket'],
+        Bucket: this.setting['storage-s3-bucket'],
         Key: url.pathname.split('/').slice(1).join('/'),
       })
       .promise();
@@ -104,7 +104,7 @@ export class S3Provider extends AbstractProvider {
 
     const result = await s3
       .getObject({
-        Bucket: this.settings['storage-s3-bucket'],
+        Bucket: this.setting['storage-s3-bucket'],
         Key: url.pathname.split('/').slice(1).join('/'),
       })
       .promise();
@@ -122,7 +122,7 @@ export class S3Provider extends AbstractProvider {
     }
 
     return s3.getSignedUrlPromise('getObject', {
-      Bucket: this.settings['storage-s3-bucket'],
+      Bucket: this.setting['storage-s3-bucket'],
       Key: url.pathname.split('/').slice(1).join('/'),
       Expires: expires,
     });

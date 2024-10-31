@@ -21,7 +21,7 @@ describe('Custom API tests', () => {
   /*
   test('Create new custom entry', async () => {
     const response = await axios.post(
-      `/persons/${personId}/customs`,
+      `/person/${personId}/customs`,
       newCustom,
       {
         headers: {
@@ -37,7 +37,7 @@ describe('Custom API tests', () => {
   */
 
   test('Get all customs for a person', async () => {
-    const response = await axios.get(`/persons/${personId}/customs`, {
+    const response = await axios.get(`/person/${personId}/customs`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -50,7 +50,7 @@ describe('Custom API tests', () => {
   /*
   test('Get custom entry by ID', async () => {
     const response = await axios.get(
-      `/persons/${personId}/customs?id=${customId}`,
+      `/person/${personId}/customs?id=${customId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ describe('Custom API tests', () => {
     };
 
     const response = await axios.patch(
-      `/persons/${personId}/customs/${customId}`,
+      `/person/${personId}/customs/${customId}`,
       updatedCustom,
       {
         headers: {
@@ -88,7 +88,7 @@ describe('Custom API tests', () => {
   /*
   test('Delete custom entry', async () => {
     const response = await axios.delete(
-      `/persons/${personId}/customs/${customId}`,
+      `/person/${personId}/customs/${customId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

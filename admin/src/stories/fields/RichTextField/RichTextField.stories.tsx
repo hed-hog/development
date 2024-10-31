@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react'
 import { RichTextField } from '@/components/custom/rich-text-field'
+import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof RichTextField> = {
   title: 'Fields/RichTextField',
@@ -8,7 +8,7 @@ const meta: Meta<typeof RichTextField> = {
   parameters: {
     docs: {
       description: {
-        component: `The RichTextField component is an advanced text editor that allows users to create and edit rich text content with formatting options such as bold, italic, strikethrough, and lists. It utilizes TipTap for rich text editing and provides a customizable toolbar for text formatting. Suitable for applications requiring rich text input such as content management systems, blogs, or any application with advanced text editing needs.`,
+        component: `The RichTextField component is an advanced text editor that allows user to create and edit rich text content with formatting options such as bold, italic, strikethrough, and lists. It utilizes TipTap for rich text editing and provides a customizable toolbar for text formatting. Suitable for applications requiring rich text input such as content management systems, blogs, or any application with advanced text editing needs.`,
       },
     },
   },

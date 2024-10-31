@@ -210,17 +210,17 @@ export default function Page() {
               ),
             },
             {
-              title: modulesT('roles'),
+              title: modulesT('role'),
               children: (
                 <DataPanel
                   ref={screenRolesRef}
                   selectable
                   multiple
                   layout='list'
-                  id={`screen-roles-${item.id}`}
-                  url={`/screens/${item.id}/roles`}
+                  id={`screen-role-${item.id}`}
+                  url={`/screens/${item.id}/role`}
                   checked={(item: RoleType) => {
-                    return Boolean((item.role_screens ?? []).length)
+                    return Boolean((item.role_screen ?? []).length)
                   }}
                   onSelectionChange={(selectedItems) => {
                     setSelectedItems((prev) => [...prev, ...selectedItems])
@@ -244,7 +244,7 @@ export default function Page() {
                           {
                             onSuccess: () => {
                               queryClient.invalidateQueries({
-                                queryKey: [`screen-roles-${item.id}`],
+                                queryKey: [`screen-role-${item.id}`],
                               })
                             },
                           }
@@ -256,15 +256,15 @@ export default function Page() {
               ],
             },
             {
-              title: modulesT('routes'),
+              title: modulesT('route'),
               children: (
                 <DataPanel
                   ref={screenRoutesRef}
                   selectable
                   multiple
                   layout='list'
-                  id={`screen-routes-${item.id}`}
-                  url={`/screens/${item.id}/routes`}
+                  id={`screen-route-${item.id}`}
+                  url={`/screens/${item.id}/route`}
                   checked={(item: RouteType) => {
                     return Boolean((item.route_screens ?? []).length)
                   }}
@@ -298,7 +298,7 @@ export default function Page() {
                           {
                             onSuccess: () => {
                               queryClient.invalidateQueries({
-                                queryKey: [`screen-routes-${item.id}`],
+                                queryKey: [`screen-route-${item.id}`],
                               })
                             },
                           }

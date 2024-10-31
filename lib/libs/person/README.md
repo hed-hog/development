@@ -21,7 +21,7 @@
 
 # Overview
 
-**Hedhog Person** is a comprehensive module for managing person-related data, supporting physical, legal, and international entities. It handles associated documents, contacts, addresses, and custom attributes, designed to integrate seamlessly into Hedhog-based projects, providing a CRUD (Create, Read, Update, Delete) foundation for managing persons.
+**Hedhog Person** is a comprehensive module for managing person-related data, supporting physical, legal, and international entities. It handles associated documents, contacts, addresses, and custom attributes, designed to integrate seamlessly into Hedhog-based projects, providing a CRUD (Create, Read, Update, Delete) foundation for managing person.
 
 ### Features
 
@@ -50,18 +50,18 @@ npm i @hedhog/person
 - **custom-type**: Allows the definition of custom field types to extend person records with specialized data points.
 - **document**: Manages documents related to individuals, such as IDs and licenses, supporting secure storage and retrieval.
 - **document-type**: Facilitates the categorization of document types (e.g., passport, driver’s license) for organized document management.
-- **person**: Manages individual and organizational profiles, including creation, updates, and deletion, along with support for linking associated addresses, contacts, documents, and custom attributes.
-- **person-type**: Provides a system for defining and managing types of persons (e.g., individual, company) to support diverse person profiles within the application.
+- **person**: Manages individual and organizational profile, including creation, updates, and deletion, along with support for linking associated addresses, contacts, documents, and custom attributes.
+- **person-type**: Provides a system for defining and managing types of person (e.g., individual, company) to support diverse person profile within the application.
 
 ---
 
 # Address
 
-The **Address** module provides comprehensive tools to manage addresses associated with individual or organizational profiles. This module allows for CRUD operations on addresses, supporting various address types and filtering capabilities.
+The **Address** module provides comprehensive tools to manage addresses associated with individual or organizational profile. This module allows for CRUD operations on addresses, supporting various address types and filtering capabilities.
 
 ### Controller Endpoints
 
-#### `POST /persons/:personId/address`
+#### `POST /person/:personId/address`
 
 - **Description**: Creates a new address for a person.
 - **Parameters**:
@@ -69,7 +69,7 @@ The **Address** module provides comprehensive tools to manage addresses associat
 - **Body**:
   - `CreatePersonAddressDTO`: Data required to create the address, including fields like country_id, type_id, street, city, postal_code, and more.
 
-#### `GET /persons/:personId/address`
+#### `GET /person/:personId/address`
 
 - **Description**: Retrieves addresses for a specific person, optionally filtered by typeId or addressId.
 - **Parameters**:
@@ -77,7 +77,7 @@ The **Address** module provides comprehensive tools to manage addresses associat
   - `typeId (query param, optional)`: Filters results by a specific address type.
   - `addressId (query param, optional)`: Retrieves a specific address by ID.
 
-#### `PATCH /persons/:personId/address/:addressId`
+#### `PATCH /person/:personId/address/:addressId`
 
 - **Description**: Updates an existing address.
 - **Parameters**:
@@ -86,7 +86,7 @@ The **Address** module provides comprehensive tools to manage addresses associat
 - **Body**:
   - `UpdatePersonAddressDTO (body)`: Data for updating the address fields.
 
-#### `DELETE /persons/:personId/address/:addressId`
+#### `DELETE /person/:personId/address/:addressId`
 
 - **Description**: Deletes an address.
 - **Body**:
@@ -165,7 +165,7 @@ The **Address** module provides comprehensive tools to manage addresses associat
 - **Description**: Retrieves all address types, supporting pagination and localization.
 - **Parameters**:
   - `paginationParams (query param, optional)`: Controls pagination parameters (page, limit).
-  - `locale (query param, optional)`: The locale code to filter address type translations.
+  - `locale (query param, optional)`: The locale code to filter address type translation.
 
 #### `GET /address-types/:id`
 
@@ -197,9 +197,9 @@ The **Address** module provides comprehensive tools to manage addresses associat
 
 #### `getAddressTypes(locale: string, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves paginated address types, including translations based on the specified locale.
+- **Description**: Retrieves paginated address types, including translation based on the specified locale.
 - **Parameters**:
-  - `locale`: The locale code to filter the translations for address type names.
+  - `locale`: The locale code to filter the translation for address type names.
   - `paginationParams`: Pagination parameters like page and limit.
 
 #### `getAddressTypeById(id: number)`
@@ -237,11 +237,11 @@ The **Address** module provides comprehensive tools to manage addresses associat
 
 # Contact
 
-The **Contact** module manages contacts associated with individual profiles, enabling CRUD operations and offering support for multiple contact types. This module allows you to create, retrieve, update, and delete contacts for a person and provides filtering options based on contact type or specific contact IDs.
+The **Contact** module manages contacts associated with individual profile, enabling CRUD operations and offering support for multiple contact types. This module allows you to create, retrieve, update, and delete contacts for a person and provides filtering options based on contact type or specific contact IDs.
 
 ### Controller Endpoints
 
-#### `POST /persons/:personId/contacts`
+#### `POST /person/:personId/contacts`
 
 - **Description**: Creates a new contact for a person.
 - **Parameters**:
@@ -249,7 +249,7 @@ The **Contact** module manages contacts associated with individual profiles, ena
 - **Body:**
   - `CreatePersonContactDTO`: Data required to create the contact, including fields like type_id, value, primary, etc.
 
-#### `GET /persons/:personId/contacts`
+#### `GET /person/:personId/contacts`
 
 - **Description**: Retrieves contacts associated with a specific person, with optional filtering by contact type or contact ID.
 - **Parameters**:
@@ -257,7 +257,7 @@ The **Contact** module manages contacts associated with individual profiles, ena
   - `typeId (query param, optional)`: Filters results by a specific contact type.
   - `contactId (query param, optional)`: Retrieves a specific contact by ID.
 
-#### `PATCH /persons/:personId/contacts/:contactId`
+#### `PATCH /person/:personId/contacts/:contactId`
 
 - **Description**: Updates an existing contact for a person.
 - **Parameters**:
@@ -266,7 +266,7 @@ The **Contact** module manages contacts associated with individual profiles, ena
 - **Body**:
   - `UpdatePersonContactDTO`: Data for updating contact fields.
 
-#### `DELETE /persons/:personId/contacts/:contactId`
+#### `DELETE /person/:personId/contacts/:contactId`
 
 - **Description**: Deletes a contact associated with a person.
 - **Parameters**:
@@ -338,14 +338,14 @@ The **Contact** module manages contacts associated with individual profiles, ena
 
 - **Description**: Creates a new contact type.
 - **Body**:
-  - `CreateContactTypeDTO`: The data required to create a contact type, including fields like name and optional translations.
+  - `CreateContactTypeDTO`: The data required to create a contact type, including fields like name and optional translation.
 
 #### `GET /contact-types`
 
-- **Description**: Retrieves paginated contact types, including localized translations based on the provided locale.
+- **Description**: Retrieves paginated contact types, including localized translation based on the provided locale.
 - **Parameters**:
   - `paginationParams (query)`: Optional pagination parameters from @hedhog/pagination.
-  - `locale (query)`: The locale code for retrieving contact type translations.
+  - `locale (query)`: The locale code for retrieving contact type translation.
 
 #### `GET /contact-types/:id`
 
@@ -373,11 +373,11 @@ The **Contact** module manages contacts associated with individual profiles, ena
 
 - **Description**: Creates a new contact type record.
 - **Parameters**:
-  - `data`: Information to create the contact type, including name and optional translations.
+  - `data`: Information to create the contact type, including name and optional translation.
 
 #### `getContactTypes(locale: string, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves paginated contact types, applying locale-based translations.
+- **Description**: Retrieves paginated contact types, applying locale-based translation.
 - **Parameters**:
   - `locale`: The locale code for the required translation.
   - `paginationParams`: Pagination options.
@@ -444,18 +444,18 @@ The **Contact** module manages contacts associated with individual profiles, ena
 
 # Custom
 
-The **Custom** module is used to manage custom data associated with persons. This module includes a controller to handle various endpoints for CRUD operations on custom data and a service to interact with the database via `PrismaService`.
+The **Custom** module is used to manage custom data associated with person. This module includes a controller to handle various endpoints for CRUD operations on custom data and a service to interact with the database via `PrismaService`.
 
 ### Controller Endpoints
 
-#### `POST /persons/:personId/customs`
+#### `POST /person/:personId/customs`
 
 - **Description**: Creates a custom record for a specific person.
 - **Parameters**:
   - `personId` (path): ID of the person.
   - `data` (body): Object containing custom data (`name`, `value`, etc.) as defined in `CreatePersonCustomDTO`.
 
-#### `GET /persons/:personId/customs`
+#### `GET /person/:personId/customs`
 
 - **Description**: Retrieves a list of all custom records for a specific person.
 - **Parameters**:
@@ -463,7 +463,7 @@ The **Custom** module is used to manage custom data associated with persons. Thi
   - `typeId` (query, optional): Filters custom records by type.
   - `id` (query, optional): Retrieves a specific custom record by ID if provided.
 
-#### `PATCH /persons/:personId/customs/:customId`
+#### `PATCH /person/:personId/customs/:customId`
 
 - **Description**: Updates a specific custom record.
 - **Parameters**:
@@ -471,7 +471,7 @@ The **Custom** module is used to manage custom data associated with persons. Thi
   - `customId` (path): ID of the custom record.
   - `data` (body): Object containing updated custom data fields as defined in `UpdatePersonCustomDTO`.
 
-#### `DELETE /persons/:personId/customs/:customId`
+#### `DELETE /person/:personId/customs/:customId`
 
 - **Description**: Deletes a specific custom record.
 - **Parameters**:
@@ -535,7 +535,7 @@ The **Custom** module is used to manage custom data associated with persons. Thi
 
 # Custom Type
 
-The **Custom Type** module is responsible for managing types for custom data associated with persons. It includes a controller to handle CRUD operations and a service to manage database interactions using `PrismaService` and `PaginationService`.
+The **Custom Type** module is responsible for managing types for custom data associated with person. It includes a controller to handle CRUD operations and a service to manage database interactions using `PrismaService` and `PaginationService`.
 
 ### Controller Endpoints
 
@@ -619,18 +619,18 @@ The **Custom Type** module is responsible for managing types for custom data ass
 
 # Document
 
-The **Document** module handles operations related to documents associated with persons, including CRUD operations and pagination. It allows retrieving documents based on various criteria, such as document ID and type ID.
+The **Document** module handles operations related to documents associated with person, including CRUD operations and pagination. It allows retrieving documents based on various criteria, such as document ID and type ID.
 
 ### Controller Endpoints
 
-#### `POST /persons/:personId/documents`
+#### `POST /person/:personId/documents`
 
 - **Description**: Creates a new document for a specified person.
 - **Parameters**:
   - `personId` (path): ID of the person associated with the document.
   - `data` (body): Document data as defined in `CreatePersonDocumentDTO`.
 
-#### `GET /persons/:personId/documents`
+#### `GET /person/:personId/documents`
 
 - **Description**: Retrieves documents for a specified person, with optional filtering by `typeId` or `documentId`.
 - **Parameters**:
@@ -638,7 +638,7 @@ The **Document** module handles operations related to documents associated with 
   - `typeId` (query): Optional type ID to filter documents by type.
   - `documentId` (query): Optional document ID to retrieve a specific document.
 
-#### `PATCH /persons/:personId/documents/:documentId`
+#### `PATCH /person/:personId/documents/:documentId`
 
 - **Description**: Updates a specific document associated with a person.
 - **Parameters**:
@@ -646,7 +646,7 @@ The **Document** module handles operations related to documents associated with 
   - `documentId` (path): ID of the document to be updated.
   - `data` (body): Document data as defined in `UpdatePersonDocumentDTO`.
 
-#### `DELETE /persons/:personId/documents/:documentId`
+#### `DELETE /person/:personId/documents/:documentId`
 
 - **Description**: Deletes a specific document.
 - **Parameters**:
@@ -700,7 +700,7 @@ The **Document** module handles operations related to documents associated with 
 ├── dto
 │   ├── create-document.dto.ts   # DTO for creating a document
 │   └── update-document.dto.ts   # DTO for updating a document
-|── document.controller.ts       # Controller for document routes
+|── document.controller.ts       # Controller for document route
 |── document.module.ts           # Module definition for documents
 |── document.service.ts          # Service class for document operations
 ├── document.service.spec.ts     # Testing file for document service
@@ -710,7 +710,7 @@ The **Document** module handles operations related to documents associated with 
 
 # Document Type
 
-The **Document Type** module manages document type definitions used for categorizing documents associated with persons. It includes operations for creating, reading, updating, and deleting document types, with support for pagination and localization.
+The **Document Type** module manages document type definitions used for categorizing documents associated with person. It includes operations for creating, reading, updating, and deleting document types, with support for pagination and localization.
 
 ### Controller Endpoints
 
@@ -722,7 +722,7 @@ The **Document Type** module manages document type definitions used for categori
 
 #### `GET /document-types`
 
-- **Description**: Retrieves all document types with optional pagination and locale-based translations.
+- **Description**: Retrieves all document types with optional pagination and locale-based translation.
 - **Parameters**:
   - `paginationParams` (query): Optional pagination parameters.
   - `locale` (header): Locale for fetching translated document type names.
@@ -756,7 +756,7 @@ The **Document Type** module manages document type definitions used for categori
 
 #### `getDocumentTypes(locale: string, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves all document types with pagination and locale-based translations.
+- **Description**: Retrieves all document types with pagination and locale-based translation.
 - **Parameters**:
   - `locale`: Locale for fetching translated document type names.
   - `paginationParams`: Pagination parameters.
@@ -786,7 +786,7 @@ The **Document Type** module manages document type definitions used for categori
 ├── dto
 │   ├── create-document-type.dto.ts   # DTO for creating a document type
 │   ├── update-document-type.dto.ts   # DTO for updating a document type
-|── document-type.controller.ts       # Controller for document type routes
+|── document-type.controller.ts       # Controller for document type route
 |── document-type.module.ts           # Module definition for document types
 |── document-type.service.ts          # Service class for document type operations
 ├── document-type.service.spec.ts     # Testing file for document type service
@@ -796,39 +796,39 @@ The **Document Type** module manages document type definitions used for categori
 
 # Person
 
-The **Person** module is designed to manage person-related data, including details such as types, documents, contacts, addresses, and custom fields. It supports multilingual features for localized data representation and provides various operations for creating, retrieving, updating, and deleting persons in the system.
+The **Person** module is designed to manage person-related data, including details such as types, documents, contacts, addresses, and custom fields. It supports multilingual features for localized data representation and provides various operations for creating, retrieving, updating, and deleting person in the system.
 
 ## Controller Endpoints
 
-### `POST /persons`
+### `POST /person`
 
 - **Description**: Creates a new person in the system.
 - **Parameters**:
   - `data` (body): Data for the person, defined in `CreatePersonDTO`.
 
-### `GET /persons`
+### `GET /person`
 
-- **Description**: Retrieves all persons with pagination and locale-based translations.
+- **Description**: Retrieves all person with pagination and locale-based translation.
 - **Parameters**:
   - `paginationParams` (query): Optional pagination parameters.
   - `locale` (header): Locale to fetch translated names of person types.
 
-### `GET /persons/:id`
+### `GET /person/:id`
 
 - **Description**: Retrieves a person by their ID.
 - **Parameters**:
   - `id` (path): Unique identifier of the person.
 
-### `PATCH /persons/:id`
+### `PATCH /person/:id`
 
 - **Description**: Updates a specific person's details.
 - **Parameters**:
   - `id` (path): Unique identifier of the person.
   - `data` (body): Data for updating, defined in `UpdatePersonDTO`.
 
-### `DELETE /persons`
+### `DELETE /person`
 
-- **Description**: Deletes multiple persons by their IDs.
+- **Description**: Deletes multiple person by their IDs.
 - **Parameters**:
   - `data` (body): Array of person IDs to delete, defined in `DeleteDTO`.
 
@@ -842,7 +842,7 @@ The **Person** module is designed to manage person-related data, including detai
 
 ### `getPersons(locale: string, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves all persons with pagination and locale-based translations.
+- **Description**: Retrieves all person with pagination and locale-based translation.
 - **Parameters**:
   - `locale`: Locale to fetch translated names of person-related data.
   - `paginationParams`: Pagination parameters.
@@ -862,7 +862,7 @@ The **Person** module is designed to manage person-related data, including detai
 
 ### `remove(data: DeleteDTO)`
 
-- **Description**: Deletes multiple persons from the database by their IDs.
+- **Description**: Deletes multiple person from the database by their IDs.
 - **Parameters**:
   - `data`: Object containing an array of person IDs to delete.
 
@@ -870,7 +870,7 @@ The **Person** module is designed to manage person-related data, including detai
 
 # Person Type
 
-The **Person Type** module manages person type classifications used for categorizing different types of persons within the application. It provides endpoints for creating, reading, updating, and deleting person types, supporting pagination and locale-based translations.
+The **Person Type** module manages person type classifications used for categorizing different types of person within the application. It provides endpoints for creating, reading, updating, and deleting person types, supporting pagination and locale-based translation.
 
 ### Controller Endpoints
 
@@ -882,7 +882,7 @@ The **Person Type** module manages person type classifications used for categori
 
 #### `GET /person-types`
 
-- **Description**: Retrieves all person types with pagination and locale-based translations.
+- **Description**: Retrieves all person types with pagination and locale-based translation.
 - **Parameters**:
   - `paginationParams` (query): Optional pagination parameters.
   - `locale` (header): Locale to fetch translated names of person types.
@@ -916,7 +916,7 @@ The **Person Type** module manages person type classifications used for categori
 
 #### `getPersonTypes(locale: string, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves all person types with pagination and locale-based translations.
+- **Description**: Retrieves all person types with pagination and locale-based translation.
 - **Parameters**:
   - `locale`: Locale to fetch translated names of person types.
   - `paginationParams`: Pagination parameters.
@@ -946,7 +946,7 @@ The **Person Type** module manages person type classifications used for categori
 ├── dto
 │   ├── create-person-type.dto.ts     # DTO for creating a person type
 │   ├── update-person-type.dto.ts     # DTO for updating a person type
-|── person-type.controller.ts         # Controller for person type routes
+|── person-type.controller.ts         # Controller for person type route
 |── person-type.module.ts             # Module definition for person types
 |── person-type.service.ts            # Service class for person type operations
 ├── person-type.service.spec.ts       # Testing file for person type service

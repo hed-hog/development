@@ -28,7 +28,7 @@ describe('Addresses API tests', () => {
   /*
   test('Create new address', async () => {
     const response = await axios.post(
-      `/persons/${personId}/address`,
+      `/person/${personId}/address`,
       newAddress,
       {
         headers: {
@@ -44,7 +44,7 @@ describe('Addresses API tests', () => {
 */
 
   /* test('Get all addresses for a person', async () => {
-    const response = await axios.get(`/persons/${personId}/address`, {
+    const response = await axios.get(`/person/${personId}/address`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -59,7 +59,7 @@ describe('Addresses API tests', () => {
   /*
   test('Get address by ID', async () => {
     const response = await axios.get(
-      `/persons/${personId}/address?id=${addressId}`,
+      `/person/${personId}/address?id=${addressId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ describe('Addresses API tests', () => {
     };
 
     const response = await axios.patch(
-      `/persons/${personId}/address/${addressId}`,
+      `/person/${personId}/address/${addressId}`,
       updatedAddress,
       {
         headers: {
@@ -99,7 +99,7 @@ describe('Addresses API tests', () => {
   /*
   test('Delete address', async () => {
     const response = await axios.delete(
-      `/persons/${personId}/address/${addressId}`,
+      `/person/${personId}/address/${addressId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -1,14 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ScreenService } from './screen.service';
-import { PrismaService } from '@hedhog/prisma';
 import {
-  PaginationService,
-  PaginationDTO,
   PageOrderDirection,
+  PaginationDTO,
+  PaginationService,
 } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
 import { BadRequestException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { ScreenService } from './screen.service';
 
 describe('ScreenService', () => {
   let service: ScreenService;
@@ -28,10 +28,10 @@ describe('ScreenService', () => {
               deleteMany: jest.fn(),
               findUnique: jest.fn(),
             },
-            routes: {
+            route: {
               findMany: jest.fn(),
             },
-            role_screens: {
+            role_screen: {
               deleteMany: jest.fn(),
               createMany: jest.fn(),
             },
@@ -155,23 +155,23 @@ describe('ScreenService', () => {
   });
 
   describe('updateRoles', () => {
-    it('should update roles for a screen', async () => {
+    it('should update role for a screen', async () => {
       const screenId = 1;
       const updateIdsDTO: UpdateIdsDTO = { ids: [1, 2, 3] };
-      jest.spyOn(prismaService.role_screens, 'deleteMany').mockResolvedValue({
+      jest.spyOn(prismaService.role_screen, 'deleteMany').mockResolvedValue({
         count: 1,
       });
 
-      jest.spyOn(prismaService.role_screens, 'createMany').mockResolvedValue({
+      jest.spyOn(prismaService.role_screen, 'createMany').mockResolvedValue({
         count: updateIdsDTO.ids.length,
       });
 
       await service.updateRoles(screenId, updateIdsDTO);
 
-      expect(prismaService.role_screens.deleteMany).toHaveBeenCalledWith({
+      expect(prismaService.role_screen.deleteMany).toHaveBeenCalledWith({
         where: { screen_id: screenId },
       });
-      expect(prismaService.role_screens.createMany).toHaveBeenCalledWith({
+      expect(prismaService.role_screen.createMany).toHaveBeenCalledWith({
         data: updateIdsDTO.ids.map((roleId) => ({
           screen_id: screenId,
           role_id: roleId,
@@ -186,7 +186,7 @@ describe('ScreenService', () => {
       const screenId = 1;
       const updateIdsDTO: UpdateIdsDTO = { ids: [1, 2, 3] };
 
-      prismaService.routes.findMany = jest
+      prismaService.route.findMany = jest
         .fn()
         .mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
 
@@ -195,7 +195,7 @@ describe('ScreenService', () => {
 
       await service.updateRoutes(screenId, updateIdsDTO);
 
-      expect(prismaService.routes.findMany).toHaveBeenCalledWith({
+      expect(prismaService.route.findMany).toHaveBeenCalledWith({
         where: { id: { in: updateIdsDTO.ids } },
         select: { id: true },
       });
@@ -235,11 +235,11 @@ describe('ScreenService', () => {
       await service.listRoles(locale, screenId, paginationParams);
 
       expect(paginationService.paginate).toHaveBeenCalledWith(
-        prismaService.roles,
+        prismaService.role,
         paginationParams,
         {
           include: {
-            role_screens: {
+            role_screen: {
               where: {
                 screen_id: screenId,
               },
@@ -255,7 +255,7 @@ describe('ScreenService', () => {
   });
 
   describe('listRoutes', () => {
-    it('should paginate the routes linked to a screen', async () => {
+    it('should paginate the route linked to a screen', async () => {
       const paginationParams: PaginationDTO = {
         page: 1,
         pageSize: 10,
@@ -282,7 +282,7 @@ describe('ScreenService', () => {
       await service.listRoutes(screenId, paginationParams);
 
       expect(paginationService.paginate).toHaveBeenCalledWith(
-        prismaService.routes,
+        prismaService.route,
         paginationParams,
         {
           include: {

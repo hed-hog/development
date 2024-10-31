@@ -42,7 +42,7 @@ export function requests() {
   }) => {
     const { slug, value } = params
     return request({
-      url: `/setting/users/${slug}`,
+      url: `/setting/user/${slug}`,
       method: 'put',
       data: { value },
     }).then((res) => res.data)

@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react'
 import { SearchField } from '@/components/search-field'
+import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof SearchField> = {
   title: 'Fields/SearchField',
@@ -32,7 +32,7 @@ const meta: Meta<typeof SearchField> = {
     docs: {
       description: {
         component:
-          'The SearchField component features an input field with an optional custom icon and a button. It provides users with an intuitive interface for entering search queries and executing searches. Ideal for use in applications that require user-driven searches, including dashboards, settings, and content management systems.',
+          'The SearchField component features an input field with an optional custom icon and a button. It provides user with an intuitive interface for entering search queries and executing searches. Ideal for use in applications that require user-driven searches, including dashboards, setting, and content management systems.',
       },
     },
   },

@@ -27,7 +27,7 @@ export type RoleEditPanelProps = {
 
 export const RoleEditPanel = forwardRef(
   ({ data, onEdit }: RoleEditPanelProps, ref) => {
-    const { t } = useTranslation(['actions', 'roles', 'modules', 'translation'])
+    const { t } = useTranslation(['actions', 'role', 'modules', 'translation'])
 
     const { data: item, isLoading } = useRolesShow(data.id as number)
     const { mutate: editRoleRoutes } = useEditRoleRoutes()
@@ -100,7 +100,7 @@ export const RoleEditPanel = forwardRef(
                 ),
               },
               {
-                title: t('users', { ns: 'modules' }),
+                title: t('user', { ns: 'modules' }),
                 children: (
                   <DataPanel
                     ref={roleUsersRef}
@@ -108,10 +108,10 @@ export const RoleEditPanel = forwardRef(
                     extractKey={(item) => String(item.id)}
                     multiple
                     layout='list'
-                    id={`role-users-${item.id}`}
-                    url={`/roles/${item.id}/users`}
+                    id={`role-user-${item.id}`}
+                    url={`/role/${item.id}/user`}
                     checked={(item: Roles) => {
-                      return Boolean((item.role_users ?? []).length)
+                      return Boolean((item.role_user ?? []).length)
                     }}
                   />
                 ),
@@ -132,7 +132,7 @@ export const RoleEditPanel = forwardRef(
                             {
                               onSuccess: () => {
                                 queryClient.invalidateQueries({
-                                  queryKey: [`role-users-${item.id}`],
+                                  queryKey: [`role-user-${item.id}`],
                                 })
                               },
                             }
@@ -144,15 +144,15 @@ export const RoleEditPanel = forwardRef(
                 ],
               },
               {
-                title: t('routes', { ns: 'modules' }),
+                title: t('route', { ns: 'modules' }),
                 children: (
                   <DataPanel
                     ref={roleRoutesRef}
                     selectable
                     multiple
                     layout='list'
-                    id={`role-routes-${item.id}`}
-                    url={`/roles/${item.id}/routes`}
+                    id={`role-route-${item.id}`}
+                    url={`/role/${item.id}/route`}
                     render={(item: Routes) => (
                       <div className='flex flex-row gap-2'>
                         <code className='relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold'>
@@ -162,7 +162,7 @@ export const RoleEditPanel = forwardRef(
                       </div>
                     )}
                     checked={(item: Routes) => {
-                      return Boolean((item.role_routes ?? []).length)
+                      return Boolean((item.role_route ?? []).length)
                     }}
                   />
                 ),
@@ -183,7 +183,7 @@ export const RoleEditPanel = forwardRef(
                             {
                               onSuccess: () => {
                                 queryClient.invalidateQueries({
-                                  queryKey: [`role-routes-${item.id}`],
+                                  queryKey: [`role-route-${item.id}`],
                                 })
                               },
                             }
@@ -195,15 +195,15 @@ export const RoleEditPanel = forwardRef(
                 ],
               },
               {
-                title: t('menus', { ns: 'modules' }),
+                title: t('menu', { ns: 'modules' }),
                 children: (
                   <DataPanel
                     ref={roleMenusRef}
                     selectable
                     multiple
                     layout='list'
-                    id={`role-menus-${item.id}`}
-                    url={`/roles/${item.id}/menus`}
+                    id={`role-menu-${item.id}`}
+                    url={`/role/${item.id}/menu`}
                     render={(item: Menus) => (
                       <div className='flex flex-row items-center gap-2'>
                         {getIcon(item.icon || '')}
@@ -213,7 +213,7 @@ export const RoleEditPanel = forwardRef(
                       </div>
                     )}
                     checked={(item: Menus) => {
-                      return Boolean((item.role_menus ?? []).length)
+                      return Boolean((item.role_menu ?? []).length)
                     }}
                   />
                 ),
@@ -234,7 +234,7 @@ export const RoleEditPanel = forwardRef(
                             {
                               onSuccess: () => {
                                 queryClient.invalidateQueries({
-                                  queryKey: [`role-menus-${item.id}`],
+                                  queryKey: [`role-menu-${item.id}`],
                                 })
                               },
                             }
@@ -254,7 +254,7 @@ export const RoleEditPanel = forwardRef(
                     multiple
                     layout='list'
                     id={`role-screens-${item.id}`}
-                    url={`/roles/${item.id}/screens`}
+                    url={`/role/${item.id}/screens`}
                     render={(item: Screens) => (
                       <div className='flex flex-col'>
                         <div className='flex flex-row'>
@@ -269,7 +269,7 @@ export const RoleEditPanel = forwardRef(
                       </div>
                     )}
                     checked={(item: Screens) => {
-                      return Boolean((item.role_screens ?? []).length)
+                      return Boolean((item.role_screen ?? []).length)
                     }}
                   />
                 ),

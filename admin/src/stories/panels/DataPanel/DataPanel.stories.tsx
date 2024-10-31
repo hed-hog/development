@@ -22,7 +22,7 @@ const meta: Meta<typeof DataPanel> = {
         <li>**Customizable Columns**: For table layouts, customize column headers and data keys to fit your data structure.</li>
         <li>**Flexible Data Source**: Fetch data from an API endpoint specified by the url prop, enabling dynamic content updates.</li>
       </ul>
-      Ideal for use in applications where users need to view and interact with large sets of data, such as dashboards, admin panels, and data management tools.
+      Ideal for use in applications where user need to view and interact with large sets of data, such as dashboards, admin panels, and data management tools.
       `,
       },
     },
@@ -118,7 +118,7 @@ const meta: Meta<typeof DataPanel> = {
     sortable: {
       control: 'boolean',
       description:
-        'Determines if the items in the panel can be sorted. When true, users can interact with the panel to sort items based on various criteria.',
+        'Determines if the items in the panel can be sorted. When true, user can interact with the panel to sort items based on various criteria.',
     },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel
@@ -132,8 +132,8 @@ type Story = StoryObj<typeof DataPanel>
 
 export const GridSelectableUnique: Story = {
   args: {
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     selectable: true,
     multiple: false,
     columns: [
@@ -146,7 +146,7 @@ export const GridSelectableUnique: Story = {
     docs: {
       description: {
         story:
-          'Displays a grid layout where users can select a single item from the list. Ideal for when only one selection is needed at a time.',
+          'Displays a grid layout where user can select a single item from the list. Ideal for when only one selection is needed at a time.',
       },
     },
   },
@@ -154,8 +154,8 @@ export const GridSelectableUnique: Story = {
 
 export const GridSelectableMultiple: Story = {
   args: {
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     selectable: true,
     multiple: true,
   },
@@ -171,8 +171,8 @@ export const GridSelectableMultiple: Story = {
 
 export const GridSearch: Story = {
   args: {
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     hasSearch: true,
   },
   parameters: {
@@ -188,7 +188,7 @@ export const GridSearch: Story = {
 export const GridWithMenuOrders: Story = {
   args: {
     id: 'data-panel-grid-menu-orders',
-    url: '/users',
+    url: '/user',
     hasSearch: true,
     selectable: true,
     multiple: true,
@@ -214,7 +214,7 @@ export const GridWithMenuOrders: Story = {
     docs: {
       description: {
         story:
-          'This grid layout allows users to sort items by name using the menu order options.',
+          'This grid layout allows user to sort items by name using the menu order options.',
       },
     },
   },
@@ -223,7 +223,7 @@ export const GridWithMenuOrders: Story = {
 export const GridWithMenuActions: Story = {
   args: {
     id: 'data-panel-grid-menu-actions',
-    url: '/users',
+    url: '/user',
     hasSearch: true,
     selectable: true,
     multiple: true,
@@ -261,7 +261,7 @@ export const GridWithMenuActions: Story = {
     docs: {
       description: {
         story:
-          'This grid layout includes actions such as edit, delete, and create for managing users.',
+          'This grid layout includes actions such as edit, delete, and create for managing user.',
       },
     },
   },
@@ -270,8 +270,8 @@ export const GridWithMenuActions: Story = {
 export const ListSelectableUnique: Story = {
   args: {
     layout: 'list',
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     selectable: true,
     multiple: false,
   },
@@ -279,7 +279,7 @@ export const ListSelectableUnique: Story = {
     docs: {
       description: {
         story:
-          'Displays a list layout where users can select only one item. Suitable for linear displays where single-item selection is required.',
+          'Displays a list layout where user can select only one item. Suitable for linear displays where single-item selection is required.',
       },
     },
   },
@@ -288,8 +288,8 @@ export const ListSelectableUnique: Story = {
 export const ListSelectableMultiple: Story = {
   args: {
     layout: 'list',
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     selectable: true,
     multiple: true,
   },
@@ -297,7 +297,7 @@ export const ListSelectableMultiple: Story = {
     docs: {
       description: {
         story:
-          'Shows a list layout with support for selecting multiple items. Ideal for scenarios where users need to select several items at once.',
+          'Shows a list layout with support for selecting multiple items. Ideal for scenarios where user need to select several items at once.',
       },
     },
   },
@@ -306,7 +306,7 @@ export const ListSelectableMultiple: Story = {
 export const ListWithMenuOrders: Story = {
   args: {
     layout: 'list',
-    url: '/users',
+    url: '/user',
     id: 'data-panel-list-menu-orders',
     hasSearch: true,
     selectable: true,
@@ -337,7 +337,7 @@ export const ListWithMenuOrders: Story = {
 export const ListWithMenuActions: Story = {
   args: {
     layout: 'list',
-    url: '/users',
+    url: '/user',
     id: 'data-panel-list-menu-actions',
     hasSearch: true,
     selectable: true,
@@ -371,7 +371,7 @@ export const ListWithMenuActions: Story = {
     docs: {
       description: {
         story:
-          'Shows a list layout with menu actions for managing users. Includes actions such as edit, delete, and create, with support for search and multiple item selections.',
+          'Shows a list layout with menu actions for managing user. Includes actions such as edit, delete, and create, with support for search and multiple item selections.',
       },
     },
   },
@@ -380,8 +380,8 @@ export const ListWithMenuActions: Story = {
 export const ListSearch: Story = {
   args: {
     layout: 'list',
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     hasSearch: true,
   },
   parameters: {
@@ -397,8 +397,8 @@ export const ListSearch: Story = {
 export const TableSelectableUnique: Story = {
   args: {
     layout: 'table',
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     selectable: true,
     multiple: false,
     columns: [
@@ -420,8 +420,8 @@ export const TableSelectableUnique: Story = {
 export const TableSelectableMultiple: Story = {
   args: {
     layout: 'table',
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     selectable: true,
     multiple: true,
     columns: [
@@ -443,7 +443,7 @@ export const TableSelectableMultiple: Story = {
 export const TableWithMenuOrders: Story = {
   args: {
     layout: 'table',
-    url: '/users',
+    url: '/user',
     id: 'data-panel-table-menu-orders',
     hasSearch: true,
     selectable: true,
@@ -489,7 +489,7 @@ export const TableWithMenuOrders: Story = {
 export const TableWithMenuActions: Story = {
   args: {
     layout: 'table',
-    url: '/users',
+    url: '/user',
     id: 'data-panel-table-menu-actions',
     hasSearch: true,
     selectable: true,
@@ -528,7 +528,7 @@ export const TableWithMenuActions: Story = {
     docs: {
       description: {
         story:
-          'Shows a table layout with menu actions for managing users. Includes actions such as edit, delete, and create, along with search functionality and support for multiple selections.',
+          'Shows a table layout with menu actions for managing user. Includes actions such as edit, delete, and create, along with search functionality and support for multiple selections.',
       },
     },
   },
@@ -537,7 +537,7 @@ export const TableWithMenuActions: Story = {
 export const TableSortable: Story = {
   args: {
     layout: 'table',
-    url: '/users',
+    url: '/user',
     id: 'data-panel-table-menu-orders',
     hasSearch: true,
     selectable: true,
@@ -562,8 +562,8 @@ export const TableSortable: Story = {
 export const TableSearch: Story = {
   args: {
     layout: 'table',
-    url: '/users',
-    id: 'users',
+    url: '/user',
+    id: 'user',
     hasSearch: true,
     columns: [
       { key: 'id', header: 'ID', width: 100 },

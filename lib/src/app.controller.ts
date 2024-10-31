@@ -1,3 +1,5 @@
+import { Public } from '@hedhog/admin';
+import { MailService } from '@hedhog/mail';
 import {
   Controller,
   Get,
@@ -5,11 +7,9 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
+import { HttpAdapterHost } from '@nestjs/core';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
-import { Public } from '@hedhog/admin';
-import { HttpAdapterHost } from '@nestjs/core';
-import { MailService } from '@hedhog/mail';
 
 @Public()
 @Controller()
@@ -26,13 +26,13 @@ export class AppController {
   }
 
   @Post('send')
-  @UseInterceptors(FilesInterceptor('files'))
-  async testMail(@UploadedFiles() files: Express.Multer.File[]) {
+  @UseInterceptors(FilesInterceptor('file'))
+  async testMail(@UploadedFiles() file: Express.Multer.File[]) {
     return this.mailService.send({
       to: ['joaohcrangel@gmail.com'],
       subject: `Testando email enviado às ${new Date().toISOString()}`,
       body: 'Testando 123',
-      attachments: (files ?? []).map((it) => {
+      attachments: (file ?? []).map((it) => {
         return {
           ...it,
           contentType: it.mimetype,
@@ -78,7 +78,7 @@ export class AppController {
   private getEndpointsFromFastify(server: any) {
     const endpoints = [];
 
-    server.routes.forEach((route) => {
+    server.route.forEach((route) => {
       const { url, method } = route;
       endpoints.push({ path: url, methods: [method] });
     });

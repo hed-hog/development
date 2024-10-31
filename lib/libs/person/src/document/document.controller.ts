@@ -16,7 +16,7 @@ import { CreatePersonDocumentDTO } from './dto/create-document.dto';
 import { UpdatePersonDocumentDTO } from './dto/update-document.dto';
 
 @Role()
-@Controller('persons/:personId/documents')
+@Controller('person/:personId/documents')
 export class DocumentController {
   constructor(private readonly documentService: DocumentService) {}
   @Post()

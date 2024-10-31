@@ -32,7 +32,7 @@ export class ScreenController {
     return this.screenService.getScreens(locale, paginationParams);
   }
 
-  @Get(':screenId/roles')
+  @Get(':screenId/role')
   async listRoles(
     @Param('screenId', ParseIntPipe) screenId: number,
     @Pagination() paginationParams,
@@ -41,7 +41,7 @@ export class ScreenController {
     return this.screenService.listRoles(locale, screenId, paginationParams);
   }
 
-  @Get(':screenId/routes')
+  @Get(':screenId/route')
   async listRoutes(
     @Param('screenId', ParseIntPipe) screenId: number,
     @Pagination() paginationParams,
@@ -49,7 +49,7 @@ export class ScreenController {
     return this.screenService.listRoutes(screenId, paginationParams);
   }
 
-  @Patch(':screenId/roles')
+  @Patch(':screenId/role')
   async updateRoles(
     @Param('screenId', ParseIntPipe) screenId: number,
     @Body() data: UpdateIdsDTO,
@@ -57,7 +57,7 @@ export class ScreenController {
     return this.screenService.updateRoles(screenId, data);
   }
 
-  @Patch(':screenId/routes')
+  @Patch(':screenId/route')
   async updateRoutes(
     @Param('screenId', ParseIntPipe) screenId: number,
     @Body() data: UpdateIdsDTO,

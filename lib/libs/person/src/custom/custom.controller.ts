@@ -16,7 +16,7 @@ import { CreatePersonCustomDTO } from './dto/create-custom.dto';
 import { UpdatePersonCustomDTO } from './dto/update-custom.dto';
 
 @Role()
-@Controller('persons/:personId/customs')
+@Controller('person/:personId/customs')
 export class CustomController {
   constructor(private readonly customService: CustomService) {}
   @Post()

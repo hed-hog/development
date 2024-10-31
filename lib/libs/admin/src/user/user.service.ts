@@ -28,7 +28,7 @@ export class UserService {
       paginationParams,
       {
         include: {
-          role_users: {
+          role_user: {
             where: {
               user_id: userId,
             },

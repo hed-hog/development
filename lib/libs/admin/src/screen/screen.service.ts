@@ -93,7 +93,7 @@ export class ScreenService {
       paginationParams,
       {
         include: {
-          role_screens: {
+          role_screen: {
             where: {
               screen_id: screenId,
             },

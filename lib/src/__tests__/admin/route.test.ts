@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
+import axios from 'axios';
 import { getGlobalToken } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
@@ -18,7 +18,7 @@ describe('Route API tests', () => {
   };
 
   test('Create new route', async () => {
-    const response = await axios.post('/routes', newRoute, {
+    const response = await axios.post('/route', newRoute, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -30,8 +30,8 @@ describe('Route API tests', () => {
     routeId = response.data.id;
   });
 
-  test('Get all routes with pagination', async () => {
-    const response = await axios.get('/routes', {
+  test('Get all route with pagination', async () => {
+    const response = await axios.get('/route', {
       params: { page: 1, pageSize: 10 },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ describe('Route API tests', () => {
   });
 
   test('Get route by ID', async () => {
-    const response = await axios.get(`/routes/${routeId}`, {
+    const response = await axios.get(`/route/${routeId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -61,7 +61,7 @@ describe('Route API tests', () => {
       method: 'POST',
     };
 
-    const response = await axios.patch(`/routes/${routeId}`, updatedRoute, {
+    const response = await axios.patch(`/route/${routeId}`, updatedRoute, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -75,7 +75,7 @@ describe('Route API tests', () => {
 
   /*
   test('Delete route', async () => {
-    const response = await axios.delete(`/routes`, {
+    const response = await axios.delete(`/route`, {
       data: { ids: [routeId] },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -86,8 +86,8 @@ describe('Route API tests', () => {
   });
   */
 
-  test('List roles for a route', async () => {
-    const response = await axios.get(`/routes/${routeId}/roles`, {
+  test('List role for a route', async () => {
+    const response = await axios.get(`/route/${routeId}/role`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -98,10 +98,10 @@ describe('Route API tests', () => {
   });
 
   /*
-  test('Update roles for a route', async () => {
+  test('Update role for a route', async () => {
     const roleIds = [1, 2];
     const response = await axios.patch(
-      `/routes/${routeId}/roles`,
+      `/route/${routeId}/role`,
       { ids: roleIds },
       {
         headers: {
@@ -115,7 +115,7 @@ describe('Route API tests', () => {
   */
 
   test('List screens for a route', async () => {
-    const response = await axios.get(`/routes/${routeId}/screens`, {
+    const response = await axios.get(`/route/${routeId}/screens`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -129,7 +129,7 @@ describe('Route API tests', () => {
   test('Update screens for a route', async () => {
     const screenIds = [1, 2];
     const response = await axios.patch(
-      `/routes/${routeId}/screens`,
+      `/route/${routeId}/screens`,
       { ids: screenIds },
       {
         headers: {

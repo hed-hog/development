@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 export default function Page() {
   const { t: modulesT } = useTranslation('modules')
   const { t: actionsT } = useTranslation('actions')
-  const { t: rolesT } = useTranslation('roles')
+  const { t: roleT } = useTranslation('role')
 
   const [selectedItems, setSelectedItems] = useState<
     (Roles | Routes | Menus | Screens)[]
@@ -26,8 +26,8 @@ export default function Page() {
     console.log('openCreateDialog')
 
     const id = openDialog({
-      title: rolesT('create'),
-      description: rolesT('createText'),
+      title: roleT('create'),
+      description: roleT('createText'),
       children: () => <RoleCreatePanel onCreate={() => closeDialog(id)} />,
     })
 
@@ -46,8 +46,8 @@ export default function Page() {
           ))}
         </div>
       ),
-      title: rolesT('delete'),
-      description: rolesT('deleteText'),
+      title: roleT('delete'),
+      description: roleT('deleteText'),
       buttons: [
         {
           text: actionsT('cancel'),
@@ -74,33 +74,33 @@ export default function Page() {
   const openEditDialog = (item: Roles) => {
     return openSheet({
       children: () => <RoleEditPanel data={item} />,
-      title: rolesT('edit'),
-      description: rolesT('editText'),
+      title: roleT('edit'),
+      description: roleT('editText'),
     })
   }
 
   return (
     <>
       <Helmet>
-        <title>{modulesT('roles')} - Hedhog</title>
+        <title>{modulesT('role')} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('roles')}
+            {modulesT('role')}
           </h1>
         </div>
       </div>
 
       <DataPanel
-        url='/roles'
+        url='/role'
         layout='table'
-        id='roles'
+        id='role'
         selectable
         columns={[
           { key: 'id', header: 'ID' },
-          { key: 'name', header: rolesT('name') },
-          { key: 'description', header: rolesT('description') },
+          { key: 'name', header: roleT('name') },
+          { key: 'description', header: roleT('description') },
         ]}
         selected={selectedItems as Roles[]}
         multiple
@@ -111,7 +111,7 @@ export default function Page() {
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('edit'),
-            tooltip: rolesT('editTooltip'),
+            tooltip: roleT('editTooltip'),
             handler: (items: Roles[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -120,7 +120,7 @@ export default function Page() {
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('remove'),
-            tooltip: rolesT('deleteTooltip'),
+            tooltip: roleT('deleteTooltip'),
             variant: 'destructive',
             handler: openDeleteDialog,
             show: 'some',
@@ -128,7 +128,7 @@ export default function Page() {
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: actionsT('create'),
-            tooltip: rolesT('createTooltip'),
+            tooltip: roleT('createTooltip'),
             variant: 'default',
             handler: openCreateDialog,
             show: 'none',

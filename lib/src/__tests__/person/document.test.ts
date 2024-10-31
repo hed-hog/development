@@ -21,7 +21,7 @@ describe('Document API tests', () => {
   /*
   test('Create new document', async () => {
     const response = await axios.post(
-      `/persons/${personId}/documents`,
+      `/person/${personId}/documents`,
       newDocument,
       {
         headers: {
@@ -38,7 +38,7 @@ describe('Document API tests', () => {
 
   /*
   test('Get all documents for a person', async () => {
-    const response = await axios.get(`/persons/${personId}/documents`, {
+    const response = await axios.get(`/person/${personId}/documents`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -53,7 +53,7 @@ describe('Document API tests', () => {
   /*
   test('Get document by ID', async () => {
     const response = await axios.get(
-      `/persons/${personId}/documents/?id=${documentId}`,
+      `/person/${personId}/documents/?id=${documentId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ describe('Document API tests', () => {
   /*
   test('Get document by type ID', async () => {
     const response = await axios.get(
-      `/persons/${personId}/documents?typeId=1`,
+      `/person/${personId}/documents?typeId=1`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -91,7 +91,7 @@ describe('Document API tests', () => {
     };
 
     const response = await axios.patch(
-      `/persons/${personId}/documents/${documentId}`,
+      `/person/${personId}/documents/${documentId}`,
       updatedDocument,
       {
         headers: {
@@ -109,7 +109,7 @@ describe('Document API tests', () => {
   /*
   test('Delete document', async () => {
     const response = await axios.delete(
-      `/persons/${personId}/documents/${documentId}`,
+      `/person/${personId}/documents/${documentId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

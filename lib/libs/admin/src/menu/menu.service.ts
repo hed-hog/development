@@ -72,7 +72,7 @@ export class MenuService {
               name: true,
             },
           },
-          menu_screens: {
+          menu_screen: {
             where: {
               menu_id: menuId,
             },
@@ -107,7 +107,7 @@ export class MenuService {
               description: true,
             },
           },
-          role_menus: {
+          role_menu: {
             where: {
               menu_id: menuId,
             },
@@ -127,13 +127,13 @@ export class MenuService {
       menuId = null;
     }
 
-    let menus = (await this.prismaService.menu.findMany({
+    let menu = (await this.prismaService.menu.findMany({
       where: {
         menu_id: menuId,
-        role_menus: {
+        role_menu: {
           some: {
-            roles: {
-              role_users: {
+            role: {
+              role_user: {
                 some: {
                   user_id: userId,
                 },
@@ -159,13 +159,13 @@ export class MenuService {
       },
     })) as unknown[] as any[];
 
-    menus = menus.map((m) => itemTranslations('menu_locale', m));
+    menu = menu.map((m) => itemTranslations('menu_locale', m));
 
-    for (let i = 0; i < menus.length; i++) {
-      menus[i].menus = await this.getMenus(locale, userId, menus[i].id);
+    for (let i = 0; i < menu.length; i++) {
+      menu[i].menu = await this.getMenus(locale, userId, menu[i].id);
     }
 
-    return menus;
+    return menu;
   }
 
   async getSystemMenu(locale: string, userId: number) {

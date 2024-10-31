@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import GeneralError from './pages/errors/general-error.tsx'
-import NotFoundError from './pages/errors/not-found-error.tsx'
 import MaintenanceError from './pages/errors/maintenance-error.tsx'
+import NotFoundError from './pages/errors/not-found-error.tsx'
 import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 
 const router = createBrowserRouter([
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     }),
   },
 
-  // Main routes
+  // Main route
   {
     path: '/',
     lazy: async () => {
@@ -67,16 +67,16 @@ const router = createBrowserRouter([
             }),
           },
           {
-            path: 'users',
+            path: 'user',
             lazy: async () => ({
-              Component: (await import('./pages/management/users/index.tsx'))
+              Component: (await import('./pages/management/user/index.tsx'))
                 .default,
             }),
           },
           {
-            path: 'roles',
+            path: 'role',
             lazy: async () => ({
-              Component: (await import('./pages/management/roles/index.tsx'))
+              Component: (await import('./pages/management/role/index.tsx'))
                 .default,
             }),
           },
@@ -88,14 +88,14 @@ const router = createBrowserRouter([
             }),
           },
           {
-            path: 'menus',
+            path: 'menu',
             lazy: async () => ({
-              Component: (await import('./pages/management/menus/index.tsx'))
+              Component: (await import('./pages/management/menu/index.tsx'))
                 .default,
             }),
           },
           {
-            path: 'persons',
+            path: 'person',
             children: [
               {
                 index: true,
@@ -109,7 +109,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/persons/address-types/index.tsx'
+                      './pages/management/person/address-types/index.tsx'
                     )
                   ).default,
                 }),
@@ -119,7 +119,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/persons/contact-types/index.tsx'
+                      './pages/management/person/contact-types/index.tsx'
                     )
                   ).default,
                 }),
@@ -129,7 +129,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/persons/custom-types/index.tsx'
+                      './pages/management/person/custom-types/index.tsx'
                     )
                   ).default,
                 }),
@@ -139,7 +139,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/persons/document-types/index.tsx'
+                      './pages/management/person/document-types/index.tsx'
                     )
                   ).default,
                 }),
@@ -149,7 +149,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/persons/person-types/index.tsx'
+                      './pages/management/person/person-types/index.tsx'
                     )
                   ).default,
                 }),
@@ -157,16 +157,16 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: 'routes',
+            path: 'route',
             lazy: async () => ({
-              Component: (await import('./pages/management/routes/index.tsx'))
+              Component: (await import('./pages/management/route/index.tsx'))
                 .default,
             }),
           },
           {
-            path: 'settings',
+            path: 'setting',
             lazy: async () => ({
-              Component: (await import('./pages/management/settings/index.tsx'))
+              Component: (await import('./pages/management/setting/index.tsx'))
                 .default,
             }),
             children: [
@@ -175,17 +175,17 @@ const router = createBrowserRouter([
                 path: ':slug',
                 lazy: async () => ({
                   Component: (
-                    await import('./pages/management/settings/forms.tsx')
+                    await import('./pages/management/setting/forms.tsx')
                   ).default,
                 }),
               },
             ],
           },
           {
-            path: 'settings-options',
+            path: 'setting-options',
             lazy: async () => ({
               Component: (
-                await import('./pages/management/settings-options/index.tsx')
+                await import('./pages/management/setting-options/index.tsx')
               ).default,
             }),
             errorElement: <GeneralError />,
@@ -195,7 +195,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/settings-options/profile/index.tsx'
+                      './pages/management/setting-options/profile/index.tsx'
                     )
                   ).default,
                 }),
@@ -205,7 +205,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/settings-options/account/index.tsx'
+                      './pages/management/setting-options/account/index.tsx'
                     )
                   ).default,
                 }),
@@ -215,7 +215,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/settings-options/appearance/index.tsx'
+                      './pages/management/setting-options/appearance/index.tsx'
                     )
                   ).default,
                 }),
@@ -225,7 +225,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/settings-options/notifications/index.tsx'
+                      './pages/management/setting-options/notifications/index.tsx'
                     )
                   ).default,
                 }),
@@ -235,7 +235,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/settings-options/display/index.tsx'
+                      './pages/management/setting-options/display/index.tsx'
                     )
                   ).default,
                 }),
@@ -245,7 +245,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/settings-options/error-example/index.tsx'
+                      './pages/management/setting-options/error-example/index.tsx'
                     )
                   ).default,
                 }),
@@ -258,7 +258,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // Error routes
+  // Error route
   { path: '/500', Component: GeneralError },
   { path: '/404', Component: NotFoundError },
   { path: '/503', Component: MaintenanceError },

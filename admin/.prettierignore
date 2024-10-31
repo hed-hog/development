@@ -1,7 +1,7 @@
 # Ignore everything
 /*
 
-# Except these files & folders
+# Except these file & folders
 !/src
 !index.html
 !package.json

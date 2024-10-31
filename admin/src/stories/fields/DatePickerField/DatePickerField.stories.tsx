@@ -8,7 +8,7 @@ const meta: Meta<typeof DatePickerField> = {
     layout: 'centered',
     docs: {
       description: {
-        component: `DatePickerField is a versatile and user-friendly date picker component designed for React applications. It allows users to select dates through an intuitive and interactive calendar interface, making it ideal for forms, booking systems, and any application that requires date input.`,
+        component: `DatePickerField is a versatile and user-friendly date picker component designed for React applications. It allows user to select dates through an intuitive and interactive calendar interface, making it ideal for forms, booking systems, and any application that requires date input.`,
       },
     },
   },

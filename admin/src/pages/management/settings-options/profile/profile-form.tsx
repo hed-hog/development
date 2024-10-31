@@ -1,6 +1,3 @@
-import { z } from 'zod'
-import { Link } from 'react-router-dom'
-import { useFieldArray, useForm } from 'react-hook-form'
 import { Button } from '@/components/custom/button'
 import {
   Form,
@@ -23,6 +20,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useFieldArray, useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { z } from 'zod'
 
 const profileFormSchema = z.object({
   username: z
@@ -122,7 +122,7 @@ export default function ProfileForm() {
               </Select>
               <FormDescription>
                 You can manage verified email addresses in your{' '}
-                <Link to='/examples/forms'>email settings</Link>.
+                <Link to='/examples/forms'>email setting</Link>.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -142,7 +142,7 @@ export default function ProfileForm() {
                 />
               </FormControl>
               <FormDescription>
-                You can <span>@mention</span> other users and organizations to
+                You can <span>@mention</span> other user and organizations to
                 link to them.
               </FormDescription>
               <FormMessage />
@@ -161,7 +161,7 @@ export default function ProfileForm() {
                     URLs
                   </FormLabel>
                   <FormDescription className={cn(index !== 0 && 'sr-only')}>
-                    Add links to your website, blog, or social media profiles.
+                    Add links to your website, blog, or social media profile.
                   </FormDescription>
                   <FormControl>
                     <Input {...field} />

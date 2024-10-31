@@ -19,7 +19,7 @@ describe('Person API tests', () => {
 
   /*
   test('Create new person', async () => {
-    const response = await axios.post('/persons', newPerson, {
+    const response = await axios.post('/person', newPerson, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,8 +31,8 @@ describe('Person API tests', () => {
   });
   */
 
-  test('Get all persons', async () => {
-    const response = await axios.get(`/persons`, {
+  test('Get all person', async () => {
+    const response = await axios.get(`/person`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -44,7 +44,7 @@ describe('Person API tests', () => {
 
   /*
   test('Get person by ID', async () => {
-    const response = await axios.get(`/persons/${personId}`, {
+    const response = await axios.get(`/person/${personId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -61,7 +61,7 @@ describe('Person API tests', () => {
       name: faker.name.fullName(),
     };
 
-    const response = await axios.patch(`/persons/${personId}`, updatedPerson, {
+    const response = await axios.patch(`/person/${personId}`, updatedPerson, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -74,7 +74,7 @@ describe('Person API tests', () => {
 
   /*
   test('Delete person', async () => {
-    const response = await axios.delete(`/persons`, {
+    const response = await axios.delete(`/person`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

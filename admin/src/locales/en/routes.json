@@ -3,11 +3,11 @@
   "createText": "Fill the route informations.",
   "createTooltip": "Create new route",
   "delete": "Delete Route",
-  "deleteText": "Are you sure to delete these routes?",
-  "deleteTooltip": "Delete the selected routes",
+  "deleteText": "Are you sure to delete these route?",
+  "deleteTooltip": "Delete the selected route",
   "edit": "Edit Route",
   "editText": "View and edit route information.",
-  "editTooltip": "Edit the selected routes",
+  "editTooltip": "Edit the selected route",
   "url": "URL",
   "method": "Method"
 }

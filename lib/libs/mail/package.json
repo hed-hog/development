@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/mail",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.production.json && npm version patch",
@@ -10,7 +10,7 @@
   "author": "HedHog",
   "license": "MIT",
   "description": "",
-  "files": [
+  "file": [
     "dist/**/*",
     "src/migrations/**/*.ts",
     "src/**/*.ejs"

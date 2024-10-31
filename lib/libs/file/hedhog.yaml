@@ -72,7 +72,7 @@ data:
         en: File Storage
         pt: Armazenamento
       description:
-        en: Configure the file storage settings.
+        en: Configure the file storage setting.
         pt: Configurar as definições de armazenamento de arquivos.
       relations:
         setting:

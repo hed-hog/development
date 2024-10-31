@@ -89,7 +89,7 @@ describe('Locale API tests', () => {
   });*/
 
   /*
-  test('Get translations for locale', async () => {
+  test('Get translation for locale', async () => {
     const response = await axios.get(`/locale/${newLocale.code}/translation`, {
       headers: {
         Authorization: `Bearer ${token}`,

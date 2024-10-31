@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react'
 import Field from '@/components/custom/field'
 import { EnumFieldType } from '@/enums/EnumFieldType'
+import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof Field> = {
   title: 'Fields/Field',
@@ -17,7 +17,7 @@ const meta: Meta<typeof Field> = {
             <li>**Customizable**: Each field type can be customized with specific options and behaviors.</li>
             <li>**State Management**: Handles state internally, with support for value changes and validation.</li>
             <li>**User Interaction**: Includes various input controls such as text input, radio buttons, checkboxes, sliders, and file uploads.</li>
-            <li>**Accessibility**: Designed with accessibility in mind to ensure it meets usability standards for all users.</li>
+            <li>**Accessibility**: Designed with accessibility in mind to ensure it meets usability standards for all user.</li>
         </ul>`,
       },
     },

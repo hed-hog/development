@@ -37,14 +37,14 @@ npm i @hedhog/prisma
 
 ```plaintext
 prisma/
-├── dist/                        # Compiled JavaScript files from build
+├── dist/                        # Compiled JavaScript file from build
 ├── node_modules/                # Discardable folder with all module dependencies
 ├── src/
 │   ├── index.ts                  # Entry point for PrismaService
 │   ├── prisma.module.ts          # Module definition (if needed)
 │   └── prisma.service.ts         # Service class extending PrismaClient
 │   ├── prisma.service.spec.ts    # Unit tests for PrismaService
-├── .gitignore                    # Specifies which files Git should ignore
+├── .gitignore                    # Specifies which file Git should ignore
 ├── package.json                  # Manages dependencies and scripts for the library
 ├── package-lock.json             # Lock file for dependencies
 ├── README.md                     # Documentation for the library

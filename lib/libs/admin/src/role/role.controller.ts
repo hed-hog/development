@@ -20,7 +20,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { RoleService } from './role.service';
 
 @Role()
-@Controller('roles')
+@Controller('role')
 export class RoleController {
   constructor(
     @Inject(forwardRef(() => RoleService))
@@ -32,7 +32,7 @@ export class RoleController {
     return this.roleService.getRoles(locale, paginationParams);
   }
 
-  @Get(':roleId/users')
+  @Get(':roleId/user')
   async listUsers(
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
@@ -40,7 +40,7 @@ export class RoleController {
     return this.roleService.listUsers(roleId, paginationParams);
   }
 
-  @Get(':roleId/menus')
+  @Get(':roleId/menu')
   async listMenus(
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
@@ -49,7 +49,7 @@ export class RoleController {
     return this.roleService.listMenus(locale, roleId, paginationParams);
   }
 
-  @Get(':roleId/routes')
+  @Get(':roleId/route')
   async listRoutes(
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
@@ -66,7 +66,7 @@ export class RoleController {
     return this.roleService.listScreens(locale, roleId, paginationParams);
   }
 
-  @Patch(':roleId/users')
+  @Patch(':roleId/user')
   async updateUsers(
     @Param('roleId', ParseIntPipe) roleId: number,
     @Body() data: UpdateIdsDTO,
@@ -74,7 +74,7 @@ export class RoleController {
     return this.roleService.updateUsers(roleId, data);
   }
 
-  @Patch(':roleId/menus')
+  @Patch(':roleId/menu')
   async updateMenus(
     @Param('roleId', ParseIntPipe) roleId: number,
     @Body() data: UpdateIdsDTO,
@@ -82,7 +82,7 @@ export class RoleController {
     return this.roleService.updateMenus(roleId, data);
   }
 
-  @Patch(':roleId/routes')
+  @Patch(':roleId/route')
   async updateRoutes(
     @Param('roleId', ParseIntPipe) roleId: number,
     @Body() data: UpdateIdsDTO,

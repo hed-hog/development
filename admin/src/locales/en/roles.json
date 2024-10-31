@@ -3,11 +3,11 @@
   "createText": "Fill the role informations.",
   "createTooltip": "Create new role",
   "delete": "Delete Role",
-  "deleteText": "Are you sure to delete these roles?",
-  "deleteTooltip": "Delete the selected roles",
+  "deleteText": "Are you sure to delete these role?",
+  "deleteTooltip": "Delete the selected role",
   "edit": "Edit Role",
   "editText": "View and edit role information.",
-  "editTooltip": "Edit the selected roles",
+  "editTooltip": "Edit the selected role",
   "name": "Name",
   "description": "Description"
 }

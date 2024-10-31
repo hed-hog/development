@@ -19,7 +19,7 @@ export * from './role/role.service';
 export * from './screen/screen.service';
 
 // Screen Module
-export * from './setting/settings.service';
+export * from './setting/setting.service';
 
 // User Module
 export * from './user/constants/user.constants';

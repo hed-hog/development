@@ -1,14 +1,14 @@
-import { PrismaModule } from '@hedhog/prisma';
 import { PaginationModule } from '@hedhog/pagination';
+import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
+import { LocaleModule } from './locale';
 import { MenuModule } from './menu/menu.module';
-import { ScreenModule } from './screen/screen.module';
-import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
-import { SettingModule } from './setting/settings.module';
-import { LocaleModule } from './locale';
+import { ScreenModule } from './screen/screen.module';
+import { SettingModule } from './setting/setting.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [

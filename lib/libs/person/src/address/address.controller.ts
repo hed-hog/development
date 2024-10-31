@@ -16,7 +16,7 @@ import { CreatePersonAddressDTO } from './dto/create-address.dto';
 import { UpdatePersonAddressDTO } from './dto/update-address.dto';
 
 @Role()
-@Controller('persons/:personId/address')
+@Controller('person/:personId/address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
   @Post()

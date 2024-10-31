@@ -1,8 +1,8 @@
+import { PaginationService } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AddressService } from './address.service';
-import { PrismaService } from '@hedhog/prisma';
-import { PaginationService } from '@hedhog/pagination';
-import { NotFoundException } from '@nestjs/common';
 import { CreatePersonAddressDTO } from './dto/create-address.dto';
 import { UpdatePersonAddressDTO } from './dto/update-address.dto';
 
@@ -36,7 +36,7 @@ describe('AddressService', () => {
         {
           provide: PrismaService,
           useValue: {
-            person_addresses: {
+            person_address: {
               create: jest.fn() as jest.Mock,
               findFirst: jest.fn() as jest.Mock,
               update: jest.fn() as jest.Mock,
@@ -78,13 +78,13 @@ describe('AddressService', () => {
     };
 
     const personId = 1;
-    (prismaService.person_addresses.create as jest.Mock).mockResolvedValue(
+    (prismaService.person_address.create as jest.Mock).mockResolvedValue(
       addressMock[0],
     );
 
     const result = await service.create(personId, createAddressDto);
 
-    expect(prismaService.person_addresses.create).toHaveBeenCalledWith({
+    expect(prismaService.person_address.create).toHaveBeenCalledWith({
       data: {
         person_id: personId,
         country_id: createAddressDto.country_id,
@@ -111,7 +111,7 @@ describe('AddressService', () => {
     const result = await service.getAddress(personId);
 
     expect(paginationService.paginate).toHaveBeenCalledWith(
-      prismaService.person_addresses,
+      prismaService.person_address,
       paginationParams,
       { where: { person_id: personId } },
     );
@@ -127,13 +127,13 @@ describe('AddressService', () => {
     const personId = 1;
     const typeId = 1;
 
-    (prismaService.person_addresses.findFirst as jest.Mock).mockResolvedValue(
+    (prismaService.person_address.findFirst as jest.Mock).mockResolvedValue(
       addressMock[0],
     );
 
     const result = await service.getAddressByTypeId(personId, typeId);
 
-    expect(prismaService.person_addresses.findFirst).toHaveBeenCalledWith({
+    expect(prismaService.person_address.findFirst).toHaveBeenCalledWith({
       where: {
         person_id: personId,
         type_id: typeId,
@@ -146,7 +146,7 @@ describe('AddressService', () => {
     const personId = 1;
     const typeId = 999; // Non-existent ID
 
-    (prismaService.person_addresses.findFirst as jest.Mock).mockResolvedValue(
+    (prismaService.person_address.findFirst as jest.Mock).mockResolvedValue(
       null,
     );
 
@@ -161,13 +161,13 @@ describe('AddressService', () => {
   it('should get address by ID', async () => {
     const addressId = 1;
 
-    (prismaService.person_addresses.findFirst as jest.Mock).mockResolvedValue(
+    (prismaService.person_address.findFirst as jest.Mock).mockResolvedValue(
       addressMock[0],
     );
 
     const result = await service.getAddressById(addressId);
 
-    expect(prismaService.person_addresses.findFirst).toHaveBeenCalledWith({
+    expect(prismaService.person_address.findFirst).toHaveBeenCalledWith({
       where: { id: addressId },
     });
     expect(result).toEqual(addressMock[0]);
@@ -181,14 +181,14 @@ describe('AddressService', () => {
       type_id: 1,
     };
 
-    (prismaService.person_addresses.update as jest.Mock).mockResolvedValue({
+    (prismaService.person_address.update as jest.Mock).mockResolvedValue({
       ...addressMock[0],
       ...updateAddressDto,
     });
 
     const result = await service.update(addressId, updateAddressDto);
 
-    expect(prismaService.person_addresses.update).toHaveBeenCalledWith({
+    expect(prismaService.person_address.update).toHaveBeenCalledWith({
       where: { id: addressId },
       data: updateAddressDto,
     });
@@ -201,13 +201,13 @@ describe('AddressService', () => {
   it('should remove an address', async () => {
     const addressId = 1;
 
-    (prismaService.person_addresses.delete as jest.Mock).mockResolvedValue({
+    (prismaService.person_address.delete as jest.Mock).mockResolvedValue({
       count: 1,
     });
 
     const result = await service.remove(addressId);
 
-    expect(prismaService.person_addresses.delete).toHaveBeenCalledWith({
+    expect(prismaService.person_address.delete).toHaveBeenCalledWith({
       where: { id: addressId },
     });
     expect(result).toEqual({ count: 1 });

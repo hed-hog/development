@@ -18,7 +18,7 @@ describe('Contacts API tests', () => {
   /*
   test('Create new contact', async () => {
     const response = await axios.post(
-      `/persons/${personId}/contacts`,
+      `/person/${personId}/contacts`,
       newContact,
       {
         headers: {
@@ -35,7 +35,7 @@ describe('Contacts API tests', () => {
 
   /*
   test('Get all contacts for a person', async () => {
-    const response = await axios.get(`/persons/${personId}/contacts`, {
+    const response = await axios.get(`/person/${personId}/contacts`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -50,7 +50,7 @@ describe('Contacts API tests', () => {
   /*
   test('Get contact by ID', async () => {
     const response = await axios.get(
-      `/persons/${personId}/contacts?id=${contactId}`,
+      `/person/${personId}/contacts?id=${contactId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ describe('Contacts API tests', () => {
 */
   /*
   test('Get contact by type ID', async () => {
-    const response = await axios.get(`/persons/${personId}/contacts?typeId=1`, {
+    const response = await axios.get(`/person/${personId}/contacts?typeId=1`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -84,7 +84,7 @@ describe('Contacts API tests', () => {
     };
 
     const response = await axios.patch(
-      `/persons/${personId}/contacts/${contactId}`,
+      `/person/${personId}/contacts/${contactId}`,
       updatedContact,
       {
         headers: {
@@ -102,7 +102,7 @@ describe('Contacts API tests', () => {
   /*
   test('Delete contact', async () => {
     const response = await axios.delete(
-      `/persons/${personId}/contacts/${contactId}`,
+      `/person/${personId}/contacts/${contactId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

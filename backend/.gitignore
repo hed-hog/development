@@ -25,17 +25,17 @@ lerna-debug.log*
 .classpath
 .c9/
 *.launch
-.settings/
+.setting/
 *.sublime-workspace
 
 # IDE - VSCode
 .vscode/*
-!.vscode/settings.json
+!.vscode/setting.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# dotenv environment variable files
+# dotenv environment variable file
 .env
 .env.development.local
 .env.test.local

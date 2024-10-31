@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { PrismaService } from '@hedhog/prisma';
-import { JwtService } from '@nestjs/jwt';
 import { MailService } from '@hedhog/mail';
+import { PrismaService } from '@hedhog/prisma';
 import { NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Test, TestingModule } from '@nestjs/testing';
 import { compare } from 'bcrypt';
+import { AuthService } from './auth.service';
 
 jest.mock('bcrypt');
 
@@ -21,7 +21,7 @@ describe('AuthService', () => {
         {
           provide: PrismaService,
           useValue: {
-            users: {
+            user: {
               findFirst: jest.fn(),
               update: jest.fn(),
               findUnique: jest.fn(),
@@ -57,7 +57,7 @@ describe('AuthService', () => {
 
   describe('loginWithEmailAndPassword', () => {
     it('should throw NotFoundException if user is not found', async () => {
-      jest.spyOn(prismaService.users, 'findFirst').mockResolvedValue(null);
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null);
 
       await expect(
         authService.loginWithEmailAndPassword('test@example.com', 'password'),
@@ -75,7 +75,7 @@ describe('AuthService', () => {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      jest.spyOn(prismaService.users, 'findFirst').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(mockUser);
       (compare as jest.Mock).mockResolvedValue(false);
 
       await expect(
@@ -94,7 +94,7 @@ describe('AuthService', () => {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      jest.spyOn(prismaService.users, 'findFirst').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(mockUser);
       (compare as jest.Mock).mockResolvedValue(true);
       jest.spyOn(jwtService, 'sign').mockReturnValue('token');
 
@@ -109,7 +109,7 @@ describe('AuthService', () => {
 
   describe('forget', () => {
     it('should throw NotFoundException if user is not found', async () => {
-      jest.spyOn(prismaService.users, 'findFirst').mockResolvedValue(null);
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null);
 
       await expect(
         authService.forget({ email: 'test@example.com' }),
@@ -127,15 +127,15 @@ describe('AuthService', () => {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      jest.spyOn(prismaService.users, 'findFirst').mockResolvedValue(mockUser);
-      jest.spyOn(prismaService.users, 'update').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'update').mockResolvedValue(mockUser);
       jest
         .spyOn(authService, 'generateRandomString')
         .mockReturnValue('resetCode');
 
       const result = await authService.forget({ email: 'test@example.com' });
 
-      expect(prismaService.users.update).toHaveBeenCalledWith({
+      expect(prismaService.user.update).toHaveBeenCalledWith({
         where: { id: 1 },
         data: { code: 'resetCode' },
       });
@@ -151,7 +151,7 @@ describe('AuthService', () => {
   describe('otp', () => {
     it('should throw NotFoundException if user with code is not found', async () => {
       jest.spyOn(jwtService, 'decode').mockReturnValue({ id: 1 });
-      jest.spyOn(prismaService.users, 'findFirst').mockResolvedValue(null);
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null);
 
       await expect(
         authService.otp({ token: 'token', code: 123456 }),
@@ -170,13 +170,13 @@ describe('AuthService', () => {
         updated_at: new Date(),
       };
       jest.spyOn(jwtService, 'decode').mockReturnValue({ id: 1 });
-      jest.spyOn(prismaService.users, 'findFirst').mockResolvedValue(mockUser);
-      jest.spyOn(prismaService.users, 'update').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'update').mockResolvedValue(mockUser);
       jest.spyOn(jwtService, 'sign').mockReturnValue('newToken');
 
       const result = await authService.otp({ token: 'token', code: 123456 });
 
-      expect(prismaService.users.update).toHaveBeenCalledWith({
+      expect(prismaService.user.update).toHaveBeenCalledWith({
         where: { id: 1 },
         data: { code: null },
       });

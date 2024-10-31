@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 export default function Page() {
-  const { t } = useTranslation(['translation', 'settings'])
+  const { t } = useTranslation(['translation', 'setting'])
   const { data: locale } = useLocales()
   const { mutate, isPending } = useSettings()
   const { setText } = useSetProperties()
@@ -438,7 +438,7 @@ export default function Page() {
               if (!data.storage) {
                 form.setError('storage', {
                   type: 'required',
-                  message: t('storage is required', { ns: 'settings' }),
+                  message: t('storage is required', { ns: 'setting' }),
                 })
                 hasErrors = true
               }
@@ -449,7 +449,7 @@ export default function Page() {
                     form.setError('storage-local-path', {
                       type: 'required',
                       message: t('storage-local-path is required', {
-                        ns: 'settings',
+                        ns: 'setting',
                       }),
                     })
                     hasErrors = true
@@ -461,7 +461,7 @@ export default function Page() {
                     form.setError('storage-abs-account', {
                       type: 'required',
                       message: t('storage-abs-account is required', {
-                        ns: 'settings',
+                        ns: 'setting',
                       }),
                     })
                     hasErrors = true
@@ -471,7 +471,7 @@ export default function Page() {
                     form.setError('storage-abs-key', {
                       type: 'required',
                       message: t('storage-abs-key is required', {
-                        ns: 'settings',
+                        ns: 'setting',
                       }),
                     })
                     hasErrors = true
@@ -481,7 +481,7 @@ export default function Page() {
                     form.setError('storage-abs-container', {
                       type: 'required',
                       message: t('storage-abs-container is required', {
-                        ns: 'settings',
+                        ns: 'setting',
                       }),
                     })
                     hasErrors = true
@@ -493,7 +493,7 @@ export default function Page() {
                     form.setError('storage-s3-key', {
                       type: 'required',
                       message: t('storage-s3-key is required', {
-                        ns: 'settings',
+                        ns: 'setting',
                       }),
                     })
                     hasErrors = true
@@ -503,7 +503,7 @@ export default function Page() {
                     form.setError('storage-s3-secret', {
                       type: 'required',
                       message: t('storage-s3-secret is required', {
-                        ns: 'settings',
+                        ns: 'setting',
                       }),
                     })
                     hasErrors = true
@@ -513,7 +513,7 @@ export default function Page() {
                     form.setError('storage-s3-region', {
                       type: 'required',
                       message: t('storage-s3-region is required', {
-                        ns: 'settings',
+                        ns: 'setting',
                       }),
                     })
                     hasErrors = true
@@ -523,7 +523,7 @@ export default function Page() {
                     form.setError('storage-s3-bucket', {
                       type: 'required',
                       message: t('storage-s3-bucket is required', {
-                        ns: 'settings',
+                        ns: 'setting',
                       }),
                     })
                     hasErrors = true

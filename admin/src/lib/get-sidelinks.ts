@@ -10,8 +10,8 @@ export const getSideLinks = (items: any[]) => {
       icon: getIcon(items[i].icon),
       title: items[i].name,
       sub:
-        items[i].menus && items[i].menus.length > 0
-          ? getSideLinks(items[i].menus)
+        items[i].menu && items[i].menu.length > 0
+          ? getSideLinks(items[i].menu)
           : [],
     }
 

@@ -143,7 +143,7 @@ export class PersonService {
       include: {
         person_address: true,
         /*
-        person_contacts: {
+        person_contact: {
           include: {
             person_contact_type: {
               select: {
@@ -153,7 +153,7 @@ export class PersonService {
             },
           },
         },
-        person_customs: {
+        person_custom: {
           include: {
             person_custom_type: {
               select: {
@@ -163,7 +163,7 @@ export class PersonService {
             },
           },
         },
-        person_documents: {
+        person_document: {
           include: {
             person_document_type: {
               select: {

@@ -1,25 +1,10 @@
-import * as React from 'react'
 import { Check, Plus, Send } from 'lucide-react'
+import * as React from 'react'
 
 import { cn } from '@/lib/utils'
-import { Card, CardContent, CardFooter, CardHeader } from '../ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip'
 import { Button } from '../custom/button'
-import { Input } from '../ui/input'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '../ui/dialog'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Card, CardContent, CardFooter, CardHeader } from '../ui/card'
 import {
   Command,
   CommandEmpty,
@@ -28,8 +13,23 @@ import {
   CommandItem,
   CommandList,
 } from '../ui/command'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../ui/dialog'
+import { Input } from '../ui/input'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip'
 
-const users = [
+const user = [
   {
     name: 'Olivia Martin',
     email: 'm@example.com',
@@ -57,7 +57,7 @@ const users = [
   },
 ] as const
 
-type User = (typeof users)[number]
+type User = (typeof user)[number]
 
 export function CardsChat() {
   const [open, setOpen] = React.useState(false)
@@ -183,9 +183,9 @@ export function CardsChat() {
           <Command className='overflow-hidden rounded-t-none border-t'>
             <CommandInput placeholder='Search user...' />
             <CommandList>
-              <CommandEmpty>No users found.</CommandEmpty>
+              <CommandEmpty>No user found.</CommandEmpty>
               <CommandGroup className='p-2'>
-                {users.map((user) => (
+                {user.map((user) => (
                   <CommandItem
                     key={user.email}
                     className='flex items-center px-2'
@@ -199,7 +199,7 @@ export function CardsChat() {
                       }
 
                       return setSelectedUsers(
-                        [...users].filter((u) =>
+                        [...user].filter((u) =>
                           [...selectedUsers, user].includes(u)
                         )
                       )
@@ -240,7 +240,7 @@ export function CardsChat() {
               </div>
             ) : (
               <p className='text-sm text-muted-foreground'>
-                Select users to add to this thread.
+                Select user to add to this thread.
               </p>
             )}
             <Button

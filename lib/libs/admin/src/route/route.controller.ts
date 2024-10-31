@@ -20,7 +20,7 @@ import { UpdateDTO } from './dto/update.dto';
 import { RouteService } from './route.service';
 
 @Role()
-@Controller('routes')
+@Controller('route')
 export class RouteController {
   constructor(
     @Inject(forwardRef(() => RouteService))
@@ -55,7 +55,7 @@ export class RouteController {
     return this.routeService.delete(data);
   }
 
-  @Get(':routeId/roles')
+  @Get(':routeId/role')
   async listRoles(
     @Param('routeId', ParseIntPipe) routeId: number,
     @Pagination() paginationParams: PaginationDTO,
@@ -64,7 +64,7 @@ export class RouteController {
     return this.routeService.listRoles(locale, routeId, paginationParams);
   }
 
-  @Patch(':routeId/roles')
+  @Patch(':routeId/role')
   async updateRoles(
     @Param('routeId', ParseIntPipe) routeId: number,
     @Body() data: UpdateIdsDTO,

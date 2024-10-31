@@ -7,17 +7,17 @@ import {
 import { AbstractProvider } from './abstract,provider';
 
 export class AzureProvider extends AbstractProvider {
-  constructor(private settings: Record<string, string>) {
+  constructor(private setting: Record<string, string>) {
     super();
   }
 
   async getClient() {
     const sharedKeyCredential = new StorageSharedKeyCredential(
-      this.settings['storage-abs-account'],
-      this.settings['storage-abs-key'],
+      this.setting['storage-abs-account'],
+      this.setting['storage-abs-key'],
     );
     const blobServiceClient = new BlobServiceClient(
-      `https://${this.settings['storage-abs-account']}.blob.core.windows.net`,
+      `https://${this.setting['storage-abs-account']}.blob.core.windows.net`,
       sharedKeyCredential,
     );
     return blobServiceClient;
@@ -26,7 +26,7 @@ export class AzureProvider extends AbstractProvider {
   async upload(destination: string, file: Express.Multer.File): Promise<any> {
     const blobServiceClient = await this.getClient();
     const containerClient = blobServiceClient.getContainerClient(
-      this.settings['storage-abs-container'],
+      this.setting['storage-abs-container'],
     );
     const filepath = [destination, this.getFilename(file.originalname)].join(
       '/',
@@ -36,7 +36,7 @@ export class AzureProvider extends AbstractProvider {
     await blobClient.uploadData(file.buffer, {
       blobHTTPHeaders: { blobContentType: file.mimetype },
     });
-    return `https://${this.settings['storage-abs-container']}.azureedge.net/${filepath}`;
+    return `https://${this.setting['storage-abs-container']}.azureedge.net/${filepath}`;
   }
 
   async delete(filepath: string): Promise<any> {
@@ -48,7 +48,7 @@ export class AzureProvider extends AbstractProvider {
 
     const blobServiceClient = await this.getClient();
     const containerClient = blobServiceClient.getContainerClient(
-      this.settings['storage-abs-container'],
+      this.setting['storage-abs-container'],
     );
     const blobClient = containerClient.getBlockBlobClient(
       url.pathname.split('/').slice(1).join('/'),
@@ -60,7 +60,7 @@ export class AzureProvider extends AbstractProvider {
   async readStream(filepath: string): Promise<any> {
     const blobServiceClient = await this.getClient();
     const containerClient = blobServiceClient.getContainerClient(
-      this.settings['storage-abs-container'],
+      this.setting['storage-abs-container'],
     );
     const blobClient = containerClient.getBlockBlobClient(filepath);
 
@@ -71,7 +71,7 @@ export class AzureProvider extends AbstractProvider {
   async metaData(filepath: string): Promise<any> {
     const blobServiceClient = await this.getClient();
     const containerClient = blobServiceClient.getContainerClient(
-      this.settings['storage-abs-container'],
+      this.setting['storage-abs-container'],
     );
     const blobClient = containerClient.getBlockBlobClient(filepath);
 
@@ -82,7 +82,7 @@ export class AzureProvider extends AbstractProvider {
     const blobServiceClient = await this.getClient();
 
     const containerClient = blobServiceClient.getContainerClient(
-      this.settings['storage-abs-container'],
+      this.setting['storage-abs-container'],
     );
 
     const blobClient = containerClient.getBlockBlobClient(filepath);
@@ -93,23 +93,23 @@ export class AzureProvider extends AbstractProvider {
   }
   async tempURL(filepath: string, expires?: number): Promise<any> {
     const sharedKeyCredential = new StorageSharedKeyCredential(
-      this.settings['storage-abs-account'],
-      this.settings['storage-abs-key'],
+      this.setting['storage-abs-account'],
+      this.setting['storage-abs-key'],
     );
     const blobServiceClient = new BlobServiceClient(
-      `https://${this.settings['storage-abs-account']}.blob.core.windows.net`,
+      `https://${this.setting['storage-abs-account']}.blob.core.windows.net`,
       sharedKeyCredential,
     );
 
     const containerClient = blobServiceClient.getContainerClient(
-      this.settings['storage-abs-container'],
+      this.setting['storage-abs-container'],
     );
     const blobClient = containerClient.getBlobClient(filepath);
 
     const expiresOn = new Date(new Date().getTime() + expires * 1000);
     const blobSAS = generateBlobSASQueryParameters(
       {
-        containerName: this.settings['storage-abs-container'],
+        containerName: this.setting['storage-abs-container'],
         blobName: filepath,
         permissions: ContainerSASPermissions.parse('r'),
         expiresOn,

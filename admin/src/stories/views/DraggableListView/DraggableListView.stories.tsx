@@ -7,7 +7,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `The **DraggableListView** component allows users to reorder items in a list by dragging and dropping them. It uses the **@dnd-kit/core** library for drag-and-drop functionality with smooth handling of user interactions.
+        component: `The **DraggableListView** component allows user to reorder items in a list by dragging and dropping them. It uses the **@dnd-kit/core** library for drag-and-drop functionality with smooth handling of user interactions.
         <br/><br/>
         <h3>Key Features:</h3>
         <ul style={{ listStyle: 'none '}}>
@@ -17,7 +17,7 @@ const meta = {
           <li>**Vertical List Sorting Strategy**: Implements vertical list sorting, making it ideal for ordered lists.</li>
           <li>**API Integration Ready**: Updated list order can be easily persisted or sent to a backend for further processing.</li>
         </ul>
-        This component is ideal for use cases where users need to prioritize or reorder items visually, such as in task management, playlist organization, or custom sorting features.`,
+        This component is ideal for use cases where user need to prioritize or reorder items visually, such as in task management, playlist organization, or custom sorting features.`,
       },
     },
   },

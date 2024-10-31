@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
+import axios from 'axios';
 import { loginUser } from '../utils/loginUser';
 
 const baseUrl = 'http://localhost:3000';
@@ -64,7 +64,7 @@ describe('Test authentication with Root User', () => {
   });
 
   test('Show Root User Data', async () => {
-    const response = await axios.get(`/users/${userRootData.id}`, {
+    const response = await axios.get(`/user/${userRootData.id}`, {
       headers: {
         Authorization: `Bearer ${userRootData.token}`,
       },
@@ -77,7 +77,7 @@ describe('Test authentication with Root User', () => {
   test('Update Root User Data', async () => {
     const newName = faker.person.fullName();
     const response = await axios.patch(
-      `/users/${userRootData.id}`,
+      `/user/${userRootData.id}`,
       { name: newName },
       {
         headers: {
@@ -91,8 +91,8 @@ describe('Test authentication with Root User', () => {
     expect(response.data.email).toEqual(userRootData.email);
   });
 
-  test('Test users list', async () => {
-    const response = await axios.get('/users', {
+  test('Test user list', async () => {
+    const response = await axios.get('/user', {
       headers: {
         Authorization: `Bearer ${userRootData.token}`,
       },
@@ -117,7 +117,7 @@ describe('Test authentication with normal user', () => {
   let newUserToken = '';
 
   test('Test create user', async () => {
-    const response = await axios.post('/users', newUser, {
+    const response = await axios.post('/user', newUser, {
       headers: {
         Authorization: `Bearer ${userRootData.token}`,
       },
@@ -136,9 +136,9 @@ describe('Test authentication with normal user', () => {
     newUserToken = response.token;
   });
 
-  test('Test to access forbidden routes', async () => {
+  test('Test to access forbidden route', async () => {
     try {
-      await axios.get('/users', {
+      await axios.get('/user', {
         headers: {
           Authorization: `Bearer ${newUserToken}`,
         },

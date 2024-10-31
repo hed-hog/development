@@ -13,7 +13,7 @@ export type RoleCreateProps = {
 }
 
 const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps, ref) => {
-  const { t } = useTranslation(['actions', 'roles', 'translation'])
+  const { t } = useTranslation(['actions', 'role', 'translation'])
   const { data: localeEnabled } = useLocales()
   const { mutate: createRole } = useCreateRole()
   const form = useForm<FieldValues>({

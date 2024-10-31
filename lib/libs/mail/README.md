@@ -68,7 +68,7 @@ mailService
 
 ```plaintext
 mail/
-├── dist/                        # Compiled JavaScript files from build
+├── dist/                        # Compiled JavaScript file from build
 ├── node_modules/                # Discardable folder with all module dependencies
 ├── src/
 │   ├── mail.service.ts           # Email sending service
@@ -76,12 +76,12 @@ mail/
 │   └── mail.consts.ts            # Constants related to email sending
 │   ├── mail.service.spec.ts      # Unit tests for MailService
 │   └── mail.template.ejs         # Email templates in EJS format
-│   ├── index.ts                  # Entry point for mail files
+│   ├── index.ts                  # Entry point for mail file
 │   ├── interfaces/
 │   │   └── mail-module-options.interface.ts # Interface for configuration options
 │   ├── enums/
 │   │   └── mail-configuration-type.enum.ts # Enum for email configuration types
-├── .gitignore                     # Specifies which files Git should ignore
+├── .gitignore                     # Specifies which file Git should ignore
 ├── package.json                   # Manages dependencies and scripts for the library
 ├── package-lock.json              # Lock file for dependencies
 ├── README.md                      # Documentation for the library

@@ -160,7 +160,7 @@ export class MailService {
       from,
     });
 
-    const url = 'https://www.googleapis.com/gmail/v1/users/me/messages/send';
+    const url = 'https://www.googleapis.com/gmail/v1/user/me/messages/send';
 
     const requestBody = {
       raw,

@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/person",
-  "version": "0.0.43",
+  "version": "0.0.45",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "author": "",
   "license": "MIT",
   "description": "",
-  "files": [
+  "file": [
     "dist/**/*",
     "src/entities/**/*.ts",
     "src/migrations/**/*.ts",

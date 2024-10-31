@@ -1,18 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from './user.service';
-import { PrismaService } from '@hedhog/prisma';
 import {
-  PaginationService,
-  PaginationDTO,
   PageOrderDirection,
+  PaginationDTO,
+  PaginationService,
 } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
 import { BadRequestException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { genSalt, hash } from 'bcrypt';
+import { DeleteDTO } from '../dto/delete.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { SALT_ROUNDS } from './constants/user.constants';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { UpdateIdsDTO } from '../dto/update-ids.dto';
-import { DeleteDTO } from '../dto/delete.dto';
-import { genSalt, hash } from 'bcrypt';
-import { SALT_ROUNDS } from './constants/user.constants';
+import { UserService } from './user.service';
 
 jest.mock('bcrypt', () => ({
   genSalt: jest.fn().mockResolvedValue('mockSalt'),
@@ -31,13 +31,13 @@ describe('UserService', () => {
         {
           provide: PrismaService,
           useValue: {
-            users: {
+            user: {
               findUnique: jest.fn(),
               create: jest.fn(),
               update: jest.fn(),
               deleteMany: jest.fn(),
             },
-            role_users: {
+            role_user: {
               deleteMany: jest.fn(),
               createMany: jest.fn(),
             },
@@ -63,7 +63,7 @@ describe('UserService', () => {
   });
 
   describe('listRoles', () => {
-    it('should return paginated roles for a specific user', async () => {
+    it('should return paginated role for a specific user', async () => {
       const paginationParams: PaginationDTO = {
         page: 1,
         pageSize: 10,
@@ -90,11 +90,11 @@ describe('UserService', () => {
       const result = await service.listRoles(1, paginationParams);
 
       expect(paginationService.paginate).toHaveBeenCalledWith(
-        prismaService.roles,
+        prismaService.role,
         paginationParams,
         {
           include: {
-            role_users: {
+            role_user: {
               where: { user_id: 1 },
               select: { user_id: true, role_id: true },
             },
@@ -106,22 +106,22 @@ describe('UserService', () => {
   });
 
   describe('updateRoles', () => {
-    it('should update user roles', async () => {
+    it('should update user role', async () => {
       const updateIdsDTO: UpdateIdsDTO = { ids: [1, 2] };
 
       jest
-        .spyOn(prismaService.role_users, 'deleteMany')
+        .spyOn(prismaService.role_user, 'deleteMany')
         .mockResolvedValue({ count: 1 });
       jest
-        .spyOn(prismaService.role_users, 'createMany')
+        .spyOn(prismaService.role_user, 'createMany')
         .mockResolvedValue({ count: 2 });
 
       await service.updateRoles(1, updateIdsDTO);
 
-      expect(prismaService.role_users.deleteMany).toHaveBeenCalledWith({
+      expect(prismaService.role_user.deleteMany).toHaveBeenCalledWith({
         where: { user_id: 1 },
       });
-      expect(prismaService.role_users.createMany).toHaveBeenCalledWith({
+      expect(prismaService.role_user.createMany).toHaveBeenCalledWith({
         data: [
           { user_id: 1, role_id: 1 },
           { user_id: 1, role_id: 2 },
@@ -132,7 +132,7 @@ describe('UserService', () => {
   });
 
   describe('getUsers', () => {
-    it('should return paginated users', async () => {
+    it('should return paginated user', async () => {
       const paginationParams: PaginationDTO = {
         page: 1,
         pageSize: 10,
@@ -164,7 +164,7 @@ describe('UserService', () => {
         paginationParams,
       );
       expect(paginationService.paginate).toHaveBeenCalledWith(
-        prismaService.users,
+        prismaService.user,
         paginationParams,
         { where: { OR: [] } },
       );
@@ -184,11 +184,11 @@ describe('UserService', () => {
         multifactor_id: null,
         code: null,
       };
-      jest.spyOn(prismaService.users, 'findUnique').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(mockUser);
 
       const result = await service.get(1);
 
-      expect(prismaService.users.findUnique).toHaveBeenCalledWith({
+      expect(prismaService.user.findUnique).toHaveBeenCalledWith({
         where: { id: 1 },
       });
       expect(result).toEqual(mockUser);
@@ -224,11 +224,11 @@ describe('UserService', () => {
         code: null,
       };
 
-      jest.spyOn(prismaService.users, 'create').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'create').mockResolvedValue(mockUser);
 
       const result = await service.create(createDTO);
 
-      expect(prismaService.users.create).toHaveBeenCalledWith({
+      expect(prismaService.user.create).toHaveBeenCalledWith({
         data: {
           email: createDTO.email,
           name: createDTO.name,
@@ -253,11 +253,11 @@ describe('UserService', () => {
         multifactor_id: null,
         code: null,
       };
-      jest.spyOn(prismaService.users, 'update').mockResolvedValue(mockUser);
+      jest.spyOn(prismaService.user, 'update').mockResolvedValue(mockUser);
 
       const result = await service.update(updateInput);
 
-      expect(prismaService.users.update).toHaveBeenCalledWith({
+      expect(prismaService.user.update).toHaveBeenCalledWith({
         where: { id: updateInput.id },
         data: updateInput.data,
       });
@@ -274,16 +274,16 @@ describe('UserService', () => {
       );
     });
 
-    it('should delete users by ids', async () => {
+    it('should delete user by ids', async () => {
       const deleteDTO: DeleteDTO = { ids: [1, 2] };
 
       jest
-        .spyOn(prismaService.users, 'deleteMany')
+        .spyOn(prismaService.user, 'deleteMany')
         .mockResolvedValue({ count: 2 });
 
       await service.delete(deleteDTO);
 
-      expect(prismaService.users.deleteMany).toHaveBeenCalledWith({
+      expect(prismaService.user.deleteMany).toHaveBeenCalledWith({
         where: {
           id: { in: deleteDTO.ids },
           email: { not: { startsWith: 'root@' } },

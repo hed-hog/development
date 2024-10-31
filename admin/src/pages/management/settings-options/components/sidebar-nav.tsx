@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { buttonVariants } from '@/components/custom/button'
 import {
   Select,
@@ -9,6 +7,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
+import { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -25,7 +25,7 @@ export default function SidebarNav({
 }: SidebarNavProps) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [val, setVal] = useState(pathname ?? '/settings')
+  const [val, setVal] = useState(pathname ?? '/setting')
 
   const handleSelect = (e: string) => {
     setVal(e)

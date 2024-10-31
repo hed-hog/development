@@ -33,7 +33,7 @@ describe('PersonService', () => {
         {
           provide: PrismaService,
           useValue: {
-            persons: {
+            person: {
               create: jest.fn().mockResolvedValue(personMock),
               findUnique: jest.fn().mockResolvedValue(personMock),
               update: jest.fn().mockResolvedValue(personMock),
@@ -68,13 +68,13 @@ describe('PersonService', () => {
 
     const result = await service.create(createPersonDto);
 
-    expect(prismaService.persons.create).toHaveBeenCalledWith({
+    expect(prismaService.person.create).toHaveBeenCalledWith({
       data: createPersonDto,
     });
     expect(result).toEqual(personMock);
   });
 
-  it('should get persons with pagination', async () => {
+  it('should get person with pagination', async () => {
     const locale = 'en';
     const paginationParams: PaginationDTO = {
       page: 1,
@@ -88,7 +88,7 @@ describe('PersonService', () => {
     const result = await service.getPersons(locale, paginationParams);
 
     expect(paginationService.paginate).toHaveBeenCalledWith(
-      prismaService.persons,
+      prismaService.person,
       paginationParams,
       {
         where: {
@@ -96,8 +96,8 @@ describe('PersonService', () => {
         },
         include: {
           person_type: expect.any(Object),
-          person_documents: expect.any(Object),
-          person_contacts: expect.any(Object),
+          person_document: expect.any(Object),
+          person_contact: expect.any(Object),
         },
       },
     );
@@ -110,7 +110,7 @@ describe('PersonService', () => {
 
     const result = await service.getPersonById(personId);
 
-    expect(prismaService.persons.findUnique).toHaveBeenCalledWith({
+    expect(prismaService.person.findUnique).toHaveBeenCalledWith({
       where: { id: personId },
       include: expect.any(Object),
     });
@@ -121,7 +121,7 @@ describe('PersonService', () => {
   it('should throw NotFoundException if person not found', async () => {
     const personId = 999; // Non-existent ID
 
-    (prismaService.persons.findUnique as jest.Mock).mockResolvedValue(null);
+    (prismaService.person.findUnique as jest.Mock).mockResolvedValue(null);
 
     await expect(service.getPersonById(personId)).rejects.toThrow(
       NotFoundException,
@@ -140,7 +140,7 @@ describe('PersonService', () => {
 
     const result = await service.update(personId, updatePersonDto);
 
-    expect(prismaService.persons.update).toHaveBeenCalledWith({
+    expect(prismaService.person.update).toHaveBeenCalledWith({
       where: { id: personId },
       data: updatePersonDto,
     });
@@ -148,12 +148,12 @@ describe('PersonService', () => {
     expect(result).toEqual(personMock);
   });
 
-  it('should remove persons', async () => {
+  it('should remove person', async () => {
     const deleteDto: DeleteDTO = { ids: [1, 2] };
 
     const result = await service.remove(deleteDto);
 
-    expect(prismaService.persons.deleteMany).toHaveBeenCalledWith({
+    expect(prismaService.person.deleteMany).toHaveBeenCalledWith({
       where: {
         id: {
           in: deleteDto.ids,

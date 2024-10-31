@@ -14,26 +14,24 @@ async function emptyDirectory(path: string) {
   }
 }
 
-async function createEnumFile(path: string, tableName: string, columns: any[]) {
-  if (tableName === 'settings') {
-    for (let i = 0; i < columns.length; i++) {
-      if (columns[i].enum) {
-        const name = columns[i].type;
-        const enumFile = [`export enum ${snakeCaseToPascalCase(name)} {`];
-        const values = [];
-        for (const enumValue of columns[i].enum) {
-          values.push(`  ${enumValue.value} = '${enumValue.value}'`);
-        }
-
-        enumFile.push(values.join(','));
-        enumFile.push('}');
-
-        await writeFile(
-          join(path, `${snakeCaseToPascalCase(name)}.ts`),
-          enumFile.join('\n'),
-          'utf-8',
-        );
+async function createEnumFile(path: string, columns: any[]) {
+  for (let i = 0; i < columns.length; i++) {
+    if (columns[i].enum) {
+      const name = columns[i].type;
+      const enumFile = [`export enum ${snakeCaseToPascalCase(name)} {`];
+      const values = [];
+      for (const enumValue of columns[i].enum) {
+        values.push(`  ${enumValue.value} = '${enumValue.value}'`);
       }
+
+      enumFile.push(values.join(','));
+      enumFile.push('}');
+
+      await writeFile(
+        join(path, `${snakeCaseToPascalCase(name)}.ts`),
+        enumFile.join('\n'),
+        'utf-8',
+      );
     }
   }
 
@@ -45,7 +43,7 @@ async function createTypes(path: string) {
 
   for (const table of tables) {
     let columns = await getTableColumns(table);
-    columns = await createEnumFile(path, table, columns);
+    columns = await createEnumFile(path, columns);
     await createTypeFile(table, snakeCaseToPascalCase(table), columns);
   }
 
