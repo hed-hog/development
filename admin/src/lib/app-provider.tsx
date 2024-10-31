@@ -155,12 +155,21 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     [token]
   )
 
-  const makeRequest = async <T extends {}>(
-    url: string,
-    method: 'post' | 'patch' | 'delete' | 'get',
-    data?: Record<string, any>,
+  const makeRequest = async <T extends {}>({
+    url,
+    method,
+    data,
+    params,
+  }: {
+    url: string
+    method?: 'POST' | 'PATCH' | 'DELETE' | 'GET'
+    data?: Record<string, any>
     params?: Record<string, any>
-  ) => {
+  }) => {
+    if (!method) {
+      method = 'GET'
+    }
+
     return request<T>({
       url,
       method,
