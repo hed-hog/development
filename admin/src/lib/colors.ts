@@ -31,7 +31,7 @@ export const getContrastColor = (hexColor: string) => {
 }
 
 export const hexToHSL = (hex: string) => {
-  hex = hex.replace(/^#/, '')
+  hex = hex && hex.includes('#') ? hex.replace(/^#/, '') : '#000'
   let r = parseInt(hex.substring(0, 2), 16) / 255
   let g = parseInt(hex.substring(2, 4), 16) / 255
   let b = parseInt(hex.substring(4, 6), 16) / 255
