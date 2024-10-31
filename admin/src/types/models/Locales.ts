@@ -1,6 +1,6 @@
-import { PersonDocumentTypeTranslations } from './PersonDocumentTypeTranslations';
 import { SettingGroupTranslations } from './SettingGroupTranslations';
 import { PersonTypeTranslations } from './PersonTypeTranslations';
+import { PersonDocumentTypeTranslations } from './PersonDocumentTypeTranslations';
 import { PersonContactTypeTranslations } from './PersonContactTypeTranslations';
 import { CountryTranslations } from './CountryTranslations';
 import { ScreenTranslations } from './ScreenTranslations';
@@ -21,9 +21,9 @@ export type Locales = {
   enabled?: boolean;
   created_at?: string;
   updated_at?: string;
-  person_document_type_translations?: PersonDocumentTypeTranslations[];
   setting_group_translations?: SettingGroupTranslations[];
   person_type_translations?: PersonTypeTranslations[];
+  person_document_type_translations?: PersonDocumentTypeTranslations[];
   person_contact_type_translations?: PersonContactTypeTranslations[];
   country_translations?: CountryTranslations[];
   screen_translations?: ScreenTranslations[];

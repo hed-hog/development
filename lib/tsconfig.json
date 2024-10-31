@@ -30,7 +30,9 @@
       "@hedhog/admin": ["libs/admin/src"],
       "@hedhog/admin/*": ["libs/admin/src/*"],
       "@hedhog/person": ["libs/person/src"],
-      "@hedhog/person/*": ["libs/person/src/*"]
+      "@hedhog/person/*": ["libs/person/src/*"],
+      "@hedhog/payment": ["libs/payment/src"],
+      "@hedhog/payment/*": ["libs/payment/src/*"]
     }
   }
 }
