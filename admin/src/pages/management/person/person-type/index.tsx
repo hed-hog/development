@@ -7,8 +7,7 @@ import { PersonType } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PersonTypeCreatePanel } from './components/person-type-create-panel'
-import { PersonTypeUpdatePanel } from './components/person-type-update-panel'
+import { PersonTypeCreatePanel, PersonTypeUpdatePanel } from './components'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
