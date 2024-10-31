@@ -1,0 +1,316 @@
+data:
+  plan_durations:
+    - slug: monthly
+      name:
+        en: Monthly
+        pt: Mensal
+      relations:
+        plans:
+          - slug: basic
+            name:
+              en: Basic
+              pt: Básico
+    - slug: quarterly
+      name:
+        en: Quarterly
+        pt: Trimestral
+      relations:
+        plans:
+          - slug: standard
+            name:
+              en: Standard
+              pt: Padrão
+    - slug: semiannual
+      name:
+        en: Semiannual
+        pt: Semestral
+      relations:
+        plans:
+          - slug: premium
+            name:
+              en: Premium
+              pt: Premium
+    - slug: annual
+      name:
+        en: Annual
+        pt: Anual
+      relations:
+        plans:
+          - slug: ultimate
+            name:
+              en: Ultimate
+              pt: Supremo
+  subscription_statuses:
+    - slug: active
+      name:
+        en: Active
+        pt: Ativo
+    - slug: pending
+      name:
+        en: Pending
+        pt: Pendente
+    - slug: canceled
+      name:
+        en: Canceled
+        pt: Cancelado
+    - slug: expired
+      name:
+        en: Expired
+        pt: Expirado
+  payment_gateways:
+    - slug: stripe
+      name:
+        en: Stripe
+        pt: Stripe
+    - slug: mercado-pago
+      name:
+        en: Mercado Pago
+        pt: Mercado Pago
+  payment_statuses:
+    - slug: completed
+      name:
+        en: Completed
+        pt: Completo
+    - slug: pending
+      name:
+        en: Pending
+        pt: Pendente
+    - slug: canceled
+      name:
+        en: Canceled
+        pt: Cancelado
+    - slug: failed
+      name:
+        en: Failed
+        pt: Falhou
+
+tables:
+  plan_durations:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  plan_duration_translations:
+    columns:
+      - type: fk
+        name: duration_id
+        isPrimary: true
+        reference:
+          table: plan_durations
+          column:
+          onDelete: cascade
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        reference:
+          table: locales
+          column:
+          onDelete: cascade
+      - name: name
+      - type: created_at
+      - type: updated_at
+  plans:
+    columns:
+      - type: pk
+      - type: slug
+      - type: fk
+        name: duration_id
+        isPrimary: true
+        reference:
+          table: plan_durations
+          column:
+          onDelete: cascade
+      - type: created_at
+      - type: updated_at
+  plan_translations:
+    columns:
+      - type: fk
+        name: plan_id
+        isPrimary: true
+        reference:
+          table: plans
+          column:
+          onDelete: cascade
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        reference:
+          table: locales
+          column:
+          onDelete: cascade
+      - name: name
+      - name: description
+        length: 1023
+      - type: created_at
+      - type: updated_at
+  subscription_statuses:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  subscription_status_translations:
+    columns:
+      - type: fk
+        name: status_id
+        isPrimary: true
+        reference:
+          table: subscription_statuses
+          column:
+          onDelete: cascade
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        reference:
+          table: locales
+          column:
+          onDelete: cascade
+      - name: name
+      - type: created_at
+      - type: updated_at
+  subscriptions:
+    columns:
+      - type: pk
+      - type: fk
+        name: plan_id
+        isPrimary: true
+        reference:
+          table: plans
+          column:
+          onDelete: cascade
+      - type: fk
+        name: person_id
+        isPrimary: true
+        reference:
+          table: persons
+          column:
+          onDelete: cascade
+      - name: name
+      - type: date
+        name: start_at
+      - type: date
+        name: end_at
+      - type: fk
+        name: status_id
+        isPrimary: true
+        reference:
+          table: subscription_statuses
+          column:
+          onDelete: cascade
+      - type: boolean
+        name: recurring
+        default: false
+      - type: created_at
+      - type: updated_at
+  payment_gateways:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  payment_gateway_translations:
+    columns:
+      - type: fk
+        name: gateway_id
+        isPrimary: true
+        reference:
+          table: payment_gateways
+          column:
+          onDelete: cascade
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        reference:
+          table: locales
+          column:
+          onDelete: cascade
+      - name: name
+      - type: created_at
+      - type: updated_at
+  payment_statuses:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  payment_status_translations:
+    columns:
+      - type: fk
+        name: status_id
+        isPrimary: true
+        reference:
+          table: payment_statuses
+          column:
+          onDelete: cascade
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        reference:
+          table: locales
+          column:
+          onDelete: cascade
+      - name: name
+      - type: created_at
+      - type: updated_at
+  payments:
+    columns:
+      - type: pk
+      - type: fk
+        name: status_id
+        isPrimary: true
+        reference:
+          table: payment_statuses
+          column:
+          onDelete: cascade
+      - type: fk
+        name: gateway_id
+        isPrimary: true
+        reference:
+          table: payment_gateways
+          column:
+          onDelete: cascade
+      - type: fk
+        name: person_id
+        isPrimary: true
+        reference:
+          table: persons
+          column:
+          onDelete: cascade
+      - type: decimal
+        name: amount
+        precision: 10
+        scale: 2
+        unsigned: true
+      - type: enum
+        name: currency
+        enum:
+          - USD
+          - BRL
+        default: BRL
+      - type: date
+        name: paid_at
+      - type: varchar
+        name: transaction_id
+        isUnique: true
+      - type: created_at
+      - type: updated_at
+  payment_subscriptions:
+    columns:
+      - type: pk
+      - type: fk
+        name: payment_id
+        isPrimary: true
+        reference:
+          table: payments
+          column:
+          onDelete: cascade
+      - type: fk
+        name: subscription_id
+        isPrimary: true
+        reference:
+          table: subscriptions
+          column:
+          onDelete: cascade
+      - type: created_at
+      - type: updated_at

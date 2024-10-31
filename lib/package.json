@@ -116,7 +116,8 @@
       "^@hedhog/pagination(|/.*)$": "<rootDir>/libs/pagination/src/$1",
       "^@hedhog/setting(|/.*)$": "<rootDir>/libs/setting/src/$1",
       "^@hedhog/admin(|/.*)$": "<rootDir>/libs/admin/src/$1",
-      "^@hedhog/person(|/.*)$": "<rootDir>/libs/person/src/$1"
+      "^@hedhog/person(|/.*)$": "<rootDir>/libs/person/src/$1",
+      "^@hedhog/payment(|/.*)$": "<rootDir>/libs/payment/src/$1"
     }
   }
 }
