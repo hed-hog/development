@@ -23,7 +23,7 @@ export class SettingsService {
 
   async setManySettings(data: SettingsDTO) {
     for (const { slug, value } of data.settings) {
-      await this.prismaService.settings.updateMany({
+      await this.prismaService.setting.updateMany({
         where: {
           slug,
         },
@@ -47,7 +47,7 @@ export class SettingsService {
     );
 
     const result = await this.paginationService.paginate(
-      this.prismaService.settings,
+      this.prismaService.setting,
       paginationParams,
       {
         where: {
@@ -112,7 +112,7 @@ export class SettingsService {
     );
 
     const result = await this.paginationService.paginate(
-      this.prismaService.setting_groups,
+      this.prismaService.setting_group,
       paginationParams,
       {
         where: {
@@ -147,7 +147,7 @@ export class SettingsService {
     );
 
     const result = await this.paginationService.paginate(
-      this.prismaService.settings,
+      this.prismaService.setting,
       paginationParams,
       {
         where: {
@@ -197,26 +197,26 @@ export class SettingsService {
   }
 
   async get(settingId: number) {
-    return this.prismaService.settings.findUnique({
+    return this.prismaService.setting.findUnique({
       where: { id: settingId },
     });
   }
 
   async create({}: CreateDTO) {
-    return this.prismaService.settings.create({
+    return this.prismaService.setting.create({
       data: {},
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.settings.update({
+    return this.prismaService.setting.update({
       where: { id },
       data,
     });
   }
 
   async updateFromSlug(slug: string, data: UpdateDTO) {
-    const { id } = await this.prismaService.settings.findFirst({
+    const { id } = await this.prismaService.setting.findFirst({
       where: {
         slug,
       },
@@ -239,7 +239,7 @@ export class SettingsService {
       );
     }
 
-    return this.prismaService.settings.deleteMany({
+    return this.prismaService.setting.deleteMany({
       where: {
         id: {
           in: ids,
@@ -249,7 +249,7 @@ export class SettingsService {
   }
 
   async setSettingUserValue(user_id: number, slug: string, value: string) {
-    const user = await this.prismaService.users.findUnique({
+    const user = await this.prismaService.user.findUnique({
       where: {
         id: user_id,
       },
@@ -262,7 +262,7 @@ export class SettingsService {
       throw new BadRequestException(`User with id ${user_id} not found.`);
     }
 
-    const setting = await this.prismaService.settings.findFirst({
+    const setting = await this.prismaService.setting.findFirst({
       where: {
         slug,
         user_override: true,
@@ -275,7 +275,7 @@ export class SettingsService {
       );
     }
 
-    return await this.prismaService.setting_users.upsert({
+    return await this.prismaService.setting_user.upsert({
       where: {
         user_id_setting_id: {
           setting_id: setting.id,
@@ -301,7 +301,7 @@ export class SettingsService {
   async getSettingValues(slug: string | string[]) {
     slug = Array.isArray(slug) ? slug : [slug];
 
-    let settings = await this.prismaService.settings.findMany({
+    let settings = await this.prismaService.setting.findMany({
       where: {
         slug: {
           in: slug,
@@ -318,7 +318,7 @@ export class SettingsService {
 
     const slugUserOverride = settings.filter((setting) => setting.userOverride);
 
-    const settingsUser = await this.prismaService.setting_users.findMany({
+    const settingsUser = await this.prismaService.setting_user.findMany({
       where: {
         setting_id: {
           in: slugUserOverride.map((setting) => setting.id),

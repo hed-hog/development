@@ -59,19 +59,19 @@ export class Plan_durationsService {
   }
 
   async getById(plan_durationsId: number) {
-    return this.prismaService.plan_durations.findUnique({
+    return this.prismaService.plan_duration.findUnique({
       where: { id: plan_durationsId },
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.plan_durations.create({
+    return this.prismaService.plan_duration.create({
       data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.plan_durations.update({
+    return this.prismaService.plan_duration.update({
       where: { id },
       data,
     });
@@ -84,7 +84,7 @@ export class Plan_durationsService {
       );
     }
 
-    return this.prismaService.plan_durations.deleteMany({
+    return this.prismaService.plan_duration.deleteMany({
       where: {
         id: {
           in: ids,

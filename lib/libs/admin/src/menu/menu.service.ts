@@ -1,17 +1,17 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
+import { itemTranslations } from '@hedhog/utils';
 import {
   BadRequestException,
   Inject,
   Injectable,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { OrderDTO } from './dto/order.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
-import { itemTranslations } from '@hedhog/utils';
+import { CreateDTO } from './dto/create.dto';
+import { OrderDTO } from './dto/order.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class MenuService {
@@ -23,13 +23,13 @@ export class MenuService {
   ) {}
 
   async updateScreens(menuId: number, data: UpdateIdsDTO) {
-    await this.prismaService.menu_screens.deleteMany({
+    await this.prismaService.menu_screen.deleteMany({
       where: {
         menu_id: menuId,
       },
     });
 
-    return this.prismaService.menu_screens.createMany({
+    return this.prismaService.menu_screen.createMany({
       data: data.ids.map((screenId) => ({
         menu_id: menuId,
         screen_id: screenId,
@@ -38,13 +38,13 @@ export class MenuService {
     });
   }
   async updateRoles(menuId: number, data: UpdateIdsDTO) {
-    await this.prismaService.role_menus.deleteMany({
+    await this.prismaService.role_menu.deleteMany({
       where: {
         menu_id: menuId,
       },
     });
 
-    return this.prismaService.role_menus.createMany({
+    return this.prismaService.role_menu.createMany({
       data: data.ids.map((roleId) => ({
         menu_id: menuId,
         role_id: roleId,
@@ -58,7 +58,7 @@ export class MenuService {
     paginationParams: PaginationDTO,
   ) {
     return this.paginationService.paginate(
-      this.prismaService.screens,
+      this.prismaService.screen,
       paginationParams,
       {
         include: {
@@ -92,7 +92,7 @@ export class MenuService {
     paginationParams: PaginationDTO,
   ) {
     return this.paginationService.paginate(
-      this.prismaService.roles,
+      this.prismaService.role,
       paginationParams,
       {
         include: {
@@ -127,7 +127,7 @@ export class MenuService {
       menuId = null;
     }
 
-    let menus = (await this.prismaService.menus.findMany({
+    let menus = (await this.prismaService.menu.findMany({
       where: {
         menu_id: menuId,
         role_menus: {
@@ -180,7 +180,7 @@ export class MenuService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.menus,
+      this.prismaService.menu,
       paginationParams,
       {
         where: {
@@ -204,19 +204,19 @@ export class MenuService {
   }
 
   async get(menuId: number) {
-    return this.prismaService.menus.findUnique({
+    return this.prismaService.menu.findUnique({
       where: { id: menuId },
     });
   }
 
   async create({ name, url, icon, order, menuId }: CreateDTO) {
-    return this.prismaService.menus.create({
+    return this.prismaService.menu.create({
       data: { name, url, icon, order, menu_id: menuId },
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.menus.update({
+    return this.prismaService.menu.update({
       where: { id },
       data,
     });
@@ -229,7 +229,7 @@ export class MenuService {
       );
     }
 
-    return this.prismaService.menus.deleteMany({
+    return this.prismaService.menu.deleteMany({
       where: {
         id: {
           in: ids,
@@ -239,7 +239,7 @@ export class MenuService {
   }
 
   async updateOrder({ ids }: OrderDTO): Promise<void> {
-    const count = await this.prismaService.menus.count({
+    const count = await this.prismaService.menu.count({
       where: {
         id: {
           in: ids,
@@ -253,7 +253,7 @@ export class MenuService {
 
     await Promise.all(
       ids.map((id, index) =>
-        this.prismaService.menus.update({
+        this.prismaService.menu.update({
           where: { id },
           data: { order: index + 1 },
         }),

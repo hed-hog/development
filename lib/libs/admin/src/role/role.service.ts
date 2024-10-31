@@ -25,13 +25,13 @@ export class RoleService {
   ) {}
 
   async updateUsers(roleId: number, { ids }: UpdateIdsDTO) {
-    await this.prismaService.role_users.deleteMany({
+    await this.prismaService.role_user.deleteMany({
       where: {
         role_id: roleId,
       },
     });
 
-    return this.prismaService.role_users.createMany({
+    return this.prismaService.role_user.createMany({
       data: ids.map((userId) => ({
         role_id: roleId,
         user_id: userId,
@@ -41,13 +41,13 @@ export class RoleService {
   }
 
   async updateScreens(roleId: number, data: UpdateIdsDTO) {
-    await this.prismaService.role_screens.deleteMany({
+    await this.prismaService.role_screen.deleteMany({
       where: {
         role_id: roleId,
       },
     });
 
-    return this.prismaService.role_screens.createMany({
+    return this.prismaService.role_screen.createMany({
       data: data.ids.map((screenId) => ({
         role_id: roleId,
         screen_id: screenId,
@@ -57,13 +57,13 @@ export class RoleService {
   }
 
   async updateRoutes(roleId: number, data: UpdateIdsDTO) {
-    await this.prismaService.role_routes.deleteMany({
+    await this.prismaService.role_route.deleteMany({
       where: {
         role_id: roleId,
       },
     });
 
-    return this.prismaService.role_routes.createMany({
+    return this.prismaService.role_route.createMany({
       data: data.ids.map((routeId) => ({
         role_id: roleId,
         route_id: routeId,
@@ -73,13 +73,13 @@ export class RoleService {
   }
 
   async updateMenus(roleId: number, data: UpdateIdsDTO) {
-    await this.prismaService.role_menus.deleteMany({
+    await this.prismaService.role_menu.deleteMany({
       where: {
         role_id: roleId,
       },
     });
 
-    return this.prismaService.role_menus.createMany({
+    return this.prismaService.role_menu.createMany({
       data: data.ids.map((menuId) => ({
         role_id: roleId,
         menu_id: menuId,
@@ -90,7 +90,7 @@ export class RoleService {
 
   async listUsers(roleId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
-      this.prismaService.users,
+      this.prismaService.user,
       paginationParams,
       {
         include: {
@@ -114,7 +114,7 @@ export class RoleService {
     paginationParams: PaginationDTO,
   ) {
     return this.paginationService.paginate(
-      this.prismaService.menus,
+      this.prismaService.menu,
       paginationParams,
       {
         include: {
@@ -145,7 +145,7 @@ export class RoleService {
 
   async listRoutes(roleId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
-      this.prismaService.routes,
+      this.prismaService.route,
       paginationParams,
       {
         include: {
@@ -169,7 +169,7 @@ export class RoleService {
     paginationParams: PaginationDTO,
   ) {
     return this.paginationService.paginate(
-      this.prismaService.screens,
+      this.prismaService.screen,
       paginationParams,
       {
         include: {
@@ -207,7 +207,7 @@ export class RoleService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.roles,
+      this.prismaService.role,
       paginationParams,
       {
         where: {
@@ -235,7 +235,7 @@ export class RoleService {
     return getWithLocale(
       locale,
       'role_translations',
-      await this.prismaService.roles.findUnique({
+      await this.prismaService.role.findUnique({
         where: { id: roleId },
         include: {
           role_translations: {
@@ -291,7 +291,7 @@ export class RoleService {
       );
     }
 
-    return this.prismaService.roles.deleteMany({
+    return this.prismaService.role.deleteMany({
       where: {
         id: {
           in: ids,

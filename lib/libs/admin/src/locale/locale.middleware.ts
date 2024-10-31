@@ -1,6 +1,6 @@
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 export class LocaleMiddleware implements NestMiddleware {
@@ -13,7 +13,7 @@ export class LocaleMiddleware implements NestMiddleware {
     let code = locale.split(',')[0].split('-')[0];
 
     if (!this.languages.length) {
-      const locales = await this.prisma.locales.findMany({
+      const locales = await this.prisma.locale.findMany({
         select: {
           code: true,
         },

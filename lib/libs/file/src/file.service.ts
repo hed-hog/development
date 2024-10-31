@@ -1,3 +1,4 @@
+import { SettingsService } from '@hedhog/admin';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
@@ -6,12 +7,11 @@ import {
   Injectable,
   forwardRef,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { DeleteDTO } from './dto/delete.dto';
 import { AbstractProvider } from './provider/abstract,provider';
-import { SettingsService } from '@hedhog/admin';
-import { ProviderFactory } from './provider/provider.factory';
-import { JwtService } from '@nestjs/jwt';
 import { EnumProvider } from './provider/provider.enum';
+import { ProviderFactory } from './provider/provider.factory';
 
 @Injectable()
 export class FileService {
@@ -80,14 +80,14 @@ export class FileService {
       return this.mimetypes[mimetype];
     }
 
-    let result = await this.prismaService.file_mimetypes.findFirst({
+    let result = await this.prismaService.file_mimetype.findFirst({
       where: {
         name: mimetype,
       },
     });
 
     if (!result) {
-      result = this.prismaService.file_mimetypes.create({
+      result = this.prismaService.file_mimetype.create({
         data: {
           name: mimetype,
         },
@@ -132,7 +132,7 @@ export class FileService {
 
     const url = await provider.upload(destination, fileBuffer);
 
-    const file = await this.prismaService.files.create({
+    const file = await this.prismaService.file.create({
       data: {
         filename: fileBuffer.originalname,
         path: url,
@@ -147,7 +147,7 @@ export class FileService {
   }
 
   async delete({ ids }: DeleteDTO) {
-    const files = await this.prismaService.files.findMany({
+    const files = await this.prismaService.file.findMany({
       where: {
         id: {
           in: ids,
@@ -162,7 +162,7 @@ export class FileService {
     for (const file of files) {
       await (await this.getProvider()).delete(file.path);
 
-      await this.prismaService.files.delete({
+      await this.prismaService.file.delete({
         where: {
           id: file.id,
         },
@@ -180,7 +180,7 @@ export class FileService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.files,
+      this.prismaService.file,
       paginationParams,
       {
         where: {
@@ -191,7 +191,7 @@ export class FileService {
   }
 
   async get(fileId: number) {
-    return this.prismaService.files.findUnique({
+    return this.prismaService.file.findUnique({
       where: { id: fileId },
     });
   }

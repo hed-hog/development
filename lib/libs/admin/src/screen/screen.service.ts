@@ -6,10 +6,10 @@ import {
   Injectable,
   forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class ScreenService {
@@ -21,13 +21,13 @@ export class ScreenService {
   ) {}
 
   async updateRoles(screenId: number, data: UpdateIdsDTO) {
-    await this.prismaService.role_screens.deleteMany({
+    await this.prismaService.role_screen.deleteMany({
       where: {
         screen_id: screenId,
       },
     });
 
-    return this.prismaService.role_screens.createMany({
+    return this.prismaService.role_screen.createMany({
       data: data.ids.map((roleId) => ({
         screen_id: screenId,
         role_id: roleId,
@@ -37,7 +37,7 @@ export class ScreenService {
   }
   async updateRoutes(screenId: number, { ids }: UpdateIdsDTO) {
     ids = (
-      await this.prismaService.routes.findMany({
+      await this.prismaService.route.findMany({
         where: {
           id: {
             in: ids,
@@ -65,7 +65,7 @@ export class ScreenService {
   }
   async listRoutes(screenId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
-      this.prismaService.routes,
+      this.prismaService.route,
       paginationParams,
       {
         include: {
@@ -89,7 +89,7 @@ export class ScreenService {
     paginationParams: PaginationDTO,
   ) {
     return this.paginationService.paginate(
-      this.prismaService.roles,
+      this.prismaService.role,
       paginationParams,
       {
         include: {
@@ -115,7 +115,7 @@ export class ScreenService {
     );
 
     const result = await this.paginationService.paginate(
-      this.prismaService.screens,
+      this.prismaService.screen,
       paginationParams,
       {
         where: {
@@ -142,11 +142,11 @@ export class ScreenService {
   }
 
   async get(screenId: number) {
-    return this.prismaService.screens.findUnique({ where: { id: screenId } });
+    return this.prismaService.screen.findUnique({ where: { id: screenId } });
   }
 
   async create({ name, slug, description, icon }: CreateDTO) {
-    return this.prismaService.screens.create({
+    return this.prismaService.screen.create({
       data: {
         name,
         slug,
@@ -157,7 +157,7 @@ export class ScreenService {
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.screens.update({
+    return this.prismaService.screen.update({
       where: { id },
       data,
     });
@@ -170,7 +170,7 @@ export class ScreenService {
       );
     }
 
-    return this.prismaService.screens.deleteMany({
+    return this.prismaService.screen.deleteMany({
       where: {
         id: {
           in: ids,

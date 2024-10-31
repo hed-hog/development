@@ -7,11 +7,11 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { genSalt, hash } from 'bcrypt';
+import { DeleteDTO } from '../dto/delete.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { SALT_ROUNDS } from './constants/user.constants';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { UpdateIdsDTO } from '../dto/update-ids.dto';
 
 @Injectable()
 export class UserService {
@@ -24,7 +24,7 @@ export class UserService {
 
   async listRoles(userId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
-      this.prismaService.roles,
+      this.prismaService.role,
       paginationParams,
       {
         include: {
@@ -43,13 +43,13 @@ export class UserService {
   }
 
   async updateRoles(userId: number, { ids }: UpdateIdsDTO) {
-    await this.prismaService.role_users.deleteMany({
+    await this.prismaService.role_user.deleteMany({
       where: {
         user_id: userId,
       },
     });
 
-    return this.prismaService.role_users.createMany({
+    return this.prismaService.role_user.createMany({
       data: ids.map((role) => {
         return {
           user_id: userId,
@@ -68,7 +68,7 @@ export class UserService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.users,
+      this.prismaService.user,
       paginationParams,
       {
         where: {
@@ -79,7 +79,7 @@ export class UserService {
   }
 
   async get(userId: number) {
-    return this.prismaService.users.findUnique({ where: { id: userId } });
+    return this.prismaService.user.findUnique({ where: { id: userId } });
   }
 
   async hashPassword(password: string): Promise<string> {
@@ -90,7 +90,7 @@ export class UserService {
   async create({ email, name, password }: CreateDTO) {
     const hashedPassword = await this.hashPassword(password);
 
-    return this.prismaService.users.create({
+    return this.prismaService.user.create({
       data: {
         email,
         name,
@@ -100,7 +100,7 @@ export class UserService {
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.users.update({
+    return this.prismaService.user.update({
       where: { id },
       data,
     });
@@ -113,7 +113,7 @@ export class UserService {
       );
     }
 
-    return this.prismaService.users.deleteMany({
+    return this.prismaService.user.deleteMany({
       where: {
         id: {
           in: ids,

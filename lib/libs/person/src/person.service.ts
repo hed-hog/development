@@ -1,14 +1,14 @@
+import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
+import { itemTranslations } from '@hedhog/utils';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '@hedhog/prisma';
 import { CreatePersonDTO } from './dto/create-person.dto';
-import { UpdatePersonDTO } from './dto/update-person.dto';
-import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { DeleteDTO } from './dto/delete.dto';
-import { itemTranslations } from '@hedhog/utils';
+import { UpdatePersonDTO } from './dto/update-person.dto';
 
 @Injectable()
 export class PersonService {
@@ -18,7 +18,7 @@ export class PersonService {
   ) {}
 
   async create(data: CreatePersonDTO) {
-    return await this.prismaService.persons.create({
+    return await this.prismaService.person.create({
       data,
     });
   }
@@ -31,7 +31,7 @@ export class PersonService {
     );
 
     const paginate = await this.paginationService.paginate(
-      this.prismaService.persons,
+      this.prismaService.person,
       paginationParams,
       {
         where: {
@@ -138,7 +138,7 @@ export class PersonService {
   }
 
   async getPersonById(id: number) {
-    const person = await this.prismaService.persons.findUnique({
+    const person = await this.prismaService.person.findUnique({
       where: { id },
       include: {
         person_addresses: true,
@@ -185,7 +185,7 @@ export class PersonService {
   }
 
   async update(id: number, data: UpdatePersonDTO) {
-    return await this.prismaService.persons.update({
+    return await this.prismaService.person.update({
       where: { id },
       data: data,
     });
@@ -198,7 +198,7 @@ export class PersonService {
       );
     }
 
-    return await this.prismaService.persons.deleteMany({
+    return await this.prismaService.person.deleteMany({
       where: {
         id: {
           in: ids,

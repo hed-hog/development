@@ -1,10 +1,10 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { UpdateDTO } from './dto/update.dto';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class RouteService {
@@ -24,7 +24,7 @@ export class RouteService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.routes,
+      this.prismaService.route,
       paginationParams,
       {
         where: {
@@ -35,22 +35,22 @@ export class RouteService {
   }
 
   async getRouteById(routeId: number) {
-    return this.prismaService.routes.findUnique({ where: { id: routeId } });
+    return this.prismaService.route.findUnique({ where: { id: routeId } });
   }
 
   async create({ url, method }: CreateDTO) {
-    return this.prismaService.routes.create({ data: { url, method } });
+    return this.prismaService.route.create({ data: { url, method } });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.routes.update({
+    return this.prismaService.route.update({
       where: { id },
       data,
     });
   }
 
   async delete({ ids }: DeleteDTO) {
-    return this.prismaService.routes.deleteMany({
+    return this.prismaService.route.deleteMany({
       where: {
         id: {
           in: ids,
@@ -65,7 +65,7 @@ export class RouteService {
     paginationParams: PaginationDTO,
   ) {
     return this.paginationService.paginate(
-      this.prismaService.roles,
+      this.prismaService.role,
       paginationParams,
       {
         include: {
@@ -96,13 +96,13 @@ export class RouteService {
   }
 
   async updateRoles(routeId: number, data: UpdateIdsDTO) {
-    await this.prismaService.role_routes.deleteMany({
+    await this.prismaService.role_route.deleteMany({
       where: {
         route_id: routeId,
       },
     });
 
-    return this.prismaService.role_routes.createMany({
+    return this.prismaService.role_route.createMany({
       data: data.ids.map((roleId) => ({
         role_id: roleId,
         route_id: routeId,
@@ -117,7 +117,7 @@ export class RouteService {
     paginationParams: PaginationDTO,
   ) {
     return this.paginationService.paginate(
-      this.prismaService.screens,
+      this.prismaService.screen,
       paginationParams,
       {
         include: {

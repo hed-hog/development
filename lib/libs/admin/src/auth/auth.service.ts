@@ -1,3 +1,4 @@
+import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
 import {
   forwardRef,
@@ -11,7 +12,6 @@ import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
-import { MailService } from '@hedhog/mail';
 
 @Injectable()
 export class AuthService {
@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   async loginWithEmailAndPassword(email: string, password: string) {
-    const user = await this.prisma.users.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         email,
       },
@@ -69,7 +69,7 @@ export class AuthService {
       if (user.multifactor_id === MultifactorType.EMAIL) {
         const code = this.generateRandomNumber();
 
-        await this.prisma.users.update({
+        await this.prisma.user.update({
           where: {
             id: user.id,
           },
@@ -106,7 +106,7 @@ export class AuthService {
   }
 
   async forget({ email }: ForgetDTO) {
-    const user = await this.prisma.users.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         email,
       },
@@ -121,7 +121,7 @@ export class AuthService {
 
     const code = this.generateRandomString(32);
 
-    await this.prisma.users.update({
+    await this.prisma.user.update({
       where: {
         id: user.id,
       },
@@ -142,7 +142,7 @@ export class AuthService {
   async otp({ token, code }: OtpDTO) {
     const data = this.jwt.decode(token);
 
-    const user = await this.prisma.users.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         id: data['id'],
         code: String(code),
@@ -153,7 +153,7 @@ export class AuthService {
       throw new NotFoundException('Invalid code');
     }
 
-    await this.prisma.users.update({
+    await this.prisma.user.update({
       where: {
         id: user.id,
       },
@@ -170,6 +170,6 @@ export class AuthService {
   }
 
   verify(id: number) {
-    return this.prisma.users.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({ where: { id } });
   }
 }

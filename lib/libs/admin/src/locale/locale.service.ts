@@ -26,7 +26,7 @@ export class LocaleService {
       throw new BadRequestException('You must select at least one item code.');
     }
 
-    await this.prismaService.locales.updateMany({
+    await this.prismaService.locale.updateMany({
       where: {
         enabled: true,
       },
@@ -35,7 +35,7 @@ export class LocaleService {
       },
     });
 
-    return this.prismaService.locales.updateMany({
+    return this.prismaService.locale.updateMany({
       where: {
         code: {
           in: codes,
@@ -55,7 +55,7 @@ export class LocaleService {
     );
 
     const result = await this.paginationService.paginate(
-      this.prismaService.locales,
+      this.prismaService.locale,
       paginationParams,
       {
         where: {
@@ -92,7 +92,7 @@ export class LocaleService {
       where.locale.region = region;
     }
 
-    const values = await this.prismaService.translations.findMany({
+    const values = await this.prismaService.translation.findMany({
       where,
       select: {
         name: true,
@@ -146,7 +146,7 @@ export class LocaleService {
       where.locales.region = region;
     }
 
-    const values = await this.prismaService.translations.findMany({
+    const values = await this.prismaService.translation.findMany({
       where,
       select: {
         name: true,
@@ -171,7 +171,7 @@ export class LocaleService {
     );
 
     const result = await this.paginationService.paginate(
-      this.prismaService.locales,
+      this.prismaService.locale,
       paginationParams,
       {
         where: {
@@ -201,7 +201,7 @@ export class LocaleService {
       where.locale.region = region;
     }
 
-    const values = await this.prismaService.translations.findMany({
+    const values = await this.prismaService.translation.findMany({
       where,
       select: {
         name: true,
@@ -225,25 +225,25 @@ export class LocaleService {
     if (this.codes[code]) {
       return this.codes[code];
     }
-    return (this.codes[code] = await this.prismaService.locales.findFirst({
+    return (this.codes[code] = await this.prismaService.locale.findFirst({
       where: { code },
     }));
   }
 
   async getById(localesId: number) {
-    return this.prismaService.locales.findUnique({
+    return this.prismaService.locale.findUnique({
       where: { id: localesId },
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.locales.create({
+    return this.prismaService.locale.create({
       data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.locales.update({
+    return this.prismaService.locale.update({
       where: { id },
       data,
     });
@@ -256,7 +256,7 @@ export class LocaleService {
       );
     }
 
-    return this.prismaService.locales.deleteMany({
+    return this.prismaService.locale.deleteMany({
       where: {
         id: {
           in: ids,

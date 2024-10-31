@@ -27,7 +27,7 @@ export class Payment_gatewaysService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.payment_gateways,
+      this.prismaService.payment_gateway,
       paginationParams,
       {
         where: {
@@ -38,19 +38,19 @@ export class Payment_gatewaysService {
   }
 
   async getById(payment_gatewaysId: number) {
-    return this.prismaService.payment_gateways.findUnique({
+    return this.prismaService.payment_gateway.findUnique({
       where: { id: payment_gatewaysId },
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.payment_gateways.create({
+    return this.prismaService.payment_gateway.create({
       data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.payment_gateways.update({
+    return this.prismaService.payment_gateway.update({
       where: { id },
       data,
     });
@@ -63,7 +63,7 @@ export class Payment_gatewaysService {
       );
     }
 
-    return this.prismaService.payment_gateways.deleteMany({
+    return this.prismaService.payment_gateway.deleteMany({
       where: {
         id: {
           in: ids,
