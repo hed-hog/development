@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer';
 import { getScreenSize } from '../__tests__/utils/getScreenSize';
 import { sleep } from '../__tests__/utils/sleep';
-import { contacts } from './contacts';
-import { customType } from './custom-types';
+import { contacts } from './contact';
+import { customType } from './custom-type';
 import { login } from './login';
 import { route } from './route';
 import { user } from './user';

@@ -1,10 +1,10 @@
 import { useApp } from '@/hooks/use-app'
-import { PersonCustomType } from '@/types/custom-type'
+import { PersonCustom, PersonCustom } from '@/types/models'
 
 export function requests() {
   const { request } = useApp()
 
-  const createCustomType = async (data: PersonCustomType) => {
+  const createCustomType = async (data: PersonCustom) => {
     if (!data.id) delete (data as any).id
     return request({
       url: '/custom-type',
@@ -13,7 +13,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const deleteCustomTypes = async <T>(customTypeIds: T[]) => {
+  const deleteCustomType = async <T>(customTypeIds: T[]) => {
     return request({
       url: '/custom-type',
       data: { ids: customTypeIds },
@@ -21,10 +21,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editCustomType = async (params: {
-    id: string
-    data: PersonCustomType
-  }) => {
+  const editCustomType = async (params: { id: string; data: PersonCustom }) => {
     const { id, data } = params
 
     return request({
@@ -36,7 +33,7 @@ export function requests() {
 
   return {
     createCustomType,
-    deleteCustomTypes,
+    deleteCustomType,
     editCustomType,
   }
 }

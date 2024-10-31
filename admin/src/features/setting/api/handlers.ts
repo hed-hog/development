@@ -100,14 +100,14 @@ export function useEditSetting() {
 }
 
 export function useEditSettinglug() {
-  const { editSettinglug } = requests()
+  const { editSettingSlug } = requests()
   //const { t: moduleT } = useTranslation('module')
   //const { t: successT } = useTranslation('success')
   //const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-setting-slug'],
-    mutationFn: editSettinglug,
+    mutationFn: editSettingSlug,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['setting'] })
       toast.success(`edit setting success`)
@@ -119,14 +119,14 @@ export function useEditSettinglug() {
 }
 
 export function useEditUserSettinglug() {
-  const { editUserSettinglug } = requests()
+  const { editUserSettingSlug } = requests()
   //const { t: moduleT } = useTranslation('module')
   //const { t: successT } = useTranslation('success')
   //const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-setting-slug'],
-    mutationFn: editUserSettinglug,
+    mutationFn: editUserSettingSlug,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['setting'] })
       toast.success(`edit setting success`)

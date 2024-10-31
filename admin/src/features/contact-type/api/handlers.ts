@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { requests } from './requests'
 
-export function useContactTypes() {
+export function useContactType() {
   const { request } = useApp()
 
   return useQuery({
@@ -39,14 +39,14 @@ export function useCreateContactType() {
 }
 
 export function useDeleteContactType<T>() {
-  const { deleteContactTypes } = requests()
+  const { deleteContactType } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['delete-contact-type'],
-    mutationFn: deleteContactTypes<T>,
+    mutationFn: deleteContactType<T>,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contact-type'] })
       toast.success(`${moduleT('contactType')} ${successT('delete')}`)

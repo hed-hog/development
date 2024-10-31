@@ -1,10 +1,10 @@
 import { useApp } from '@/hooks/use-app'
-import { UserType } from '@/types/user'
+import { User } from '@/types/models'
 
 export function requests() {
   const { request } = useApp()
 
-  const createUser = async (data: UserType) => {
+  const createUser = async (data: User) => {
     return request({
       url: '/user',
       data,
@@ -20,7 +20,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editUser = async (params: { id: string; data: UserType }) => {
+  const editUser = async (params: { id: string; data: User }) => {
     const { id, data } = params
     return request({
       url: `/user/${id}`,

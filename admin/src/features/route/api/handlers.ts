@@ -61,7 +61,7 @@ export function useDeleteRoute<T>() {
   })
 }
 
-export function useEditRoutecreens() {
+export function useEditRouteScreens() {
   const { editRoutecreens } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')

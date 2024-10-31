@@ -46,12 +46,12 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: 'contacts',
+        path: 'contact',
         children: [
           {
             index: true,
             lazy: async () => ({
-              Component: (await import('./pages/contacts/index.tsx')).default,
+              Component: (await import('./pages/contact/index.tsx')).default,
             }),
           },
         ],
@@ -81,9 +81,9 @@ const router = createBrowserRouter([
             }),
           },
           {
-            path: 'screens',
+            path: 'screen',
             lazy: async () => ({
-              Component: (await import('./pages/management/screens/index.tsx'))
+              Component: (await import('./pages/management/screen/index.tsx'))
                 .default,
             }),
           },
@@ -100,56 +100,56 @@ const router = createBrowserRouter([
               {
                 index: true,
                 lazy: async () => ({
-                  Component: (await import('./pages/contacts/index.tsx'))
+                  Component: (await import('./pages/contact/index.tsx'))
                     .default,
                 }),
               },
               {
-                path: 'address-types',
+                path: 'address-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/person/address-types/index.tsx'
+                      './pages/management/person/address-type/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: 'contact-types',
+                path: 'contact-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/person/contact-types/index.tsx'
+                      './pages/management/person/contact-type/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: 'custom-types',
+                path: 'custom-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/person/custom-types/index.tsx'
+                      './pages/management/person/custom-type/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: 'document-types',
+                path: 'document-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/person/document-types/index.tsx'
+                      './pages/management/person/document-type/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: 'person-types',
+                path: 'person-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      './pages/management/person/person-types/index.tsx'
+                      './pages/management/person/person-type/index.tsx'
                     )
                   ).default,
                 }),
@@ -178,78 +178,6 @@ const router = createBrowserRouter([
                     await import('./pages/management/setting/forms.tsx')
                   ).default,
                 }),
-              },
-            ],
-          },
-          {
-            path: 'setting-options',
-            lazy: async () => ({
-              Component: (
-                await import('./pages/management/setting-options/index.tsx')
-              ).default,
-            }),
-            errorElement: <GeneralError />,
-            children: [
-              {
-                index: true,
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/setting-options/profile/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'account',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/setting-options/account/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'appearance',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/setting-options/appearance/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'notifications',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/setting-options/notifications/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'display',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/setting-options/display/index.tsx'
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: 'error-example',
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      './pages/management/setting-options/error-example/index.tsx'
-                    )
-                  ).default,
-                }),
-                errorElement: <GeneralError className='h-[50svh]' minimal />,
               },
             ],
           },

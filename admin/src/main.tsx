@@ -19,7 +19,7 @@ i18n
   .use(
     resourcesToBackend(
       async (language: string, namespace: string) =>
-        import(`./locale/${language}/${namespace}.json`)
+        import(`./locales/${language}/${namespace}.json`)
     )
   )
   .init({

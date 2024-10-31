@@ -24,14 +24,14 @@ export function useCreateMenu() {
 }
 
 export function useDeleteMenu<T>() {
-  const { deleteMenus } = requests()
+  const { deleteMenu } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['delete-menu'],
-    mutationFn: deleteMenus<T>,
+    mutationFn: deleteMenu<T>,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['menu'] })
       toast.success(`${moduleT('menu')} ${successT('delete')}`)
@@ -61,15 +61,15 @@ export function useEditMenu() {
   })
 }
 
-export function useEditMenuRoles() {
-  const { editMenuRoles } = requests()
+export function useEditMenuRole() {
+  const { editMenuRole } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-menu-role'],
-    mutationFn: editMenuRoles,
+    mutationFn: editMenuRole,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['menu'] })
       toast.success(`${moduleT('menuRole')} ${successT('edit')}`)
@@ -80,15 +80,15 @@ export function useEditMenuRoles() {
   })
 }
 
-export function useEditMenuScreens() {
-  const { editMenuScreens } = requests()
+export function useEditMenuScreen() {
+  const { editMenuScreen } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
-    mutationKey: ['edit-menu-screens'],
-    mutationFn: editMenuScreens,
+    mutationKey: ['edit-menu-screen'],
+    mutationFn: editMenuScreen,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['menu'] })
       toast.success(`${moduleT('menuScreen')} ${successT('edit')}`)

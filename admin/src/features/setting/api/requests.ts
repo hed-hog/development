@@ -24,7 +24,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editSettinglug = async (params: {
+  const editSettingSlug = async (params: {
     slug: string
     data: Partial<SettingType>
   }) => {
@@ -36,7 +36,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editUserSettinglug = async (params: {
+  const editUserSettingSlug = async (params: {
     slug: string
     value: string
   }) => {
@@ -72,9 +72,9 @@ export function requests() {
   return {
     createSetting,
     editSetting,
-    editSettinglug,
+    editSettingSlug,
     deleteSetting,
     editMultipleSetting,
-    editUserSettinglug,
+    editUserSettingSlug,
   }
 }

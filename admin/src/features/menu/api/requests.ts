@@ -1,10 +1,10 @@
 import { useApp } from '@/hooks/use-app'
-import { MenuType } from '@/types/menu'
+import { Menu } from '@/types/models'
 
 export function requests() {
   const { request } = useApp()
 
-  const createMenu = async (data: MenuType) => {
+  const createMenu = async (data: Menu) => {
     return request({
       url: '/menu',
       data,
@@ -20,7 +20,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editMenu = async (params: { id: string; data: MenuType }) => {
+  const editMenu = async (params: { id: string; data: Menu }) => {
     const { id, data } = params
     return request({
       url: `/menu/${id}`,
@@ -29,21 +29,21 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const getMenuRoles = async ({ menuId }: { menuId: string }) => {
+  const getMenuRole = async ({ menuId }: { menuId: string }) => {
     return request({
       url: `/menu/${menuId}/role`,
       method: 'get',
     }).then((res) => res.data)
   }
 
-  const getMenucreens = async ({ menuId }: { menuId: string }) => {
+  const getMenuScreen = async ({ menuId }: { menuId: string }) => {
     return request({
       url: `/menu/${menuId}/screen`,
       method: 'get',
     }).then((res) => res.data)
   }
 
-  const editMenuRoles = async ({
+  const editMenuRole = async ({
     menuId,
     roleIds,
   }: {
@@ -57,7 +57,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editMenucreens = async ({
+  const editMenuScreen = async ({
     menuId,
     screenIds,
   }: {
@@ -75,9 +75,9 @@ export function requests() {
     createMenu,
     deleteMenu,
     editMenu,
-    getMenuRoles,
-    getMenucreens,
-    editMenuRoles,
-    editMenucreens,
+    getMenuRole,
+    getMenuScreen,
+    editMenuRole,
+    editMenuScreen,
   }
 }

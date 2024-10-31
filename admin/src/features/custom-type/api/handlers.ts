@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { requests } from './requests'
 
-export function useCustomTypes() {
+export function useCustomType() {
   const { request } = useApp()
 
   return useQuery({
@@ -39,14 +39,14 @@ export function useCreateCustomType() {
 }
 
 export function useDeleteCustomType<T>() {
-  const { deleteCustomTypes } = requests()
+  const { deleteCustomType } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['delete-custom-type'],
-    mutationFn: deleteCustomTypes<T>,
+    mutationFn: deleteCustomType<T>,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['custom-type'] })
       toast.success(`${moduleT('customType')} ${successT('delete')}`)
