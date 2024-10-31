@@ -83,7 +83,87 @@ data:
       name:
         en: Failed
         pt: Falhou
-
+  routes:
+    - url: /plan-duration
+      method: GET
+    - url: /plan-duration
+      method: POST
+    - url: /plan-duration/:id
+      method: GET
+    - url: /plan-duration/:id
+      method: PATCH
+    - url: /plan-duration/:id
+      method: DELETE
+    - url: /plan
+      method: GET
+    - url: /plan
+      method: POST
+    - url: /plan/:id
+      method: GET
+    - url: /plan/:id
+      method: PATCH
+    - url: /plan/:id
+      method: DELETE
+    - url: /subscription-status
+      method: GET
+    - url: /subscription-status
+      method: POST
+    - url: /subscription-status/:id
+      method: GET
+    - url: /subscription-status/:id
+      method: PATCH
+    - url: /subscription-status/:id
+      method: DELETE
+    - url: /subscription
+      method: GET
+    - url: /subscription
+      method: POST
+    - url: /subscription/:id
+      method: GET
+    - url: /subscription/:id
+      method: PATCH
+    - url: /subscription/:id
+      method: DELETE
+    - url: /payment-gateway
+      method: GET
+    - url: /payment-gateway
+      method: POST
+    - url: /payment-gateway/:id
+      method: GET
+    - url: /payment-gateway/:id
+      method: PATCH
+    - url: /payment-gateway/:id
+      method: DELETE
+    - url: /payment-status
+      method: GET
+    - url: /payment-status
+      method: POST
+    - url: /payment-status/:id
+      method: GET
+    - url: /payment-status/:id
+      method: PATCH
+    - url: /payment-status/:id
+      method: DELETE
+    - url: /payment
+      method: GET
+    - url: /payment
+      method: POST
+    - url: /payment/:id
+      method: GET
+    - url: /payment/:id
+      method: PATCH
+    - url: /payment/:id
+      method: DELETE
+    - url: /payment-subscription
+      method: GET
+    - url: /payment-subscription
+      method: POST
+    - url: /payment-subscription/:id
+      method: GET
+    - url: /payment-subscription/:id
+      method: PATCH
+    - url: /payment-subscription/:id
+      method: DELETE
 tables:
   plan_duration:
     columns:
@@ -98,14 +178,14 @@ tables:
         isPrimary: true
         reference:
           table: plan_duration
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: locale_id
         isPrimary: true
         reference:
           table: locale
-          column:
+          column: null
           onDelete: cascade
       - name: name
       - type: created_at
@@ -119,7 +199,7 @@ tables:
         isPrimary: true
         reference:
           table: plan_duration
-          column:
+          column: null
           onDelete: cascade
       - type: created_at
       - type: updated_at
@@ -130,14 +210,14 @@ tables:
         isPrimary: true
         reference:
           table: plan
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: locale_id
         isPrimary: true
         reference:
           table: locale
-          column:
+          column: null
           onDelete: cascade
       - name: name
       - name: description
@@ -157,14 +237,14 @@ tables:
         isPrimary: true
         reference:
           table: subscription_status
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: locale_id
         isPrimary: true
         reference:
           table: locale
-          column:
+          column: null
           onDelete: cascade
       - name: name
       - type: created_at
@@ -177,14 +257,14 @@ tables:
         isPrimary: true
         reference:
           table: plan
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: person_id
         isPrimary: true
         reference:
           table: person
-          column:
+          column: null
           onDelete: cascade
       - name: name
       - type: date
@@ -196,7 +276,7 @@ tables:
         isPrimary: true
         reference:
           table: subscription_status
-          column:
+          column: null
           onDelete: cascade
       - type: boolean
         name: recurring
@@ -216,14 +296,14 @@ tables:
         isPrimary: true
         reference:
           table: payment_gateway
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: locale_id
         isPrimary: true
         reference:
           table: locale
-          column:
+          column: null
           onDelete: cascade
       - name: name
       - type: created_at
@@ -241,14 +321,14 @@ tables:
         isPrimary: true
         reference:
           table: payment_status
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: locale_id
         isPrimary: true
         reference:
           table: locale
-          column:
+          column: null
           onDelete: cascade
       - name: name
       - type: created_at
@@ -261,21 +341,21 @@ tables:
         isPrimary: true
         reference:
           table: payment_status
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: gateway_id
         isPrimary: true
         reference:
           table: payment_gateway
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: person_id
         isPrimary: true
         reference:
           table: person
-          column:
+          column: null
           onDelete: cascade
       - type: decimal
         name: amount
@@ -303,14 +383,14 @@ tables:
         isPrimary: true
         reference:
           table: payment
-          column:
+          column: null
           onDelete: cascade
       - type: fk
         name: subscription_id
         isPrimary: true
         reference:
           table: subscription
-          column:
+          column: null
           onDelete: cascade
       - type: created_at
       - type: updated_at

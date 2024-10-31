@@ -2,16 +2,16 @@ import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
-import { SubscriptionsService } from './subscriptions.service';
-import { SubscriptionsController } from './subscriptions.controller';
+import { SubscriptionService } from './subscription.service';
+import { SubscriptionController } from './subscription.controller';
 @Module({
   imports: [
     forwardRef(() => AdminModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
   ],
-  controllers: [SubscriptionsController],
-  providers: [SubscriptionsService],
-  exports: [SubscriptionsService],
+  controllers: [SubscriptionController],
+  providers: [SubscriptionService],
+  exports: [SubscriptionService],
 })
-export class SubscriptionsModule {}
+export class SubscriptionModule {}

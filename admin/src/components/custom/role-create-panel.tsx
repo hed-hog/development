@@ -1,20 +1,20 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocales } from '@/features/locale'
+import { useLocale } from '@/features/locale'
 import { useCreateRole } from '@/features/role'
 import { FieldType } from '@/types/form-panel'
-import { Roles } from '@/types/models'
+import { Role } from '@/types/models'
 import { forwardRef, useImperativeHandle } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import FormPanel from './form-panel'
 
 export type RoleCreateProps = {
-  onCreate?: (data: Roles) => void
+  onCreate?: (data: Role) => void
 }
 
 const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps, ref) => {
   const { t } = useTranslation(['actions', 'role', 'translation'])
-  const { data: localeEnabled } = useLocales()
+  const { data: localeEnabled } = useLocale()
   const { mutate: createRole } = useCreateRole()
   const form = useForm<FieldValues>({
     mode: 'onSubmit',
@@ -62,7 +62,7 @@ const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps, ref) => {
       ]}
       form={form}
       button={{ text: t('create', { ns: 'actions' }) }}
-      onSubmit={(data: Roles) => {
+      onSubmit={(data: Role) => {
         createRole(data)
         if (typeof onCreate === 'function') {
           onCreate(data)

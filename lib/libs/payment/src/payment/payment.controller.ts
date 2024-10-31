@@ -14,35 +14,35 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { Payment_gatewaysService } from './payment_gateways.service';
+import { PaymentService } from './payment.service';
 import { Role } from '@hedhog/admin';
 
 @Role()
-@Controller('payment_gateways')
-export class Payment_gatewaysController {
+@Controller('payment')
+export class PaymentController {
   constructor(
-    @Inject(forwardRef(() => Payment_gatewaysService))
-    private readonly payment_gatewaysService: Payment_gatewaysService,
+    @Inject(forwardRef(() => PaymentService))
+    private readonly paymentService: PaymentService,
   ) {}
 
   @Get()
   async get(@Pagination() paginationParams) {
-    return this.payment_gatewaysService.get(paginationParams);
+    return this.paymentService.get(paginationParams);
   }
 
   @Get(':id')
   async getById(@Param('id', ParseIntPipe) id: number) {
-    return this.payment_gatewaysService.getById(id);
+    return this.paymentService.getById(id);
   }
 
   @Post()
   create(@Body() data: CreateDTO) {
-    return this.payment_gatewaysService.create(data);
+    return this.paymentService.create(data);
   }
 
   @Patch(':id')
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.payment_gatewaysService.update({
+    return this.paymentService.update({
       id,
       data,
     });
@@ -50,6 +50,6 @@ export class Payment_gatewaysController {
 
   @Delete()
   async delete(@Body() data: DeleteDTO) {
-    return this.payment_gatewaysService.delete(data);
+    return this.paymentService.delete(data);
   }
 }

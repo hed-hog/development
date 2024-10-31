@@ -11,7 +11,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class Subscription_statusesService {
+export class PaymentStatusService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -28,10 +28,10 @@ export class Subscription_statusesService {
     ];
 
     const include = {
-      subscription_statuses: {
+      payment_status: {
         select: {
           id: true,
-          subscription_status_locale: {
+          payment_status_locale: {
             where: {
               locale: {
                 code: locale,
@@ -46,7 +46,7 @@ export class Subscription_statusesService {
     };
 
     return this.paginationService.paginate(
-      this.prismaService.subscription_status_locale,
+      this.prismaService.payment_status_locale,
       paginationParams,
       {
         where: {
@@ -54,24 +54,24 @@ export class Subscription_statusesService {
         },
         include,
       },
-      'subscription_status_locale',
+      'payment_status_locale',
     );
   }
 
-  async getById(subscription_statusesId: number) {
-    return this.prismaService.subscription_statuses.findUnique({
-      where: { id: subscription_statusesId },
+  async getById(paymentStatusId: number) {
+    return this.prismaService.payment_status.findUnique({
+      where: { id: paymentStatusId },
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.subscription_statuses.create({
+    return this.prismaService.payment_status.create({
       data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.subscription_statuses.update({
+    return this.prismaService.payment_status.update({
       where: { id },
       data,
     });
@@ -84,7 +84,7 @@ export class Subscription_statusesService {
       );
     }
 
-    return this.prismaService.subscription_statuses.deleteMany({
+    return this.prismaService.payment_status.deleteMany({
       where: {
         id: {
           in: ids,

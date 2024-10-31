@@ -11,7 +11,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class PlansService {
+export class PaymentSubscriptionService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -19,59 +19,38 @@ export class PlansService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async get(locale: string, paginationParams: PaginationDTO) {
-    const OR: any[] = [
-      {
-        name: { contains: paginationParams.search, mode: 'insensitive' },
-      },
-      { id: { equals: +paginationParams.search } },
-    ];
+  async get(paginationParams: PaginationDTO) {
+    const OR: any[] = [];
 
-    const include = {
-      plans: {
-        select: {
-          id: true,
-          plan_locale: {
-            where: {
-              locale: {
-                code: locale,
-              },
-            },
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-    };
+    if (!isNaN(+paginationParams.search)) {
+      OR.push({ id: { equals: +paginationParams.search } });
+    }
 
     return this.paginationService.paginate(
-      this.prismaService.plan_locale,
+      this.prismaService.payment_subscription,
       paginationParams,
       {
         where: {
           OR,
         },
-        include,
       },
-      'plan_locale',
     );
   }
 
-  async getById(plansId: number) {
-    return this.prismaService.plans.findUnique({
-      where: { id: plansId },
+  async getById(paymentSubscriptionId: number) {
+    return this.prismaService.payment_subscription.findUnique({
+      where: { id: paymentSubscriptionId },
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.plans.create({
+    return this.prismaService.payment_subscription.create({
       data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.plans.update({
+    return this.prismaService.payment_subscription.update({
       where: { id },
       data,
     });
@@ -84,7 +63,7 @@ export class PlansService {
       );
     }
 
-    return this.prismaService.plans.deleteMany({
+    return this.prismaService.payment_subscription.deleteMany({
       where: {
         id: {
           in: ids,

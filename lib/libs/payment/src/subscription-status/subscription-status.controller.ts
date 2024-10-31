@@ -15,35 +15,35 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { Subscription_statusesService } from './subscription_statuses.service';
+import { SubscriptionStatusService } from './subscription-status.service';
 import { Role } from '@hedhog/admin';
 
 @Role()
-@Controller('subscription_statuses')
-export class Subscription_statusesController {
+@Controller('subscription-status')
+export class SubscriptionStatusController {
   constructor(
-    @Inject(forwardRef(() => Subscription_statusesService))
-    private readonly subscription_statusesService: Subscription_statusesService,
+    @Inject(forwardRef(() => SubscriptionStatusService))
+    private readonly subscriptionStatusService: SubscriptionStatusService,
   ) {}
 
   @Get()
   async get(@Pagination() paginationParams, @Locale() locale) {
-    return this.subscription_statusesService.get(paginationParams);
+    return this.subscriptionStatusService.get(locale, paginationParams);
   }
 
   @Get(':id')
   async getById(@Param('id', ParseIntPipe) id: number) {
-    return this.subscription_statusesService.getById(id);
+    return this.subscriptionStatusService.getById(id);
   }
 
   @Post()
   create(@Body() data: CreateDTO) {
-    return this.subscription_statusesService.create(data);
+    return this.subscriptionStatusService.create(data);
   }
 
   @Patch(':id')
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.subscription_statusesService.update({
+    return this.subscriptionStatusService.update({
       id,
       data,
     });
@@ -51,6 +51,6 @@ export class Subscription_statusesController {
 
   @Delete()
   async delete(@Body() data: DeleteDTO) {
-    return this.subscription_statusesService.delete(data);
+    return this.subscriptionStatusService.delete(data);
   }
 }

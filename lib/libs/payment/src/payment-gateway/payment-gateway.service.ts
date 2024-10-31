@@ -11,7 +11,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class Payment_gatewaysService {
+export class PaymentGatewayService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -19,27 +19,48 @@ export class Payment_gatewaysService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async get(paginationParams: PaginationDTO) {
-    const OR: any[] = [];
+  async get(locale: string, paginationParams: PaginationDTO) {
+    const OR: any[] = [
+      {
+        name: { contains: paginationParams.search, mode: 'insensitive' },
+      },
+      { id: { equals: +paginationParams.search } },
+    ];
 
-    if (!isNaN(+paginationParams.search)) {
-      OR.push({ id: { equals: +paginationParams.search } });
-    }
+    const include = {
+      payment_gateway: {
+        select: {
+          id: true,
+          payment_gateway_locale: {
+            where: {
+              locale: {
+                code: locale,
+              },
+            },
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    };
 
     return this.paginationService.paginate(
-      this.prismaService.payment_gateway,
+      this.prismaService.payment_gateway_locale,
       paginationParams,
       {
         where: {
           OR,
         },
+        include,
       },
+      'payment_gateway_locale',
     );
   }
 
-  async getById(payment_gatewaysId: number) {
+  async getById(paymentGatewayId: number) {
     return this.prismaService.payment_gateway.findUnique({
-      where: { id: payment_gatewaysId },
+      where: { id: paymentGatewayId },
     });
   }
 

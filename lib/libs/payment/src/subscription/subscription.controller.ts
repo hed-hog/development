@@ -1,4 +1,3 @@
-import { Locale } from '@hedhog/admin';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -15,35 +14,35 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { Plan_durationsService } from './plan_durations.service';
+import { SubscriptionService } from './subscription.service';
 import { Role } from '@hedhog/admin';
 
 @Role()
-@Controller('plan_durations')
-export class Plan_durationsController {
+@Controller('subscription')
+export class SubscriptionController {
   constructor(
-    @Inject(forwardRef(() => Plan_durationsService))
-    private readonly plan_durationsService: Plan_durationsService,
+    @Inject(forwardRef(() => SubscriptionService))
+    private readonly subscriptionService: SubscriptionService,
   ) {}
 
   @Get()
-  async get(@Pagination() paginationParams, @Locale() locale) {
-    return this.plan_durationsService.get(paginationParams);
+  async get(@Pagination() paginationParams) {
+    return this.subscriptionService.get(paginationParams);
   }
 
   @Get(':id')
   async getById(@Param('id', ParseIntPipe) id: number) {
-    return this.plan_durationsService.getById(id);
+    return this.subscriptionService.getById(id);
   }
 
   @Post()
   create(@Body() data: CreateDTO) {
-    return this.plan_durationsService.create(data);
+    return this.subscriptionService.create(data);
   }
 
   @Patch(':id')
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.plan_durationsService.update({
+    return this.subscriptionService.update({
       id,
       data,
     });
@@ -51,6 +50,6 @@ export class Plan_durationsController {
 
   @Delete()
   async delete(@Body() data: DeleteDTO) {
-    return this.plan_durationsService.delete(data);
+    return this.subscriptionService.delete(data);
   }
 }

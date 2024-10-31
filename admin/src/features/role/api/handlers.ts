@@ -61,15 +61,15 @@ export function useEditRole() {
   })
 }
 
-export function useEditRoleRoutes() {
-  const { editRoleRoutes } = requests()
+export function useEditRoleRoute() {
+  const { editRoleRoute } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role-route'],
-    mutationFn: editRoleRoutes,
+    mutationFn: editRoleRoute,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['role'] })
       toast.success(`${moduleT('roleRoute')} ${successT('edit')}`)
@@ -80,15 +80,15 @@ export function useEditRoleRoutes() {
   })
 }
 
-export function useEditRoleMenus() {
-  const { editRoleMenus } = requests()
+export function useEditRoleMenu() {
+  const { editRoleMenu } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role-menu'],
-    mutationFn: editRoleMenus,
+    mutationFn: editRoleMenu,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['role'] })
       toast.success(`${moduleT('roleMenu')} ${successT('edit')}`)
@@ -99,15 +99,15 @@ export function useEditRoleMenus() {
   })
 }
 
-export function useEditRolecreens() {
-  const { editRolecreens } = requests()
+export function useEditRoleScreen() {
+  const { editRoleScreen } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role-screens'],
-    mutationFn: editRolecreens,
+    mutationFn: editRoleScreen,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['role'] })
       toast.success(`${moduleT('rolecreen')} ${successT('edit')}`)
@@ -118,15 +118,15 @@ export function useEditRolecreens() {
   })
 }
 
-export function useEditRoleUsers() {
-  const { editRoleUsers } = requests()
+export function useEditRoleUser() {
+  const { editRoleUser } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
   const { t: errorT } = useTranslation('error')
 
   return useMutation({
     mutationKey: ['edit-role-user'],
-    mutationFn: editRoleUsers,
+    mutationFn: editRoleUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['role'] })
       toast.success(`${moduleT('roleUser')} ${successT('edit')}`)

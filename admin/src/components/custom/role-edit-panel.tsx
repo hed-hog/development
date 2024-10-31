@@ -1,17 +1,17 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
   useEditRole,
-  useEditRoleMenus,
-  useEditRoleRoutes,
-  useEditRoleScreens,
-  useEditRoleUsers,
-  useRolesShow,
+  useEditRoleMenu,
+  useEditRoleRoute,
+  useEditRoleScreen,
+  useEditRoleUser,
+  useRoleShow,
 } from '@/features/role'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
 import { FieldType } from '@/types/form-panel'
-import { Menus, Roles, Routes, Screens, Users } from '@/types/models'
+import { Menu, Role, Route, Screen, User } from '@/types/models'
 import { getLocaleFields, getLocalesFromItem } from '@hedhog/utils'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,19 +21,19 @@ import { Overlay } from './overlay'
 import { TabPanel } from './tab-panel'
 
 export type RoleEditPanelProps = {
-  data: Roles
-  onEdit?: (data: Roles) => void
+  data: Role
+  onEdit?: (data: Role) => void
 }
 
 export const RoleEditPanel = forwardRef(
   ({ data, onEdit }: RoleEditPanelProps, ref) => {
     const { t } = useTranslation(['actions', 'role', 'modules', 'translation'])
 
-    const { data: item, isLoading } = useRolesShow(data.id as number)
-    const { mutate: editRoleRoutes } = useEditRoleRoutes()
-    const { mutate: editRoleScreens } = useEditRoleScreens()
-    const { mutate: editRoleUsers } = useEditRoleUsers()
-    const { mutate: editRoleMenus } = useEditRoleMenus()
+    const { data: item, isLoading } = useRoleShow(data.id as number)
+    const { mutate: editRoleRoutes } = useEditRoleRoute()
+    const { mutate: editRoleScreens } = useEditRoleScreen()
+    const { mutate: editRoleUsers } = useEditRoleUser()
+    const { mutate: editRoleMenus } = useEditRoleMenu()
     const { mutate: editRole } = useEditRole()
 
     const formRef = useRef<any>(null)
@@ -89,7 +89,7 @@ export const RoleEditPanel = forwardRef(
                         },
                       })),
                     ]}
-                    onSubmit={(data: Roles) => {
+                    onSubmit={(data: Role) => {
                       editRole({ id: String(data.id), data })
 
                       if (typeof onEdit === 'function') {
@@ -110,7 +110,7 @@ export const RoleEditPanel = forwardRef(
                     layout='list'
                     id={`role-user-${item.id}`}
                     url={`/role/${item.id}/user`}
-                    checked={(item: Roles) => {
+                    checked={(item: Role) => {
                       return Boolean((item.role_user ?? []).length)
                     }}
                   />
@@ -127,7 +127,7 @@ export const RoleEditPanel = forwardRef(
                           editRoleUsers(
                             {
                               roleId: String(item.id),
-                              userIds: items.map((u: Users) => u.id),
+                              userIds: items.map((u: User) => u.id),
                             },
                             {
                               onSuccess: () => {
@@ -153,7 +153,7 @@ export const RoleEditPanel = forwardRef(
                     layout='list'
                     id={`role-route-${item.id}`}
                     url={`/role/${item.id}/route`}
-                    render={(item: Routes) => (
+                    render={(item: Route) => (
                       <div className='flex flex-row gap-2'>
                         <code className='relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold'>
                           {item.method}
@@ -161,7 +161,7 @@ export const RoleEditPanel = forwardRef(
                         <code>{item.url}</code>
                       </div>
                     )}
-                    checked={(item: Routes) => {
+                    checked={(item: Route) => {
                       return Boolean((item.role_route ?? []).length)
                     }}
                   />
@@ -178,7 +178,7 @@ export const RoleEditPanel = forwardRef(
                           editRoleRoutes(
                             {
                               roleId: String(item.id),
-                              routeIds: items.map((r: Routes) => r.id),
+                              routeIds: items.map((r: Route) => r.id),
                             },
                             {
                               onSuccess: () => {
@@ -204,7 +204,7 @@ export const RoleEditPanel = forwardRef(
                     layout='list'
                     id={`role-menu-${item.id}`}
                     url={`/role/${item.id}/menu`}
-                    render={(item: Menus) => (
+                    render={(item: Menu) => (
                       <div className='flex flex-row items-center gap-2'>
                         {getIcon(item.icon || '')}
                         <code>
@@ -212,7 +212,7 @@ export const RoleEditPanel = forwardRef(
                         </code>
                       </div>
                     )}
-                    checked={(item: Menus) => {
+                    checked={(item: Menu) => {
                       return Boolean((item.role_menu ?? []).length)
                     }}
                   />
@@ -229,7 +229,7 @@ export const RoleEditPanel = forwardRef(
                           editRoleMenus(
                             {
                               roleId: String(item.id),
-                              menuIds: items.map((m: Menus) => m.id),
+                              menuIds: items.map((m: Menu) => m.id),
                             },
                             {
                               onSuccess: () => {
@@ -255,7 +255,7 @@ export const RoleEditPanel = forwardRef(
                     layout='list'
                     id={`role-screens-${item.id}`}
                     url={`/role/${item.id}/screens`}
-                    render={(item: Screens) => (
+                    render={(item: Screen) => (
                       <div className='flex flex-col'>
                         <div className='flex flex-row'>
                           {getIcon(item.icon || '')}
@@ -268,7 +268,7 @@ export const RoleEditPanel = forwardRef(
                         </p>
                       </div>
                     )}
-                    checked={(item: Screens) => {
+                    checked={(item: Screen) => {
                       return Boolean((item.role_screen ?? []).length)
                     }}
                   />
@@ -285,7 +285,7 @@ export const RoleEditPanel = forwardRef(
                           editRoleScreens(
                             {
                               roleId: String(item.id),
-                              screenIds: items.map((s: Screens) => s.id),
+                              screenIds: items.map((s: Screen) => s.id),
                             },
                             {
                               onSuccess: () => {

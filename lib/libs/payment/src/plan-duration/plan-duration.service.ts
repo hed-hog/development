@@ -11,7 +11,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class Plan_durationsService {
+export class PlanDurationService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -28,7 +28,7 @@ export class Plan_durationsService {
     ];
 
     const include = {
-      plan_durations: {
+      plan_duration: {
         select: {
           id: true,
           plan_duration_locale: {
@@ -58,9 +58,9 @@ export class Plan_durationsService {
     );
   }
 
-  async getById(plan_durationsId: number) {
+  async getById(planDurationId: number) {
     return this.prismaService.plan_duration.findUnique({
-      where: { id: plan_durationsId },
+      where: { id: planDurationId },
     });
   }
 
