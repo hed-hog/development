@@ -72,7 +72,7 @@ export class MenuService {
               name: true,
             },
           },
-          menu_screens: {
+          menu_screen: {
             where: {
               menu_id: menuId,
             },

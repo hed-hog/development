@@ -80,7 +80,7 @@ export class RouteService {
               description: true,
             },
           },
-          role_routes: {
+          role_route: {
             where: {
               route_id: routeId,
             },
@@ -131,7 +131,7 @@ export class RouteService {
               name: true,
             },
           },
-          route_screens: {
+          route_screen: {
             where: {
               route_id: routeId,
             },

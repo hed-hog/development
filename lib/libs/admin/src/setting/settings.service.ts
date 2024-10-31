@@ -52,14 +52,14 @@ export class SettingsService {
       {
         where: {
           AND: {
-            setting_groups: {
+            setting_group: {
               slug,
             },
             OR,
           },
         },
         include: {
-          setting_groups: {
+          setting_group: {
             include: {
               setting_group_locale: {
                 where: {
@@ -91,9 +91,9 @@ export class SettingsService {
     );
 
     result.data = result.data.map((setting: any) => {
-      setting.setting_groups = itemTranslations(
+      setting.setting_group = itemTranslations(
         'setting_group_locale',
-        setting.setting_groups,
+        setting.setting_group,
       );
       return setting;
     });
@@ -154,7 +154,7 @@ export class SettingsService {
           OR,
         },
         include: {
-          setting_groups: {
+          setting_group: {
             include: {
               setting_group_locale: {
                 where: {
@@ -186,9 +186,9 @@ export class SettingsService {
     );
 
     result.data = result.data.map((setting: any) => {
-      setting.setting_groups = itemTranslations(
+      setting.setting_group = itemTranslations(
         'setting_group_locale',
-        setting.setting_groups,
+        setting.setting_group,
       );
       return setting;
     });
