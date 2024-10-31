@@ -1,200 +1,200 @@
 data:
-  routes:
-    - url: /countries
+  route:
+    - url: /country
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /persons
+    - url: /person
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /persons
+    - url: /person
       method: POST
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /persons
+    - url: /person
       method: DELETE
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /persons/:personId
+    - url: /person/:personId
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /persons/:personId
+    - url: /person/:personId
       method: PATCH
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /person-types
+    - url: /person-type
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /person-types
+    - url: /person-type
       method: POST
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /person-types
+    - url: /person-type
       method: DELETE
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /person-types/:personTypeId
+    - url: /person-type/:personTypeId
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /person-types/:personTypeId
+    - url: /person-type/:personTypeId
       method: PATCH
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /address-types
+    - url: /address-type
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /address-types
+    - url: /address-type
       method: POST
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /address-types
+    - url: /address-type
       method: DELETE
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /address-types/:addressTypeId
+    - url: /address-type/:addressTypeId
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /address-types/:addressTypeId
+    - url: /address-type/:addressTypeId
       method: PATCH
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /contact-types
+    - url: /contact-type
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /contact-types
+    - url: /contact-type
       method: POST
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /contact-types
+    - url: /contact-type
       method: DELETE
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /contact-types/:contactTypeId
+    - url: /contact-type/:contactTypeId
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /contact-types/:contactTypeId
+    - url: /contact-type/:contactTypeId
       method: PATCH
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /custom-types
+    - url: /custom-type
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /custom-types
+    - url: /custom-type
       method: POST
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /custom-types
+    - url: /custom-type
       method: DELETE
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /custom-types/:customTypeId
+    - url: /custom-type/:customTypeId
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /custom-types/:customTypeId
+    - url: /custom-type/:customTypeId
       method: PATCH
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /document-types
+    - url: /document-type
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /document-types
+    - url: /document-type
       method: POST
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /document-types
+    - url: /document-type
       method: DELETE
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /document-types/:documentTypeId
+    - url: /document-type/:documentTypeId
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /document-types/:documentTypeId
+    - url: /document-type/:documentTypeId
       method: PATCH
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-  menus:
-    - url: /contacts
+  menu:
+    - url: /contact
       icon: user-check
       name:
-        en: Contacts
+        en: Contact
         pt: Contatos
-      slug: /contacts
+      slug: /contact
       relations:
-        roles:
+        role:
           - where:
               slug: admin
     - menu_id:
@@ -202,128 +202,128 @@ data:
           slug: /management
       icon: user-check
       name:
-        en: Persons
+        en: Person
         pt: Pessoas
-      slug: /management/persons
+      slug: /management/person
       relations:
-        roles:
+        role:
           - where:
               slug: admin
     - menu_id:
         where:
-          slug: /management/persons
-      url: /management/persons/address-types
+          slug: /management/person
+      url: /management/person/address-type
       icon: home-link
       name:
-        en: Address Types
+        en: Address Type
         pt: Tipos de Endereço
-      slug: /management/persons/address-types
+      slug: /management/person/address-type
       relations:
-        roles:
+        role:
           - where:
               slug: admin
     - menu_id:
         where:
-          slug: /management/persons
-      url: /management/persons/contact-types
+          slug: /management/person
+      url: /management/person/contact-type
       icon: address-book
       name:
-        en: Contact Types
+        en: Contact Type
         pt: Tipos de Contato
-      slug: /management/persons/contact-types
+      slug: /management/person/contact-type
       relations:
-        roles:
+        role:
           - where:
               slug: admin
     - menu_id:
         where:
-          slug: /management/persons
-      url: /management/persons/custom-types
+          slug: /management/person
+      url: /management/person/custom-type
       icon: adjustments
       name:
-        en: Custom Types
+        en: Custom Type
         pt: Tipos Personalizados
-      slug: /management/persons/custom-types
+      slug: /management/person/custom-type
       relations:
-        roles:
+        role:
           - where:
               slug: admin
     - menu_id:
         where:
-          slug: /management/persons
-      url: /management/persons/document-types
+          slug: /management/person
+      url: /management/person/document-type
       icon: file-search
       name:
-        en: Document Types
+        en: Document Type
         pt: Tipos de Documento
-      slug: /management/persons/document-types
+      slug: /management/person/document-type
       relations:
-        roles:
+        role:
           - where:
               slug: admin
     - menu_id:
         where:
-          slug: /management/persons
-      url: /management/persons/person-types
+          slug: /management/person
+      url: /management/person/person-type
       icon: id
       name:
-        en: Person Types
+        en: Person Type
         pt: Tipos de Pessoa
-      slug: /management/persons/person-types
+      slug: /management/person/person-type
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-  screens:
-    - slug: /contacts
+  screen:
+    - slug: /contact
       icon: user-check
       name:
-        en: Contacts
+        en: Contact
         pt: Contatos
       description:
-        en: Check all persons registered in the system.
+        en: Check all person registered in the system.
         pt: Verifique todas as pessoas registradas no sistema.
-    - slug: /management/persons/address-types
+    - slug: /management/person/address-type
       icon: home-link
       name:
-        en: Address Types
+        en: Address Type
         pt: Tipos de Endereço
       description:
-        en: Check all address types registered in the system.
+        en: Check all address type registered in the system.
         pt: Verifique todos os tipos de endereço registrados no sistema.
-    - slug: /management/persons/contact-types
+    - slug: /management/person/contact-type
       icon: address-book
       name:
-        en: Contact Types
+        en: Contact Type
         pt: Tipos de Contato
       description:
-        en: Check all contact types registered in the system.
+        en: Check all contact type registered in the system.
         pt: Verifique todos os tipos de contato registrados no sistema.
-    - slug: /management/persons/custom-types
+    - slug: /management/person/custom-type
       icon: adjustments
       name:
-        en: Custom Types
+        en: Custom Type
         pt: Tipos Personalizados
       description:
-        en: Check all custom types registered in the system.
+        en: Check all custom type registered in the system.
         pt: Verifique todos os tipos personalizados registrados no sistema.
-    - slug: /management/persons/document-types
+    - slug: /management/person/document-type
       icon: file-search
       name:
-        en: Document Types
+        en: Document Type
         pt: Tipos de Documento
       description:
-        en: Check all document types registered in the system.
+        en: Check all document type registered in the system.
         pt: Verifique todos os tipos de documento registrados no sistema.
-    - slug: /management/persons/person-types
+    - slug: /management/person/person-type
       icon: id
       name:
-        en: Person Types
+        en: Person Type
         pt: Tipos de Pessoa
       description:
-        en: Check all person types registered in the system.
+        en: Check all person type registered in the system.
         pt: Verifique todos os tipos de pessoa registrados no sistema.
-  person_types:
+  person_type:
     - name:
         en: Physical
         pt: Física
@@ -336,7 +336,7 @@ data:
         en: International
         pt: Internacional
       slug: international
-  person_document_types:
+  person_document_type:
     - name:
         en: ID
         pt: RG
@@ -372,7 +372,7 @@ data:
       country_id:
         where:
           code: BRA
-  person_contact_types:
+  person_contact_type:
     - name:
         en: Phone
         pt: Telefone
@@ -393,7 +393,7 @@ data:
         en: Telegram
         pt: Telegram
       slug: telegram
-  person_address_types:
+  person_address_type:
     - name:
         en: Residential
         pt: Residencial
@@ -423,27 +423,27 @@ data:
         pt: Entrega
       slug: shipping
 tables:
-  person_types:
+  person_type:
     columns:
       - type: pk
       - type: slug
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  person_type_translations:
+  person_type_locale:
     columns:
       - name: type_id
         type: fk
         isPrimary: true
         references:
-          table: person_types
+          table: person_type
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
@@ -453,7 +453,7 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  persons:
+  person:
     columns:
       - type: pk
       - name: name
@@ -477,7 +477,7 @@ tables:
         type: fk
         isPrimary: false
         references:
-          table: person_types
+          table: person_type
           column: id
           onDelete: CASCADE
       - name: birth_at
@@ -486,32 +486,32 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  person_document_types:
+  person_document_type:
     columns:
       - type: pk
       - type: fk
         name: country_id
         references:
-          table: countries
+          table: country
           column: id
           onDelete: RESTRICT
       - type: slug
       - type: created_at
       - type: updated_at
-  person_document_type_translations:
+  person_document_type_locale:
     columns:
       - name: type_id
         type: fk
         isPrimary: true
         references:
-          table: person_document_types
+          table: person_document_type
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
@@ -519,25 +519,25 @@ tables:
         length: 63
       - type: created_at
       - type: updated_at
-  person_documents:
+  person_document:
     columns:
       - type: pk
       - name: person_id
         type: fk
         references:
-          table: persons
+          table: person
           column: id
           onDelete: CASCADE
       - name: type_id
         type: fk
         references:
-          table: person_document_types
+          table: person_document_type
           column: id
           onDelete: CASCADE
       - name: country_id
         type: fk
         references:
-          table: countries
+          table: country
           column: id
           onDelete: RESTRICT
       - name: primary
@@ -561,26 +561,26 @@ tables:
           - value
         isUnique: true
     ifNotExists: true
-  person_contact_types:
+  person_contact_type:
     columns:
       - type: pk
       - type: slug
       - type: created_at
       - type: updated_at
-  person_contact_type_translations:
+  person_contact_type_locale:
     columns:
       - name: type_id
         type: fk
         isPrimary: true
         references:
-          table: person_contact_types
+          table: person_contact_type
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
@@ -588,19 +588,19 @@ tables:
         length: 63
       - type: created_at
       - type: updated_at
-  person_contacts:
+  person_contact:
     columns:
       - type: pk
       - name: person_id
         type: fk
         references:
-          table: persons
+          table: person
           column: id
           onDelete: CASCADE
       - name: type_id
         type: fk
         references:
-          table: person_contact_types
+          table: person_contact_type
           column: id
           onDelete: CASCADE
       - name: primary
@@ -618,31 +618,31 @@ tables:
           - value
         isUnique: true
     ifNotExists: true
-  person_address_types:
+  person_address_type:
     columns:
       - type: pk
       - type: slug
       - type: created_at
       - type: updated_at
-  person_addresses:
+  person_address:
     columns:
       - type: pk
       - name: person_id
         type: fk
         references:
-          table: persons
+          table: person
           column: id
           onDelete: CASCADE
       - name: country_id
         type: fk
         references:
-          table: countries
+          table: country
           column: id
           onDelete: RESTRICT
       - name: type_id
         type: fk
         references:
-          table: person_address_types
+          table: person_address_type
           column: id
           onDelete: CASCADE
       - name: primary
@@ -678,20 +678,20 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  person_address_type_translations:
+  person_address_type_locale:
     columns:
       - name: type_id
         type: fk
         isPrimary: true
         references:
-          table: person_address_types
+          table: person_address_type
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
@@ -699,26 +699,26 @@ tables:
         length: 31
       - type: created_at
       - type: updated_at
-  person_custom_types:
+  person_custom_type:
     columns:
       - type: pk
       - type: slug
       - type: created_at
       - type: updated_at
-  person_custom_type_translations:
+  person_custom_type_locale:
     columns:
       - name: type_id
         type: fk
         isPrimary: true
         references:
-          table: person_custom_types
+          table: person_custom_type
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
@@ -726,19 +726,19 @@ tables:
         length: 31
       - type: created_at
       - type: updated_at
-  person_customs:
+  person_custom:
     columns:
       - type: pk
       - name: person_id
         type: fk
         references:
-          table: persons
+          table: person
           column: id
           onDelete: CASCADE
       - name: type_id
         type: fk
         references:
-          table: person_custom_types
+          table: person_custom_type
           column: id
           onDelete: CASCADE
       - name: value
@@ -752,20 +752,20 @@ tables:
           - type_id
         isUnique: true
     ifNotExists: true
-  person_custom_translations:
+  person_custom_locale:
     columns:
       - name: custom_id
         type: fk
         isPrimary: true
         references:
-          table: person_customs
+          table: person_custom
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name

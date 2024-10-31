@@ -6,7 +6,7 @@ import {
   useCreateDocumentType,
   useDeleteDocumentType,
   useEditDocumentType,
-} from '@/features/document-types'
+} from '@/features/document-type'
 import { useApp } from '@/hooks/use-app'
 import { PersonDocumentType } from '@/types/document-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'

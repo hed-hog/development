@@ -1,5 +1,5 @@
 tables:
-  file_providers:
+  file_provider:
     ifNotExists: true
 
     columns:
@@ -8,21 +8,21 @@ tables:
       - type: created_at
       - type: updated_at
 
-  file_provider_translations:
+  file_provider_locale:
     ifNotExists: true
     columns:
       - name: provider_id
         type: fk
         isPrimary: true
         references:
-          table: file_providers
+          table: file_provider
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
@@ -30,7 +30,7 @@ tables:
       - type: created_at
       - type: updated_at
 
-  file_mimetypes:
+  file_mimetype:
     ifNotExists: true
     columns:
       - type: pk
@@ -38,7 +38,7 @@ tables:
       - type: created_at
       - type: updated_at
 
-  files:
+  file:
     ifNotExists: true
     columns:
       - type: pk
@@ -47,14 +47,14 @@ tables:
       - name: provider_id
         type: fk
         references:
-          table: file_providers
+          table: file_provider
           column: id
           onDelete: CASCADE
       - name: location
       - name: mimetype_id
         type: fk
         references:
-          table: file_mimetypes
+          table: file_mimetype
           column: id
           onDelete: CASCADE
       - name: size
@@ -65,7 +65,7 @@ tables:
       - type: updated_at
 
 data:
-  setting_groups:
+  setting_group:
     - slug: file-storage
       icon: folder
       name:
@@ -75,7 +75,7 @@ data:
         en: Configure the file storage settings.
         pt: Configurar as definições de armazenamento de arquivos.
       relations:
-        settings:
+        setting:
           - slug: storage
             type: string
             name:
@@ -85,7 +85,7 @@ data:
               en: The storage to use
               pt: O armazenamento a utilizar
             value: local
-          - slug: storage-accept-mimetypes
+          - slug: storage-accept-mimetype
             type: string
             name:
               en: Accept Mime Types
@@ -109,7 +109,7 @@ data:
               en: Local Path
               pt: Caminho Local
             description:
-              en: The local path to store files
+              en: The local path to store file
               pt: O caminho local para armazenar arquivos
             value: storage
           - slug: storage-s3-key
@@ -176,7 +176,7 @@ data:
               pt: O contêiner de armazenamento de blob do Azure
             value: ''
 
-  file_providers:
+  file_provider:
     - slug: local
       name:
         en: Local
@@ -190,7 +190,7 @@ data:
         en: Azure Blob Storage
         pt: Azure Blob Storage
 
-  file_mimetypes:
+  file_mimetype:
     - name: application/pdf
     - name: image/jpeg
     - name: image/png
@@ -219,40 +219,40 @@ data:
     - name: application/vnd.ms-powerpoint
     - name: application/vnd.openxmlformats-officedocument.presentationml.presentation
 
-  routes:
-    - url: /files
+  route:
+    - url: /file
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /files/:id
+    - url: /file/:id
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /files/download/:token
+    - url: /file/download/:token
       method: GET
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /files/download/:id
+    - url: /file/download/:id
       method: PUT
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /files
+    - url: /file
       method: POST
       relations:
-        roles:
+        role:
           - where:
               slug: admin
-    - url: /files
+    - url: /file
       method: DELETE
       relations:
-        roles:
+        role:
           - where:
               slug: admin

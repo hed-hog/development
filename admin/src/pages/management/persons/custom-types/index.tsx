@@ -6,7 +6,7 @@ import {
   useCreateCustomType,
   useDeleteCustomType,
   useEditCustomType,
-} from '@/features/custom-types'
+} from '@/features/custom-type'
 import { useApp } from '@/hooks/use-app'
 import { PersonCustomType } from '@/types/custom-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'

@@ -7,7 +7,7 @@ import {
   useDeleteUser,
   useEditUser,
   useEditUserRoles,
-} from '@/features/users'
+} from '@/features/user'
 import { useApp } from '@/hooks/use-app'
 import { queryClient } from '@/lib/query-provider'
 import { RoleType } from '@/types/role'

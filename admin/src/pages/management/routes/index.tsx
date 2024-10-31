@@ -8,7 +8,7 @@ import {
   useEditRoute,
   useEditRouteRoles,
   useEditRouteScreens,
-} from '@/features/routes/api'
+} from '@/features/route/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'

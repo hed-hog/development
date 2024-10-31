@@ -8,7 +8,7 @@ import {
   useEditMenu,
   useEditMenuRoles,
   useEditMenuScreens,
-} from '@/features/menus/api'
+} from '@/features/menu/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'

@@ -1,5 +1,5 @@
 import { useApp } from '@/hooks/use-app'
-import { PersonAddress } from '@/types/address'
+import { PersonAddress } from '@/types/models'
 
 export function requests() {
   const { request } = useApp()
@@ -10,7 +10,7 @@ export function requests() {
   }) => {
     const { personId, data } = params
     return request({
-      url: `/persons/${personId}/address`,
+      url: `/person/${personId}/address`,
       method: 'post',
       data,
     }).then((res) => res.data)
@@ -24,7 +24,7 @@ export function requests() {
     const { personId, addressId, data } = params
 
     return request({
-      url: `/persons/${personId}/address/${addressId}`,
+      url: `/person/${personId}/address/${addressId}`,
       method: 'patch',
       data,
     }).then((res) => res.data)
@@ -37,7 +37,7 @@ export function requests() {
     const { personId, addressId } = params
 
     return request({
-      url: `/persons/${personId}/address/${addressId}`,
+      url: `/person/${personId}/address/${addressId}`,
       method: 'delete',
     }).then((res) => res.data)
   }

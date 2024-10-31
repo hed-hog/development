@@ -1,138 +1,138 @@
 data:
-  routes:
+  route:
     - url: /auth/verify
       method: GET
-    - url: /menus/system
+    - url: /menu/system
       method: GET
-    - url: /menus
+    - url: /menu
       method: GET
-    - url: /menus/:menuId/roles
+    - url: /menu/:menuId/role
       method: GET
-    - url: /menus/:menuId/screens
+    - url: /menu/:menuId/screen
       method: GET
-    - url: /menus/:menuId/roles
+    - url: /menu/:menuId/role
       method: PATCH
-    - url: /menus/:menuId/screens
+    - url: /menu/:menuId/screen
       method: PATCH
-    - url: /menus/:menuId
+    - url: /menu/:menuId
       method: GET
-    - url: /menus
+    - url: /menu
       method: POST
-    - url: /menus/:menuId
+    - url: /menu/:menuId
       method: PATCH
-    - url: /menus
+    - url: /menu
       method: DELETE
-    - url: /menus/order
+    - url: /menu/order
       method: PATCH
-    - url: /roles
+    - url: /role
       method: GET
-    - url: /roles/:roleId/users
+    - url: /role/:roleId/user
       method: GET
-    - url: /roles/:roleId/menus
+    - url: /role/:roleId/menu
       method: GET
-    - url: /roles/:roleId/routes
+    - url: /role/:roleId/route
       method: GET
-    - url: /roles/:roleId/screens
+    - url: /role/:roleId/screen
       method: GET
-    - url: /roles/:roleId/users
+    - url: /role/:roleId/user
       method: PATCH
-    - url: /roles/:roleId/menus
+    - url: /role/:roleId/menu
       method: PATCH
-    - url: /roles/:roleId/routes
+    - url: /role/:roleId/route
       method: PATCH
-    - url: /roles/:roleId/screens
+    - url: /role/:roleId/screen
       method: PATCH
-    - url: /roles/:roleId
+    - url: /role/:roleId
       method: GET
-    - url: /roles
+    - url: /role
       method: POST
-    - url: /roles/:roleId
+    - url: /role/:roleId
       method: PATCH
-    - url: /roles
+    - url: /role
       method: DELETE
-    - url: /routes
+    - url: /route
       method: GET
-    - url: /routes/:routeId
+    - url: /route/:routeId
       method: GET
-    - url: /routes
+    - url: /route
       method: POST
-    - url: /routes/:routeId
+    - url: /route/:routeId
       method: PATCH
-    - url: /routes
+    - url: /route
       method: DELETE
-    - url: /routes/:routeId/roles
+    - url: /route/:routeId/role
       method: GET
-    - url: /routes/:routeId/roles
+    - url: /route/:routeId/role
       method: PATCH
-    - url: /routes/:routeId/screens
+    - url: /route/:routeId/screen
       method: GET
-    - url: /routes/:routeId/screens
+    - url: /route/:routeId/screen
       method: PATCH
-    - url: /screens
+    - url: /screen
       method: GET
-    - url: /screens/:screenId/roles
+    - url: /screen/:screenId/role
       method: GET
-    - url: /screens/:screenId/routes
+    - url: /screen/:screenId/route
       method: GET
-    - url: /screens/:screenId/roles
+    - url: /screen/:screenId/role
       method: PATCH
-    - url: /screens/:screenId/routes
+    - url: /screen/:screenId/route
       method: PATCH
-    - url: /screens/:screenId
+    - url: /screen/:screenId
       method: GET
-    - url: /screens
+    - url: /screen
       method: POST
-    - url: /screens/:screenId
+    - url: /screen/:screenId
       method: PATCH
-    - url: /screens
+    - url: /screen
       method: DELETE
-    - url: /settings
+    - url: /setting
       method: GET
-    - url: /settings/groups/:slug
+    - url: /setting/group/:slug
       method: GET
-    - url: /settings/groups
+    - url: /setting/group
       method: GET
-    - url: /settings/:settingId
+    - url: /setting/:settingId
       method: GET
-    - url: /settings
+    - url: /setting
       method: POST
-    - url: /settings
+    - url: /setting
       method: PUT
-    - url: /settings/:slug
+    - url: /setting/:slug
       method: PUT
-    - url: /settings/users/:slug
+    - url: /setting/user/:slug
       method: PUT
-    - url: /settings/:settingId
+    - url: /setting/:settingId
       method: PATCH
-    - url: /settings
+    - url: /setting
       method: DELETE
-    - url: /users
+    - url: /user
       method: GET
-    - url: /users/:userId/roles
+    - url: /user/:userId/role
       method: GET
-    - url: /users/:userId/roles
+    - url: /user/:userId/role
       method: PATCH
-    - url: /users/:userId
+    - url: /user/:userId
       method: GET
-    - url: /users
+    - url: /user
       method: POST
-    - url: /users/:userId
+    - url: /user/:userId
       method: PATCH
-    - url: /users
+    - url: /user
       method: DELETE
-    - url: /locales
+    - url: /locale
       method: GET
-    - url: /locales/:localeId
+    - url: /locale/:localeId
       method: GET
-    - url: /locales
+    - url: /locale
       method: POST
-    - url: /locales
+    - url: /locale
       method: PUT
-    - url: /locales/:localeId
+    - url: /locale/:localeId
       method: PATCH
-    - url: /locales
+    - url: /locale
       method: DELETE
-  menus:
+  menu:
     - url: /
       icon: dashboard
       name:
@@ -148,137 +148,137 @@ data:
     - menu_id:
         where:
           slug: /management
-      url: /management/users
-      icon: users
+      url: /management/user
+      icon: user
       name:
-        en: Users
+        en: User
         pt: Usuários
-      slug: /management/users
+      slug: /management/user
     - menu_id:
         where:
           slug: /management
-      url: /management/roles
+      url: /management/role
       icon: circles
       name:
-        en: Roles
+        en: Role
         pt: Cargos
-      slug: /management/roles
+      slug: /management/role
     - menu_id:
         where:
           slug: /management
-      url: /management/screens
+      url: /management/screen
       icon: device-tv
       name:
-        en: Screens
+        en: Screen
         pt: Telas
-      slug: /management/screens
+      slug: /management/screen
     - menu_id:
         where:
           slug: /management
-      url: /management/menus
+      url: /management/menu
       icon: menu
       name:
-        en: Menus
-        pt: Menus
-      slug: /management/menus
+        en: Menu
+        pt: Menu
+      slug: /management/menu
     - menu_id:
         where:
           slug: /management
-      url: /management/routes
+      url: /management/route
       icon: route
       name:
-        en: Routes
+        en: Route
         pt: Rotas
-      slug: /management/routes
+      slug: /management/route
     - menu_id:
         where:
           slug: /management
-      url: /management/settings
-      icon: settings
+      url: /management/setting
+      icon: setting
       name:
-        en: Settings
+        en: Setting
         pt: Configurações
-      slug: /management/settings
-  screens:
-    - slug: /management/users
-      icon: users
+      slug: /management/setting
+  screen:
+    - slug: /management/user
+      icon: user
       name:
-        en: Users
+        en: User
         pt: Usuários
       description:
-        en: Manage users in the system.
+        en: Manage user in the system.
         pt: Gerenciar usuários no sistema.
       relations:
-        routes:
+        route:
           - where:
               url:
-                like: /users%
-    - slug: /management/roles
+                like: /user%
+    - slug: /management/role
       icon: circles
       name:
-        en: Roles
+        en: Role
         pt: Funções
       description:
-        en: Manage roles assigned to users.
+        en: Manage role assigned to user.
         pt: Gerenciar funções atribuídas a usuários.
       relations:
-        routes:
+        route:
           - where:
               url:
-                like: /roles%
-    - slug: /management/screens
+                like: /role%
+    - slug: /management/screen
       icon: monitor
       name:
-        en: Screens
+        en: Screen
         pt: Telas
       description:
-        en: Manage the screens available in the system.
+        en: Manage the screen available in the system.
         pt: Gerenciar as telas disponíveis no sistema.
       relations:
-        routes:
+        route:
           - where:
               url:
-                like: /screens%
-    - slug: /management/menus
+                like: /screen%
+    - slug: /management/menu
       icon: menu
       name:
-        en: Menus
-        pt: Menus
+        en: Menu
+        pt: Menu
       description:
-        en: Manage the menus in the system.
-        pt: Gerenciar os menus no sistema.
+        en: Manage the menu in the system.
+        pt: Gerenciar os menu no sistema.
       relations:
-        routes:
+        route:
           - where:
               url:
-                like: /menus%
-    - slug: /management/routes
+                like: /menu%
+    - slug: /management/route
       icon: route
       name:
-        en: Routes
+        en: Route
         pt: Rotas
       description:
-        en: Manage routes for navigation within the system.
+        en: Manage route for navigation within the system.
         pt: Gerenciar rotas para navegação dentro do sistema.
       relations:
-        routes:
+        route:
           - where:
               url:
-                like: /routes%
-    - slug: /management/settings
-      icon: settings
+                like: /route%
+    - slug: /management/setting
+      icon: setting
       name:
-        en: Settings
+        en: Setting
         pt: Configurações
       description:
-        en: Manage system settings and configurations.
+        en: Manage system setting and configurations.
         pt: Gerenciar configurações e definições do sistema.
       relations:
-        routes:
+        route:
           - where:
               url:
-                like: /settings%
-  countries:
+                like: /setting%
+  country:
     - name:
         en: Afghanistan
         pt: Afeganistão
@@ -1039,7 +1039,7 @@ data:
         en: Zimbabwe
         pt: Zimbábue
       code: ZWE
-  multifactors:
+  multifactor:
     - name:
         en: Email
         pt: E-mail
@@ -1048,7 +1048,7 @@ data:
         en: Authenticator
         pt: Autenticador
       slug: authenticator
-  users:
+  user:
     - name: Administrator
       email: root@hedhog.com
       password:
@@ -1057,7 +1057,7 @@ data:
       email: user@hedhog.com
       password:
         hash: changeme
-  roles:
+  role:
     - slug: admin
       name:
         en: Administrator
@@ -1066,18 +1066,18 @@ data:
         en: System administrator with full access.
         pt: Administrador do sistema com acesso total.
       relations:
-        users:
+        user:
           - where:
               email: root@hedhog.com
-        menus:
+        menu:
           - where:
               id:
                 gte: 0
-        routes:
+        route:
           - where:
               id:
                 gte: 0
-        screens:
+        screen:
           - where:
               id:
                 gte: 0
@@ -1086,17 +1086,17 @@ data:
         en: Screen Manager
         pt: Gerente de Telas
       description:
-        en: Manage screens in the system.
+        en: Manage screen in the system.
         pt: Gerenciar telas no sistema.
       relations:
-        users:
+        user:
           - where:
               email: user@hedhog.com
-        routes:
+        route:
           - where:
               url:
-                like: /screens%
-        menus:
+                like: /screen%
+        menu:
           - where:
               slug: /
     - slug: admin-access
@@ -1107,34 +1107,34 @@ data:
         en: Access to administrative features.
         pt: Acesso a funcionalidades administrativas.
       relations:
-        users:
+        user:
           - where:
               email: root@hedhog.com
           - where:
               email: user@hedhog.com
-        routes:
+        route:
           - where:
               method: GET
               url:
                 in:
-                  - /menus/system
+                  - /menu/system
                   - /auth/verify
-                  - /settings/groups/:slug
-                  - /settings/groups
+                  - /setting/group/:slug
+                  - /setting/group
           - where:
               method: PUT
               url:
                 in:
-                  - /settings/:slug
-  locales:
+                  - /setting/:slug
+  locale:
     - code: en
       region: US
     - code: pt
       region: BR
-  translation_namespaces:
+  translation_namespace:
     - name: translation
       relations:
-        translations:
+        translation:
           - locale_id:
               where:
                 code: en
@@ -1165,17 +1165,17 @@ data:
                 code: pt
             name: pt
             value: Português
-  setting_groups:
+  setting_group:
     - slug: localization
       icon: world
       name:
         en: Localization
         pt: Localização
       description:
-        en: Configure the localization settings.
+        en: Configure the localization setting.
         pt: Configurar as definições de localização.
       relations:
-        settings:
+        setting:
           - slug: language
             type: string
             name:
@@ -1202,10 +1202,10 @@ data:
         en: Appearance
         pt: Aparência
       description:
-        en: Configure the appearance settings.
+        en: Configure the appearance setting.
         pt: Configurar as definições de aparência.
       relations:
-        settings:
+        setting:
           - slug: theme-primary
             type: string
             name:
@@ -1361,7 +1361,7 @@ data:
             value: 'dark'
 
 tables:
-  countries:
+  country:
     columns:
       - type: pk
       - name: code
@@ -1370,46 +1370,46 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  country_translations:
+  country_locale:
     columns:
       - name: country_id
         type: fk
         isPrimary: true
         references:
-          table: countries
+          table: country
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  translation_namespaces:
+  translation_namespace:
     columns:
       - type: pk
       - name: name
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  translations:
+  translation:
     columns:
       - type: pk
       - name: locale_id
         type: fk
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: namespace_id
         type: fk
         references:
-          table: translation_namespaces
+          table: translation_namespace
           column: id
           onDelete: CASCADE
       - name: name
@@ -1423,41 +1423,41 @@ tables:
           - name
         isUnique: true
     ifNotExists: true
-  multifactors:
+  multifactor:
     columns:
       - type: pk
       - type: slug
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  multifactor_translations:
+  multifactor_locale:
     columns:
       - name: multifactor_id
         type: fk
         isPrimary: true
         references:
-          table: multifactors
+          table: multifactor
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  users:
+  user:
     columns:
       - type: pk
       - name: multifactor_id
         type: fk
         isNullable: true
         references:
-          table: multifactors
+          table: multifactor
           column: id
           onDelete: SET NULL
       - name: name
@@ -1468,7 +1468,7 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  screens:
+  screen:
     columns:
       - type: pk
       - type: slug
@@ -1477,20 +1477,20 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  screen_translations:
+  screen_locale:
     columns:
       - name: screen_id
         type: fk
         isPrimary: true
         references:
-          table: screens
+          table: screen
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
@@ -1498,14 +1498,14 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  menus:
+  menu:
     columns:
       - type: pk
       - name: menu_id
         type: fk
         isNullable: true
         references:
-          table: menus
+          table: menu
           column: id
           onDelete: CASCADE
       - type: slug
@@ -1517,44 +1517,44 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  menu_translations:
+  menu_locale:
     columns:
       - name: menu_id
         type: fk
         isPrimary: true
         references:
-          table: menus
+          table: menu
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  menu_screens:
+  menu_screen:
     columns:
       - name: menu_id
         type: fk
         isPrimary: true
         references:
-          table: menus
+          table: menu
           column: id
           onDelete: CASCADE
       - name: screen_id
         type: fk
         isPrimary: true
         references:
-          table: screens
+          table: screen
           column: id
           onDelete: CASCADE
     ifNotExists: true
-  routes:
+  route:
     columns:
       - type: pk
       - name: url
@@ -1574,27 +1574,27 @@ tables:
       - columns: ['url', 'method']
         isUnique: true
     ifNotExists: true
-  roles:
+  role:
     columns:
       - type: pk
       - type: slug
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  role_translations:
+  role_locale:
     columns:
       - name: role_id
         type: fk
         isPrimary: true
         references:
-          table: roles
+          table: role
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: name
@@ -1602,106 +1602,106 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  role_menus:
+  role_menu:
     columns:
       - name: role_id
         type: fk
         isPrimary: true
         references:
-          table: roles
+          table: role
           column: id
           onDelete: CASCADE
       - name: menu_id
         type: fk
         isPrimary: true
         references:
-          table: menus
+          table: menu
           column: id
           onDelete: CASCADE
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  route_screens:
+  route_screen:
     columns:
       - name: route_id
         type: fk
         isPrimary: true
         references:
-          table: routes
+          table: route
           column: id
           onDelete: CASCADE
       - name: screen_id
         type: fk
         isPrimary: true
         references:
-          table: screens
+          table: screen
           column: id
           onDelete: CASCADE
       - type: created_at
       - type: updated_at
     ifNotExists: true
 
-  role_screens:
+  role_screen:
     columns:
       - name: role_id
         type: fk
         isPrimary: true
         references:
-          table: roles
+          table: role
           column: id
           onDelete: CASCADE
       - name: screen_id
         type: fk
         isPrimary: true
         references:
-          table: screens
+          table: screen
           column: id
           onDelete: CASCADE
       - type: created_at
       - type: updated_at
     ifNotExists: true
 
-  role_users:
+  role_user:
     columns:
       - name: role_id
         type: fk
         isPrimary: true
         references:
-          table: roles
+          table: role
           column: id
           onDelete: CASCADE
       - name: user_id
         type: fk
         isPrimary: true
         references:
-          table: users
+          table: user
           column: id
           onDelete: CASCADE
       - type: created_at
       - type: updated_at
     ifNotExists: true
 
-  role_routes:
+  role_route:
     columns:
       - name: role_id
         type: fk
         isPrimary: true
         references:
-          table: roles
+          table: role
           column: id
           onDelete: CASCADE
       - name: route_id
         type: fk
         isPrimary: true
         references:
-          table: routes
+          table: route
           column: id
           onDelete: CASCADE
       - type: created_at
       - type: updated_at
     ifNotExists: true
 
-  setting_groups:
+  setting_group:
     columns:
       - type: pk
       - name: icon
@@ -1711,20 +1711,20 @@ tables:
       - type: updated_at
     ifNotExists: true
 
-  setting_group_translations:
+  setting_group_locale:
     columns:
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: group_id
         type: fk
         isPrimary: true
         references:
-          table: setting_groups
+          table: setting_group
           column: id
           onDelete: CASCADE
       - name: name
@@ -1736,13 +1736,13 @@ tables:
       - type: updated_at
     ifNotExists: true
 
-  settings:
+  setting:
     columns:
       - type: pk
       - name: group_id
         type: fk
         references:
-          table: setting_groups
+          table: setting_group
           column: id
           onDelete: CASCADE
       - type: slug
@@ -1765,20 +1765,20 @@ tables:
       - type: updated_at
     ifNotExists: true
 
-  setting_translations:
+  setting_locale:
     columns:
       - name: locale_id
         type: fk
         isPrimary: true
         references:
-          table: locales
+          table: locale
           column: id
           onDelete: CASCADE
       - name: setting_id
         type: fk
         isPrimary: true
         references:
-          table: settings
+          table: setting
           column: id
           onDelete: CASCADE
       - name: description
@@ -1791,20 +1791,20 @@ tables:
       - type: updated_at
     ifNotExists: true
 
-  setting_users:
+  setting_user:
     columns:
       - name: user_id
         type: fk
         isPrimary: true
         references:
-          table: users
+          table: user
           column: id
           onDelete: CASCADE
       - name: setting_id
         type: fk
         isPrimary: true
         references:
-          table: settings
+          table: setting
           column: id
           onDelete: CASCADE
       - name: value
@@ -1814,7 +1814,7 @@ tables:
       - type: updated_at
     ifNotExists: true
 
-  locales:
+  locale:
     columns:
       - type: pk
       - name: code

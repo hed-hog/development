@@ -1,11 +1,10 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocalesTranslations } from '@/features/locales/api/handlers'
-import { useEditSetting } from '@/features/settings'
+import { useLocalesTranslations } from '@/features/locale/api/handlers'
+import { useEditSetting } from '@/features/setting'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useDebounceValue } from 'usehooks-ts'
-import FormPanel from './form-panel'
 import FormPanel from './form-panel'
 
 type SettingTextProps = {

@@ -1,9 +1,9 @@
-import { useLocalesAll } from '@/features/locales/api/handlers'
+import { useLocalesAll } from '@/features/locale/api/handlers'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { useEffect, useState } from 'react'
 import { Label } from '../ui/label'
 import { Separator } from '../ui/separator'
 import { Switch } from '../ui/switch'
-import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 
 export type SettingLocaleEnabledProps = {
   onChange?: (value: string[]) => void

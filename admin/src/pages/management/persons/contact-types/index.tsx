@@ -6,7 +6,7 @@ import {
   useCreateContactType,
   useDeleteContactType,
   useEditContactType,
-} from '@/features/contact-types'
+} from '@/features/contact-type'
 import { useApp } from '@/hooks/use-app'
 import { PersonContactType } from '@/types/contact-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'

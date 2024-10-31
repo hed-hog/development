@@ -6,7 +6,7 @@ import {
   useEditRoleScreens,
   useEditRoleUsers,
   useRolesShow,
-} from '@/features/roles'
+} from '@/features/role'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'

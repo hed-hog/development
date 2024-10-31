@@ -6,7 +6,7 @@ import {
   useCreateAddressType,
   useDeleteAddressType,
   useEditAddressType,
-} from '@/features/address-types'
+} from '@/features/address-type'
 import { useApp } from '@/hooks/use-app'
 import { PersonAddressType } from '@/types/address-type'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'

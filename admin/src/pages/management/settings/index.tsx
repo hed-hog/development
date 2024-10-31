@@ -1,12 +1,12 @@
-import { useSettingGroups } from '@/features/settings'
+import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useSettingGroups } from '@/features/setting'
+import { getIcon } from '@/lib/get-icon'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
-import { Separator } from '@/components/ui/separator'
-import SidebarNav from '../settings-options/components/sidebar-nav'
 import { Outlet } from 'react-router-dom'
-import { Skeleton } from '@/components/ui/skeleton'
-import { getIcon } from '@/lib/get-icon'
+import SidebarNav from '../settings-options/components/sidebar-nav'
 
 export default function Page() {
   const { t: modulesT } = useTranslation('modules')

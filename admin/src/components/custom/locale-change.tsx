@@ -1,22 +1,22 @@
+import {
+  useLocales,
+  useLocalesTranslations,
+} from '@/features/locale/api/handlers'
+import { useEditUserSettingSlug } from '@/features/setting'
+import { useApp } from '@/hooks/use-app'
+import { queryClient } from '@/lib/query-provider'
+import { cn } from '@/lib/utils'
 import { IconCheck, IconLanguage } from '@tabler/icons-react'
+import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
-import { Button } from './button'
-import { cn } from '@/lib/utils'
-import { useTranslation } from 'react-i18next'
-import {
-  useLocales,
-  useLocalesTranslations,
-} from '@/features/locales/api/handlers'
-import { useCallback, useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
-import { queryClient } from '@/lib/query-provider'
-import { useEditUserSettingSlug } from '@/features/settings'
-import { useApp } from '@/hooks/use-app'
+import { Button } from './button'
 
 export const LocaleChange = () => {
   const { user } = useApp()

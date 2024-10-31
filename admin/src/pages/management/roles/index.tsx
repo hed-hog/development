@@ -1,7 +1,7 @@
 import { DataPanel } from '@/components/custom/data-panel'
 import RoleCreatePanel from '@/components/custom/role-create-panel'
 import { RoleEditPanel } from '@/components/custom/role-edit-panel'
-import { useDeleteRole } from '@/features/roles/api'
+import { useDeleteRole } from '@/features/role/api'
 import { useApp } from '@/hooks/use-app'
 import { Menus, Roles, Routes, Screens } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'

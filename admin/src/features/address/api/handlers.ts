@@ -1,13 +1,13 @@
 import { useApp } from '@/hooks/use-app'
+import { queryClient } from '@/lib/query-provider'
 import {
   InvalidateQueryFilters,
   useMutation,
   useQuery,
 } from '@tanstack/react-query'
-import { requests } from './requests'
-import { queryClient } from '@/lib/query-provider'
-import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
+import { requests } from './requests'
 
 export function useAddress(personId: number) {
   const { request } = useApp()
@@ -16,7 +16,7 @@ export function useAddress(personId: number) {
     queryKey: ['address', personId],
     queryFn: () =>
       request({
-        url: `/persons/${personId}/address`,
+        url: `/person/${personId}/address`,
       }),
     enabled: !!personId,
   })

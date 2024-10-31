@@ -1,6 +1,6 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocalesTranslations } from '@/features/locales/api/handlers'
-import { useEditSetting } from '@/features/settings'
+import { useLocalesTranslations } from '@/features/locale/api/handlers'
+import { useEditSetting } from '@/features/setting'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import FormPanel from './form-panel'

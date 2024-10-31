@@ -1,6 +1,6 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocales } from '@/features/locales'
-import { useCreateRole } from '@/features/roles'
+import { useLocales } from '@/features/locale'
+import { useCreateRole } from '@/features/role'
 import { FieldType } from '@/types/form-panel'
 import { Roles } from '@/types/models'
 import { forwardRef, useImperativeHandle } from 'react'

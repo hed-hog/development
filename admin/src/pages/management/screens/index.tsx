@@ -8,13 +8,11 @@ import {
   useEditScreen,
   useEditScreenRoles,
   useEditScreenRoutes,
-} from '@/features/screens/api'
+} from '@/features/screen/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
-import { RoleType } from '@/types/role'
-import { RouteType } from '@/types/route'
-import { ScreenType } from '@/types/screen'
+import { Roles, Routes, Screens } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -27,7 +25,7 @@ export default function Page() {
   const { t: screensT } = useTranslation('screens')
 
   const [selectedItems, setSelectedItems] = useState<
-    (ScreenType | RoleType | RouteType)[]
+    (Screens | Roles | Routes)[]
   >([])
   const formEdit = useRef<any>(null)
 

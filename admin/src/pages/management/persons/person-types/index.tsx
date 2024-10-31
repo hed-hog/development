@@ -6,7 +6,7 @@ import {
   useCreatePersonType,
   useDeletePersonType,
   useEditPersonType,
-} from '@/features/person-types'
+} from '@/features/person-type'
 import { useApp } from '@/hooks/use-app'
 import { PersonType } from '@/types/person'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'

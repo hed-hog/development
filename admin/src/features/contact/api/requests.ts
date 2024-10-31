@@ -10,7 +10,7 @@ export function requests() {
   }) => {
     const { personId, data } = params
     return request({
-      url: `/persons/${personId}/contacts`,
+      url: `/person/${personId}/contact`,
       method: 'post',
       data,
     }).then((res) => res.data)
@@ -24,7 +24,7 @@ export function requests() {
     const { personId, contactId, data } = params
 
     return request({
-      url: `/persons/${personId}/contacts/${contactId}`,
+      url: `/person/${personId}/contact/${contactId}`,
       method: 'patch',
       data,
     }).then((res) => res.data)
@@ -37,7 +37,7 @@ export function requests() {
     const { personId, contactId } = params
 
     return request({
-      url: `/persons/${personId}/contacts/${contactId}`,
+      url: `/person/${personId}/contact/${contactId}`,
       method: 'delete',
     }).then((res) => res.data)
   }

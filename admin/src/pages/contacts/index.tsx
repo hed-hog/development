@@ -14,32 +14,32 @@ import {
   useDeleteAddress,
   useEditAddress,
 } from '@/features/address'
-import { useAddressTypes } from '@/features/address-types'
+import { useAddressTypes } from '@/features/address-type'
 import {
   useCreateContact,
   useDeleteContact,
   useEditContact,
 } from '@/features/contact'
-import { useContactTypes } from '@/features/contact-types'
+import { useContactTypes } from '@/features/contact-type'
 import { useCountries } from '@/features/country'
 import {
   useCreateCustom,
   useDeleteCustom,
   useEditCustom,
 } from '@/features/custom'
-import { useCustomTypes } from '@/features/custom-types'
+import { useCustomTypes } from '@/features/custom-type'
 import {
   useCreateDocument,
   useDeleteDocument,
   useEditDocument,
 } from '@/features/document'
-import { useDocumentTypes } from '@/features/document-types'
-import { usePersonTypes } from '@/features/person-types'
+import { useDocumentTypes } from '@/features/document-type'
 import {
   useCreatePerson,
   useDeletePerson,
   useEditPerson,
-} from '@/features/persons'
+} from '@/features/person'
+import { usePersonTypes } from '@/features/person-type'
 import { useApp } from '@/hooks/use-app'
 import { formatDate } from '@/lib/date-string'
 import { PersonAddress } from '@/types/address'
