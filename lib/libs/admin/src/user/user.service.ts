@@ -60,7 +60,7 @@ export class UserService {
     });
   }
 
-  async getUsers(paginationParams: PaginationDTO) {
+  async list(paginationParams: PaginationDTO) {
     const fields = ['name', 'email'];
     const OR = this.prismaService.createInsensitiveSearch(
       fields,

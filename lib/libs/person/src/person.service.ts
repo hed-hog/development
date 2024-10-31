@@ -23,7 +23,7 @@ export class PersonService {
     });
   }
 
-  async getPersons(locale: string, paginationParams: PaginationDTO) {
+  async list(locale: string, paginationParams: PaginationDTO) {
     const fields = ['name'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -137,7 +137,7 @@ export class PersonService {
     return paginate;
   }
 
-  async getPersonById(id: number) {
+  async get(id: number) {
     const person = await this.prismaService.person.findUnique({
       where: { id },
       include: {
@@ -191,7 +191,7 @@ export class PersonService {
     });
   }
 
-  async remove({ ids }: DeleteDTO) {
+  async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
         `You must select at least one person to delete.`,

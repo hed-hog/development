@@ -101,7 +101,7 @@ export class SettingService {
     return result;
   }
 
-  async getSettingGroups(locale: string, paginationParams: PaginationDTO) {
+  async listSettingGroups(locale: string, paginationParams: PaginationDTO) {
     const fields = ['slug', 'icon'];
 
     paginationParams.pageSize = 100;
@@ -138,7 +138,7 @@ export class SettingService {
     return result;
   }
 
-  async getSettings(locale: string, paginationParams: PaginationDTO) {
+  async listSettings(locale: string, paginationParams: PaginationDTO) {
     const fields = ['slug', 'value'];
 
     const OR: any[] = this.prismaService.createInsensitiveSearch(

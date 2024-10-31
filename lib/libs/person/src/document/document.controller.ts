@@ -28,18 +28,18 @@ export class DocumentController {
   }
 
   @Get()
-  getDocuments(
+  list(
     @Param('personId', ParseIntPipe) personId: number,
     @Query('typeId', OptionalParseIntPipe) typeId?: number,
     @Query('id', OptionalParseIntPipe) documentId?: number,
   ) {
     if (documentId) {
-      return this.documentService.getDocumentById(documentId);
+      return this.documentService.list(personId, null, documentId);
     }
     if (typeId) {
-      return this.documentService.getDocumentByTypeId(personId, typeId);
+      return this.documentService.list(personId, typeId);
     }
-    return this.documentService.getDocuments(personId);
+    return this.documentService.list(personId);
   }
 
   @Patch(':documentId')
@@ -51,7 +51,7 @@ export class DocumentController {
   }
 
   @Delete(':documentId')
-  remove(@Param('documentId', ParseIntPipe) documentId: number) {
-    return this.documentService.remove(documentId);
+  delete(@Param('documentId', ParseIntPipe) documentId: number) {
+    return this.documentService.delete(documentId);
   }
 }

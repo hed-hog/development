@@ -22,7 +22,7 @@ export class CustomTypeService {
     });
   }
 
-  async getCustomTypes(locale: string, paginationParams: PaginationDTO) {
+  async list(locale: string, paginationParams: PaginationDTO) {
     const fields = ['slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -53,7 +53,7 @@ export class CustomTypeService {
     );
   }
 
-  async getCustomTypeById(id: number) {
+  async get(id: number) {
     const customType = await this.prismaService.person_custom_type.findUnique({
       where: { id },
     });
@@ -72,7 +72,7 @@ export class CustomTypeService {
     });
   }
 
-  async remove({ ids }: DeleteDTO) {
+  async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
         `You must select at least one customType to delete.`,

@@ -22,7 +22,7 @@ export class ContactTypeService {
     });
   }
 
-  async getContactTypes(locale: string, paginationParams: PaginationDTO) {
+  async list(locale: string, paginationParams: PaginationDTO) {
     const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -53,7 +53,7 @@ export class ContactTypeService {
     );
   }
 
-  async getContactTypeById(id: number) {
+  async get(id: number) {
     const ContactType = await this.prismaService.person_contact_type.findUnique(
       {
         where: { id },
@@ -74,7 +74,7 @@ export class ContactTypeService {
     });
   }
 
-  async remove({ ids }: DeleteDTO) {
+  async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
         `You must select at least one ContactType to delete.`,

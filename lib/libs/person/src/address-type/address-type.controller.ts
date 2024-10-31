@@ -26,13 +26,13 @@ export class AddressTypeController {
   }
 
   @Get()
-  getAddressTypes(@Pagination() paginationParams, @Locale() locale) {
-    return this.addressTypeService.getAddressTypes(locale, paginationParams);
+  list(@Pagination() paginationParams, @Locale() locale) {
+    return this.addressTypeService.list(locale, paginationParams);
   }
 
   @Get(':id')
-  getAddressTypeById(@Param('id', ParseIntPipe) id: number) {
-    return this.addressTypeService.getAddressTypeById(id);
+  get(@Param('id', ParseIntPipe) id: number) {
+    return this.addressTypeService.get(id);
   }
 
   @Patch(':id')
@@ -44,7 +44,7 @@ export class AddressTypeController {
   }
 
   @Delete()
-  remove(@Body() data: DeleteDTO) {
-    return this.addressTypeService.remove(data);
+  delete(@Body() data: DeleteDTO) {
+    return this.addressTypeService.delete(data);
   }
 }
