@@ -1,14 +1,13 @@
 import { useApp } from '@/hooks/use-app'
-import { Delete } from '@/types/delete'
+import { Delete, PaginationParams, PaginationResult } from '@/types'
 import { HttpMethod } from '@/types/http-method'
 import { PersonType } from '@/types/models'
-import { Pagination } from '@/types/pagination'
 
 export function requests() {
   const { request } = useApp()
 
-  const personTypeList = async (params: Pagination) => {
-    return request<PersonType>({
+  const personTypeList = async (params: PaginationParams) => {
+    return request<PaginationResult<PersonType>>({
       url: '/person-type',
       params,
     }).then((res) => res.data)

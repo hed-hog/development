@@ -38,7 +38,7 @@ export function usePersonTypeCreate() {
   })
 }
 
-export function usePersonTypeDelete<T>() {
+export function usePersonTypeDelete() {
   const { personTypeDelete } = requests()
   const { t: moduleT } = useTranslation('module')
   const { t: successT } = useTranslation('success')
@@ -46,7 +46,7 @@ export function usePersonTypeDelete<T>() {
 
   return useMutation({
     mutationKey: ['delete-person-type'],
-    mutationFn: personTypeDelete<T>,
+    mutationFn: personTypeDelete,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['person-type'] })
       toast.success(`${moduleT('personType')} ${successT('delete')}`)
