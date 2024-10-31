@@ -1,26 +1,19 @@
+import { LocaleService } from '@hedhog/admin';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { getWithLocale } from '@hedhog/utils';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { DeleteDTO } from '../dto/delete.dto';
 import { CreatePersonTypeDTO } from './dto/create-person-type.dto';
 import { UpdatePersonTypeDTO } from './dto/update-person-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
 
 @Injectable()
 export class PersonTypeService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly paginationService: PaginationService,
+    private readonly localeService: LocaleService,
   ) {}
-
-  async create(data: CreatePersonTypeDTO) {
-    return await this.prismaService.person_type.create({
-      data,
-    });
-  }
 
   async list(locale: string, paginationParams: PaginationDTO) {
     const fields = [];
@@ -53,23 +46,56 @@ export class PersonTypeService {
     );
   }
 
-  async get(id: number) {
-    const PersonType = await this.prismaService.person_type.findUnique({
-      where: { id },
-    });
-
-    if (!PersonType) {
-      throw new NotFoundException(`PersonType with ID ${id} not found`);
-    }
-
-    return PersonType;
+  async get(locale: string, typeId: number) {
+    return getWithLocale(
+      locale,
+      'person_type_locale',
+      await this.prismaService.person_type.findUnique({
+        where: { id: typeId },
+        include: {
+          person_type_locale: {
+            where: {
+              locale: {
+                enabled: true,
+              },
+            },
+            select: {
+              name: true,
+              locale: {
+                select: {
+                  code: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+    );
   }
 
-  async update(id: number, data: UpdatePersonTypeDTO) {
-    return await this.prismaService.person_type.update({
-      where: { id },
-      data: data,
-    });
+  async create({ slug, locale }: CreatePersonTypeDTO) {
+    return this.localeService.createModelWithLocale(
+      'person_type',
+      'type_id',
+      { slug },
+      locale,
+    );
+  }
+
+  async update({
+    id,
+    data: { locale, slug },
+  }: {
+    id: number;
+    data: UpdatePersonTypeDTO;
+  }) {
+    return this.localeService.updateModelWithLocale(
+      'person_type',
+      'type_id',
+      id,
+      { slug },
+      locale,
+    );
   }
 
   async delete({ ids }: DeleteDTO) {

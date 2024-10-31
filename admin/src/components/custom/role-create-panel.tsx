@@ -1,5 +1,5 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocale } from '@/features/locale'
+import { useLocaleListEnabled } from '@/features/locale'
 import { useCreateRole } from '@/features/role'
 import { FieldType } from '@/types/form-panel'
 import { Role } from '@/types/models'
@@ -14,7 +14,7 @@ export type RoleCreateProps = {
 
 const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps, ref) => {
   const { t } = useTranslation(['actions', 'role', 'translation'])
-  const { data: localeEnabled } = useLocale()
+  const { data: localeEnabled } = useLocaleListEnabled()
   const { mutate: createRole } = useCreateRole()
   const form = useForm<FieldValues>({
     mode: 'onSubmit',
@@ -37,24 +37,24 @@ const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps, ref) => {
           type: EnumFieldType.TEXT,
           required: true,
         },
-        ...(localeEnabled?.data.data
+        ...(localeEnabled?.data
           .map((item) => item.code)
           .map((code) => ({
             name: `${code}-name`,
             label: {
               text: t('name', { ns: 'translation' }),
-              ...(localeEnabled?.data.data.length > 1 ? { small: code } : {}),
+              ...(localeEnabled?.data.length > 1 ? { small: code } : {}),
             },
             type: EnumFieldType.TEXT as FieldType,
             required: true,
           })) || []),
-        ...(localeEnabled?.data.data
+        ...(localeEnabled?.data
           .map((item) => item.code)
           .map((code) => ({
             name: `${code}-description`,
             label: {
               text: t('description', { ns: 'translation' }),
-              ...(localeEnabled?.data.data.length > 1 ? { small: code } : {}),
+              ...(localeEnabled?.data.length > 1 ? { small: code } : {}),
             },
             type: EnumFieldType.TEXT as FieldType,
             required: true,

@@ -1,6 +1,7 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
-  useLocaleTranslations
+  useLocaleListEnabled,
+  useLocaleTranslations,
 } from '@/features/locale/api/handlers'
 import { useEditSetting } from '@/features/setting'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -15,7 +16,7 @@ type SettingLanguageProps = {
 const SettingLanguage = ({ setting }: SettingLanguageProps) => {
   const { mutateAsync } = useEditSetting()
   const { i18n } = useTranslation()
-  const { data: dataLocales } = useLocale()
+  const { data: dataLocales } = useLocaleListEnabled()
   const { data: localeTranslations, isLoading } = useLocaleTranslations()
   const form = useForm<FieldValues>({
     defaultValues: {},
@@ -27,7 +28,7 @@ const SettingLanguage = ({ setting }: SettingLanguageProps) => {
   const loadOptions = useCallback(() => {
     if (dataLocales?.data && localeTranslations?.data) {
       setOptions(
-        dataLocales?.data.data.map((locale: any) => ({
+        dataLocales?.data.map((locale: any) => ({
           label: localeTranslations?.data[locale.code],
           value: locale.code,
         })) ?? []

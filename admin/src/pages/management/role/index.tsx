@@ -23,8 +23,6 @@ export default function Page() {
   const { mutate: deleteRole } = useDeleteRole()
 
   const openCreateDialog = () => {
-    console.log('openCreateDialog')
-
     const id = openDialog({
       title: roleT('create'),
       description: roleT('createText'),

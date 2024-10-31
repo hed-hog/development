@@ -29,7 +29,6 @@ import { useSheet } from '@/hooks/use-sheet'
 import { DialogType, OpenDialogType } from '@/types/dialog'
 import { OpenSheetType, SheetType } from '@/types/sheet'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { t } from 'i18next'
 import React, {
   createContext,
   Fragment,
@@ -96,6 +95,7 @@ export type AppProviderProps = {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
+  const { t } = useTranslation(['module', 'success', 'error'])
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [dialogs, setDialogs] = useState<DialogType[]>([])
   const [sheets, setSheets] = useState<SheetType[]>([])
@@ -148,7 +148,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         toast.error('Network error')
         break
       default:
-        toast.error('An error occurred')
+        toast.error(
+          error?.response?.data?.message ??
+            error?.message ??
+            'An error occurred'
+        )
     }
   }
 
@@ -177,7 +181,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           return response
         },
         (error) => {
-          console.error('request error', error)
           handleError(error)
           return Promise.reject(error)
         }
@@ -238,7 +241,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     action: string,
     error: any = null
   ) => {
-    const { t } = useTranslation(['module', 'success', 'error'])
     switch (type) {
       case 'success':
         return toast.success(
@@ -308,16 +310,27 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                           </DialogHeader>
                         )}
                         {children && (
-                          <div className='mt-8 flex flex-1 overflow-y-auto'>
+                          <div
+                            key={`${id}-body`}
+                            className='mt-8 flex flex-1 overflow-y-auto'
+                          >
                             {React.createElement(children, {
                               ...props,
                               block: children,
                             })}
                           </div>
                         )}
+                        {!children && (
+                          <div key={`${id}-space`} className='h-4' />
+                        )}
                         <DialogFooter className='gap-1 sm:justify-end'>
-                          {(buttons ?? []).map(({ text, ...props }) => (
-                            <Button {...props}>{text}</Button>
+                          {(buttons ?? []).map(({ text, ...props }, index) => (
+                            <Button
+                              key={`${id}-footer-btn-${index}`}
+                              {...props}
+                            >
+                              {text}
+                            </Button>
                           ))}
                         </DialogFooter>
                       </DialogContent>
@@ -339,12 +352,15 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                           </DrawerHeader>
                         )}
                         {children && (
-                          <div className='px-4'>
+                          <div key={`${id}-body`} className='px-4'>
                             {React.createElement(children, {
                               ...props,
                               block: children,
                             })}
                           </div>
+                        )}
+                        {!children && (
+                          <div key={`${id}-space`} className='h-4' />
                         )}
                         <DrawerFooter className='gap-1 sm:justify-end'>
                           {(buttons ?? []).map(({ text, ...props }) => (
@@ -383,13 +399,17 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                       </SheetHeader>
                     )}
                     {children && (
-                      <div className='mt-8 flex flex-1 overflow-y-auto'>
+                      <div
+                        key={`${id}-body`}
+                        className='mt-8 flex flex-1 overflow-y-auto'
+                      >
                         {React.createElement(children, {
                           ...props,
                           block: children,
                         })}
                       </div>
                     )}
+                    {!children && <div key={`${id}-space`} className='h-4' />}
                     <SheetFooter>
                       {(buttons ?? []).map(({ text, ...props }) => (
                         <Button {...props}>{text}</Button>

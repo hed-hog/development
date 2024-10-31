@@ -266,101 +266,99 @@ export class LocaleService {
   }
 
   private getTableNameTranslations(modelName: string) {
-    const modelNames = modelName.split('_');
-    modelNames.push('locale');
-    return modelNames.join('_');
+    return `${modelName}_locale`;
   }
 
   async createModelWithLocale<T>(
     modelName: string,
-    foreginKeyName: string,
+    foreignKeyName: string,
     data: T,
-    locale: Record<string, string>,
+    locale: Record<string, Record<string, string>>,
   ) {
-    const model = await this.prismaService[modelName].create({
-      data,
-    });
+    try {
+      const model = await this.prismaService[modelName].create({ data });
 
-    for (const localeCode of Object.keys(locale)) {
-      const locale = await this.getByCode(localeCode);
+      if (locale) {
+        await Promise.all(
+          Object.entries(locale).map(async ([localeCode, localeData]) => {
+            const localeRecord = await this.getByCode(localeCode);
+            const localeEntry = {
+              [foreignKeyName]: model.id,
+              locale_id: localeRecord.id,
+              ...localeData,
+            };
 
-      const data: any = {};
-
-      for (const key of Object.keys(locale[localeCode])) {
-        data[key] = locale[localeCode][key];
+            await this.prismaService[
+              this.getTableNameTranslations(modelName)
+            ].create({
+              data: localeEntry,
+            });
+          }),
+        );
       }
 
-      await this.prismaService[this.getTableNameTranslations(modelName)].create(
-        {
-          data: {
-            [foreginKeyName]: model.id,
-            locale_id: locale.id,
-            ...data,
+      return this.prismaService[modelName].findUnique({
+        where: { id: model.id },
+        include: {
+          [this.getTableNameTranslations(modelName)]: {
+            where: { locale: { enabled: true } },
+            include: { locale: { select: { code: true } } },
           },
         },
-      );
+      });
+    } catch (error) {
+      if (error.message.includes('Unique constraint failed')) {
+        throw new BadRequestException('Data already exists.');
+      } else {
+        throw new BadRequestException(error);
+      }
     }
-
-    return this.prismaService[modelName].findUnique({
-      where: { id: model.id },
-      include: {
-        [this.getTableNameTranslations(modelName)]: {
-          where: {
-            locale: {
-              enabled: true,
-            },
-          },
-          include: {
-            locale: {
-              select: {
-                code: true,
-              },
-            },
-          },
-        },
-      },
-    });
   }
 
-  async updateModelWithLocale<T extends any>(
+  async updateModelWithLocale<T>(
     modelName: string,
-    foreginKeyName: string,
+    foreignKeyName: string,
     id: number,
     data: T,
-    locale: Record<string, string>,
+    locale: Record<string, Record<string, string>>,
   ) {
-    for (const localeCode of Object.keys(locale)) {
-      const locale = await this.getByCode(localeCode);
+    try {
+      if (locale) {
+        await Promise.all(
+          Object.entries(locale).map(async ([localeCode, localeData]) => {
+            const localeRecord = await this.getByCode(localeCode);
+            const localeEntry = {
+              [foreignKeyName]: id,
+              locale_id: localeRecord.id,
+              ...localeData,
+            };
 
-      const data: any = {};
-
-      for (const key of Object.keys(locale[localeCode])) {
-        data[key] = locale[localeCode][key];
+            await this.prismaService[
+              this.getTableNameTranslations(modelName)
+            ].upsert({
+              where: {
+                [`${foreignKeyName}_locale_id`]: {
+                  [foreignKeyName]: id,
+                  locale_id: localeRecord.id,
+                },
+              },
+              create: localeEntry,
+              update: localeData,
+            });
+          }),
+        );
       }
 
-      await this.prismaService[this.getTableNameTranslations(modelName)].upsert(
-        {
-          where: {
-            [`${foreginKeyName}_locale_id`]: {
-              [foreginKeyName]: id,
-              locale_id: locale.id,
-            },
-          },
-          create: {
-            [foreginKeyName]: id,
-            locale_id: locale.id,
-            ...data,
-          },
-          update: {
-            ...data,
-          },
-        },
-      );
+      return this.prismaService[modelName].update({
+        where: { id },
+        data,
+      });
+    } catch (error) {
+      if (error.message.includes('Unique constraint failed')) {
+        throw new BadRequestException('Data already exists.');
+      } else {
+        throw new BadRequestException(error);
+      }
     }
-
-    return this.prismaService[modelName].update({
-      where: { id },
-      data,
-    });
   }
 }

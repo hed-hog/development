@@ -21,30 +21,33 @@ export class PersonTypeController {
   constructor(private readonly personTypeService: PersonTypeService) {}
 
   @Post()
-  create(@Body() data: CreatePersonTypeDTO) {
+  async create(@Body() data: CreatePersonTypeDTO) {
     return this.personTypeService.create(data);
   }
 
   @Get()
-  list(@Pagination() paginationParams, @Locale() locale) {
+  async list(@Pagination() paginationParams, @Locale() locale) {
     return this.personTypeService.list(locale, paginationParams);
   }
 
-  @Get(':id')
-  get(@Param('id', ParseIntPipe) id: number) {
-    return this.personTypeService.get(id);
+  @Get(':personTypeId')
+  async get(@Param('personTypeId', ParseIntPipe) id: number, @Locale() locale) {
+    return this.personTypeService.get(locale, id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
+  @Patch(':personTypeId')
+  async update(
+    @Param('personTypeId', ParseIntPipe) id: number,
     @Body() data: UpdatePersonTypeDTO,
   ) {
-    return this.personTypeService.update(id, data);
+    return this.personTypeService.update({
+      id,
+      data,
+    });
   }
 
   @Delete()
-  delete(@Body() data: DeleteDTO) {
+  async delete(@Body() data: DeleteDTO) {
     return this.personTypeService.delete(data);
   }
 }

@@ -31,6 +31,7 @@ import { UserModule } from './user/user.module';
     MenuModule,
     SettingModule,
     ScreenModule,
+    LocaleModule,
   ],
 })
 export class AdminModule {}

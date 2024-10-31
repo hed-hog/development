@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { WithLocaleDTO } from '@hedhog/admin';
+import { IsString } from 'class-validator';
 
-export class CreatePersonTypeDTO {
-  @IsNotEmpty({ message: 'Name is mandatory.' })
-  @IsString({ message: 'Name needs to be a string.' })
-  name: string;
+export class CreatePersonTypeDTO extends WithLocaleDTO {
+  @IsString()
+  slug: string;
 }

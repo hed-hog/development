@@ -34,7 +34,7 @@
     "puppeteer": "ts-node ./src/puppeteer/main.ts"
   },
   "dependencies": {
-    "@hedhog/utils": "^0.0.15",
+    "@hedhog/utils": "^0.0.18",
     "@nestjs/axios": "^3.0.3",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.3",

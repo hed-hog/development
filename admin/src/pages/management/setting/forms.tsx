@@ -4,7 +4,10 @@ import FormPanel from '@/components/custom/form-panel'
 import { SettingLocaleEnabled } from '@/components/custom/setting-locale-enabled'
 import { Skeleton } from '@/components/ui/skeleton'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocale, useLocaleEnabled } from '@/features/locale/api/handlers'
+import {
+  useLocaleEnabled,
+  useLocaleListEnabled,
+} from '@/features/locale/api/handlers'
 import { useSetting, useSettingFromGroup } from '@/features/setting'
 import { useSetProperties } from '@/hooks/use-set-properties'
 import { hexToHSL, hslToHex } from '@/lib/colors'
@@ -16,7 +19,7 @@ import { useParams } from 'react-router-dom'
 
 export default function Page() {
   const { t } = useTranslation(['translation', 'setting'])
-  const { data: locale } = useLocale()
+  const { data: locale } = useLocaleListEnabled()
   const { mutate, isPending } = useSetting()
   const { setText } = useSetProperties()
   const { mutateAsync: mutateLocale, isPending: isPendingLocale } =
@@ -70,7 +73,7 @@ export default function Page() {
             description: {
               text: item.description,
             },
-            options: (locale?.data.data ?? []).map((l: any) => ({
+            options: (locale?.data ?? []).map((l: any) => ({
               value: l.code,
               label: l.name,
             })),
@@ -427,7 +430,7 @@ export default function Page() {
       <FormPanel
         ref={formRef}
         fields={
-          data?.data.data.map((item) => getField(item)) as IFormFieldPropsBase[]
+          data?.data.map((item: any) => getField(item)) as IFormFieldPropsBase[]
         }
         form={form}
         onSubmit={(data) => {

@@ -30,8 +30,8 @@ export class LocaleController {
   ) {}
 
   @Public()
-  @Get('system/enable')
-  async getEnables(@Pagination() paginationParams, @Locale() locale: string) {
+  @Get('system/enabled')
+  async listEnabled(@Pagination() paginationParams, @Locale() locale: string) {
     return this.localeService.getEnables(locale, paginationParams);
   }
 

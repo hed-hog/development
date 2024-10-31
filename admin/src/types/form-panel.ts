@@ -54,7 +54,7 @@ export interface IFormFieldPropsBase {
   description?: ILabelProps
   input?: IStylingProps
   container?: IStylingProps
-  required: boolean
+  required?: boolean
   options?: IFormFieldOption[]
 }
 
@@ -78,7 +78,7 @@ export interface IMultiSelectFieldProps extends IFormFieldPropsBase {
   checkbox?: IStylingProps
 }
 
-export interface IFormPanelProps {
+export type FormPanelProps = {
   title?: ITextProps
   subtitle?: ITextProps
   button?: ITextProps

@@ -4,5 +4,5 @@ export class WithLocaleDTO {
   @IsOptional()
   @IsObject()
   @ValidateNested({ each: true })
-  locale: Record<string, string>;
+  locale: Record<string, Record<string, string>>;
 }

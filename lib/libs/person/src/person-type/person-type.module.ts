@@ -1,9 +1,9 @@
+import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { Module, forwardRef } from '@nestjs/common';
 import { PersonTypeController } from './person-type.controller';
 import { PersonTypeService } from './person-type.service';
-import { AdminModule } from '@hedhog/admin';
 
 @Module({
   providers: [PersonTypeService],

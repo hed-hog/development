@@ -6,7 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { IFormPanelProps, ISliderProps } from '@/types/form-panel'
+import { FormPanelProps, ISliderProps } from '@/types/form-panel'
 import { getObjectFromLocaleFields } from '@hedhog/utils'
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form'
@@ -16,7 +16,7 @@ import { Button } from './button'
 import Field from './field'
 
 const FormPanelForm = forwardRef(
-  ({ form, fields, button = {}, onSubmit }: IFormPanelProps, ref) => {
+  ({ form, fields, button = {}, onSubmit }: FormPanelProps, ref) => {
     const formRef = useRef<HTMLFormElement>(null)
     const formSubmitRef = useRef<HTMLButtonElement>(null)
     form = useForm()
@@ -40,7 +40,7 @@ const FormPanelForm = forwardRef(
           onSubmit &&
           (form as UseFormReturn<FieldValues>).handleSubmit(onSubmit)
         }
-        className='w-full space-y-8'
+        className='w-full space-y-3'
       >
         {fields.map((renderField) => (
           <FormField
@@ -66,7 +66,7 @@ const FormPanelForm = forwardRef(
                 <Field
                   {...(field as any)}
                   type={renderField.type}
-                  required={renderField.required}
+                  required={renderField.required ?? false}
                   options={renderField.options}
                   sliderOptions={Object.assign(
                     {},
@@ -102,31 +102,28 @@ const FormPanelForm = forwardRef(
           />
         ))}
         <div className='h-1' />
-        {button.text ? (
-          <Button
-            type='submit'
-            style={button.style}
-            className='w-full'
-            ref={formSubmitRef}
-          >
-            {button.text}
-          </Button>
-        ) : (
-          <button type='submit' className='hidden' ref={formSubmitRef} />
-        )}
+        <div className='flex justify-end gap-2'>
+          {button.text ? (
+            <Button type='submit' style={button.style} ref={formSubmitRef}>
+              {button.text}
+            </Button>
+          ) : (
+            <button type='submit' className='hidden' ref={formSubmitRef} />
+          )}
+        </div>
       </form>
     )
   }
 )
 
-export type FormPanelRefType = {
+export type FormPanelRef = {
   setValuesFromItem: (item: Record<string, any>) => void
   setValues: (values: Record<string, any>) => void
   submit: () => void
 }
 
-const FormPanel = forwardRef<FormPanelRefType, IFormPanelProps>(
-  ({ title = {}, subtitle = {}, ...props }: IFormPanelProps, ref) => {
+const FormPanel = forwardRef<FormPanelRef, FormPanelProps>(
+  ({ title = {}, subtitle = {}, ...props }: FormPanelProps, ref) => {
     const formRef = useRef<any>(null)
 
     const getValues = useCallback(() => {

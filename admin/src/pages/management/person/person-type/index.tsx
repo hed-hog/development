@@ -1,7 +1,8 @@
 import DataPanel from '@/components/custom/data-panel'
 import { PageTitle } from '@/components/custom/page-title'
-import { useDeletePersonType } from '@/features/person-type'
+import { usePersonTypeDelete } from '@/features/person-type'
 import { useApp } from '@/hooks/use-app'
+import { isPlural } from '@/lib/utils'
 import { PersonType } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
@@ -11,37 +12,39 @@ import { PersonTypeUpdatePanel } from './components/person-type-update-panel'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonType[]>([])
-
-  const { mutate: deletePersonTypes } = useDeletePersonType()
-  const { openDialog, closeDialog, openSheet, confirm } = useApp()
-
+  const { mutate: deletePersonTypes } = usePersonTypeDelete()
+  const { openSheet, confirm, closeSheet } = useApp()
   const { t } = useTranslation(['person-types', 'modules', 'actions'])
 
-  const openCreateDialog = () => {
-    const id = openDialog({
+  const openCreate = () => {
+    const id = openSheet({
       title: t('create', { ns: 'actions' }),
       description: t('createText', { ns: 'person-types' }),
       children: () => (
-        <PersonTypeCreatePanel onCreated={() => closeDialog(id)} />
+        <PersonTypeCreatePanel onCreated={() => closeSheet(id)} />
       ),
     })
 
     return id
   }
 
-  const openDeleteDialog = (items: PersonType[]) => {
+  const openDelete = (items: PersonType[]) => {
     return confirm({
-      title: t('delete', { ns: 'person-types' }),
+      title: `${t('delete', { ns: 'actions' })} ${items.length} ${isPlural(items.length) ? t('items', { ns: 'actions' }) : t('item', { ns: 'actions' })}`,
       description: t('deleteText', { ns: 'person-types' }),
     })
-      .then(() => deletePersonTypes(items.map((item) => item.id)))
+      .then(() =>
+        deletePersonTypes(
+          items.map((item) => item.id).filter((id) => id !== undefined)
+        )
+      )
       .catch(() => setSelectedItems(items))
   }
 
-  const openEditDialog = (item: PersonType) => {
+  const openUpdate = (item: PersonType) => {
     const id = openSheet({
       children: () => (
-        <PersonTypeUpdatePanel data={item} onUpdated={() => closeDialog(id)} />
+        <PersonTypeUpdatePanel data={item} onUpdated={() => closeSheet(id)} />
       ),
       title: t('edit', { ns: 'person-types' }),
       description: t('editText', { ns: 'person-types' }),
@@ -66,14 +69,14 @@ export default function Page() {
         multiple
         hasSearch
         sortable
-        onItemDoubleClick={(item) => openEditDialog(item)}
+        onItemDoubleClick={(item) => openUpdate(item)}
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: t('edit', { ns: 'actions' }),
             tooltip: t('editTooltip', { ns: 'person-types' }),
             handler: (items: PersonType[]) => {
-              if (items.length === 1) openEditDialog(items[0])
+              if (items.length === 1) openUpdate(items[0])
             },
             show: 'once',
           },
@@ -82,7 +85,9 @@ export default function Page() {
             label: t('delete', { ns: 'actions' }),
             tooltip: t('deleteTooltip', { ns: 'person-types' }),
             variant: 'destructive',
-            handler: openDeleteDialog,
+            handler: (items: PersonType[]) => {
+              openDelete(items)
+            },
             show: 'some',
           },
           {
@@ -90,7 +95,9 @@ export default function Page() {
             label: t('create', { ns: 'actions' }),
             tooltip: t('createTooltip', { ns: 'person-types' }),
             variant: 'default',
-            handler: openCreateDialog,
+            handler: () => {
+              openCreate()
+            },
             show: 'none',
           },
         ]}

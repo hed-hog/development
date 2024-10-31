@@ -1,23 +1,19 @@
 import { useApp } from '@/hooks/use-app'
-import { PaginationResult } from '@/hooks/use-pagination-fetch'
 import { queryClient } from '@/lib/query-provider'
+import { PaginationParams, PaginationResult } from '@/types'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { requests } from './requests'
 
-export function useLocale() {
+export function useLocaleListEnabled(params?: PaginationParams) {
   const {
     i18n: { language },
   } = useTranslation()
-  const { request } = useApp()
-
+  const { localeListEnabled } = requests()
   return useQuery({
-    queryKey: [`locale-${language}`],
-    queryFn: () =>
-      request<PaginationResult<any>>({
-        url: `/locale/system/enable`,
-      }),
+    queryKey: ['locale', 'list', 'enabled', language],
+    queryFn: () => localeListEnabled(params),
   })
 }
 

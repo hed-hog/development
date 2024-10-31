@@ -1,7 +1,4 @@
-import {
-  useLocale,
-  useLocaleTranslations,
-} from '@/features/locale/api/handlers'
+import { useLocaleListEnabled, useLocaleTranslations } from '@/features/locale'
 import { useEditUserSettingSlug } from '@/features/setting'
 import { useApp } from '@/hooks/use-app'
 import { queryClient } from '@/lib/query-provider'
@@ -23,13 +20,13 @@ export const LocaleChange = () => {
   const { mutateAsync, isPending } = useEditUserSettingSlug()
   const { i18n, t } = useTranslation()
   const [languages, setLanguages] = useState<any[]>([])
-  const { data: dataLocales } = useLocale()
+  const { data: dataLocales } = useLocaleListEnabled()
   const { data: localeTranslations, isLoading } = useLocaleTranslations()
 
   const loadOptions = useCallback(() => {
     if (dataLocales?.data && localeTranslations?.data) {
       setLanguages(
-        (dataLocales?.data.data ?? []).map((locale: any) => ({
+        (dataLocales?.data ?? []).map((locale: any) => ({
           id: locale.id,
           label: localeTranslations?.data[locale.code],
           value: locale.code,

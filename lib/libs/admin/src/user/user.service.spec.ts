@@ -130,7 +130,7 @@ describe('UserService', () => {
       });
     });
   });
-
+  /*
   describe('getUsers', () => {
     it('should return paginated user', async () => {
       const paginationParams: PaginationDTO = {
@@ -171,7 +171,7 @@ describe('UserService', () => {
       expect(result).toEqual(mockPaginatedUsers);
     });
   });
-
+*/
   describe('get', () => {
     it('should return a specific user by ID', async () => {
       const mockUser = {

@@ -1,21 +1,31 @@
 import { queryClient } from '@/lib/query-provider'
-import { InvalidateQueryFilters, useMutation } from '@tanstack/react-query'
+import {
+  InvalidateQueryFilters,
+  MutationFunction,
+  useMutation,
+  UseMutationOptions,
+  UseMutationResult,
+} from '@tanstack/react-query'
 import { useApp } from './use-app'
 
-export function useDefaultMutation(
+export function useDefaultMutation<TData, TVariables>(
   scope: string,
   action: string,
-  mutationFn: any
-) {
+  mutationFn: MutationFunction<TData, TVariables>,
+  options?: Omit<UseMutationOptions<TData, unknown, TVariables>, 'mutationFn'>
+): UseMutationResult<TData, unknown, TVariables> {
   const { showToastHandler } = useApp()
 
-  return useMutation({
+  return useMutation<TData, unknown, TVariables>({
     mutationKey: [`${scope}-${action}`],
     mutationFn,
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries(scope as InvalidateQueryFilters)
       showToastHandler('success', scope, action)
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context)
+      }
     },
-    onError: (error: any) => showToastHandler('error', scope, action, error),
+    ...options,
   })
 }

@@ -2,6 +2,7 @@ import { useApp } from '@/hooks/use-app'
 import { Delete, PaginationParams, PaginationResult } from '@/types'
 import { HttpMethod } from '@/types/http-method'
 import { PersonType } from '@/types/models'
+import { formatDataWithLocale } from '@hedhog/utils'
 
 export function requests() {
   const { request } = useApp()
@@ -24,7 +25,7 @@ export function requests() {
     return request<PersonType>({
       url: '/person-type',
       method: HttpMethod.POST,
-      data,
+      data: formatDataWithLocale(data),
     }).then((res) => res.data)
   }
 
@@ -36,11 +37,17 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const personTypeUpdate = async (id: number, data: PersonType) => {
+  const personTypeUpdate = async ({
+    id,
+    data,
+  }: {
+    id: number
+    data: PersonType
+  }) => {
     return request<PersonType>({
       url: `/person-type/${id}`,
       method: HttpMethod.PATCH,
-      data,
+      data: formatDataWithLocale(data),
     }).then((res) => res.data)
   }
 

@@ -7,5 +7,8 @@
   "cancel": "Cancel",
   "details": "Details",
   "save": "Save",
-  "ok": "Ok"
+  "ok": "Ok",
+  "item": "item",
+  "items": "items",
+  "selected": "selected"
 }

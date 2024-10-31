@@ -104,7 +104,7 @@ export class RoleController {
   }
 
   @Post()
-  create(@Body() data: CreateDTO) {
+  async create(@Body() data: CreateDTO) {
     return this.roleService.create(data);
   }
 

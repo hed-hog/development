@@ -1,8 +1,11 @@
-import FormPanel, { FormPanelRefType } from '@/components/custom/form-panel'
+import FormPanel, { FormPanelRef } from '@/components/custom/form-panel'
+import { Overlay } from '@/components/custom/overlay'
 import { TabPanel } from '@/components/custom/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useEditPersonType } from '@/features/person-type'
+import { useLocaleListEnabled } from '@/features/locale'
+import { usePersonTypeGet, usePersonTypeUpdate } from '@/features/person-type'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { FieldType } from '@/types'
 import { PersonType } from '@/types/models'
 import { t } from 'i18next'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
@@ -14,15 +17,16 @@ export type PersonTypeUpdatePanelProps = {
 
 export const PersonTypeUpdatePanel = forwardRef(
   ({ data, onUpdated }: PersonTypeUpdatePanelProps, ref) => {
+    const { data: localeEnabled } = useLocaleListEnabled()
     const { data: item, isLoading } = usePersonTypeGet(data.id as number)
-    const { mutate: editPersonType } = useEditPersonType()
-    const formRef = useRef<FormPanelRefType>(null)
+    const { mutate: personTypeUpdate } = usePersonTypeUpdate()
+    const formRef = useRef<FormPanelRef>(null)
 
     useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
         formRef.current.setValuesFromItem(item)
       }
-    }, [item, formRef])
+    }, [item])
 
     useImperativeHandle(ref, () => ({}))
 
@@ -32,36 +36,38 @@ export const PersonTypeUpdatePanel = forwardRef(
         tabs={[
           {
             title: t('details', { ns: 'actions' }),
-            buttons: [
-              {
-                text: t('save', { ns: 'actions' }),
-                variant: 'default',
-                onClick: () => {
-                  formRef.current?.submit()
-                },
-              },
-            ],
             children: (
-              <FormPanel
-                ref={formRef}
-                fields={[
-                  {
-                    name: 'name',
-                    label: { text: t('name', { ns: 'person-types' }) },
-                    type: EnumFieldType.TEXT,
-                    required: false,
-                  },
-                ]}
-                onSubmit={(data: PersonType) => {
-                  editPersonType({
-                    id: String(data.id),
-                    data: { ...data, slug: '' },
-                  })
-                  if (typeof onUpdated === 'function') {
-                    onUpdated(data)
-                  }
-                }}
-              />
+              <Overlay loading={isLoading}>
+                <FormPanel
+                  ref={formRef}
+                  fields={[
+                    {
+                      name: 'slug',
+                      label: { text: t('slug', { ns: 'translation' }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+                    ...(localeEnabled?.data.map(({ code }) => ({
+                      name: `${code}-name`,
+                      label: {
+                        text: t('name', { ns: 'translation' }),
+                        ...(localeEnabled.data.length > 1
+                          ? { small: code }
+                          : {}),
+                      },
+                      type: EnumFieldType.TEXT as FieldType,
+                      required: false,
+                    })) || []),
+                  ]}
+                  button={{ text: t('save', { ns: 'actions' }) }}
+                  onSubmit={(data) => {
+                    personTypeUpdate({ id: data.id, data })
+                    if (typeof onUpdated === 'function') {
+                      onUpdated(data)
+                    }
+                  }}
+                />
+              </Overlay>
             ),
           },
         ]}
