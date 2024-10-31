@@ -119,7 +119,13 @@ const FormPanelForm = forwardRef(
   }
 )
 
-const FormPanel = forwardRef(
+export type FormPanelRefType = {
+  setValuesFromItem: (item: Record<string, any>) => void
+  setValues: (values: Record<string, any>) => void
+  submit: () => void
+}
+
+const FormPanel = forwardRef<FormPanelRefType, IFormPanelProps>(
   ({ title = {}, subtitle = {}, ...props }: IFormPanelProps, ref) => {
     const formRef = useRef<any>(null)
 

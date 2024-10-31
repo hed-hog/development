@@ -1,4 +1,5 @@
 import { useApp } from '@/hooks/use-app'
+import { Delete } from '@/types/delete'
 import { PersonType } from '@/types/models'
 
 export function requests() {
@@ -6,7 +7,7 @@ export function requests() {
 
   const createPersonType = async (data: PersonType) => {
     if (!data.id) delete (data as any).id
-    return request({
+    return request<PersonType>({
       url: '/person-type',
       method: 'post',
       data,
@@ -14,7 +15,7 @@ export function requests() {
   }
 
   const deletePersonType = async <T>(personTypeIds: T[]) => {
-    return request({
+    return request<Delete>({
       url: '/person-type',
       data: { ids: personTypeIds },
       method: 'delete',
@@ -24,7 +25,7 @@ export function requests() {
   const editPersonType = async (params: { id: string; data: PersonType }) => {
     const { id, data } = params
 
-    return request({
+    return request<PersonType>({
       url: `/person-type/${id}`,
       method: 'patch',
       data,

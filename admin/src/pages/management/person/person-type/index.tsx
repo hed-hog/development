@@ -1,71 +1,28 @@
 import DataPanel from '@/components/custom/data-panel'
-import FormPanel from '@/components/custom/form-panel'
-import { TabPanel } from '@/components/custom/tab-panel'
-import { EnumFieldType } from '@/enums/EnumFieldType'
-import {
-  useCreatePersonType,
-  useDeletePersonType,
-  useEditPersonType,
-} from '@/features/person-type'
+import { PageTitle } from '@/components/custom/page-title'
+import { useDeletePersonType } from '@/features/person-type'
 import { useApp } from '@/hooks/use-app'
 import { Person } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { useRef, useState } from 'react'
-import { Helmet } from 'react-helmet'
-import { FieldValues, useForm } from 'react-hook-form'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { PersonTypeCreatePanel } from './components/person-type-create-panel'
+import { PersonTypeUpdatePanel } from './components/person-type-update-panel'
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState<Person[]>([])
-  const formEdit = useRef<any>(null)
 
-  const { mutate: createPersonType } = useCreatePersonType()
-  const { mutate: editPersonType } = useEditPersonType()
   const { mutate: deletePersonTypes } = useDeletePersonType()
-  const { openDialog, closeDialog, openSheet, closeSheet } = useApp()
+  const { openDialog, closeDialog, openSheet, confirm } = useApp()
 
-  const { t: personTypesT } = useTranslation('person-types')
-  const { t: modulesT } = useTranslation('modules')
-  const { t: actionsT } = useTranslation('actions')
-
-  const form = useForm<FieldValues>({
-    defaultValues: {
-      id: '',
-      name: '',
-    },
-    mode: 'onChange',
-  })
+  const { t } = useTranslation(['person-types', 'modules', 'actions'])
 
   const openCreateDialog = () => {
-    form.reset({
-      id: '',
-      name: '',
-    })
-
     const id = openDialog({
-      title: personTypesT('create'),
-      description: personTypesT('createText'),
+      title: t('create', { ns: 'actions' }),
+      description: t('createText', { ns: 'person-types' }),
       children: () => (
-        <FormPanel
-          fields={[
-            {
-              name: 'name',
-              label: { text: personTypesT('name') },
-              type: EnumFieldType.TEXT,
-              required: true,
-            },
-          ]}
-          form={form}
-          button={{ text: actionsT('create') }}
-          onSubmit={(data: Person) => {
-            createPersonType({
-              id: Number(data.id),
-              name: data.name,
-              slug: '',
-            })
-            closeDialog(id)
-          }}
-        />
+        <PersonTypeCreatePanel onCreated={() => closeDialog(id)} />
       ),
     })
 
@@ -73,92 +30,21 @@ export default function Page() {
   }
 
   const openDeleteDialog = (items: Person[]) => {
-    const id = openDialog({
-      children: () => (
-        <div className='flex flex-col'>
-          {items.map((item: Person) => (
-            <div key={item.name} className='mb-5'>
-              <h3 className='text-md font-semibold'>
-                {item.id} - {item.name}
-              </h3>
-            </div>
-          ))}
-        </div>
-      ),
-      title: personTypesT('delete'),
-      description: personTypesT('deleteText'),
-      buttons: [
-        {
-          text: actionsT('cancel'),
-          variant: 'secondary',
-          onClick: () => {
-            setSelectedItems(items)
-            closeDialog(id)
-          },
-        },
-        {
-          text: actionsT('delete'),
-          variant: 'destructive',
-          onClick: () => {
-            deletePersonTypes(items.map((item) => item.id))
-            closeDialog(id)
-          },
-        },
-      ],
+    return confirm({
+      title: t('delete', { ns: 'person-types' }),
+      description: t('deleteText', { ns: 'person-types' }),
     })
-
-    return id
+      .then(() => deletePersonTypes(items.map((item) => item.id)))
+      .catch(() => setSelectedItems(items))
   }
 
   const openEditDialog = (item: Person) => {
-    form.reset({
-      id: item.id || '',
-      name: item.name || '',
-    })
-
     const id = openSheet({
       children: () => (
-        <TabPanel
-          activeTabIndex={0}
-          tabs={[
-            {
-              title: actionsT('details'),
-              buttons: [
-                {
-                  text: actionsT('save'),
-                  variant: 'default',
-                  onClick: () => {
-                    formEdit.current?.submit()
-                  },
-                },
-              ],
-              children: (
-                <FormPanel
-                  ref={formEdit}
-                  fields={[
-                    {
-                      name: 'name',
-                      label: { text: personTypesT('name') },
-                      type: EnumFieldType.TEXT,
-                      required: false,
-                    },
-                  ]}
-                  form={form}
-                  onSubmit={(data: Person) => {
-                    editPersonType({
-                      id: String(data.id),
-                      data: { ...data, slug: '' },
-                    })
-                    closeSheet(id)
-                  }}
-                />
-              ),
-            },
-          ]}
-        />
+        <PersonTypeUpdatePanel onUpdated={() => closeDialog(id)} />
       ),
-      title: personTypesT('edit'),
-      description: personTypesT('editText'),
+      title: t('edit', { ns: 'person-types' }),
+      description: t('editText', { ns: 'person-types' }),
     })
 
     return id
@@ -166,25 +52,15 @@ export default function Page() {
 
   return (
     <>
-      <Helmet>
-        <title>{modulesT('personTypes')} - Hedhog</title>
-      </Helmet>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('personTypes')}
-          </h1>
-        </div>
-      </div>
-
+      <PageTitle title={t('personTypes', { ns: 'modules' })} />
       <DataPanel
         url='/person-type'
         layout='table'
         id='person-type'
         selectable
         columns={[
-          { key: 'id', header: 'ID' },
-          { key: 'name', header: personTypesT('name') },
+          { key: 'id', header: 'ID', width: 64 },
+          { key: 'name', header: t('name', { ns: 'person-types' }) },
         ]}
         selected={selectedItems as Person[]}
         multiple
@@ -194,8 +70,8 @@ export default function Page() {
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
-            label: actionsT('edit'),
-            tooltip: personTypesT('editTooltip'),
+            label: t('edit', { ns: 'actions' }),
+            tooltip: t('editTooltip', { ns: 'person-types' }),
             handler: (items: Person[]) => {
               if (items.length === 1) openEditDialog(items[0])
             },
@@ -203,16 +79,16 @@ export default function Page() {
           },
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
-            label: actionsT('delete'),
-            tooltip: personTypesT('deleteTooltip'),
+            label: t('delete', { ns: 'actions' }),
+            tooltip: t('deleteTooltip', { ns: 'person-types' }),
             variant: 'destructive',
             handler: openDeleteDialog,
             show: 'some',
           },
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
-            label: actionsT('create'),
-            tooltip: personTypesT('createTooltip'),
+            label: t('create', { ns: 'actions' }),
+            tooltip: t('createTooltip', { ns: 'person-types' }),
             variant: 'default',
             handler: openCreateDialog,
             show: 'none',

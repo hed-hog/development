@@ -1,4 +1,4 @@
-import { Button } from '@/components/custom/button'
+import { Button, ButtonProps } from '@/components/custom/button'
 import {
   Dialog,
   DialogContent,
@@ -29,6 +29,7 @@ import { useSheet } from '@/hooks/use-sheet'
 import { DialogType, OpenDialogType } from '@/types/dialog'
 import { OpenSheetType, SheetType } from '@/types/sheet'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { t } from 'i18next'
 import React, {
   createContext,
   Fragment,
@@ -45,6 +46,13 @@ import { getBaseURL } from './getBaseURL'
 import { QueryClientProvider } from './query-provider'
 
 export const BASE_URL = getBaseURL()
+
+export type AppConfirmDialogType = {
+  title?: string
+  description?: string
+  cancelButton?: ButtonProps & { text: string }
+  okButton?: ButtonProps & { text: string }
+}
 
 type AppContextType = {
   logout: () => void
@@ -63,6 +71,7 @@ type AppContextType = {
     action: string,
     error?: any
   ) => void
+  confirm: (props: AppConfirmDialogType) => Promise<void>
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -75,6 +84,7 @@ export const AppContext = createContext<AppContextType>({
   openSheet: () => '',
   closeSheet: () => {},
   showToastHandler: () => {},
+  confirm: () => new Promise(() => {}),
 })
 
 type RequestLoginType = {
@@ -101,6 +111,36 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   const { openDialog, closeDialog } = useDialog(dialogs, setDialogs)
   const { openSheet, closeSheet } = useSheet(sheets, setSheets)
+
+  const confirm = useCallback(
+    ({ title, description, okButton, cancelButton }: AppConfirmDialogType) => {
+      return new Promise<void>((resolve, reject) => {
+        const id = openDialog({
+          title,
+          description,
+          buttons: [
+            cancelButton ?? {
+              text: t('cancel', { ns: 'actions' }),
+              variant: 'secondary',
+              onClick: () => {
+                closeDialog(id)
+                reject()
+              },
+            },
+            okButton ?? {
+              text: t('ok', { ns: 'actions' }),
+              variant: 'default',
+              onClick: () => {
+                closeDialog(id)
+                resolve()
+              },
+            },
+          ],
+        })
+      })
+    },
+    []
+  )
 
   const handleError = (error: any) => {
     switch (error.code) {
@@ -235,6 +275,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           openSheet,
           closeSheet,
           showToastHandler,
+          confirm,
         }}
       >
         <QueryClientProvider>
@@ -266,12 +307,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                             )}
                           </DialogHeader>
                         )}
-                        <div className='mt-8 flex flex-1 overflow-y-auto'>
-                          {React.createElement(children, {
-                            ...props,
-                            block: children,
-                          })}
-                        </div>
+                        {children && (
+                          <div className='mt-8 flex flex-1 overflow-y-auto'>
+                            {React.createElement(children, {
+                              ...props,
+                              block: children,
+                            })}
+                          </div>
+                        )}
                         <DialogFooter className='gap-1 sm:justify-end'>
                           {(buttons ?? []).map(({ text, ...props }) => (
                             <Button {...props}>{text}</Button>
@@ -295,12 +338,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                             )}
                           </DrawerHeader>
                         )}
-                        <div className='px-4'>
-                          {React.createElement(children, {
-                            ...props,
-                            block: children,
-                          })}
-                        </div>
+                        {children && (
+                          <div className='px-4'>
+                            {React.createElement(children, {
+                              ...props,
+                              block: children,
+                            })}
+                          </div>
+                        )}
                         <DrawerFooter className='gap-1 sm:justify-end'>
                           {(buttons ?? []).map(({ text, ...props }) => (
                             <Button {...props}>{text}</Button>
@@ -337,12 +382,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                         )}
                       </SheetHeader>
                     )}
-                    <div className='mt-8 flex flex-1 overflow-y-auto'>
-                      {React.createElement(children, {
-                        ...props,
-                        block: children,
-                      })}
-                    </div>
+                    {children && (
+                      <div className='mt-8 flex flex-1 overflow-y-auto'>
+                        {React.createElement(children, {
+                          ...props,
+                          block: children,
+                        })}
+                      </div>
+                    )}
                     <SheetFooter>
                       {(buttons ?? []).map(({ text, ...props }) => (
                         <Button {...props}>{text}</Button>
