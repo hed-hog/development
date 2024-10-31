@@ -1,6 +1,5 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { pluralToSingular } from '@hedhog/utils';
 import {
   BadRequestException,
   Inject,
@@ -268,10 +267,7 @@ export class LocaleService {
 
   private getTableNameTranslations(modelName: string) {
     const modelNames = modelName.split('_');
-    modelNames[modelNames.length - 1] = pluralToSingular(
-      modelNames[modelNames.length - 1],
-    );
-    modelNames.push('translations');
+    modelNames.push('locale');
     return modelNames.join('_');
   }
 
