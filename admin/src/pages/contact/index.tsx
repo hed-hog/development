@@ -15,15 +15,12 @@ import {
   useEditAddress,
 } from '@/features/address'
 import { useAddressType } from '@/features/address-type'
-
 import {
   useCreateContact,
   useDeleteContact,
   useEditContact,
 } from '@/features/contact'
 import { useContactType } from '@/features/contact-type'
-import { useDocumentType } from '@/features/document-type'
-import { usePerson } from '@/features/person'
 import { useCountry } from '@/features/country'
 import {
   useCreateCustom,
@@ -36,6 +33,7 @@ import {
   useDeleteDocument,
   useEditDocument,
 } from '@/features/document'
+import { useDocumentType } from '@/features/document-type'
 import {
   useCreatePerson,
   useDeletePerson,

@@ -1,5 +1,5 @@
 import { useApp } from '@/hooks/use-app'
-import { PersonType } from '@/type/person-type'
+import { PersonType } from '@/types/models'
 
 export function requests() {
   const { request } = useApp()

@@ -1,4 +1,4 @@
-import { useLocalesAll } from '@/features/locale/api/handlers'
+import { useLocaleAll } from '@/features/locale/api/handlers'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { useEffect, useState } from 'react'
 import { Label } from '../ui/label'
@@ -12,7 +12,7 @@ export type SettingLocaleEnabledProps = {
 export const SettingLocaleEnabled = ({
   onChange,
 }: SettingLocaleEnabledProps) => {
-  const { data } = useLocalesAll()
+  const { data } = useLocaleAll()
   const [value, setValue] = useState<string[]>(
     data?.data.data
       .filter((locale) => locale.enabled)

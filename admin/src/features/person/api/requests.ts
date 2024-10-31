@@ -1,10 +1,23 @@
 import { useApp } from '@/hooks/use-app'
-import { PersonType } from '@/types/person'
+import { Person } from '@/types/models'
 
 export function requests() {
   const { request } = useApp()
 
-  const createPerson = async (data: PersonType) => {
+  const listPerson = async () => {
+    return request({
+      url: '/person',
+    }).then((res) => res.data)
+  }
+
+  const getPerson = async (params: { id: string }) => {
+    const { id } = params
+    return request({
+      url: `/person/${id}`,
+    }).then((res) => res.data)
+  }
+
+  const createPerson = async (data: Person) => {
     if (!data.id) delete (data as any).id
     return request({
       url: '/person',
@@ -21,7 +34,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editPerson = async (params: { id: string; data: PersonType }) => {
+  const editPerson = async (params: { id: string; data: Person }) => {
     const { id, data } = params
 
     return request({
@@ -32,6 +45,8 @@ export function requests() {
   }
 
   return {
+    listPerson,
+    getPerson,
     createPerson,
     deletePerson,
     editPerson,

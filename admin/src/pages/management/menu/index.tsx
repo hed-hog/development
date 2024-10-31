@@ -6,8 +6,8 @@ import {
   useCreateMenu,
   useDeleteMenu,
   useEditMenu,
-  useEditMenuRoles,
-  useEditMenuScreens,
+  useEditMenuRole,
+  useEditMenuScreen,
 } from '@/features/menu/api'
 import { useApp } from '@/hooks/use-app'
 import { getIcon } from '@/lib/get-icon'
@@ -45,8 +45,8 @@ export default function Page() {
   const { mutate: deleteMenu } = useDeleteMenu()
   const { mutate: createMenu } = useCreateMenu()
   const { mutate: editMenu } = useEditMenu()
-  const { mutate: editMenuRoles } = useEditMenuRoles()
-  const { mutate: editMenuScreens } = useEditMenuScreens()
+  const { mutate: editMenuRoles } = useEditMenuRole()
+  const { mutate: editMenuScreens } = useEditMenuScreen()
 
   const openCreateDialog = () => {
     form.reset({
