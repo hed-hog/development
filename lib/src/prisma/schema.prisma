@@ -7,577 +7,383 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model countries {
-  id                    Int                     @id(map: "PK_b2d7006793e8697ab3ae2deff18") @default(autoincrement())
-  code                  String                  @db.Char(3)
-  created_at            DateTime                @default(now()) @db.Timestamp(6)
-  updated_at            DateTime                @default(now()) @db.Timestamp(6)
-  country_translations  country_translations[]
-  person_addresses      person_addresses[]
-  person_document_types person_document_types[]
-  person_documents      person_documents[]
+model country {
+  id             Int              @id(map: "PK_bf6e37c231c4f4ea56dcd887269") @default(autoincrement())
+  code           String           @db.Char(3)
+  created_at     DateTime         @default(now()) @db.Timestamp(6)
+  updated_at     DateTime         @default(now()) @db.Timestamp(6)
+  country_locale country_locale[]
 }
 
-model country_translations {
+model country_locale {
   country_id Int
   locale_id  Int
-  name       String    @db.VarChar
-  created_at DateTime  @default(now()) @db.Timestamp(6)
-  updated_at DateTime  @default(now()) @db.Timestamp(6)
-  locales    locales   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_48928f4449dc57e558b37a3bcbb")
-  countries  countries @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_bbb58c160eaec1a054cb2358473")
+  name       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  locale     locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_a9c5e221cc5ea25684c6e486b86")
+  country    country  @relation(fields: [country_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f6078a6569013351b3a316f8f98")
 
-  @@id([country_id, locale_id], map: "PK_ccf4f73f72dff8be908d2a0f971")
+  @@id([country_id, locale_id], map: "PK_df7141e9042d27d998b49a9b325")
 }
 
-model locales {
-  id                                Int                                 @id(map: "PK_f7a42a6bd1ee3e584a11eb5b37d") @default(autoincrement())
-  code                              String                              @db.Char(2)
-  region                            String                              @db.Char(2)
-  enabled                           Boolean                             @default(true)
-  created_at                        DateTime                            @default(now()) @db.Timestamp(6)
-  updated_at                        DateTime                            @default(now()) @db.Timestamp(6)
-  country_translations              country_translations[]
-  file_provider_translations        file_provider_translations[]
-  menu_translations                 menu_translations[]
-  multifactor_translations          multifactor_translations[]
-  person_address_type_translations  person_address_type_translations[]
-  person_contact_type_translations  person_contact_type_translations[]
-  person_custom_translations        person_custom_translations[]
-  person_custom_type_translations   person_custom_type_translations[]
-  person_document_type_translations person_document_type_translations[]
-  person_type_translations          person_type_translations[]
-  role_translations                 role_translations[]
-  screen_translations               screen_translations[]
-  setting_group_translations        setting_group_translations[]
-  setting_translations              setting_translations[]
-  translations                      translations[]
+model file {
+  id            Int           @id(map: "PK_36b46d232307066b3a2c9ea3a1d") @default(autoincrement())
+  filename      String        @db.VarChar
+  path          String        @db.VarChar
+  provider_id   Int
+  location      String        @db.VarChar
+  mimetype_id   Int
+  size          Int           @default(0)
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  file_mimetype file_mimetype @relation(fields: [mimetype_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_893f78c26bcde79a87cc0fe45a5")
+  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_afb71f4bd9709183d4f8d4c8ad2")
 }
 
-model menu_screens {
-  menu_id   Int
-  screen_id Int
-  screens   screens @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5fce02e2ce60ad6508a0de01464")
-  menus     menus   @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9b57bb2e47bf2b0dbf693ef456c")
-
-  @@id([menu_id, screen_id], map: "PK_18f770e8566e02e344d1f494dbb")
+model file_mimetype {
+  id         Int      @id(map: "PK_893f78c26bcde79a87cc0fe45a5") @default(autoincrement())
+  name       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  file       file[]
 }
 
-model menu_translations {
+model file_provider {
+  id                   Int                    @id(map: "PK_afb71f4bd9709183d4f8d4c8ad2") @default(autoincrement())
+  slug                 String                 @db.VarChar
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  file                 file[]
+  file_provider_locale file_provider_locale[]
+}
+
+model file_provider_locale {
+  provider_id   Int
+  locale_id     Int
+  name          String        @db.VarChar
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3ebdcb105301319377557c272bc")
+  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4fba1720defa9d0f6a9112ddc89")
+
+  @@id([provider_id, locale_id], map: "PK_c108e943a38100608cfae509b3a")
+}
+
+model locale {
+  id                   Int                    @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
+  code                 String                 @db.Char(2)
+  region               String                 @db.Char(2)
+  enabled              Boolean                @default(true)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  country_locale       country_locale[]
+  file_provider_locale file_provider_locale[]
+  menu_locale          menu_locale[]
+  multifactor_locale   multifactor_locale[]
+  person_type_locale   person_type_locale[]
+  role_locale          role_locale[]
+  screen_locale        screen_locale[]
+  setting_group_locale setting_group_locale[]
+  setting_locale       setting_locale[]
+  translation          translation[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model menu {
+  id          Int           @id(map: "PK_35b2a8f47d153ff7a41860cceeb") @default(autoincrement())
+  menu_id     Int?
+  slug        String        @db.VarChar(255)
+  url         String?       @db.VarChar
+  order       Int           @default(0)
+  icon        String?       @db.VarChar
+  created_at  DateTime      @default(now()) @db.Timestamp(6)
+  updated_at  DateTime      @default(now()) @db.Timestamp(6)
+  menu        menu?         @relation("menuTomenu", fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_237a0fe43278378e9c5729d17af")
+  other_menu  menu[]        @relation("menuTomenu")
+  menu_locale menu_locale[]
+  menu_screen menu_screen[]
+  role_menu   role_menu[]
+}
+
+model menu_locale {
   menu_id    Int
   locale_id  Int
   name       String   @db.VarChar
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-  menus      menus    @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_22d219b4f9b1aaf0131736e3d0d")
-  locales    locales  @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c6b09ca9e1eb832fd9b04a18ced")
+  locale     locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1647d7410791844eb6cc82c424c")
+  menu       menu     @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d375a8d5f738a3b2c4fb13c0609")
 
-  @@id([menu_id, locale_id], map: "PK_16bc870180c681c47bb87cb8229")
+  @@id([menu_id, locale_id], map: "PK_c79932cd650be458f1540d97b08")
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model menus {
-  id                Int                 @id(map: "PK_3fec3d93327f4538e0cbd4349c4") @default(autoincrement())
-  menu_id           Int?
-  slug              String              @db.VarChar(255)
-  url               String?             @db.VarChar
-  order             Int                 @default(0)
-  icon              String?             @db.VarChar
-  created_at        DateTime            @default(now()) @db.Timestamp(6)
-  updated_at        DateTime            @default(now()) @db.Timestamp(6)
-  menu_screens      menu_screens[]
-  menu_translations menu_translations[]
-  menus             menus?              @relation("menusTomenus", fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8fd2708e7b132186c634f02ed11")
-  other_menus       menus[]             @relation("menusTomenus")
-  role_menus        role_menus[]
+model menu_screen {
+  menu_id   Int
+  screen_id Int
+  screen    screen @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_429d198bd0ea0d8ecee8426dea0")
+  menu      menu   @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_de2545ba7d953ec8315ee340485")
+
+  @@id([menu_id, screen_id], map: "PK_cefac3ef25311287e1b40c1059d")
 }
 
-model multifactor_translations {
+model multifactor {
+  id                 Int                  @id(map: "PK_dd28340c66eb211fbd352507167") @default(autoincrement())
+  slug               String               @db.VarChar(255)
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
+  multifactor_locale multifactor_locale[]
+  user               user[]
+}
+
+model multifactor_locale {
   multifactor_id Int
   locale_id      Int
-  name           String       @db.VarChar
-  created_at     DateTime     @default(now()) @db.Timestamp(6)
-  updated_at     DateTime     @default(now()) @db.Timestamp(6)
-  locales        locales      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_35302e1b5b57d8ed1589f7587c1")
-  multifactors   multifactors @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_731df6bc1ba60843c73771a1bd9")
+  name           String      @db.VarChar
+  created_at     DateTime    @default(now()) @db.Timestamp(6)
+  updated_at     DateTime    @default(now()) @db.Timestamp(6)
+  multifactor    multifactor @relation(fields: [multifactor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c2a20be9c49258c1d7ea96c818e")
+  locale         locale      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d5f92b6d1e95a38b5af8470f2fe")
 
-  @@id([multifactor_id, locale_id], map: "PK_307e89d7a201bff1feacf9e33e6")
+  @@id([multifactor_id, locale_id], map: "PK_1cc26c48643e0908951b8528fd9")
 }
 
-model multifactors {
-  id                       Int                        @id(map: "PK_8e88fc38e04a53be42acb939e9c") @default(autoincrement())
-  slug                     String                     @db.VarChar(255)
-  created_at               DateTime                   @default(now()) @db.Timestamp(6)
-  updated_at               DateTime                   @default(now()) @db.Timestamp(6)
-  multifactor_translations multifactor_translations[]
-  users                    users[]
+model person_type {
+  id                 Int                  @id(map: "PK_f900a8c313411c7da8fcbba7975") @default(autoincrement())
+  slug               String               @db.VarChar(255)
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
+  person_type_locale person_type_locale[]
 }
 
-model role_menus {
-  role_id    Int
-  menu_id    Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  menus      menus    @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4c7c7bd4eb8a33aece58434cbf5")
-  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cec0c62317111ac45c9c295d226")
+model person_type_locale {
+  type_id     Int
+  locale_id   Int
+  name        String      @unique(map: "UQ_5d4c8dea076f83721ef1a631315") @db.VarChar(31)
+  created_at  DateTime    @default(now()) @db.Timestamp(6)
+  updated_at  DateTime    @default(now()) @db.Timestamp(6)
+  person_type person_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2eb1f7db6f53ac7dca9cbff7b76")
+  locale      locale      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3cac1af04c04a72706ca0e73242")
 
-  @@id([role_id, menu_id], map: "PK_0c02205fabd207a919cb7833813")
+  @@id([type_id, locale_id], map: "PK_817fb03a35a6d045af0ef30603c")
 }
 
-model role_routes {
-  role_id    Int
-  route_id   Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d78a3d2d9528c374bee33a6e91d")
-  routes     routes   @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e47347fae100e5df53627866606")
-
-  @@id([role_id, route_id], map: "PK_d2641c113ec79d2a55d11ce182b")
+model role {
+  id          Int           @id(map: "PK_b36bcfe02fc8de3c57a8b2391c2") @default(autoincrement())
+  slug        String        @db.VarChar(255)
+  created_at  DateTime      @default(now()) @db.Timestamp(6)
+  updated_at  DateTime      @default(now()) @db.Timestamp(6)
+  role_locale role_locale[]
+  role_menu   role_menu[]
+  role_route  role_route[]
+  role_screen role_screen[]
+  role_user   role_user[]
 }
 
-model role_screens {
-  role_id    Int
-  screen_id  Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_72462a86a18d40848bf303fec3b")
-  screens    screens  @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8fe4933a0cf0badef82163977a3")
-
-  @@id([role_id, screen_id], map: "PK_82cdd66bd3fd409bf87b1716c42")
-}
-
-model role_translations {
+model role_locale {
   role_id     Int
   locale_id   Int
   name        String   @db.VarChar
   description String   @db.VarChar
   created_at  DateTime @default(now()) @db.Timestamp(6)
   updated_at  DateTime @default(now()) @db.Timestamp(6)
-  roles       roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_35c7a5c1552d24e8a9503a61244")
-  locales     locales  @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_98294f131403e4e8eb111966213")
+  role        role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2294c27f7b13ae4bd3edd845bfa")
+  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2f1f8ebc571f696da89d584c250")
 
-  @@id([role_id, locale_id], map: "PK_55903c5cd46a591e47198bcb98a")
+  @@id([role_id, locale_id], map: "PK_c259035e32b4022042cd99aa948")
 }
 
-model role_users {
+model role_menu {
+  role_id    Int
+  menu_id    Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_25f45e543fbda0c91da4af7a2a9")
+  menu       menu     @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_96d26921e6aa2172256a55a6bc7")
+
+  @@id([role_id, menu_id], map: "PK_ec8ce21a3846c0f4f3b59c3d310")
+}
+
+model role_route {
+  role_id    Int
+  route_id   Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cfb587091271544695118e9c05d")
+  route      route    @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_fb62a702db3d0b7f5588c4db7b2")
+
+  @@id([role_id, route_id], map: "PK_925753da26ee2b077ab7428ed06")
+}
+
+model role_screen {
+  role_id    Int
+  screen_id  Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_299ad30564c8266309fbebd05ab")
+  screen     screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7313f91bf6d625f7e989d7cfc5a")
+
+  @@id([role_id, screen_id], map: "PK_e12b4dd3c676dfc208c4d50366f")
+}
+
+model role_user {
   role_id    Int
   user_id    Int
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1dc3ce23874f906d8306186671a")
-  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_790a8ca58c37fd1f31944ae65e2")
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5261e26da61ccaf8aeda8bca8ea")
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_78ee37f2db349d230d502b1c7ea")
 
-  @@id([role_id, user_id], map: "PK_e976807ebe4fc773c2365d91566")
+  @@id([role_id, user_id], map: "PK_0d02ac0493a7a8193048bbc7da5")
 }
 
-model roles {
-  id                Int                 @id(map: "PK_c1433d71a4838793a49dcad46ab") @default(autoincrement())
-  slug              String              @db.VarChar(255)
-  created_at        DateTime            @default(now()) @db.Timestamp(6)
-  updated_at        DateTime            @default(now()) @db.Timestamp(6)
-  role_menus        role_menus[]
-  role_routes       role_routes[]
-  role_screens      role_screens[]
-  role_translations role_translations[]
-  role_users        role_users[]
+model route {
+  id           Int               @id(map: "PK_08affcd076e46415e5821acf52d") @default(autoincrement())
+  url          String            @db.VarChar
+  method       route_method_enum
+  created_at   DateTime          @default(now()) @db.Timestamp(6)
+  updated_at   DateTime          @default(now()) @db.Timestamp(6)
+  role_route   role_route[]
+  route_screen route_screen[]
+
+  @@unique([url, method], map: "IDX_19974683ac52f73bd0d53aa39a")
 }
 
-model route_screens {
+model route_screen {
   route_id   Int
   screen_id  Int
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-  routes     routes   @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_814b2bc75be789b2aaf4e6b466b")
-  screens    screens  @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d5bcb3cba97f6837341c77a16d9")
+  route      route    @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_6a7e17a4ddcf97e70ec825faff9")
+  screen     screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e0c208670cd186fa86fd3190126")
 
-  @@id([route_id, screen_id], map: "PK_3172af099b6b65644be3bc72acc")
+  @@id([route_id, screen_id], map: "PK_76272b0e5954880b0cece9a0a05")
 }
 
-model routes {
-  id            Int                @id(map: "PK_76100511cdfa1d013c859f01d8b") @default(autoincrement())
-  url           String             @db.VarChar
-  method        routes_method_enum
-  created_at    DateTime           @default(now()) @db.Timestamp(6)
-  updated_at    DateTime           @default(now()) @db.Timestamp(6)
-  role_routes   role_routes[]
-  route_screens route_screens[]
-
-  @@unique([url, method], map: "IDX_7712e3ad3bd39c8d5e701a98f9")
+model screen {
+  id            Int             @id(map: "PK_7d30806a7556636b84d24e75f4d") @default(autoincrement())
+  slug          String          @db.VarChar(255)
+  icon          String?         @db.VarChar
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @db.Timestamp(6)
+  menu_screen   menu_screen[]
+  role_screen   role_screen[]
+  route_screen  route_screen[]
+  screen_locale screen_locale[]
 }
 
-model screen_translations {
+model screen_locale {
   screen_id   Int
   locale_id   Int
   name        String   @db.VarChar
   description String   @db.VarChar
   created_at  DateTime @default(now()) @db.Timestamp(6)
   updated_at  DateTime @default(now()) @db.Timestamp(6)
-  locales     locales  @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9cbee2bf99d4279ff58a34dc3e7")
-  screens     screens  @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c0568d6f198d9283a13acec5423")
+  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cb1dfd415b7d620999be342cb70")
+  screen      screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cb802193d021bef9c3156143a73")
 
-  @@id([screen_id, locale_id], map: "PK_69d08f4651cf1fda11f4b7cd2b0")
+  @@id([screen_id, locale_id], map: "PK_1cd85e4f1dd3e6616bd6a960db2")
 }
 
-model screens {
-  id                  Int                   @id(map: "PK_15b65ed44367c5411efccdd7de1") @default(autoincrement())
-  slug                String                @db.VarChar(255)
-  icon                String?               @db.VarChar
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  menu_screens        menu_screens[]
-  role_screens        role_screens[]
-  route_screens       route_screens[]
-  screen_translations screen_translations[]
-}
-
-model setting_group_translations {
-  locale_id      Int
+model setting {
+  id             Int               @id(map: "PK_fcb21187dc6094e24a48f677bed") @default(autoincrement())
   group_id       Int
-  name           String         @db.VarChar(63)
-  description    String?        @db.VarChar(255)
-  created_at     DateTime       @default(now()) @db.Timestamp(6)
-  updated_at     DateTime       @default(now()) @db.Timestamp(6)
-  setting_groups setting_groups @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_38b99c2da9e04cc5df699dd5005")
-  locales        locales        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d9e5def8e7b5aea9e0902246ac2")
-
-  @@id([locale_id, group_id], map: "PK_ca91c40f872f1abca475a9d928c")
+  slug           String            @db.VarChar(255)
+  type           setting_type_enum @default(string)
+  value          String?           @db.VarChar(1023)
+  user_override  Boolean           @default(false)
+  created_at     DateTime          @default(now()) @db.Timestamp(6)
+  updated_at     DateTime          @default(now()) @db.Timestamp(6)
+  setting_group  setting_group     @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_07f390cb981a5f4bb7a4a354d06")
+  setting_locale setting_locale[]
+  setting_user   setting_user[]
 }
 
-model setting_groups {
-  id                         Int                          @id(map: "PK_d743b68d4f14b4f9088d17c3f95") @default(autoincrement())
-  icon                       String                       @db.VarChar(31)
-  slug                       String                       @db.VarChar(255)
-  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  setting_group_translations setting_group_translations[]
-  settings                   settings[]
+model setting_group {
+  id                   Int                    @id(map: "PK_07f390cb981a5f4bb7a4a354d06") @default(autoincrement())
+  icon                 String                 @db.VarChar(31)
+  slug                 String                 @db.VarChar(255)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  setting              setting[]
+  setting_group_locale setting_group_locale[]
 }
 
-model setting_translations {
+model setting_group_locale {
+  locale_id     Int
+  group_id      Int
+  name          String        @db.VarChar(63)
+  description   String?       @db.VarChar(255)
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5a216b58563d23ffe4fc47c2f81")
+  setting_group setting_group @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9e47153fd708717c436d3016908")
+
+  @@id([locale_id, group_id], map: "PK_ba363f06d3eeec8e42345d205d1")
+}
+
+model setting_locale {
   locale_id   Int
   setting_id  Int
   description String?  @db.VarChar(255)
   name        String?  @db.VarChar(63)
   created_at  DateTime @default(now()) @db.Timestamp(6)
   updated_at  DateTime @default(now()) @db.Timestamp(6)
-  locales     locales  @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1981fbb8d2d872a8d6613b11345")
-  settings    settings @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_bd2e921fb8cf8b3c862bca74ad1")
+  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1cfadfbb033b62b01e9241342ea")
+  setting     setting  @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f78068a8a9924c19c7d33e8bfb8")
 
-  @@id([locale_id, setting_id], map: "PK_737d9d307d6ea39b81760328457")
+  @@id([locale_id, setting_id], map: "PK_388a9fe9b33b00aff31d26f0912")
 }
 
-model setting_users {
+model setting_user {
   user_id    Int
   setting_id Int
   value      String?  @db.VarChar(1023)
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-  settings   settings @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_88a4db80bd383b324edd63e5ffe")
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c39aa938af424c78a0abcdf8a1e")
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_787278995b974bcb29ac98635e1")
+  setting    setting  @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9d2cd571c1eea2008632c07e95f")
 
-  @@id([user_id, setting_id], map: "PK_8b154c73d988229f1d5fafd3054")
+  @@id([user_id, setting_id], map: "PK_9b9f9a08cecc632f2da8f12f4da")
 }
 
-model settings {
-  id                   Int                    @id(map: "PK_0669fe20e252eb692bf4d344975") @default(autoincrement())
-  group_id             Int
-  slug                 String                 @db.VarChar(255)
-  type                 settings_type_enum     @default(string)
-  value                String?                @db.VarChar(1023)
-  user_override        Boolean                @default(false)
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  setting_translations setting_translations[]
-  setting_users        setting_users[]
-  setting_groups       setting_groups         @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_35eb8ab2edefee1ddeaf85f4603")
-}
-
-model translation_namespaces {
-  id           Int            @id(map: "PK_c7b8542f5500a5f0f15080f3fb4") @default(autoincrement())
-  name         String         @db.VarChar
-  created_at   DateTime       @default(now()) @db.Timestamp(6)
-  updated_at   DateTime       @default(now()) @db.Timestamp(6)
-  translations translations[]
-}
-
-model translations {
-  id                     Int                    @id(map: "PK_aca248c72ae1fb2390f1bf4cd87") @default(autoincrement())
-  locale_id              Int
-  namespace_id           Int
-  name                   String                 @db.VarChar
-  value                  String                 @db.VarChar
-  created_at             DateTime               @default(now()) @db.Timestamp(6)
-  updated_at             DateTime               @default(now()) @db.Timestamp(6)
-  translation_namespaces translation_namespaces @relation(fields: [namespace_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f531ade6f56a5fa6fe4285aba10")
-  locales                locales                @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_faa4b0066c5625e1abafbfae61f")
-
-  @@unique([locale_id, namespace_id, name], map: "IDX_065d58e595dace2c02111970a8")
-}
-
-model users {
-  id             Int             @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(autoincrement())
-  multifactor_id Int?
-  name           String          @db.VarChar
-  email          String          @db.VarChar
-  password       String          @db.VarChar
-  code           String?         @db.VarChar
-  created_at     DateTime        @default(now()) @db.Timestamp(6)
-  updated_at     DateTime        @default(now()) @db.Timestamp(6)
-  role_users     role_users[]
-  setting_users  setting_users[]
-  multifactors   multifactors?   @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_a8475ba568388432f4c6379234e")
-}
-
-model file_mimetypes {
-  id         Int      @id(map: "PK_a4c71224b13664790ed7df83a74") @default(autoincrement())
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  files      files[]
-}
-
-model file_provider_translations {
-  provider_id    Int
-  locale_id      Int
-  name           String         @db.VarChar
-  created_at     DateTime       @default(now()) @db.Timestamp(6)
-  updated_at     DateTime       @default(now()) @db.Timestamp(6)
-  locales        locales        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_058b64b386473bd82e025de4069")
-  file_providers file_providers @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_84fab7d58fb6d062ec19ae603a5")
-
-  @@id([provider_id, locale_id], map: "PK_448856d9627fe00c43d7d8bc9d5")
-}
-
-model file_providers {
-  id                         Int                          @id(map: "PK_f0ff5aa15e284774cbe4c68f439") @default(autoincrement())
-  slug                       String                       @db.VarChar
-  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  file_provider_translations file_provider_translations[]
-  files                      files[]
-}
-
-model files {
-  id                              Int            @id(map: "PK_6c16b9093a142e0e7613b04a3d9") @default(autoincrement())
-  filename                        String         @db.VarChar
-  path                            String         @db.VarChar
-  provider_id                     Int
-  location                        String         @db.VarChar
-  mimetype_id                     Int
-  size                            Int            @default(0)
-  created_at                      DateTime       @default(now()) @db.Timestamp(6)
-  updated_at                      DateTime       @default(now()) @db.Timestamp(6)
-  file_providers                  file_providers @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_72c4fa102fb56ad2071b17a9b22")
-  file_mimetypes                  file_mimetypes @relation(fields: [mimetype_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c1246a57812024596c006cfee60")
-  persons_persons_photo_idTofiles persons[]      @relation("persons_photo_idTofiles")
-  persons_persons_cover_idTofiles persons[]      @relation("persons_cover_idTofiles")
-}
-
-model person_address_type_translations {
-  type_id              Int
-  locale_id            Int
-  name                 String               @db.VarChar(31)
-  created_at           DateTime             @default(now()) @db.Timestamp(6)
-  updated_at           DateTime             @default(now()) @db.Timestamp(6)
-  locales              locales              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8419d881502082b87280577c72c")
-  person_address_types person_address_types @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f0313079a61a71d2911189745e2")
-
-  @@id([type_id, locale_id], map: "PK_2a7a7131a8662c6338a18311622")
-}
-
-model person_address_types {
-  id                               Int                                @id(map: "PK_f9a5d62dda62d29b60ed7ceec29") @default(autoincrement())
-  slug                             String                             @db.VarChar(255)
-  created_at                       DateTime                           @default(now()) @db.Timestamp(6)
-  updated_at                       DateTime                           @default(now()) @db.Timestamp(6)
-  person_address_type_translations person_address_type_translations[]
-  person_addresses                 person_addresses[]
-}
-
-model person_addresses {
-  id                   Int                  @id(map: "PK_5589c5d05b3cefd4520bc618fff") @default(autoincrement())
-  person_id            Int
-  country_id           Int
-  type_id              Int
-  primary              Boolean              @default(false)
-  street               String               @db.VarChar(255)
-  number               String?              @db.VarChar(15)
-  complement           String?              @db.VarChar(255)
-  district             String               @db.VarChar(255)
-  city                 String               @db.VarChar(255)
-  state                String               @db.VarChar(255)
-  postal_code          String               @db.VarChar(20)
-  reference            String?              @db.VarChar(60)
-  created_at           DateTime             @default(now()) @db.Timestamp(6)
-  updated_at           DateTime             @default(now()) @db.Timestamp(6)
-  person_address_types person_address_types @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1692ccce79d0ad29ad06fc59e02")
-  persons              persons              @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c96dbc8d8afeb80efa16023ae48")
-  countries            countries            @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_ce16f1214d402c21bdd9d19134e")
-}
-
-model person_contact_type_translations {
-  type_id              Int
-  locale_id            Int
-  name                 String               @db.VarChar(63)
-  created_at           DateTime             @default(now()) @db.Timestamp(6)
-  updated_at           DateTime             @default(now()) @db.Timestamp(6)
-  locales              locales              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ef95932878938a88a9e234c4686")
-  person_contact_types person_contact_types @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f07d598c52219eb4e444a645d6c")
-
-  @@id([type_id, locale_id], map: "PK_60fcfc64daf31f4e3dc3568c628")
-}
-
-model person_contact_types {
-  id                               Int                                @id(map: "PK_6a3a16e815e47dcb22787d621e4") @default(autoincrement())
-  slug                             String                             @db.VarChar(255)
-  created_at                       DateTime                           @default(now()) @db.Timestamp(6)
-  updated_at                       DateTime                           @default(now()) @db.Timestamp(6)
-  person_contact_type_translations person_contact_type_translations[]
-  person_contacts                  person_contacts[]
-}
-
-model person_contacts {
-  id                   Int                  @id(map: "PK_07b8ffac6f3ee21ad90b7af50e2") @default(autoincrement())
-  person_id            Int
-  type_id              Int
-  primary              Boolean              @default(false)
-  value                String               @db.VarChar(255)
-  created_at           DateTime             @default(now()) @db.Timestamp(6)
-  updated_at           DateTime             @default(now()) @db.Timestamp(6)
-  person_contact_types person_contact_types @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f81d0f4b512b16d534243ab94bc")
-  persons              persons              @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f93c944e8b6efe7d6c247e19e92")
-
-  @@unique([person_id, type_id, value], map: "IDX_ae39244ab2c884c1fcb559cf81")
-}
-
-model person_custom_translations {
-  custom_id      Int
-  locale_id      Int
-  name           String         @db.VarChar(31)
-  created_at     DateTime       @default(now()) @db.Timestamp(6)
-  updated_at     DateTime       @default(now()) @db.Timestamp(6)
-  person_customs person_customs @relation(fields: [custom_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_13bd8b7f4fa1746fdcf9097aa1f")
-  locales        locales        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8fdd24c530ea9a6d6b6fb1f2678")
-
-  @@id([custom_id, locale_id], map: "PK_53c1371c3091b7ca3fad1f8fbc5")
-}
-
-model person_custom_type_translations {
-  type_id             Int
-  locale_id           Int
-  name                String              @db.VarChar(31)
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  locales             locales             @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8a503a5b619e831adc1f9a336c3")
-  person_custom_types person_custom_types @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_b5fbe07c55bc0ff564dd11fcb0b")
-
-  @@id([type_id, locale_id], map: "PK_66858cb028299d0d54c7c932ce8")
-}
-
-model person_custom_types {
-  id                              Int                               @id(map: "PK_6c24bd778f1a6080973c3267515") @default(autoincrement())
-  slug                            String                            @db.VarChar(255)
-  created_at                      DateTime                          @default(now()) @db.Timestamp(6)
-  updated_at                      DateTime                          @default(now()) @db.Timestamp(6)
-  person_custom_type_translations person_custom_type_translations[]
-  person_customs                  person_customs[]
-}
-
-model person_customs {
-  id                         Int                          @id(map: "PK_a29191dea61007536bb4953f79a") @default(autoincrement())
-  person_id                  Int
-  type_id                    Int
-  value                      String?
-  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  person_custom_translations person_custom_translations[]
-  person_custom_types        person_custom_types          @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2d52716eb78a6193205d5e26b1b")
-  persons                    persons                      @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_fdbad45d2e568c5866f73c39db7")
-
-  @@unique([person_id, type_id], map: "IDX_2a9561da3a3e5d3f995a8518f8")
-}
-
-model person_document_type_translations {
-  type_id               Int
+model translation {
+  id                    Int                   @id(map: "PK_7aef875e43ab80d34a0cdd39c70") @default(autoincrement())
   locale_id             Int
-  name                  String                @db.VarChar(63)
+  namespace_id          Int
+  name                  String                @db.VarChar
+  value                 String                @db.VarChar
   created_at            DateTime              @default(now()) @db.Timestamp(6)
   updated_at            DateTime              @default(now()) @db.Timestamp(6)
-  person_document_types person_document_types @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5e133a366959158e3f437a1db42")
-  locales               locales               @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_fd43edc9de431cd8c21b02e067e")
+  locale                locale                @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_70a64feade03541926a4abffe16")
+  translation_namespace translation_namespace @relation(fields: [namespace_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cf3aa3ba3594c508de49e411c2b")
 
-  @@id([type_id, locale_id], map: "PK_17e2592b17ffdd4abfc82fc68e9")
+  @@unique([locale_id, namespace_id, name], map: "IDX_86152a28a0b83d37df0bb67c85")
 }
 
-model person_document_types {
-  id                                Int                                 @id(map: "PK_bbc7142cc46575b9342dd2b5ca3") @default(autoincrement())
-  country_id                        Int
-  slug                              String                              @db.VarChar(255)
-  created_at                        DateTime                            @default(now()) @db.Timestamp(6)
-  updated_at                        DateTime                            @default(now()) @db.Timestamp(6)
-  person_document_type_translations person_document_type_translations[]
-  countries                         countries                           @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_8837f3451c4dd6654a2fb0265fe")
-  person_documents                  person_documents[]
+model translation_namespace {
+  id          Int           @id(map: "PK_cf3aa3ba3594c508de49e411c2b") @default(autoincrement())
+  name        String        @db.VarChar
+  created_at  DateTime      @default(now()) @db.Timestamp(6)
+  updated_at  DateTime      @default(now()) @db.Timestamp(6)
+  translation translation[]
 }
 
-model person_documents {
-  id                    Int                   @id(map: "PK_01c97611450ec13b16fa4a2f3e5") @default(autoincrement())
-  person_id             Int
-  type_id               Int
-  country_id            Int
-  primary               Boolean               @default(false)
-  value                 String                @db.VarChar(63)
-  issued_at             DateTime?             @db.Date
-  expiry_at             DateTime?             @db.Date
-  created_at            DateTime              @default(now()) @db.Timestamp(6)
-  updated_at            DateTime              @default(now()) @db.Timestamp(6)
-  countries             countries             @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_50e6bf8568b624a0cb09f04a29f")
-  persons               persons               @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c9de95eb603253addb0dc502bb5")
-  person_document_types person_document_types @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f8767ba3f4cb87d9dc64fafa654")
-
-  @@unique([person_id, type_id, value], map: "IDX_dd7cc13dfa5d46d563fb138b27")
+model user {
+  id             Int            @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
+  multifactor_id Int?
+  name           String         @db.VarChar
+  email          String         @db.VarChar
+  password       String         @db.VarChar
+  code           String?        @db.VarChar
+  created_at     DateTime       @default(now()) @db.Timestamp(6)
+  updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  role_user      role_user[]
+  setting_user   setting_user[]
+  multifactor    multifactor?   @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
 }
 
-model person_type_translations {
-  type_id      Int
-  locale_id    Int
-  name         String       @unique(map: "UQ_055e8fbd9f253063888f5ebdc8a") @db.VarChar(31)
-  created_at   DateTime     @default(now()) @db.Timestamp(6)
-  updated_at   DateTime     @default(now()) @db.Timestamp(6)
-  locales      locales      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_02dcc0f3e72c82c4c9e3ee5afd5")
-  person_types person_types @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_789b53bd731d458732a6ef431db")
-
-  @@id([type_id, locale_id], map: "PK_c63b93c585b550488ea3dd20a13")
-}
-
-model person_types {
-  id                       Int                        @id(map: "PK_8aba3a0e5f072264285099a82fc") @default(autoincrement())
-  slug                     String                     @db.VarChar(255)
-  created_at               DateTime                   @default(now()) @db.Timestamp(6)
-  updated_at               DateTime                   @default(now()) @db.Timestamp(6)
-  person_type_translations person_type_translations[]
-  persons                  persons[]
-}
-
-model persons {
-  id                            Int                @id(map: "PK_74278d8812a049233ce41440ac7") @default(autoincrement())
-  name                          String             @db.VarChar(255)
-  photo_id                      Int?
-  cover_id                      Int?
-  type_id                       Int
-  birth_at                      DateTime?          @db.Date
-  created_at                    DateTime           @default(now()) @db.Timestamp(6)
-  updated_at                    DateTime           @default(now()) @db.Timestamp(6)
-  person_addresses              person_addresses[]
-  person_contacts               person_contacts[]
-  person_customs                person_customs[]
-  person_documents              person_documents[]
-  person_types                  person_types       @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_279db59ec1744e71c6c1014ba57")
-  files_persons_photo_idTofiles files?             @relation("persons_photo_idTofiles", fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_3c8b7213b6f70590e8ede17a88b")
-  files_persons_cover_idTofiles files?             @relation("persons_cover_idTofiles", fields: [cover_id], references: [id], onUpdate: NoAction, map: "FK_e6a4663410a2a5f295d12db80fd")
-}
-
-enum routes_method_enum {
+enum route_method_enum {
   GET
   POST
   PATCH
@@ -587,7 +393,7 @@ enum routes_method_enum {
   HEAD
 }
 
-enum settings_type_enum {
+enum setting_type_enum {
   string
   array
   number
