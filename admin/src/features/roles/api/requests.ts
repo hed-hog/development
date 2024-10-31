@@ -30,6 +30,7 @@ export function requests() {
 
   const editRole = async (params: { id: string; data: Roles }) => {
     const { id, data } = params
+
     return request({
       url: `/roles/${id}`,
       method: 'patch',

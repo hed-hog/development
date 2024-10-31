@@ -3,7 +3,7 @@ import { useLocales } from '@/features/locales'
 import { useCreateRole } from '@/features/roles'
 import { FieldType } from '@/types/form-panel'
 import { Roles } from '@/types/models'
-import { forwardRef } from 'react'
+import { forwardRef, useImperativeHandle } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import FormPanel from './form-panel'
@@ -12,7 +12,7 @@ export type RoleCreateProps = {
   onCreate?: (data: Roles) => void
 }
 
-export const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps) => {
+const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps, ref) => {
   const { t } = useTranslation(['actions', 'roles', 'translation'])
   const { data: localesEnabled } = useLocales()
   const { mutate: createRole } = useCreateRole()
@@ -25,6 +25,8 @@ export const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps) => {
       slug: '',
     },
   })
+
+  useImperativeHandle(ref, () => ({}), [])
 
   return (
     <FormPanel
@@ -69,3 +71,7 @@ export const RoleCreatePanel = forwardRef(({ onCreate }: RoleCreateProps) => {
     />
   )
 })
+
+RoleCreatePanel.displayName = 'RoleCreatePanel'
+
+export default RoleCreatePanel

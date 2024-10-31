@@ -1,5 +1,5 @@
 import { DataPanel } from '@/components/custom/data-panel'
-import { RoleCreatePanel } from '@/components/custom/role-create-panel'
+import RoleCreatePanel from '@/components/custom/role-create-panel'
 import { RoleEditPanel } from '@/components/custom/role-edit-panel'
 import { useDeleteRole } from '@/features/roles/api'
 import { useApp } from '@/hooks/use-app'

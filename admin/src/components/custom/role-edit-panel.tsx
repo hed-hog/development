@@ -7,16 +7,13 @@ import {
   useEditRoleUsers,
   useRolesShow,
 } from '@/features/roles'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { getIcon } from '@/lib/get-icon'
 import { queryClient } from '@/lib/query-provider'
 import { FieldType } from '@/types/form-panel'
 import { Menus, Roles, Routes, Screens, Users } from '@/types/models'
-import {
-  getLocaleFields,
-  getLocalesFromItem,
-  getObjectFromLocaleFields,
-} from '@hedhog/utils'
-import { forwardRef, useEffect, useRef } from 'react'
+import { getLocaleFields, getLocalesFromItem } from '@hedhog/utils'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import DataPanel from './data-panel'
 import FormPanel from './form-panel'
@@ -29,7 +26,7 @@ export type RoleEditPanelProps = {
 }
 
 export const RoleEditPanel = forwardRef(
-  ({ data, onEdit }: RoleEditPanelProps) => {
+  ({ data, onEdit }: RoleEditPanelProps, ref) => {
     const { t } = useTranslation(['actions', 'roles', 'modules', 'translation'])
 
     const { data: item, isLoading } = useRolesShow(data.id as number)
@@ -45,17 +42,13 @@ export const RoleEditPanel = forwardRef(
     const roleRoutesRef = useRef<any>(null)
     const roleUsersRef = useRef<any>(null)
 
-    useEffect(() => {
-      console.log('useEffect')
+    useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
-        formRef.current.setValue('slug', item.slug)
-        formRef.current?.reset({
-          id: item.id || '',
-          slug: item.slug || '',
-          ...getObjectFromLocaleFields(item),
-        })
+        formRef.current.setValuesFromItem(item)
       }
     }, [item, formRef])
+
+    useImperativeHandle(ref, () => ({}), [])
 
     return (
       <Overlay loading={isLoading}>

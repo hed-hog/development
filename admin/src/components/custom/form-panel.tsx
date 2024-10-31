@@ -7,6 +7,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { IFormPanelProps, ISliderProps } from '@/types/form-panel'
+import { getObjectFromLocaleFields } from '@hedhog/utils'
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
@@ -23,7 +24,9 @@ const FormPanelForm = forwardRef(
     useImperativeHandle(
       ref,
       () => ({
-        ...form,
+        setValues(values: Record<string, any>) {
+          form.reset(values)
+        },
         submit() {
           formSubmitRef.current?.click()
         },
@@ -98,6 +101,7 @@ const FormPanelForm = forwardRef(
             )}
           />
         ))}
+        <div className='h-1' />
         {button.text ? (
           <Button
             type='submit'
@@ -133,7 +137,16 @@ const FormPanel = forwardRef(
     useImperativeHandle(
       ref,
       () => ({
-        ...form,
+        setValuesFromItem(item: Record<string, any>) {
+          formRef.current?.setValues({
+            ...item,
+            ...getObjectFromLocaleFields(item),
+          })
+        },
+        setValues(values: Record<string, any>) {
+          console.log('setValues', values)
+          formRef.current?.setValues(values)
+        },
         submit() {
           formRef.current?.submit()
         },
