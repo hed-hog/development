@@ -22,7 +22,7 @@ export class DocumentTypeService {
     });
   }
 
-  async getDocumentTypes(locale: string, paginationParams: PaginationDTO) {
+  async list(locale: string, paginationParams: PaginationDTO) {
     const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -53,7 +53,7 @@ export class DocumentTypeService {
     );
   }
 
-  async getDocumentTypeById(id: number) {
+  async get(id: number) {
     const DocumentType =
       await this.prismaService.person_document_type.findUnique({
         where: { id },
@@ -73,7 +73,7 @@ export class DocumentTypeService {
     });
   }
 
-  async remove({ ids }: DeleteDTO) {
+  async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
         `You must select at least one DocumentType to delete.`,

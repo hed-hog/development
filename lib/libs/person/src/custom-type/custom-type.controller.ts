@@ -26,13 +26,13 @@ export class CustomTypeController {
   }
 
   @Get()
-  getCustomTypes(@Pagination() paginationParams, @Locale() locale: string) {
-    return this.customTypeService.getCustomTypes(locale, paginationParams);
+  list(@Pagination() paginationParams, @Locale() locale: string) {
+    return this.customTypeService.list(locale, paginationParams);
   }
 
   @Get(':id')
-  getCustomTypeById(@Param('id', ParseIntPipe) id: number) {
-    return this.customTypeService.getCustomTypeById(id);
+  get(@Param('id', ParseIntPipe) id: number) {
+    return this.customTypeService.get(id);
   }
 
   @Patch(':id')
@@ -44,7 +44,7 @@ export class CustomTypeController {
   }
 
   @Delete()
-  remove(@Body() data: DeleteDTO) {
-    return this.customTypeService.remove(data);
+  delete(@Body() data: DeleteDTO) {
+    return this.customTypeService.delete(data);
   }
 }

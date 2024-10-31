@@ -21,7 +21,28 @@ export class AddressService {
     });
   }
 
-  async getAddress(personId: number) {
+  async list(personId?: number, typeId?: number, addressId?: number) {
+    if (addressId) {
+      return this.prismaService.person_address.findFirst({
+        where: { id: addressId },
+      });
+    }
+
+    if (typeId) {
+      const address = await this.prismaService.person_address.findFirst({
+        where: {
+          person_id: personId,
+          type_id: typeId,
+        },
+      });
+
+      if (!address) {
+        throw new NotFoundException(`Type with ID ${typeId} not found`);
+      }
+
+      return address;
+    }
+
     return this.paginationService.paginate(
       this.prismaService.person_address,
       {
@@ -36,29 +57,6 @@ export class AddressService {
     );
   }
 
-  async getAddressByTypeId(personId: number, typeId: number) {
-    const address = await this.prismaService.person_address.findFirst({
-      where: {
-        person_id: personId,
-        type_id: typeId,
-      },
-    });
-
-    if (!address) {
-      throw new NotFoundException(`Type with ID ${typeId} not found`);
-    }
-
-    return address;
-  }
-
-  async getAddressById(addressId: number) {
-    return this.prismaService.person_address.findFirst({
-      where: {
-        id: addressId,
-      },
-    });
-  }
-
   async update(addressId: number, data: UpdatePersonAddressDTO) {
     return this.prismaService.person_address.update({
       where: { id: addressId },
@@ -66,7 +64,7 @@ export class AddressService {
     });
   }
 
-  async remove(addressId: number) {
+  async delete(addressId: number) {
     return this.prismaService.person_address
       .delete({
         where: {

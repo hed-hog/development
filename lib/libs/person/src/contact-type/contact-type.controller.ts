@@ -27,12 +27,12 @@ export class ContactTypeController {
 
   @Get()
   getContactTypes(@Pagination() paginationParams, @Locale() locale) {
-    return this.contactTypeService.getContactTypes(locale, paginationParams);
+    return this.contactTypeService.list(locale, paginationParams);
   }
 
   @Get(':id')
   getContactTypeById(@Param('id', ParseIntPipe) id: number) {
-    return this.contactTypeService.getContactTypeById(id);
+    return this.contactTypeService.get(id);
   }
 
   @Patch(':id')
@@ -45,6 +45,6 @@ export class ContactTypeController {
 
   @Delete()
   remove(@Body() data: DeleteDTO) {
-    return this.contactTypeService.remove(data);
+    return this.contactTypeService.delete(data);
   }
 }

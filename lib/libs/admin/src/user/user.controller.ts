@@ -27,8 +27,8 @@ export class UserController {
   ) {}
 
   @Get()
-  async getUsers(@Pagination() paginationParams) {
-    return this.userService.getUsers(paginationParams);
+  async list(@Pagination() paginationParams) {
+    return this.userService.list(paginationParams);
   }
 
   @Get(':userId/role')
@@ -48,7 +48,7 @@ export class UserController {
   }
 
   @Get(':userId')
-  async show(@Param('userId', ParseIntPipe) userId: number) {
+  async get(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.get(userId);
   }
 

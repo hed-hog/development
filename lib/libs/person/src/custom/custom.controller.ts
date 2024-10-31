@@ -28,18 +28,18 @@ export class CustomController {
   }
 
   @Get()
-  getCustoms(
+  list(
     @Param('personId', ParseIntPipe) personId: number,
     @Query('typeId', OptionalParseIntPipe) typeId?: number,
     @Query('id', OptionalParseIntPipe) customId?: number,
   ) {
     if (customId) {
-      return this.customService.getCustomById(customId);
+      return this.customService.list(personId, null, customId);
     }
     if (typeId) {
-      return this.customService.getCustomByTypeId(personId, typeId);
+      return this.customService.list(personId, typeId);
     }
-    return this.customService.getCustoms(personId);
+    return this.customService.list(personId);
   }
 
   @Patch(':customId')
@@ -51,7 +51,7 @@ export class CustomController {
   }
 
   @Delete(':customId')
-  remove(@Param('customId', ParseIntPipe) CustomId: number) {
-    return this.customService.remove(CustomId);
+  delete(@Param('customId', ParseIntPipe) CustomId: number) {
+    return this.customService.delete(CustomId);
   }
 }

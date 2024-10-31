@@ -22,7 +22,7 @@ export class PersonTypeService {
     });
   }
 
-  async getPersonTypes(locale: string, paginationParams: PaginationDTO) {
+  async list(locale: string, paginationParams: PaginationDTO) {
     const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -53,7 +53,7 @@ export class PersonTypeService {
     );
   }
 
-  async getPersonTypeById(id: number) {
+  async get(id: number) {
     const PersonType = await this.prismaService.person_type.findUnique({
       where: { id },
     });
@@ -72,7 +72,7 @@ export class PersonTypeService {
     });
   }
 
-  async remove({ ids }: DeleteDTO) {
+  async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
         `You must select at least one PersonType to delete.`,

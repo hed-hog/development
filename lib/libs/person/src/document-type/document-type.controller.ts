@@ -26,13 +26,13 @@ export class DocumentTypeController {
   }
 
   @Get()
-  getdocumentTypes(@Pagination() paginationParams, @Locale() locale) {
-    return this.documentTypeService.getDocumentTypes(locale, paginationParams);
+  list(@Pagination() paginationParams, @Locale() locale) {
+    return this.documentTypeService.list(locale, paginationParams);
   }
 
   @Get(':id')
-  getdocumentTypeById(@Param('id', ParseIntPipe) id: number) {
-    return this.documentTypeService.getDocumentTypeById(id);
+  get(@Param('id', ParseIntPipe) id: number) {
+    return this.documentTypeService.get(id);
   }
 
   @Patch(':id')
@@ -44,7 +44,7 @@ export class DocumentTypeController {
   }
 
   @Delete()
-  remove(@Body() data: DeleteDTO) {
-    return this.documentTypeService.remove(data);
+  delete(@Body() data: DeleteDTO) {
+    return this.documentTypeService.delete(data);
   }
 }

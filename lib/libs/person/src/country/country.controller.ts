@@ -8,7 +8,7 @@ export class CountryController {
   constructor(private readonly countryService: CountryService) {}
 
   @Get()
-  async getAll() {
-    return this.countryService.getAll();
+  async list() {
+    return this.countryService.list();
   }
 }

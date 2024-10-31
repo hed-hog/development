@@ -28,8 +28,8 @@ export class ScreenController {
   ) {}
 
   @Get()
-  async getScreens(@Pagination() paginationParams, @Locale() locale) {
-    return this.screenService.getScreens(locale, paginationParams);
+  async list(@Pagination() paginationParams, @Locale() locale) {
+    return this.screenService.list(locale, paginationParams);
   }
 
   @Get(':screenId/role')

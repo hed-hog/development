@@ -20,17 +20,20 @@ export class DocumentService {
     });
   }
 
-  async getDocuments(personId: number) {
-    return this.paginationService.paginate(
+  async list(personId?: number, typeId?: number, documentId?: number) {
+    const where: any = {};
+    if (personId) where.person_id = personId;
+    if (typeId) where.type_id = typeId;
+    if (documentId) where.id = documentId;
+
+    const documents = await this.paginationService.paginate(
       this.prismaService.person_document,
       {
         fields:
           'id,person_id,type_id,primary,value,country_id,issued_at,expiry_at',
       },
       {
-        where: {
-          person_id: personId,
-        },
+        where,
         include: {
           person_document_type: {
             select: {
@@ -46,55 +49,12 @@ export class DocumentService {
         },
       },
     );
-  }
 
-  async getDocumentByTypeId(personId: number, typeId: number) {
-    const document = await this.prismaService.person_document.findFirst({
-      where: {
-        person_id: personId,
-        type_id: typeId,
-      },
-      include: {
-        person_document_type: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        country: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
-
-    if (!document) {
-      throw new NotFoundException(`Type with ID ${typeId} not found`);
+    if (documentId && !documents) {
+      throw new NotFoundException(`Document with ID ${documentId} not found`);
     }
 
-    return document;
-  }
-
-  async getDocumentById(documentId: number) {
-    return this.prismaService.person_document.findFirst({
-      where: {
-        id: documentId,
-      },
-      include: {
-        person_document_type: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        country: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
+    return documents;
   }
 
   async update(documentId: number, data: UpdatePersonDocumentDTO) {
@@ -104,7 +64,7 @@ export class DocumentService {
     });
   }
 
-  async remove(documentId: number) {
+  async delete(documentId: number) {
     return this.prismaService.person_document
       .delete({
         where: {

@@ -26,13 +26,13 @@ export class PersonController {
   }
 
   @Get()
-  getPersons(@Pagination() paginationParams, @Locale() locale) {
-    return this.personService.getPersons(locale, paginationParams);
+  list(@Pagination() paginationParams, @Locale() locale) {
+    return this.personService.list(locale, paginationParams);
   }
 
   @Get(':id')
-  getPersonById(@Param('id', ParseIntPipe) id: number) {
-    return this.personService.getPersonById(id);
+  get(@Param('id', ParseIntPipe) id: number) {
+    return this.personService.get(id);
   }
 
   @Patch(':id')
@@ -41,12 +41,7 @@ export class PersonController {
   }
 
   @Delete()
-  remove(@Body() data: DeleteDTO) {
-    return this.personService.remove(data);
-  }
-
-  @Patch(':id/document')
-  updateDocuments(@Param('id', ParseIntPipe) personId: number) {
-    return { personId };
+  delete(@Body() data: DeleteDTO) {
+    return this.personService.delete(data);
   }
 }

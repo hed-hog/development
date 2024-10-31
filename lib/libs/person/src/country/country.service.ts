@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 export class CountryService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getAll() {
+  async list() {
     return this.prismaService.country.findMany();
   }
 }

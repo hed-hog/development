@@ -12,7 +12,7 @@ export class CustomService {
   ) {}
 
   async create(personId: number, data: CreatePersonCustomDTO) {
-    return this.prismaService.person_custom.create({
+    return this.prismaService.person_customs.create({
       data: {
         person_id: personId,
         ...data,
@@ -20,18 +20,40 @@ export class CustomService {
     });
   }
 
-  async getCustoms(personId: number) {
+  async list(personId: number, customId?: number, typeId?: number) {
+    const whereClause: any = { person_id: personId };
+    if (customId) {
+      whereClause.id = customId;
+    }
+    if (typeId) {
+      whereClause.type_id = typeId;
+    }
+
+    const customs = await this.prismaService.person_customs.findMany({
+      where: whereClause,
+      include: {
+        person_custom_types: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (customId && customs.length === 0) {
+      throw new NotFoundException(`ID not found`);
+    }
+
     return this.paginationService.paginate(
-      this.prismaService.person_custom,
+      this.prismaService.person_customs,
       {
         fields: 'id,person_id,type_id,name,value',
       },
       {
-        where: {
-          person_id: personId,
-        },
+        where: whereClause,
         include: {
-          person_custom_type: {
+          person_custom_types: {
             select: {
               id: true,
               name: true,
@@ -42,54 +64,15 @@ export class CustomService {
     );
   }
 
-  async getCustomByTypeId(personId: number, customId: number) {
-    const custom = await this.prismaService.person_custom.findFirst({
-      where: {
-        person_id: personId,
-        id: customId,
-      },
-      include: {
-        person_custom_type: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    });
-
-    if (!custom) {
-      throw new NotFoundException(`ID not found`);
-    }
-
-    return custom;
-  }
-
-  async getCustomById(customId: number) {
-    return this.prismaService.person_custom.findFirst({
-      where: {
-        id: customId,
-      },
-      include: {
-        person_custom_type: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    });
-  }
-
   async update(customId: number, data: UpdatePersonCustomDTO) {
-    return this.prismaService.person_custom.update({
+    return this.prismaService.person_customs.update({
       where: { id: customId },
       data,
     });
   }
 
-  async remove(customId: number) {
-    return this.prismaService.person_custom
+  async delete(customId: number) {
+    return this.prismaService.person_customs
       .delete({
         where: {
           id: customId,

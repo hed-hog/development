@@ -107,7 +107,7 @@ export class ScreenService {
     );
   }
 
-  async getScreens(locale: string, paginationParams: PaginationDTO) {
+  async list(locale: string, paginationParams: PaginationDTO) {
     const fields = ['slug', 'icon'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,

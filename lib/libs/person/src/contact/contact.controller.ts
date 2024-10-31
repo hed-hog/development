@@ -28,18 +28,18 @@ export class ContactController {
   }
 
   @Get()
-  getContacts(
+  list(
     @Param('personId', ParseIntPipe) personId: number,
     @Query('typeId', OptionalParseIntPipe) typeId?: number,
     @Query('id', OptionalParseIntPipe) contactId?: number,
   ) {
     if (contactId) {
-      return this.contactService.getContactById(contactId);
+      return this.contactService.list(personId, null, contactId);
     }
     if (typeId) {
-      return this.contactService.getContactByTypeId(personId, typeId);
+      return this.contactService.list(personId, typeId);
     }
-    return this.contactService.getContacts(personId);
+    return this.contactService.list(personId);
   }
 
   @Patch(':contactId')
@@ -51,7 +51,7 @@ export class ContactController {
   }
 
   @Delete(':contactId')
-  remove(@Param('contactId', ParseIntPipe) ContactId: number) {
-    return this.contactService.remove(ContactId);
+  delete(@Param('contactId', ParseIntPipe) ContactId: number) {
+    return this.contactService.delete(ContactId);
   }
 }

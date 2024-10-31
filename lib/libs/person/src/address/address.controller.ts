@@ -28,18 +28,18 @@ export class AddressController {
   }
 
   @Get()
-  getAddress(
+  list(
     @Param('personId', ParseIntPipe) personId: number,
     @Query('typeId', OptionalParseIntPipe) typeId?: number,
     @Query('id', OptionalParseIntPipe) addressId?: number,
   ) {
     if (addressId) {
-      return this.addressService.getAddressById(addressId);
+      return this.addressService.list(personId, null, addressId);
     }
     if (typeId) {
-      return this.addressService.getAddressByTypeId(personId, typeId);
+      return this.addressService.list(personId, typeId);
     }
-    return this.addressService.getAddress(personId);
+    return this.addressService.list(personId);
   }
 
   @Patch(':addressId')
@@ -51,7 +51,7 @@ export class AddressController {
   }
 
   @Delete(':addressId')
-  remove(@Param('addressId', ParseIntPipe) addressId: number) {
-    return this.addressService.remove(addressId);
+  delete(@Param('addressId', ParseIntPipe) addressId: number) {
+    return this.addressService.delete(addressId);
   }
 }

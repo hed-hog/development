@@ -44,13 +44,13 @@ export class SettingsController {
   }
 
   @Get('groups')
-  async getSettingGroups(@Pagination() paginationParams, @Locale() locale) {
-    return this.settingService.getSettingGroups(locale, paginationParams);
+  async listSettingGroups(@Pagination() paginationParams, @Locale() locale) {
+    return this.settingService.listSettingGroups(locale, paginationParams);
   }
 
   @Get()
-  async getSettings(@Pagination() paginationParams, @Locale() locale) {
-    return this.settingService.getSettings(locale, paginationParams);
+  async listSettings(@Pagination() paginationParams, @Locale() locale) {
+    return this.settingService.listSettings(locale, paginationParams);
   }
 
   @Get(':settingId')
