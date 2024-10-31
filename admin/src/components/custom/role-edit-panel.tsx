@@ -17,7 +17,6 @@ import {
   getObjectFromLocaleFields,
 } from '@hedhog/utils'
 import { forwardRef, useEffect, useRef } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import DataPanel from './data-panel'
 import FormPanel from './form-panel'
@@ -46,19 +45,17 @@ export const RoleEditPanel = forwardRef(
     const roleRoutesRef = useRef<any>(null)
     const roleUsersRef = useRef<any>(null)
 
-    const form = useForm<FieldValues>({
-      mode: 'onChange',
-    })
-
     useEffect(() => {
-      if (item) {
-        form.reset({
+      console.log('useEffect')
+      if (item && formRef.current) {
+        formRef.current.setValue('slug', item.slug)
+        formRef.current?.reset({
           id: item.id || '',
           slug: item.slug || '',
           ...getObjectFromLocaleFields(item),
         })
       }
-    }, [item])
+    }, [item, formRef])
 
     return (
       <Overlay loading={isLoading}>
@@ -99,7 +96,6 @@ export const RoleEditPanel = forwardRef(
                         },
                       })),
                     ]}
-                    form={form}
                     onSubmit={(data: Roles) => {
                       editRole({ id: String(data.id), data })
 

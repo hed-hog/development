@@ -23,6 +23,7 @@ const FormPanelForm = forwardRef(
     useImperativeHandle(
       ref,
       () => ({
+        ...form,
         submit() {
           formSubmitRef.current?.click()
         },
@@ -77,11 +78,9 @@ const FormPanelForm = forwardRef(
                   value={field.value ?? renderField.value ?? ''}
                   onChange={(value: string) => {
                     if (typeof field.onChange === 'function') {
-                      console.log('field.onChange', value)
                       field.onChange(value)
                     }
                     if (typeof renderField.onChange === 'function') {
-                      console.log('renderField.onChange', value)
                       renderField.onChange(value)
                     }
                   }}
@@ -127,13 +126,14 @@ const FormPanel = forwardRef(
       }, {})
     }, [props.fields])
 
-    const methods = useForm({
+    const form = useForm({
       defaultValues: getValues(),
     })
 
     useImperativeHandle(
       ref,
       () => ({
+        ...form,
         submit() {
           formRef.current?.submit()
         },
@@ -142,7 +142,7 @@ const FormPanel = forwardRef(
     )
 
     return (
-      <Form {...methods}>
+      <Form {...form}>
         <div className='w-full'>
           {title.text && (
             <h1 style={title.style} className='text-xl font-bold'>
