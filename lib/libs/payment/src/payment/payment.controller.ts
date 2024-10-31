@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/admin';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -15,7 +16,6 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { PaymentService } from './payment.service';
-import { Role } from '@hedhog/admin';
 
 @Role()
 @Controller('payment')
@@ -26,17 +26,17 @@ export class PaymentController {
   ) {}
 
   @Get()
-  async get(@Pagination() paginationParams) {
+  async list(@Pagination() paginationParams) {
     return this.paymentService.get(paginationParams);
   }
 
   @Get(':id')
-  async getById(@Param('id', ParseIntPipe) id: number) {
+  async get(@Param('id', ParseIntPipe) id: number) {
     return this.paymentService.getById(id);
   }
 
   @Post()
-  create(@Body() data: CreateDTO) {
+  async create(@Body() data: CreateDTO) {
     return this.paymentService.create(data);
   }
 

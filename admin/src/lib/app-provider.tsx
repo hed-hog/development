@@ -23,7 +23,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { useToast } from '@/components/ui/use-toast'
 import { useDialog } from '@/hooks/use-dialog'
 import useLocalStorage, { LocalStorageKeys } from '@/hooks/use-local-storage'
 import { useSheet } from '@/hooks/use-sheet'
@@ -38,7 +37,8 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { Toaster } from 'sonner'
+import { useTranslation } from 'react-i18next'
+import { toast, Toaster } from 'sonner'
 import { useMediaQuery } from 'usehooks-ts'
 import { decodeToken } from './decodeToken'
 import { getBaseURL } from './getBaseURL'
@@ -57,6 +57,17 @@ type AppContextType = {
   closeDialog: (id: string) => void
   openSheet: (props: OpenSheetType) => string
   closeSheet: (id: string) => void
+  showToastHandler: (
+    type: 'success' | 'error',
+    name: string,
+    action: string,
+    error?: any
+  ) => void
+  makeRequest: <T extends {}>(
+    url: string,
+    method: 'post' | 'patch' | 'delete' | 'get',
+    data?: any
+  ) => Promise<T>
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -68,6 +79,8 @@ export const AppContext = createContext<AppContextType>({
   closeDialog: () => {},
   openSheet: () => '',
   closeSheet: () => {},
+  showToastHandler: () => {},
+  makeRequest: () => new Promise(() => {}),
 })
 
 type RequestLoginType = {
@@ -79,7 +92,6 @@ export type AppProviderProps = {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const { toast } = useToast()
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [dialogs, setDialogs] = useState<DialogType[]>([])
   const [sheets, setSheets] = useState<SheetType[]>([])
@@ -99,18 +111,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const handleError = (error: any) => {
     switch (error.code) {
       case 'ERR_NETWORK':
-        toast({
-          title: 'Servidor indisponível',
-          description: `Por favor tente novamente mais tarde`,
-          variant: 'destructive',
-        })
+        toast.error('Network error')
         break
       default:
-        toast({
-          title: 'Error',
-          description: 'An error occurred',
-          variant: 'destructive',
-        })
+        toast.error('An error occurred')
     }
   }
 
@@ -151,6 +155,18 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     [token]
   )
 
+  const makeRequest = async <T extends {}>(
+    url: string,
+    method: 'post' | 'patch' | 'delete' | 'get',
+    data?: any
+  ) => {
+    return request<T>({
+      url,
+      method,
+      data,
+    }).then((res) => res.data)
+  }
+
   const parseToken = (token: string) => {
     if (token) {
       try {
@@ -158,11 +174,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         const parsed = JSON.parse(decoded)
 
         if (parsed.exp * 1000 < Date.now()) {
-          toast({
-            title: 'Error',
-            description: 'Token expired',
-            variant: 'destructive',
-          })
+          toast.error('Token expired')
           setToken('')
         }
 
@@ -187,23 +199,35 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
         if (data.token) {
           setToken(data.token)
-          toast({
-            title: 'Success',
-            description: 'Logged in successfully',
-            variant: 'default',
-          })
+          toast.success('Login successful')
         }
 
         resolve()
       } catch (error) {
-        toast({
-          title: 'Error',
-          description: (error as any).response.data.message,
-          variant: 'destructive',
-        })
+        toast.error('Login failed')
         reject()
       }
     })
+  }
+
+  const showToastHandler = (
+    type: 'success' | 'error',
+    name: string,
+    action: string,
+    error: any = null
+  ) => {
+    const { t } = useTranslation(['module', 'success', 'error'])
+    switch (type) {
+      case 'success':
+        return toast.success(
+          `${t(name, { ns: 'module' })} ${t(action, { ns: 'success' })}`
+        )
+      case 'error':
+        toast.error(
+          `${t(action, { ns: 'error' })} ${t(name, { ns: 'module' })}` +
+            error.message
+        )
+    }
   }
 
   const logout = () => {
@@ -228,6 +252,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           closeDialog,
           openSheet,
           closeSheet,
+          showToastHandler,
+          makeRequest,
         }}
       >
         <QueryClientProvider>
