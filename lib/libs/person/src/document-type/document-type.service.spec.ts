@@ -91,7 +91,7 @@ describe('DocumentTypeService', () => {
           OR: [],
         },
         include: {
-          person_document_type_translations: {
+          person_document_type_locale: {
             where: {
               locales: {
                 code: locale,
@@ -103,7 +103,7 @@ describe('DocumentTypeService', () => {
           },
         },
       },
-      'person_document_type_translations',
+      'person_document_type_locale',
     );
     expect(result).toEqual(paginationMockResult);
   });

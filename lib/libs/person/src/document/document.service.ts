@@ -12,7 +12,7 @@ export class DocumentService {
   ) {}
 
   async create(personId: number, data: CreatePersonDocumentDTO) {
-    return this.prismaService.person_documents.create({
+    return this.prismaService.person_document.create({
       data: {
         person_id: personId,
         ...data,
@@ -22,7 +22,7 @@ export class DocumentService {
 
   async getDocuments(personId: number) {
     return this.paginationService.paginate(
-      this.prismaService.person_documents,
+      this.prismaService.person_document,
       {
         fields:
           'id,person_id,type_id,primary,value,country_id,issued_at,expiry_at',
@@ -32,13 +32,13 @@ export class DocumentService {
           person_id: personId,
         },
         include: {
-          person_document_types: {
+          person_document_type: {
             select: {
               id: true,
               name: true,
             },
           },
-          countries: {
+          country: {
             select: {
               name: true,
             },
@@ -49,19 +49,19 @@ export class DocumentService {
   }
 
   async getDocumentByTypeId(personId: number, typeId: number) {
-    const document = await this.prismaService.person_documents.findFirst({
+    const document = await this.prismaService.person_document.findFirst({
       where: {
         person_id: personId,
         type_id: typeId,
       },
       include: {
-        person_document_types: {
+        person_document_type: {
           select: {
             id: true,
             name: true,
           },
         },
-        countries: {
+        country: {
           select: {
             name: true,
           },
@@ -77,18 +77,18 @@ export class DocumentService {
   }
 
   async getDocumentById(documentId: number) {
-    return this.prismaService.person_documents.findFirst({
+    return this.prismaService.person_document.findFirst({
       where: {
         id: documentId,
       },
       include: {
-        person_document_types: {
+        person_document_type: {
           select: {
             id: true,
             name: true,
           },
         },
-        countries: {
+        country: {
           select: {
             name: true,
           },
@@ -98,14 +98,14 @@ export class DocumentService {
   }
 
   async update(documentId: number, data: UpdatePersonDocumentDTO) {
-    return this.prismaService.person_documents.update({
+    return this.prismaService.person_document.update({
       where: { id: documentId },
       data,
     });
   }
 
   async remove(documentId: number) {
-    return this.prismaService.person_documents
+    return this.prismaService.person_document
       .delete({
         where: {
           id: documentId,

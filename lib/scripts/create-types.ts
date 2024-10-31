@@ -190,8 +190,7 @@ async function addLocaleFields(path: string) {
     .map((f) => files[f])
     .filter(
       (f) =>
-        f.tableName.split('_')[f.tableName.split('_').length - 1] ===
-        'translations',
+        f.tableName.split('_')[f.tableName.split('_').length - 1] === 'locale',
     )) {
     for (const column of file.columns) {
       if (

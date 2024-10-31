@@ -12,7 +12,7 @@ export class CustomService {
   ) {}
 
   async create(personId: number, data: CreatePersonCustomDTO) {
-    return this.prismaService.person_customs.create({
+    return this.prismaService.person_custom.create({
       data: {
         person_id: personId,
         ...data,
@@ -22,7 +22,7 @@ export class CustomService {
 
   async getCustoms(personId: number) {
     return this.paginationService.paginate(
-      this.prismaService.person_customs,
+      this.prismaService.person_custom,
       {
         fields: 'id,person_id,type_id,name,value',
       },
@@ -31,7 +31,7 @@ export class CustomService {
           person_id: personId,
         },
         include: {
-          person_custom_types: {
+          person_custom_type: {
             select: {
               id: true,
               name: true,
@@ -43,13 +43,13 @@ export class CustomService {
   }
 
   async getCustomByTypeId(personId: number, customId: number) {
-    const custom = await this.prismaService.person_customs.findFirst({
+    const custom = await this.prismaService.person_custom.findFirst({
       where: {
         person_id: personId,
         id: customId,
       },
       include: {
-        person_custom_types: {
+        person_custom_type: {
           select: {
             id: true,
             name: true,
@@ -66,12 +66,12 @@ export class CustomService {
   }
 
   async getCustomById(customId: number) {
-    return this.prismaService.person_customs.findFirst({
+    return this.prismaService.person_custom.findFirst({
       where: {
         id: customId,
       },
       include: {
-        person_custom_types: {
+        person_custom_type: {
           select: {
             id: true,
             name: true,
@@ -82,14 +82,14 @@ export class CustomService {
   }
 
   async update(customId: number, data: UpdatePersonCustomDTO) {
-    return this.prismaService.person_customs.update({
+    return this.prismaService.person_custom.update({
       where: { id: customId },
       data,
     });
   }
 
   async remove(customId: number) {
-    return this.prismaService.person_customs
+    return this.prismaService.person_custom
       .delete({
         where: {
           id: customId,

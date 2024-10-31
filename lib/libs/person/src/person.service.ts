@@ -38,12 +38,12 @@ export class PersonService {
           OR,
         },
         include: {
-          person_types: {
+          person_type: {
             select: {
               id: true,
-              person_type_translations: {
+              person_type_locale: {
                 where: {
-                  locales: {
+                  locale: {
                     code: locale,
                   },
                 },
@@ -53,12 +53,31 @@ export class PersonService {
               },
             },
           },
-          person_documents: {
+          person_document: {
             include: {
-              person_document_types: {
+              person_document_type: {
                 select: {
                   id: true,
-                  person_document_type_translations: {
+                  person_document_type_locale: {
+                    where: {
+                      locale: {
+                        code: locale,
+                      },
+                    },
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          person_contact: {
+            include: {
+              person_contact_type: {
+                select: {
+                  id: true,
+                  person_contact_type_locale: {
                     where: {
                       locales: {
                         code: locale,
@@ -72,29 +91,10 @@ export class PersonService {
               },
             },
           },
-          person_contacts: {
+          person_address: true,
+          person_custom: {
             include: {
-              person_contact_types: {
-                select: {
-                  id: true,
-                  person_contact_type_translations: {
-                    where: {
-                      locales: {
-                        code: locale,
-                      },
-                    },
-                    select: {
-                      name: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-          person_addresses: true,
-          person_customs: {
-            include: {
-              person_custom_types: true,
+              person_custom_type: true,
             },
           },
         },
@@ -102,29 +102,29 @@ export class PersonService {
     );
 
     paginate.data = paginate.data.map((person: any) => {
-      if (person.person_types) {
-        person.person_types = itemTranslations(
-          'person_type_translations',
-          person.person_types,
+      if (person.person_type) {
+        person.person_type = itemTranslations(
+          'person_type_locale',
+          person.person_type,
         );
       }
-      if (person.person_documents) {
-        person.person_documents = person.person_documents.map((document) => {
-          if (document.person_document_types) {
-            document.person_document_types = itemTranslations(
-              'person_document_type_translations',
-              document.person_document_types,
+      if (person.person_document) {
+        person.person_document = person.person_document.map((document) => {
+          if (document.person_document_type) {
+            document.person_document_type = itemTranslations(
+              'person_document_type_locale',
+              document.person_document_type,
             );
           }
           return document;
         });
       }
-      if (person.person_contacts) {
-        person.person_contacts = person.person_contacts.map((contact) => {
-          if (contact.person_contact_types) {
-            contact.person_contact_types = itemTranslations(
-              'person_contact_type_translations',
-              contact.person_contact_types,
+      if (person.person_contact) {
+        person.person_contact = person.person_contact.map((contact) => {
+          if (contact.person_contact_type) {
+            contact.person_contact_type = itemTranslations(
+              'person_contact_type_locale',
+              contact.person_contact_type,
             );
           }
           return contact;
@@ -141,7 +141,7 @@ export class PersonService {
     const person = await this.prismaService.person.findUnique({
       where: { id },
       include: {
-        person_addresses: true,
+        person_address: true,
         /*
         person_contacts: {
           include: {

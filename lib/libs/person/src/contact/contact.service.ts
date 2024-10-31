@@ -31,7 +31,7 @@ export class ContactService {
           person_id: personId,
         },
         include: {
-          person_contact_types: {
+          person_contact_type: {
             select: {
               id: true,
               name: true,
@@ -49,7 +49,7 @@ export class ContactService {
         type_id: typeId,
       },
       include: {
-        person_contact_types: {
+        person_contact_type: {
           select: {
             id: true,
             name: true,
@@ -71,7 +71,7 @@ export class ContactService {
         id: contactId,
       },
       include: {
-        person_contact_types: {
+        person_contact_type: {
           select: {
             id: true,
             name: true,
