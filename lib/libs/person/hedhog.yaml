@@ -463,14 +463,7 @@ tables:
         type: fk
         isNullable: true
         references:
-          table: files
-          column: id
-          onDelete: SET NULL
-      - name: cover_id
-        type: fk
-        isNullable: true
-        references:
-          table: files
+          table: file
           column: id
           onDelete: SET NULL
       - name: type_id
