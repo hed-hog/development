@@ -309,8 +309,8 @@ describe('RoleService', () => {
         paginationParams,
         {
           include: {
-            menu_translations: {
-              where: { locales: { code: locale } },
+            menu_locale: {
+              where: { locale: { code: locale } },
               select: { name: true },
             },
             role_menus: {
@@ -319,7 +319,7 @@ describe('RoleService', () => {
             },
           },
         },
-        'menu_translations',
+        'menu_locale',
       );
     });
   });
@@ -399,8 +399,8 @@ describe('RoleService', () => {
         paginationParams,
         {
           include: {
-            screen_translations: {
-              where: { locales: { code: locale } },
+            screen_locale: {
+              where: { locale: { code: locale } },
               select: { name: true },
             },
             role_screens: {
@@ -409,7 +409,7 @@ describe('RoleService', () => {
             },
           },
         },
-        'screen_translations',
+        'screen_locale',
       );
     });
   });

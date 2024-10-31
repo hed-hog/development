@@ -31,9 +31,9 @@ export class PlansService {
       plans: {
         select: {
           id: true,
-          plan_translations: {
+          plan_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -46,7 +46,7 @@ export class PlansService {
     };
 
     return this.paginationService.paginate(
-      this.prismaService.plan_translations,
+      this.prismaService.plan_locale,
       paginationParams,
       {
         where: {
@@ -54,7 +54,7 @@ export class PlansService {
         },
         include,
       },
-      'plan_translations',
+      'plan_locale',
     );
   }
 

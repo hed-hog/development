@@ -22,7 +22,7 @@ import { Locale } from './locale.decorator';
 import { LocaleService } from './locale.service';
 
 @Role()
-@Controller('locales')
+@Controller('locale')
 export class LocaleController {
   constructor(
     @Inject(forwardRef(() => LocaleService))

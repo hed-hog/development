@@ -26,7 +26,7 @@ describe('CustomTypeService', () => {
         {
           provide: PrismaService,
           useValue: {
-            person_custom_types: {
+            person_custom_type: {
               create: jest.fn().mockResolvedValue(customTypeMock),
               findUnique: jest.fn().mockResolvedValue(customTypeMock),
               update: jest.fn().mockResolvedValue(customTypeMock),
@@ -60,7 +60,7 @@ describe('CustomTypeService', () => {
 
     const result = await service.create(createCustomTypeDto);
 
-    expect(prismaService.person_custom_types.create).toHaveBeenCalledWith({
+    expect(prismaService.person_custom_type.create).toHaveBeenCalledWith({
       data: createCustomTypeDto,
     });
     expect(result).toEqual(customTypeMock);
@@ -79,7 +79,7 @@ describe('CustomTypeService', () => {
     const result = await service.getCustomTypes(paginationParams);
 
     expect(paginationService.paginate).toHaveBeenCalledWith(
-      prismaService.person_custom_types,
+      prismaService.person_custom_type,
       paginationParams,
       {
         where: {
@@ -95,7 +95,7 @@ describe('CustomTypeService', () => {
 
     const result = await service.getCustomTypeById(id);
 
-    expect(prismaService.person_custom_types.findUnique).toHaveBeenCalledWith({
+    expect(prismaService.person_custom_type.findUnique).toHaveBeenCalledWith({
       where: { id },
     });
     expect(result).toEqual(customTypeMock);
@@ -104,7 +104,7 @@ describe('CustomTypeService', () => {
   it('should throw NotFoundException if custom type not found', async () => {
     const id = 999;
     (
-      prismaService.person_custom_types.findUnique as jest.Mock
+      prismaService.person_custom_type.findUnique as jest.Mock
     ).mockResolvedValue(null);
 
     await expect(service.getCustomTypeById(id)).rejects.toThrow(
@@ -123,7 +123,7 @@ describe('CustomTypeService', () => {
 
     const result = await service.update(id, updateCustomTypeDto);
 
-    expect(prismaService.person_custom_types.update).toHaveBeenCalledWith({
+    expect(prismaService.person_custom_type.update).toHaveBeenCalledWith({
       where: { id },
       data: updateCustomTypeDto,
     });
@@ -135,7 +135,7 @@ describe('CustomTypeService', () => {
 
     const result = await service.remove(deleteDto);
 
-    expect(prismaService.person_custom_types.deleteMany).toHaveBeenCalledWith({
+    expect(prismaService.person_custom_type.deleteMany).toHaveBeenCalledWith({
       where: {
         id: {
           in: deleteDto.ids,

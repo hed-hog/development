@@ -62,9 +62,9 @@ export class MenuService {
       paginationParams,
       {
         include: {
-          screen_translations: {
+          screen_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -83,7 +83,7 @@ export class MenuService {
           },
         },
       },
-      'screen_translations',
+      'screen_locale',
     );
   }
   async listRoles(
@@ -96,9 +96,9 @@ export class MenuService {
       paginationParams,
       {
         include: {
-          role_translations: {
+          role_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -118,7 +118,7 @@ export class MenuService {
           },
         },
       },
-      'role_translations',
+      'role_locale',
     );
   }
 
@@ -146,9 +146,9 @@ export class MenuService {
         order: 'asc',
       },
       include: {
-        menu_translations: {
+        menu_locale: {
           where: {
-            locales: {
+            locale: {
               code: locale,
             },
           },
@@ -159,7 +159,7 @@ export class MenuService {
       },
     })) as unknown[] as any[];
 
-    menus = menus.map((m) => itemTranslations('menu_translations', m));
+    menus = menus.map((m) => itemTranslations('menu_locale', m));
 
     for (let i = 0; i < menus.length; i++) {
       menus[i].menus = await this.getMenus(locale, userId, menus[i].id);
@@ -187,9 +187,9 @@ export class MenuService {
           OR,
         },
         include: {
-          menu_translations: {
+          menu_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -199,7 +199,7 @@ export class MenuService {
           },
         },
       },
-      'menu_translations',
+      'menu_locale',
     );
   }
 

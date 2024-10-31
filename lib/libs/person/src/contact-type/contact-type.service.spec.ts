@@ -1,15 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ContactTypeService } from './contact-type.service';
-import { PrismaService } from '@hedhog/prisma';
 import {
   PageOrderDirection,
   PaginationDTO,
   PaginationService,
 } from '@hedhog/pagination';
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { PrismaService } from '@hedhog/prisma';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { DeleteDTO } from '../dto/delete.dto';
+import { ContactTypeService } from './contact-type.service';
 import { CreateContactTypeDTO } from './dto/create-contact-type.dto';
 import { UpdateContactTypeDTO } from './dto/update-contact-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
 
 describe('ContactTypeService', () => {
   let service: ContactTypeService;
@@ -37,7 +37,7 @@ describe('ContactTypeService', () => {
         {
           provide: PrismaService,
           useValue: {
-            person_contact_types: {
+            person_contact_type: {
               create: jest.fn(),
               findUnique: jest.fn(),
               update: jest.fn(),
@@ -69,13 +69,13 @@ describe('ContactTypeService', () => {
       name: 'Email',
     };
 
-    (prismaService.person_contact_types.create as jest.Mock).mockResolvedValue(
+    (prismaService.person_contact_type.create as jest.Mock).mockResolvedValue(
       contactTypeMock,
     );
 
     const result = await service.create(createContactTypeDto);
 
-    expect(prismaService.person_contact_types.create).toHaveBeenCalledWith({
+    expect(prismaService.person_contact_type.create).toHaveBeenCalledWith({
       data: createContactTypeDto,
     });
     expect(result).toEqual(contactTypeMock);
@@ -89,32 +89,32 @@ describe('ContactTypeService', () => {
     const result = await service.getContactTypes('en', paginationMock);
 
     expect(paginationService.paginate).toHaveBeenCalledWith(
-      prismaService.person_contact_types,
+      prismaService.person_contact_type,
       paginationMock,
       {
         where: {},
         include: {
-          person_contact_type_translations: {
+          person_contact_type_locale: {
             where: {
-              locales: { code: 'en' },
+              locale: { code: 'en' },
             },
             select: { name: true },
           },
         },
       },
-      'person_contact_type_translations',
+      'person_contact_type_locale',
     );
     expect(result).toEqual([contactTypeMock]);
   });
 
   it('should get a contact type by ID', async () => {
     (
-      prismaService.person_contact_types.findUnique as jest.Mock
+      prismaService.person_contact_type.findUnique as jest.Mock
     ).mockResolvedValue(contactTypeMock);
 
     const result = await service.getContactTypeById(1);
 
-    expect(prismaService.person_contact_types.findUnique).toHaveBeenCalledWith({
+    expect(prismaService.person_contact_type.findUnique).toHaveBeenCalledWith({
       where: { id: 1 },
     });
     expect(result).toEqual(contactTypeMock);
@@ -122,7 +122,7 @@ describe('ContactTypeService', () => {
 
   it('should throw NotFoundException if contact type not found by ID', async () => {
     (
-      prismaService.person_contact_types.findUnique as jest.Mock
+      prismaService.person_contact_type.findUnique as jest.Mock
     ).mockResolvedValue(null);
 
     await expect(service.getContactTypeById(999)).rejects.toThrow(
@@ -138,14 +138,14 @@ describe('ContactTypeService', () => {
       name: 'Updated Name',
     };
 
-    (prismaService.person_contact_types.update as jest.Mock).mockResolvedValue({
+    (prismaService.person_contact_type.update as jest.Mock).mockResolvedValue({
       ...contactTypeMock,
       ...updateContactTypeDto,
     });
 
     const result = await service.update(1, updateContactTypeDto);
 
-    expect(prismaService.person_contact_types.update).toHaveBeenCalledWith({
+    expect(prismaService.person_contact_type.update).toHaveBeenCalledWith({
       where: { id: 1 },
       data: updateContactTypeDto,
     });
@@ -156,14 +156,14 @@ describe('ContactTypeService', () => {
     const deleteDto: DeleteDTO = { ids: [1, 2] };
 
     (
-      prismaService.person_contact_types.deleteMany as jest.Mock
+      prismaService.person_contact_type.deleteMany as jest.Mock
     ).mockResolvedValue({
       count: 2,
     });
 
     const result = await service.remove(deleteDto);
 
-    expect(prismaService.person_contact_types.deleteMany).toHaveBeenCalledWith({
+    expect(prismaService.person_contact_type.deleteMany).toHaveBeenCalledWith({
       where: {
         id: { in: deleteDto.ids },
       },

@@ -69,9 +69,9 @@ export class RouteService {
       paginationParams,
       {
         include: {
-          role_translations: {
+          role_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -91,7 +91,7 @@ export class RouteService {
           },
         },
       },
-      'role_translations',
+      'role_locale',
     );
   }
 
@@ -121,9 +121,9 @@ export class RouteService {
       paginationParams,
       {
         include: {
-          screen_translations: {
+          screen_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -142,18 +142,18 @@ export class RouteService {
           },
         },
       },
-      'screen_translations',
+      'screen_locale',
     );
   }
 
   async updateScreens(routeId: number, data: UpdateIdsDTO) {
-    await this.prismaService.route_screens.deleteMany({
+    await this.prismaService.route_screen.deleteMany({
       where: {
         route_id: routeId,
       },
     });
 
-    return this.prismaService.route_screens.createMany({
+    return this.prismaService.route_screen.createMany({
       data: data.ids.map((screenId) => ({
         screen_id: screenId,
         route_id: routeId,

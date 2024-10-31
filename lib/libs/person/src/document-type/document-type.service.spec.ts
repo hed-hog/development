@@ -1,15 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { DocumentTypeService } from './document-type.service';
-import { PrismaService } from '@hedhog/prisma';
 import {
   PageOrderDirection,
   PaginationDTO,
   PaginationService,
 } from '@hedhog/pagination';
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { PrismaService } from '@hedhog/prisma';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { DeleteDTO } from '../dto/delete.dto';
+import { DocumentTypeService } from './document-type.service';
 import { CreateDocumentTypeDTO } from './dto/create-document-type.dto';
 import { UpdateDocumentTypeDTO } from './dto/update-document-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
 
 describe('DocumentTypeService', () => {
   let service: DocumentTypeService;
@@ -30,7 +30,7 @@ describe('DocumentTypeService', () => {
         {
           provide: PrismaService,
           useValue: {
-            person_document_types: {
+            person_document_type: {
               create: jest.fn().mockResolvedValue(documentTypeMock),
               findUnique: jest.fn().mockResolvedValue(documentTypeMock),
               update: jest.fn().mockResolvedValue(documentTypeMock),
@@ -64,7 +64,7 @@ describe('DocumentTypeService', () => {
 
     const result = await service.create(createDocumentTypeDto);
 
-    expect(prismaService.person_document_types.create).toHaveBeenCalledWith({
+    expect(prismaService.person_document_type.create).toHaveBeenCalledWith({
       data: createDocumentTypeDto,
     });
     expect(result).toEqual(documentTypeMock);
@@ -84,7 +84,7 @@ describe('DocumentTypeService', () => {
     const result = await service.getDocumentTypes(locale, paginationParams);
 
     expect(paginationService.paginate).toHaveBeenCalledWith(
-      prismaService.person_document_types,
+      prismaService.person_document_type,
       paginationParams,
       {
         where: {
@@ -93,7 +93,7 @@ describe('DocumentTypeService', () => {
         include: {
           person_document_type_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -113,11 +113,9 @@ describe('DocumentTypeService', () => {
 
     const result = await service.getDocumentTypeById(documentTypeId);
 
-    expect(prismaService.person_document_types.findUnique).toHaveBeenCalledWith(
-      {
-        where: { id: documentTypeId },
-      },
-    );
+    expect(prismaService.person_document_type.findUnique).toHaveBeenCalledWith({
+      where: { id: documentTypeId },
+    });
     expect(result).toEqual(documentTypeMock);
   });
 
@@ -125,7 +123,7 @@ describe('DocumentTypeService', () => {
     const documentTypeId = 999; // Non-existent ID
 
     (
-      prismaService.person_document_types.findUnique as jest.Mock
+      prismaService.person_document_type.findUnique as jest.Mock
     ).mockResolvedValue(null);
 
     await expect(service.getDocumentTypeById(documentTypeId)).rejects.toThrow(
@@ -144,7 +142,7 @@ describe('DocumentTypeService', () => {
 
     const result = await service.update(documentTypeId, updateDocumentTypeDto);
 
-    expect(prismaService.person_document_types.update).toHaveBeenCalledWith({
+    expect(prismaService.person_document_type.update).toHaveBeenCalledWith({
       where: { id: documentTypeId },
       data: updateDocumentTypeDto,
     });
@@ -156,15 +154,13 @@ describe('DocumentTypeService', () => {
 
     const result = await service.remove(deleteDto);
 
-    expect(prismaService.person_document_types.deleteMany).toHaveBeenCalledWith(
-      {
-        where: {
-          id: {
-            in: deleteDto.ids,
-          },
+    expect(prismaService.person_document_type.deleteMany).toHaveBeenCalledWith({
+      where: {
+        id: {
+          in: deleteDto.ids,
         },
       },
-    );
+    });
     expect(result).toEqual({ count: 1 });
   });
 

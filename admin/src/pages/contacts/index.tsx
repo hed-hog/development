@@ -176,7 +176,7 @@ export default function Page() {
   const { t: customsT } = useTranslation('customs')
   const { t: usersT } = useTranslation('users')
 
-  const locales: { [key: string]: Locale } = {
+  const locale: { [key: string]: Locale } = {
     en: enUS,
     pt: ptBR,
   }
@@ -186,7 +186,7 @@ export default function Page() {
     if (date.getHours() >= 21) {
       utcDate.setUTCDate(utcDate.getUTCDate() + 1)
     }
-    return format(utcDate, 'P', { locale: locales[language] })
+    return format(utcDate, 'P', { locale: locale[language] })
   }
 
   useEffect(() => {
@@ -1108,7 +1108,7 @@ export default function Page() {
                     {formatDistance(
                       new Date(String(item.created_at)),
                       new Date(),
-                      { addSuffix: true, locale: locales[language] }
+                      { addSuffix: true, locale: locale[language] }
                     )}
                   </h4>
                 </div>

@@ -1,5 +1,3 @@
-import { CSSProperties, useState } from 'react'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/custom/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -7,11 +5,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { CalendarIcon } from 'lucide-react'
-import { FormControl } from './form'
+import { cn } from '@/lib/utils'
 import { format, Locale } from 'date-fns'
 import { enUS, ptBR } from 'date-fns/locale'
+import { CalendarIcon } from 'lucide-react'
+import { CSSProperties, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FormControl } from './form'
 
 interface IDatePickerFieldProps {
   name?: string
@@ -42,7 +42,7 @@ export function DatePickerField({
 
   const [open, setOpen] = useState(false)
 
-  const locales: { [key: string]: Locale } = {
+  const locale: { [key: string]: Locale } = {
     en: enUS,
     pt: ptBR,
   }
@@ -52,7 +52,7 @@ export function DatePickerField({
     if (date.getHours() >= 21) {
       utcDate.setUTCDate(utcDate.getUTCDate() + 1)
     }
-    return format(utcDate, 'P', { locale: locales[language] })
+    return format(utcDate, 'P', { locale: locale[language] })
   }
 
   return (

@@ -1,15 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { LocaleService } from './locale.service';
+import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import {
-  PaginationService,
-  PaginationDTO,
-  PageOrderDirection,
-} from '@hedhog/pagination';
 import { BadRequestException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { DeleteDTO } from './dto/delete.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { LocaleService } from './locale.service';
 
 describe('LocaleService', () => {
   let service: LocaleService;
@@ -26,7 +22,7 @@ describe('LocaleService', () => {
             translations: {
               findMany: jest.fn(),
             },
-            locales: {
+            locale: {
               findUnique: jest.fn(),
               create: jest.fn(),
               update: jest.fn(),
@@ -81,7 +77,7 @@ describe('LocaleService', () => {
   });
   /*
   describe('get', () => {
-    it('should paginate locales', async () => {
+    it('should paginate locale', async () => {
       const mockPaginationResult = {
         data: [],
         total: 10,
@@ -106,7 +102,7 @@ describe('LocaleService', () => {
       const result = await service.get(paginationParams );
 
       expect(paginationService.paginate).toHaveBeenCalledWith(
-        prismaService.locales,
+        prismaService.locale,
         paginationParams,
         expect.anything(),
       );
@@ -125,7 +121,7 @@ describe('LocaleService', () => {
         updated_at: new Date(),
       };
       jest
-        .spyOn(prismaService.locales, 'findUnique')
+        .spyOn(prismaService.locale, 'findUnique')
         .mockResolvedValue(mockLocale);
 
       const result = await service.getById(1);
@@ -148,7 +144,7 @@ describe('LocaleService', () => {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      jest.spyOn(prismaService.locales, 'create').mockResolvedValue(mockLocale);
+      jest.spyOn(prismaService.locale, 'create').mockResolvedValue(mockLocale);
 
       const result = await service.create(mockCreateDTO);
       expect(result).toBe(mockLocale);
@@ -170,7 +166,7 @@ describe('LocaleService', () => {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      jest.spyOn(prismaService.locales, 'update').mockResolvedValue(mockLocale);
+      jest.spyOn(prismaService.locale, 'update').mockResolvedValue(mockLocale);
 
       const result = await service.update({ id: 1, data: mockUpdateDTO });
       expect(result).toBe(mockLocale);
@@ -184,10 +180,10 @@ describe('LocaleService', () => {
       );
     });
 
-    it('should delete locales by IDs', async () => {
+    it('should delete locale by IDs', async () => {
       const mockDeleteDTO: DeleteDTO = { ids: [1, 2, 3] };
       jest
-        .spyOn(prismaService.locales, 'deleteMany')
+        .spyOn(prismaService.locale, 'deleteMany')
         .mockResolvedValue({ count: 3 });
 
       const result = await service.delete(mockDeleteDTO);

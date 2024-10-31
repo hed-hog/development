@@ -31,7 +31,7 @@ describe('AddressTypeService', () => {
         {
           provide: PrismaService,
           useValue: {
-            person_address_types: {
+            person_address_type: {
               create: jest.fn() as PersonAddressTypesMock['create'],
               findUnique: jest.fn() as PersonAddressTypesMock['findUnique'],
               update: jest.fn() as PersonAddressTypesMock['update'],
@@ -62,13 +62,13 @@ describe('AddressTypeService', () => {
       name: 'Residential',
     };
 
-    (prismaService.person_address_types.create as jest.Mock).mockResolvedValue(
+    (prismaService.person_address_type.create as jest.Mock).mockResolvedValue(
       addressTypeMock,
     );
 
     const result = await service.create(createAddressTypeDto);
 
-    expect(prismaService.person_address_types.create).toHaveBeenCalledWith({
+    expect(prismaService.person_address_type.create).toHaveBeenCalledWith({
       data: createAddressTypeDto,
     });
     expect(result).toEqual(addressTypeMock);
@@ -78,12 +78,12 @@ describe('AddressTypeService', () => {
     const addressTypeId = 1;
 
     (
-      prismaService.person_address_types.findUnique as jest.Mock
+      prismaService.person_address_type.findUnique as jest.Mock
     ).mockResolvedValue(addressTypeMock);
 
     const result = await service.getAddressTypeById(addressTypeId);
 
-    expect(prismaService.person_address_types.findUnique).toHaveBeenCalledWith({
+    expect(prismaService.person_address_type.findUnique).toHaveBeenCalledWith({
       where: { id: addressTypeId },
     });
     expect(result).toEqual(addressTypeMock);
@@ -93,7 +93,7 @@ describe('AddressTypeService', () => {
     const addressTypeId = 999;
 
     (
-      prismaService.person_address_types.findUnique as jest.Mock
+      prismaService.person_address_type.findUnique as jest.Mock
     ).mockResolvedValue(null);
 
     await expect(service.getAddressTypeById(addressTypeId)).rejects.toThrow(
@@ -110,14 +110,14 @@ describe('AddressTypeService', () => {
       name: 'Commercial',
     };
 
-    (prismaService.person_address_types.update as jest.Mock).mockResolvedValue({
+    (prismaService.person_address_type.update as jest.Mock).mockResolvedValue({
       ...addressTypeMock,
       ...updateAddressTypeDto,
     });
 
     const result = await service.update(addressTypeId, updateAddressTypeDto);
 
-    expect(prismaService.person_address_types.update).toHaveBeenCalledWith({
+    expect(prismaService.person_address_type.update).toHaveBeenCalledWith({
       where: { id: addressTypeId },
       data: updateAddressTypeDto,
     });
@@ -128,14 +128,14 @@ describe('AddressTypeService', () => {
     const deleteDto: DeleteDTO = { ids: [1, 2] };
 
     (
-      prismaService.person_address_types.deleteMany as jest.Mock
+      prismaService.person_address_type.deleteMany as jest.Mock
     ).mockResolvedValue({
       count: 2,
     });
 
     const result = await service.remove(deleteDto);
 
-    expect(prismaService.person_address_types.deleteMany).toHaveBeenCalledWith({
+    expect(prismaService.person_address_type.deleteMany).toHaveBeenCalledWith({
       where: {
         id: {
           in: deleteDto.ids,

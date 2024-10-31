@@ -20,7 +20,7 @@ describe('Locale API tests', () => {
   const localeId = 1;
 
   /* test('Create new locale', async () => {
-    const response = await axios.post('/locales', newLocale, {
+    const response = await axios.post('/locale', newLocale, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -33,8 +33,8 @@ describe('Locale API tests', () => {
   });
 */
   /*
-  test('Get all locales with pagination', async () => {
-    const response = await axios.get('/locales', {
+  test('Get all locale with pagination', async () => {
+    const response = await axios.get('/locale', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -50,7 +50,7 @@ describe('Locale API tests', () => {
   test('Update locale', async () => {
     const updatedName = 'english2';
     const response = await axios.patch(
-      `/locales/${localeId}`,
+      `/locale/${localeId}`,
       { name: updatedName },
       {
         headers: {
@@ -64,7 +64,7 @@ describe('Locale API tests', () => {
   });*/
 
   test('Get locale by ID', async () => {
-    const response = await axios.get(`/locales/${localeId}`, {
+    const response = await axios.get(`/locale/${localeId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -76,7 +76,7 @@ describe('Locale API tests', () => {
 
   /*
   test('Delete locale', async () => {
-    const response = await axios.delete(`/locales`, {
+    const response = await axios.delete(`/locale`, {
       data: {
         ids: [localeId],
       },
@@ -90,7 +90,7 @@ describe('Locale API tests', () => {
 
   /*
   test('Get translations for locale', async () => {
-    const response = await axios.get(`/locales/${newLocale.code}/translation`, {
+    const response = await axios.get(`/locale/${newLocale.code}/translation`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

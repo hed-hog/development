@@ -1,15 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PersonTypeService } from './person-type.service';
-import { PrismaService } from '@hedhog/prisma';
 import {
   PageOrderDirection,
   PaginationDTO,
   PaginationService,
 } from '@hedhog/pagination';
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { PrismaService } from '@hedhog/prisma';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { DeleteDTO } from '../dto/delete.dto';
 import { CreatePersonTypeDTO } from './dto/create-person-type.dto';
 import { UpdatePersonTypeDTO } from './dto/update-person-type.dto';
-import { DeleteDTO } from '../dto/delete.dto';
+import { PersonTypeService } from './person-type.service';
 
 describe('PersonTypeService', () => {
   let service: PersonTypeService;
@@ -30,7 +30,7 @@ describe('PersonTypeService', () => {
         {
           provide: PrismaService,
           useValue: {
-            person_types: {
+            person_type: {
               create: jest.fn().mockResolvedValue(personTypeMock),
               findUnique: jest.fn().mockResolvedValue(personTypeMock),
               update: jest.fn().mockResolvedValue(personTypeMock),
@@ -64,7 +64,7 @@ describe('PersonTypeService', () => {
 
     const result = await service.create(createPersonTypeDto);
 
-    expect(prismaService.person_types.create).toHaveBeenCalledWith({
+    expect(prismaService.person_type.create).toHaveBeenCalledWith({
       data: createPersonTypeDto,
     });
     expect(result).toEqual(personTypeMock);
@@ -84,16 +84,16 @@ describe('PersonTypeService', () => {
     const result = await service.getPersonTypes(locale, paginationParams);
 
     expect(paginationService.paginate).toHaveBeenCalledWith(
-      prismaService.person_types,
+      prismaService.person_type,
       paginationParams,
       {
         where: {
           OR: [],
         },
         include: {
-          person_type_translations: {
+          person_type_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -103,7 +103,7 @@ describe('PersonTypeService', () => {
           },
         },
       },
-      'person_type_translations',
+      'person_type_locale',
     );
     expect(result).toEqual(paginationMockResult);
   });
@@ -113,7 +113,7 @@ describe('PersonTypeService', () => {
 
     const result = await service.getPersonTypeById(personTypeId);
 
-    expect(prismaService.person_types.findUnique).toHaveBeenCalledWith({
+    expect(prismaService.person_type.findUnique).toHaveBeenCalledWith({
       where: { id: personTypeId },
     });
     expect(result).toEqual(personTypeMock);
@@ -122,9 +122,7 @@ describe('PersonTypeService', () => {
   it('should throw NotFoundException if person type not found', async () => {
     const personTypeId = 999; // Non-existent ID
 
-    (prismaService.person_types.findUnique as jest.Mock).mockResolvedValue(
-      null,
-    );
+    (prismaService.person_type.findUnique as jest.Mock).mockResolvedValue(null);
 
     await expect(service.getPersonTypeById(personTypeId)).rejects.toThrow(
       NotFoundException,
@@ -142,7 +140,7 @@ describe('PersonTypeService', () => {
 
     const result = await service.update(personTypeId, updatePersonTypeDto);
 
-    expect(prismaService.person_types.update).toHaveBeenCalledWith({
+    expect(prismaService.person_type.update).toHaveBeenCalledWith({
       where: { id: personTypeId },
       data: updatePersonTypeDto,
     });
@@ -154,7 +152,7 @@ describe('PersonTypeService', () => {
 
     const result = await service.remove(deleteDto);
 
-    expect(prismaService.person_types.deleteMany).toHaveBeenCalledWith({
+    expect(prismaService.person_type.deleteMany).toHaveBeenCalledWith({
       where: {
         id: {
           in: deleteDto.ids,

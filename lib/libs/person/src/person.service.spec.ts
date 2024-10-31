@@ -95,7 +95,7 @@ describe('PersonService', () => {
           OR: [],
         },
         include: {
-          person_types: expect.any(Object),
+          person_type: expect.any(Object),
           person_documents: expect.any(Object),
           person_contacts: expect.any(Object),
         },

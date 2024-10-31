@@ -31,9 +31,9 @@ export class Plan_durationsService {
       plan_durations: {
         select: {
           id: true,
-          plan_duration_translations: {
+          plan_duration_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -46,7 +46,7 @@ export class Plan_durationsService {
     };
 
     return this.paginationService.paginate(
-      this.prismaService.plan_duration_translations,
+      this.prismaService.plan_duration_locale,
       paginationParams,
       {
         where: {
@@ -54,7 +54,7 @@ export class Plan_durationsService {
         },
         include,
       },
-      'plan_duration_translations',
+      'plan_duration_locale',
     );
   }
 

@@ -77,10 +77,10 @@ export class LocaleService {
       codes.push((item as any).code);
     }
 
-    const { code, region, locales } = this.parseLocale(locale);
+    const { code, region, locale } = this.parseLocale(locale);
 
     const where: any = {
-      locales: {
+      locale: {
         code,
       },
       translation_namespaces: {
@@ -88,7 +88,7 @@ export class LocaleService {
       },
     };
 
-    if (locales.length > 1) {
+    if (locale.length > 1) {
       where.locale.region = region;
     }
 
@@ -119,7 +119,7 @@ export class LocaleService {
     return {
       code,
       region,
-      locales: localeCodes,
+      locale: localeCodes,
     };
   }
 
@@ -132,9 +132,9 @@ export class LocaleService {
       namespace = 'translation';
     }
 
-    const { code, region, locales } = this.parseLocale(localeCode);
+    const { code, region, locale } = this.parseLocale(localeCode);
     const where: any = {
-      locales: {
+      locale: {
         code,
       },
       translation_namespaces: {
@@ -142,8 +142,8 @@ export class LocaleService {
       },
     };
 
-    if (locales.length > 1) {
-      where.locales.region = region;
+    if (locale.length > 1) {
+      where.locale.region = region;
     }
 
     const values = await this.prismaService.translation.findMany({
@@ -186,10 +186,10 @@ export class LocaleService {
       codes.push((item as any).code);
     }
 
-    const { code, region, locales } = this.parseLocale(locale);
+    const { code, region, locale } = this.parseLocale(locale);
 
     const where: any = {
-      locales: {
+      locale: {
         code,
       },
       translation_namespaces: {
@@ -197,7 +197,7 @@ export class LocaleService {
       },
     };
 
-    if (locales.length > 1) {
+    if (locale.length > 1) {
       where.locale.region = region;
     }
 
@@ -230,9 +230,9 @@ export class LocaleService {
     }));
   }
 
-  async getById(localesId: number) {
+  async getById(localeId: number) {
     return this.prismaService.locale.findUnique({
-      where: { id: localesId },
+      where: { id: localeId },
     });
   }
 
@@ -271,23 +271,23 @@ export class LocaleService {
     return modelNames.join('_');
   }
 
-  async createModelWithLocales<T>(
+  async createModelWithLocale<T>(
     modelName: string,
     foreginKeyName: string,
     data: T,
-    locales: Record<string, string>,
+    locale: Record<string, string>,
   ) {
     const model = await this.prismaService[modelName].create({
       data,
     });
 
-    for (const localeCode of Object.keys(locales)) {
+    for (const localeCode of Object.keys(locale)) {
       const locale = await this.getByCode(localeCode);
 
       const data: any = {};
 
-      for (const key of Object.keys(locales[localeCode])) {
-        data[key] = locales[localeCode][key];
+      for (const key of Object.keys(locale[localeCode])) {
+        data[key] = locale[localeCode][key];
       }
 
       await this.prismaService[this.getTableNameTranslations(modelName)].create(
@@ -306,12 +306,12 @@ export class LocaleService {
       include: {
         [this.getTableNameTranslations(modelName)]: {
           where: {
-            locales: {
+            locale: {
               enabled: true,
             },
           },
           include: {
-            locales: {
+            locale: {
               select: {
                 code: true,
               },
@@ -322,20 +322,20 @@ export class LocaleService {
     });
   }
 
-  async updateModelWithLocales<T extends any>(
+  async updateModelWithLocale<T extends any>(
     modelName: string,
     foreginKeyName: string,
     id: number,
     data: T,
-    locales: Record<string, string>,
+    locale: Record<string, string>,
   ) {
-    for (const localeCode of Object.keys(locales)) {
+    for (const localeCode of Object.keys(locale)) {
       const locale = await this.getByCode(localeCode);
 
       const data: any = {};
 
-      for (const key of Object.keys(locales[localeCode])) {
-        data[key] = locales[localeCode][key];
+      for (const key of Object.keys(locale[localeCode])) {
+        data[key] = locale[localeCode][key];
       }
 
       await this.prismaService[this.getTableNameTranslations(modelName)].upsert(

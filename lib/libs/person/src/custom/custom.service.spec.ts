@@ -1,10 +1,10 @@
+import { PaginationService } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CustomService } from './custom.service';
-import { PrismaService } from '@hedhog/prisma';
-import { PaginationService } from '@hedhog/pagination';
 import { CreatePersonCustomDTO } from './dto/create-custom.dto';
 import { UpdatePersonCustomDTO } from './dto/update-custom.dto';
-import { NotFoundException } from '@nestjs/common';
 
 describe('CustomService', () => {
   let service: CustomService;
@@ -89,7 +89,7 @@ describe('CustomService', () => {
           person_id: personId,
         },
         include: {
-          person_custom_types: {
+          person_custom_type: {
             select: {
               id: true,
               name: true,
@@ -113,7 +113,7 @@ describe('CustomService', () => {
         id: customId,
       },
       include: {
-        person_custom_types: {
+        person_custom_type: {
           select: {
             id: true,
             name: true,

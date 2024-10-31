@@ -1,8 +1,8 @@
+import { PaginationService } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DocumentService } from './document.service';
-import { PrismaService } from '@hedhog/prisma';
-import { PaginationService } from '@hedhog/pagination';
-import { NotFoundException } from '@nestjs/common';
 import { CreatePersonDocumentDTO } from './dto/create-document.dto';
 import { UpdatePersonDocumentDTO } from './dto/update-document.dto';
 
@@ -20,7 +20,7 @@ describe('DocumentService', () => {
     country_id: 1,
     issued_at: new Date(),
     expiry_at: new Date(),
-    person_document_types: {
+    person_document_type: {
       id: 1,
       name: 'Type Name',
     },
@@ -102,7 +102,7 @@ describe('DocumentService', () => {
           person_id: personId,
         },
         include: {
-          person_document_types: {
+          person_document_type: {
             select: {
               id: true,
               name: true,
@@ -131,7 +131,7 @@ describe('DocumentService', () => {
         type_id: typeId,
       },
       include: {
-        person_document_types: {
+        person_document_type: {
           select: {
             id: true,
             name: true,
@@ -173,7 +173,7 @@ describe('DocumentService', () => {
         id: documentId,
       },
       include: {
-        person_document_types: {
+        person_document_type: {
           select: {
             id: true,
             name: true,

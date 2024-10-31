@@ -31,9 +31,9 @@ export class Subscription_statusesService {
       subscription_statuses: {
         select: {
           id: true,
-          subscription_status_translations: {
+          subscription_status_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -46,7 +46,7 @@ export class Subscription_statusesService {
     };
 
     return this.paginationService.paginate(
-      this.prismaService.subscription_status_translations,
+      this.prismaService.subscription_status_locale,
       paginationParams,
       {
         where: {
@@ -54,7 +54,7 @@ export class Subscription_statusesService {
         },
         include,
       },
-      'subscription_status_translations',
+      'subscription_status_locale',
     );
   }
 

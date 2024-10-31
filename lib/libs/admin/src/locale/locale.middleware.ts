@@ -13,13 +13,13 @@ export class LocaleMiddleware implements NestMiddleware {
     let code = locale.split(',')[0].split('-')[0];
 
     if (!this.languages.length) {
-      const locales = await this.prisma.locale.findMany({
+      const locale = await this.prisma.locale.findMany({
         select: {
           code: true,
         },
       });
 
-      for (const l of locales) {
+      for (const l of locale) {
         this.languages.push(l.code);
       }
     }

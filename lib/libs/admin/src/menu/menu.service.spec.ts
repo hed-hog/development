@@ -1,12 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { MenuService } from './menu.service';
-import { PrismaService } from '@hedhog/prisma';
 import {
   PageOrderDirection,
   PaginationDTO,
   PaginationService,
 } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
 import { BadRequestException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { MenuService } from './menu.service';
 
 describe('MenuService', () => {
   let menuService: MenuService;
@@ -137,7 +137,7 @@ describe('MenuService', () => {
         prismaService.screens,
         paginationParams,
         expect.anything(),
-        'screen_translations',
+        'screen_locale',
       );
     });
   });

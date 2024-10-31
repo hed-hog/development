@@ -118,9 +118,9 @@ export class RoleService {
       paginationParams,
       {
         include: {
-          menu_translations: {
+          menu_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -139,7 +139,7 @@ export class RoleService {
           },
         },
       },
-      'menu_translations',
+      'menu_locale',
     );
   }
 
@@ -173,9 +173,9 @@ export class RoleService {
       paginationParams,
       {
         include: {
-          screen_translations: {
+          screen_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -194,7 +194,7 @@ export class RoleService {
           },
         },
       },
-      'screen_translations',
+      'screen_locale',
     );
   }
 
@@ -214,9 +214,9 @@ export class RoleService {
           OR,
         },
         include: {
-          role_translations: {
+          role_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -227,27 +227,27 @@ export class RoleService {
           },
         },
       },
-      'role_translations',
+      'role_locale',
     );
   }
 
   async get(locale: string, roleId: number) {
     return getWithLocale(
       locale,
-      'role_translations',
+      'role_locale',
       await this.prismaService.role.findUnique({
         where: { id: roleId },
         include: {
-          role_translations: {
+          role_locale: {
             where: {
-              locales: {
+              locale: {
                 enabled: true,
               },
             },
             select: {
               name: true,
               description: true,
-              locales: {
+              locale: {
                 select: {
                   code: true,
                 },
@@ -259,28 +259,28 @@ export class RoleService {
     );
   }
 
-  async create({ slug, locales }: CreateDTO) {
-    return this.localeService.createModelWithLocales(
+  async create({ slug, locale }: CreateDTO) {
+    return this.localeService.createModelWithLocale(
       'roles',
       'role_id',
       { slug },
-      locales,
+      locale,
     );
   }
 
   async update({
     id,
-    data: { locales, slug },
+    data: { locale, slug },
   }: {
     id: number;
     data: UpdateDTO;
   }) {
-    return this.localeService.updateModelWithLocales(
+    return this.localeService.updateModelWithLocale(
       'roles',
       'role_id',
       id,
       { slug },
-      locales,
+      locale,
     );
   }
 

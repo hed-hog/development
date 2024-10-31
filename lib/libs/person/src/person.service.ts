@@ -79,7 +79,7 @@ export class PersonService {
                   id: true,
                   person_contact_type_locale: {
                     where: {
-                      locales: {
+                      locale: {
                         code: locale,
                       },
                     },
@@ -145,7 +145,7 @@ export class PersonService {
         /*
         person_contacts: {
           include: {
-            person_contact_types: {
+            person_contact_type: {
               select: {
                 id: true,
                 name: true,
@@ -155,7 +155,7 @@ export class PersonService {
         },
         person_customs: {
           include: {
-            person_custom_types: {
+            person_custom_type: {
               select: {
                 id: true,
                 name: true,
@@ -165,7 +165,7 @@ export class PersonService {
         },
         person_documents: {
           include: {
-            person_document_types: {
+            person_document_type: {
               select: {
                 id: true,
                 name: true,

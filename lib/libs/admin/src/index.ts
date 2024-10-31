@@ -31,4 +31,4 @@ export * from './locale/locale.service';
 
 export * from './dto/delete.dto';
 export * from './dto/update-ids.dto';
-export * from './dto/with-locales.dto';
+export * from './dto/with-locale.dto';

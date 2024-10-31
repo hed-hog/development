@@ -61,9 +61,9 @@ export class SettingsService {
         include: {
           setting_groups: {
             include: {
-              setting_group_translations: {
+              setting_group_locale: {
                 where: {
-                  locales: {
+                  locale: {
                     code: locale,
                   },
                 },
@@ -74,9 +74,9 @@ export class SettingsService {
               },
             },
           },
-          setting_translations: {
+          setting_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -87,12 +87,12 @@ export class SettingsService {
           },
         },
       },
-      'setting_translations',
+      'setting_locale',
     );
 
     result.data = result.data.map((setting: any) => {
       setting.setting_groups = itemTranslations(
-        'setting_group_translations',
+        'setting_group_locale',
         setting.setting_groups,
       );
       return setting;
@@ -119,9 +119,9 @@ export class SettingsService {
           OR,
         },
         include: {
-          setting_group_translations: {
+          setting_group_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -132,7 +132,7 @@ export class SettingsService {
           },
         },
       },
-      'setting_group_translations',
+      'setting_group_locale',
     );
 
     return result;
@@ -156,9 +156,9 @@ export class SettingsService {
         include: {
           setting_groups: {
             include: {
-              setting_group_translations: {
+              setting_group_locale: {
                 where: {
-                  locales: {
+                  locale: {
                     code: locale,
                   },
                 },
@@ -169,9 +169,9 @@ export class SettingsService {
               },
             },
           },
-          setting_translations: {
+          setting_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -182,12 +182,12 @@ export class SettingsService {
           },
         },
       },
-      'setting_translations',
+      'setting_locale',
     );
 
     result.data = result.data.map((setting: any) => {
       setting.setting_groups = itemTranslations(
-        'setting_group_translations',
+        'setting_group_locale',
         setting.setting_groups,
       );
       return setting;

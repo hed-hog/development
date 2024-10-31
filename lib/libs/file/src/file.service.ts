@@ -57,7 +57,7 @@ export class FileService {
       this.settings,
     );
 
-    const providerData = await this.prismaService.file_providers.findFirst({
+    const providerData = await this.prismaService.file_provider.findFirst({
       where: {
         slug: providerName,
       },

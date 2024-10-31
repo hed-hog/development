@@ -1,7 +1,3 @@
-import * as React from 'react'
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
-import { DayPicker } from 'react-day-picker'
-import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/custom/button'
 import {
   Select,
@@ -10,8 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useTranslation } from 'react-i18next'
+import { cn } from '@/lib/utils'
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
 import { enUS, Locale, ptBR } from 'date-fns/locale'
+import * as React from 'react'
+import { DayPicker } from 'react-day-picker'
+import { useTranslation } from 'react-i18next'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   name: string
@@ -53,7 +53,7 @@ function Calendar({
 
   const years = Array.from({ length: 100 }, (_, i) => currentYear - i)
 
-  const locales: { [key: string]: Locale } = {
+  const locale: { [key: string]: Locale } = {
     en: enUS,
     pt: ptBR,
   }
@@ -117,7 +117,7 @@ function Calendar({
         setSelectedMonth(date.getMonth())
         setSelectedYear(date.getFullYear())
       }}
-      locale={locales[language]}
+      locale={locale[language]}
       className={cn('p-3', className)}
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',

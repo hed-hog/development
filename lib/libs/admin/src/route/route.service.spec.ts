@@ -1,15 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import {
   PageOrderDirection,
   PaginationDTO,
   PaginationService,
 } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { RouteService } from './route.service';
-import { UpdateDTO } from './dto/update.dto';
-import { CreateDTO } from './dto/create.dto';
+import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { RouteService } from './route.service';
 
 describe('RouteService', () => {
   let service: RouteService;
@@ -227,9 +227,9 @@ describe('RouteService', () => {
         paginationParams,
         {
           include: {
-            role_translations: {
+            role_locale: {
               where: {
-                locales: { code: locale },
+                locale: { code: locale },
               },
               select: {
                 name: true,
@@ -245,7 +245,7 @@ describe('RouteService', () => {
             },
           },
         },
-        'role_translations',
+        'role_locale',
       );
     });
   });
@@ -275,9 +275,9 @@ describe('RouteService', () => {
         paginationParams,
         {
           include: {
-            screen_translations: {
+            screen_locale: {
               where: {
-                locales: { code: locale },
+                locale: { code: locale },
               },
               select: {
                 name: true,
@@ -292,7 +292,7 @@ describe('RouteService', () => {
             },
           },
         },
-        'screen_translations',
+        'screen_locale',
       );
     });
   });

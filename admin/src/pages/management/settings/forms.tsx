@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom'
 
 export default function Page() {
   const { t } = useTranslation(['translation', 'settings'])
-  const { data: locales } = useLocales()
+  const { data: locale } = useLocales()
   const { mutate, isPending } = useSettings()
   const { setText } = useSetProperties()
   const { mutateAsync: mutateLocale, isPending: isPendingLocale } =
@@ -28,7 +28,7 @@ export default function Page() {
   })
   const { slug } = useParams()
   const { data, isLoading } = useSettingsFromGroup(String(slug))
-  const [localesEnabled, setLocalesEnabled] = useState<string[]>([])
+  const [localeEnabled, setLocalesEnabled] = useState<string[]>([])
 
   const handleDataChange = (dataValues: any) => {
     Object.keys(dataValues).forEach((key) => {
@@ -70,7 +70,7 @@ export default function Page() {
             description: {
               text: item.description,
             },
-            options: locales?.data.data.map((l: any) => ({
+            options: locale?.data.data.map((l: any) => ({
               value: l.code,
               label: l.name,
             })),
@@ -405,7 +405,7 @@ export default function Page() {
           }
       }
     },
-    [locales, slug]
+    [locale, slug]
   )
 
   if (isLoading) {
@@ -556,10 +556,10 @@ export default function Page() {
 
           if (slug === 'localization') {
             mutateLocale({
-              codes: localesEnabled,
+              codes: localeEnabled,
             }).then(() => {
-              if (!localesEnabled.includes(data.language)) {
-                data.language = localesEnabled[0]
+              if (!localeEnabled.includes(data.language)) {
+                data.language = localeEnabled[0]
               }
               save()
             })

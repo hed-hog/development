@@ -1,8 +1,8 @@
 import { IsObject, IsOptional, ValidateNested } from 'class-validator';
 
-export class WithLocalesDTO {
+export class WithLocaleDTO {
   @IsOptional()
   @IsObject()
   @ValidateNested({ each: true })
-  locales: Record<string, string>;
+  locale: Record<string, string>;
 }

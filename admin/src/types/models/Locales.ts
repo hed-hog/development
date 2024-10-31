@@ -1,39 +1,39 @@
-import { SettingGroupTranslations } from './SettingGroupTranslations';
-import { PersonTypeTranslations } from './PersonTypeTranslations';
-import { PersonDocumentTypeTranslations } from './PersonDocumentTypeTranslations';
-import { PersonContactTypeTranslations } from './PersonContactTypeTranslations';
-import { CountryTranslations } from './CountryTranslations';
-import { ScreenTranslations } from './ScreenTranslations';
-import { Translations } from './Translations';
-import { SettingTranslations } from './SettingTranslations';
-import { RoleTranslations } from './RoleTranslations';
-import { FileProviderTranslations } from './FileProviderTranslations';
-import { MultifactorTranslations } from './MultifactorTranslations';
-import { MenuTranslations } from './MenuTranslations';
-import { PersonAddressTypeTranslations } from './PersonAddressTypeTranslations';
-import { PersonCustomTypeTranslations } from './PersonCustomTypeTranslations';
-import { PersonCustomTranslations } from './PersonCustomTranslations';
+import { CountryTranslations } from './CountryTranslations'
+import { FileProviderTranslations } from './FileProviderTranslations'
+import { MenuTranslations } from './MenuTranslations'
+import { MultifactorTranslations } from './MultifactorTranslations'
+import { PersonAddressTypeTranslations } from './PersonAddressTypeTranslations'
+import { PersonContactTypeTranslations } from './PersonContactTypeTranslations'
+import { PersonCustomTranslations } from './PersonCustomTranslations'
+import { PersonCustomTypeTranslations } from './PersonCustomTypeTranslations'
+import { PersonDocumentTypeTranslations } from './PersonDocumentTypeTranslations'
+import { PersonTypeTranslations } from './PersonTypeTranslations'
+import { RoleTranslations } from './RoleTranslations'
+import { ScreenTranslations } from './ScreenTranslations'
+import { SettingGroupTranslations } from './SettingGroupTranslations'
+import { SettingTranslations } from './SettingTranslations'
+import { Translations } from './Translations'
 
 export type Locales = {
-  id?: number;
-  code: string;
-  region: string;
-  enabled?: boolean;
-  created_at?: string;
-  updated_at?: string;
-  setting_group_translations?: SettingGroupTranslations[];
-  person_type_translations?: PersonTypeTranslations[];
-  person_document_type_translations?: PersonDocumentTypeTranslations[];
-  person_contact_type_translations?: PersonContactTypeTranslations[];
-  country_translations?: CountryTranslations[];
-  screen_translations?: ScreenTranslations[];
-  translations?: Translations[];
-  setting_translations?: SettingTranslations[];
-  role_translations?: RoleTranslations[];
-  file_provider_translations?: FileProviderTranslations[];
-  multifactor_translations?: MultifactorTranslations[];
-  menu_translations?: MenuTranslations[];
-  person_address_type_translations?: PersonAddressTypeTranslations[];
-  person_custom_type_translations?: PersonCustomTypeTranslations[];
-  person_custom_translations?: PersonCustomTranslations[];
+  id?: number
+  code: string
+  region: string
+  enabled?: boolean
+  created_at?: string
+  updated_at?: string
+  setting_group_locale?: SettingGroupTranslations[]
+  person_type_locale?: PersonTypeTranslations[]
+  person_document_type_locale?: PersonDocumentTypeTranslations[]
+  person_contact_type_locale?: PersonContactTypeTranslations[]
+  country_locale?: CountryTranslations[]
+  screen_locale?: ScreenTranslations[]
+  translations?: Translations[]
+  setting_locale?: SettingTranslations[]
+  role_locale?: RoleTranslations[]
+  file_provider_locale?: FileProviderTranslations[]
+  multifactor_locale?: MultifactorTranslations[]
+  menu_locale?: MenuTranslations[]
+  person_address_type_locale?: PersonAddressTypeTranslations[]
+  person_custom_type_locale?: PersonCustomTypeTranslations[]
+  person_custom_locale?: PersonCustomTranslations[]
 }

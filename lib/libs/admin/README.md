@@ -25,7 +25,7 @@ Whether you need to secure access to resources, manage user roles, or handle fil
 ### Included Modules<
 
 - **@hedhog/auth**: Provides authentication and authorization mechanisms, ensuring secure access to application resources.
-- **@hedhog/locale**: Provides solution for managing locales and translations across applications.
+- **@hedhog/locale**: Provides solution for managing locale and translations across applications.
 - **@hedhog/menu**: Allows for the creation and management of dynamic menus within the application interface.
 - **@hedhog/role**: Facilitates the management of roles, controlling access to specific features or areas.
 - **@hedhog/route**: Provides a comprehensive system for managing routes within your application.
@@ -116,19 +116,19 @@ The `AuthService` provides methods for:
 
 # Hedhog Locale
 
-**Hedhog Locale** module provides a powerful solution for managing locales and translations across applications. It includes functionalities to retrieve, create, update, and delete locale data, with support for pagination and localization. The module integrates seamlessly within the HedHog ecosystem, using @hedhog/pagination for handling paginated responses and @hedhog/prisma for database interactions.
+**Hedhog Locale** module provides a powerful solution for managing locale and translations across applications. It includes functionalities to retrieve, create, update, and delete locale data, with support for pagination and localization. The module integrates seamlessly within the HedHog ecosystem, using @hedhog/pagination for handling paginated responses and @hedhog/prisma for database interactions.
 
 ### Controller Endpoints
 
-#### `GET /locales/system/enables`
+#### `GET /locale/system/enables`
 
-- **Description**: Retrieve a paginated list of enabled locales.
+- **Description**: Retrieve a paginated list of enabled locale.
 - **Authentication**: Not required (public endpoint).
 - **Parameters**:
   - `locale (string)`: Locale code for filtering.
   - Pagination parameters (optional).
 
-#### `GET /locales/:localeCode/:namespace`
+#### `GET /locale/:localeCode/:namespace`
 
 - **Description**: Retrieve translations for a specific locale and namespace.
 - **Authentication**: Not required (public endpoint).
@@ -136,20 +136,20 @@ The `AuthService` provides methods for:
   - `localeCode (string)`: The locale code to fetch translations for.
   - `namespace (string)`: The namespace to fetch translations from.
 
-#### `GET /locales`
+#### `GET /locale`
 
-- **Description**: Retrieve a paginated list of locales.
+- **Description**: Retrieve a paginated list of locale.
 - **Authentication**: Required.
 - **Pagination**: Supports pagination through query parameters.
 
-#### `GET /locales/:id`
+#### `GET /locale/:id`
 
 - **Description**: Retrieve a specific locale by its ID.
 - **Authentication**: Required.
 - **Parameters**:
   - `id (number)`: The ID of the locale to retrieve.
 
-#### `POST /locales`
+#### `POST /locale`
 
 - **Description**: Create a new locale entry.
 - **Authentication**: Required.
@@ -157,7 +157,7 @@ The `AuthService` provides methods for:
   - `code (string)`: The code of the locale.
   - `region (string)`: The region of the locale.
 
-#### `PATCH /locales/:id`
+#### `PATCH /locale/:id`
 
 - **Description**: Update an existing locale entry.
 - **Authentication**: Required.
@@ -167,9 +167,9 @@ The `AuthService` provides methods for:
   - `code (string, optional)`: Updated code of the locale.
   - `region (string, optional)`: Updated region of the locale.
 
-#### `DELETE /locales`
+#### `DELETE /locale`
 
-- **Description**: Delete one or more locales.
+- **Description**: Delete one or more locale.
 - **Authentication**: Required.
 - **Body**:
   - `ids (number[])`: Array of locale IDs to delete.
@@ -178,7 +178,7 @@ The `AuthService` provides methods for:
 
 #### `getEnables(locale: string, paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of enabled locales based on locale code and pagination parameters.
+- **Description**: Retrieves a paginated list of enabled locale based on locale code and pagination parameters.
 - **Parameters**:
   - `locale (string)`: Locale code for filtering.
   - `paginationParams (PaginationDTO)`: Includes pagination criteria.
@@ -192,7 +192,7 @@ The `AuthService` provides methods for:
 
 #### `get(paginationParams: PaginationDTO)`
 
-- **Description**: Retrieves a paginated list of all locales.
+- **Description**: Retrieves a paginated list of all locale.
 - **Parameters**:
   - `paginationParams (PaginationDTO)`: Includes pagination criteria.
 
@@ -225,14 +225,14 @@ The `AuthService` provides methods for:
 
 ```plaintext
 |── dto/                         # Data Transfer Objects
-│   ├── create.dto.ts            # DTO for creating locales
-│   ├── delete.dto.ts            # DTO for deleting locales
-│   └── update.dto.ts            # DTO for updating locales
-|── locale.controller.ts         # Controller for locales
+│   ├── create.dto.ts            # DTO for creating locale
+│   ├── delete.dto.ts            # DTO for deleting locale
+│   └── update.dto.ts            # DTO for updating locale
+|── locale.controller.ts         # Controller for locale
 |── locale.decorator.ts          # Decorator for injecting locale into requests
 |── locale.middleware.ts         # Middleware to handle locale-specific processing
-|── locale.module.ts             # Module definition for locales
-|── locale.service.ts            # Service class for locales logic
+|── locale.module.ts             # Module definition for locale
+|── locale.service.ts            # Service class for locale logic
 ├── locale.service.spec.ts       # Testing file for locale service
 |── index.ts                     # Main export file for the module
 ```

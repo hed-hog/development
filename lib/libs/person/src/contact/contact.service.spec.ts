@@ -1,8 +1,8 @@
+import { PaginationService } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ContactService } from './contact.service';
-import { PrismaService } from '@hedhog/prisma';
-import { PaginationService } from '@hedhog/pagination';
-import { NotFoundException } from '@nestjs/common';
 import { CreatePersonContactDTO } from './dto/create-contact.dto';
 import { UpdatePersonContactDTO } from './dto/update-contact.dto';
 
@@ -17,7 +17,7 @@ describe('ContactService', () => {
     type_id: 2,
     primary: true,
     value: 'example@example.com',
-    person_contact_types: {
+    person_contact_type: {
       id: 2,
       name: 'Email',
     },
@@ -89,7 +89,7 @@ describe('ContactService', () => {
       {
         where: { person_id: 1 },
         include: {
-          person_contact_types: { select: { id: true, name: true } },
+          person_contact_type: { select: { id: true, name: true } },
         },
       },
     );
@@ -108,7 +108,7 @@ describe('ContactService', () => {
     expect(prismaService.person_contacts.findFirst).toHaveBeenCalledWith({
       where: { person_id: 1, type_id: typeId },
       include: {
-        person_contact_types: { select: { id: true, name: true } },
+        person_contact_type: { select: { id: true, name: true } },
       },
     });
     expect(result).toEqual(contactMock);
@@ -137,7 +137,7 @@ describe('ContactService', () => {
     expect(prismaService.person_contacts.findFirst).toHaveBeenCalledWith({
       where: { id: 1 },
       include: {
-        person_contact_types: { select: { id: true, name: true } },
+        person_contact_type: { select: { id: true, name: true } },
       },
     });
     expect(result).toEqual(contactMock);

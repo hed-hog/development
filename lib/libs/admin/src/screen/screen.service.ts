@@ -49,13 +49,13 @@ export class ScreenService {
       })
     ).map((route) => route.id);
 
-    await this.prismaService.route_screens.deleteMany({
+    await this.prismaService.route_screen.deleteMany({
       where: {
         screen_id: screenId,
       },
     });
 
-    return this.prismaService.route_screens.createMany({
+    return this.prismaService.route_screen.createMany({
       data: ids.map((routeId) => ({
         screen_id: screenId,
         route_id: routeId,
@@ -122,9 +122,9 @@ export class ScreenService {
           OR,
         },
         include: {
-          screen_translations: {
+          screen_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -135,7 +135,7 @@ export class ScreenService {
           },
         },
       },
-      'screen_translations',
+      'screen_locale',
     );
 
     return result;
