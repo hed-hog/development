@@ -6,6 +6,6 @@ export class CountryService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async getAll() {
-    return this.prismaService.countries.findMany();
+    return this.prismaService.country.findMany();
   }
 }

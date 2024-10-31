@@ -17,7 +17,7 @@ export class DocumentTypeService {
   ) {}
 
   async create(data: CreateDocumentTypeDTO) {
-    return await this.prismaService.person_document_types.create({
+    return await this.prismaService.person_document_type.create({
       data,
     });
   }
@@ -30,16 +30,16 @@ export class DocumentTypeService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.person_document_types,
+      this.prismaService.person_document_type,
       paginationParams,
       {
         where: {
           OR,
         },
         include: {
-          person_document_type_translations: {
+          person_document_type_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -49,13 +49,13 @@ export class DocumentTypeService {
           },
         },
       },
-      'person_document_type_translations',
+      'person_document_type_locale',
     );
   }
 
   async getDocumentTypeById(id: number) {
     const DocumentType =
-      await this.prismaService.person_document_types.findUnique({
+      await this.prismaService.person_document_type.findUnique({
         where: { id },
       });
 
@@ -67,7 +67,7 @@ export class DocumentTypeService {
   }
 
   async update(id: number, data: UpdateDocumentTypeDTO) {
-    return await this.prismaService.person_document_types.update({
+    return await this.prismaService.person_document_type.update({
       where: { id },
       data: data,
     });
@@ -80,7 +80,7 @@ export class DocumentTypeService {
       );
     }
 
-    return await this.prismaService.person_document_types.deleteMany({
+    return await this.prismaService.person_document_type.deleteMany({
       where: {
         id: {
           in: ids,

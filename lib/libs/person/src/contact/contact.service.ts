@@ -12,7 +12,7 @@ export class ContactService {
   ) {}
 
   async create(personId: number, data: CreatePersonContactDTO) {
-    return this.prismaService.person_contacts.create({
+    return this.prismaService.person_contact.create({
       data: {
         person_id: personId,
         ...data,
@@ -22,7 +22,7 @@ export class ContactService {
 
   async getContacts(personId: number) {
     return this.paginationService.paginate(
-      this.prismaService.person_contacts,
+      this.prismaService.person_contact,
       {
         fields: 'id,person_id,type_id,primary,value',
       },
@@ -31,7 +31,7 @@ export class ContactService {
           person_id: personId,
         },
         include: {
-          person_contact_types: {
+          person_contact_type: {
             select: {
               id: true,
               name: true,
@@ -43,13 +43,13 @@ export class ContactService {
   }
 
   async getContactByTypeId(personId: number, typeId: number) {
-    const contact = await this.prismaService.person_contacts.findFirst({
+    const contact = await this.prismaService.person_contact.findFirst({
       where: {
         person_id: personId,
         type_id: typeId,
       },
       include: {
-        person_contact_types: {
+        person_contact_type: {
           select: {
             id: true,
             name: true,
@@ -66,12 +66,12 @@ export class ContactService {
   }
 
   async getContactById(contactId: number) {
-    return this.prismaService.person_contacts.findFirst({
+    return this.prismaService.person_contact.findFirst({
       where: {
         id: contactId,
       },
       include: {
-        person_contact_types: {
+        person_contact_type: {
           select: {
             id: true,
             name: true,
@@ -82,14 +82,14 @@ export class ContactService {
   }
 
   async update(contactId: number, data: UpdatePersonContactDTO) {
-    return this.prismaService.person_contacts.update({
+    return this.prismaService.person_contact.update({
       where: { id: contactId },
       data,
     });
   }
 
   async remove(contactId: number) {
-    return this.prismaService.person_contacts
+    return this.prismaService.person_contact
       .delete({
         where: {
           id: contactId,

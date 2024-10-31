@@ -17,7 +17,7 @@ export class ContactTypeService {
   ) {}
 
   async create(data: CreateContactTypeDTO) {
-    return await this.prismaService.person_contact_types.create({
+    return await this.prismaService.person_contact_type.create({
       data,
     });
   }
@@ -30,16 +30,16 @@ export class ContactTypeService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.person_contact_types,
+      this.prismaService.person_contact_type,
       paginationParams,
       {
         where: {
           OR,
         },
         include: {
-          person_contact_type_translations: {
+          person_contact_type_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -49,15 +49,16 @@ export class ContactTypeService {
           },
         },
       },
-      'person_contact_type_translations',
+      'person_contact_type_locale',
     );
   }
 
   async getContactTypeById(id: number) {
-    const ContactType =
-      await this.prismaService.person_contact_types.findUnique({
+    const ContactType = await this.prismaService.person_contact_type.findUnique(
+      {
         where: { id },
-      });
+      },
+    );
 
     if (!ContactType) {
       throw new NotFoundException(`ContactType with ID ${id} not found`);
@@ -67,7 +68,7 @@ export class ContactTypeService {
   }
 
   async update(id: number, data: UpdateContactTypeDTO) {
-    return await this.prismaService.person_contact_types.update({
+    return await this.prismaService.person_contact_type.update({
       where: { id },
       data: data,
     });
@@ -80,7 +81,7 @@ export class ContactTypeService {
       );
     }
 
-    return await this.prismaService.person_contact_types.deleteMany({
+    return await this.prismaService.person_contact_type.deleteMany({
       where: {
         id: {
           in: ids,

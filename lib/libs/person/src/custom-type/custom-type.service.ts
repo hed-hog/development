@@ -17,7 +17,7 @@ export class CustomTypeService {
   ) {}
 
   async create(data: CreateCustomTypeDTO) {
-    return await this.prismaService.person_custom_types.create({
+    return await this.prismaService.person_custom_type.create({
       data,
     });
   }
@@ -30,16 +30,16 @@ export class CustomTypeService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.person_custom_types,
+      this.prismaService.person_custom_type,
       paginationParams,
       {
         where: {
           OR,
         },
         include: {
-          person_custom_type_translations: {
+          person_custom_type_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -49,12 +49,12 @@ export class CustomTypeService {
           },
         },
       },
-      'person_custom_type_translations',
+      'person_custom_type_locale',
     );
   }
 
   async getCustomTypeById(id: number) {
-    const customType = await this.prismaService.person_custom_types.findUnique({
+    const customType = await this.prismaService.person_custom_type.findUnique({
       where: { id },
     });
 
@@ -66,7 +66,7 @@ export class CustomTypeService {
   }
 
   async update(id: number, data: UpdateCustomTypeDTO) {
-    return await this.prismaService.person_custom_types.update({
+    return await this.prismaService.person_custom_type.update({
       where: { id },
       data: data,
     });
@@ -79,7 +79,7 @@ export class CustomTypeService {
       );
     }
 
-    return await this.prismaService.person_custom_types.deleteMany({
+    return await this.prismaService.person_custom_type.deleteMany({
       where: {
         id: {
           in: ids,

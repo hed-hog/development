@@ -12,7 +12,7 @@ export class AddressService {
   ) {}
 
   async create(personId: number, data: CreatePersonAddressDTO) {
-    return this.prismaService.person_addresses.create({
+    return this.prismaService.person_address.create({
       data: {
         person_id: personId,
         country_id: data.country_id,
@@ -23,7 +23,7 @@ export class AddressService {
 
   async getAddress(personId: number) {
     return this.paginationService.paginate(
-      this.prismaService.person_addresses,
+      this.prismaService.person_address,
       {
         fields:
           'id,type_id,person_id,primary,street,number,complement,district,city,state,postal_code,reference,country_id',
@@ -37,7 +37,7 @@ export class AddressService {
   }
 
   async getAddressByTypeId(personId: number, typeId: number) {
-    const address = await this.prismaService.person_addresses.findFirst({
+    const address = await this.prismaService.person_address.findFirst({
       where: {
         person_id: personId,
         type_id: typeId,
@@ -52,7 +52,7 @@ export class AddressService {
   }
 
   async getAddressById(addressId: number) {
-    return this.prismaService.person_addresses.findFirst({
+    return this.prismaService.person_address.findFirst({
       where: {
         id: addressId,
       },
@@ -60,14 +60,14 @@ export class AddressService {
   }
 
   async update(addressId: number, data: UpdatePersonAddressDTO) {
-    return this.prismaService.person_addresses.update({
+    return this.prismaService.person_address.update({
       where: { id: addressId },
       data,
     });
   }
 
   async remove(addressId: number) {
-    return this.prismaService.person_addresses
+    return this.prismaService.person_address
       .delete({
         where: {
           id: addressId,

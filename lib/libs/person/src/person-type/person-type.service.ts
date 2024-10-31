@@ -17,7 +17,7 @@ export class PersonTypeService {
   ) {}
 
   async create(data: CreatePersonTypeDTO) {
-    return await this.prismaService.person_types.create({
+    return await this.prismaService.person_type.create({
       data,
     });
   }
@@ -30,16 +30,16 @@ export class PersonTypeService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.person_types,
+      this.prismaService.person_type,
       paginationParams,
       {
         where: {
           OR,
         },
         include: {
-          person_type_translations: {
+          person_type_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -49,12 +49,12 @@ export class PersonTypeService {
           },
         },
       },
-      'person_type_translations',
+      'person_type_locale',
     );
   }
 
   async getPersonTypeById(id: number) {
-    const PersonType = await this.prismaService.person_types.findUnique({
+    const PersonType = await this.prismaService.person_type.findUnique({
       where: { id },
     });
 
@@ -66,7 +66,7 @@ export class PersonTypeService {
   }
 
   async update(id: number, data: UpdatePersonTypeDTO) {
-    return await this.prismaService.person_types.update({
+    return await this.prismaService.person_type.update({
       where: { id },
       data: data,
     });
@@ -79,7 +79,7 @@ export class PersonTypeService {
       );
     }
 
-    return await this.prismaService.person_types.deleteMany({
+    return await this.prismaService.person_type.deleteMany({
       where: {
         id: {
           in: ids,

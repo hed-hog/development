@@ -17,7 +17,7 @@ export class AddressTypeService {
   ) {}
 
   async create(data: CreateAddressTypeDTO) {
-    return await this.prismaService.person_address_types.create({
+    return await this.prismaService.person_address_type.create({
       data,
     });
   }
@@ -30,16 +30,16 @@ export class AddressTypeService {
     );
 
     return this.paginationService.paginate(
-      this.prismaService.person_address_types,
+      this.prismaService.person_address_type,
       paginationParams,
       {
         where: {
           OR,
         },
         include: {
-          person_address_type_translations: {
+          person_address_type_locale: {
             where: {
-              locales: {
+              locale: {
                 code: locale,
               },
             },
@@ -49,15 +49,16 @@ export class AddressTypeService {
           },
         },
       },
-      'person_address_type_translations',
+      'person_address_type_locale',
     );
   }
 
   async getAddressTypeById(id: number) {
-    const addressType =
-      await this.prismaService.person_address_types.findUnique({
+    const addressType = await this.prismaService.person_address_type.findUnique(
+      {
         where: { id },
-      });
+      },
+    );
 
     if (!addressType) {
       throw new NotFoundException(`addressType with ID ${id} not found`);
@@ -67,7 +68,7 @@ export class AddressTypeService {
   }
 
   async update(id: number, data: UpdateAddressTypeDTO) {
-    return await this.prismaService.person_address_types.update({
+    return await this.prismaService.person_address_type.update({
       where: { id },
       data: data,
     });
@@ -80,7 +81,7 @@ export class AddressTypeService {
       );
     }
 
-    return await this.prismaService.person_address_types.deleteMany({
+    return await this.prismaService.person_address_type.deleteMany({
       where: {
         id: {
           in: ids,

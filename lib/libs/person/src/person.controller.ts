@@ -16,7 +16,7 @@ import { UpdatePersonDTO } from './dto/update-person.dto';
 import { PersonService } from './person.service';
 
 @Role()
-@Controller('persons')
+@Controller('person')
 export class PersonController {
   constructor(private readonly personService: PersonService) {}
 
@@ -45,7 +45,7 @@ export class PersonController {
     return this.personService.remove(data);
   }
 
-  @Patch(':id/documents')
+  @Patch(':id/document')
   updateDocuments(@Param('id', ParseIntPipe) personId: number) {
     return { personId };
   }
