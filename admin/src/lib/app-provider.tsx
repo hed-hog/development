@@ -158,12 +158,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const makeRequest = async <T extends {}>(
     url: string,
     method: 'post' | 'patch' | 'delete' | 'get',
-    data?: any
+    data?: Record<string, any>,
+    params?: Record<string, any>
   ) => {
     return request<T>({
       url,
       method,
       data,
+      params,
     }).then((res) => res.data)
   }
 
