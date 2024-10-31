@@ -69,7 +69,7 @@ export class ScreenService {
       paginationParams,
       {
         include: {
-          route_screens: {
+          route_screen: {
             where: {
               screen_id: screenId,
             },

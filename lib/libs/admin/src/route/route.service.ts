@@ -131,7 +131,7 @@ export class RouteService {
               name: true,
             },
           },
-          route_screens: {
+          route_screen: {
             where: {
               route_id: routeId,
             },
