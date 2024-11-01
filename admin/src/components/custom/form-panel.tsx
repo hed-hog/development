@@ -6,14 +6,49 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { FormPanelProps, ISliderProps } from '@/types/form-panel'
+import { EnumFieldType } from '@/enums/EnumFieldType'
+import { useLocaleListEnabled } from '@/features/locale'
+import {
+  FieldType,
+  FormPanelProps,
+  IFormFieldPropsBase,
+  ISliderProps,
+} from '@/types/form-panel'
 import { getObjectFromLocaleFields } from '@hedhog/utils'
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { Badge } from '../ui/badge'
 import { Button } from './button'
 import Field from './field'
+
+export type FieldLocale = {
+  name: string
+  required?: boolean
+}
+
+export const getFieldsLocale = (fieldNames: FieldLocale[]) => {
+  const { data: localeEnabled } = useLocaleListEnabled()
+  const { t } = useTranslation(['translation'])
+  const fields: IFormFieldPropsBase[] = []
+
+  for (const locale of localeEnabled?.data || []) {
+    for (const field of fieldNames) {
+      fields.push({
+        name: `${locale.code}-${field.name}`,
+        label: {
+          text: t(field.name, { ns: 'translation' }),
+          ...(locale?.code ? { small: locale.code } : {}),
+        },
+        type: EnumFieldType.TEXT as FieldType,
+        required: field.required ?? false,
+      })
+    }
+  }
+
+  return fields
+}
 
 const FormPanelForm = forwardRef(
   ({ form, fields, button = {}, onSubmit }: FormPanelProps, ref) => {
@@ -147,7 +182,6 @@ const FormPanel = forwardRef<FormPanelRef, FormPanelProps>(
           })
         },
         setValues(values: Record<string, any>) {
-          console.log('setValues', values)
           formRef.current?.setValues(values)
         },
         submit() {

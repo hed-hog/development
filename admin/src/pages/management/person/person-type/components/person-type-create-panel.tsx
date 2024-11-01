@@ -1,8 +1,9 @@
-import FormPanel, { FormPanelRef } from '@/components/custom/form-panel'
+import FormPanel, {
+  FormPanelRef,
+  getFieldsLocale,
+} from '@/components/custom/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useLocaleListEnabled } from '@/features/locale'
 import { usePersonTypeCreate } from '@/features/person-type'
-import { FieldType } from '@/types'
 import { PersonType } from '@/types/models'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,7 +19,7 @@ export type PersonTypeCreatePanelProps = {
 export const PersonTypeCreatePanel = forwardRef(
   ({ onCreated }: PersonTypeCreatePanelProps, ref) => {
     const formRef = useRef<FormPanelRef>(null)
-    const { data: localeEnabled } = useLocaleListEnabled()
+
     const { t } = useTranslation(['person-types', 'actions'])
     const { mutateAsync: createPersonType } = usePersonTypeCreate()
 
@@ -42,15 +43,7 @@ export const PersonTypeCreatePanel = forwardRef(
             type: EnumFieldType.TEXT,
             required: true,
           },
-          ...(localeEnabled?.data?.map(({ code }) => ({
-            name: `${code}-name`,
-            label: {
-              text: t('name', { ns: 'translation' }),
-              ...(localeEnabled.data.length > 1 ? { small: code } : {}),
-            },
-            type: EnumFieldType.TEXT as FieldType,
-            required: false,
-          })) || []),
+          ...getFieldsLocale([{ name: 'name' }]),
         ]}
         button={{ text: t('create', { ns: 'actions' }) }}
         onSubmit={async (data) => {
