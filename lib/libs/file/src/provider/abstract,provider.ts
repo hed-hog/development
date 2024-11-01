@@ -1,6 +1,7 @@
 import { v4 } from 'uuid';
 
 interface IProvider {
+  uploadFromString(destination: string, fileContent: string): Promise<any>;
   upload(destination: string, file: Express.Multer.File): Promise<any>;
   readStream(filepath: string): Promise<any>;
   delete(filepath: string): Promise<any>;
@@ -10,6 +11,10 @@ interface IProvider {
 }
 
 export abstract class AbstractProvider implements IProvider {
+  abstract uploadFromString(
+    destination: string,
+    fileContent: string,
+  ): Promise<any>;
   abstract upload(destination: string, file: Express.Multer.File): Promise<any>;
   abstract readStream(filepath: string): Promise<any>;
   abstract delete(filepath: string): Promise<any>;
