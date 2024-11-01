@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@/components/custom/button'
+import { Button, ButtonProps } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -40,8 +40,8 @@ import React, {
 import { useTranslation } from 'react-i18next'
 import { toast, Toaster } from 'sonner'
 import { useMediaQuery } from 'usehooks-ts'
-import { decodeToken } from './decodeToken'
-import { getBaseURL } from './getBaseURL'
+import { decodeToken } from './decode-token'
+import { getBaseURL } from './get-base-url'
 import { QueryClientProvider } from './query-provider'
 
 export const BASE_URL = getBaseURL()

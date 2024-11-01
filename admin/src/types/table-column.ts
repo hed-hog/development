@@ -1,4 +1,4 @@
-import { ButtonProps } from '@/components/custom/button'
+import { ButtonProps } from '@/components/ui/button'
 
 export type ITableAction<T> = ButtonProps & {
   icon: JSX.Element

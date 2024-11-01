@@ -1,4 +1,4 @@
-import Tree from '@/components/custom/tree-view'
+import Tree from '@/components/views/tree-view'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const meta = {

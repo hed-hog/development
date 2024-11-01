@@ -1,4 +1,4 @@
-import { Button } from '@/components/custom/button'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useApp } from '@/hooks/use-app'

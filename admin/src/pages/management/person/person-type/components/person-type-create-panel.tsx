@@ -1,7 +1,7 @@
 import FormPanel, {
   FormPanelRef,
   getFieldsLocale,
-} from '@/components/custom/form-panel'
+} from '@/components/panels/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { usePersonTypeCreate } from '@/features/person-type'
 import { PersonType } from '@/types/models'

@@ -1,18 +1,18 @@
-import AddressCard from '@/components/custom/address-card'
-import { Button } from '@/components/custom/button'
-import ContactCard from '@/components/custom/contact-card'
-import CustomCard from '@/components/custom/custom-card'
-import DataPanel from '@/components/custom/data-panel'
-import DocumentCard from '@/components/custom/document-card'
-import FormPanel from '@/components/custom/form-panel'
-import { TabPanel } from '@/components/custom/tab-panel'
+import AddressCard from '@/components/cards/address-card'
+import ContactCard from '@/components/cards/contact-card'
+import CustomCard from '@/components/cards/custom-card'
+import DocumentCard from '@/components/cards/document-card'
+import DataPanel from '@/components/panels/data-panel'
+import FormPanel from '@/components/panels/form-panel'
+import { TabPanel } from '@/components/panels/tab-panel'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
-  useCreateAddress,
-  useDeleteAddress,
-  useEditAddress,
+  useAddressCreate,
+  useAddressDelete,
+  useAddressUpdate,
 } from '@/features/address'
 import { useAddressType } from '@/features/address-type'
 import {
@@ -147,9 +147,9 @@ export default function Page() {
   const { mutate: createPerson } = useCreatePerson()
   const { mutate: editPerson } = useEditPerson()
   const { mutate: deletePerson } = useDeletePerson()
-  const { mutate: createAddress } = useCreateAddress()
-  const { mutate: editAddress } = useEditAddress()
-  const { mutate: deleteAddress } = useDeleteAddress()
+  const { mutate: createAddress } = useAddressCreate()
+  const { mutate: editAddress } = useAddressUpdate()
+  const { mutate: deleteAddress } = useAddressDelete()
   const { mutate: createContact } = useCreateContact()
   const { mutate: editContact } = useEditContact()
   const { mutate: deleteContact } = useDeleteContact()

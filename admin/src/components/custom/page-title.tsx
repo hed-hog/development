@@ -1,4 +1,3 @@
-import { t } from 'i18next'
 import { Helmet } from 'react-helmet'
 
 export type PageTitleProps = {
@@ -9,7 +8,7 @@ export const PageTitle = ({ title }: PageTitleProps) => {
   return (
     <>
       <Helmet>
-        <title>{t('personTypes', { ns: 'modules' })} - Hedhog</title>
+        <title>{title} - Hedhog</title>
       </Helmet>
       <div className='mb-2 flex items-center justify-between space-y-2'>
         <div>

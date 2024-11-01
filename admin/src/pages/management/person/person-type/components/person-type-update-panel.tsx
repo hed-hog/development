@@ -1,9 +1,9 @@
 import FormPanel, {
   FormPanelRef,
   getFieldsLocale,
-} from '@/components/custom/form-panel'
+} from '@/components/panels/form-panel'
 import { Overlay } from '@/components/custom/overlay'
-import { TabPanel } from '@/components/custom/tab-panel'
+import { TabPanel } from '@/components/panels/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { usePersonTypeGet, usePersonTypeUpdate } from '@/features/person-type'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'

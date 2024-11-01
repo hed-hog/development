@@ -1,4 +1,4 @@
-import { SearchField } from '@/components/search-field'
+import { SearchField } from '@/components/fields/search-field'
 import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof SearchField> = {

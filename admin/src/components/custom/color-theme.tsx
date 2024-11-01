@@ -1,11 +1,11 @@
-import { useTheme } from '@/components/theme-provider'
+import { useTheme } from '@/components/app/theme-provider'
 import { Slider } from '@/components/ui/slider'
 import { adjustHSL, hexToHSL } from '@/lib/colors'
-import { useState, useEffect } from 'react'
-import { HexColorPicker, HexColorInput } from 'react-colorful'
-import { CardsChat } from '../examples/chat'
-import Stats from '../examples/stats'
-import CalendarDemo from '../examples/calendar'
+import { useEffect, useState } from 'react'
+import { HexColorInput, HexColorPicker } from 'react-colorful'
+import CalendarDemo from '@/components/examples/calendar'
+import { CardsChat } from '@/components/examples/chat'
+import Stats from '@/components/examples/stats'
 
 interface IProps {
   onChange?: (values: any) => void

@@ -1,9 +1,5 @@
-import { HTMLAttributes, useState } from 'react'
-import { cn } from '@/lib/utils'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Button } from '@/components/custom/button'
+import { PinInput, PinInputField } from '@/components/ui/pin-input'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -12,9 +8,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { PinInput, PinInputField } from '@/components/custom/pin-input'
 import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { HTMLAttributes, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { z } from 'zod'
 
 interface OtpFormProps extends HTMLAttributes<HTMLDivElement> {}
 

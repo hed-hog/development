@@ -1,4 +1,4 @@
-import { PaginationView } from '@/components/custom/pagination-view'
+import { PaginationView } from '@/components/views/pagination-view'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

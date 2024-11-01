@@ -1,4 +1,4 @@
-import Nav from '@/components/nav'
+import Nav from '@/components/navs/nav'
 import { useApp } from '@/hooks/use-app'
 import { getSideLinks } from '@/lib/get-sidelinks'
 import { useQuery } from '@tanstack/react-query'
