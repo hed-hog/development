@@ -123,11 +123,10 @@ export class PaginationService {
         delete query.select;
       }
 
-      console.log('query', model.name, query);
-
       let [total, data] = await Promise.all([
         model.count({ where: customQuery?.where || {} }),
-        this.query(model, query),
+        model.findMany(query),
+        //this.query(model, query),
       ]);
 
       const lastPage = Math.ceil(total / pageSize);
