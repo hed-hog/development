@@ -9,11 +9,6 @@ import { TabPanel } from '@/components/custom/tab-panel'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import {
-  useCreateAddress,
-  useDeleteAddress,
-  useEditAddress,
-} from '@/features/address'
 import { useAddressType } from '@/features/address-type'
 import {
   useCreateContact,

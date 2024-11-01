@@ -1,11 +1,10 @@
-import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { parseEnv } from 'util';
+import { parseEnv } from './parseEnv';
 
 export async function getDatabaseConfig() {
   const envPath = join(__dirname, '..', '.env');
-  const envContent = await readFile(envPath, 'utf-8');
-  const envData: any = parseEnv(envContent);
+  console.log({ envPath });
+  const envData: any = parseEnv(envPath);
 
   return {
     type: String(envData.DATABASE_URL)
