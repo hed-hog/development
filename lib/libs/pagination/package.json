@@ -19,8 +19,12 @@
     "class-validator": "^0.14.1"
   },
   "devDependencies": {
-    "@hedhog/utils": "latest",
+    "@hedhog/utils": "^0.0.19",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1"
+  },
+  "dependencies": {
+    "mysql2": "^3.11.3",
+    "pg": "^8.13.1"
   }
 }

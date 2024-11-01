@@ -36,6 +36,7 @@ export type BaseModel = {
   findMany: (args: any) => Promise<any[]>;
   count: (args: any) => Promise<number>;
   fields?: Record<string, any>;
+  name: string;
 };
 
 export type FindManyArgs<M> = M extends { findMany: (args: infer A) => any }

@@ -16,7 +16,7 @@ import { CreatePersonContactDTO } from './dto/create-contact.dto';
 import { UpdatePersonContactDTO } from './dto/update-contact.dto';
 
 @Role()
-@Controller('person/:personId/contacts')
+@Controller('person/:personId/contact')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
   @Post()
