@@ -1,5 +1,5 @@
 import { useApp } from '@/hooks/use-app'
-import { PaginationResult } from '@/hooks/use-pagination-fetch'
+import { PaginationResult } from '@/types/pagination-result'
 import { queryClient } from '@/lib/query-provider'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
@@ -17,7 +17,7 @@ export function useSettingFromGroup(slug: string) {
     queryFn: () =>
       request<PaginationResult<any>>({
         url: `/setting/group/${slug}`,
-      }),
+      }).then((res) => res.data),
   })
 }
 
