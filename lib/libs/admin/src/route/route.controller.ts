@@ -28,13 +28,13 @@ export class RouteController {
   ) {}
 
   @Get()
-  async getRoutes(@Pagination() paginationParams) {
-    return this.routeService.getRoutes(paginationParams);
+  async list(@Pagination() paginationParams) {
+    return this.routeService.list(paginationParams);
   }
 
   @Get(':routeId')
-  async getRouteById(@Param('routeId', ParseIntPipe) routeId: number) {
-    return this.routeService.getRouteById(routeId);
+  async get(@Param('routeId', ParseIntPipe) routeId: number) {
+    return this.routeService.get(routeId);
   }
 
   @Post()

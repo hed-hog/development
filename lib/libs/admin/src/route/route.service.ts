@@ -15,7 +15,7 @@ export class RouteService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async getRoutes(paginationParams: PaginationDTO) {
+  async list(paginationParams: PaginationDTO) {
     const fields = ['url', 'method'];
 
     const OR: any[] = this.prismaService.createInsensitiveSearch(
@@ -34,7 +34,7 @@ export class RouteService {
     );
   }
 
-  async getRouteById(routeId: number) {
+  async get(routeId: number) {
     return this.prismaService.route.findUnique({ where: { id: routeId } });
   }
 

@@ -28,8 +28,8 @@ export class RoleController {
   ) {}
 
   @Get()
-  async getRoles(@Pagination() paginationParams, @Locale() locale) {
-    return this.roleService.getRoles(locale, paginationParams);
+  async list(@Pagination() paginationParams, @Locale() locale) {
+    return this.roleService.list(locale, paginationParams);
   }
 
   @Get(':roleId/user')

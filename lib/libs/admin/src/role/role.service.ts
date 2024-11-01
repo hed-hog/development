@@ -198,7 +198,7 @@ export class RoleService {
     );
   }
 
-  async getRoles(locale: string, paginationParams: PaginationDTO) {
+  async list(locale: string, paginationParams: PaginationDTO) {
     const fields = [];
 
     const OR: any[] = this.prismaService.createInsensitiveSearch(

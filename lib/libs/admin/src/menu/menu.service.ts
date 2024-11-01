@@ -172,7 +172,7 @@ export class MenuService {
     return this.getMenus(locale, userId);
   }
 
-  async getMenu(locale: string, paginationParams: PaginationDTO) {
+  async list(locale: string, paginationParams: PaginationDTO) {
     const fields = ['url', 'icon'];
     const OR = this.prismaService.createInsensitiveSearch(
       fields,

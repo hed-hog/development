@@ -35,8 +35,8 @@ export class MenuController {
   }
 
   @Get()
-  async getMenu(@Pagination() paginationParams, @Locale() locale) {
-    return this.menuService.getMenu(locale, paginationParams);
+  async list(@Pagination() paginationParams, @Locale() locale) {
+    return this.menuService.list(locale, paginationParams);
   }
 
   @Get(':menuId/role')
