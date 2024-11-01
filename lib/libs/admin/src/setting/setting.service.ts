@@ -21,16 +21,39 @@ export class SettingService {
     private readonly paginationService: PaginationService,
   ) {}
 
+  async updateAppearanceSettings() {
+    console.log({ updateAppearanceSettings: 'updateAppearanceSettings' });
+  }
+
   async setManySettings(data: SettingDTO) {
+    const transaction = [];
+
     for (const { slug, value } of data.setting) {
-      await this.prismaService.setting.updateMany({
-        where: {
-          slug,
+      transaction.push(
+        this.prismaService.setting.updateMany({
+          where: {
+            slug,
+          },
+          data: {
+            value,
+          },
+        }),
+      );
+    }
+
+    await this.prismaService.$transaction(transaction);
+
+    const hasAppearance = await this.prismaService.setting.count({
+      where: {
+        slug: data.setting.map((setting) => setting.slug),
+        setting_group: {
+          slug: 'appearance',
         },
-        data: {
-          value,
-        },
-      });
+      },
+    });
+
+    if (hasAppearance) {
+      await this.updateAppearanceSettings();
     }
 
     return { success: true };

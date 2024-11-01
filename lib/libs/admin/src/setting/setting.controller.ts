@@ -59,7 +59,7 @@ export class SettingsController {
   }
 
   @Post()
-  create(@Body() data: CreateDTO) {
+  async create(@Body() data: CreateDTO) {
     return this.settingService.create(data);
   }
 
