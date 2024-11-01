@@ -1,3 +1,4 @@
+import { FileModule } from '@hedhog/file';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { Module, forwardRef } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { SettingService } from './setting.service';
     forwardRef(() => AuthModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
+    forwardRef(() => FileModule),
   ],
 })
 export class SettingModule {}

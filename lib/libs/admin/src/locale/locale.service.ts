@@ -306,7 +306,7 @@ export class LocaleService {
           },
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.message.includes('Unique constraint failed')) {
         throw new BadRequestException('Data already exists.');
       } else {
@@ -353,7 +353,7 @@ export class LocaleService {
         where: { id },
         data,
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.message.includes('Unique constraint failed')) {
         throw new BadRequestException('Data already exists.');
       } else {

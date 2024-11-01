@@ -1,16 +1,18 @@
-import { Role } from '@hedhog/admin';
+import { Role } from '@hedhog/admin/dist/role/decorators/role.decorator';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
   Put,
   UploadedFile,
   UseInterceptors,
+  forwardRef,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DeleteDTO } from './dto/delete.dto';
@@ -19,7 +21,10 @@ import { FileService } from './file.service';
 @Role()
 @Controller('file')
 export class FileController {
-  constructor(private readonly fileService: FileService) {}
+  constructor(
+    @Inject(forwardRef(() => FileService))
+    private readonly fileService: FileService,
+  ) {}
 
   @Get()
   async list(@Pagination() paginationParams) {

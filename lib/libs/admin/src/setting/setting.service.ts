@@ -1,3 +1,4 @@
+import { FileService } from '@hedhog/file';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { itemTranslations } from '@hedhog/utils';
@@ -19,10 +20,22 @@ export class SettingService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
+    @Inject(forwardRef(() => FileService))
+    private readonly fileService: FileService,
   ) {}
 
   async updateAppearanceSettings() {
     console.log({ updateAppearanceSettings: 'updateAppearanceSettings' });
+
+    const settings = await this.prismaService.setting.findMany({
+      where: {
+        setting_group: {
+          slug: 'appearance',
+        },
+      },
+    });
+
+    console.log({ settings });
   }
 
   async setManySettings(data: SettingDTO) {
@@ -45,7 +58,9 @@ export class SettingService {
 
     const hasAppearance = await this.prismaService.setting.count({
       where: {
-        slug: data.setting.map((setting) => setting.slug),
+        slug: {
+          in: data.setting.map((setting) => setting.slug),
+        },
         setting_group: {
           slug: 'appearance',
         },
