@@ -1,7 +1,7 @@
-import { useContext } from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import { Button } from '@/components/ui/button'
 import { AppContext } from '@/lib/app-provider'
-import { Button } from '@/components/custom/button'
+import { Meta, StoryObj } from '@storybook/react'
+import { useContext } from 'react'
 
 // Definindo o Meta para a história
 const meta: Meta<typeof Button> = {

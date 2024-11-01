@@ -1,4 +1,4 @@
-import { SheetPickerField } from '@/components/custom/sheet-picker-field'
+import { SheetPickerField } from '@/components/pickers/sheet-picker-field'
 import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof SheetPickerField> = {

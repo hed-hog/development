@@ -1,5 +1,5 @@
+import { PasswordInput as PasswordInputField } from '@/components/fields/password-input-field'
 import { Meta, StoryObj } from '@storybook/react'
-import { PasswordInput as PasswordInputField } from '@/components/custom/password-input-field'
 import React from 'react'
 
 const meta: Meta<typeof PasswordInputField> = {

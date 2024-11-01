@@ -1,8 +1,8 @@
+import { LocaleChange } from '@/components/custom/locale-change'
 import { Card } from '@/components/ui/card'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { OtpForm } from './components/otp-form'
-import { LocaleChange } from '@/components/custom/locale-change'
-import { useTranslation } from 'react-i18next'
 
 export default function Otp() {
   const { t } = useTranslation('auth')

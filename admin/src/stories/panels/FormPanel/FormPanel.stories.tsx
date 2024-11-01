@@ -1,4 +1,4 @@
-import FormPanel from '@/components/custom/form-panel'
+import FormPanel from '@/components/panels/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { Meta, StoryObj } from '@storybook/react'
 import { useForm } from 'react-hook-form'

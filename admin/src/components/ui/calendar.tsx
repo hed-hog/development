@@ -1,4 +1,4 @@
-import { buttonVariants } from '@/components/custom/button'
+import { buttonVariants } from '@/components/ui/button'
 import {
   Select,
   SelectContent,

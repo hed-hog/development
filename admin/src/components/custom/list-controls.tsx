@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { Checkbox } from '../ui/checkbox'
-import { SearchField } from '../search-field'
-import { SelectedItems } from './select-items'
 import { useTranslation } from 'react-i18next'
+import { Checkbox } from '@/components/ui/checkbox'
+import { SearchField } from '@/components/fields/search-field'
+import { SelectedItems } from '@/components/custom/select-items'
 
 interface ListControlsProps {
   data: any[]

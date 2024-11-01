@@ -6,14 +6,14 @@ import { cn } from '@/lib/utils'
 import { IconCheck, IconLanguage } from '@tabler/icons-react'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu'
-import { Skeleton } from '../ui/skeleton'
-import { Button } from './button'
+} from '@/components/ui/dropdown-menu'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const LocaleChange = () => {
   const { user } = useApp()

@@ -1,4 +1,4 @@
-import { DatePickerField } from '@/components/ui/date-picker-field'
+import { DatePickerField } from '@/components/pickers/date-picker-field'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof DatePickerField> = {

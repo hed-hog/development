@@ -1,4 +1,4 @@
-import { ColorPickerField } from '@/components/custom/color-picker-field'
+import { ColorPickerField } from '@/components/pickers/color-picker-field'
 import { ColorPickerFieldVariant } from '@/enums/EnumColorPickerFieldVariant'
 import type { Meta, StoryObj } from '@storybook/react'
 

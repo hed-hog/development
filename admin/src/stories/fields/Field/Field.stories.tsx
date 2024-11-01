@@ -1,4 +1,4 @@
-import Field from '@/components/custom/field'
+import Field from '@/components/fields/field'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { Meta, StoryObj } from '@storybook/react'
 

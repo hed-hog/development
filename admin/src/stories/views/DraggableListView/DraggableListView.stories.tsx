@@ -1,4 +1,4 @@
-import DraggableListView from '@/components/custom/draggable-list-view'
+import DraggableListView from '@/components/views/draggable-list-view'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const meta = {

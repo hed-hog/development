@@ -1,4 +1,4 @@
-import { Button } from '@/components/custom/button'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -7,8 +7,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
+import { RecentSales } from './components/recent-sales'
 
 export default function Dashboard() {
   return (

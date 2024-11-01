@@ -1,4 +1,4 @@
-import EditableTableView from '@/components/custom/editable-table-view'
+import EditableTableView from '@/components/views/editable-table-view'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import type { Meta, StoryObj } from '@storybook/react'
 

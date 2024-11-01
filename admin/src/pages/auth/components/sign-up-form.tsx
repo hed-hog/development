@@ -1,8 +1,5 @@
-import { HTMLAttributes, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react'
-import { z } from 'zod'
+import { PasswordInput } from '@/components/fields/password-input-field'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -12,10 +9,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/custom/button'
-import { PasswordInput } from '@/components/custom/password-input-field'
 import { cn } from '@/lib/utils'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react'
+import { HTMLAttributes, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { z } from 'zod'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
 

@@ -1,4 +1,4 @@
-import { RichTextField } from '@/components/custom/rich-text-field'
+import { RichTextField } from '@/components/fields/rich-text-field'
 import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof RichTextField> = {

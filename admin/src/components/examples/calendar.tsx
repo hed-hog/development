@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Calendar } from '../ui/calendar'
+import { Calendar } from '@/components/ui/calendar'
 
 export default function CalendarDemo() {
   const today = new Date()

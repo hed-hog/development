@@ -1,4 +1,4 @@
-import TableView from '@/components/custom/table-view'
+import TableView from '@/components/views/table-view'
 import type { Meta, StoryObj } from '@storybook/react'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

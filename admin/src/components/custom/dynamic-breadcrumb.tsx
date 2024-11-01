@@ -1,14 +1,14 @@
-import { useLocation } from 'react-router-dom'
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbSeparator,
   BreadcrumbList,
-} from '@/components/custom/breadcrumb'
-import { useMediaQuery } from 'usehooks-ts'
-import { useTranslation } from 'react-i18next'
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 import { toCamelCase } from '@/lib/to-camel-case'
+import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
+import { useMediaQuery } from 'usehooks-ts'
 
 export const DynamicBreadcrumb = () => {
   const { t } = useTranslation('modules', { useSuspense: false })

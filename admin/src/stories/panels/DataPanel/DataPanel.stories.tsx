@@ -1,4 +1,4 @@
-import { DataPanel } from '@/components/custom/data-panel'
+import { DataPanel } from '@/components/panels/data-panel'
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'

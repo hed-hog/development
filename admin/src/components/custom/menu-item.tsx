@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { ButtonProps } from './button'
-import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
+import { cva } from 'class-variance-authority'
+import { useState } from 'react'
+import { ButtonProps } from '@/components/ui/button'
 
 type MenuItemProps = ButtonProps & {
   icon?: React.ReactNode

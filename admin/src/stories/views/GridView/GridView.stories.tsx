@@ -1,4 +1,4 @@
-import GridView from '@/components/custom/grid-view'
+import GridView from '@/components/views/grid-view'
 import type { Meta, StoryObj } from '@storybook/react'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import { toast } from 'sonner'
-import { getBaseURL } from './getBaseURL'
+import { getBaseURL } from './get-base-url'
 
 export const axios = Axios.create({
   baseURL: getBaseURL(),

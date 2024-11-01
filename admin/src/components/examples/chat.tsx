@@ -2,9 +2,9 @@ import { Check, Plus, Send } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
-import { Button } from '../custom/button'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { Card, CardContent, CardFooter, CardHeader } from '../ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import {
   Command,
   CommandEmpty,
@@ -12,7 +12,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '../ui/command'
+} from '@/components/ui/command'
 import {
   Dialog,
   DialogContent,
@@ -20,14 +20,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../ui/dialog'
-import { Input } from '../ui/input'
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip'
+} from '@/components/ui/tooltip'
 
 const user = [
   {
@@ -199,9 +199,9 @@ export function CardsChat() {
                       }
 
                       return setSelectedUsers(
-                        [...user].filter((u) =>
-                          [...selectedUsers, user].includes(u)
-                        )
+                        selectedUsers
+                          .concat(user)
+                          .filter((u) => [...selectedUsers, user].includes(u))
                       )
                     }}
                   >

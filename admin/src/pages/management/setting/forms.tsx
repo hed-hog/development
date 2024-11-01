@@ -1,7 +1,7 @@
-import { Button } from '@/components/custom/button'
+import FormPanel from '@/components/panels/form-panel'
 import ColorTheme from '@/components/custom/color-theme'
-import FormPanel from '@/components/custom/form-panel'
-import { SettingLocaleEnabled } from '@/components/custom/setting-locale-enabled'
+import { SettingLocaleEnabled } from '@/components/settings/setting-locale-enabled'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
@@ -12,7 +12,7 @@ import { useSetting, useSettingFromGroup } from '@/features/setting'
 import { useSetProperties } from '@/hooks/use-set-properties'
 import { hexToHSL, hslToHex } from '@/lib/colors'
 import { IFormFieldPropsBase, ISliderProps } from '@/types/form-panel'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -428,9 +428,13 @@ export default function Page() {
       )}
       {slug === 'appearance' && <ColorTheme onChange={handleDataChange} />}
       <FormPanel
-        ref={formRef}
+        ref={formRef as any}
         fields={
-          data?.data.map((item: any) => getField(item)) as IFormFieldPropsBase[]
+          Array.isArray(data?.data)
+            ? (data.data.map((item: any) =>
+                getField(item)
+              ) as IFormFieldPropsBase[])
+            : []
         }
         form={form}
         onSubmit={(data) => {

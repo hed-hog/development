@@ -1,4 +1,4 @@
-import DataPanel from '@/components/custom/data-panel'
+import DataPanel from '@/components/panels/data-panel'
 import { PageTitle } from '@/components/custom/page-title'
 import { usePersonTypeDelete } from '@/features/person-type'
 import { useApp } from '@/hooks/use-app'

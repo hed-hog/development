@@ -1,7 +1,7 @@
-import { Card } from '@/components/ui/card'
-import { UserAuthForm } from './components/user-auth-form'
 import { LocaleChange } from '@/components/custom/locale-change'
+import { Card } from '@/components/ui/card'
 import { useTranslation } from 'react-i18next'
+import { UserAuthForm } from './components/user-auth-form'
 
 export default function SignIn2() {
   const { t } = useTranslation('auth')

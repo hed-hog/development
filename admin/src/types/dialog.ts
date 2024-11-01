@@ -1,4 +1,4 @@
-import { ButtonProps } from '@/components/custom/button'
+import { ButtonProps } from '@/components/ui/button'
 import { FunctionComponent } from 'react'
 
 export type DialogType = {

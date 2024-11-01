@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { Button } from './button'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { cn } from '@/lib/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Button } from '@/components/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -9,11 +11,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '../ui/command'
-import { cn } from '@/lib/utils'
-import { FormControl } from '../ui/form'
-import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import { useTranslation } from 'react-i18next'
+} from '@/components/ui/command'
+import { FormControl } from '@/components/ui/form'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
 export type ComboboxPrps = {
   value?: string

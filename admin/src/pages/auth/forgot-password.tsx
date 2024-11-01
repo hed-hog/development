@@ -1,7 +1,7 @@
-import { Card } from '@/components/ui/card'
-import { ForgotForm } from './components/forgot-form'
 import { LocaleChange } from '@/components/custom/locale-change'
+import { Card } from '@/components/ui/card'
 import { useTranslation } from 'react-i18next'
+import { ForgotForm } from './components/forgot-form'
 
 export default function ForgotPassword() {
   const { t } = useTranslation('auth')
