@@ -1,14 +1,14 @@
-import { Module } from '@nestjs/common';
-import { BlogModule } from '@hedhog/blog';
-import { PersonModule } from '@hedhog/person';
-import { FileModule } from '@hedhog/file';
 import { AdminModule } from '@hedhog/admin';
-import { PaginationModule } from '@hedhog/pagination';
+import { BlogModule } from '@hedhog/blog';
+import { FileModule } from '@hedhog/file';
 import { MailModule } from '@hedhog/mail';
+import { PaginationModule } from '@hedhog/pagination';
+import { PersonModule } from '@hedhog/person';
+import { PrismaModule } from '@hedhog/prisma';
+import { Module } from '@nestjs/common';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ThrottlerModule } from '@nestjs/throttler';
-import { PrismaModule } from '@hedhog/prisma';
 
 @Module({
   imports: [
