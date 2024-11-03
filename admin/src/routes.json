@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "path": "blog",
+      "children": [
+        {
+          "path": "author",
+          "component": "blog/author/index.tsx"
+        },
+        {
+          "path": "category",
+          "component": "blog/category/index.tsx"
+        },
+        {
+          "path": "post",
+          "component": "blog/post/index.tsx"
+        }
+      ]
+    }
+  ]
+}

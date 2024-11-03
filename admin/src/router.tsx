@@ -3,8 +3,32 @@ import GeneralError from './pages/errors/general-error.tsx'
 import MaintenanceError from './pages/errors/maintenance-error.tsx'
 import NotFoundError from './pages/errors/not-found-error.tsx'
 import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
+import routesJSON from './routes.json'
 
-const router = createBrowserRouter([
+type Route = {
+  path: string
+  children?: Route[]
+  component?: string
+}
+
+type RoutesJSON = {
+  routes: Route[]
+}
+
+function getRoute(route: any): any {
+  if (route.children && Array.isArray(route.children)) {
+    return route.children.map(getRoute)
+  } else {
+    return {
+      path: route.path,
+      lazy: async () => ({
+        Component: (await import(`./pages/${route.component}`)).default,
+      }),
+    }
+  }
+}
+
+const routes = [
   {
     path: '/login',
     lazy: async () => ({
@@ -45,6 +69,7 @@ const router = createBrowserRouter([
           Component: (await import('./pages/dashboard/index.tsx')).default,
         }),
       },
+      ...((routesJSON as RoutesJSON).routes ?? []).map(getRoute),
       {
         path: 'contact',
         children: [
@@ -56,7 +81,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-
       {
         path: 'management',
         children: [
@@ -194,6 +218,8 @@ const router = createBrowserRouter([
 
   // Fallback 404 route
   { path: '*', Component: NotFoundError },
-])
+]
+
+const router = createBrowserRouter(routes)
 
 export default router
