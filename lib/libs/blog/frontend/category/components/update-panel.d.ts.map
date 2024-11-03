@@ -1,0 +1,1 @@
+{"version":3,"file":"update-panel.d.ts","sourceRoot":"","sources":["update-panel.tsx"],"names":[],"mappings":"AASA,OAAO,EAAE,QAAQ,EAAE,MAAM,gBAAgB,CAAC;AAI1C,MAAM,MAAM,wBAAwB,GAAG;IACrC,IAAI,EAAE,QAAQ,CAAC;IACf,SAAS,CAAC,EAAE,CAAC,IAAI,EAAE,QAAQ,KAAK,IAAI,CAAC;CACtC,CAAC;AAEF,eAAO,MAAM,mBAAmB,KAwC/B,CAAC"}

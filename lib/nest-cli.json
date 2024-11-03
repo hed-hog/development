@@ -78,6 +78,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/payment/tsconfig.lib.json"
       }
+    },
+    "blog": {
+      "type": "library",
+      "root": "libs/blog",
+      "entryFile": "index",
+      "sourceRoot": "libs/blog/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/blog/tsconfig.lib.json"
+      }
     }
   }
 }
