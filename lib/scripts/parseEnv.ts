@@ -1,6 +1,24 @@
 import * as fs from 'fs';
 
+let envVarsCache: any = {};
+
+function removeQuotes(value: string): string {
+  if (value.startsWith('"') && value.endsWith('"')) {
+    value = value.slice(1, -1);
+  }
+
+  if (value.startsWith("'") && value.endsWith("'")) {
+    value = value.slice(1, -1);
+  }
+
+  return value;
+}
+
 export function parseEnv(filePath: string): Record<string, string> {
+  if (envVarsCache[filePath]) {
+    return envVarsCache[filePath];
+  }
+
   if (!fs.existsSync(filePath)) {
     throw new Error(`Arquivo .env não encontrado no caminho: ${filePath}`);
   }
@@ -12,11 +30,13 @@ export function parseEnv(filePath: string): Record<string, string> {
     const [key, value] = line.split('=');
 
     if (key && value) {
-      envVariables[key.trim()] = expandValue(value.trim(), envVariables);
+      envVariables[key.trim()] = removeQuotes(
+        expandValue(value.trim(), envVariables),
+      );
     }
   });
 
-  return envVariables;
+  return (envVarsCache[filePath] = envVariables);
 }
 
 function expandValue(

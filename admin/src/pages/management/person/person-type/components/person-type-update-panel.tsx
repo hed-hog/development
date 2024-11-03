@@ -1,15 +1,15 @@
+import { Overlay } from '@/components/custom/overlay'
 import FormPanel, {
   FormPanelRef,
   getFieldsLocale,
 } from '@/components/panels/form-panel'
-import { Overlay } from '@/components/custom/overlay'
 import { TabPanel } from '@/components/panels/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { usePersonTypeGet, usePersonTypeUpdate } from '@/features/person-type'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { PersonType } from '@/types/models'
-import { t } from 'i18next'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export type PersonTypeUpdatePanelProps = {
   data: PersonType
@@ -18,6 +18,7 @@ export type PersonTypeUpdatePanelProps = {
 
 export const PersonTypeUpdatePanel = forwardRef(
   ({ data, onUpdated }: PersonTypeUpdatePanelProps, ref) => {
+    const { t } = useTranslation(['person-types', 'actions'])
     const { data: item, isLoading } = usePersonTypeGet(data.id as number)
     const { mutate: personTypeUpdate } = usePersonTypeUpdate()
     const formRef = useRef<FormPanelRef>(null)

@@ -216,6 +216,8 @@ async function addLocaleFields(path: string) {
 }
 
 async function main() {
+  console.info('Creating types for admin...');
+
   const pathAdmin = join(__dirname, '../../admin/src/types/models');
 
   await createDirectoryRecursive(pathAdmin);
@@ -224,8 +226,15 @@ async function main() {
   await addLocaleFields(pathAdmin);
   await writeFiles(pathAdmin);
   await createIndex(pathAdmin);
+
+  console.info('Types for admin created successfully!');
 }
 
-main().catch((err) => {
-  console.error('Error:', err);
-});
+main()
+  .then(() => {
+    console.info('Types created successfully!');
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error('Error:', err);
+  });

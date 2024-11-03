@@ -3,7 +3,7 @@ import { parseEnv } from './parseEnv';
 
 export async function getDatabaseConfig() {
   const envPath = join(__dirname, '..', '.env');
-  console.log({ envPath });
+
   const envData: any = parseEnv(envPath);
 
   return {

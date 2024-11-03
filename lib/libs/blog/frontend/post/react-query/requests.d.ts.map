@@ -1,1 +1,0 @@
-{"version":3,"file":"requests.d.ts","sourceRoot":"","sources":["requests.ts"],"names":[],"mappings":"AACA,OAAO,EAAU,gBAAgB,EAAoB,MAAM,SAAS,CAAC;AACrE,OAAO,EAAE,IAAI,EAAE,MAAM,gBAAgB,CAAC;AAGtC,wBAAgB,QAAQ;uBAgBU,IAAI;qBAgBN,MAAM,QAAQ,IAAI;sBARjB,MAAM,EAAE;uBArBP,gBAAgB;kBAOrB,MAAM;EAqClC"}

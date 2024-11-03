@@ -1,12 +1,13 @@
-import { PersonType } from './PersonType';
+import { Category } from './Category';
 import { Locale } from './Locale';
 
-export type PersonTypeLocale = {
-  type_id?: number;
+export type CategoryLocale = {
+  category_id?: number;
   locale_id?: number;
   name: string;
+  description: string;
   created_at?: string;
   updated_at?: string;
-  person_type?: PersonType;
+  category?: Category;
   locale?: Locale;
 }
