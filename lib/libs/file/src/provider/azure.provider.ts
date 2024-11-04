@@ -27,6 +27,7 @@ export class AzureProvider extends AbstractProvider {
     destination: string,
     filename: string,
     fileContent: string,
+    mimetype = 'text/plain',
   ): Promise<any> {
     const blobServiceClient = await this.getClient();
     const containerClient = blobServiceClient.getContainerClient(
@@ -36,7 +37,7 @@ export class AzureProvider extends AbstractProvider {
     const blobClient = containerClient.getBlockBlobClient(filepath);
 
     await blobClient.upload(fileContent, fileContent.length, {
-      blobHTTPHeaders: { blobContentType: 'text/plain' },
+      blobHTTPHeaders: { blobContentType: mimetype },
     });
     return `https://${this.setting['storage-abs-container']}.azureedge.net/${filepath}`;
   }

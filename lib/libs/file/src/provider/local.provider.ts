@@ -22,6 +22,37 @@ export class LocalProvider extends AbstractProvider {
     }
   }
 
+  async uploadFromString(
+    destination: string,
+    filename: string,
+    fileContent: string,
+    mimetype?: string,
+  ): Promise<any> {
+    const storagePath = join(this.setting['storage-local-path'], destination);
+
+    if (!storagePath) {
+      throw new BadRequestException(
+        `You must set the storage-local-path in the setting.`,
+      );
+    }
+
+    if (!existsSync(storagePath)) {
+      await this.createForderRecursive(storagePath);
+    }
+
+    if (!existsSync(storagePath)) {
+      throw new BadRequestException(
+        `The storage path does not exist: ${storagePath}`,
+      );
+    }
+
+    const filePath = join(storagePath, this.getFilename(filename));
+
+    await writeFile(filePath, fileContent);
+
+    return filePath;
+  }
+
   async upload(destination: string, file: Express.Multer.File): Promise<any> {
     const storagePath = join(this.setting['storage-local-path'], destination);
 

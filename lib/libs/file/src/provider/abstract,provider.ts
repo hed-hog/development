@@ -5,6 +5,7 @@ interface IProvider {
     destination: string,
     filename: string,
     fileContent: string,
+    mimetype?: string,
   ): Promise<any>;
   upload(destination: string, file: Express.Multer.File): Promise<any>;
   readStream(filepath: string): Promise<any>;
@@ -19,6 +20,7 @@ export abstract class AbstractProvider implements IProvider {
     destination: string,
     filename: string,
     fileContent: string,
+    mimetype?: string,
   ): Promise<any>;
   abstract upload(destination: string, file: Express.Multer.File): Promise<any>;
   abstract readStream(filepath: string): Promise<any>;

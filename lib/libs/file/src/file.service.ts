@@ -117,6 +117,39 @@ export class FileService {
     return size <= Number(maxSize);
   }
 
+  async uploadFromString(
+    destination: string,
+    filename: string,
+    filecontent: string,
+    mimetype = 'text/plain',
+  ) {
+    const provider = await this.getProvider();
+
+    if (!(await this.acceptMimetypes(mimetype))) {
+      throw new BadRequestException(`Invalid file type: ${mimetype}`);
+    }
+
+    const url = await provider.uploadFromString(
+      destination,
+      filename,
+      filecontent,
+      mimetype,
+    );
+
+    const file = await this.prismaService.file.create({
+      data: {
+        filename,
+        path: url,
+        provider_id: this.providerId,
+        location: destination,
+        mimetype_id: await this.getMimeType(mimetype),
+        size: filecontent.length,
+      },
+    });
+
+    return file;
+  }
+
   async upload(destination: string, fileBuffer: Express.Multer.File) {
     const provider = await this.getProvider();
 
