@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  forwardRef,
   Get,
   Inject,
   Param,
@@ -10,8 +11,9 @@ import {
   Patch,
   Post,
   Put,
-  forwardRef,
+  Res,
 } from '@nestjs/common';
+import { Public } from '../auth/decorators/public.decorator';
 import { User } from '../auth/decorators/user.decorator';
 import { DeleteDTO } from '../dto/delete.dto';
 import { Locale } from '../locale';
@@ -41,6 +43,12 @@ export class SettingsController {
       paginationParams,
       slug,
     );
+  }
+
+  @Public()
+  @Get('appearance.css')
+  async appearanceCSS(@Res() res) {
+    return this.settingService.getAppearanceCSS(res);
   }
 
   @Get('group')

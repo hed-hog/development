@@ -229,6 +229,10 @@ export class FileService {
     });
   }
 
+  async readStream(filepath: string) {
+    return (await this.getProvider()).readStream(filepath);
+  }
+
   async download(token: string) {
     const { filepath } = this.jwtService.verify(token);
     return (await this.getProvider()).readStream(filepath);

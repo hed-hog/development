@@ -8,6 +8,7 @@ import {
   Injectable,
   forwardRef,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { DeleteDTO } from '../dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingDTO } from './dto/setting.dto';
@@ -24,6 +25,14 @@ export class SettingService {
     private readonly fileService: FileService,
   ) {}
 
+  async getAppearanceCSS(res: Response) {
+    const fileCSS = await this.fileService.readStream(`appearance/theme.css`);
+
+    res.setHeader('Content-Type', 'text/css');
+
+    return fileCSS.pipe(res);
+  }
+
   async updateAppearanceSettings() {
     console.log({ updateAppearanceSettings: 'updateAppearanceSettings' });
 
@@ -36,7 +45,7 @@ export class SettingService {
     });
 
     await this.fileService.uploadFromString(
-      'public',
+      'appearance',
       'theme.css',
       `
         @layer base {
