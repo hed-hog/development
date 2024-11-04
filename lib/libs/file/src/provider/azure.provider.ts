@@ -23,6 +23,24 @@ export class AzureProvider extends AbstractProvider {
     return blobServiceClient;
   }
 
+  async uploadFromString(
+    destination: string,
+    filename: string,
+    fileContent: string,
+  ): Promise<any> {
+    const blobServiceClient = await this.getClient();
+    const containerClient = blobServiceClient.getContainerClient(
+      this.setting['storage-abs-container'],
+    );
+    const filepath = [destination, this.getFilename(filename)].join('/');
+    const blobClient = containerClient.getBlockBlobClient(filepath);
+
+    await blobClient.upload(fileContent, fileContent.length, {
+      blobHTTPHeaders: { blobContentType: 'text/plain' },
+    });
+    return `https://${this.setting['storage-abs-container']}.azureedge.net/${filepath}`;
+  }
+
   async upload(destination: string, file: Express.Multer.File): Promise<any> {
     const blobServiceClient = await this.getClient();
     const containerClient = blobServiceClient.getContainerClient(

@@ -22,6 +22,24 @@ export class S3Provider extends AbstractProvider {
     }));
   }
 
+  async uploadFromString(
+    destination: string,
+    filename: string,
+    fileContent: string,
+  ): Promise<any> {
+    const s3 = await this.getClient();
+
+    const result = await s3
+      .upload({
+        Bucket: this.setting['storage-s3-bucket'],
+        Key: [destination, this.getFilename(filename)].join('/'),
+        Body: fileContent,
+      })
+      .promise();
+
+    return result['Location'];
+  }
+
   async upload(destination: string, file: Express.Multer.File): Promise<any> {
     const s3 = await this.getClient();
 
