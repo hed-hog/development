@@ -1,0 +1,11 @@
+{
+  "create": "Create setting",
+  "createText": "Fill the setting informations.",
+  "createTooltip": "Create new setting",
+  "delete": "Delete setting",
+  "deleteText": "Are you sure to delete these setting?",
+  "deleteTooltip": "Delete the selected setting",
+  "edit": "Edit setting",
+  "editText": "View and edit setting information.",
+  "editTooltip": "Edit the selected setting"
+}

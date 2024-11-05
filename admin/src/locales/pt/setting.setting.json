@@ -1,0 +1,11 @@
+{
+  "create": "Criar configuração",
+  "createText": "Preencha as informações da configuração.",
+  "createTooltip": "Criar nova configuração",
+  "delete": "Deletar configuração",
+  "deleteText": "Você tem certeza de que deseja deletar estas configurações?",
+  "deleteTooltip": "Deletar a configuração selecionada",
+  "edit": "Editar configuração",
+  "editText": "Ver e editar informações da configuração.",
+  "editTooltip": "Editar a configuração selecionada"
+}

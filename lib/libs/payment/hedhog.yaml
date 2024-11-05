@@ -1,0 +1,173 @@
+tables:
+  # Tabela de Planos
+  plan:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  plan_locale:
+    columns:
+      - type: fk
+        name: plan_id
+        isPrimary: true
+        references:
+          table: plan
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - name: description
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  # Tabela de Planos e Durações
+  plan_duration:
+    columns:
+      - type: pk
+      - name: plan_id
+        type: fk
+        references:
+          table: plan
+          column: id
+          onDelete: CASCADE
+      - type: enum
+        name: frequency
+        enum:
+          - monthly
+          - quarterly
+          - yearly
+      - type: slug
+      - name: price
+        type: decimal
+        precision: 10
+        scale: 2
+        unsigned: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  # Table de Assinaturas
+  subscription:
+    columns:
+      - type: pk
+      - name: person_id
+        type: fk
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - name: duration_id
+        type: fk
+        references:
+          table: plan_duration
+          column: id
+          onDelete: CASCADE
+      - name: start_at
+        type: date
+      - name: end_at
+        type: date
+      - name: status
+        type: enum
+        enum:
+          - pending
+          - active
+          - canceled
+          - expired
+        default: pending
+      - name: recurring
+        type: boolean
+        default: false
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  # Tabela de Gateways de Pagamento
+  payment_gateway:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+    ifNotExists: true
+
+  payment_gateway_locale:
+    columns:
+      - type: fk
+        name: gateway_id
+        isPrimary: true
+        references:
+          table: payment_gateway
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  # Tabela de Pagamentos
+  payment:
+    columns:
+      - type: pk
+      - name: subscription_id
+        type: fk
+        isNullable: true
+        references:
+          table: subscription
+          column: id
+          onDelete: SET NULL
+      - name: gateway_id
+        type: fk
+        references:
+          table: payment_gateway
+          column: id
+          onDelete: CASCADE
+      - name: amount
+        type: decimal
+        precision: 10
+        scale: 2
+        unsigned: true
+      - name: currency
+        type: enum
+        enum:
+          - USD
+          - BRL
+        default: USD
+      - name: payment_at
+        type: timestamp
+        isNullable: true
+      - name: status
+        type: enum
+        enum:
+          - pending
+          - approved
+          - canceled
+          - refunded
+          - failed
+        default: pending
+      - name: type
+        type: enum
+        enum:
+          - one-time
+          - recurring
+        default: one-time
+      - name: transaction_id
+        unique: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
