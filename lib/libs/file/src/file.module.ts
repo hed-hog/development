@@ -1,16 +1,16 @@
-import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { FileController } from './file.controller';
 import { FileService } from './file.service';
+import { SettingModule } from '@hedhog/setting';
 
 @Module({
   imports: [
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
-    forwardRef(() => AdminModule),
+    forwardRef(() => SettingModule),
     forwardRef(() =>
       JwtModule.registerAsync({
         global: true,

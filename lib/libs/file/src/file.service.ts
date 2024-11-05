@@ -1,4 +1,4 @@
-import { SettingService } from '@hedhog/admin';
+import { SettingService } from '@hedhog/setting';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {

@@ -1,4 +1,4 @@
-import { Role } from '@hedhog/admin/dist/role/decorators/role.decorator';
+import { Role } from '@hedhog/utils';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,

@@ -7,7 +7,6 @@ import { MenuModule } from './menu/menu.module';
 import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
 import { ScreenModule } from './screen/screen.module';
-import { SettingModule } from './setting/setting.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -19,7 +18,6 @@ import { UserModule } from './user/user.module';
     forwardRef(() => RouteModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => ScreenModule),
-    forwardRef(() => SettingModule),
     forwardRef(() => LocaleModule),
     forwardRef(() => UserModule),
   ],
@@ -29,7 +27,6 @@ import { UserModule } from './user/user.module';
     RouteModule,
     RoleModule,
     MenuModule,
-    SettingModule,
     ScreenModule,
     LocaleModule,
   ],

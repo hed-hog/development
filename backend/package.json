@@ -43,7 +43,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@hedhog/utils": "^0.0.19",
+    "@hedhog/utils": "^0.0.21",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@types/bcrypt": "^5.0.2",
