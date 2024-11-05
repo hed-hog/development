@@ -175,6 +175,15 @@ data:
               en: The Azure Blob Storage container
               pt: O contêiner de armazenamento de blob do Azure
             value: ''
+          - slug: storage-gcs-keyfile
+            type: string
+            name:
+              en: GCS Keyfile
+              pt: Arquivo de Chave GCS
+            description:
+              en: The Google Cloud Storage keyfile
+              pt: O arquivo de chave de armazenamento do Google Cloud
+            value: ''
 
   file_provider:
     - slug: local
