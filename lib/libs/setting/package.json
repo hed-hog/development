@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/setting",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "@hedhog/utils": "latest"
   },
   "devDependencies": {
-    "@hedhog/locale": "^0.0.17",
+    "@hedhog/locale": "^0.0.18",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
     "@hedhog/utils": "^0.0.21",

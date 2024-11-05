@@ -4,33 +4,7 @@ data:
       region: US
     - code: pt
       region: BR
-  route:
-    - url: /locale
-      method: GET
-      relations: &a1
-        role:
-          - where:
-              slug: admin
-    - url: /locale/:id
-      method: GET
-      relations: *a1
-  menu:
-    - name:
-        en: Locale
-        pt: Locale
-      icon: file
-      url: /locale
-      slug: locale
-      relations: *a1
-  screen:
-    - name:
-        en: Locale
-        pt: Locale
-      slug: locale
-      description:
-        en: Screen to manage locale
-        pt: Tela para gerenciar locale
-      icon: file
+
 tables:
   locale:
     columns:

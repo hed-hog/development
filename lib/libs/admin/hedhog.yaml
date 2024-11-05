@@ -199,6 +199,25 @@ data:
         en: Setting
         pt: Configurações
       slug: /management/setting
+        menu:
+    - name:
+        en: SettingGroup
+        pt: Grupo de Configuração
+      icon: file
+      url: /setting-group
+      slug: setting-group
+    - name:
+        en: SettingUser
+        pt: Configuração de Usuário
+      icon: file
+      url: /setting-user
+      slug: setting-user
+    - name:
+        en: Locale
+        pt: Locale
+      icon: file
+      url: /locale
+      slug: locale
   screen:
     - slug: /management/user
       icon: user
@@ -278,6 +297,35 @@ data:
           - where:
               url:
                 like: /setting%
+      - name:
+        en: SettingGroup
+        pt: Grupo de Configuração
+      slug: setting-group
+      description:
+        en: Screen to manage setting_group
+        pt: Tela para gerenciar setting_group
+      icon: file
+    - name:
+        en: SettingUser
+        pt: Configuração de Usuário
+      slug: setting-user
+      description:
+        en: Screen to manage setting_user
+        pt: Tela para gerenciar setting_user
+      icon: file
+    - name:
+        en: Locale
+        pt: Locale
+      slug: locale
+      description:
+        en: Screen to manage locale
+        pt: Tela para gerenciar locale
+      icon: file
+      relations:
+        route:
+          - where:
+              url:
+                like: /locale%
   country:
     - name:
         en: Afghanistan
