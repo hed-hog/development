@@ -1,4 +1,5 @@
-import { Locale, Role } from '@hedhog/admin';
+import { Role } from '@hedhog/utils';
+import { Locale } from '@hedhog/locale';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,

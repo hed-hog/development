@@ -1,4 +1,4 @@
-import { Role } from '@hedhog/admin';
+import { Role } from '@hedhog/utils';
 import {
   Body,
   Controller,

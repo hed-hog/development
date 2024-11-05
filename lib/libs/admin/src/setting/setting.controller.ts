@@ -13,11 +13,10 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { Public } from '../auth/decorators/public.decorator';
+import { Locale } from '@hedhog/locale';
+import { Role, Public } from '@hedhog/utils';
 import { User } from '../auth/decorators/user.decorator';
 import { DeleteDTO } from '../dto/delete.dto';
-import { Locale } from '../locale';
-import { Role } from '../role/decorators/role.decorator';
 import { CreateDTO } from './dto/create.dto';
 import { SettingUserDTO } from './dto/setting-user.dto';
 import { SettingDTO } from './dto/setting.dto';
