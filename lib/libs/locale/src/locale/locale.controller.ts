@@ -1,4 +1,5 @@
 import { Pagination } from '@hedhog/pagination';
+import { Public, Role } from '@hedhog/utils';
 import {
   Body,
   Controller,
@@ -14,11 +15,10 @@ import {
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { LocaleService } from './locale.service';
-import { Public, Role } from '@hedhog/utils';
-import { Locale } from './locale.decorator';
 import { SetEnabledDTO } from './dto/set-enabled.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { Locale } from './locale.decorator';
+import { LocaleService } from './locale.service';
 
 @Role()
 @Controller('locale')
