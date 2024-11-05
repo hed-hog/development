@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/file",
-  "version": "0.0.26",
+  "version": "0.0.28",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "@azure/storage-blob": "^12.25.0",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
-    "@hedhog/setting": "^0.0.11",
+    "@hedhog/setting": "^0.0.14",
     "@hedhog/utils": "^0.0.21",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "^2.0.5",

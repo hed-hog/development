@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/admin",
-  "version": "0.0.112",
+  "version": "0.0.114",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@hedhog/file": "^0.0.24",
+    "@hedhog/file": "^0.0.27",
     "@hedhog/mail": "latest",
     "@hedhog/locale": "^0.0.18",
     "@hedhog/pagination": "^0.0.17",
