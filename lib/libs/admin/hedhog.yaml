@@ -1430,6 +1430,8 @@ tables:
           - PUT
           - OPTIONS
           - HEAD
+      - name: description
+        isNullable: true
       - type: created_at
       - type: updated_at
     indices:

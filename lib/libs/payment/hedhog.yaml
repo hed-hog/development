@@ -161,6 +161,54 @@ tables:
       - type: updated_at
     ifNotExists: true
 data:
+  setting_group:
+    - slug: payment-gateway
+      icon: wallet
+      name:
+        en: Payment
+        pt: Pagamento
+      description:
+        en: Payment gateway settings
+        pt: Configurações do gateway de pagamento
+      relations:
+        setting:
+          - slug: payment-gateway
+            type: string
+            name:
+              en: Payment Gateway
+              pt: Gateway de Pagamento
+            description:
+              en: Payment gateway slug
+              pt: Slug do gateway de pagamento
+            value:
+          - slug: payment-mercado-pago-token
+            type: string
+            name:
+              en: Mercado Pago Token
+              pt: Token do Mercado Pago
+            description:
+              en: Token used for authenticating with the Mercado Pago payment gateway
+              pt: Token usado para autenticação com o gateway de pagamento Mercado Pago
+            value:
+          - slug: payment-mercado-pago-public-key
+            type: string
+            name:
+              en: Mercado Pago Public Key
+              pt: Chave Pública do Mercado Pago
+            description:
+              en: Public key used for authenticating with the Mercado Pago payment gateway
+              pt: Chave pública usada para autenticação com o gateway de pagamento Mercado Pago
+            value:
+          - slug: payment-stripe-secret-key
+            type: string
+            name:
+              en: Stripe Secret Key
+              pt: Chave Secreta do Stripe
+            description:
+              en: Secret key used for authenticating with the Stripe payment gateway
+              pt: Chave secreta usada para autenticação com o gateway de pagamento Stripe
+            value:
+
   route:
     - url: /plan
       method: GET
