@@ -1,5 +1,5 @@
-import { Public } from '@hedhog/admin';
 import { MailService } from '@hedhog/mail';
+import { Public } from '@hedhog/utils';
 import {
   Controller,
   Get,
