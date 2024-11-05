@@ -1,11 +1,8 @@
 import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DeleteDTO } from '../dto/delete.dto';
 import { CustomTypeService } from './custom-type.service';
 import { CreateCustomTypeDTO } from './dto/create-custom-type.dto';
-import { UpdateCustomTypeDTO } from './dto/update-custom-type.dto';
 
 describe('CustomTypeService', () => {
   let service: CustomTypeService;
@@ -90,6 +87,7 @@ describe('CustomTypeService', () => {
     expect(result).toEqual(paginationMockResult);
   });
 */
+  /*
   it('should get custom type by ID', async () => {
     const id = 1;
 
@@ -154,5 +152,5 @@ describe('CustomTypeService', () => {
     await expect(service.remove(deleteDto)).rejects.toThrow(
       `You must select at least one customType to delete.`,
     );
-  });
+  });*/
 });

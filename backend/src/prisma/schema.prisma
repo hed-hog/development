@@ -7,35 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model author {
-  id    Int    @id(map: "PK_5a0e79799d372fe56f2f3fa6871") @default(autoincrement())
-  name  String @db.VarChar
-  email String @db.VarChar
-  post  post[]
-}
-
-model category {
-  id              Int               @id(map: "PK_9c4e4a89e3674fc9f382d733f03") @default(autoincrement())
-  slug            String            @unique(map: "UQ_cb73208f151aa71cdd78f662d70") @db.VarChar(255)
-  created_at      DateTime          @default(now()) @db.Timestamp(6)
-  updated_at      DateTime          @default(now()) @db.Timestamp(6)
-  category_locale category_locale[]
-  post            post[]
-}
-
-model category_locale {
-  category_id Int
-  locale_id   Int
-  name        String   @db.VarChar(100)
-  description String   @db.VarChar(512)
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
-  locale      locale   @relation(fields: [locale_id], references: [id], onUpdate: NoAction, map: "FK_42628cb0187a1a24f9fedaf0283")
-  category    category @relation(fields: [category_id], references: [id], onUpdate: NoAction, map: "FK_c1b493b4088aac71fcfc899a597")
-
-  @@id([category_id, locale_id], map: "PK_e56abeb6623877833eb81839ab4")
-}
-
 model country {
   id             Int              @id(map: "PK_bf6e37c231c4f4ea56dcd887269") @default(autoincrement())
   code           String           @db.Char(3)
@@ -70,7 +41,6 @@ model locale {
   enabled              Boolean                @default(true)
   created_at           DateTime               @default(now()) @db.Timestamp(6)
   updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  category_locale      category_locale[]
   country_locale       country_locale[]
   menu_locale          menu_locale[]
   multifactor_locale   multifactor_locale[]
@@ -138,18 +108,6 @@ model multifactor_locale {
   locale         locale      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d5f92b6d1e95a38b5af8470f2fe")
 
   @@id([multifactor_id, locale_id], map: "PK_1cc26c48643e0908951b8528fd9")
-}
-
-model post {
-  id          Int      @id(map: "PK_be5fda3aac270b134ff9c21cdee") @default(autoincrement())
-  title       String   @db.VarChar
-  content     String
-  author_id   Int
-  category_id Int
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
-  author      author   @relation(fields: [author_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2f1a9ca8908fc8168bc18437f62")
-  category    category @relation(fields: [category_id], references: [id], onUpdate: NoAction, map: "FK_388636ba602c312da6026dc9dbc")
 }
 
 model role {

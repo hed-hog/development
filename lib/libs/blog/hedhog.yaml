@@ -1,0 +1,133 @@
+data:
+  route:
+    - url: /auth/login
+      method: POST
+    - url: /post
+      method: GET
+    - url: /post/:id
+      method: GET
+    - url: /author
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /author/:id
+      method: GET
+      relations: *a1
+    - url: /category
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /category/:id
+      method: GET
+      relations: *a2
+  menu:
+    - name:
+        en: Author
+        pt: Author
+      icon: file
+      url: /author
+      slug: author
+      relations: *a1
+    - name:
+        en: Category
+        pt: Category
+      icon: file
+      url: /category
+      slug: category
+      relations: *a2
+    - name:
+        en: Post
+        pt: Post
+      icon: file
+      url: /post
+      slug: post
+      relations:
+        role:
+          - where:
+              slug: admin
+  screen:
+    - name:
+        en: Author
+        pt: Author
+      slug: author
+      description:
+        en: Screen to manage author
+        pt: Tela para gerenciar author
+      icon: file
+    - name:
+        en: Category
+        pt: Category
+      slug: category
+      description:
+        en: Screen to manage category
+        pt: Tela para gerenciar category
+      icon: file
+    - name:
+        en: Post
+        pt: Post
+      slug: post
+      description:
+        en: Screen to manage post
+        pt: Tela para gerenciar post
+      icon: file
+tables:
+  author:
+    columns:
+      - type: pk
+      - name: name
+      - name: email
+    ifNotExists: true
+  category:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  category_locale:
+    columns:
+      - name: category_id
+        type: fk
+        isPrimary: true
+        references:
+          table: category
+          column: id
+          onDelete: RESTRICT
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: RESTRICT
+      - name: name
+        length: 100
+      - name: description
+        length: 512
+      - type: created_at
+      - type: updated_at
+  post:
+    columns:
+      - type: pk
+      - name: title
+      - name: content
+        type: text
+      - name: author_id
+        type: fk
+        references:
+          table: author
+          column: id
+          onDelete: CASCADE
+      - name: category_id
+        type: fk
+        references:
+          table: category
+          column: id
+          onDelete: RESTRICT
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true

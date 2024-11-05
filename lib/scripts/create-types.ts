@@ -41,6 +41,8 @@ async function createEnumFile(path: string, columns: any[]) {
 async function createTypes(path: string) {
   const tables = await getTables();
 
+  console.log(tables)
+
   for (const table of tables) {
     let columns = await getTableColumns(table);
     columns = await createEnumFile(path, columns);

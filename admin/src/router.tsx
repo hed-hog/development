@@ -19,10 +19,15 @@ function getRoute(route: any): any {
   if (route.children && Array.isArray(route.children)) {
     return route.children.map(getRoute)
   } else {
+    console.log({
+      path: route.path,
+      component: `./pages/${route.component}`,
+    })
     return {
       path: route.path,
       lazy: async () => ({
-        Component: (await import(`./pages/${route.component}`)).default,
+        Component: (await import(`./pages/${route.component}/index.tsx`))
+          .default,
       }),
     }
   }
@@ -221,5 +226,7 @@ const routes = [
 ]
 
 const router = createBrowserRouter(routes)
+
+console.log(router)
 
 export default router

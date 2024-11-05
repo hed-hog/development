@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BlogModule } from '@hedhog/blog';
+import { PersonModule } from '@hedhog/person';
 import { AdminModule } from '@hedhog/admin';
 import { MailModule } from '@hedhog/mail';
 import { FileModule } from '@hedhog/file';
@@ -25,7 +25,7 @@ import { PrismaModule } from '@hedhog/prisma';
       password: 'changeme',
     }),
     AdminModule,
-    BlogModule,
+    PersonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

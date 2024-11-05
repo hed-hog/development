@@ -1,0 +1,11 @@
+{
+  "create": "Criar categoria",
+  "createText": "Preencha as informações da categoria.",
+  "createTooltip": "Criar nova categoria",
+  "delete": "Excluir categoria",
+  "deleteText": "Você tem certeza de que deseja excluir estas categorias?",
+  "deleteTooltip": "Excluir a categoria selecionada",
+  "edit": "Editar categoria",
+  "editText": "Ver e editar informações da categoria.",
+  "editTooltip": "Editar a categoria selecionada"
+}

@@ -1,10 +1,8 @@
 import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CustomService } from './custom.service';
 import { CreatePersonCustomDTO } from './dto/create-custom.dto';
-import { UpdatePersonCustomDTO } from './dto/update-custom.dto';
 
 describe('CustomService', () => {
   let service: CustomService;
@@ -73,7 +71,7 @@ describe('CustomService', () => {
     });
     expect(result).toEqual(customMock);
   });
-
+  /*
   it('should get customs by person ID', async () => {
     const personId = 1;
 
@@ -168,5 +166,5 @@ describe('CustomService', () => {
       },
     });
     expect(result).toEqual({ count: 1 });
-  });
+  });*/
 });

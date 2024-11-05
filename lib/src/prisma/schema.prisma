@@ -34,10 +34,10 @@ model locale {
   enabled              Boolean                @default(true)
   created_at           DateTime               @default(now()) @db.Timestamp(6)
   updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  category_locale      category_locale[]
   country_locale       country_locale[]
   menu_locale          menu_locale[]
   multifactor_locale   multifactor_locale[]
+  person_type_locale   person_type_locale[]
   role_locale          role_locale[]
   screen_locale        screen_locale[]
   setting_group_locale setting_group_locale[]
@@ -326,45 +326,24 @@ model file_provider {
   updated_at DateTime @default(now()) @db.Timestamp(6)
 }
 
-model author {
-  id    Int    @id(map: "PK_5a0e79799d372fe56f2f3fa6871") @default(autoincrement())
-  name  String @db.VarChar
-  email String @db.VarChar
-  post  post[]
+model person_type {
+  id                 Int                  @id(map: "PK_f900a8c313411c7da8fcbba7975") @default(autoincrement())
+  slug               String               @unique(map: "UQ_e450c84833fbeb5e6bce51b4805") @db.VarChar(255)
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
+  person_type_locale person_type_locale[]
 }
 
-model category {
-  id              Int               @id(map: "PK_9c4e4a89e3674fc9f382d733f03") @default(autoincrement())
-  slug            String            @unique(map: "UQ_cb73208f151aa71cdd78f662d70") @db.VarChar(255)
-  created_at      DateTime          @default(now()) @db.Timestamp(6)
-  updated_at      DateTime          @default(now()) @db.Timestamp(6)
-  category_locale category_locale[]
-  post            post[]
-}
-
-model category_locale {
-  category_id Int
+model person_type_locale {
+  type_id     Int
   locale_id   Int
-  name        String   @db.VarChar(100)
-  description String   @db.VarChar(512)
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
-  locale      locale   @relation(fields: [locale_id], references: [id], onUpdate: NoAction, map: "FK_42628cb0187a1a24f9fedaf0283")
-  category    category @relation(fields: [category_id], references: [id], onUpdate: NoAction, map: "FK_c1b493b4088aac71fcfc899a597")
+  name        String      @unique(map: "UQ_5d4c8dea076f83721ef1a631315") @db.VarChar(31)
+  created_at  DateTime    @default(now()) @db.Timestamp(6)
+  updated_at  DateTime    @default(now()) @db.Timestamp(6)
+  person_type person_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2eb1f7db6f53ac7dca9cbff7b76")
+  locale      locale      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3cac1af04c04a72706ca0e73242")
 
-  @@id([category_id, locale_id], map: "PK_e56abeb6623877833eb81839ab4")
-}
-
-model post {
-  id          Int      @id(map: "PK_be5fda3aac270b134ff9c21cdee") @default(autoincrement())
-  title       String   @db.VarChar
-  content     String
-  author_id   Int
-  category_id Int
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
-  author      author   @relation(fields: [author_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2f1a9ca8908fc8168bc18437f62")
-  category    category @relation(fields: [category_id], references: [id], onUpdate: NoAction, map: "FK_388636ba602c312da6026dc9dbc")
+  @@id([type_id, locale_id], map: "PK_817fb03a35a6d045af0ef30603c")
 }
 
 enum route_method_enum {

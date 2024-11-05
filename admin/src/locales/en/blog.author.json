@@ -1,0 +1,11 @@
+{
+  "create": "Create author",
+  "createText": "Fill the author informations.",
+  "createTooltip": "Create new author",
+  "delete": "Delete author",
+  "deleteText": "Are you sure to delete these authors?",
+  "deleteTooltip": "Delete the selected author",
+  "edit": "Edit author",
+  "editText": "View and edit author information.",
+  "editTooltip": "Edit the selected author"
+}

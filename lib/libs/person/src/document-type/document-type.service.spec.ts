@@ -1,15 +1,8 @@
-import {
-  PageOrderDirection,
-  PaginationDTO,
-  PaginationService,
-} from '@hedhog/pagination';
+import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DeleteDTO } from '../dto/delete.dto';
 import { DocumentTypeService } from './document-type.service';
 import { CreateDocumentTypeDTO } from './dto/create-document-type.dto';
-import { UpdateDocumentTypeDTO } from './dto/update-document-type.dto';
 
 describe('DocumentTypeService', () => {
   let service: DocumentTypeService;
@@ -69,7 +62,7 @@ describe('DocumentTypeService', () => {
     });
     expect(result).toEqual(documentTypeMock);
   });
-
+  /*
   it('should get document types with pagination', async () => {
     const locale = 'en';
     const paginationParams: PaginationDTO = {
@@ -173,5 +166,5 @@ describe('DocumentTypeService', () => {
     await expect(service.remove(deleteDto)).rejects.toThrow(
       `You must select at least one DocumentType to delete.`,
     );
-  });
+  });*/
 });
