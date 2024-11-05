@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { WithLocaleDTO } from '../../dto/with-locale.dto';
+import { WithLocaleDTO } from '@hedhog/locale';
 
 export class CreateDTO extends WithLocaleDTO {
   @IsString()

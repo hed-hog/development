@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/setting",
-  "version": "0.0.0",
+  "version": "0.0.8",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -23,12 +23,14 @@
   "description": "",
   "peerDependencies": {
     "@hedhog/admin": "latest",
+    "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
     "@hedhog/utils": "latest"
   },
   "devDependencies": {
     "@hedhog/admin": "^0.0.109",
+    "@hedhog/locale": "^0.0.17",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
     "@hedhog/utils": "^0.0.21",

@@ -23,7 +23,7 @@
   "devDependencies": {
     "@hedhog/file": "^0.0.24",
     "@hedhog/mail": "latest",
-    "@hedhog/locale": "^0.0.16",
+    "@hedhog/locale": "^0.0.17",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
     "@hedhog/utils": "^0.0.21",
