@@ -309,7 +309,7 @@ data:
           - where:
               url:
                 like: /setting%
-      - name:
+    - name:
         en: SettingGroup
         pt: Grupo de Configuração
       slug: setting-group
@@ -1562,7 +1562,7 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-    
+
   setting_user:
     columns:
       - name: user_id
@@ -1585,4 +1585,3 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
