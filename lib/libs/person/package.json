@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/person",
-  "version": "0.0.46",
+  "version": "0.0.47",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@hedhog/admin": "^0.0.108",
     "@hedhog/file": "^0.0.24",
-    "@hedhog/locale": "^0.0.15",
+    "@hedhog/locale": "^0.0.16",
     "@hedhog/mail": "latest",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",

@@ -2,7 +2,7 @@ import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { LocaleModule } from './locale';
+import { LocaleModule } from '@hedhog/locale';
 import { MenuModule } from './menu/menu.module';
 import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
