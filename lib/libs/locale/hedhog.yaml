@@ -1,0 +1,49 @@
+data:
+  locale:
+    - code: en
+      region: US
+    - code: pt
+      region: BR
+  route:
+    - url: /locale
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /locale/:id
+      method: GET
+      relations: *a1
+  menu:
+    - name:
+        en: Locale
+        pt: Locale
+      icon: file
+      url: /locale
+      slug: locale
+      relations: *a1
+  screen:
+    - name:
+        en: Locale
+        pt: Locale
+      slug: locale
+      description:
+        en: Screen to manage locale
+        pt: Tela para gerenciar locale
+      icon: file
+tables:
+  locale:
+    columns:
+      - type: pk
+      - name: code
+        type: char
+        length: 2
+      - name: region
+        type: char
+        length: 2
+      - name: enabled
+        type: boolean
+        default: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true

@@ -87,6 +87,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/blog/tsconfig.lib.json"
       }
+    },
+    "locale": {
+      "type": "library",
+      "root": "libs/locale",
+      "entryFile": "index",
+      "sourceRoot": "libs/locale/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/locale/tsconfig.lib.json"
+      }
     }
   }
 }

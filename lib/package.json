@@ -119,7 +119,8 @@
       "^@hedhog/admin(|/.*)$": "<rootDir>/libs/admin/src/$1",
       "^@hedhog/person(|/.*)$": "<rootDir>/libs/person/src/$1",
       "^@hedhog/payment(|/.*)$": "<rootDir>/libs/payment/src/$1",
-      "^@hedhog/blog(|/.*)$": "<rootDir>/libs/blog/src/$1"
+      "^@hedhog/blog(|/.*)$": "<rootDir>/libs/blog/src/$1",
+      "^@hedhog/locale(|/.*)$": "<rootDir>/libs/locale/src/$1"
     }
   }
 }

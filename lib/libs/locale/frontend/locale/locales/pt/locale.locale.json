@@ -1,0 +1,11 @@
+{
+  "create": "Criar locale",
+  "createText": "Preencha as informações do locale.",
+  "createTooltip": "Criar novo locale",
+  "delete": "Excluir locale",
+  "deleteText": "Você tem certeza de que deseja excluir esses locale?",
+  "deleteTooltip": "Excluir o locale selecionado",
+  "edit": "Editar locale",
+  "editText": "Visualizar e editar informações do locale.",
+  "editTooltip": "Editar o locale selecionado"
+}
