@@ -212,7 +212,6 @@ data:
         en: Setting
         pt: Configurações
       slug: /management/setting
-        menu:
     - name:
         en: SettingGroup
         pt: Grupo de Configuração
