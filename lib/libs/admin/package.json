@@ -21,7 +21,6 @@
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@hedhog/file": "^0.0.27",
     "@hedhog/mail": "latest",
     "@hedhog/locale": "^0.0.18",
     "@hedhog/pagination": "^0.0.17",
@@ -32,7 +31,6 @@
     "typescript": "^5.1.3"
   },
   "peerDependencies": {
-    "@hedhog/file": "latest",
     "@hedhog/mail": "latest",
     "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
