@@ -36,6 +36,7 @@
     "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
+    "@hedhog/setting": "^0.0.14",
     "@hedhog/utils": "latest",
     "@nestjs/jwt": "latest"
   }
