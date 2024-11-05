@@ -11,11 +11,10 @@ import {
   Post,
   forwardRef,
 } from '@nestjs/common';
-import { User } from '../auth/decorators/user.decorator';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '@hedhog/locale';
-import { Role } from '@hedhog/utils';
+import { Role, User } from '@hedhog/utils';
 import { CreateDTO } from './dto/create.dto';
 import { OrderDTO } from './dto/order.dto';
 import { UpdateDTO } from './dto/update.dto';

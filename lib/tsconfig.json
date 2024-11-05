@@ -72,6 +72,12 @@
       ],
       "@hedhog/locale/*": [
         "libs/locale/src/*"
+      ],
+      "@hedhog/setting": [
+        "libs/setting/src"
+      ],
+      "@hedhog/setting/*": [
+        "libs/setting/src/*"
       ]
     }
   },

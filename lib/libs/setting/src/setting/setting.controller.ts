@@ -14,9 +14,8 @@ import {
   Res,
 } from '@nestjs/common';
 import { Locale } from '@hedhog/locale';
-import { Role, Public } from '@hedhog/utils';
-import { User } from '../auth/decorators/user.decorator';
-import { DeleteDTO } from '../dto/delete.dto';
+import { Role, Public, User } from '@hedhog/utils';
+import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingUserDTO } from './dto/setting-user.dto';
 import { SettingDTO } from './dto/setting.dto';
@@ -61,7 +60,7 @@ export class SettingsController {
   }
 
   @Get(':settingId')
-  async show(@Param('settingId', ParseIntPipe) settingId: number) {
+  async get(@Param('settingId', ParseIntPipe) settingId: number) {
     return this.settingService.get(settingId);
   }
 

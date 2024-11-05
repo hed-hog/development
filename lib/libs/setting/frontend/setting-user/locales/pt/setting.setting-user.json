@@ -1,0 +1,11 @@
+{
+  "create": "Criar configuração de usuário",
+  "createText": "Preencha as informações da configuração de usuário.",
+  "createTooltip": "Criar nova configuração de usuário",
+  "delete": "Excluir configuração de usuário",
+  "deleteText": "Tem certeza de que deseja excluir estas configurações de usuário?",
+  "deleteTooltip": "Excluir a configuração de usuário selecionada",
+  "edit": "Editar configuração de usuário",
+  "editText": "Visualizar e editar informações da configuração de usuário.",
+  "editTooltip": "Editar a configuração de usuário selecionada"
+}

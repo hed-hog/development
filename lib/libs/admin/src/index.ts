@@ -3,7 +3,6 @@ export * from './admin.module';
 
 // Auth Module
 export * from './auth/auth.service';
-export * from './auth/decorators/user.decorator';
 export * from './auth/guards/auth.guard';
 
 // Menu Module
@@ -15,9 +14,6 @@ export * from './role/role.service';
 
 // Screen Module
 export * from './screen/screen.service';
-
-// Screen Module
-export * from './setting/setting.service';
 
 // User Module
 export * from './user/constants/user.constants';

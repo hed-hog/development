@@ -1,0 +1,11 @@
+{
+  "create": "Criar grupo de configurações",
+  "createText": "Preencha as informações do grupo de configurações.",
+  "createTooltip": "Criar novo grupo de configurações",
+  "delete": "Excluir grupo de configurações",
+  "deleteText": "Você tem certeza de que deseja excluir esses grupos de configurações?",
+  "deleteTooltip": "Excluir o grupo de configurações selecionado",
+  "edit": "Editar grupo de configurações",
+  "editText": "Visualizar e editar informações do grupo de configurações.",
+  "editTooltip": "Editar o grupo de configurações selecionado"
+}

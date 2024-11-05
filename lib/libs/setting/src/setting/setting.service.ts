@@ -9,7 +9,7 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { DeleteDTO } from '../dto/delete.dto';
+import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingDTO } from './dto/setting.dto';
 import { UpdateDTO } from './dto/update.dto';

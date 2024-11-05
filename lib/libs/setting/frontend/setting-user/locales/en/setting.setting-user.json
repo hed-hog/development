@@ -1,0 +1,11 @@
+{
+  "create": "Create setting user",
+  "createText": "Fill the setting user informations.",
+  "createTooltip": "Create new setting user",
+  "delete": "Delete setting user",
+  "deleteText": "Are you sure to delete these setting user?",
+  "deleteTooltip": "Delete the selected setting user",
+  "edit": "Edit setting user",
+  "editText": "View and edit setting user information.",
+  "editTooltip": "Edit the selected setting user"
+}
