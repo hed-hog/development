@@ -1,4 +1,4 @@
-import { Pagination } from "@hedhog/pagination";
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -10,15 +10,15 @@ import {
   Patch,
   Post,
   forwardRef,
-} from "@nestjs/common";
-import { CreateDTO } from "./dto/create.dto";
-import { DeleteDTO } from "./dto/delete.dto";
-import { UpdateDTO } from "./dto/update.dto";
-import { PostService } from "./post.service";
-import { Role } from "@hedhog/admin";
+} from '@nestjs/common';
+import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from './dto/delete.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { PostService } from './post.service';
+import { Role } from '@hedhog/utils';
 
 @Role()
-@Controller("post")
+@Controller('post')
 export class PostController {
   constructor(
     @Inject(forwardRef(() => PostService))
@@ -30,8 +30,8 @@ export class PostController {
     return this.postService.list(paginationParams);
   }
 
-  @Get(":id")
-  async get(@Param("id", ParseIntPipe) id: number) {
+  @Get(':id')
+  async get(@Param('id', ParseIntPipe) id: number) {
     return this.postService.get(id);
   }
 
@@ -40,8 +40,8 @@ export class PostController {
     return this.postService.create(data);
   }
 
-  @Patch(":id")
-  async update(@Param("id", ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+  @Patch(':id')
+  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.postService.update({
       id,
       data,
