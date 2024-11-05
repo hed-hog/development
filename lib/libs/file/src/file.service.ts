@@ -1,6 +1,6 @@
-import { SettingService } from '@hedhog/setting';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
+import { SettingService } from '@hedhog/setting';
 import {
   BadRequestException,
   Inject,
@@ -43,6 +43,7 @@ export class FileService {
       'storage-abs-account',
       'storage-abs-key',
       'storage-abs-container',
+      'storage-gcs-keyfile',
     ]);
 
     if (!this.setting['storage']) {

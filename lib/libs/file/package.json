@@ -33,6 +33,7 @@
   ],
   "devDependencies": {
     "@azure/storage-blob": "^12.25.0",
+    "@google-cloud/storage": "^7.14.0",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
     "@hedhog/setting": "^0.0.14",
@@ -46,6 +47,9 @@
       "optional": true
     },
     "@azure/storage-blob": {
+      "optional": true
+    },
+    "@google-cloud/storage": {
       "optional": true
     }
   }
