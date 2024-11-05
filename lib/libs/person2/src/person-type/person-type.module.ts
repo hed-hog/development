@@ -1,0 +1,18 @@
+import { AdminModule } from '@hedhog/admin';
+import { PaginationModule } from '@hedhog/pagination';
+import { PrismaModule } from '@hedhog/prisma';
+import { Module, forwardRef } from '@nestjs/common';
+import { PersonTypeController } from './person-type.controller';
+import { PersonTypeService } from './person-type.service';
+
+@Module({
+  providers: [PersonTypeService],
+  exports: [PersonTypeService],
+  controllers: [PersonTypeController],
+  imports: [
+    forwardRef(() => AdminModule),
+    forwardRef(() => PrismaModule),
+    forwardRef(() => PaginationModule),
+  ],
+})
+export class PersonTypeModule {}

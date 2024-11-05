@@ -1,38 +1,35 @@
+import { PersonCustomModule } from './person-custom/person-custom.module';
+import { PersonCustomTypeModule } from './person-custom-type/person-custom-type.module';
+import { PersonAddressModule } from './person-address/person-address.module';
+import { PersonAddressTypeModule } from './person-address-type/person-address-type.module';
+import { PersonContactModule } from './person-contact/person-contact.module';
+import { PersonContactTypeModule } from './person-contact-type/person-contact-type.module';
+import { PersonDocumentModule } from './person-document/person-document.module';
+import { PersonDocumentTypeModule } from './person-document-type/person-document-type.module';
+import { PersonSubModule } from './person/person.module';
+import { PersonTypeModule } from './person-type/person-type.module';
+import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
-import { Module, forwardRef } from '@nestjs/common';
-import { PersonService } from './person.service';
-import { PersonController } from './person.controller';
-import { AdminModule } from '@hedhog/admin';
-import { ContactTypeModule } from './contact-type/contact-type.module';
-import { AddressTypeModule } from './address-type/address-type.module';
-import { CustomTypeModule } from './custom-type/custom-type.module';
-import { DocumentTypeModule } from './document-type/document-type.module';
-import { PersonTypeModule } from './person-type/person-type.module';
-import { DocumentModule } from './document/document.module';
-import { AddressModule } from './address/address.module';
-import { ContactModule } from './contact/contact.module';
-import { CustomModule } from './custom/custom.module';
-import { CountryModule } from './country/country.module';
-
+import { forwardRef, Module } from '@nestjs/common';
 @Module({
-  providers: [PersonService],
-  exports: [PersonService],
-  controllers: [PersonController],
   imports: [
     forwardRef(() => AdminModule),
-    forwardRef(() => AddressModule),
-    forwardRef(() => AddressTypeModule),
-    forwardRef(() => ContactModule),
-    forwardRef(() => ContactTypeModule),
-    forwardRef(() => CountryModule),
-    forwardRef(() => CustomModule),
-    forwardRef(() => CustomTypeModule),
-    forwardRef(() => DocumentModule),
-    forwardRef(() => DocumentTypeModule),
-    forwardRef(() => PersonTypeModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
+    forwardRef(() => PersonTypeModule),
+    forwardRef(() => PersonSubModule),
+    forwardRef(() => PersonDocumentTypeModule),
+    forwardRef(() => PersonDocumentModule),
+    forwardRef(() => PersonContactTypeModule),
+    forwardRef(() => PersonContactModule),
+    forwardRef(() => PersonAddressTypeModule),
+    forwardRef(() => PersonAddressModule),
+    forwardRef(() => PersonCustomTypeModule),
+    forwardRef(() => PersonCustomModule),
   ],
+  controllers: [],
+  providers: [],
+  exports: [],
 })
 export class PersonModule {}

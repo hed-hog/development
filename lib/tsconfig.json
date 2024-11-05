@@ -50,10 +50,10 @@
         "libs/admin/src/*"
       ],
       "@hedhog/person": [
-        "libs/person/src"
+        "libs/person2/src"
       ],
       "@hedhog/person/*": [
-        "libs/person/src/*"
+        "libs/person2/src/*"
       ],
       "@hedhog/payment": [
         "libs/payment/src"
