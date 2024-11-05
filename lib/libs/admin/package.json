@@ -25,6 +25,7 @@
     "@hedhog/locale": "^0.0.18",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
+    "@hedhog/setting": "^0.0.14",
     "@hedhog/utils": "^0.0.21",
     "@nestjs/mapped-types": "^2.0.5",
     "ts-node": "^10.9.1",
