@@ -1,5 +1,4 @@
 tables:
-  # Tabela de Planos
   plan:
     columns:
       - type: pk
@@ -7,7 +6,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   plan_locale:
     columns:
       - type: fk
@@ -29,8 +27,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
-  # Tabela de Planos e Durações
   plan_duration:
     columns:
       - type: pk
@@ -55,8 +51,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
-  # Table de Assinaturas
   subscription:
     columns:
       - type: pk
@@ -90,15 +84,12 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
-  # Tabela de Gateways de Pagamento
   payment_gateway:
     columns:
       - type: pk
       - type: slug
       - type: created_at
     ifNotExists: true
-
   payment_gateway_locale:
     columns:
       - type: fk
@@ -119,8 +110,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
-  # Tabela de Pagamentos
   payment:
     columns:
       - type: pk
@@ -171,3 +160,127 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
+data:
+  route:
+    - url: /plan
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /plan/:id
+      method: GET
+      relations: *a1
+    - url: /plan-duration
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /plan-duration/:id
+      method: GET
+      relations: *a2
+    - url: /subscription
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /subscription/:id
+      method: GET
+      relations: *a3
+    - url: /payment-gateway
+      method: GET
+      relations: &a4
+        role:
+          - where:
+              slug: admin
+    - url: /payment-gateway/:id
+      method: GET
+      relations: *a4
+    - url: /payment
+      method: GET
+      relations: &a5
+        role:
+          - where:
+              slug: admin
+    - url: /payment/:id
+      method: GET
+      relations: *a5
+  menu:
+    - name:
+        en: Plan
+        pt: Plan
+      icon: file
+      url: /plan
+      slug: plan
+      relations: *a1
+    - name:
+        en: PlanDuration
+        pt: PlanDuration
+      icon: file
+      url: /plan-duration
+      slug: plan-duration
+      relations: *a2
+    - name:
+        en: Subscription
+        pt: Subscription
+      icon: file
+      url: /subscription
+      slug: subscription
+      relations: *a3
+    - name:
+        en: PaymentGateway
+        pt: PaymentGateway
+      icon: file
+      url: /payment-gateway
+      slug: payment-gateway
+      relations: *a4
+    - name:
+        en: Payment
+        pt: Payment
+      icon: file
+      url: /payment
+      slug: payment
+      relations: *a5
+  screen:
+    - name:
+        en: Plan
+        pt: Plan
+      slug: plan
+      description:
+        en: Screen to manage plan
+        pt: Tela para gerenciar plan
+      icon: file
+    - name:
+        en: PlanDuration
+        pt: PlanDuration
+      slug: plan-duration
+      description:
+        en: Screen to manage plan_duration
+        pt: Tela para gerenciar plan_duration
+      icon: file
+    - name:
+        en: Subscription
+        pt: Subscription
+      slug: subscription
+      description:
+        en: Screen to manage subscription
+        pt: Tela para gerenciar subscription
+      icon: file
+    - name:
+        en: PaymentGateway
+        pt: PaymentGateway
+      slug: payment-gateway
+      description:
+        en: Screen to manage payment_gateway
+        pt: Tela para gerenciar payment_gateway
+      icon: file
+    - name:
+        en: Payment
+        pt: Payment
+      slug: payment
+      description:
+        en: Screen to manage payment
+        pt: Tela para gerenciar payment
+      icon: file
