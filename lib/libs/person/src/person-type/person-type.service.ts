@@ -1,4 +1,4 @@
-import { LocaleService } from '@hedhog/admin';
+import { LocaleService } from '@hedhog/locale';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { getWithLocale } from '@hedhog/utils';

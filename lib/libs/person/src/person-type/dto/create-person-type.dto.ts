@@ -1,4 +1,4 @@
-import { WithLocaleDTO } from '@hedhog/admin';
+import { WithLocaleDTO } from '@hedhog/locale';
 import { IsString } from 'class-validator';
 
 export class CreatePersonTypeDTO extends WithLocaleDTO {
