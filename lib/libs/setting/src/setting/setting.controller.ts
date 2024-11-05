@@ -11,10 +11,9 @@ import {
   Patch,
   Post,
   Put,
-  Res,
 } from '@nestjs/common';
 import { Locale } from '@hedhog/locale';
-import { Role, Public, User } from '@hedhog/utils';
+import { Role, User } from '@hedhog/utils';
 import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingUserDTO } from './dto/setting-user.dto';
@@ -41,12 +40,6 @@ export class SettingsController {
       paginationParams,
       slug,
     );
-  }
-
-  @Public()
-  @Get('appearance.css')
-  async appearanceCSS(@Res() res) {
-    return this.settingService.getAppearanceCSS(res);
   }
 
   @Get('group')
