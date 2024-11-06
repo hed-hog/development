@@ -277,7 +277,7 @@ data:
         role:
           - where:
               slug: admin
-   screen:
+  screen:
     - slug: /contact
       icon: user-check
       name:
