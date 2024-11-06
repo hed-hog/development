@@ -1,9 +1,9 @@
-import { AdminModule } from "@hedhog/admin";
-import { PaginationModule } from "@hedhog/pagination";
-import { PrismaModule } from "@hedhog/prisma";
-import { forwardRef, Module } from "@nestjs/common";
-import { PaymentService } from "./payment.service";
-import { PaymentController } from "./payment.controller";
+import { AdminModule } from '@hedhog/admin';
+import { PaginationModule } from '@hedhog/pagination';
+import { PrismaModule } from '@hedhog/prisma';
+import { forwardRef, Module } from '@nestjs/common';
+import { PaymentService } from './payment.service';
+import { PaymentController } from './payment.controller';
 @Module({
   imports: [
     forwardRef(() => AdminModule),
@@ -14,4 +14,4 @@ import { PaymentController } from "./payment.controller";
   providers: [PaymentService],
   exports: [PaymentService],
 })
-export class PaymentModule {}
+export class PaymentSubModule {}

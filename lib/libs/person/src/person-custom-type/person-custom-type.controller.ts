@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/utils';
 import { Locale } from '@hedhog/locale';
 import { Pagination } from '@hedhog/pagination';
 import {
@@ -5,52 +6,43 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { PersonCustomTypeService } from './person-custom-type.service';
-import { Role } from '@hedhog/utils';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Role()
-@Controller('person-custom-type')
+@Controller('custom-type')
 export class PersonCustomTypeController {
-  constructor(
-    @Inject(forwardRef(() => PersonCustomTypeService))
-    private readonly personCustomTypeService: PersonCustomTypeService,
-  ) {}
+  constructor(private readonly customTypeService: PersonCustomTypeService) {}
+
+  @Post()
+  create(@Body() data: CreateDTO) {
+    return this.customTypeService.create(data);
+  }
 
   @Get()
-  async list(@Pagination() paginationParams, @Locale() locale) {
-    return this.personCustomTypeService.list(locale, paginationParams);
+  list(@Pagination() paginationParams, @Locale() locale: string) {
+    return this.customTypeService.list(locale, paginationParams);
   }
 
   @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number) {
-    return this.personCustomTypeService.get(id);
-  }
-
-  @Post()
-  async create(@Body() data: CreateDTO) {
-    return this.personCustomTypeService.create(data);
+  get(@Param('id', ParseIntPipe) id: number) {
+    return this.customTypeService.get(id);
   }
 
   @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.personCustomTypeService.update({
-      id,
-      data,
-    });
+  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+    return this.customTypeService.update(id, data);
   }
 
   @Delete()
-  async delete(@Body() data: DeleteDTO) {
-    return this.personCustomTypeService.delete(data);
+  delete(@Body() data: DeleteDTO) {
+    return this.customTypeService.delete(data);
   }
 }

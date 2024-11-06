@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/utils';
 import { Locale } from '@hedhog/locale';
 import { Pagination } from '@hedhog/pagination';
 import {
@@ -5,52 +6,43 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { PersonContactTypeService } from './person-contact-type.service';
-import { Role } from '@hedhog/utils';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Role()
-@Controller('person-contact-type')
+@Controller('contact-type')
 export class PersonContactTypeController {
-  constructor(
-    @Inject(forwardRef(() => PersonContactTypeService))
-    private readonly personContactTypeService: PersonContactTypeService,
-  ) {}
+  constructor(private readonly contactTypeService: PersonContactTypeService) {}
+
+  @Post()
+  create(@Body() data: CreateDTO) {
+    return this.contactTypeService.create(data);
+  }
 
   @Get()
-  async list(@Pagination() paginationParams, @Locale() locale) {
-    return this.personContactTypeService.list(locale, paginationParams);
+  getContactTypes(@Pagination() paginationParams, @Locale() locale) {
+    return this.contactTypeService.list(locale, paginationParams);
   }
 
   @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number) {
-    return this.personContactTypeService.get(id);
-  }
-
-  @Post()
-  async create(@Body() data: CreateDTO) {
-    return this.personContactTypeService.create(data);
+  getContactTypeById(@Param('id', ParseIntPipe) id: number) {
+    return this.contactTypeService.get(id);
   }
 
   @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.personContactTypeService.update({
-      id,
-      data,
-    });
+  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+    return this.contactTypeService.update(id, data);
   }
 
   @Delete()
-  async delete(@Body() data: DeleteDTO) {
-    return this.personContactTypeService.delete(data);
+  remove(@Body() data: DeleteDTO) {
+    return this.contactTypeService.delete(data);
   }
 }

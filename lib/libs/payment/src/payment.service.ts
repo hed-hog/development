@@ -5,7 +5,7 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
-import { SettingService } from 'libs/admin/dist/setting/setting.service';
+import { SettingService } from '@hedhog/setting';
 import { AbstractProvider } from './provider/abstract.provider';
 import { EnumProvider } from './provider/provider.enum';
 import { ProviderFactory } from './provider/provider.factory';

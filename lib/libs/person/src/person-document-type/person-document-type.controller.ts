@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/utils';
 import { Locale } from '@hedhog/locale';
 import { Pagination } from '@hedhog/pagination';
 import {
@@ -5,52 +6,45 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
 import { PersonDocumentTypeService } from './person-document-type.service';
-import { Role } from '@hedhog/utils';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Role()
-@Controller('person-document-type')
+@Controller('document-type')
 export class PersonDocumentTypeController {
   constructor(
-    @Inject(forwardRef(() => PersonDocumentTypeService))
-    private readonly personDocumentTypeService: PersonDocumentTypeService,
+    private readonly documentTypeService: PersonDocumentTypeService,
   ) {}
 
+  @Post()
+  create(@Body() data: CreateDTO) {
+    return this.documentTypeService.create(data);
+  }
+
   @Get()
-  async list(@Pagination() paginationParams, @Locale() locale) {
-    return this.personDocumentTypeService.list(locale, paginationParams);
+  list(@Pagination() paginationParams, @Locale() locale) {
+    return this.documentTypeService.list(locale, paginationParams);
   }
 
   @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number) {
-    return this.personDocumentTypeService.get(id);
-  }
-
-  @Post()
-  async create(@Body() data: CreateDTO) {
-    return this.personDocumentTypeService.create(data);
+  get(@Param('id', ParseIntPipe) id: number) {
+    return this.documentTypeService.get(id);
   }
 
   @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.personDocumentTypeService.update({
-      id,
-      data,
-    });
+  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+    return this.documentTypeService.update(id, data);
   }
 
   @Delete()
-  async delete(@Body() data: DeleteDTO) {
-    return this.personDocumentTypeService.delete(data);
+  delete(@Body() data: DeleteDTO) {
+    return this.documentTypeService.delete(data);
   }
 }

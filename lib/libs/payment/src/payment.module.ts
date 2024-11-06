@@ -1,4 +1,4 @@
-import { PaymentModule } from './payment/payment.module';
+import { PaymentSubModule } from './payment/payment.module';
 import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { PlanDurationModule } from './plan-duration/plan-duration.module';
@@ -16,7 +16,7 @@ import { forwardRef, Module } from '@nestjs/common';
     forwardRef(() => PlanDurationModule),
     forwardRef(() => SubscriptionModule),
     forwardRef(() => PaymentGatewayModule),
-    forwardRef(() => PaymentModule),
+    forwardRef(() => PaymentSubModule),
   ],
   controllers: [],
   providers: [],

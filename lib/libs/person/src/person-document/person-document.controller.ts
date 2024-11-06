@@ -1,55 +1,57 @@
-import { Pagination } from '@hedhog/pagination';
+import { Role } from '@hedhog/utils';
 import {
   Body,
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef,
+  Query,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from './dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
+import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
 import { PersonDocumentService } from './person-document.service';
-import { Role } from '@hedhog/utils';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Role()
-@Controller('person-document')
+@Controller('person/:personId/documents')
 export class PersonDocumentController {
-  constructor(
-    @Inject(forwardRef(() => PersonDocumentService))
-    private readonly personDocumentService: PersonDocumentService,
-  ) {}
+  constructor(private readonly documentService: PersonDocumentService) {}
+  @Post()
+  create(
+    @Param('personId', ParseIntPipe) personId: number,
+    @Body() data: CreateDTO,
+  ) {
+    return this.documentService.create(personId, data);
+  }
 
   @Get()
-  async list(@Pagination() paginationParams) {
-    return this.personDocumentService.list(paginationParams);
+  list(
+    @Param('personId', ParseIntPipe) personId: number,
+    @Query('typeId', OptionalParseIntPipe) typeId?: number,
+    @Query('id', OptionalParseIntPipe) documentId?: number,
+  ) {
+    if (documentId) {
+      return this.documentService.list(personId, null, documentId);
+    }
+    if (typeId) {
+      return this.documentService.list(personId, typeId);
+    }
+    return this.documentService.list(personId);
   }
 
-  @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number) {
-    return this.personDocumentService.get(id);
+  @Patch(':documentId')
+  update(
+    @Param('documentId', ParseIntPipe) id: number,
+    @Body() data: UpdateDTO,
+  ) {
+    return this.documentService.update(id, data);
   }
 
-  @Post()
-  async create(@Body() data: CreateDTO) {
-    return this.personDocumentService.create(data);
-  }
-
-  @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.personDocumentService.update({
-      id,
-      data,
-    });
-  }
-
-  @Delete()
-  async delete(@Body() data: DeleteDTO) {
-    return this.personDocumentService.delete(data);
+  @Delete(':documentId')
+  delete(@Param('documentId', ParseIntPipe) documentId: number) {
+    return this.documentService.delete(documentId);
   }
 }

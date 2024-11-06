@@ -1,56 +1,54 @@
-import { Locale } from '@hedhog/locale';
-import { Pagination } from '@hedhog/pagination';
+import { Role } from '@hedhog/utils';
 import {
   Body,
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef,
+  Query,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from './dto/delete.dto';
-import { UpdateDTO } from './dto/update.dto';
+import { OptionalParseIntPipe } from '../pipes/optional-parse-int.pipe';
 import { PersonCustomService } from './person-custom.service';
-import { Role } from '@hedhog/utils';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Role()
-@Controller('person-custom')
+@Controller('person/:personId/customs')
 export class PersonCustomController {
-  constructor(
-    @Inject(forwardRef(() => PersonCustomService))
-    private readonly personCustomService: PersonCustomService,
-  ) {}
+  constructor(private readonly customService: PersonCustomService) {}
+  @Post()
+  create(
+    @Param('personId', ParseIntPipe) personId: number,
+    @Body() data: CreateDTO,
+  ) {
+    return this.customService.create(personId, data);
+  }
 
   @Get()
-  async list(@Pagination() paginationParams, @Locale() locale) {
-    return this.personCustomService.list(locale, paginationParams);
+  list(
+    @Param('personId', ParseIntPipe) personId: number,
+    @Query('typeId', OptionalParseIntPipe) typeId?: number,
+    @Query('id', OptionalParseIntPipe) customId?: number,
+  ) {
+    if (customId) {
+      return this.customService.list(personId, null, customId);
+    }
+    if (typeId) {
+      return this.customService.list(personId, typeId);
+    }
+    return this.customService.list(personId);
   }
 
-  @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number) {
-    return this.personCustomService.get(id);
+  @Patch(':customId')
+  update(@Param('customId', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+    return this.customService.update(id, data);
   }
 
-  @Post()
-  async create(@Body() data: CreateDTO) {
-    return this.personCustomService.create(data);
-  }
-
-  @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.personCustomService.update({
-      id,
-      data,
-    });
-  }
-
-  @Delete()
-  async delete(@Body() data: DeleteDTO) {
-    return this.personCustomService.delete(data);
+  @Delete(':customId')
+  delete(@Param('customId', ParseIntPipe) CustomId: number) {
+    return this.customService.delete(CustomId);
   }
 }

@@ -1,35 +1,42 @@
-import { PaginationDTO, PaginationService } from "@hedhog/pagination";
-import { PrismaService } from "@hedhog/prisma";
+import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
-  Inject,
   Injectable,
-  forwardRef,
-} from "@nestjs/common";
-import { CreateDTO } from "./dto/create.dto";
-import { DeleteDTO } from "./dto/delete.dto";
-import { UpdateDTO } from "./dto/update.dto";
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { DeleteDTO } from './dto/delete.dto';
 
 @Injectable()
 export class PersonContactTypeService {
   constructor(
-    @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
-    @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
   ) {}
 
+  async create(data: CreateDTO) {
+    return await this.prismaService.person_contact_type.create({
+      data,
+    });
+  }
+
   async list(locale: string, paginationParams: PaginationDTO) {
-    const fields = ["slug"];
+    const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
     );
 
-    const include = {
-      person_contact_type: {
-        select: {
-          id: true,
+    return this.paginationService.paginate(
+      this.prismaService.person_contact_type,
+      paginationParams,
+      {
+        where: {
+          OR,
+        },
+        include: {
           person_contact_type_locale: {
             where: {
               locale: {
@@ -42,48 +49,39 @@ export class PersonContactTypeService {
           },
         },
       },
-    };
-
-    return this.paginationService.paginate(
-      this.prismaService.person_contact_type_locale,
-      paginationParams,
-      {
-        where: {
-          OR,
-        },
-        include,
-      },
-      "person_contact_type_locale",
+      'person_contact_type_locale',
     );
   }
 
-  async get(personContactTypeId: number) {
-    return this.prismaService.person_contact_type.findUnique({
-      where: { id: personContactTypeId },
-    });
+  async get(id: number) {
+    const ContactType = await this.prismaService.person_contact_type.findUnique(
+      {
+        where: { id },
+      },
+    );
+
+    if (!ContactType) {
+      throw new NotFoundException(`ContactType with ID ${id} not found`);
+    }
+
+    return ContactType;
   }
 
-  async create(data: CreateDTO) {
-    return this.prismaService.person_contact_type.create({
-      data,
-    });
-  }
-
-  async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.person_contact_type.update({
+  async update(id: number, data: UpdateDTO) {
+    return await this.prismaService.person_contact_type.update({
       where: { id },
-      data,
+      data: data,
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        "You must select at least one item to delete.",
+        `You must select at least one ContactType to delete.`,
       );
     }
 
-    return this.prismaService.person_contact_type.deleteMany({
+    return await this.prismaService.person_contact_type.deleteMany({
       where: {
         id: {
           in: ids,
