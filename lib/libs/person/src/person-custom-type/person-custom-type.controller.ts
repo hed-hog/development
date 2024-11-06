@@ -19,7 +19,7 @@ import { PersonCustomTypeService } from './person-custom-type.service';
 import { Role } from '@hedhog/utils';
 
 @Role()
-@Controller('custom-type')
+@Controller('person-custom-type')
 export class PersonCustomTypeController {
   constructor(
     @Inject(forwardRef(() => PersonCustomTypeService))

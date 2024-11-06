@@ -19,7 +19,7 @@ import { PersonAddressTypeService } from './person-address-type.service';
 import { Role } from '@hedhog/utils';
 
 @Role()
-@Controller('address-type')
+@Controller('person-address-type')
 export class PersonAddressTypeController {
   constructor(
     @Inject(forwardRef(() => PersonAddressTypeService))

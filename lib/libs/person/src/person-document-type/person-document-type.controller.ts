@@ -19,7 +19,7 @@ import { PersonDocumentTypeService } from './person-document-type.service';
 import { Role } from '@hedhog/utils';
 
 @Role()
-@Controller('document-type')
+@Controller('person-document-type')
 export class PersonDocumentTypeController {
   constructor(
     @Inject(forwardRef(() => PersonDocumentTypeService))

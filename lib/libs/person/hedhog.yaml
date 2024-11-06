@@ -190,157 +190,142 @@ data:
       method: GET
       relations: *a10
   menu:
-    - name:
-        en: PersonType
-        pt: PersonType
-      icon: file
-      url: /person-type
-      slug: person-type
-      relations: *a1
-    - name:
+    - url: /contact
+      icon: user-check
+      name:
+        en: Contact
+        pt: Contatos
+      slug: /contact
+      relations:
+        role:
+          - where:
+              slug: admin
+    - menu_id:
+        where:
+          slug: /management
+      icon: user-check
+      name:
         en: Person
-        pt: Person
-      icon: file
-      url: /person
-      slug: person
-      relations: *a2
-    - name:
-        en: PersonDocumentType
-        pt: PersonDocumentType
-      icon: file
-      url: /person-document-type
-      slug: person-document-type
-      relations: *a3
-    - name:
-        en: PersonDocument
-        pt: PersonDocument
-      icon: file
-      url: /person-document
-      slug: person-document
-      relations: *a4
-    - name:
-        en: PersonContactType
-        pt: PersonContactType
-      icon: file
-      url: /person-contact-type
-      slug: person-contact-type
-      relations: *a5
-    - name:
-        en: PersonContact
-        pt: PersonContact
-      icon: file
-      url: /person-contact
-      slug: person-contact
-      relations: *a6
-    - name:
-        en: PersonAddressType
-        pt: PersonAddressType
-      icon: file
-      url: /person-address-type
-      slug: person-address-type
-      relations: *a7
-    - name:
-        en: PersonAddress
-        pt: PersonAddress
-      icon: file
-      url: /person-address
-      slug: person-address
-      relations: *a8
-    - name:
-        en: PersonCustomType
-        pt: PersonCustomType
-      icon: file
-      url: /person-custom-type
-      slug: person-custom-type
-      relations: *a9
-    - name:
-        en: PersonCustom
-        pt: PersonCustom
-      icon: file
-      url: /person-custom
-      slug: person-custom
-      relations: *a10
-  screen:
-    - name:
-        en: PersonType
-        pt: PersonType
-      slug: person-type
+        pt: Pessoas
+      slug: /management/person
+      relations:
+        role:
+          - where:
+              slug: admin
+    - menu_id:
+        where:
+          slug: /management/person
+      url: /management/person/address-type
+      icon: home-link
+      name:
+        en: Address Type
+        pt: Tipos de Endereço
+      slug: /management/person/address-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - menu_id:
+        where:
+          slug: /management/person
+      url: /management/person/contact-type
+      icon: address-book
+      name:
+        en: Contact Type
+        pt: Tipos de Contato
+      slug: /management/person/contact-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - menu_id:
+        where:
+          slug: /management/person
+      url: /management/person/custom-type
+      icon: adjustments
+      name:
+        en: Custom Type
+        pt: Tipos Personalizados
+      slug: /management/person/custom-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - menu_id:
+        where:
+          slug: /management/person
+      url: /management/person/document-type
+      icon: file-search
+      name:
+        en: Document Type
+        pt: Tipos de Documento
+      slug: /management/person/document-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - menu_id:
+        where:
+          slug: /management/person
+      url: /management/person/person-type
+      icon: id
+      name:
+        en: Person Type
+        pt: Tipos de Pessoa
+      slug: /management/person/person-type
+      relations:
+        role:
+          - where:
+              slug: admin
+   screen:
+    - slug: /contact
+      icon: user-check
+      name:
+        en: Contact
+        pt: Contatos
       description:
-        en: Screen to manage person_type
-        pt: Tela para gerenciar person_type
-      icon: file
-    - name:
-        en: Person
-        pt: Person
-      slug: person
+        en: Check all person registered in the system.
+        pt: Verifique todas as pessoas registradas no sistema.
+    - slug: /management/person/address-type
+      icon: home-link
+      name:
+        en: Address Type
+        pt: Tipos de Endereço
       description:
-        en: Screen to manage person
-        pt: Tela para gerenciar person
-      icon: file
-    - name:
-        en: PersonDocumentType
-        pt: PersonDocumentType
-      slug: person-document-type
+        en: Check all address type registered in the system.
+        pt: Verifique todos os tipos de endereço registrados no sistema.
+    - slug: /management/person/contact-type
+      icon: address-book
+      name:
+        en: Contact Type
+        pt: Tipos de Contato
       description:
-        en: Screen to manage person_document_type
-        pt: Tela para gerenciar person_document_type
-      icon: file
-    - name:
-        en: PersonDocument
-        pt: PersonDocument
-      slug: person-document
+        en: Check all contact type registered in the system.
+        pt: Verifique todos os tipos de contato registrados no sistema.
+    - slug: /management/person/custom-type
+      icon: adjustments
+      name:
+        en: Custom Type
+        pt: Tipos Personalizados
       description:
-        en: Screen to manage person_document
-        pt: Tela para gerenciar person_document
-      icon: file
-    - name:
-        en: PersonContactType
-        pt: PersonContactType
-      slug: person-contact-type
+        en: Check all custom type registered in the system.
+        pt: Verifique todos os tipos personalizados registrados no sistema.
+    - slug: /management/person/document-type
+      icon: file-search
+      name:
+        en: Document Type
+        pt: Tipos de Documento
       description:
-        en: Screen to manage person_contact_type
-        pt: Tela para gerenciar person_contact_type
-      icon: file
-    - name:
-        en: PersonContact
-        pt: PersonContact
-      slug: person-contact
+        en: Check all document type registered in the system.
+        pt: Verifique todos os tipos de documento registrados no sistema.
+    - slug: /management/person/person-type
+      icon: id
+      name:
+        en: Person Type
+        pt: Tipos de Pessoa
       description:
-        en: Screen to manage person_contact
-        pt: Tela para gerenciar person_contact
-      icon: file
-    - name:
-        en: PersonAddressType
-        pt: PersonAddressType
-      slug: person-address-type
-      description:
-        en: Screen to manage person_address_type
-        pt: Tela para gerenciar person_address_type
-      icon: file
-    - name:
-        en: PersonAddress
-        pt: PersonAddress
-      slug: person-address
-      description:
-        en: Screen to manage person_address
-        pt: Tela para gerenciar person_address
-      icon: file
-    - name:
-        en: PersonCustomType
-        pt: PersonCustomType
-      slug: person-custom-type
-      description:
-        en: Screen to manage person_custom_type
-        pt: Tela para gerenciar person_custom_type
-      icon: file
-    - name:
-        en: PersonCustom
-        pt: PersonCustom
-      slug: person-custom
-      description:
-        en: Screen to manage person_custom
-        pt: Tela para gerenciar person_custom
-      icon: file
+        en: Check all person type registered in the system.
+        pt: Verifique todos os tipos de pessoa registrados no sistema.
 tables:
   person_type:
     columns:
