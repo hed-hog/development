@@ -219,7 +219,7 @@ data:
       url: /settings/setting-group
       slug: /settings/setting-group
     - name:
-        en: SettingUser
+        en: Setting User
         pt: Configuração de Usuário
       icon: file
       url: /settings/setting-user
@@ -310,28 +310,28 @@ data:
               url:
                 like: /setting%
     - name:
-        en: SettingGroup
+        en: Setting Group
         pt: Grupo de Configuração
-      slug: setting-group
+      slug: /settings/setting-group
       description:
-        en: Screen to manage setting_group
-        pt: Tela para gerenciar setting_group
+        en: Screen to manage a group of settings
+        pt: Tela para gerenciar grupo de configurações
       icon: file
     - name:
-        en: SettingUser
+        en: Setting User
         pt: Configuração de Usuário
-      slug: setting-user
+      slug: /settings/setting-user
       description:
-        en: Screen to manage setting_user
-        pt: Tela para gerenciar setting_user
+        en: Screen to manage user settings
+        pt: Tela para gerenciar configurações de usuário
       icon: file
     - name:
         en: Locale
         pt: Locale
-      slug: locale
+      slug: /settings/locale
       description:
         en: Screen to manage locale
-        pt: Tela para gerenciar locale
+        pt: Tela para gerenciar localização/tradução
       icon: file
       relations:
         route:
