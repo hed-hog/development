@@ -207,29 +207,29 @@ data:
         where:
           slug: /management
       url: /management/setting
-      icon: setting
+      icon: settings
       name:
         en: Setting
         pt: Configurações
       slug: /management/setting
     - name:
-        en: SettingGroup
+        en: Setting Group
         pt: Grupo de Configuração
-      icon: file
-      url: /setting-group
-      slug: setting-group
+      icon: settings
+      url: /settings/setting-group
+      slug: /settings/setting-group
     - name:
         en: SettingUser
         pt: Configuração de Usuário
       icon: file
-      url: /setting-user
-      slug: setting-user
+      url: /settings/setting-user
+      slug: /settings/setting-user
     - name:
         en: Locale
         pt: Locale
       icon: file
-      url: /locale
-      slug: locale
+      url: /settings/locale
+      slug: /settings/locale
   screen:
     - slug: /management/user
       icon: user
