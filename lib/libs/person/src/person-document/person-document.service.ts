@@ -1,78 +1,78 @@
-import { PaginationService } from '@hedhog/pagination';
-import { PrismaService } from '@hedhog/prisma';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
+import { PaginationDTO, PaginationService } from "@hedhog/pagination";
+import { PrismaService } from "@hedhog/prisma";
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from "@nestjs/common";
+import { CreateDTO } from "./dto/create.dto";
+import { DeleteDTO } from "./dto/delete.dto";
+import { UpdateDTO } from "./dto/update.dto";
 
 @Injectable()
 export class PersonDocumentService {
   constructor(
+    @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
+    @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
   ) {}
 
-  async create(personId: number, data: CreateDTO) {
-    return this.prismaService.person_document.create({
-      data: {
-        person_id: personId,
-        ...data,
-      },
-    });
-  }
+  async list(paginationParams: PaginationDTO) {
+    const fields = ["primary", "value", "issued_at", "expiry_at"];
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
+      fields,
+      paginationParams,
+    );
 
-  async list(personId?: number, typeId?: number, documentId?: number) {
-    const where: any = {};
-    if (personId) where.person_id = personId;
-    if (typeId) where.type_id = typeId;
-    if (documentId) where.id = documentId;
+    if (!isNaN(+paginationParams.search)) {
+      OR.push({ id: { equals: +paginationParams.search } });
+    }
 
-    const documents = await this.paginationService.paginate(
+    return this.paginationService.paginate(
       this.prismaService.person_document,
+      paginationParams,
       {
-        fields:
-          'id,person_id,type_id,primary,value,country_id,issued_at,expiry_at',
-      },
-      {
-        where,
-        include: {
-          person_document_type: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-          country: {
-            select: {
-              name: true,
-            },
-          },
+        where: {
+          OR,
         },
       },
     );
-
-    if (documentId && !documents) {
-      throw new NotFoundException(`Document with ID ${documentId} not found`);
-    }
-
-    return documents;
   }
 
-  async update(documentId: number, data: UpdateDTO) {
-    return this.prismaService.person_document.update({
-      where: { id: documentId },
+  async get(personDocumentId: number) {
+    return this.prismaService.person_document.findUnique({
+      where: { id: personDocumentId },
+    });
+  }
+
+  async create(data: CreateDTO) {
+    return this.prismaService.person_document.create({
       data,
     });
   }
 
-  async delete(documentId: number) {
-    return this.prismaService.person_document
-      .delete({
-        where: {
-          id: documentId,
+  async update({ id, data }: { id: number; data: UpdateDTO }) {
+    return this.prismaService.person_document.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async delete({ ids }: DeleteDTO) {
+    if (ids == undefined || ids == null) {
+      throw new BadRequestException(
+        "You must select at least one item to delete.",
+      );
+    }
+
+    return this.prismaService.person_document.deleteMany({
+      where: {
+        id: {
+          in: ids,
         },
-      })
-      .then(() => {
-        return { count: 1 };
-      });
+      },
+    });
   }
 }

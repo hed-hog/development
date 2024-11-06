@@ -1,48 +1,55 @@
-import { Role } from '@hedhog/utils';
-import { Locale } from '@hedhog/locale';
-import { Pagination } from '@hedhog/pagination';
+import { Pagination } from "@hedhog/pagination";
 import {
   Body,
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Patch,
   Post,
-} from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { DeleteDTO } from './dto/delete.dto';
-import { PersonService } from './person.service';
+  forwardRef,
+} from "@nestjs/common";
+import { CreateDTO } from "./dto/create.dto";
+import { DeleteDTO } from "./dto/delete.dto";
+import { UpdateDTO } from "./dto/update.dto";
+import { PersonService } from "./person.service";
+import { Role } from "@hedhog/utils";
 
 @Role()
-@Controller('person')
+@Controller("person")
 export class PersonController {
-  constructor(private readonly personService: PersonService) {}
-
-  @Post()
-  create(@Body() data: CreateDTO) {
-    return this.personService.create(data);
-  }
+  constructor(
+    @Inject(forwardRef(() => PersonService))
+    private readonly personService: PersonService,
+  ) {}
 
   @Get()
-  list(@Pagination() paginationParams, @Locale() locale) {
-    return this.personService.list(locale, paginationParams);
+  async list(@Pagination() paginationParams) {
+    return this.personService.list(paginationParams);
   }
 
-  @Get(':id')
-  get(@Param('id', ParseIntPipe) id: number) {
+  @Get(":id")
+  async get(@Param("id", ParseIntPipe) id: number) {
     return this.personService.get(id);
   }
 
-  @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.personService.update(id, data);
+  @Post()
+  async create(@Body() data: CreateDTO) {
+    return this.personService.create(data);
+  }
+
+  @Patch(":id")
+  async update(@Param("id", ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+    return this.personService.update({
+      id,
+      data,
+    });
   }
 
   @Delete()
-  delete(@Body() data: DeleteDTO) {
+  async delete(@Body() data: DeleteDTO) {
     return this.personService.delete(data);
   }
 }

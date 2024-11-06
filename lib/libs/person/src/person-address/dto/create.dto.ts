@@ -1,4 +1,4 @@
-import { IsBoolean, IsString, Length, IsInt } from 'class-validator';
+import { IsBoolean, IsString, Length } from 'class-validator';
 
 export class CreateDTO {
   @IsBoolean()
@@ -35,7 +35,4 @@ export class CreateDTO {
   @IsString()
   @Length(0, 60)
   reference: string;
-
-  @IsInt()
-  country_id: number;
 }

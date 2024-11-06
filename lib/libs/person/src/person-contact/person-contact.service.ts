@@ -1,86 +1,78 @@
-import { PaginationService } from '@hedhog/pagination';
-import { PrismaService } from '@hedhog/prisma';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
+import { PaginationDTO, PaginationService } from "@hedhog/pagination";
+import { PrismaService } from "@hedhog/prisma";
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from "@nestjs/common";
+import { CreateDTO } from "./dto/create.dto";
+import { DeleteDTO } from "./dto/delete.dto";
+import { UpdateDTO } from "./dto/update.dto";
 
 @Injectable()
 export class PersonContactService {
   constructor(
+    @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
+    @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
   ) {}
 
-  async create(personId: number, data: CreateDTO) {
-    return this.prismaService.person_contact.create({
-      data: {
-        person_id: personId,
-        ...data,
-      },
-    });
-  }
+  async list(paginationParams: PaginationDTO) {
+    const fields = ["primary", "value"];
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
+      fields,
+      paginationParams,
+    );
 
-  async list(personId?: number, typeId?: number, contactId?: number) {
-    const where: any = {};
-    if (personId !== undefined) where.person_id = personId;
-    if (typeId !== undefined) where.type_id = typeId;
-    if (contactId !== undefined) where.id = contactId;
-
-    const contacts = await this.prismaService.person_contact.findMany({
-      where,
-      include: {
-        person_contact_type: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    });
-
-    if (Boolean(contactId) && contacts.length === 0) {
-      throw new NotFoundException(`Contact with ID ${contactId} not found`);
-    }
-
-    if (Boolean(typeId) && contacts.length === 0) {
-      throw new NotFoundException(`Type with ID ${typeId} not found`);
+    if (!isNaN(+paginationParams.search)) {
+      OR.push({ id: { equals: +paginationParams.search } });
     }
 
     return this.paginationService.paginate(
       this.prismaService.person_contact,
+      paginationParams,
       {
-        fields: 'id,person_id,type_id,primary,value',
-      },
-      {
-        where,
-        include: {
-          person_contact_type: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
+        where: {
+          OR,
         },
       },
     );
   }
 
-  async update(contactId: number, data: UpdateDTO) {
-    return this.prismaService.person_contact.update({
-      where: { id: contactId },
+  async get(personContactId: number) {
+    return this.prismaService.person_contact.findUnique({
+      where: { id: personContactId },
+    });
+  }
+
+  async create(data: CreateDTO) {
+    return this.prismaService.person_contact.create({
       data,
     });
   }
 
-  async delete(contactId: number) {
-    return this.prismaService.person_contact
-      .delete({
-        where: {
-          id: contactId,
+  async update({ id, data }: { id: number; data: UpdateDTO }) {
+    return this.prismaService.person_contact.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async delete({ ids }: DeleteDTO) {
+    if (ids == undefined || ids == null) {
+      throw new BadRequestException(
+        "You must select at least one item to delete.",
+      );
+    }
+
+    return this.prismaService.person_contact.deleteMany({
+      where: {
+        id: {
+          in: ids,
         },
-      })
-      .then(() => {
-        return { count: 1 };
-      });
+      },
+    });
   }
 }

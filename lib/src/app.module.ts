@@ -3,7 +3,7 @@ import { FileModule } from '@hedhog/file';
 import { LocaleModule } from '@hedhog/locale';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
-import { PersonModule } from 'libs/person/src';
+import { PersonModule } from '@hedhog/person';
 import { PrismaModule } from '@hedhog/prisma';
 import { SettingModule } from '@hedhog/setting';
 import { Module } from '@nestjs/common';
