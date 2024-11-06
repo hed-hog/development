@@ -212,22 +212,36 @@ data:
         en: Setting
         pt: Configurações
       slug: /management/setting
-    - name:
+    - slug: /settings
+      icon: config
+      name:
+        en: Settings
+        pt: Configurações
+    - menu_id:
+        where:
+          slug: /settings
+      name:
         en: Setting Group
         pt: Grupo de Configuração
       icon: settings
       url: /settings/setting-group
       slug: /settings/setting-group
-    - name:
+    - menu_id:
+        where:
+          slug: /settings
+      name:
         en: Setting User
         pt: Configuração de Usuário
-      icon: file
+      icon: user-cog
       url: /settings/setting-user
       slug: /settings/setting-user
-    - name:
+    - menu_id:
+        where:
+          slug: /settings
+      name:
         en: Locale
         pt: Locale
-      icon: file
+      icon: world
       url: /settings/locale
       slug: /settings/locale
   screen:
