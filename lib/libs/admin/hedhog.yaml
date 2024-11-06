@@ -203,16 +203,16 @@ data:
         en: Route
         pt: Rotas
       slug: /management/route
-    - menu_id:
-        where:
-          slug: /management
-      url: /management/setting
+    - url: /management/setting
       icon: settings
       name:
         en: Setting
         pt: Configurações
       slug: /management/setting
-    - slug: /settings
+    - menu_id:
+        where:
+          slug: /management
+      slug: /settings
       icon: settings
       name:
         en: Settings
