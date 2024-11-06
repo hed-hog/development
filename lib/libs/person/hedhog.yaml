@@ -186,36 +186,6 @@ data:
         role:
           - where:
               slug: admin
-    - url: /person-type
-      method: GET
-      relations:
-        role:
-          - where:
-              slug: admin
-    - url: /person-type
-      method: POST
-      relations:
-        role:
-          - where:
-              slug: admin
-    - url: /person-type
-      method: DELETE
-      relations:
-        role:
-          - where:
-              slug: admin
-    - url: /person-type/:personTypeId
-      method: GET
-      relations:
-        role:
-          - where:
-              slug: admin
-    - url: /person-type/:personTypeId
-      method: PATCH
-      relations:
-        role:
-          - where:
-              slug: admin
     - url: /person/:personId/address
       method: POST
       relations:
