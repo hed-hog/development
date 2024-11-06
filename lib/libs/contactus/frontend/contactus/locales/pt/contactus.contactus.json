@@ -1,0 +1,11 @@
+{
+  "create": "Criar contactus",
+  "createText": "Preencha as informações do contactus.",
+  "createTooltip": "Criar novo contactus",
+  "delete": "Excluir contactus",
+  "deleteText": "Tem certeza de que deseja excluir esses contactus?",
+  "deleteTooltip": "Excluir o contactus selecionado",
+  "edit": "Editar contactus",
+  "editText": "Ver e editar informações do contactus.",
+  "editTooltip": "Editar o contactus selecionado"
+}

@@ -96,6 +96,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/locale/tsconfig.lib.json"
       }
+    },
+    "contactus": {
+      "type": "library",
+      "root": "libs/contactus",
+      "entryFile": "index",
+      "sourceRoot": "libs/contactus/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/contactus/tsconfig.lib.json"
+      }
     }
   }
 }

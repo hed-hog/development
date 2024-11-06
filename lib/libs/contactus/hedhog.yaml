@@ -1,0 +1,89 @@
+tables:
+  contactus:
+    columns:
+      - type: pk
+      - name: name
+      - name: email
+      - name: message
+        type: text
+      - type: fk
+        name: subject_id
+        references:
+          table: contactus_subject
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  contactus_subject:
+    columns:
+      - type: pk
+      - type: slug
+    ifNotExists: true
+  contactus_subject_locale:
+    columns:
+      - type: fk
+        name: subject_id
+        reference:
+          table: contactus_subject
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: subject
+    ifNotExists: true
+data:
+  route:
+    - url: /contactus
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /contactus/:id
+      method: GET
+      relations: *a1
+    - url: /contactus-subject
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /contactus-subject/:id
+      method: GET
+      relations: *a2
+  menu:
+    - name:
+        en: Contactus
+        pt: Contactus
+      icon: file
+      url: /contactus
+      slug: contactus
+      relations: *a1
+    - name:
+        en: ContactusSubject
+        pt: ContactusSubject
+      icon: file
+      url: /contactus-subject
+      slug: contactus-subject
+      relations: *a2
+  screen:
+    - name:
+        en: Contactus
+        pt: Contactus
+      slug: contactus
+      description:
+        en: Screen to manage contactus
+        pt: Tela para gerenciar contactus
+      icon: file
+    - name:
+        en: ContactusSubject
+        pt: ContactusSubject
+      slug: contactus-subject
+      description:
+        en: Screen to manage contactus_subject
+        pt: Tela para gerenciar contactus_subject
+      icon: file
