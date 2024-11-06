@@ -197,7 +197,7 @@ data:
       relations:
         role:
           - where:
-              slug: admin      
+              slug: admin
     - url: /person-type
       method: DELETE
       relations:
@@ -268,8 +268,8 @@ data:
       method: POST
       relations:
         role:
-        - where:
-            slug: admin
+          - where:
+              slug: admin
     - url: /person/:personId/customs
       method: GET
       relations:
@@ -277,42 +277,41 @@ data:
           - where:
               slug: admin
     - url: /person/:personId/customs/:customId
-        method: PATCH
-        relations:
-          role:
-            - where:
-                slug: admin
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /person/:personId/customs/:customId
-        method: DELETE
-        relations:
-          role:
-            - where:
-                slug: admin
-
+      method: DELETE
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /person/:personId/documents
-        method: POST
-        relations:
-          role:
-            - where:
-                slug: admin
-      - url: /person/:personId/documents
-        method: GET
-        relations:
-          role:
-            - where:
-                slug: admin
-      - url: /person/:personId/documents/:documentId
-        method: PATCH
-        relations:
-          role:
-            - where:
-                slug: admin
-      - url: /person/:personId/documents/:documentId
-        method: DELETE
-        relations:
-          role:
-            - where:
-                slug: admin
+      method: POST
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/documents
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/documents/:documentId
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/documents/:documentId
+      method: DELETE
+      relations:
+        role:
+          - where:
+              slug: admin
   menu:
     - url: /contact
       icon: user-check

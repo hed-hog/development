@@ -213,7 +213,7 @@ data:
         pt: Configurações
       slug: /management/setting
     - slug: /settings
-      icon: config
+      icon: settings
       name:
         en: Settings
         pt: Configurações
