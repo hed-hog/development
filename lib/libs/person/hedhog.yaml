@@ -19,7 +19,6 @@ screens:
       - person_contact
       - person_document
       - person_custom
-
   person_type:
     title:
       en: Person Type
@@ -38,7 +37,6 @@ screens:
         role:
           - where:
               slug: admin
-
   person_address_type:
     title:
       en: Address Type
@@ -57,7 +55,6 @@ screens:
         role:
           - where:
               slug: admin
-
   person_contact_type:
     title:
       en: Contact Type
@@ -76,7 +73,6 @@ screens:
         role:
           - where:
               slug: admin
-
   person_custom_type:
     title:
       en: Custom Type
@@ -95,7 +91,6 @@ screens:
         role:
           - where:
               slug: admin
-
   person_document_type:
     title:
       en: Document Type
