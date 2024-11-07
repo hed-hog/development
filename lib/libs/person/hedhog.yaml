@@ -471,7 +471,7 @@ data:
         role:
           - where:
               slug: admin
-   menu:
+  menu:
     - url: /contact
       icon: user-check
       name:
