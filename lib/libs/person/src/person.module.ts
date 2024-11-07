@@ -6,7 +6,7 @@ import { PersonContactModule } from './person-contact/person-contact.module';
 import { PersonContactTypeModule } from './person-contact-type/person-contact-type.module';
 import { PersonDocumentModule } from './person-document/person-document.module';
 import { PersonDocumentTypeModule } from './person-document-type/person-document-type.module';
-import { PersonSubModule } from './person/person.module';
+import { PersonModule } from './person/person.module';
 import { PersonTypeModule } from './person-type/person-type.module';
 import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
@@ -18,7 +18,7 @@ import { forwardRef, Module } from '@nestjs/common';
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
     forwardRef(() => PersonTypeModule),
-    forwardRef(() => PersonSubModule),
+    forwardRef(() => PersonModule),
     forwardRef(() => PersonDocumentTypeModule),
     forwardRef(() => PersonDocumentModule),
     forwardRef(() => PersonContactTypeModule),

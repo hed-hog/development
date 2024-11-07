@@ -12,10 +12,9 @@ import {
   forwardRef,
 } from "@nestjs/common";
 import { CreateDTO } from "./dto/create.dto";
-import { DeleteDTO } from "./dto/delete.dto";
 import { UpdateDTO } from "./dto/update.dto";
 import { PersonDocumentService } from "./person-document.service";
-import { Role } from "@hedhog/utils";
+import { Role, DeleteDTO } from "@hedhog/utils";
 
 @Role()
 @Controller("person-document")

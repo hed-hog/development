@@ -1,3 +1,10 @@
+screens:
+  - person
+  - person_type
+  - person_address_type
+  - person_contact_type
+  - person_custom_type
+  - person_document_type
 data:
   person_type:
     - name:
@@ -105,8 +112,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-type
+      method: POST
+      relations: *a1
     - url: /person-type/:id
       method: GET
+      relations: *a1
+    - url: /person-type/:id
+      method: PATCH
+      relations: *a1
+    - url: /person-type/:id
+      method: DELETE
       relations: *a1
     - url: /person
       method: GET
@@ -114,8 +130,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person
+      method: POST
+      relations: *a2
     - url: /person/:id
       method: GET
+      relations: *a2
+    - url: /person/:id
+      method: PATCH
+      relations: *a2
+    - url: /person/:id
+      method: DELETE
       relations: *a2
     - url: /person-document-type
       method: GET
@@ -123,8 +148,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-document-type
+      method: POST
+      relations: *a3
     - url: /person-document-type/:id
       method: GET
+      relations: *a3
+    - url: /person-document-type/:id
+      method: PATCH
+      relations: *a3
+    - url: /person-document-type/:id
+      method: DELETE
       relations: *a3
     - url: /person-document
       method: GET
@@ -132,8 +166,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-document
+      method: POST
+      relations: *a4
     - url: /person-document/:id
       method: GET
+      relations: *a4
+    - url: /person-document/:id
+      method: PATCH
+      relations: *a4
+    - url: /person-document/:id
+      method: DELETE
       relations: *a4
     - url: /person-contact-type
       method: GET
@@ -141,8 +184,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-contact-type
+      method: POST
+      relations: *a5
     - url: /person-contact-type/:id
       method: GET
+      relations: *a5
+    - url: /person-contact-type/:id
+      method: PATCH
+      relations: *a5
+    - url: /person-contact-type/:id
+      method: DELETE
       relations: *a5
     - url: /person-contact
       method: GET
@@ -150,8 +202,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-contact
+      method: POST
+      relations: *a6
     - url: /person-contact/:id
       method: GET
+      relations: *a6
+    - url: /person-contact/:id
+      method: PATCH
+      relations: *a6
+    - url: /person-contact/:id
+      method: DELETE
       relations: *a6
     - url: /person-address-type
       method: GET
@@ -159,8 +220,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-address-type
+      method: POST
+      relations: *a7
     - url: /person-address-type/:id
       method: GET
+      relations: *a7
+    - url: /person-address-type/:id
+      method: PATCH
+      relations: *a7
+    - url: /person-address-type/:id
+      method: DELETE
       relations: *a7
     - url: /person-address
       method: GET
@@ -168,8 +238,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-address
+      method: POST
+      relations: *a8
     - url: /person-address/:id
       method: GET
+      relations: *a8
+    - url: /person-address/:id
+      method: PATCH
+      relations: *a8
+    - url: /person-address/:id
+      method: DELETE
       relations: *a8
     - url: /person-custom-type
       method: GET
@@ -177,8 +256,17 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-custom-type
+      method: POST
+      relations: *a9
     - url: /person-custom-type/:id
       method: GET
+      relations: *a9
+    - url: /person-custom-type/:id
+      method: PATCH
+      relations: *a9
+    - url: /person-custom-type/:id
+      method: DELETE
       relations: *a9
     - url: /person-custom
       method: GET
@@ -186,146 +274,170 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-custom
+      method: POST
+      relations: *a10
     - url: /person-custom/:id
       method: GET
       relations: *a10
+    - url: /person-custom/:id
+      method: PATCH
+      relations: *a10
+    - url: /person-custom/:id
+      method: DELETE
+      relations: *a10
   menu:
-    - url: /contact
-      icon: user-check
-      name:
-        en: Contact
-        pt: Contatos
-      slug: /contact
-      relations:
-        role:
-          - where:
-              slug: admin
-    - menu_id:
-        where:
-          slug: /management
-      icon: user-check
-      name:
+    - name:
+        en: PersonType
+        pt: PersonType
+      icon: file
+      url: /person-type
+      slug: person-type
+      relations: *a1
+    - name:
         en: Person
-        pt: Pessoas
-      slug: /management/person
-      relations:
-        role:
-          - where:
-              slug: admin
-    - menu_id:
-        where:
-          slug: /management/person
-      url: /management/person/address-type
-      icon: home-link
-      name:
-        en: Address Type
-        pt: Tipos de Endereço
-      slug: /management/person/address-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - menu_id:
-        where:
-          slug: /management/person
-      url: /management/person/contact-type
-      icon: address-book
-      name:
-        en: Contact Type
-        pt: Tipos de Contato
-      slug: /management/person/contact-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - menu_id:
-        where:
-          slug: /management/person
-      url: /management/person/custom-type
-      icon: adjustments
-      name:
-        en: Custom Type
-        pt: Tipos Personalizados
-      slug: /management/person/custom-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - menu_id:
-        where:
-          slug: /management/person
-      url: /management/person/document-type
-      icon: file-search
-      name:
-        en: Document Type
-        pt: Tipos de Documento
-      slug: /management/person/document-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - menu_id:
-        where:
-          slug: /management/person
-      url: /management/person/person-type
-      icon: id
-      name:
-        en: Person Type
-        pt: Tipos de Pessoa
-      slug: /management/person/person-type
-      relations:
-        role:
-          - where:
-              slug: admin
+        pt: Person
+      icon: file
+      url: /person
+      slug: person
+      relations: *a2
+    - name:
+        en: PersonDocumentType
+        pt: PersonDocumentType
+      icon: file
+      url: /person-document-type
+      slug: person-document-type
+      relations: *a3
+    - name:
+        en: PersonDocument
+        pt: PersonDocument
+      icon: file
+      url: /person-document
+      slug: person-document
+      relations: *a4
+    - name:
+        en: PersonContactType
+        pt: PersonContactType
+      icon: file
+      url: /person-contact-type
+      slug: person-contact-type
+      relations: *a5
+    - name:
+        en: PersonContact
+        pt: PersonContact
+      icon: file
+      url: /person-contact
+      slug: person-contact
+      relations: *a6
+    - name:
+        en: PersonAddressType
+        pt: PersonAddressType
+      icon: file
+      url: /person-address-type
+      slug: person-address-type
+      relations: *a7
+    - name:
+        en: PersonAddress
+        pt: PersonAddress
+      icon: file
+      url: /person-address
+      slug: person-address
+      relations: *a8
+    - name:
+        en: PersonCustomType
+        pt: PersonCustomType
+      icon: file
+      url: /person-custom-type
+      slug: person-custom-type
+      relations: *a9
+    - name:
+        en: PersonCustom
+        pt: PersonCustom
+      icon: file
+      url: /person-custom
+      slug: person-custom
+      relations: *a10
   screen:
-    - slug: /contact
-      icon: user-check
-      name:
-        en: Contact
-        pt: Contatos
+    - name:
+        en: PersonType
+        pt: PersonType
+      slug: person-type
       description:
-        en: Check all person registered in the system.
-        pt: Verifique todas as pessoas registradas no sistema.
-    - slug: /management/person/address-type
-      icon: home-link
-      name:
-        en: Address Type
-        pt: Tipos de Endereço
+        en: Screen to manage person_type
+        pt: Tela para gerenciar person_type
+      icon: file
+    - name:
+        en: Person
+        pt: Person
+      slug: person
       description:
-        en: Check all address type registered in the system.
-        pt: Verifique todos os tipos de endereço registrados no sistema.
-    - slug: /management/person/contact-type
-      icon: address-book
-      name:
-        en: Contact Type
-        pt: Tipos de Contato
+        en: Screen to manage person
+        pt: Tela para gerenciar person
+      icon: file
+    - name:
+        en: PersonDocumentType
+        pt: PersonDocumentType
+      slug: person-document-type
       description:
-        en: Check all contact type registered in the system.
-        pt: Verifique todos os tipos de contato registrados no sistema.
-    - slug: /management/person/custom-type
-      icon: adjustments
-      name:
-        en: Custom Type
-        pt: Tipos Personalizados
+        en: Screen to manage person_document_type
+        pt: Tela para gerenciar person_document_type
+      icon: file
+    - name:
+        en: PersonDocument
+        pt: PersonDocument
+      slug: person-document
       description:
-        en: Check all custom type registered in the system.
-        pt: Verifique todos os tipos personalizados registrados no sistema.
-    - slug: /management/person/document-type
-      icon: file-search
-      name:
-        en: Document Type
-        pt: Tipos de Documento
+        en: Screen to manage person_document
+        pt: Tela para gerenciar person_document
+      icon: file
+    - name:
+        en: PersonContactType
+        pt: PersonContactType
+      slug: person-contact-type
       description:
-        en: Check all document type registered in the system.
-        pt: Verifique todos os tipos de documento registrados no sistema.
-    - slug: /management/person/person-type
-      icon: id
-      name:
-        en: Person Type
-        pt: Tipos de Pessoa
+        en: Screen to manage person_contact_type
+        pt: Tela para gerenciar person_contact_type
+      icon: file
+    - name:
+        en: PersonContact
+        pt: PersonContact
+      slug: person-contact
       description:
-        en: Check all person type registered in the system.
-        pt: Verifique todos os tipos de pessoa registrados no sistema.
+        en: Screen to manage person_contact
+        pt: Tela para gerenciar person_contact
+      icon: file
+    - name:
+        en: PersonAddressType
+        pt: PersonAddressType
+      slug: person-address-type
+      description:
+        en: Screen to manage person_address_type
+        pt: Tela para gerenciar person_address_type
+      icon: file
+    - name:
+        en: PersonAddress
+        pt: PersonAddress
+      slug: person-address
+      description:
+        en: Screen to manage person_address
+        pt: Tela para gerenciar person_address
+      icon: file
+    - name:
+        en: PersonCustomType
+        pt: PersonCustomType
+      slug: person-custom-type
+      description:
+        en: Screen to manage person_custom_type
+        pt: Tela para gerenciar person_custom_type
+      icon: file
+    - name:
+        en: PersonCustom
+        pt: PersonCustom
+      slug: person-custom
+      description:
+        en: Screen to manage person_custom
+        pt: Tela para gerenciar person_custom
+      icon: file
 tables:
   person_type:
     columns:
