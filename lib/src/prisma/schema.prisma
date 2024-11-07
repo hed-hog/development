@@ -223,12 +223,6 @@ model menu_screen {
   @@id([menu_id, screen_id], map: "PK_cefac3ef25311287e1b40c1059d")
 }
 
-model migrations {
-  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
-  timestamp BigInt
-  name      String @db.VarChar
-}
-
 model multifactor {
   id                 Int                  @id(map: "PK_dd28340c66eb211fbd352507167") @default(autoincrement())
   slug               String               @unique(map: "UQ_a108f605bb3787f098bd7169681") @db.VarChar(255)
@@ -488,6 +482,7 @@ model route {
   id           Int               @id(map: "PK_08affcd076e46415e5821acf52d") @default(autoincrement())
   url          String            @db.VarChar
   method       route_method_enum
+  description  String?           @db.VarChar
   created_at   DateTime          @default(now()) @db.Timestamp(6)
   updated_at   DateTime          @default(now()) @db.Timestamp(6)
   role_route   role_route[]
