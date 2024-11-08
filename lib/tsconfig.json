@@ -78,6 +78,12 @@
       ],
       "@hedhog/setting/*": [
         "libs/setting/src/*"
+      ],
+      "@hedhog/contact": [
+        "libs/contact/src"
+      ],
+      "@hedhog/contact/*": [
+        "libs/contact/src/*"
       ]
     }
   },
