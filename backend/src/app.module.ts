@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { PersonModule } from '@hedhog/person';
+import { ContactModule } from '@hedhog/contact';
 import { FileModule } from '@hedhog/file';
 import { AdminModule } from '@hedhog/admin';
 import { SettingModule } from '@hedhog/setting';
+import { MailModule } from '@hedhog/mail';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
-import { MailModule } from '@hedhog/mail';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -15,6 +15,8 @@ import { PrismaModule } from '@hedhog/prisma';
   imports: [
     PrismaModule,
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
+    PaginationModule,
+    LocaleModule,
     MailModule.forRoot({
       global: true,
       type: 'SMTP',
@@ -24,12 +26,10 @@ import { PrismaModule } from '@hedhog/prisma';
       username: 'changeme',
       password: 'changeme',
     }),
-    PaginationModule,
-    LocaleModule,
     SettingModule,
     AdminModule,
     FileModule,
-    PersonModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

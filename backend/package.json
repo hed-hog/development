@@ -24,12 +24,12 @@
     "typeorm": "ts-node --transpile-only ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
-    "@hedhog/admin": "^0.0.117",
+    "@hedhog/admin": "^0.0.122",
+    "@hedhog/contact": "^0.0.2",
     "@hedhog/file": "^0.0.28",
     "@hedhog/locale": "^0.0.18",
     "@hedhog/mail": "^0.0.14",
     "@hedhog/pagination": "^0.0.17",
-    "@hedhog/person": "^0.0.47",
     "@hedhog/prisma": "^0.0.11",
     "@hedhog/setting": "^0.0.14",
     "@nestjs/axios": "^3.0.3",
@@ -50,7 +50,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@hedhog/utils": "^0.0.21",
+    "@hedhog/utils": "^0.0.23",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@types/bcrypt": "^5.0.2",
