@@ -15,10 +15,22 @@ screens:
           - where:
               slug: admin
     relations:
-      - person_address
-      - person_contact
-      - person_document
-      - person_custom
+      person_address:
+        title:
+          en: Address
+          pt: Endereços
+      person_contact:
+        title:
+          en: Contact
+          pt: Contatos
+      person_document:
+        title:
+          en: Document
+          pt: Documentos
+      person_custom:
+        title:
+          en: Custom
+          pt: Personalizado
   person_type:
     title:
       en: Person Type
@@ -471,6 +483,42 @@ data:
         role:
           - where:
               slug: admin
+    - url: /person-type
+      method: DELETE
+      relations: &a11
+        role:
+          - where:
+              slug: admin
+    - url: /person
+      method: DELETE
+      relations: &a12
+        role:
+          - where:
+              slug: admin
+    - url: /person-document-type
+      method: DELETE
+      relations: &a13
+        role:
+          - where:
+              slug: admin
+    - url: /person-contact-type
+      method: DELETE
+      relations: &a14
+        role:
+          - where:
+              slug: admin
+    - url: /person-address-type
+      method: DELETE
+      relations: &a15
+        role:
+          - where:
+              slug: admin
+    - url: /person-custom-type
+      method: DELETE
+      relations: &a16
+        role:
+          - where:
+              slug: admin
   menu:
     - url: /contact
       icon: user-check
@@ -555,6 +603,88 @@ data:
         en: Person Type
         pt: Tipos de Pessoa
       slug: /management/person/person-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonType
+        pt: PersonType
+      icon: file
+      url: /person-type
+      slug: person-type
+      relations: *a11
+    - name:
+        en: Person
+        pt: Person
+      icon: file
+      url: /person
+      slug: person
+      relations: *a12
+    - name:
+        en: PersonDocumentType
+        pt: PersonDocumentType
+      icon: file
+      url: /person-document-type
+      slug: person-document-type
+      relations: *a13
+    - name:
+        en: PersonDocument
+        pt: PersonDocument
+      icon: file
+      url: /person-document
+      slug: person-document
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonContactType
+        pt: PersonContactType
+      icon: file
+      url: /person-contact-type
+      slug: person-contact-type
+      relations: *a14
+    - name:
+        en: PersonContact
+        pt: PersonContact
+      icon: file
+      url: /person-contact
+      slug: person-contact
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonAddressType
+        pt: PersonAddressType
+      icon: file
+      url: /person-address-type
+      slug: person-address-type
+      relations: *a15
+    - name:
+        en: PersonAddress
+        pt: PersonAddress
+      icon: file
+      url: /person-address
+      slug: person-address
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonCustomType
+        pt: PersonCustomType
+      icon: file
+      url: /person-custom-type
+      slug: person-custom-type
+      relations: *a16
+    - name:
+        en: PersonCustom
+        pt: PersonCustom
+      icon: file
+      url: /person-custom
+      slug: person-custom
       relations:
         role:
           - where:
