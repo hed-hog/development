@@ -61,15 +61,6 @@
         "tsConfigPath": "libs/admin/tsconfig.lib.json"
       }
     },
-    "person": {
-      "type": "library",
-      "root": "libs/person",
-      "entryFile": "index",
-      "sourceRoot": "libs/person/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/person/tsconfig.lib.json"
-      }
-    },
     "payment": {
       "type": "library",
       "root": "libs/payment",
