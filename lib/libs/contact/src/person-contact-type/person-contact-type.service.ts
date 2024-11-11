@@ -1,14 +1,14 @@
-import { PaginationDTO, PaginationService } from "@hedhog/pagination";
-import { PrismaService } from "@hedhog/prisma";
+import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
   Inject,
   Injectable,
   forwardRef,
-} from "@nestjs/common";
-import { CreateDTO } from "./dto/create.dto";
-import { DeleteDTO } from "@hedhog/utils";
-import { UpdateDTO } from "./dto/update.dto";
+} from '@nestjs/common';
+import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from '@hedhog/utils';
+import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class PersonContactTypeService {
@@ -20,32 +20,27 @@ export class PersonContactTypeService {
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
-    const fields = ["slug"];
+    const fields = ['slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
     );
 
     const include = {
-      person_contact_type: {
-        select: {
-          id: true,
-          person_contact_type_locale: {
-            where: {
-              locale: {
-                code: locale,
-              },
-            },
-            select: {
-              name: true,
-            },
+      person_contact_type_locale: {
+        where: {
+          locale: {
+            code: locale,
           },
+        },
+        select: {
+          name: true,
         },
       },
     };
 
     return this.paginationService.paginate(
-      this.prismaService.person_contact_type_locale,
+      this.prismaService.person_contact_type,
       paginationParams,
       {
         where: {
@@ -53,7 +48,7 @@ export class PersonContactTypeService {
         },
         include,
       },
-      "person_contact_type_locale",
+      'person_contact_type_locale',
     );
   }
 
@@ -79,7 +74,7 @@ export class PersonContactTypeService {
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        "You must select at least one item to delete.",
+        'You must select at least one item to delete.',
       );
     }
 
