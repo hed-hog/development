@@ -37,8 +37,8 @@
       "@hedhog/locale/*": ["libs/locale/src/*"],
       "@hedhog/setting": ["libs/setting/src"],
       "@hedhog/setting/*": ["libs/setting/src/*"],
-      "@hedhog/contact": ["libs/_contact/src"],
-      "@hedhog/contact/*": ["libs/_contact/src/*"]
+      "@hedhog/contact": ["libs/contact/src"],
+      "@hedhog/contact/*": ["libs/contact/src/*"]
     }
   },
   "exclude": ["libs/**/frontend", "node_modules", "dist"]

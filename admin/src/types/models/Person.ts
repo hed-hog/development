@@ -1,9 +1,9 @@
 import { File } from './File';
 import { PersonType } from './PersonType';
 import { PersonDocument } from './PersonDocument';
-import { PersonContact } from './PersonContact';
 import { PersonAddress } from './PersonAddress';
 import { PersonCustom } from './PersonCustom';
+import { PersonContact } from './PersonContact';
 
 export type Person = {
   id?: number;
@@ -16,7 +16,7 @@ export type Person = {
   file?: File;
   person_type?: PersonType;
   person_document?: PersonDocument[];
-  person_contact?: PersonContact[];
   person_address?: PersonAddress[];
   person_custom?: PersonCustom[];
+  person_contact?: PersonContact[];
 }
