@@ -1,14 +1,14 @@
-import { PaginationDTO, PaginationService } from '@hedhog/pagination';
-import { PrismaService } from '@hedhog/prisma';
+import { PaginationDTO, PaginationService } from "@hedhog/pagination";
+import { PrismaService } from "@hedhog/prisma";
 import {
   BadRequestException,
   Inject,
   Injectable,
   forwardRef,
-} from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/utils';
-import { UpdateDTO } from './dto/update.dto';
+} from "@nestjs/common";
+import { CreateDTO } from "./dto/create.dto";
+import { DeleteDTO } from "@hedhog/utils";
+import { UpdateDTO } from "./dto/update.dto";
 
 @Injectable()
 export class PersonAddressTypeService {
@@ -20,7 +20,7 @@ export class PersonAddressTypeService {
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
-    const fields = ['slug'];
+    const fields = ["slug"];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -48,7 +48,7 @@ export class PersonAddressTypeService {
         },
         include,
       },
-      'person_address_type_locale',
+      "person_address_type_locale",
     );
   }
 
@@ -74,7 +74,7 @@ export class PersonAddressTypeService {
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.',
+        "You must select at least one item to delete.",
       );
     }
 
