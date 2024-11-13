@@ -61,15 +61,6 @@
         "tsConfigPath": "libs/admin/tsconfig.lib.json"
       }
     },
-    "person": {
-      "type": "library",
-      "root": "libs/person",
-      "entryFile": "index",
-      "sourceRoot": "libs/person/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/person/tsconfig.lib.json"
-      }
-    },
     "payment": {
       "type": "library",
       "root": "libs/payment",
@@ -97,13 +88,13 @@
         "tsConfigPath": "libs/locale/tsconfig.lib.json"
       }
     },
-    "contactus": {
+    "contact": {
       "type": "library",
-      "root": "libs/contactus",
+      "root": "libs/contact",
       "entryFile": "index",
-      "sourceRoot": "libs/contactus/src",
+      "sourceRoot": "libs/contact/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/contactus/tsconfig.lib.json"
+        "tsConfigPath": "libs/contact/tsconfig.lib.json"
       }
     }
   }

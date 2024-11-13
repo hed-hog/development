@@ -203,33 +203,47 @@ data:
         en: Route
         pt: Rotas
       slug: /management/route
-    - menu_id:
-        where:
-          slug: /management
-      url: /management/setting
-      icon: setting
+    - url: /management/setting
+      icon: settings
       name:
         en: Setting
         pt: Configurações
       slug: /management/setting
-    - name:
-        en: SettingGroup
+    - menu_id:
+        where:
+          slug: /management
+      slug: /settings
+      icon: settings
+      name:
+        en: Settings
+        pt: Configurações
+    - menu_id:
+        where:
+          slug: /settings
+      name:
+        en: Setting Group
         pt: Grupo de Configuração
-      icon: file
-      url: /setting-group
-      slug: setting-group
-    - name:
-        en: SettingUser
+      icon: settings
+      url: /settings/setting-group
+      slug: /settings/setting-group
+    - menu_id:
+        where:
+          slug: /settings
+      name:
+        en: Setting User
         pt: Configuração de Usuário
-      icon: file
-      url: /setting-user
-      slug: setting-user
-    - name:
+      icon: user-cog
+      url: /settings/setting-user
+      slug: /settings/setting-user
+    - menu_id:
+        where:
+          slug: /settings
+      name:
         en: Locale
         pt: Locale
-      icon: file
-      url: /locale
-      slug: locale
+      icon: world
+      url: /settings/locale
+      slug: /settings/locale
   screen:
     - slug: /management/user
       icon: user
@@ -310,28 +324,28 @@ data:
               url:
                 like: /setting%
     - name:
-        en: SettingGroup
+        en: Setting Group
         pt: Grupo de Configuração
-      slug: setting-group
+      slug: /settings/setting-group
       description:
-        en: Screen to manage setting_group
-        pt: Tela para gerenciar setting_group
+        en: Screen to manage a group of settings
+        pt: Tela para gerenciar grupo de configurações
       icon: file
     - name:
-        en: SettingUser
+        en: Setting User
         pt: Configuração de Usuário
-      slug: setting-user
+      slug: /settings/setting-user
       description:
-        en: Screen to manage setting_user
-        pt: Tela para gerenciar setting_user
+        en: Screen to manage user settings
+        pt: Tela para gerenciar configurações de usuário
       icon: file
     - name:
         en: Locale
         pt: Locale
-      slug: locale
+      slug: /settings/locale
       description:
         en: Screen to manage locale
-        pt: Tela para gerenciar locale
+        pt: Tela para gerenciar localização/tradução
       icon: file
       relations:
         route:
@@ -1430,6 +1444,8 @@ tables:
           - PUT
           - OPTIONS
           - HEAD
+      - name: description
+        isNullable: true
       - type: created_at
       - type: updated_at
     indices:

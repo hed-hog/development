@@ -1,0 +1,334 @@
+tables:
+  plan:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  plan_locale:
+    columns:
+      - type: fk
+        name: plan_id
+        isPrimary: true
+        references:
+          table: plan
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - name: description
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  plan_duration:
+    columns:
+      - type: pk
+      - name: plan_id
+        type: fk
+        references:
+          table: plan
+          column: id
+          onDelete: CASCADE
+      - type: enum
+        name: frequency
+        enum:
+          - monthly
+          - quarterly
+          - yearly
+      - type: slug
+      - name: price
+        type: decimal
+        precision: 10
+        scale: 2
+        unsigned: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  subscription:
+    columns:
+      - type: pk
+      - name: person_id
+        type: fk
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - name: duration_id
+        type: fk
+        references:
+          table: plan_duration
+          column: id
+          onDelete: CASCADE
+      - name: start_at
+        type: date
+      - name: end_at
+        type: date
+      - name: status
+        type: enum
+        enum:
+          - pending
+          - active
+          - canceled
+          - expired
+        default: pending
+      - name: recurring
+        type: boolean
+        default: false
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  payment_gateway:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+    ifNotExists: true
+  payment_gateway_locale:
+    columns:
+      - type: fk
+        name: gateway_id
+        isPrimary: true
+        references:
+          table: payment_gateway
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  payment:
+    columns:
+      - type: pk
+      - name: subscription_id
+        type: fk
+        isNullable: true
+        references:
+          table: subscription
+          column: id
+          onDelete: SET NULL
+      - name: gateway_id
+        type: fk
+        references:
+          table: payment_gateway
+          column: id
+          onDelete: CASCADE
+      - name: amount
+        type: decimal
+        precision: 10
+        scale: 2
+        unsigned: true
+      - name: currency
+        type: enum
+        enum:
+          - USD
+          - BRL
+        default: USD
+      - name: payment_at
+        type: timestamp
+        isNullable: true
+      - name: status
+        type: enum
+        enum:
+          - pending
+          - approved
+          - canceled
+          - refunded
+          - failed
+        default: pending
+      - name: type
+        type: enum
+        enum:
+          - one-time
+          - recurring
+        default: one-time
+      - name: transaction_id
+        unique: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+data:
+  setting_group:
+    - slug: payment-gateway
+      icon: wallet
+      name:
+        en: Payment
+        pt: Pagamento
+      description:
+        en: Payment gateway settings
+        pt: Configurações do gateway de pagamento
+      relations:
+        setting:
+          - slug: payment-gateway
+            type: string
+            name:
+              en: Payment Gateway
+              pt: Gateway de Pagamento
+            description:
+              en: Payment gateway slug
+              pt: Slug do gateway de pagamento
+            value:
+          - slug: payment-mercado-pago-token
+            type: string
+            name:
+              en: Mercado Pago Token
+              pt: Token do Mercado Pago
+            description:
+              en: Token used for authenticating with the Mercado Pago payment gateway
+              pt: Token usado para autenticação com o gateway de pagamento Mercado Pago
+            value:
+          - slug: payment-mercado-pago-public-key
+            type: string
+            name:
+              en: Mercado Pago Public Key
+              pt: Chave Pública do Mercado Pago
+            description:
+              en: Public key used for authenticating with the Mercado Pago payment gateway
+              pt: Chave pública usada para autenticação com o gateway de pagamento Mercado Pago
+            value:
+          - slug: payment-stripe-secret-key
+            type: string
+            name:
+              en: Stripe Secret Key
+              pt: Chave Secreta do Stripe
+            description:
+              en: Secret key used for authenticating with the Stripe payment gateway
+              pt: Chave secreta usada para autenticação com o gateway de pagamento Stripe
+            value:
+
+  route:
+    - url: /plan
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /plan/:id
+      method: GET
+      relations: *a1
+    - url: /plan-duration
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /plan-duration/:id
+      method: GET
+      relations: *a2
+    - url: /subscription
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /subscription/:id
+      method: GET
+      relations: *a3
+    - url: /payment-gateway
+      method: GET
+      relations: &a4
+        role:
+          - where:
+              slug: admin
+    - url: /payment-gateway/:id
+      method: GET
+      relations: *a4
+    - url: /payment
+      method: GET
+      relations: &a5
+        role:
+          - where:
+              slug: admin
+    - url: /payment/:id
+      method: GET
+      relations: *a5
+  menu:
+    - name:
+        en: Plan
+        pt: Plan
+      icon: file
+      url: /plan
+      slug: plan
+      relations: *a1
+    - name:
+        en: PlanDuration
+        pt: PlanDuration
+      icon: file
+      url: /plan-duration
+      slug: plan-duration
+      relations: *a2
+    - name:
+        en: Subscription
+        pt: Subscription
+      icon: file
+      url: /subscription
+      slug: subscription
+      relations: *a3
+    - name:
+        en: PaymentGateway
+        pt: PaymentGateway
+      icon: file
+      url: /payment-gateway
+      slug: payment-gateway
+      relations: *a4
+    - name:
+        en: Payment
+        pt: Payment
+      icon: file
+      url: /payment
+      slug: payment
+      relations: *a5
+  screen:
+    - name:
+        en: Plan
+        pt: Plan
+      slug: plan
+      description:
+        en: Screen to manage plan
+        pt: Tela para gerenciar plan
+      icon: file
+    - name:
+        en: PlanDuration
+        pt: PlanDuration
+      slug: plan-duration
+      description:
+        en: Screen to manage plan_duration
+        pt: Tela para gerenciar plan_duration
+      icon: file
+    - name:
+        en: Subscription
+        pt: Subscription
+      slug: subscription
+      description:
+        en: Screen to manage subscription
+        pt: Tela para gerenciar subscription
+      icon: file
+    - name:
+        en: PaymentGateway
+        pt: PaymentGateway
+      slug: payment-gateway
+      description:
+        en: Screen to manage payment_gateway
+        pt: Tela para gerenciar payment_gateway
+      icon: file
+    - name:
+        en: Payment
+        pt: Payment
+      slug: payment
+      description:
+        en: Screen to manage payment
+        pt: Tela para gerenciar payment
+      icon: file

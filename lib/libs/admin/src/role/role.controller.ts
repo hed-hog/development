@@ -57,7 +57,7 @@ export class RoleController {
     return this.roleService.listRoutes(roleId, paginationParams);
   }
 
-  @Get(':roleId/screens')
+  @Get(':roleId/screen')
   async listScreens(
     @Pagination() paginationParams,
     @Param('roleId', ParseIntPipe) roleId: number,
@@ -90,7 +90,7 @@ export class RoleController {
     return this.roleService.updateRoutes(roleId, data);
   }
 
-  @Patch(':roleId/screens')
+  @Patch(':roleId/screen')
   async updateScreens(
     @Param('roleId', ParseIntPipe) roleId: number,
     @Body() data: UpdateIdsDTO,

@@ -1,5 +1,5 @@
-import { Locale } from "@hedhog/admin";
-import { Pagination } from "@hedhog/pagination";
+import { Locale } from '@hedhog/locale';
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -11,15 +11,15 @@ import {
   Patch,
   Post,
   forwardRef,
-} from "@nestjs/common";
-import { CreateDTO } from "./dto/create.dto";
-import { DeleteDTO } from "./dto/delete.dto";
-import { UpdateDTO } from "./dto/update.dto";
-import { CategoryService } from "./category.service";
-import { Role } from "@hedhog/admin";
+} from '@nestjs/common';
+import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from './dto/delete.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { CategoryService } from './category.service';
+import { Role } from '@hedhog/utils';
 
 @Role()
-@Controller("category")
+@Controller('category')
 export class CategoryController {
   constructor(
     @Inject(forwardRef(() => CategoryService))
@@ -31,8 +31,8 @@ export class CategoryController {
     return this.categoryService.list(locale, paginationParams);
   }
 
-  @Get(":id")
-  async get(@Param("id", ParseIntPipe) id: number) {
+  @Get(':id')
+  async get(@Param('id', ParseIntPipe) id: number) {
     return this.categoryService.get(id);
   }
 
@@ -41,8 +41,8 @@ export class CategoryController {
     return this.categoryService.create(data);
   }
 
-  @Patch(":id")
-  async update(@Param("id", ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+  @Patch(':id')
+  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.categoryService.update({
       id,
       data,

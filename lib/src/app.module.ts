@@ -1,9 +1,11 @@
 import { AdminModule } from '@hedhog/admin';
 import { FileModule } from '@hedhog/file';
+import { LocaleModule } from '@hedhog/locale';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
-import { PersonModule } from '@hedhog/person';
+import { ContactModule } from '@hedhog/contact';
 import { PrismaModule } from '@hedhog/prisma';
+import { SettingModule } from '@hedhog/setting';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -27,7 +29,9 @@ import { AppService } from './app.service';
       password: 'changeme',
     }),
     AdminModule,
-    PersonModule,
+    ContactModule,
+    LocaleModule,
+    SettingModule,
     FileModule,
   ],
   controllers: [AppController],

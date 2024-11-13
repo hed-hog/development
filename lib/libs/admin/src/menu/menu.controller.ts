@@ -47,7 +47,7 @@ export class MenuController {
     return this.menuService.listRoles(locale, menuId, paginationParams);
   }
 
-  @Get(':menuId/screens')
+  @Get(':menuId/screen')
   async listScreens(
     @Param('menuId', ParseIntPipe) menuId: number,
     @Pagination() paginationParams,
@@ -64,7 +64,7 @@ export class MenuController {
     return this.menuService.updateRoles(menuId, data);
   }
 
-  @Patch(':menuId/screens')
+  @Patch(':menuId/screen')
   async updateScreens(
     @Param('menuId', ParseIntPipe) menuId: number,
     @Body() data: UpdateIdsDTO,

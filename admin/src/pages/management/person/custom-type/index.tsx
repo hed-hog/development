@@ -180,7 +180,7 @@ export default function Page() {
       </div>
 
       <DataPanel
-        url='/custom-type'
+        url='/person-custom-type'
         layout='table'
         id='custom-types'
         selectable

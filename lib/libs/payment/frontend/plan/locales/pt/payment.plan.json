@@ -1,0 +1,11 @@
+{
+  "create": "Criar plano",
+  "createText": "Preencha as informações do plano.",
+  "createTooltip": "Criar novo plano",
+  "delete": "Excluir plano",
+  "deleteText": "Você tem certeza de que deseja excluir estes planos?",
+  "deleteTooltip": "Excluir o plano selecionado",
+  "edit": "Editar plano",
+  "editText": "Ver e editar as informações do plano.",
+  "editTooltip": "Editar o plano selecionado"
+}
