@@ -1,3 +1,33 @@
 {
-  "routes": []
+  "routes": [
+    {
+      "path": "contact",
+      "children": [
+        {
+          "path": "person",
+          "component": "contact/person"
+        },
+        {
+          "path": "person-address-type",
+          "component": "contact/person-address-type"
+        },
+        {
+          "path": "person-contact-type",
+          "component": "contact/person-contact-type"
+        },
+        {
+          "path": "person-custom-type",
+          "component": "contact/person-custom-type"
+        },
+        {
+          "path": "person-document-type",
+          "component": "contact/person-document-type"
+        },
+        {
+          "path": "person-type",
+          "component": "contact/person-type"
+        }
+      ]
+    }
+  ]
 }
