@@ -1,0 +1,50 @@
+routes:
+  - path: /login
+    lazy:
+      component: ./pages/auth/login.tsx
+  - path: /forgot-password
+    lazy:
+      component: ./pages/auth/forgot-password.tsx
+  - path: /otp
+    lazy:
+      component: ./pages/auth/otp.tsx
+  - path: /tests
+    lazy:
+      component: ./components/custom/color-theme.tsx
+  - path: /
+    errorElement: ./pages/errors/general-error.tsx
+    lazy:
+      component: ./components/app/app-shell.tsx
+    children:
+      - index: true
+        lazy:
+          component: ./pages/dashboard/index.tsx
+      - path: management
+        lazy:
+          component: ./pages/management/index.tsx
+        children:
+          - path:
+            lazy:
+              component: ./pages/management/index.tsx
+          - path: user
+            lazy:
+              component: ./pages/management/user/index.tsx
+          - path: role
+            lazy:
+              component: ./pages/management/role/index.tsx
+          - path: screen
+            lazy:
+              component: ./pages/management/screen/index.tsx
+          - path: menu
+            lazy:
+              component: ./pages/management/menu/index.tsx
+  - path: '/500'
+    component: ./pages/errors/general-error.tsx
+  - path: '/404'
+    component: ./pages/errors/not-found-error.tsx
+  - path: /503
+    component: ./pages/errors/maintenance-error.tsx
+  - path: /401
+    component: ./pages/errors/unauthorised-error.tsx
+  - path: '*'
+    component: ./pages/errors/not-found-error.tsx

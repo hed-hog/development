@@ -1,1 +1,0 @@
-{"version":3,"file":"create-document.dto.d.ts","sourceRoot":"","sources":["../../../src/document/dto/create-document.dto.ts"],"names":[],"mappings":"AAQA,qBAAa,uBAAuB;IAElC,OAAO,EAAE,MAAM,CAAC;IAGhB,OAAO,UAAS;IAGhB,KAAK,EAAE,MAAM,CAAC;IAId,UAAU,CAAC,EAAE,MAAM,CAAC;IAIpB,SAAS,CAAC,EAAE,IAAI,CAAC;IAIjB,SAAS,CAAC,EAAE,IAAI,CAAC;CAClB"}

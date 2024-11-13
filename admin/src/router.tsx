@@ -17,17 +17,15 @@ type RoutesJSON = {
 
 function getRoute(route: any): any {
   if (route.children && Array.isArray(route.children)) {
-    return route.children.map(getRoute)
-  } else {
-    console.log({
+    return {
       path: route.path,
-      component: `./pages/${route.component}`,
-    })
+      children: route.children.map(getRoute),
+    }
+  } else {
     return {
       path: route.path,
       lazy: async () => ({
-        Component: (await import(`./pages/${route.component}/index.tsx`))
-          .default,
+        Component: (await import(`./pages/contact/person/index.tsx`)).default,
       }),
     }
   }
@@ -73,18 +71,6 @@ const routes = [
         lazy: async () => ({
           Component: (await import('./pages/dashboard/index.tsx')).default,
         }),
-      },
-      ...((routesJSON as RoutesJSON).routes ?? []).map(getRoute),
-      {
-        path: 'contact',
-        children: [
-          {
-            index: true,
-            lazy: async () => ({
-              Component: (await import('./pages/contact/index.tsx')).default,
-            }),
-          },
-        ],
       },
       {
         path: 'management',
@@ -212,6 +198,7 @@ const routes = [
           },
         ],
       },
+      ...((routesJSON as RoutesJSON).routes ?? []).map(getRoute),
     ],
   },
 
@@ -226,7 +213,5 @@ const routes = [
 ]
 
 const router = createBrowserRouter(routes)
-
-console.log(router)
 
 export default router
