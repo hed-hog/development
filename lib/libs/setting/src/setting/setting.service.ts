@@ -219,9 +219,9 @@ export class SettingService {
     });
   }
 
-  async create({}: CreateDTO) {
+  async create(data: CreateDTO) {
     return this.prismaService.setting.create({
-      data: {},
+      data,
     });
   }
 
@@ -333,7 +333,7 @@ export class SettingService {
       },
     });
 
-    const slugUserOverride = setting.filter((setting) => setting.userOverride);
+    const slugUserOverride = setting.filter((setting) => setting.user_override);
 
     const settingUser = await this.prismaService.setting_user.findMany({
       where: {
