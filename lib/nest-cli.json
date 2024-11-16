@@ -96,6 +96,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/contact/tsconfig.lib.json"
       }
+    },
+    "pages": {
+      "type": "library",
+      "root": "libs/pages",
+      "entryFile": "index",
+      "sourceRoot": "libs/pages/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/pages/tsconfig.lib.json"
+      }
     }
   }
 }

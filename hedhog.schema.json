@@ -280,6 +280,9 @@
         }
       },
       "additionalProperties": false
+    },
+    "screens": {
+      "type": "object"
     }
   },
   "required": [],

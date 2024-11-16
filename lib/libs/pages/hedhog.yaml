@@ -1,0 +1,272 @@
+tables:
+  component_type:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  component_type_locale:
+    ifNotExists: true
+    columns:
+      - type: fk
+        name: type_id
+        isPrimary: true
+        references:
+          table: component_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - type: fk
+        name: type_id
+        references:
+          table: component_type
+          column: id
+          onDelete: CASCADE
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  component_locale:
+    ifNotExists: true
+    columns:
+      - type: fk
+        name: component_id
+        isPrimary: true
+        references:
+          table: component
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component_property_type:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  component_property_type_locale:
+    ifNotExists: true
+    columns:
+      - type: fk
+        name: type_id
+        isPrimary: true
+        references:
+          table: component_property_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component_property:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - type: fk
+        name: type_id
+        references:
+          table: component_property_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: component_id
+        references:
+          table: component
+          column: id
+          onDelete: CASCADE
+      - name: default
+      - type: created_at
+      - type: updated_at
+  component_property_locale:
+    ifNotExists: true
+    columns:
+      - type: fk
+        name: property_id
+        isPrimary: true
+        references:
+          table: component_property
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component_instance:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - type: fk
+        name: component_id
+        references:
+          table: component
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: instance_id
+        references:
+          table: component_instance
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: order
+      - type: created_at
+      - type: updated_at
+  component_instance_property:
+    ifNotExists: true
+    columns:
+      - type: fk
+        isPrimary: true
+        name: property_id
+        references:
+          table: component_property
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        isPrimary: true
+        name: instance_id
+        references:
+          table: component_instance
+          column: id
+          onDelete: CASCADE
+      - name: value
+      - type: created_at
+      - type: updated_at
+  page:
+    ifNotExists: true
+    columns:
+      - type: pk
+      - type: slug
+      - type: fk
+        name: instance_id
+        references:
+          table: component_instance
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+  page_locale:
+    ifNotExists: true
+    columns:
+      - type: fk
+        name: page_id
+        isPrimary: true
+        references:
+          table: page
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: title
+      - name: description
+      - type: created_at
+      - type: updated_at
+
+screens:
+  page:
+    title:
+      en: Pages
+      pt: Páginas
+    menu:
+      url: /page
+      icon: file-code
+      name:
+        en: Pages
+        pt: Páginas
+      slug: /page
+      relations:
+        role:
+          - where:
+              slug: admin
+  component:
+    title:
+      en: Components
+      pt: Componentes
+    menu:
+      menu_id:
+        where:
+          slug: /management/component
+      url: /component
+      icon: puzzle
+      name:
+        en: Components
+        pt: Componentes
+      slug: /management/component/component
+      relations:
+        role:
+          - where:
+              slug: admin
+  component_type:
+    title:
+      en: Component Types
+      pt: Tipos de Componentes
+    menu:
+      menu_id:
+        where:
+          slug: /management/component
+      url: /component-type
+      icon: puzzle
+      name:
+        en: Component Types
+        pt: Tipos de Componentes
+      slug: /management/component/type
+      relations:
+        role:
+          - where:
+              slug: admin
+  component_property_type:
+    title:
+      en: Component Property Types
+      pt: Tipos de Propriedades de Componentes
+    menu:
+      menu_id:
+        where:
+          slug: /management/component
+      url: /component-property-type
+      icon: puzzle
+      name:
+        en: Component Property Types
+        pt: Tipos de Propriedades de Componentes
+      slug: /management/component/property-type
+      relations:
+        role:
+          - where:
+              slug: admin
