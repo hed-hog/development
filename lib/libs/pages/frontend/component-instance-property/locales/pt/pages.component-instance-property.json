@@ -1,0 +1,11 @@
+{
+  "create": "Criar propriedade da instância do componente",
+  "createText": "Preencha as informações da propriedade da instância do componente.",
+  "createTooltip": "Criar nova propriedade da instância do componente",
+  "delete": "Excluir propriedade da instância do componente",
+  "deleteText": "Você tem certeza de que deseja excluir estas propriedades da instância do componente?",
+  "deleteTooltip": "Excluir a propriedade da instância do componente selecionada",
+  "edit": "Editar propriedade da instância do componente",
+  "editText": "Visualizar e editar informações da propriedade da instância do componente.",
+  "editTooltip": "Editar a propriedade da instância do componente selecionada"
+}

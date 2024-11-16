@@ -199,7 +199,6 @@ tables:
       - name: description
       - type: created_at
       - type: updated_at
-
 screens:
   page:
     title:
@@ -270,3 +269,253 @@ screens:
         role:
           - where:
               slug: admin
+data:
+  route:
+    - url: /component-type
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /component-type
+      method: POST
+      relations: *a1
+    - url: /component-type/:id
+      method: GET
+      relations: *a1
+    - url: /component-type/:id
+      method: PATCH
+      relations: *a1
+    - url: /component-type
+      method: DELETE
+      relations: *a1
+    - url: /component
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /component
+      method: POST
+      relations: *a2
+    - url: /component/:id
+      method: GET
+      relations: *a2
+    - url: /component/:id
+      method: PATCH
+      relations: *a2
+    - url: /component
+      method: DELETE
+      relations: *a2
+    - url: /component-property-type
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /component-property-type
+      method: POST
+      relations: *a3
+    - url: /component-property-type/:id
+      method: GET
+      relations: *a3
+    - url: /component-property-type/:id
+      method: PATCH
+      relations: *a3
+    - url: /component-property-type
+      method: DELETE
+      relations: *a3
+    - url: /component-property
+      method: GET
+      relations: &a4
+        role:
+          - where:
+              slug: admin
+    - url: /component-property
+      method: POST
+      relations: *a4
+    - url: /component-property/:id
+      method: GET
+      relations: *a4
+    - url: /component-property/:id
+      method: PATCH
+      relations: *a4
+    - url: /component-property
+      method: DELETE
+      relations: *a4
+    - url: /component-instance
+      method: GET
+      relations: &a5
+        role:
+          - where:
+              slug: admin
+    - url: /component-instance
+      method: POST
+      relations: *a5
+    - url: /component-instance/:id
+      method: GET
+      relations: *a5
+    - url: /component-instance/:id
+      method: PATCH
+      relations: *a5
+    - url: /component-instance
+      method: DELETE
+      relations: *a5
+    - url: /component-instance-property
+      method: GET
+      relations: &a6
+        role:
+          - where:
+              slug: admin
+    - url: /component-instance-property
+      method: POST
+      relations: *a6
+    - url: /component-instance-property/:id
+      method: GET
+      relations: *a6
+    - url: /component-instance-property/:id
+      method: PATCH
+      relations: *a6
+    - url: /component-instance-property
+      method: DELETE
+      relations: *a6
+    - url: /page
+      method: GET
+      relations: &a7
+        role:
+          - where:
+              slug: admin
+    - url: /page
+      method: POST
+      relations: *a7
+    - url: /page/:id
+      method: GET
+      relations: *a7
+    - url: /page/:id
+      method: PATCH
+      relations: *a7
+    - url: /page
+      method: DELETE
+      relations: *a7
+  menu:
+    - name:
+        en: ComponentType
+        pt: ComponentType
+      icon: file
+      url: /component-type
+      slug: component-type
+      relations: *a1
+    - name:
+        en: Component
+        pt: Component
+      icon: file
+      url: /component
+      slug: component
+      relations: *a2
+    - name:
+        en: ComponentPropertyType
+        pt: ComponentPropertyType
+      icon: file
+      url: /component-property-type
+      slug: component-property-type
+      relations: *a3
+    - name:
+        en: ComponentProperty
+        pt: ComponentProperty
+      icon: file
+      url: /component-property
+      slug: component-property
+      relations: *a4
+    - name:
+        en: ComponentInstance
+        pt: ComponentInstance
+      icon: file
+      url: /component-instance
+      slug: component-instance
+      relations: *a5
+    - name:
+        en: ComponentInstanceProperty
+        pt: ComponentInstanceProperty
+      icon: file
+      url: /component-instance-property
+      slug: component-instance-property
+      relations: *a6
+    - name:
+        en: Page
+        pt: Page
+      icon: file
+      url: /page
+      slug: page
+      relations: *a7
+  screen:
+    - name:
+        en: ComponentType
+        pt: ComponentType
+      slug: component-type
+      description:
+        en: Screen to manage component_type
+        pt: Tela para gerenciar component_type
+      icon: file
+    - name:
+        en: Component
+        pt: Component
+      slug: component
+      description:
+        en: Screen to manage component
+        pt: Tela para gerenciar component
+      icon: file
+    - name:
+        en: ComponentPropertyType
+        pt: ComponentPropertyType
+      slug: component-property-type
+      description:
+        en: Screen to manage component_property_type
+        pt: Tela para gerenciar component_property_type
+      icon: file
+    - name:
+        en: ComponentProperty
+        pt: ComponentProperty
+      slug: component-property
+      description:
+        en: Screen to manage component_property
+        pt: Tela para gerenciar component_property
+      icon: file
+    - name:
+        en: ComponentInstance
+        pt: ComponentInstance
+      slug: component-instance
+      description:
+        en: Screen to manage component_instance
+        pt: Tela para gerenciar component_instance
+      icon: file
+    - name:
+        en: ComponentInstanceProperty
+        pt: ComponentInstanceProperty
+      slug: component-instance-property
+      description:
+        en: Screen to manage component_instance_property
+        pt: Tela para gerenciar component_instance_property
+      icon: file
+    - name:
+        en: Page
+        pt: Page
+      slug: page
+      description:
+        en: Screen to manage page
+        pt: Tela para gerenciar page
+      icon: file
+routes:
+  - path: pages
+    children:
+      - path: page
+        lazy:
+          component: ./pages/pages/page/index.tsx
+      - path: component
+        lazy:
+          component: ./pages/pages/component/index.tsx
+      - path: component-type
+        lazy:
+          component: ./pages/pages/component-type/index.tsx
+      - path: component-property-type
+        lazy:
+          component: ./pages/pages/component-property-type/index.tsx

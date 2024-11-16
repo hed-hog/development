@@ -1,0 +1,11 @@
+{
+  "create": "Criar página",
+  "createText": "Preencha as informações da página.",
+  "createTooltip": "Criar nova página",
+  "delete": "Excluir página",
+  "deleteText": "Tem certeza de que deseja excluir estas páginas?",
+  "deleteTooltip": "Excluir a página selecionada",
+  "edit": "Editar página",
+  "editText": "Visualizar e editar informações da página.",
+  "editTooltip": "Editar a página selecionada"
+}

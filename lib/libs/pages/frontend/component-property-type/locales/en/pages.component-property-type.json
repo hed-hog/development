@@ -1,0 +1,11 @@
+{
+  "create": "Create component property type",
+  "createText": "Fill the component property type informations.",
+  "createTooltip": "Create new component property type",
+  "delete": "Delete component property type",
+  "deleteText": "Are you sure to delete these component property type?",
+  "deleteTooltip": "Delete the selected component property type",
+  "edit": "Edit component property type",
+  "editText": "View and edit component property type information.",
+  "editTooltip": "Edit the selected component property type"
+}

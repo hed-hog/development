@@ -1,0 +1,11 @@
+{
+  "create": "Criar instância de componente",
+  "createText": "Preencha as informações da instância de componente.",
+  "createTooltip": "Criar nova instância de componente",
+  "delete": "Deletar instância de componente",
+  "deleteText": "Você tem certeza de que deseja deletar essas instâncias de componente?",
+  "deleteTooltip": "Deletar a instância de componente selecionada",
+  "edit": "Editar instância de componente",
+  "editText": "Visualizar e editar informações da instância de componente.",
+  "editTooltip": "Editar a instância de componente selecionada"
+}

@@ -1,0 +1,11 @@
+{
+  "create": "Criar tipo de propriedade de componente",
+  "createText": "Preencha as informações do tipo de propriedade de componente.",
+  "createTooltip": "Criar novo tipo de propriedade de componente",
+  "delete": "Deletar tipo de propriedade de componente",
+  "deleteText": "Você tem certeza de que deseja deletar esses tipos de propriedade de componente?",
+  "deleteTooltip": "Deletar o tipo de propriedade de componente selecionado",
+  "edit": "Editar tipo de propriedade de componente",
+  "editText": "Visualizar e editar informações do tipo de propriedade de componente.",
+  "editTooltip": "Editar o tipo de propriedade de componente selecionado"
+}

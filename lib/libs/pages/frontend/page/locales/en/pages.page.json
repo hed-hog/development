@@ -1,0 +1,11 @@
+{
+  "create": "Create page",
+  "createText": "Fill the page informations.",
+  "createTooltip": "Create new page",
+  "delete": "Delete page",
+  "deleteText": "Are you sure to delete these page?",
+  "deleteTooltip": "Delete the selected page",
+  "edit": "Edit page",
+  "editText": "View and edit page information.",
+  "editTooltip": "Edit the selected page"
+}
