@@ -49,6 +49,12 @@ const routes = [
         path: "contact",
         children: [
           {
+            path: "",
+            lazy: async () => ({
+              Component: (await import("./pages/contact/index.tsx")).default,
+            }),
+          },
+          {
             path: "person",
             lazy: async () => ({
               Component: (await import("./pages/contact/person/index.tsx"))
