@@ -2,7 +2,7 @@ import FormPanel, {
   FormPanelRef,
   getFieldsLocale,
 } from "@/components/panels/form-panel";
-
+import { EnumFieldType } from "@/enums/EnumFieldType";
 import { usePersonTypeCreate } from "@/features/contact/person-type";
 import { PersonType } from "@/types/models";
 import { forwardRef, useImperativeHandle, useRef } from "react";
@@ -35,7 +35,16 @@ const PersonTypeCreatePanel = forwardRef(
     return (
       <FormPanel
         ref={formRef}
-        fields={[...getFieldsLocale([{ name: "name" }])]}
+        fields={[
+          {
+            name: "slug",
+            label: { text: t("slug", { ns: "translation" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          ...getFieldsLocale([{ name: "name" }]),
+        ]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
           const createdData = await createPersonType(data);

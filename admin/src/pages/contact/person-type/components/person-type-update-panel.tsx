@@ -4,7 +4,7 @@ import FormPanel, {
 } from "@/components/panels/form-panel";
 import { Overlay } from "@/components/custom/overlay";
 import { TabPanel } from "@/components/panels/tab-panel";
-
+import { EnumFieldType } from "@/enums/EnumFieldType";
 import {
   usePersonTypeGet,
   usePersonTypeUpdate,
@@ -44,7 +44,16 @@ const PersonTypeUpdatePanel = forwardRef(
               <Overlay loading={isLoading}>
                 <FormPanel
                   ref={formRef}
-                  fields={[...getFieldsLocale([{ name: "name" }])]}
+                  fields={[
+                    {
+                      name: "slug",
+                      label: { text: t("slug", { ns: "translation" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    ...getFieldsLocale([{ name: "name" }]),
+                  ]}
                   button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {
                     personTypeUpdate({ id: data.id, data });

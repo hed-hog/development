@@ -54,6 +54,13 @@ const PersonDocumentTypeUpdatePanel = forwardRef(
                       required: true,
                     },
 
+                    {
+                      name: "slug",
+                      label: { text: t("slug", { ns: "translation" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
                     ...getFieldsLocale([{ name: "name" }]),
                   ]}
                   button={{ text: t("save", { ns: "actions" }) }}
