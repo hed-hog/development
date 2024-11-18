@@ -477,7 +477,7 @@ data:
       relations:
         role:
           - where:
-              slug: admim
+              slug: admin
   screen:
     - name:
         en: Person Type
