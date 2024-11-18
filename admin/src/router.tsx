@@ -77,7 +77,7 @@ const routes = [
             path: "person",
             children: [
               {
-                path: "person-address-type",
+                path: "address-type",
                 lazy: async () => ({
                   Component: (
                     await import(
@@ -87,7 +87,7 @@ const routes = [
                 }),
               },
               {
-                path: "person-contact-type",
+                path: "contact-type",
                 lazy: async () => ({
                   Component: (
                     await import(
@@ -97,7 +97,7 @@ const routes = [
                 }),
               },
               {
-                path: "person-custom-type",
+                path: "custom-type",
                 lazy: async () => ({
                   Component: (
                     await import("./pages/contact/person-custom-type/index.tsx")
@@ -105,7 +105,7 @@ const routes = [
                 }),
               },
               {
-                path: "person-document-type",
+                path: "document-type",
                 lazy: async () => ({
                   Component: (
                     await import(
