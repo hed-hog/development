@@ -22,8 +22,3 @@ routes:
       - path: menu
         lazy:
           component: ./pages/management/menu/index.tsx
-  - path: contact
-    children:
-      - path:
-        lazy:
-          component: ./pages/contact/index.tsx
