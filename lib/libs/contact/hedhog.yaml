@@ -913,16 +913,16 @@ routes:
     children:
       - path: person
         children:
-          - path: person-address-type
+          - path: address-type
             lazy:
               component: ./pages/contact/person-address-type/index.tsx
-          - path: person-contact-type
+          - path: contact-type
             lazy:
               component: ./pages/contact/person-contact-type/index.tsx
-          - path: person-custom-type
+          - path: custom-type
             lazy:
               component: ./pages/contact/person-custom-type/index.tsx
-          - path: person-document-type
+          - path: document-type
             lazy:
               component: ./pages/contact/person-document-type/index.tsx
           - path: person-type
