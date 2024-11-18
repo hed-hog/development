@@ -132,9 +132,23 @@ const routes = [
             }),
           },
           {
+            path: "route",
+            lazy: async () => ({
+              Component: (await import("./pages/management/route/index.tsx"))
+                .default,
+            }),
+          },
+          {
             path: "screen",
             lazy: async () => ({
               Component: (await import("./pages/management/screen/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "setting",
+            lazy: async () => ({
+              Component: (await import("./pages/management/setting/index.tsx"))
                 .default,
             }),
           },
