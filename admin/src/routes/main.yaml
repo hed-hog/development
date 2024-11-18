@@ -10,6 +10,9 @@ routes:
       - path: role
         lazy:
           component: ./pages/management/role/index.tsx
+      - path: route
+        lazy:
+          component: ./pages/management/route/index.tsx
       - path: screen
         lazy:
           component: ./pages/management/screen/index.tsx
