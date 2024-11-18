@@ -96,9 +96,6 @@ const PersonUpdatePanel = forwardRef(
                     </span>
                   </div>
                 )}
-                checked={(item: PersonAddress) => {
-                  return false;
-                }}
               />
             ),
             buttons: [
@@ -128,9 +125,6 @@ const PersonUpdatePanel = forwardRef(
                     </span>
                   </div>
                 )}
-                checked={(item: PersonContact) => {
-                  return false;
-                }}
               />
             ),
             buttons: [
@@ -160,9 +154,6 @@ const PersonUpdatePanel = forwardRef(
                     </span>
                   </div>
                 )}
-                checked={(item: PersonDocument) => {
-                  return false;
-                }}
               />
             ),
             buttons: [
@@ -192,9 +183,6 @@ const PersonUpdatePanel = forwardRef(
                     </span>
                   </div>
                 )}
-                checked={(item: PersonCustom) => {
-                  return false;
-                }}
               />
             ),
             buttons: [

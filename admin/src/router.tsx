@@ -49,12 +49,6 @@ const routes = [
         path: "contact",
         children: [
           {
-            path: "",
-            lazy: async () => ({
-              Component: (await import("./pages/contact/index.tsx")).default,
-            }),
-          },
-          {
             path: "person",
             lazy: async () => ({
               Component: (await import("./pages/contact/person/index.tsx"))
@@ -153,10 +147,24 @@ const routes = [
           },
           {
             path: "setting",
-            lazy: async () => ({
-              Component: (await import("./pages/management/setting/index.tsx"))
-                .default,
-            }),
+            children: [
+              {
+                path: "",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/management/setting/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: ":slug",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/management/setting/forms.tsx")
+                  ).default,
+                }),
+              },
+            ],
           },
           {
             path: "user",
