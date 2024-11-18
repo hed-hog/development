@@ -16,6 +16,12 @@ routes:
       - path: screen
         lazy:
           component: ./pages/management/screen/index.tsx
+      - path: setting
+        lazy:
+          component: ./pages/management/setting/index.tsx
       - path: menu
         lazy:
           component: ./pages/management/menu/index.tsx
+  - path: contact
+    lazy:
+      component: ./pages/contact/index.tsx
