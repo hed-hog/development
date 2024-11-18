@@ -19,6 +19,10 @@ routes:
       - path: setting
         lazy:
           component: ./pages/management/setting/index.tsx
+        children:
+          - path: :slug
+            lazy:
+              component: ./pages/management/setting/forms.tsx
       - path: menu
         lazy:
           component: ./pages/management/menu/index.tsx
