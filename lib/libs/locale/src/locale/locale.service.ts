@@ -73,7 +73,7 @@ export class LocaleService {
     });
 
     return enabledLocales.data.reduce(
-      (acc, locale) => {
+      (acc, locale: any) => {
         acc[locale.code] = locale.id;
         return acc;
       },
