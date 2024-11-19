@@ -14,7 +14,6 @@ import {
   IFormFieldPropsBase,
   ISliderProps,
 } from '@/types/form-panel'
-import { getObjectFromLocaleFields } from '@hedhog/utils'
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -28,13 +27,15 @@ export type FieldLocale = {
   required?: boolean
 }
 
-export const getFieldsLocale = (fieldNames: FieldLocale[]) => {
+export const getFieldsLocale = (fieldNames: FieldLocale[], itemData?: any) => {
   const { data: localeEnabled } = useLocaleListEnabled()
   const { t } = useTranslation(['translation'])
   const fields: IFormFieldPropsBase[] = []
 
   for (const locale of localeEnabled?.data || []) {
     for (const field of fieldNames) {
+      const fieldValue = itemData?.locale[locale.code]?.name || ''
+
       fields.push({
         name: `${locale.code}-${field.name}`,
         label: {
@@ -43,6 +44,7 @@ export const getFieldsLocale = (fieldNames: FieldLocale[]) => {
         },
         type: EnumFieldType.TEXT as FieldType,
         required: field.required ?? false,
+        value: fieldValue,
       })
     }
   }
@@ -178,7 +180,6 @@ const FormPanel = forwardRef<FormPanelRef, FormPanelProps>(
         setValuesFromItem(item: Record<string, any>) {
           formRef.current?.setValues({
             ...item,
-            ...getObjectFromLocaleFields(item),
           })
         },
         setValues(values: Record<string, any>) {

@@ -56,9 +56,38 @@ export class PersonCustomTypeService {
   }
 
   async get(personCustomTypeId: number) {
-    return this.prismaService.person_custom_type.findUnique({
+    const localeMap = await this.localeService.enabledLocalesMap();
+    const result = await this.prismaService.person_custom_type.findUnique({
       where: { id: personCustomTypeId },
+      include: {
+        person_custom_type_locale: true,
+      },
     });
+
+    if (!result) {
+      return null;
+    }
+
+    const locale = result.person_custom_type_locale.reduce(
+      (acc, localeData) => {
+        const localeCode = Object.keys(localeMap).find(
+          (code) => localeMap[code] === localeData.locale_id,
+        );
+        if (localeCode) {
+          acc[localeCode] = { name: localeData.name };
+        }
+        return acc;
+      },
+      {},
+    );
+
+    return {
+      id: result.id,
+      slug: result.slug,
+      created_at: result.created_at,
+      updated_at: result.updated_at,
+      locale,
+    };
   }
 
   async create(data: CreateDTO) {

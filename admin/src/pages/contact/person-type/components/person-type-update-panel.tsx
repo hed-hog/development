@@ -1,64 +1,64 @@
 import FormPanel, {
   FormPanelRef,
   getFieldsLocale,
-} from "@/components/panels/form-panel";
-import { Overlay } from "@/components/custom/overlay";
-import { TabPanel } from "@/components/panels/tab-panel";
-import { EnumFieldType } from "@/enums/EnumFieldType";
+} from '@/components/panels/form-panel'
+import { Overlay } from '@/components/custom/overlay'
+import { TabPanel } from '@/components/panels/tab-panel'
+import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
   usePersonTypeGet,
   usePersonTypeUpdate,
-} from "@/features/contact/person-type";
-import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
-import { PersonType } from "@/types/models";
-import { forwardRef, useImperativeHandle, useRef } from "react";
-import { useTranslation } from "react-i18next";
+} from '@/features/contact/person-type'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { PersonType } from '@/types/models'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export type PersonTypeUpdatePanelProps = {
-  data: PersonType;
-  onUpdated?: (data: PersonType) => void;
-};
+  data: PersonType
+  onUpdated?: (data: PersonType) => void
+}
 
 const PersonTypeUpdatePanel = forwardRef(
   ({ data, onUpdated }: PersonTypeUpdatePanelProps, ref) => {
-    const { t } = useTranslation(["actions"]);
-    const { data: item, isLoading } = usePersonTypeGet(data.id as number);
-    const { mutate: personTypeUpdate } = usePersonTypeUpdate();
-    const formRef = useRef<FormPanelRef>(null);
+    const { t } = useTranslation(['actions'])
+    const { data: item, isLoading } = usePersonTypeGet(data.id as number)
+    const { mutate: personTypeUpdate } = usePersonTypeUpdate()
+    const formRef = useRef<FormPanelRef>(null)
 
     useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
-        formRef.current.setValuesFromItem(item);
+        formRef.current.setValuesFromItem(item)
       }
-    }, [item]);
+    }, [item])
 
-    useImperativeHandle(ref, () => ({}));
+    useImperativeHandle(ref, () => ({}))
 
     return (
       <TabPanel
         activeTabIndex={0}
         tabs={[
           {
-            title: t("details", { ns: "actions" }),
+            title: t('details', { ns: 'actions' }),
             children: (
               <Overlay loading={isLoading}>
                 <FormPanel
                   ref={formRef}
                   fields={[
                     {
-                      name: "slug",
-                      label: { text: t("slug", { ns: "translation" }) },
+                      name: 'slug',
+                      label: { text: t('slug', { ns: 'translation' }) },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
-                    ...getFieldsLocale([{ name: "name" }]),
+                    ...getFieldsLocale([{ name: 'name' }], item),
                   ]}
-                  button={{ text: t("save", { ns: "actions" }) }}
+                  button={{ text: t('save', { ns: 'actions' }) }}
                   onSubmit={(data) => {
-                    personTypeUpdate({ id: data.id, data });
-                    if (typeof onUpdated === "function") {
-                      onUpdated(data);
+                    personTypeUpdate({ id: data.id, data })
+                    if (typeof onUpdated === 'function') {
+                      onUpdated(data)
                     }
                   }}
                 />
@@ -67,10 +67,10 @@ const PersonTypeUpdatePanel = forwardRef(
           },
         ]}
       />
-    );
-  },
-);
+    )
+  }
+)
 
-PersonTypeUpdatePanel.displayName = "PersonTypeUpdatePanel";
+PersonTypeUpdatePanel.displayName = 'PersonTypeUpdatePanel'
 
-export default PersonTypeUpdatePanel;
+export default PersonTypeUpdatePanel

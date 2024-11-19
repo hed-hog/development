@@ -60,9 +60,38 @@ export class PersonAddressTypeService {
   }
 
   async get(personAddressTypeId: number) {
-    return this.prismaService.person_address_type.findUnique({
+    const localeMap = await this.localeService.enabledLocalesMap();
+    const result = await this.prismaService.person_address_type.findUnique({
       where: { id: personAddressTypeId },
+      include: {
+        person_address_type_locale: true,
+      },
     });
+
+    if (!result) {
+      return null;
+    }
+
+    const locale = result.person_address_type_locale.reduce(
+      (acc, localeData) => {
+        const localeCode = Object.keys(localeMap).find(
+          (code) => localeMap[code] === localeData.locale_id,
+        );
+        if (localeCode) {
+          acc[localeCode] = { name: localeData.name };
+        }
+        return acc;
+      },
+      {},
+    );
+
+    return {
+      id: result.id,
+      slug: result.slug,
+      created_at: result.created_at,
+      updated_at: result.updated_at,
+      locale,
+    };
   }
 
   async create(data: CreateDTO) {
