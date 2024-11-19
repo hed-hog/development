@@ -12,6 +12,8 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { PersonService } from './person.service';
 import { PersonController } from './person.controller';
+import { CountryController } from './country/country.controller';
+import { CountryService } from './country/country.service';
 @Module({
   imports: [
     forwardRef(() => AdminModule),
@@ -19,6 +21,7 @@ import { PersonController } from './person.controller';
     forwardRef(() => PaginationModule),
   ],
   controllers: [
+    CountryController,
     PersonController,
     PersonDocumentController,
     PersonContactController,
@@ -26,6 +29,7 @@ import { PersonController } from './person.controller';
     PersonCustomController,
   ],
   providers: [
+    CountryService,
     PersonService,
     PersonDocumentService,
     PersonContactService,
