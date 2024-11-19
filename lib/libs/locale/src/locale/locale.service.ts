@@ -1,4 +1,8 @@
-import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import {
+  PageOrderDirection,
+  PaginationDTO,
+  PaginationService,
+} from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
@@ -56,6 +60,25 @@ export class LocaleService {
       region,
       locale: localeCodes,
     };
+  }
+
+  async enabledLocalesMap() {
+    const enabledLocales = await this.getEnables('en', {
+      search: '',
+      pageSize: 10,
+      page: 1,
+      sortField: 'code',
+      sortOrder: PageOrderDirection.Asc,
+      fields: 'code,id',
+    });
+
+    return enabledLocales.data.reduce(
+      (acc, locale) => {
+        acc[locale.code] = locale.id;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
   }
 
   async getEnables(currentLocale: string, paginationParams: PaginationDTO) {

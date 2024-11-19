@@ -1,14 +1,19 @@
-import { PaginationDTO, PaginationService } from "@hedhog/pagination";
-import { PrismaService } from "@hedhog/prisma";
+import {
+  PageOrderDirection,
+  PaginationDTO,
+  PaginationService,
+} from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
   Inject,
   Injectable,
   forwardRef,
-} from "@nestjs/common";
-import { CreateDTO } from "./dto/create.dto";
-import { DeleteDTO } from "@hedhog/utils";
-import { UpdateDTO } from "./dto/update.dto";
+} from '@nestjs/common';
+import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from '@hedhog/utils';
+import { UpdateDTO } from './dto/update.dto';
+import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
 export class PersonAddressTypeService {
@@ -17,10 +22,12 @@ export class PersonAddressTypeService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
+    @Inject(forwardRef(() => LocaleService))
+    private readonly localeService: LocaleService,
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
-    const fields = ["slug"];
+    const fields = ['slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -48,7 +55,7 @@ export class PersonAddressTypeService {
         },
         include,
       },
-      "person_address_type_locale",
+      'person_address_type_locale',
     );
   }
 
@@ -59,22 +66,51 @@ export class PersonAddressTypeService {
   }
 
   async create(data: CreateDTO) {
+    const localeMap = await this.localeService.enabledLocalesMap();
     return this.prismaService.person_address_type.create({
-      data,
+      data: {
+        slug: data.slug,
+        created_at: new Date(),
+        updated_at: new Date(),
+        person_address_type_locale: {
+          create: Object.keys(localeMap).map((code) => ({
+            locale_id: localeMap[code],
+            name: data.locale[code].name,
+          })),
+        },
+      },
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
+    const localeMap = await this.localeService.enabledLocalesMap();
     return this.prismaService.person_address_type.update({
       where: { id },
-      data,
+      data: {
+        slug: data.slug,
+        updated_at: new Date(),
+        person_address_type_locale: {
+          upsert: Object.keys(localeMap).map((code) => ({
+            where: {
+              type_id_locale_id: { type_id: id, locale_id: localeMap[code] },
+            },
+            update: {
+              name: data.locale[code].name,
+            },
+            create: {
+              locale_id: localeMap[code],
+              name: data.locale[code].name,
+            },
+          })),
+        },
+      },
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        "You must select at least one item to delete.",
+        'You must select at least one item to delete.',
       );
     }
 
