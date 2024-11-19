@@ -1,6 +1,7 @@
 import { readdir } from 'fs/promises';
 import { join } from 'path';
 import { run } from './../lib/scripts/run';
+import { existsSync } from 'fs';
 
 async function getDirectoriesPackages() {
   const folders = ['lib'];
@@ -37,16 +38,18 @@ async function main() {
   );
 
   for (const folder of folders) {
-    console.info(`Installing ${folder} dependencies...`);
-    await run(
-      folder,
-      'npm',
-      'i',
-      '--legacy-peer-deps',
-      '--quiet',
-      '--no-audit',
-      '--no-fund'
-    );
+    if (existsSync(join(folder, 'package.json'))) {
+      console.info(`Installing ${folder} dependencies...`);
+      await run(
+        folder,
+        'npm',
+        'i',
+        '--legacy-peer-deps',
+        '--quiet',
+        '--no-audit',
+        '--no-fund'
+      );
+    }
   }
 }
 
