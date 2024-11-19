@@ -21,12 +21,12 @@
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@hedhog/locale": "^0.0.18",
+    "@hedhog/locale": "^0.0.19",
     "@hedhog/mail": "^0.0.14",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
     "@hedhog/setting": "^0.0.14",
-    "@hedhog/utils": "^0.0.23",
+    "@hedhog/utils": "^0.0.24",
     "@nestjs/mapped-types": "^2.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.3"

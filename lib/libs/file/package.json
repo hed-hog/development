@@ -37,7 +37,7 @@
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
     "@hedhog/setting": "^0.0.14",
-    "@hedhog/utils": "^0.0.23",
+    "@hedhog/utils": "^0.0.24",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "^2.0.5",
     "aws-sdk": "^2.1691.0"
