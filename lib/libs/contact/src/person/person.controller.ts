@@ -1,4 +1,4 @@
-import { Pagination } from "@hedhog/pagination";
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -9,19 +9,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef,
-} from "@nestjs/common";
-import { CreateDTO } from "./dto/create.dto";
-import { UpdateDTO } from "./dto/update.dto";
-import { PersonService } from "./person.service";
-import { Role, DeleteDTO } from "@hedhog/utils";
+  forwardRef
+} from '@nestjs/common';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { PersonService } from './person.service';
+import { Role, DeleteDTO } from '@hedhog/utils';
 
 @Role()
-@Controller("person")
+@Controller('person')
 export class PersonController {
   constructor(
     @Inject(forwardRef(() => PersonService))
-    private readonly personService: PersonService,
+    private readonly personService: PersonService
   ) {}
 
   @Get()
@@ -29,8 +29,8 @@ export class PersonController {
     return this.personService.list(paginationParams);
   }
 
-  @Get(":id")
-  async get(@Param("id", ParseIntPipe) id: number) {
+  @Get(':id')
+  async get(@Param('id', ParseIntPipe) id: number) {
     return this.personService.get(id);
   }
 
@@ -39,11 +39,11 @@ export class PersonController {
     return this.personService.create(data);
   }
 
-  @Patch(":id")
-  async update(@Param("id", ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+  @Patch(':id')
+  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.personService.update({
       id,
-      data,
+      data
     });
   }
 

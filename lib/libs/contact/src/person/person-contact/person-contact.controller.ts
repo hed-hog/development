@@ -1,4 +1,4 @@
-import { Role, OptionalParseIntPipe } from "@hedhog/utils";
+import { Role, OptionalParseIntPipe } from '@hedhog/utils';
 import {
   Body,
   Controller,
@@ -8,30 +8,30 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
-} from "@nestjs/common";
-import { PersonContactService } from "./person-contact.service";
-import { CreateDTO } from "./dto/create.dto";
-import { UpdateDTO } from "./dto/update.dto";
-import { DeleteDTO } from "@hedhog/utils";
+  Query
+} from '@nestjs/common';
+import { PersonContactService } from './person-contact.service';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { DeleteDTO } from '@hedhog/utils';
 
 @Role()
-@Controller("person/:personId/contact")
+@Controller('person/:personId/contact')
 export class PersonContactController {
   constructor(private readonly contactService: PersonContactService) {}
   @Post()
   create(
-    @Param("personId", ParseIntPipe) personId: number,
-    @Body() data: CreateDTO,
+    @Param('personId', ParseIntPipe) personId: number,
+    @Body() data: CreateDTO
   ) {
     return this.contactService.create(personId, data);
   }
 
   @Get()
   list(
-    @Param("personId", ParseIntPipe) personId: number,
-    @Query("typeId", OptionalParseIntPipe) typeId?: number,
-    @Query("id", OptionalParseIntPipe) contactId?: number,
+    @Param('personId', ParseIntPipe) personId: number,
+    @Query('typeId', OptionalParseIntPipe) typeId?: number,
+    @Query('id', OptionalParseIntPipe) contactId?: number
   ) {
     if (contactId) {
       return this.contactService.list(personId, null, contactId);
@@ -42,19 +42,19 @@ export class PersonContactController {
     return this.contactService.list(personId);
   }
 
-  @Patch(":contactId")
+  @Patch(':contactId')
   update(
-    @Param("personId", ParseIntPipe) personId: number,
-    @Param("contactId", ParseIntPipe) contactId: number,
-    @Body() data: UpdateDTO,
+    @Param('personId', ParseIntPipe) personId: number,
+    @Param('contactId', ParseIntPipe) contactId: number,
+    @Body() data: UpdateDTO
   ) {
     return this.contactService.update(personId, contactId, data);
   }
 
   @Delete()
   delete(
-    @Param("personId", ParseIntPipe) personId: number,
-    @Body() { ids }: DeleteDTO,
+    @Param('personId', ParseIntPipe) personId: number,
+    @Body() { ids }: DeleteDTO
   ) {
     return this.contactService.delete(personId, { ids });
   }
