@@ -395,16 +395,26 @@ export class LocaleService {
     try {
       const model = await this.prismaService[modelName].findUnique({
         where: { id },
-      });
-
-      return this.prismaService[modelName].findUnique({
-        where: { id: model.id },
         include: {
           [this.getTableNameTranslations(modelName)]: {
             where: { locale: { enabled: true } },
+            include: { locale: { select: { code: true } } },
           },
         },
       });
+
+      const localeData = model[this.getTableNameTranslations(modelName)].reduce(
+        (acc, item) => {
+          acc[item.locale.code] = { name: item.name };
+          return acc;
+        },
+        {} as Record<string, { name: string }>,
+      );
+
+      return {
+        ...model,
+        locale: localeData,
+      };
     } catch (error: any) {
       if (error.message.includes('Unique constraint failed')) {
         throw new BadRequestException('Data already exists.');
