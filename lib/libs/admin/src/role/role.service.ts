@@ -259,29 +259,16 @@ export class RoleService {
     );
   }
 
-  async create({ slug, locale }: CreateDTO) {
-    return this.localeService.createModelWithLocale(
-      'role',
-      'role_id',
-      { slug },
-      locale,
-    );
+  async create({ slug }: CreateDTO) {
+    return this.localeService.createModelWithLocale('role', 'role_id', {
+      slug,
+    });
   }
 
-  async update({
-    id,
-    data: { locale, slug },
-  }: {
-    id: number;
-    data: UpdateDTO;
-  }) {
-    return this.localeService.updateModelWithLocale(
-      'role',
-      'role_id',
-      id,
-      { slug },
-      locale,
-    );
+  async update({ id, data: { slug } }: { id: number; data: UpdateDTO }) {
+    return this.localeService.updateModelWithLocale('role', 'role_id', id, {
+      slug,
+    });
   }
 
   async delete({ ids }: DeleteDTO) {
