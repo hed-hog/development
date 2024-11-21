@@ -296,9 +296,12 @@ export class LocaleService {
     modelName: string,
     foreignKeyName: string,
     data: T,
-    locale: Record<string, Record<string, string>>,
   ) {
     try {
+      const locale = (data as any).locale as Record<
+        string,
+        Record<string, string>
+      >;
       const model = await this.prismaService[modelName].create({ data });
 
       if (locale) {
@@ -343,9 +346,12 @@ export class LocaleService {
     foreignKeyName: string,
     id: number,
     data: T,
-    locale: Record<string, Record<string, string>>,
   ) {
     try {
+      const locale = (data as any).locale as Record<
+        string,
+        Record<string, string>
+      >;
       if (locale) {
         await Promise.all(
           Object.entries(locale).map(async ([localeCode, localeData]) => {
@@ -375,6 +381,29 @@ export class LocaleService {
       return this.prismaService[modelName].update({
         where: { id },
         data,
+      });
+    } catch (error: any) {
+      if (error.message.includes('Unique constraint failed')) {
+        throw new BadRequestException('Data already exists.');
+      } else {
+        throw new BadRequestException(error);
+      }
+    }
+  }
+
+  async getModelWithLocale(modelName: string, id: number) {
+    try {
+      const model = await this.prismaService[modelName].findUnique({
+        where: { id },
+      });
+
+      return this.prismaService[modelName].findUnique({
+        where: { id: model.id },
+        include: {
+          [this.getTableNameTranslations(modelName)]: {
+            where: { locale: { enabled: true } },
+          },
+        },
       });
     } catch (error: any) {
       if (error.message.includes('Unique constraint failed')) {
