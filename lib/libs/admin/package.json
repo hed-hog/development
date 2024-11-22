@@ -21,9 +21,9 @@
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@hedhog/locale": "^0.0.22",
+    "@hedhog/locale": "^0.0.23",
     "@hedhog/mail": "^0.0.14",
-    "@hedhog/pagination": "^0.0.17",
+    "@hedhog/pagination": "^0.0.18",
     "@hedhog/prisma": "^0.0.11",
     "@hedhog/setting": "^0.0.14",
     "@hedhog/utils": "^0.0.27",
