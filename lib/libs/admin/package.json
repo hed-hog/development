@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/admin",
-  "version": "0.0.123",
+  "version": "0.0.124",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -21,11 +21,11 @@
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@hedhog/locale": "^0.0.23",
+    "@hedhog/locale": "^0.0.24",
     "@hedhog/mail": "^0.0.14",
     "@hedhog/pagination": "^0.0.18",
-    "@hedhog/prisma": "^0.0.11",
-    "@hedhog/setting": "^0.0.14",
+    "@hedhog/prisma": "^0.0.12",
+    "@hedhog/setting": "^0.0.15",
     "@hedhog/utils": "^0.0.27",
     "@nestjs/mapped-types": "^2.0.5",
     "ts-node": "^10.9.1",
