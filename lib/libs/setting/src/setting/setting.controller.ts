@@ -13,7 +13,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { Locale } from '@hedhog/locale';
-import { Role, User } from '@hedhog/utils';
+import { Role, User } from '@hedhog/core';
 import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingUserDTO } from './dto/setting-user.dto';

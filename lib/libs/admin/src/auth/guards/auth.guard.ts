@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { AuthService } from '../auth.service';
-import { IS_PUBLIC_KEY } from '@hedhog/utils';
+import { IS_PUBLIC_KEY } from '@hedhog/core';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

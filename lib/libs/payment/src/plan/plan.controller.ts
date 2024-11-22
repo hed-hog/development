@@ -16,7 +16,7 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { PlanService } from './plan.service';
-import { Role } from '@hedhog/utils';
+import { Role } from '@hedhog/core';
 
 @Role()
 @Controller('plan')

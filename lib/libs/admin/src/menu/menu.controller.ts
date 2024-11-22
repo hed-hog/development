@@ -14,7 +14,7 @@ import {
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
 import { Locale } from '@hedhog/locale';
-import { Role, User } from '@hedhog/utils';
+import { Role, User } from '@hedhog/core';
 import { CreateDTO } from './dto/create.dto';
 import { OrderDTO } from './dto/order.dto';
 import { UpdateDTO } from './dto/update.dto';

@@ -1,6 +1,6 @@
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { itemTranslations } from '@hedhog/utils';
+import { itemTranslations } from '@hedhog/core';
 import {
   BadRequestException,
   Inject,

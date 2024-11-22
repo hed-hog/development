@@ -6,7 +6,7 @@ import {
   Inject,
   Post,
 } from '@nestjs/common';
-import { Role, Public, User } from '@hedhog/utils';
+import { Role, Public, User } from '@hedhog/core';
 import { AuthService } from './auth.service';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';

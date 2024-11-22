@@ -1,4 +1,4 @@
-import { Role } from '@hedhog/utils';
+import { Role } from '@hedhog/core';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,

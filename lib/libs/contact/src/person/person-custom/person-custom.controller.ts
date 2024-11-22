@@ -1,5 +1,4 @@
-import { Locale } from "@hedhog/locale";
-import { Role, OptionalParseIntPipe } from "@hedhog/utils";
+import { Role, OptionalParseIntPipe, DeleteDTO } from '@hedhog/core';
 import {
   Body,
   Controller,
@@ -10,19 +9,18 @@ import {
   Patch,
   Post,
   Query,
-} from "@nestjs/common";
-import { PersonCustomService } from "./person-custom.service";
-import { CreateDTO } from "./dto/create.dto";
-import { UpdateDTO } from "./dto/update.dto";
-import { DeleteDTO } from "@hedhog/utils";
+} from '@nestjs/common';
+import { PersonCustomService } from './person-custom.service';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
 
 @Role()
-@Controller("person/:personId/custom")
+@Controller('person/:personId/custom')
 export class PersonCustomController {
   constructor(private readonly customService: PersonCustomService) {}
   @Post()
   create(
-    @Param("personId", ParseIntPipe) personId: number,
+    @Param('personId', ParseIntPipe) personId: number,
     @Body() data: CreateDTO,
   ) {
     return this.customService.create(personId, data);
@@ -30,9 +28,9 @@ export class PersonCustomController {
 
   @Get()
   list(
-    @Param("personId", ParseIntPipe) personId: number,
-    @Query("typeId", OptionalParseIntPipe) typeId?: number,
-    @Query("id", OptionalParseIntPipe) customId?: number,
+    @Param('personId', ParseIntPipe) personId: number,
+    @Query('typeId', OptionalParseIntPipe) typeId?: number,
+    @Query('id', OptionalParseIntPipe) customId?: number,
   ) {
     if (customId) {
       return this.customService.list(personId, null, customId);
@@ -43,10 +41,10 @@ export class PersonCustomController {
     return this.customService.list(personId);
   }
 
-  @Patch(":customId")
+  @Patch(':customId')
   update(
-    @Param("personId", ParseIntPipe) personId: number,
-    @Param("customId", ParseIntPipe) customId: number,
+    @Param('personId', ParseIntPipe) personId: number,
+    @Param('customId', ParseIntPipe) customId: number,
     @Body() data: UpdateDTO,
   ) {
     return this.customService.update(personId, customId, data);
@@ -54,7 +52,7 @@ export class PersonCustomController {
 
   @Delete()
   delete(
-    @Param("personId", ParseIntPipe) personId: number,
+    @Param('personId', ParseIntPipe) personId: number,
     @Body() { ids }: DeleteDTO,
   ) {
     return this.customService.delete(personId, { ids });

@@ -1,4 +1,4 @@
-import { itemTranslations } from '@hedhog/utils';
+import { itemTranslations } from '@hedhog/core';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import {
   DEFAULT_PAGE,

@@ -11,7 +11,7 @@ import {
 import { METHOD_METADATA } from '@nestjs/common/constants';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { IS_PUBLIC_KEY, WITH_ROLE } from '@hedhog/utils';
+import { IS_PUBLIC_KEY, WITH_ROLE } from '@hedhog/core';
 
 @Injectable()
 export class RoleGuard implements CanActivate {

@@ -1,4 +1,4 @@
-import { Role, OptionalParseIntPipe } from '@hedhog/utils';
+import { Role, OptionalParseIntPipe } from '@hedhog/core';
 import {
   Body,
   Controller,
@@ -8,12 +8,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query
+  Query,
 } from '@nestjs/common';
 import { PersonContactService } from './person-contact.service';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { DeleteDTO } from '@hedhog/utils';
+import { DeleteDTO } from '@hedhog/core';
 
 @Role()
 @Controller('person/:personId/contact')
@@ -22,7 +22,7 @@ export class PersonContactController {
   @Post()
   create(
     @Param('personId', ParseIntPipe) personId: number,
-    @Body() data: CreateDTO
+    @Body() data: CreateDTO,
   ) {
     return this.contactService.create(personId, data);
   }
@@ -31,7 +31,7 @@ export class PersonContactController {
   list(
     @Param('personId', ParseIntPipe) personId: number,
     @Query('typeId', OptionalParseIntPipe) typeId?: number,
-    @Query('id', OptionalParseIntPipe) contactId?: number
+    @Query('id', OptionalParseIntPipe) contactId?: number,
   ) {
     if (contactId) {
       return this.contactService.list(personId, null, contactId);
@@ -46,7 +46,7 @@ export class PersonContactController {
   update(
     @Param('personId', ParseIntPipe) personId: number,
     @Param('contactId', ParseIntPipe) contactId: number,
-    @Body() data: UpdateDTO
+    @Body() data: UpdateDTO,
   ) {
     return this.contactService.update(personId, contactId, data);
   }
@@ -54,7 +54,7 @@ export class PersonContactController {
   @Delete()
   delete(
     @Param('personId', ParseIntPipe) personId: number,
-    @Body() { ids }: DeleteDTO
+    @Body() { ids }: DeleteDTO,
   ) {
     return this.contactService.delete(personId, { ids });
   }

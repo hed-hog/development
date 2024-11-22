@@ -15,7 +15,7 @@ import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { PaymentService } from './payment.service';
-import { Role } from '@hedhog/utils';
+import { Role } from '@hedhog/core';
 
 @Role()
 @Controller('payment')

@@ -1,5 +1,5 @@
 import { Pagination } from '@hedhog/pagination';
-import { Public, Role } from '@hedhog/utils';
+import { Public, Role } from '@hedhog/core';
 import {
   Body,
   Controller,

@@ -3,25 +3,25 @@ import { PrismaService } from '@hedhog/prisma';
 import {
   Injectable,
   NotFoundException,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { DeleteDTO } from '@hedhog/utils';
+import { DeleteDTO } from '@hedhog/core';
 
 @Injectable()
 export class PersonDocumentService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   async create(personId: number, data: CreateDTO) {
     return this.prismaService.person_document.create({
       data: {
         person_id: personId,
-        ...data
-      }
+        ...data,
+      },
     });
   }
 
@@ -37,10 +37,10 @@ export class PersonDocumentService {
         person_document_type: {
           select: {
             id: true,
-            name: true
-          }
-        }
-      }
+            name: true,
+          },
+        },
+      },
     });
 
     if (Boolean(documentId) && documents.length === 0) {
@@ -54,7 +54,7 @@ export class PersonDocumentService {
     return this.paginationService.paginate(
       this.prismaService.person_document,
       {
-        fields: 'id,person_id,type_id,primary,value'
+        fields: 'id,person_id,type_id,primary,value',
       },
       {
         where,
@@ -62,11 +62,11 @@ export class PersonDocumentService {
           person_document_type: {
             select: {
               id: true,
-              name: true
-            }
-          }
-        }
-      }
+              name: true,
+            },
+          },
+        },
+      },
     );
   }
 
@@ -74,16 +74,16 @@ export class PersonDocumentService {
     return this.prismaService.person_document.update({
       where: {
         person_id: personId,
-        id: documentId
+        id: documentId,
       },
-      data
+      data,
     });
   }
 
   async delete(personId: number, { ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
@@ -91,9 +91,9 @@ export class PersonDocumentService {
       where: {
         person_id: personId,
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }
