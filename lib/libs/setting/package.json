@@ -22,12 +22,14 @@
   "license": "MIT",
   "description": "",
   "peerDependencies": {
+    "@hedhog/core": "latest",
     "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
     "@hedhog/utils": "latest"
   },
   "devDependencies": {
+    "@hedhog/core": "^0.0.1",
     "@hedhog/locale": "^0.0.23",
     "@hedhog/pagination": "^0.0.18",
     "@hedhog/prisma": "^0.0.11",
