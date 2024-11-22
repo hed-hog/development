@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/file",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -19,7 +19,6 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "^2.0.5",
     "@prisma/client": "^5.17.0",
-    "aws-sdk": "2.1691.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "typeorm": "^0.3.20"
@@ -32,25 +31,16 @@
     "hedhog.yaml"
   ],
   "devDependencies": {
-    "@azure/storage-blob": "^12.25.0",
-    "@google-cloud/storage": "^7.14.0",
     "@hedhog/pagination": "^0.0.18",
     "@hedhog/prisma": "^0.0.12",
     "@hedhog/setting": "^0.0.15",
     "@hedhog/utils": "^0.0.27",
     "@nestjs/jwt": "^10.2.0",
-    "@nestjs/mapped-types": "^2.0.5",
-    "aws-sdk": "^2.1691.0"
+    "@nestjs/mapped-types": "^2.0.5"
   },
-  "peerDependenciesMeta": {
-    "aws-sdk": {
-      "optional": true
-    },
-    "@azure/storage-blob": {
-      "optional": true
-    },
-    "@google-cloud/storage": {
-      "optional": true
-    }
+  "dependencies": {
+    "@azure/storage-blob": "^12.25.0",
+    "@google-cloud/storage": "^7.14.0",
+    "aws-sdk": "^2.1691.0"
   }
 }
