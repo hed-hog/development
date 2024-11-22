@@ -1,9 +1,9 @@
 import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 
 export class CreateDTO {
-  @IsString({ message: 'O nome deve ser uma string' })
-  @IsNotEmpty({ message: 'O nome é obrigatório.' })
-  name: string;
+  @IsString({ message: 'O slug deve ser uma string' })
+  @IsNotEmpty({ message: 'O slug é obrigatório.' })
+  slug: string;
 
   @IsString({ message: 'A url deve ser uma string' })
   @IsNotEmpty({ message: 'A url é obrigatório.' })

@@ -145,12 +145,10 @@ export class ScreenService {
     return this.prismaService.screen.findUnique({ where: { id: screenId } });
   }
 
-  async create({ name, slug, description, icon }: CreateDTO) {
+  async create({ slug, icon }: CreateDTO) {
     return this.prismaService.screen.create({
       data: {
-        name,
         slug,
-        description,
         icon,
       },
     });

@@ -209,9 +209,9 @@ export class MenuService {
     });
   }
 
-  async create({ name, url, icon, order, menuId }: CreateDTO) {
+  async create({ slug, url, icon, order, menuId }: CreateDTO) {
     return this.prismaService.menu.create({
-      data: { name, url, icon, order, menu_id: menuId },
+      data: { slug, url, icon, order, menu_id: menuId },
     });
   }
 
