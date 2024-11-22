@@ -296,10 +296,15 @@ export class LocaleService {
     modelName: string,
     foreignKeyName: string,
     data: T,
-    locale: Record<string, Record<string, string>>,
   ) {
     try {
-      const model = await this.prismaService[modelName].create({ data });
+      const model = await this.prismaService[modelName].create({
+        data: this.getValidData(modelName, data),
+      });
+
+      const { locale } = data as {
+        locale: Record<string, Record<string, string>>;
+      };
 
       if (locale) {
         await Promise.all(
@@ -338,18 +343,66 @@ export class LocaleService {
     }
   }
 
+  async getModelWithLocale(modelName: string, id: number) {
+    const result = await this.prismaService[modelName].findUnique({
+      where: { id },
+      include: {
+        [this.getTableNameTranslations(modelName)]: {
+          where: {
+            locale: {
+              enabled: true,
+            },
+          },
+          include: {
+            locale: {
+              select: {
+                code: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const newLocale: any = {};
+
+    for (const locale of result[this.getTableNameTranslations(modelName)]) {
+      newLocale[locale.locale.code] = locale;
+    }
+
+    delete result[this.getTableNameTranslations(modelName)];
+
+    result.locale = newLocale;
+
+    return result;
+  }
+
+  getValidData(modelName: string, data: any) {
+    const validData: any = {};
+
+    for (const fieldName of Object.keys(this.prismaService[modelName].fields)) {
+      validData[fieldName] = data[fieldName];
+    }
+
+    return validData;
+  }
+
   async updateModelWithLocale<T>(
     modelName: string,
     foreignKeyName: string,
     id: number,
     data: T,
-    locale: Record<string, Record<string, string>>,
   ) {
     try {
+      const { locale } = data as {
+        locale: Record<string, Record<string, string>>;
+      };
+
       if (locale) {
         await Promise.all(
           Object.entries(locale).map(async ([localeCode, localeData]) => {
             const localeRecord = await this.getByCode(localeCode);
+
             const localeEntry = {
               [foreignKeyName]: id,
               locale_id: localeRecord.id,
@@ -374,7 +427,7 @@ export class LocaleService {
 
       return this.prismaService[modelName].update({
         where: { id },
-        data,
+        data: this.getValidData(modelName, data),
       });
     } catch (error: any) {
       if (error.message.includes('Unique constraint failed')) {
