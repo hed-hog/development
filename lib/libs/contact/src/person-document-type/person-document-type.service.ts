@@ -4,42 +4,47 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef,
+  forwardRef
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '@hedhog/utils';
 import { UpdateDTO } from './dto/update.dto';
+
 import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
 export class PersonDocumentTypeService {
+  private readonly modelName = 'person_document_type';
+  private readonly foreignKey = 'type_id';
+
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
-    @Inject(forwardRef(() => LocaleService))
-    private readonly localeService: LocaleService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
+
+    @Inject(forwardRef(() => LocaleService))
+    private readonly localeService: LocaleService
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
     const fields = ['slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams,
+      paginationParams
     );
 
     const include = {
       person_document_type_locale: {
         where: {
           locale: {
-            code: locale,
-          },
+            code: locale
+          }
         },
         select: {
-          name: true,
-        },
-      },
+          name: true
+        }
+      }
     };
 
     return this.paginationService.paginate(
@@ -47,104 +52,51 @@ export class PersonDocumentTypeService {
       paginationParams,
       {
         where: {
-          OR,
+          OR
         },
-        include,
+        include
       },
-      'person_document_type_locale',
+      'person_document_type_locale'
     );
   }
 
   async get(personDocumentTypeId: number) {
-    const localeMap = await this.localeService.enabledLocalesMap();
-    const result = await this.prismaService.person_document_type.findUnique({
-      where: { id: personDocumentTypeId },
-      include: {
-        person_document_type_locale: true,
-      },
-    });
-
-    if (!result) {
-      return null;
-    }
-
-    const locale = result.person_document_type_locale.reduce(
-      (acc, localeData) => {
-        const localeCode = Object.keys(localeMap).find(
-          (code) => localeMap[code] === localeData.locale_id,
-        );
-        if (localeCode) {
-          acc[localeCode] = { name: localeData.name };
-        }
-        return acc;
-      },
-      {},
+    return this.localeService.getModelWithLocale(
+      this.modelName,
+      personDocumentTypeId
     );
-
-    return {
-      id: result.id,
-      slug: result.slug,
-      created_at: result.created_at,
-      updated_at: result.updated_at,
-      locale,
-    };
   }
 
   async create(data: CreateDTO) {
-    const localeMap = await this.localeService.enabledLocalesMap();
-    return this.prismaService.person_document_type.create({
-      data: {
-        slug: data.slug,
-        created_at: new Date(),
-        updated_at: new Date(),
-        person_document_type_locale: {
-          create: Object.keys(localeMap).map((code) => ({
-            locale_id: localeMap[code],
-            name: data.locale[code].name,
-          })),
-        },
-      },
-    });
+    return this.localeService.createModelWithLocale(
+      this.modelName,
+      this.foreignKey,
+      data
+    );
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    const localeMap = await this.localeService.enabledLocalesMap();
-    return this.prismaService.person_document_type.update({
-      where: { id },
-      data: {
-        slug: data.slug,
-        updated_at: new Date(),
-        person_document_type_locale: {
-          upsert: Object.keys(localeMap).map((code) => ({
-            where: {
-              type_id_locale_id: { type_id: id, locale_id: localeMap[code] },
-            },
-            update: {
-              name: data.locale[code].name,
-            },
-            create: {
-              locale_id: localeMap[code],
-              name: data.locale[code].name,
-            },
-          })),
-        },
-      },
-    });
+    return this.localeService.updateModelWithLocale(
+      this.modelName,
+      this.foreignKey,
+      id,
+      data
+    );
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.',
+        'You must select at least one item to delete.'
       );
     }
 
     return this.prismaService.person_document_type.deleteMany({
       where: {
         id: {
-          in: ids,
-        },
-      },
+          in: ids
+        }
+      }
     });
   }
 }

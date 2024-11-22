@@ -343,40 +343,6 @@ export class LocaleService {
     }
   }
 
-  async getModelWithLocale(modelName: string, id: number) {
-    const result = await this.prismaService[modelName].findUnique({
-      where: { id },
-      include: {
-        [this.getTableNameTranslations(modelName)]: {
-          where: {
-            locale: {
-              enabled: true,
-            },
-          },
-          include: {
-            locale: {
-              select: {
-                code: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    const newLocale: any = {};
-
-    for (const locale of result[this.getTableNameTranslations(modelName)]) {
-      newLocale[locale.locale.code] = locale;
-    }
-
-    delete result[this.getTableNameTranslations(modelName)];
-
-    result.locale = newLocale;
-
-    return result;
-  }
-
   getValidData(modelName: string, data: any) {
     const validData: any = {};
 
@@ -429,6 +395,39 @@ export class LocaleService {
         where: { id },
         data: this.getValidData(modelName, data),
       });
+    } catch (error: any) {
+      if (error.message.includes('Unique constraint failed')) {
+        throw new BadRequestException('Data already exists.');
+      } else {
+        throw new BadRequestException(error);
+      }
+    }
+  }
+
+  async getModelWithLocale(modelName: string, id: number) {
+    try {
+      const model = await this.prismaService[modelName].findUnique({
+        where: { id },
+        include: {
+          [this.getTableNameTranslations(modelName)]: {
+            where: { locale: { enabled: true } },
+            include: { locale: { select: { code: true } } },
+          },
+        },
+      });
+
+      const localeData = model[this.getTableNameTranslations(modelName)].reduce(
+        (acc, item) => {
+          acc[item.locale.code] = { name: item.name };
+          return acc;
+        },
+        {} as Record<string, { name: string }>,
+      );
+
+      return {
+        ...model,
+        locale: localeData,
+      };
     } catch (error: any) {
       if (error.message.includes('Unique constraint failed')) {
         throw new BadRequestException('Data already exists.');

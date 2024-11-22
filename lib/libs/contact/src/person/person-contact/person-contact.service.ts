@@ -1,27 +1,27 @@
-import { PaginationService } from "@hedhog/pagination";
-import { PrismaService } from "@hedhog/prisma";
+import { PaginationService } from '@hedhog/pagination';
+import { PrismaService } from '@hedhog/prisma';
 import {
   Injectable,
   NotFoundException,
-  BadRequestException,
-} from "@nestjs/common";
-import { CreateDTO } from "./dto/create.dto";
-import { UpdateDTO } from "./dto/update.dto";
-import { DeleteDTO } from "@hedhog/utils";
+  BadRequestException
+} from '@nestjs/common';
+import { CreateDTO } from './dto/create.dto';
+import { UpdateDTO } from './dto/update.dto';
+import { DeleteDTO } from '@hedhog/utils';
 
 @Injectable()
 export class PersonContactService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly paginationService: PaginationService,
+    private readonly paginationService: PaginationService
   ) {}
 
   async create(personId: number, data: CreateDTO) {
     return this.prismaService.person_contact.create({
       data: {
         person_id: personId,
-        ...data,
-      },
+        ...data
+      }
     });
   }
 
@@ -37,10 +37,10 @@ export class PersonContactService {
         person_contact_type: {
           select: {
             id: true,
-            name: true,
-          },
-        },
-      },
+            name: true
+          }
+        }
+      }
     });
 
     if (Boolean(contactId) && contacts.length === 0) {
@@ -54,7 +54,7 @@ export class PersonContactService {
     return this.paginationService.paginate(
       this.prismaService.person_contact,
       {
-        fields: "id,person_id,type_id,primary,value",
+        fields: 'id,person_id,type_id,primary,value'
       },
       {
         where,
@@ -62,11 +62,11 @@ export class PersonContactService {
           person_contact_type: {
             select: {
               id: true,
-              name: true,
-            },
-          },
-        },
-      },
+              name: true
+            }
+          }
+        }
+      }
     );
   }
 
@@ -74,16 +74,16 @@ export class PersonContactService {
     return this.prismaService.person_contact.update({
       where: {
         person_id: personId,
-        id: contactId,
+        id: contactId
       },
-      data,
+      data
     });
   }
 
   async delete(personId: number, { ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        "You must select at least one item to delete.",
+        'You must select at least one item to delete.'
       );
     }
 
@@ -91,9 +91,9 @@ export class PersonContactService {
       where: {
         person_id: personId,
         id: {
-          in: ids,
-        },
-      },
+          in: ids
+        }
+      }
     });
   }
 }

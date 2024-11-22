@@ -44,7 +44,7 @@ const PersonContactTypeCreatePanel = forwardRef(
             required: true,
           },
 
-          ...getFieldsLocale([{ name: "name" }]),
+          ...getFieldsLocale([{ name: "name" }], item),
         ]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
