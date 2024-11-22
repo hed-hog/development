@@ -25,10 +25,9 @@
   },
   "dependencies": {
     "@hedhog/admin": "^0.0.122",
-    "@hedhog/contact": "^0.0.15",
-    "@hedhog/core": "^0.0.1",
+    "@hedhog/contact": "^0.0.16",
     "@hedhog/file": "^0.0.28",
-    "@hedhog/locale": "^0.0.21",
+    "@hedhog/locale": "^0.0.22",
     "@hedhog/mail": "^0.0.14",
     "@hedhog/pagination": "^0.0.17",
     "@hedhog/prisma": "^0.0.11",
@@ -52,7 +51,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@hedhog/utils": "^0.0.24",
+    "@hedhog/utils": "^0.0.27",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@types/bcrypt": "^5.0.2",
