@@ -26,6 +26,7 @@
   "dependencies": {
     "@hedhog/admin": "^0.0.122",
     "@hedhog/contact": "^0.0.15",
+    "@hedhog/core": "^0.0.1",
     "@hedhog/file": "^0.0.28",
     "@hedhog/locale": "^0.0.21",
     "@hedhog/mail": "^0.0.14",
