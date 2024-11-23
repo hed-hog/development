@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@hedhog/admin": "^0.0.124",
-    "@hedhog/file": "^0.0.29",
+    "@hedhog/file": "^0.0.30",
     "@hedhog/locale": "^0.0.24",
     "@hedhog/pagination": "^0.0.18",
     "@hedhog/prisma": "^0.0.12",
