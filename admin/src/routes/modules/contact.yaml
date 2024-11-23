@@ -1,0 +1,25 @@
+routes:
+  - path: contact
+    children:
+      - path: person
+        lazy:
+          component: ./pages/contact/person/index.tsx
+  - path: management
+    children:
+      - path: person
+        children:
+          - path: address-type
+            lazy:
+              component: ./pages/contact/person-address-type/index.tsx
+          - path: contact-type
+            lazy:
+              component: ./pages/contact/person-contact-type/index.tsx
+          - path: custom-type
+            lazy:
+              component: ./pages/contact/person-custom-type/index.tsx
+          - path: document-type
+            lazy:
+              component: ./pages/contact/person-document-type/index.tsx
+          - path: person-type
+            lazy:
+              component: ./pages/contact/person-type/index.tsx
