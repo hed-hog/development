@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/setting",
-  "version": "0.0.15",
+  "version": "0.1.1",
   "private": false,
   "main": "dist/index.js",
   "scripts": {

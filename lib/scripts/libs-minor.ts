@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { existsSync } from 'fs';
 import { readdir, writeFile } from 'fs/promises';
 import { get } from 'https';
@@ -13,7 +14,7 @@ type Libs = Record<string, Lib>;
 
 async function updateHedhogDeps(path: string) {
   console.info(`Updating ${path}...`);
-  const packagePath = join(__dirname, '..', path, 'package.json');
+  const packagePath = join(path, 'package.json');
   console.info(`Reading ${packagePath}...`);
 
   if (existsSync(packagePath)) {
@@ -40,7 +41,13 @@ async function updateHedhogDeps(path: string) {
       await run(path, 'npm', 'i', ...deps, '--legacy-peer-deps');
     }
 
+    console.info(`Checking for updates...`);
+
+    await run(path, 'npm', 'i');
+
     console.info(`Updated!`);
+  } else {
+    console.warn(chalk.yellow(`File ${packagePath} not found`));
   }
 }
 
@@ -148,13 +155,15 @@ async function getNextLibToUpdate(
 }
 
 async function updateVersionLib(path: string, version: string) {
-  const packagePath = join(__dirname, '..', path, 'package.json');
+  const packagePath = join(path, 'package.json');
   if (existsSync(packagePath)) {
     const packageJson = require(packagePath);
 
     packageJson.version = version;
 
     await writeFile(packagePath, JSON.stringify(packageJson, null, 2));
+  } else {
+    console.warn(chalk.yellow(`File ${packagePath} not found`));
   }
 }
 
