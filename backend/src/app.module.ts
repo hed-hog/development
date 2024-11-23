@@ -3,7 +3,6 @@ import { ContactModule } from '@hedhog/contact';
 import { FileModule } from '@hedhog/file';
 import { AdminModule } from '@hedhog/admin';
 import { SettingModule } from '@hedhog/setting';
-import { CoreModule } from '@hedhog/core';
 import { MailModule } from '@hedhog/mail';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
@@ -27,7 +26,6 @@ import { PrismaModule } from '@hedhog/prisma';
       username: 'changeme',
       password: 'changeme',
     }),
-    CoreModule,
     SettingModule,
     AdminModule,
     FileModule,

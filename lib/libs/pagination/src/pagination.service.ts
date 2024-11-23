@@ -6,17 +6,13 @@ import {
 } from './constants/pagination.constants';
 import { AbstractDatabase, Database, DatabaseFactory } from './databases';
 import { PageOrderDirection } from './enums/patination.enums';
-import type {
-  BaseModel,
-  FindManyArgs,
-  PaginationParams,
-} from './types/pagination.types';
+import type { FindManyArgs, PaginationParams } from './types/pagination.types';
 
 @Injectable()
 export class PaginationService {
   private readonly logger = new Logger(PaginationService.name);
   private db: any = null;
-  async paginate<T, M extends BaseModel>(
+  async paginate<T, M extends any>(
     model: M,
     paginationParams: PaginationParams,
     customQuery?: FindManyArgs<M>,
@@ -62,7 +58,7 @@ export class PaginationService {
             );
           } else {
             sortOrderCondition = {
-              [`${model.name}_locale`]: { [sortField]: sortOrder },
+              [`${(model as any).name}_locale`]: { [sortField]: sortOrder },
             };
           }
         } else {
@@ -103,29 +99,29 @@ export class PaginationService {
       const skip = page > 0 ? pageSize * (page - 1) : 0;
 
       if (
-        customQuery.where &&
-        customQuery.where.OR &&
-        customQuery.where.OR.length === 0
+        (customQuery as any).where &&
+        (customQuery as any).where.OR &&
+        (customQuery as any).where.OR.length === 0
       ) {
-        delete customQuery.where.OR;
+        delete (customQuery as any).where.OR;
       }
 
       const query: any = {
         select: selectCondition,
-        where: customQuery?.where || {},
+        where: (customQuery as any)?.where || {},
         orderBy: sortOrderCondition,
         take: pageSize,
         skip,
       };
 
-      if (customQuery?.include) {
-        query.include = customQuery?.include;
+      if ((customQuery as any)?.include) {
+        query.include = (customQuery as any)?.include;
         delete query.select;
       }
 
       let [total, data] = await Promise.all([
-        model.count({ where: customQuery?.where || {} }),
-        model.findMany(query),
+        (model as any).count({ where: (customQuery as any)?.where || {} }),
+        (model as any).findMany(query),
         //this.query(model, query),
       ]);
 
@@ -169,23 +165,23 @@ export class PaginationService {
     return fieldNames;
   }
 
-  isInvalidField(sortField: string, model: BaseModel): boolean {
+  isInvalidField(sortField: string, model: any): boolean {
     return model && model.fields ? !model.fields[sortField] : true;
   }
 
-  isInvalidLocaleField(sortField: string, model: BaseModel): boolean {
+  isInvalidLocaleField(sortField: string, model: any): boolean {
     const fields = model['$parent'][`${model.name}_locale`].fields;
 
     return model && fields ? !fields[sortField] : true;
   }
 
-  isInvalidFields(fields: string[], model: BaseModel): boolean {
+  isInvalidFields(fields: string[], model: any): boolean {
     return !fields.every((field) =>
       model.fields ? model && model.fields[field] : false,
     );
   }
 
-  isInvalidLocaleFields(fields: string[], model: BaseModel): boolean {
+  isInvalidLocaleFields(fields: string[], model: any): boolean {
     const localeFields = model['$parent'][`${model.name}_locale`].fields;
 
     return !fields.every((field) =>

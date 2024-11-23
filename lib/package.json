@@ -32,7 +32,8 @@
     "prisma:update": "npm run prisma:pull && npm run prisma:generate && npm run create:types",
     "preinstall": "ts-node scripts/npm-install-libs.ts",
     "puppeteer": "ts-node ./src/puppeteer/main.ts",
-    "create:types": "ts-node scripts/create-types.ts"
+    "create:types": "ts-node scripts/create-types.ts",
+    "libs:minor": "ts-node scripts/libs-minor.ts"
   },
   "dependencies": {
     "@hedhog/core": "^0.0.1",
