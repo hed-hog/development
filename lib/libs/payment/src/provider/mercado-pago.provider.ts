@@ -23,7 +23,7 @@ export class MercadoPagoProvider extends AbstractProvider {
     try {
       const response = await this.httpClient.post('/payments', data);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Error creating payment: ${error.message}`);
     }
   }
@@ -32,7 +32,7 @@ export class MercadoPagoProvider extends AbstractProvider {
     try {
       const response = await this.httpClient.get(`/payments/${paymentId}`);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Error retrieving payment: ${error.message}`);
     }
   }

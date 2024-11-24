@@ -138,6 +138,15 @@ async function getNextLibToUpdate(
   libs: Libs,
   updatedLibs: Record<string, number[]>,
 ): Promise<[string, number[]]> {
+  console.info('==========================');
+  console.info(
+    'libs restantes: ',
+    Object.keys(libs).filter((name) => {
+      return !updatedLibs[name];
+    }),
+  );
+  console.info('==========================');
+
   for (const lib of Object.keys(libs).filter((name) => !updatedLibs[name])) {
     const { dependencies, version } = libs[lib];
 
@@ -216,6 +225,9 @@ async function main() {
 }
 
 main().then(() => {
+  console.info('==========================');
   console.info();
-  console.log('✅ ', 'done');
+  console.info('✅ ', 'DONE!');
+  console.info();
+  console.info('==========================');
 });

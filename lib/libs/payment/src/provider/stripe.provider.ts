@@ -20,7 +20,7 @@ export class StripeProvider extends AbstractProvider {
     try {
       const response = await this.axiosInstance.post('', data);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Failed to create payment: ${error.message}`);
     }
   }
@@ -29,7 +29,7 @@ export class StripeProvider extends AbstractProvider {
     try {
       const response = await this.axiosInstance.get(`/${paymentId}`);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Failed to retrieve payment: ${error.message}`);
     }
   }
