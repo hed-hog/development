@@ -26,6 +26,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     const searchValue = paginationParams.search;
     const OR: any[] = [];
 
+    if (!searchValue) {
+      return OR;
+    }
+
     fields.forEach((field) => {
       if (field === 'id' && !isNaN(+searchValue) && +searchValue > 0) {
         OR.push({ id: { equals: +searchValue } });
