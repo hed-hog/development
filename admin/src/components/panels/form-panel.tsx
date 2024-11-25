@@ -105,6 +105,7 @@ const FormPanelForm = forwardRef(
                   type={renderField.type}
                   required={renderField.required ?? false}
                   options={renderField.options}
+                  url={renderField.url}
                   sliderOptions={Object.assign(
                     {},
                     {

@@ -92,7 +92,7 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
         <Combobox
           value={String(value)}
           onChange={props.onChange}
-          options={options || []}
+          url={String(props.url)}
         />
       )
 

@@ -2,7 +2,6 @@ import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { cn } from '@/lib/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -18,18 +17,40 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useApp } from '@/hooks/use-app'
+import { IFormFieldOption } from '@/types'
+import { useQuery } from '@tanstack/react-query'
 
 export type ComboboxPrps = {
   value?: string
   onChange?: (value: string) => void
-  options: { label: string; value: string }[]
+  url: string
 }
 
 export function Combobox(props: ComboboxPrps) {
-  const { t } = useTranslation()
+  const { request } = useApp()
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(props.value || '')
-  const [options, setOptions] = useState(props.options || [])
+  const [options, setOptions] = useState<IFormFieldOption[]>([])
+
+  const { data } = useQuery({
+    queryKey: [props.url],
+    queryFn: () =>
+      request({
+        url: props.url,
+      }),
+  })
+
+  useEffect(() => {
+    if (data) {
+      setOptions(
+        (data?.data as any).data.map((item: any) => ({
+          value: item.id,
+          label: item.name || 'N/A',
+        }))
+      )
+    }
+  }, [data])
 
   useEffectAfterFirstUpdate(() => {
     if (typeof props.onChange === 'function' && value !== props.value) {
@@ -52,10 +73,6 @@ export function Combobox(props: ComboboxPrps) {
     setValue(props.value || '')
   }, [props.value])
 
-  useEffect(() => {
-    setOptions(props.options || [])
-  }, [props.options])
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -70,17 +87,10 @@ export function Combobox(props: ComboboxPrps) {
           >
             <span>
               {value &&
-              options.find(
-                (language) =>
-                  language.value.toLocaleLowerCase() ===
-                  value.toLocaleLowerCase()
-              )?.label
-                ? options.find(
-                    (language) =>
-                      language.value.toLocaleLowerCase() ===
-                      value.toLocaleLowerCase()
-                  )?.label
-                : t('selectTimezone')}
+              options.length &&
+              options.find((language) => language.value === value)?.label
+                ? options.find((language) => language.value === value)?.label
+                : ''}
             </span>
             <ChevronsUpDown className='ml-2 h-3 w-3 shrink-0 opacity-50' />
           </Button>
@@ -88,7 +98,7 @@ export function Combobox(props: ComboboxPrps) {
       </PopoverTrigger>
       <PopoverContent className='w-[200px] p-0'>
         <Command>
-          <CommandInput placeholder='Search framework...' />
+          <CommandInput />
           <CommandList>
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandGroup>
@@ -97,6 +107,7 @@ export function Combobox(props: ComboboxPrps) {
                   key={option.value}
                   value={option.value}
                   onSelect={(currentValue) => {
+                    console.log('selected!', currentValue)
                     setValue(currentValue === value ? '' : currentValue)
                     setOpen(false)
                   }}
