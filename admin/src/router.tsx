@@ -46,6 +46,18 @@ const routes = [
         }),
       },
       {
+        path: "contact",
+        children: [
+          {
+            path: "person",
+            lazy: async () => ({
+              Component: (await import("./pages/contact/person/index.tsx"))
+                .default,
+            }),
+          },
+        ],
+      },
+      {
         path: "management",
         children: [
           {
@@ -60,6 +72,57 @@ const routes = [
               Component: (await import("./pages/management/menu/index.tsx"))
                 .default,
             }),
+          },
+          {
+            path: "person",
+            children: [
+              {
+                path: "address-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-address-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "contact-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-contact-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "custom-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/contact/person-custom-type/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "document-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-document-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "person-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/contact/person-type/index.tsx")
+                  ).default,
+                }),
+              },
+            ],
           },
           {
             path: "role",

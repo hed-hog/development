@@ -4,12 +4,12 @@ screens:
       en: Contact
       pt: Contatos
     menu:
-      url: /contact
+      url: /contact/person
       icon: user-check
       name:
         en: Contact
         pt: Contatos
-      slug: /contact
+      slug: /contact/person
       relations:
         role:
           - where:
