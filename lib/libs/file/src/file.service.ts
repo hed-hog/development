@@ -39,7 +39,7 @@ export class FileService {
       'storage-s3-region',
       'storage-s3-bucket',
       'storage-max-size',
-      'storage-accept-mimetypes',
+      'storage-accept-mimetype',
       'storage-abs-account',
       'storage-abs-key',
       'storage-abs-container',
@@ -99,12 +99,10 @@ export class FileService {
   }
 
   async acceptMimetypes(mimetype: string) {
-    if (!this.setting || !this.setting['storage-accept-mimetypes']) {
+    if (!this.setting || !this.setting['storage-accept-mimetype']) {
       await this.getProvider();
     }
-
-    const acceptMimetypes = this.setting['storage-accept-mimetypes'];
-
+    const acceptMimetypes = this.setting['storage-accept-mimetype'];
     return acceptMimetypes.split(',').indexOf(mimetype) !== -1;
   }
 

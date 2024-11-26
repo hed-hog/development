@@ -53,7 +53,7 @@ export class FileController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async upload(@UploadedFile() file: Express.Multer.File) {
-    return this.fileService.upload('images', file);
+    return this.fileService.upload('files', file);
   }
 
   @Delete()

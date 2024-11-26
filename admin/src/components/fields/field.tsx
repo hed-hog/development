@@ -43,7 +43,13 @@ export type FieldProps = (
       onChange: (value: string) => void
     }
   | {
-      type: EnumFieldType.TEXT | EnumFieldType.FILE | EnumFieldType.PASSWORD
+      type: EnumFieldType.FILE
+      name: string
+      value: number
+      onChange: (value: number) => void
+    }
+  | {
+      type: EnumFieldType.TEXT | EnumFieldType.PASSWORD
       name: string
       value: string
       onChange: ChangeEventHandler<HTMLInputElement>
@@ -123,7 +129,13 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
       )
 
     case EnumFieldType.FILE:
-      return <FileUploader />
+      return (
+        <FileUploader
+          name={props.name}
+          value={props.value}
+          onChange={props.onChange}
+        />
+      )
 
     case EnumFieldType.PASSWORD:
       return (

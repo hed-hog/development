@@ -1,75 +1,103 @@
 import React, { useState, useCallback } from 'react'
 import { X } from 'lucide-react'
+import { AxiosProgressEvent } from 'axios'
+import { useApp } from '@/hooks/use-app'
+import { File as FileType } from '@/types'
+import { Input } from '@/components/ui/input'
+import { IconReload } from '@tabler/icons-react'
 
-export default function FileUploader() {
+interface IProps {
+  name: string
+  value: string
+  onChange: (val: number) => void
+}
+
+export default function FileUploader({ name, value: val, onChange }: IProps) {
   const [file, setFile] = useState<File | null>(null)
   const [progress, setProgress] = useState(0)
   const [uploading, setUploading] = useState(false)
+  const [value, setValue] = useState<string>(val)
+  const [deleting, setDeleting] = useState<boolean>(false)
+  const { request } = useApp()
+
+  const uploadFile = (file: File) => {
+    const formData = new FormData()
+    if (file) {
+      formData.append('file', file)
+      request({
+        method: 'post',
+        url: '/file',
+        data: formData,
+        onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / (progressEvent.total ?? 1)
+          )
+          setProgress(percentCompleted)
+        },
+      })
+        .then(({ data }) => {
+          setValue(String((data as FileType)?.id))
+          onChange(Number((data as FileType)?.id))
+          setUploading(false)
+        })
+        .catch(() => {
+          setUploading(false)
+        })
+    }
+  }
 
   const handleFileChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = event.target.files?.[0]
+      console.log({ selectedFile })
+
       if (selectedFile) {
         setFile(selectedFile)
-        simulateUpload()
+        uploadFile(selectedFile)
       }
     },
-    []
+    [uploadFile]
   )
 
-  const simulateUpload = useCallback(() => {
-    setUploading(true)
-    setProgress(0)
-    const interval = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress >= 100) {
-          clearInterval(interval)
-          setUploading(false)
-          return 100
-        }
-        return prevProgress + 10
-      })
-    }, 500)
-  }, [])
-
   const handleRemove = useCallback(() => {
-    setFile(null)
-    setProgress(0)
-    setUploading(false)
-  }, [])
+    setDeleting(true)
+    request({
+      url: '/file',
+      method: 'delete',
+      data: {
+        ids: [Number(value)],
+      },
+    })
+      .then(() => {
+        setFile(null)
+        setProgress(0)
+        setUploading(false)
+      })
+      .finally(() => {
+        setDeleting(false)
+      })
+  }, [value])
 
   return (
-    <div className='mx-auto w-full max-w-md p-4'>
-      <div className='mb-4'>
-        <label
-          htmlFor='file-upload'
-          className='mb-2 block text-sm font-medium text-gray-700'
-        >
-          Upload de arquivo
-        </label>
-        <input
-          id='file-upload'
-          type='file'
-          onChange={handleFileChange}
-          className='block w-full text-sm text-gray-500
-            file:mr-4 file:rounded-full file:border-0
-            file:bg-blue-50 file:px-4
-            file:py-2 file:text-sm
-            file:font-semibold file:text-blue-700
-            hover:file:bg-blue-100'
-        />
-      </div>
+    <div className='mx-auto w-full'>
+      <input type='hidden' name={name} value={value} />
+      <Input type='file' onChange={handleFileChange} />
       {file && (
         <div className='mt-4'>
           <div className='mb-2 flex items-center justify-between'>
             <span className='text-sm text-gray-500'>{file.name}</span>
             {!uploading && (
               <button
-                onClick={handleRemove}
                 className='text-red-500 hover:text-red-700'
                 aria-label='Remover arquivo'
+                onClick={handleRemove}
+                disabled={deleting}
               >
-                <X size={20} />
+                {deleting ? (
+                  <IconReload size={20} className='animate-spin' />
+                ) : (
+                  <X size={20} />
+                )}
               </button>
             )}
           </div>
