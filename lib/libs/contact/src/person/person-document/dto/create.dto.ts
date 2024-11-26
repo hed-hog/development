@@ -1,4 +1,11 @@
-import { IsInt, IsBoolean, IsString, Length, IsDate } from 'class-validator';
+import {
+  IsInt,
+  IsBoolean,
+  IsString,
+  Length,
+  IsDateString,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateDTO {
   @IsInt()
@@ -17,9 +24,11 @@ export class CreateDTO {
   @Length(0, 63)
   value: string;
 
-  @IsDate()
-  issued_at: Date;
+  @IsDateString()
+  @IsOptional()
+  issued_at?: string;
 
-  @IsDate()
-  expiry_at: Date;
+  @IsDateString()
+  @IsOptional()
+  expiry_at?: string;
 }

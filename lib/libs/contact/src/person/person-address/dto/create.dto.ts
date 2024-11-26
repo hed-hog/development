@@ -1,4 +1,10 @@
-import { IsInt, IsBoolean, IsString, Length } from 'class-validator';
+import {
+  IsInt,
+  IsBoolean,
+  IsString,
+  Length,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateDTO {
   @IsInt()
@@ -19,11 +25,13 @@ export class CreateDTO {
 
   @IsString()
   @Length(0, 15)
-  number: string;
+  @IsOptional()
+  number?: string;
 
   @IsString()
   @Length(0, 255)
-  complement: string;
+  @IsOptional()
+  complement?: string;
 
   @IsString()
   @Length(0, 255)
@@ -43,5 +51,6 @@ export class CreateDTO {
 
   @IsString()
   @Length(0, 60)
-  reference: string;
+  @IsOptional()
+  reference?: string;
 }

@@ -2,8 +2,8 @@ import {
   IsString,
   Length,
   IsInt,
-  IsDateString,
   IsOptional,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateDTO {
@@ -19,5 +19,6 @@ export class CreateDTO {
   type_id: number;
 
   @IsDateString()
-  birth_at: string;
+  @IsOptional()
+  birth_at?: string;
 }
