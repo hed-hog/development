@@ -1,4 +1,10 @@
-import { IsString, Length, IsInt, IsDate } from 'class-validator';
+import {
+  IsString,
+  Length,
+  IsInt,
+  IsDateString,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateDTO {
   @IsString()
@@ -6,11 +12,12 @@ export class CreateDTO {
   name: string;
 
   @IsInt()
-  photo_id: number;
+  @IsOptional()
+  photo_id?: number;
 
   @IsInt()
   type_id: number;
 
-  @IsDate()
-  birth_at: Date;
+  @IsDateString()
+  birth_at: string;
 }
