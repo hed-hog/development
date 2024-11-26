@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/contact",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -23,6 +23,7 @@
   "description": "",
   "peerDependencies": {
     "@hedhog/admin": "latest",
+    "@hedhog/country": "latest",
     "@hedhog/file": "latest",
     "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@hedhog/admin": "^0.7.1",
+    "@hedhog/country": "^0.0.1",
     "@hedhog/file": "^0.7.1",
     "@hedhog/locale": "^0.7.1",
     "@hedhog/pagination": "^0.0.18",
