@@ -762,6 +762,8 @@ tables:
       - type: pk
       - name: code
         varchar: 3
+      - type: created_at
+      - type: updated_at
     ifNotExists: true
   country_locale:
     columns:
