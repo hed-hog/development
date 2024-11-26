@@ -72,7 +72,7 @@ export function Combobox(props: ComboboxPrps) {
               !value && 'text-muted-foreground'
             )}
           >
-            <span>{value[displayName]}</span>
+            {value && <span>{value[displayName]}</span>}
             <ChevronsUpDown className='ml-2 h-3 w-3 shrink-0 opacity-50' />
           </Button>
         </FormControl>
