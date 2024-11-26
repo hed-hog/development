@@ -57,6 +57,8 @@ export interface IFormFieldPropsBase {
   required?: boolean
   options?: IFormFieldOption[]
   url?: string
+  displayName?: string
+  valueName?: string
 }
 
 export interface ISliderProps extends IFormFieldPropsBase {
@@ -113,6 +115,8 @@ export type FieldProps = {
   options?: IFormFieldOption[]
   url?: string
   sliderOptions?: ISliderOption
+  displayName?: string
+  valueName?: string
 }
 
 export type IFormFieldProps =
