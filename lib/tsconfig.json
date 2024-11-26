@@ -19,6 +19,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@hedhog/country": ["libs/country/src"],
+      "@hedhog/country/*": ["libs/country/src/*"],
       "@hedhog/file": ["libs/file/src"],
       "@hedhog/file/*": ["libs/file/src/*"],
       "@hedhog/prisma": ["libs/prisma/src"],
