@@ -268,7 +268,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     <>
       {sheets.filter((s) => s.open).length > 0 && (
         <div
-          className='fixed h-full w-full bg-black/50'
+          className='fixed h-full w-full bg-black/80'
           style={{ zIndex: 50 }}
         ></div>
       )}
