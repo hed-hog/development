@@ -50,7 +50,7 @@ export function Combobox(props: ComboboxPrps) {
       setOptions(
         (data?.data as any).data.map((item: any) => ({
           [valueName]: item[String(valueName)],
-          [displayName]: item[String(displayName)],
+          [displayName]: item[String(displayName)] || item.locale.en.name,
         }))
       )
     }
