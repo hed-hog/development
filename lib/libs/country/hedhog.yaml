@@ -755,6 +755,10 @@ data:
   route:
     - url: /country
       method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
 
 tables:
   country:
