@@ -1237,35 +1237,6 @@ data:
             value: Português
 
 tables:
-  country:
-    columns:
-      - type: pk
-      - name: code
-        type: char
-        length: 3
-      - type: created_at
-      - type: updated_at
-    ifNotExists: true
-  country_locale:
-    columns:
-      - name: country_id
-        type: fk
-        isPrimary: true
-        references:
-          table: country
-          column: id
-          onDelete: CASCADE
-      - name: locale_id
-        type: fk
-        isPrimary: true
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: created_at
-      - type: updated_at
-    ifNotExists: true
   translation_namespace:
     columns:
       - type: pk
