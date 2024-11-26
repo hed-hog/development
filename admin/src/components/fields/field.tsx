@@ -30,6 +30,7 @@ import {
   useEffect,
   useState,
 } from 'react'
+import FileUploader from './upload-field'
 
 export type FieldProps = (
   | {
@@ -109,7 +110,6 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
       )
 
     case EnumFieldType.TEXT:
-    case EnumFieldType.FILE:
       return (
         <FormControl>
           <Input
@@ -121,6 +121,9 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
           />
         </FormControl>
       )
+
+    case EnumFieldType.FILE:
+      return <FileUploader />
 
     case EnumFieldType.PASSWORD:
       return (

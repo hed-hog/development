@@ -24,10 +24,11 @@
     "typeorm": "ts-node --transpile-only ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
-    "@hedhog/admin": "^0.7.2",
-    "@hedhog/contact": "^0.7.5",
+    "@hedhog/admin": "^0.7.3",
+    "@hedhog/contact": "^0.7.8",
     "@hedhog/core": "^0.0.1",
-    "@hedhog/country": "^0.0.2",
+    "@hedhog/country": "^0.0.4",
+    "@hedhog/file": "^0.7.1",
     "@hedhog/locale": "^0.7.2",
     "@hedhog/mail": "^0.7.1",
     "@hedhog/pagination": "^0.7.1",
