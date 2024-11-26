@@ -40,8 +40,11 @@ const PersonDocumentTypeCreatePanel = forwardRef(
           {
             name: "country_id",
             label: { text: t("country_id", { ns: "translation" }) },
-            type: EnumFieldType.TEXT,
+            type: EnumFieldType.COMBOBOX,
             required: true,
+            url: "/country",
+            displayName: "country",
+            valueName: "id",
           },
 
           {

@@ -5,6 +5,7 @@ import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { ContactModule } from '@hedhog/contact';
 import { PrismaModule } from '@hedhog/prisma';
+import { CountryModule } from '../libs/country/src/country.module';
 import { SettingModule } from '@hedhog/setting';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -30,6 +31,7 @@ import { AppService } from './app.service';
     }),
     AdminModule,
     ContactModule,
+    CountryModule,
     LocaleModule,
     SettingModule,
     FileModule,

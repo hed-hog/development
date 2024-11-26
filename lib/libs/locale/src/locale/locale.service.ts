@@ -436,4 +436,42 @@ export class LocaleService {
       }
     }
   }
+
+  async listModelWithLocale(modelName: string) {
+    try {
+      const models = await this.prismaService[modelName].findMany({
+        include: {
+          [this.getTableNameTranslations(modelName)]: {
+            where: { locale: { enabled: true } },
+            include: { locale: { select: { code: true } } },
+          },
+        },
+      });
+
+      const processedModels = models.map((model) => {
+        const localeData = model[
+          this.getTableNameTranslations(modelName)
+        ].reduce(
+          (acc, item) => {
+            acc[item.locale.code] = { name: item.name };
+            return acc;
+          },
+          {} as Record<string, { name: string }>,
+        );
+
+        return {
+          ...model,
+          locale: localeData,
+        };
+      });
+
+      return { data: processedModels };
+    } catch (error: any) {
+      if (error.message.includes('Unique constraint failed')) {
+        throw new BadRequestException('Data already exists.');
+      } else {
+        throw new BadRequestException(error.message || 'An error occurred.');
+      }
+    }
+  }
 }

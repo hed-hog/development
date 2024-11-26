@@ -1,0 +1,784 @@
+data:
+  country:
+    - code: AFG
+      name:
+        en: Afghanistan
+        pt: Afeganistão
+    - code: ALB
+      name:
+        en: Albania
+        pt: Albânia
+    - code: DZA
+      name:
+        en: Algeria
+        pt: Argélia
+    - code: AND
+      name:
+        en: Andorra
+        pt: Andorra
+    - code: AGO
+      name:
+        en: Angola
+        pt: Angola
+    - code: ARG
+      name:
+        en: Argentina
+        pt: Argentina
+    - code: ARM
+      name:
+        en: Armenia
+        pt: Armênia
+    - code: AUS
+      name:
+        en: Australia
+        pt: Austrália
+    - code: AUT
+      name:
+        en: Austria
+        pt: Áustria
+    - code: AZE
+      name:
+        en: Azerbaijan
+        pt: Azerbaijão
+    - code: BHS
+      name:
+        en: Bahamas
+        pt: Bahamas
+    - code: BHR
+      name:
+        en: Bahrain
+        pt: Bahrein
+    - code: BGD
+      name:
+        en: Bangladesh
+        pt: Bangladesh
+    - code: BRB
+      name:
+        en: Barbados
+        pt: Barbados
+    - code: BLR
+      name:
+        en: Belarus
+        pt: Bielorrússia
+    - code: BEL
+      name:
+        en: Belgium
+        pt: Bélgica
+    - code: BLZ
+      name:
+        en: Belize
+        pt: Belize
+    - code: BEN
+      name:
+        en: Benin
+        pt: Benim
+    - code: BTN
+      name:
+        en: Bhutan
+        pt: Butão
+    - code: BOL
+      name:
+        en: Bolivia
+        pt: Bolívia
+    - code: BIH
+      name:
+        en: Bosnia and Herzegovina
+        pt: Bósnia e Herzegovina
+    - code: BWA
+      name:
+        en: Botswana
+        pt: Botsuana
+    - code: BRA
+      name:
+        en: Brazil
+        pt: Brasil
+    - code: BRN
+      name:
+        en: Brunei
+        pt: Brunei
+    - code: BGR
+      name:
+        en: Bulgaria
+        pt: Bulgária
+    - code: BFA
+      name:
+        en: Burkina Faso
+        pt: Burkina Faso
+    - code: BDI
+      name:
+        en: Burundi
+        pt: Burundi
+    - code: CPV
+      name:
+        en: Cape Verde
+        pt: Cabo Verde
+    - code: KHM
+      name:
+        en: Cambodia
+        pt: Camboja
+    - code: CMR
+      name:
+        en: Cameroon
+        pt: Camarões
+    - code: CAN
+      name:
+        en: Canada
+        pt: Canadá
+    - code: CAF
+      name:
+        en: Central African Republic
+        pt: República Centro-Africana
+    - code: TCD
+      name:
+        en: Chad
+        pt: Chade
+    - code: CHL
+      name:
+        en: Chile
+        pt: Chile
+    - code: CHN
+      name:
+        en: China
+        pt: China
+    - code: COL
+      name:
+        en: Colombia
+        pt: Colômbia
+    - code: COM
+      name:
+        en: Comoros
+        pt: Comores
+    - code: COG
+      name:
+        en: Congo (Brazzaville)
+        pt: Congo (Brazzaville)
+    - code: COD
+      name:
+        en: Congo (Kinshasa)
+        pt: Congo (Kinshasa)
+    - code: CRI
+      name:
+        en: Costa Rica
+        pt: Costa Rica
+    - code: HRV
+      name:
+        en: Croatia
+        pt: Croácia
+    - code: CUB
+      name:
+        en: Cuba
+        pt: Cuba
+    - code: CYP
+      name:
+        en: Cyprus
+        pt: Chipre
+    - code: CZE
+      name:
+        en: Czech Republic
+        pt: República Tcheca
+    - code: DNK
+      name:
+        en: Denmark
+        pt: Dinamarca
+    - code: DJI
+      name:
+        en: Djibouti
+        pt: Djibuti
+    - code: DMA
+      name:
+        en: Dominica
+        pt: Dominica
+    - code: DOM
+      name:
+        en: Dominican Republic
+        pt: República Dominicana
+    - code: ECU
+      name:
+        en: Ecuador
+        pt: Equador
+    - code: EGY
+      name:
+        en: Egypt
+        pt: Egito
+    - code: SLV
+      name:
+        en: El Salvador
+        pt: El Salvador
+    - code: GNQ
+      name:
+        en: Equatorial Guinea
+        pt: Guiné Equatorial
+    - code: ERI
+      name:
+        en: Eritrea
+        pt: Eritreia
+    - code: EST
+      name:
+        en: Estonia
+        pt: Estônia
+    - code: SWZ
+      name:
+        en: Eswatini
+        pt: Essuatíni
+    - code: ETH
+      name:
+        en: Ethiopia
+        pt: Etiópia
+    - code: FJI
+      name:
+        en: Fiji
+        pt: Fiji
+    - code: FIN
+      name:
+        en: Finland
+        pt: Finlândia
+    - code: FRA
+      name:
+        en: France
+        pt: França
+    - code: GAB
+      name:
+        en: Gabon
+        pt: Gabão
+    - code: GMB
+      name:
+        en: Gambia
+        pt: Gâmbia
+    - code: GEO
+      name:
+        en: Georgia
+        pt: Geórgia
+    - code: DEU
+      name:
+        en: Germany
+        pt: Alemanha
+    - code: GHA
+      name:
+        en: Ghana
+        pt: Gana
+    - code: GRC
+      name:
+        en: Greece
+        pt: Grécia
+    - code: GRD
+      name:
+        en: Grenada
+        pt: Granada
+    - code: GTM
+      name:
+        en: Guatemala
+        pt: Guatemala
+    - code: GIN
+      name:
+        en: Guinea
+        pt: Guiné
+    - code: GNB
+      name:
+        en: Guinea-Bissau
+        pt: Guiné-Bissau
+    - code: GUY
+      name:
+        en: Guyana
+        pt: Guiana
+    - code: HTI
+      name:
+        en: Haiti
+        pt: Haiti
+    - code: HND
+      name:
+        en: Honduras
+        pt: Honduras
+    - code: HUN
+      name:
+        en: Hungary
+        pt: Hungria
+    - code: ISL
+      name:
+        en: Iceland
+        pt: Islândia
+    - code: IND
+      name:
+        en: India
+        pt: Índia
+    - code: IDN
+      name:
+        en: Indonesia
+        pt: Indonésia
+    - code: IRN
+      name:
+        en: Iran
+        pt: Irã
+    - code: IRQ
+      name:
+        en: Iraq
+        pt: Iraque
+    - code: IRL
+      name:
+        en: Ireland
+        pt: Irlanda
+    - code: ISR
+      name:
+        en: Israel
+        pt: Israel
+    - code: ITA
+      name:
+        en: Italy
+        pt: Itália
+    - code: JAM
+      name:
+        en: Jamaica
+        pt: Jamaica
+    - code: JPN
+      name:
+        en: Japan
+        pt: Japão
+    - code: JOR
+      name:
+        en: Jordan
+        pt: Jordânia
+    - code: KAZ
+      name:
+        en: Kazakhstan
+        pt: Cazaquistão
+    - code: KEN
+      name:
+        en: Kenya
+        pt: Quênia
+    - code: KIR
+      name:
+        en: Kiribati
+        pt: Kiribati
+    - code: KOR
+      name:
+        en: South Korea
+        pt: Coreia do Sul
+    - code: KWT
+      name:
+        en: Kuwait
+        pt: Kuwait
+    - code: KGZ
+      name:
+        en: Kyrgyzstan
+        pt: Quirguistão
+    - code: LAO
+      name:
+        en: Laos
+        pt: Laos
+    - code: LVA
+      name:
+        en: Latvia
+        pt: Letônia
+    - code: LBN
+      name:
+        en: Lebanon
+        pt: Líbano
+    - code: LSO
+      name:
+        en: Lesotho
+        pt: Lesoto
+    - code: LBR
+      name:
+        en: Liberia
+        pt: Libéria
+    - code: LBY
+      name:
+        en: Libya
+        pt: Líbia
+    - code: LIE
+      name:
+        en: Liechtenstein
+        pt: Liechtenstein
+    - code: LTU
+      name:
+        en: Lithuania
+        pt: Lituânia
+    - code: LUX
+      name:
+        en: Luxembourg
+        pt: Luxemburgo
+    - code: MDG
+      name:
+        en: Madagascar
+        pt: Madagascar
+    - code: MWI
+      name:
+        en: Malawi
+        pt: Maláui
+    - code: MYS
+      name:
+        en: Malaysia
+        pt: Malásia
+    - code: MDV
+      name:
+        en: Maldives
+        pt: Maldivas
+    - code: MLI
+      name:
+        en: Mali
+        pt: Mali
+    - code: MLT
+      name:
+        en: Malta
+        pt: Malta
+    - code: MHL
+      name:
+        en: Marshall Islands
+        pt: Ilhas Marshall
+    - code: MRT
+      name:
+        en: Mauritania
+        pt: Mauritânia
+    - code: MUS
+      name:
+        en: Mauritius
+        pt: Maurício
+    - code: MEX
+      name:
+        en: Mexico
+        pt: México
+    - code: FSM
+      name:
+        en: Micronesia
+        pt: Micronésia
+    - code: MDA
+      name:
+        en: Moldova
+        pt: Moldávia
+    - code: MCO
+      name:
+        en: Monaco
+        pt: Mônaco
+    - code: MNG
+      name:
+        en: Mongolia
+        pt: Mongólia
+    - code: MNE
+      name:
+        en: Montenegro
+        pt: Montenegro
+    - code: MAR
+      name:
+        en: Morocco
+        pt: Marrocos
+    - code: MOZ
+      name:
+        en: Mozambique
+        pt: Moçambique
+    - code: MMR
+      name:
+        en: Myanmar (Burma)
+        pt: Mianmar (Birmânia)
+    - code: NAM
+      name:
+        en: Namibia
+        pt: Namíbia
+    - code: NRU
+      name:
+        en: Nauru
+        pt: Nauru
+    - code: NPL
+      name:
+        en: Nepal
+        pt: Nepal
+    - code: NLD
+      name:
+        en: Netherlands
+        pt: Países Baixos
+    - code: NZL
+      name:
+        en: New Zealand
+        pt: Nova Zelândia
+    - code: NIC
+      name:
+        en: Nicaragua
+        pt: Nicarágua
+    - code: NER
+      name:
+        en: Niger
+        pt: Níger
+    - code: NGA
+      name:
+        en: Nigeria
+        pt: Nigéria
+    - code: MKD
+      name:
+        en: North Macedonia
+        pt: Macedônia do Norte
+    - code: NOR
+      name:
+        en: Norway
+        pt: Noruega
+    - code: OMN
+      name:
+        en: Oman
+        pt: Omã
+    - code: PAK
+      name:
+        en: Pakistan
+        pt: Paquistão
+    - code: PLW
+      name:
+        en: Palau
+        pt: Palau
+    - code: PAN
+      name:
+        en: Panama
+        pt: Panamá
+    - code: PNG
+      name:
+        en: Papua New Guinea
+        pt: Papua-Nova Guiné
+    - code: PRY
+      name:
+        en: Paraguay
+        pt: Paraguai
+    - code: PER
+      name:
+        en: Peru
+        pt: Peru
+    - code: PHL
+      name:
+        en: Philippines
+        pt: Filipinas
+    - code: POL
+      name:
+        en: Poland
+        pt: Polônia
+    - code: PRT
+      name:
+        en: Portugal
+        pt: Portugal
+    - code: QAT
+      name:
+        en: Qatar
+        pt: Catar
+    - code: ROU
+      name:
+        en: Romania
+        pt: Romênia
+    - code: RUS
+      name:
+        en: Russia
+        pt: Rússia
+    - code: RWA
+      name:
+        en: Rwanda
+        pt: Ruanda
+    - code: KNA
+      name:
+        en: Saint Kitts and Nevis
+        pt: São Cristóvão e Nevis
+    - code: LCA
+      name:
+        en: Saint Lucia
+        pt: Santa Lúcia
+    - code: VCT
+      name:
+        en: Saint Vincent and the Grenadines
+        pt: São Vicente e Granadinas
+    - code: SMR
+      name:
+        en: San Marino
+        pt: San Marino
+    - code: STP
+      name:
+        en: São Tomé and Príncipe
+        pt: São Tomé e Príncipe
+    - code: SAU
+      name:
+        en: Saudi Arabia
+        pt: Arábia Saudita
+    - code: SEN
+      name:
+        en: Senegal
+        pt: Senegal
+    - code: SRB
+      name:
+        en: Serbia
+        pt: Sérvia
+    - code: SYC
+      name:
+        en: Seychelles
+        pt: Seicheles
+    - code: SLE
+      name:
+        en: Sierra Leone
+        pt: Serra Leoa
+    - code: SGP
+      name:
+        en: Singapore
+        pt: Singapura
+    - code: SVK
+      name:
+        en: Slovakia
+        pt: Eslováquia
+    - code: SVN
+      name:
+        en: Slovenia
+        pt: Eslovênia
+    - code: SLB
+      name:
+        en: Solomon Islands
+        pt: Ilhas Salomão
+    - code: SOM
+      name:
+        en: Somalia
+        pt: Somália
+    - code: ZAF
+      name:
+        en: South Africa
+        pt: África do Sul
+    - code: ESP
+      name:
+        en: Spain
+        pt: Espanha
+    - code: LKA
+      name:
+        en: Sri Lanka
+        pt: Sri Lanka
+    - code: SDN
+      name:
+        en: Sudan
+        pt: Sudão
+    - code: SUR
+      name:
+        en: Suriname
+        pt: Suriname
+    - code: SWE
+      name:
+        en: Sweden
+        pt: Suécia
+    - code: CHE
+      name:
+        en: Switzerland
+        pt: Suíça
+    - code: SYR
+      name:
+        en: Syria
+        pt: Síria
+    - code: TJK
+      name:
+        en: Tajikistan
+        pt: Tajiquistão
+    - code: TZA
+      name:
+        en: Tanzania
+        pt: Tanzânia
+    - code: THA
+      name:
+        en: Thailand
+        pt: Tailândia
+    - code: TLS
+      name:
+        en: Timor-Leste
+        pt: Timor-Leste
+    - code: TGO
+      name:
+        en: Togo
+        pt: Togo
+    - code: TON
+      name:
+        en: Tonga
+        pt: Tonga
+    - code: TTO
+      name:
+        en: Trinidad and Tobago
+        pt: Trinidad e Tobago
+    - code: TUN
+      name:
+        en: Tunisia
+        pt: Tunísia
+    - code: TUR
+      name:
+        en: Turkey
+        pt: Turquia
+    - code: TKM
+      name:
+        en: Turkmenistan
+        pt: Turcomenistão
+    - code: TUV
+      name:
+        en: Tuvalu
+        pt: Tuvalu
+    - code: UGA
+      name:
+        en: Uganda
+        pt: Uganda
+    - code: UKR
+      name:
+        en: Ukraine
+        pt: Ucrânia
+    - code: ARE
+      name:
+        en: United Arab Emirates
+        pt: Emirados Árabes Unidos
+    - code: GBR
+      name:
+        en: United Kingdom
+        pt: Reino Unido
+    - code: USA
+      name:
+        en: United States
+        pt: Estados Unidos
+    - code: URY
+      name:
+        en: Uruguay
+        pt: Uruguai
+    - code: UZB
+      name:
+        en: Uzbekistan
+        pt: Uzbequistão
+    - code: VUT
+      name:
+        en: Vanuatu
+        pt: Vanuatu
+    - code: VEN
+      name:
+        en: Venezuela
+        pt: Venezuela
+    - code: VNM
+      name:
+        en: Vietnam
+        pt: Vietnã
+    - code: YEM
+      name:
+        en: Yemen
+        pt: Iêmen
+    - code: ZMB
+      name:
+        en: Zambia
+        pt: Zâmbia
+    - code: ZWE
+      name:
+        en: Zimbabwe
+        pt: Zimbábue
+  route:
+    - url: /country
+      method: GET
+
+tables:
+  country:
+    columns:
+      - type: pk
+      - name: code
+        varchar: 3
+    ifNotExists: true
+  country_locale:
+    columns:
+      - name: country_id
+        type: fk
+        isPrimary: true
+        references:
+          table: country
+          column: id
+          onDelete: RESTRICT
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: RESTRICT
+      - name: name
+      - type: created_at
+      - type: updated_at

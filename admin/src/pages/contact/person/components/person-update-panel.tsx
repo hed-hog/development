@@ -49,21 +49,27 @@ const PersonUpdatePanel = forwardRef(
                     {
                       name: "photo_id",
                       label: { text: t("photo_id", { ns: "translation" }) },
-                      type: EnumFieldType.TEXT,
+                      type: EnumFieldType.COMBOBOX,
                       required: true,
+                      url: "/file",
+                      displayName: "photo",
+                      valueName: "id",
                     },
 
                     {
                       name: "type_id",
                       label: { text: t("type_id", { ns: "translation" }) },
-                      type: EnumFieldType.TEXT,
+                      type: EnumFieldType.COMBOBOX,
                       required: true,
+                      url: "/person-type",
+                      displayName: "type",
+                      valueName: "id",
                     },
 
                     {
                       name: "birth_at",
                       label: { text: t("birth_at", { ns: "translation" }) },
-                      type: EnumFieldType.TEXT,
+                      type: EnumFieldType.DATEPICKER,
                       required: true,
                     },
                   ]}
