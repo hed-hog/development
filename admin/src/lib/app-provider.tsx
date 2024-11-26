@@ -266,6 +266,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   }, [token])
   return (
     <>
+      {sheets.filter((s) => s.open).length > 0 && (
+        <div
+          className='fixed h-full w-full bg-black/50'
+          style={{ zIndex: 50 }}
+        ></div>
+      )}
       <AppContext.Provider
         value={{
           login,
@@ -385,6 +391,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                 <Sheet
                   open={open}
                   onOpenChange={(value) => !value && closeSheet(id)}
+                  modal={false}
                 >
                   <SheetContent
                     className={`flex flex-col ${['bottom', 'top'].includes(side ?? '') && 'max-h-full'}`}

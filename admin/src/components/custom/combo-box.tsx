@@ -1,7 +1,3 @@
-import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import { cn } from '@/lib/utils'
-import { Check, ChevronsUpDown } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -9,7 +5,6 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
 } from '@/components/ui/command'
 import { FormControl } from '@/components/ui/form'
 import {
@@ -18,8 +13,12 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useApp } from '@/hooks/use-app'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { cn } from '@/lib/utils'
 import { IFormFieldOption } from '@/types'
 import { useQuery } from '@tanstack/react-query'
+import { Check, ChevronsUpDown } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 export type ComboboxPrps = {
   value?: string
@@ -96,33 +95,33 @@ export function Combobox(props: ComboboxPrps) {
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className='w-[200px] p-0'>
+      <PopoverContent className='z-50 w-[200px] p-0'>
         <Command>
-          <CommandInput />
-          <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
-            <CommandGroup>
-              {options.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  value={option.value}
-                  onSelect={(currentValue) => {
-                    console.log('selected!', currentValue)
-                    setValue(currentValue === value ? '' : currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      option.value === value ? 'opacity-100' : 'opacity-0'
-                    )}
-                  />
-                  {option.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
+          <CommandInput placeholder='Search...' />
+          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandGroup>
+            {options.map((option) => (
+              <CommandItem
+                key={option.value}
+                onSelect={(currentValue) => {
+                  console.log('selected!', currentValue)
+                  setValue(currentValue === value ? '' : currentValue)
+                  setOpen(false)
+                }}
+                onClick={() => {
+                  console.log('clicked!', option)
+                }}
+              >
+                <Check
+                  className={cn(
+                    'mr-2 h-4 w-4',
+                    option.value === value ? 'opacity-100' : 'opacity-0'
+                  )}
+                />
+                {option.label}
+              </CommandItem>
+            ))}
+          </CommandGroup>
         </Command>
       </PopoverContent>
     </Popover>

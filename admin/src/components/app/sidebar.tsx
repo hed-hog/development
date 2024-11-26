@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button'
+import { Layout } from '@/components/ui/layout'
 import { useApp } from '@/hooks/use-app'
 import { getSideLinks } from '@/lib/get-sidelinks'
 import { cn } from '@/lib/utils'
@@ -5,9 +7,7 @@ import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Layout } from '@/components/ui/layout'
 import Nav from '../navs/nav'
-import { Button } from '@/components/ui/button'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -51,7 +51,7 @@ export default function Sidebar({
   return (
     <aside
       className={cn(
-        `fixed left-0 right-0 top-0 z-50 w-full border-r-2 transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
+        `fixed left-0 right-0 top-0 z-40 w-full border-r-2 transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
         className
       )}
     >
@@ -65,7 +65,7 @@ export default function Sidebar({
         {/* Header */}
         <Layout.Header
           sticky
-          className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'
+          className='flex justify-between px-4 py-3 shadow-sm md:px-4'
         >
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
             <svg
