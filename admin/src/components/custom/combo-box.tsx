@@ -33,7 +33,7 @@ export function Combobox(props: ComboboxPrps) {
 
   const { request } = useApp()
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState<any>({})
+  const [value, setValue] = useState<any>(props.value)
   const [options, setOptions] = useState<any[]>([])
   const [lastValueOnChange, setLastValueOnChange] = useState('')
 
@@ -59,8 +59,8 @@ export function Combobox(props: ComboboxPrps) {
   useEffect(() => {
     if (props.value && options.length) {
       const value = options.find((option) => option[valueName] === props.value)
-      if (value && lastValueOnChange !== JSON.stringify(value)) {
-        setValue(value)
+      if (value && lastValueOnChange !== JSON.stringify(value[valueName])) {
+        setValue(value[valueName])
       }
     }
   }, [options, props.value, lastValueOnChange])
@@ -72,8 +72,8 @@ export function Combobox(props: ComboboxPrps) {
       typeof props.onChange === 'function' &&
       lastValueOnChange !== JSON.stringify(value)
     ) {
-      setLastValueOnChange(JSON.stringify(value))
-      props.onChange(value)
+      setLastValueOnChange(JSON.stringify(value[valueName]))
+      props.onChange(value[valueName])
     }
   }, [value, props.onChange, valueName, lastValueOnChange])
 
@@ -89,7 +89,13 @@ export function Combobox(props: ComboboxPrps) {
               !value && 'text-muted-foreground'
             )}
           >
-            {value && <span>{value[displayName]}</span>}
+            {value && (
+              <span>
+                {value[displayName] ||
+                  (options.find((opt) => opt.id == value) || {}).name}
+              </span>
+            )}
+
             <ChevronsUpDown className='ml-2 h-3 w-3 shrink-0 opacity-50' />
           </Button>
         </FormControl>
@@ -110,7 +116,9 @@ export function Combobox(props: ComboboxPrps) {
                 <Check
                   className={cn(
                     'mr-2 h-4 w-4',
-                    option[valueName] === value ? 'opacity-100' : 'opacity-0'
+                    option[valueName] === value[valueName]
+                      ? 'opacity-100'
+                      : 'opacity-0'
                   )}
                 />
                 {option[displayName]}
