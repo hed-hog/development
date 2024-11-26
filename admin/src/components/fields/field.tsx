@@ -1,7 +1,11 @@
+import { Combobox } from '@/components/custom/combo-box'
+import { PasswordInput } from '@/components/fields/password-input-field'
 import { RichTextField } from '@/components/fields/rich-text-field'
 import { ColorPickerField } from '@/components/pickers/color-picker-field'
 import { DatePickerField } from '@/components/pickers/date-picker-field'
+import { SheetPickerField } from '@/components/pickers/sheet-picker-field'
 import { Checkbox } from '@/components/ui/checkbox'
+import { FormControl } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MultiSelectField } from '@/components/ui/multi-select-field'
@@ -15,6 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
+import { Switch } from '@/components/ui/switch'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import { FieldProps as FieldPropsForm } from '@/types/form-panel'
 import { CheckedState } from '@radix-ui/react-checkbox'
@@ -25,11 +30,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { SheetPickerField } from '@/components/pickers/sheet-picker-field'
-import { FormControl } from '@/components/ui/form'
-import { Switch } from '@/components/ui/switch'
-import { Combobox } from '@/components/custom/combo-box'
-import { PasswordInput } from '@/components/fields/password-input-field'
 
 export type FieldProps = (
   | {

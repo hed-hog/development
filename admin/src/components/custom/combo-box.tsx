@@ -13,6 +13,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useApp } from '@/hooks/use-app'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { Check, ChevronsUpDown } from 'lucide-react'
@@ -34,6 +35,7 @@ export function Combobox(props: ComboboxPrps) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState<any>({})
   const [options, setOptions] = useState<any[]>([])
+  const [lastValueOnChange, setLastValueOnChange] = useState('')
 
   const { data } = useQuery({
     queryKey: [props.url],
@@ -56,9 +58,24 @@ export function Combobox(props: ComboboxPrps) {
 
   useEffect(() => {
     if (props.value && options.length) {
-      setValue(options.find((option) => option[valueName] === props.value))
+      const value = options.find((option) => option[valueName] === props.value)
+      if (value && lastValueOnChange !== JSON.stringify(value)) {
+        setValue(value)
+      }
     }
-  }, [options, props.value])
+  }, [options, props.value, lastValueOnChange])
+
+  useEffectAfterFirstUpdate(() => {
+    if (
+      value &&
+      value[valueName] &&
+      typeof props.onChange === 'function' &&
+      lastValueOnChange !== JSON.stringify(value)
+    ) {
+      setLastValueOnChange(JSON.stringify(value))
+      props.onChange(value)
+    }
+  }, [value, props.onChange, valueName, lastValueOnChange])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
