@@ -8,7 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
+  Query
 } from '@nestjs/common';
 import { PersonAddressService } from './person-address.service';
 import { CreateDTO } from './dto/create.dto';
@@ -22,7 +22,7 @@ export class PersonAddressController {
   @Post()
   create(
     @Param('personId', ParseIntPipe) personId: number,
-    @Body() data: CreateDTO,
+    @Body() data: CreateDTO
   ) {
     return this.addressService.create(personId, data);
   }
@@ -31,7 +31,7 @@ export class PersonAddressController {
   list(
     @Param('personId', ParseIntPipe) personId: number,
     @Query('typeId', OptionalParseIntPipe) typeId?: number,
-    @Query('id', OptionalParseIntPipe) addressId?: number,
+    @Query('id', OptionalParseIntPipe) addressId?: number
   ) {
     if (addressId) {
       return this.addressService.list(personId, null, addressId);
@@ -46,7 +46,7 @@ export class PersonAddressController {
   update(
     @Param('personId', ParseIntPipe) personId: number,
     @Param('addressId', ParseIntPipe) addressId: number,
-    @Body() data: UpdateDTO,
+    @Body() data: UpdateDTO
   ) {
     return this.addressService.update(personId, addressId, data);
   }
@@ -54,7 +54,7 @@ export class PersonAddressController {
   @Delete()
   delete(
     @Param('personId', ParseIntPipe) personId: number,
-    @Body() { ids }: DeleteDTO,
+    @Body() { ids }: DeleteDTO
   ) {
     return this.addressService.delete(personId, { ids });
   }

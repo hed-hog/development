@@ -1,5 +1,5 @@
-import { Locale } from '@hedhog/locale';
-import { Pagination } from '@hedhog/pagination';
+import { Locale } from "@hedhog/locale";
+import { Pagination } from "@hedhog/pagination";
 import {
   Body,
   Controller,
@@ -11,14 +11,14 @@ import {
   Patch,
   Post,
   forwardRef,
-} from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { UpdateDTO } from './dto/update.dto';
-import { PersonAddressTypeService } from './person-address-type.service';
-import { Role, DeleteDTO } from '@hedhog/core';
+} from "@nestjs/common";
+import { CreateDTO } from "./dto/create.dto";
+import { UpdateDTO } from "./dto/update.dto";
+import { PersonAddressTypeService } from "./person-address-type.service";
+import { Role, DeleteDTO } from "@hedhog/core";
 
 @Role()
-@Controller('person-address-type')
+@Controller("person-address-type")
 export class PersonAddressTypeController {
   constructor(
     @Inject(forwardRef(() => PersonAddressTypeService))
@@ -30,8 +30,8 @@ export class PersonAddressTypeController {
     return this.personAddressTypeService.list(locale, paginationParams);
   }
 
-  @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number) {
+  @Get(":id")
+  async get(@Param("id", ParseIntPipe) id: number) {
     return this.personAddressTypeService.get(id);
   }
 
@@ -40,8 +40,8 @@ export class PersonAddressTypeController {
     return this.personAddressTypeService.create(data);
   }
 
-  @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+  @Patch(":id")
+  async update(@Param("id", ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.personAddressTypeService.update({
       id,
       data,

@@ -4,7 +4,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef,
+  forwardRef
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '@hedhog/core';
@@ -24,27 +24,27 @@ export class PersonTypeService {
     private readonly paginationService: PaginationService,
 
     @Inject(forwardRef(() => LocaleService))
-    private readonly localeService: LocaleService,
+    private readonly localeService: LocaleService
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
     const fields = ['slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams,
+      paginationParams
     );
 
     const include = {
       person_type_locale: {
         where: {
           locale: {
-            code: locale,
-          },
+            code: locale
+          }
         },
         select: {
-          name: true,
-        },
-      },
+          name: true
+        }
+      }
     };
 
     return this.paginationService.paginate(
@@ -52,11 +52,11 @@ export class PersonTypeService {
       paginationParams,
       {
         where: {
-          OR,
+          OR
         },
-        include,
+        include
       },
-      'person_type_locale',
+      'person_type_locale'
     );
   }
 
@@ -68,7 +68,7 @@ export class PersonTypeService {
     return this.localeService.createModelWithLocale(
       this.modelName,
       this.foreignKey,
-      data,
+      data
     );
   }
 
@@ -77,23 +77,23 @@ export class PersonTypeService {
       this.modelName,
       this.foreignKey,
       id,
-      data,
+      data
     );
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.',
+        'You must select at least one item to delete.'
       );
     }
 
     return this.prismaService.person_type.deleteMany({
       where: {
         id: {
-          in: ids,
-        },
-      },
+          in: ids
+        }
+      }
     });
   }
 }

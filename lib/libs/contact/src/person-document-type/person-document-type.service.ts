@@ -4,7 +4,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef,
+  forwardRef
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '@hedhog/core';
@@ -24,27 +24,27 @@ export class PersonDocumentTypeService {
     private readonly paginationService: PaginationService,
 
     @Inject(forwardRef(() => LocaleService))
-    private readonly localeService: LocaleService,
+    private readonly localeService: LocaleService
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
     const fields = ['slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams,
+      paginationParams
     );
 
     const include = {
       person_document_type_locale: {
         where: {
           locale: {
-            code: locale,
-          },
+            code: locale
+          }
         },
         select: {
-          name: true,
-        },
-      },
+          name: true
+        }
+      }
     };
 
     return this.paginationService.paginate(
@@ -52,18 +52,18 @@ export class PersonDocumentTypeService {
       paginationParams,
       {
         where: {
-          OR,
+          OR
         },
-        include,
+        include
       },
-      'person_document_type_locale',
+      'person_document_type_locale'
     );
   }
 
   async get(personDocumentTypeId: number) {
     return this.localeService.getModelWithLocale(
       this.modelName,
-      personDocumentTypeId,
+      personDocumentTypeId
     );
   }
 
@@ -71,7 +71,7 @@ export class PersonDocumentTypeService {
     return this.localeService.createModelWithLocale(
       this.modelName,
       this.foreignKey,
-      data,
+      data
     );
   }
 
@@ -80,23 +80,23 @@ export class PersonDocumentTypeService {
       this.modelName,
       this.foreignKey,
       id,
-      data,
+      data
     );
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.',
+        'You must select at least one item to delete.'
       );
     }
 
     return this.prismaService.person_document_type.deleteMany({
       where: {
         id: {
-          in: ids,
-        },
-      },
+          in: ids
+        }
+      }
     });
   }
 }

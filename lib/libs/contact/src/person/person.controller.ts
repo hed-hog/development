@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef,
+  forwardRef
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
@@ -21,7 +21,7 @@ import { Role, DeleteDTO } from '@hedhog/core';
 export class PersonController {
   constructor(
     @Inject(forwardRef(() => PersonService))
-    private readonly personService: PersonService,
+    private readonly personService: PersonService
   ) {}
 
   @Get()
@@ -43,7 +43,7 @@ export class PersonController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.personService.update({
       id,
-      data,
+      data
     });
   }
 

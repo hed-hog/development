@@ -8,7 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
+  Query
 } from '@nestjs/common';
 import { PersonDocumentService } from './person-document.service';
 import { CreateDTO } from './dto/create.dto';
@@ -22,7 +22,7 @@ export class PersonDocumentController {
   @Post()
   create(
     @Param('personId', ParseIntPipe) personId: number,
-    @Body() data: CreateDTO,
+    @Body() data: CreateDTO
   ) {
     return this.documentService.create(personId, data);
   }
@@ -31,7 +31,7 @@ export class PersonDocumentController {
   list(
     @Param('personId', ParseIntPipe) personId: number,
     @Query('typeId', OptionalParseIntPipe) typeId?: number,
-    @Query('id', OptionalParseIntPipe) documentId?: number,
+    @Query('id', OptionalParseIntPipe) documentId?: number
   ) {
     if (documentId) {
       return this.documentService.list(personId, null, documentId);
@@ -46,7 +46,7 @@ export class PersonDocumentController {
   update(
     @Param('personId', ParseIntPipe) personId: number,
     @Param('documentId', ParseIntPipe) documentId: number,
-    @Body() data: UpdateDTO,
+    @Body() data: UpdateDTO
   ) {
     return this.documentService.update(personId, documentId, data);
   }
@@ -54,7 +54,7 @@ export class PersonDocumentController {
   @Delete()
   delete(
     @Param('personId', ParseIntPipe) personId: number,
-    @Body() { ids }: DeleteDTO,
+    @Body() { ids }: DeleteDTO
   ) {
     return this.documentService.delete(personId, { ids });
   }
