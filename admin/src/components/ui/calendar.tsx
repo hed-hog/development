@@ -69,7 +69,9 @@ function Calendar({
             const month = parseInt(value, 10)
             setSelectedMonth(month)
             const newDate = new Date(selectedYear, month)
-            onMonthChange(newDate)
+            if (typeof onMonthChange === 'function') {
+              onMonthChange(newDate)
+            }
           }}
         >
           <SelectTrigger className='text-sm font-medium'>
