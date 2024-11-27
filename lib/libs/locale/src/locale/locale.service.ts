@@ -343,10 +343,14 @@ export class LocaleService {
     }
   }
 
+  getFields(modelName: string) {
+    return Object.keys(this.prismaService[modelName].fields);
+  }
+
   getValidData(modelName: string, data: any) {
     const validData: any = {};
 
-    for (const fieldName of Object.keys(this.prismaService[modelName].fields)) {
+    for (const fieldName of this.getFields(modelName)) {
       validData[fieldName] = data[fieldName];
     }
 
@@ -437,35 +441,35 @@ export class LocaleService {
     }
   }
 
-  async listModelWithLocale(modelName: string) {
+  async listModelWithLocale(
+    locale: string,
+    modelName: string,
+    paginationParams: PaginationDTO,
+  ) {
     try {
-      const models = await this.prismaService[modelName].findMany({
-        include: {
-          [this.getTableNameTranslations(modelName)]: {
-            where: { locale: { enabled: true } },
-            include: { locale: { select: { code: true } } },
+      const fields = this.getFields(modelName);
+
+      const OR: any[] = this.prismaService.createInsensitiveSearch(
+        fields,
+        paginationParams,
+      );
+
+      return this.paginationService.paginate(
+        this.prismaService.person_address_type,
+        paginationParams,
+        {
+          where: {
+            OR,
+          },
+          include: {
+            [this.getTableNameTranslations(modelName)]: {
+              where: { locale: { code: locale } },
+              include: { locale: { select: { code: true } } },
+            },
           },
         },
-      });
-
-      const processedModels = models.map((model) => {
-        const localeData = model[
-          this.getTableNameTranslations(modelName)
-        ].reduce(
-          (acc, item) => {
-            acc[item.locale.code] = { name: item.name };
-            return acc;
-          },
-          {} as Record<string, { name: string }>,
-        );
-
-        return {
-          ...model,
-          locale: localeData,
-        };
-      });
-
-      return { data: processedModels };
+        this.getTableNameTranslations(modelName),
+      );
     } catch (error: any) {
       if (error.message.includes('Unique constraint failed')) {
         throw new BadRequestException('Data already exists.');

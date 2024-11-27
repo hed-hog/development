@@ -1,3 +1,4 @@
+import { PersonTestModule } from './person-test/person-test.module';
 import { PersonCustomTypeModule } from './person-custom-type/person-custom-type.module';
 import { PersonAddressTypeModule } from './person-address-type/person-address-type.module';
 import { PersonContactTypeModule } from './person-contact-type/person-contact-type.module';
@@ -21,6 +22,7 @@ import { LocaleModule } from '@hedhog/locale';
     forwardRef(() => PersonContactTypeModule),
     forwardRef(() => PersonAddressTypeModule),
     forwardRef(() => PersonCustomTypeModule),
+    forwardRef(() => PersonTestModule),
   ],
   controllers: [],
   providers: [],

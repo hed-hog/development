@@ -15,6 +15,10 @@ screens:
           - where:
               slug: admin
     relations:
+      person_value:
+        title:
+          en: Value
+          pt: Valores
       person_address:
         title:
           en: Address
@@ -31,6 +35,24 @@ screens:
         title:
           en: Custom
           pt: Personalizado
+  person_test:
+    title:
+      en: Person Test
+      pt: Teste de Pessoa
+    menu:
+      menu_id:
+        where:
+          slug: /management/person
+      url: /management/person/person-test
+      icon: id
+      name:
+        en: Person Test
+        pt: Teste de Pessoa
+      slug: /management/person/person-test
+      relations:
+        role:
+          - where:
+              slug: admin
   person_type:
     title:
       en: Person Type
@@ -390,6 +412,39 @@ data:
     - url: /person/:personId/custom
       method: DELETE
       relations: *a10
+    - url: /person-test
+      method: GET
+      relations: &a11
+        role:
+          - where:
+              slug: admin
+    - url: /person-test
+      method: POST
+      relations: *a11
+    - url: /person-test/:id
+      method: GET
+      relations: *a11
+    - url: /person-test/:id
+      method: PATCH
+      relations: *a11
+    - url: /person-test
+      method: DELETE
+      relations: *a11
+    - url: /person/:personId/value
+      method: GET
+      relations: &a12
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/value
+      method: POST
+      relations: *a12
+    - url: /person/:personId/value/:valueId
+      method: PATCH
+      relations: *a12
+    - url: /person/:personId/value
+      method: DELETE
+      relations: *a12
   menu:
     - url: /contact/person
       icon: user-check
@@ -478,6 +533,120 @@ data:
         role:
           - where:
               slug: admin
+    - name:
+        en: PersonTest
+        pt: PersonTest
+      icon: file
+      url: /person-test
+      slug: person-test
+      relations: *a11
+    - name:
+        en: PersonType
+        pt: PersonType
+      icon: file
+      url: /person-type
+      slug: person-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Person
+        pt: Person
+      icon: file
+      url: /person
+      slug: person
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonDocumentType
+        pt: PersonDocumentType
+      icon: file
+      url: /person-document-type
+      slug: person-document-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonDocument
+        pt: PersonDocument
+      icon: file
+      url: /person-document
+      slug: person-document
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonContactType
+        pt: PersonContactType
+      icon: file
+      url: /person-contact-type
+      slug: person-contact-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonContact
+        pt: PersonContact
+      icon: file
+      url: /person-contact
+      slug: person-contact
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonAddressType
+        pt: PersonAddressType
+      icon: file
+      url: /person-address-type
+      slug: person-address-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonAddress
+        pt: PersonAddress
+      icon: file
+      url: /person-address
+      slug: person-address
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonValue
+        pt: PersonValue
+      icon: file
+      url: /person-value
+      slug: person-value
+      relations: *a12
+    - name:
+        en: PersonCustomType
+        pt: PersonCustomType
+      icon: file
+      url: /person-custom-type
+      slug: person-custom-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonCustom
+        pt: PersonCustom
+      icon: file
+      url: /person-custom
+      slug: person-custom
+      relations:
+        role:
+          - where:
+              slug: admin
   screen:
     - name:
         en: Person Type
@@ -559,7 +728,43 @@ data:
         en: Screen to manage person custom
         pt: Tela para gerenciar personalização da pessoa
       icon: adjustments
+    - name:
+        en: PersonTest
+        pt: PersonTest
+      slug: person-test
+      description:
+        en: Screen to manage person_test
+        pt: Tela para gerenciar person_test
+      icon: file
+    - name:
+        en: PersonValue
+        pt: PersonValue
+      slug: person-value
+      description:
+        en: Screen to manage person_value
+        pt: Tela para gerenciar person_value
+      icon: file
 tables:
+  person_value:
+    columns:
+      - type: pk
+      - name: person_id
+        type: fk
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - name: value
+        type: varchar
+        length: 255
+      - type: created_at
+      - type: updated_at
+  person_test:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
   person_type:
     columns:
       - type: pk
@@ -909,6 +1114,27 @@ routes:
       - path: person
         lazy:
           component: ./pages/contact/person/index.tsx
+      - path: person
+        lazy:
+          component: ./pages/contact/person/index.tsx
+      - path: person-test
+        lazy:
+          component: ./pages/contact/person-test/index.tsx
+      - path: person-type
+        lazy:
+          component: ./pages/contact/person-type/index.tsx
+      - path: person-address-type
+        lazy:
+          component: ./pages/contact/person-address-type/index.tsx
+      - path: person-contact-type
+        lazy:
+          component: ./pages/contact/person-contact-type/index.tsx
+      - path: person-custom-type
+        lazy:
+          component: ./pages/contact/person-custom-type/index.tsx
+      - path: person-document-type
+        lazy:
+          component: ./pages/contact/person-document-type/index.tsx
   - path: management
     children:
       - path: person
