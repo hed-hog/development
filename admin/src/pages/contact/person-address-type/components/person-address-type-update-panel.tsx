@@ -4,7 +4,6 @@ import FormPanel, {
 } from "@/components/panels/form-panel";
 import { Overlay } from "@/components/custom/overlay";
 import { TabPanel } from "@/components/panels/tab-panel";
-import { EnumFieldType } from "@/enums/EnumFieldType";
 import {
   usePersonAddressTypeGet,
   usePersonAddressTypeUpdate,
@@ -13,6 +12,7 @@ import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
 import { PersonAddressType } from "@/types/models";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { EnumFieldType } from "@/enums/EnumFieldType";
 
 export type PersonAddressTypeUpdatePanelProps = {
   data: PersonAddressType;

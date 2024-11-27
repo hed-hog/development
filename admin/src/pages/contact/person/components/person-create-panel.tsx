@@ -1,81 +1,84 @@
-import FormPanel, { FormPanelRef } from '@/components/panels/form-panel'
-import { EnumFieldType } from '@/enums/EnumFieldType'
-import { usePersonCreate } from '@/features/contact/person'
-import { Person } from '@/types/models'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
+import { EnumFieldType } from "@/enums/EnumFieldType";
+import { usePersonCreate } from "@/features/contact/person";
+import { Person } from "@/types/models";
+import { forwardRef, useImperativeHandle, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 export type PersonCreatePanelRef = {
-  submit: () => void
-}
+  submit: () => void;
+};
 
 export type PersonCreatePanelProps = {
-  onCreated?: (data: Person) => void
-}
+  onCreated?: (data: Person) => void;
+};
 
 const PersonCreatePanel = forwardRef(
   ({ onCreated }: PersonCreatePanelProps, ref) => {
-    const formRef = useRef<FormPanelRef>(null)
-    const { t } = useTranslation(['actions'])
-    const { mutateAsync: createPerson } = usePersonCreate()
+    const formRef = useRef<FormPanelRef>(null);
+    const { t } = useTranslation(["actions"]);
+    const { mutateAsync: createPerson } = usePersonCreate();
 
     useImperativeHandle(
       ref,
       () => ({
         submit: () => {
-          formRef.current?.submit()
+          formRef.current?.submit();
         },
       }),
-      [formRef]
-    )
+      [formRef],
+    );
 
     return (
       <FormPanel
         ref={formRef}
         fields={[
           {
-            name: 'name',
-            label: { text: t('name', { ns: 'translation' }) },
+            name: "name",
+            label: { text: t("name", { ns: "translation" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
 
           {
-            name: 'photo_id',
-            label: { text: t('photo_id', { ns: 'translation' }) },
+            name: "photo_id",
+            label: { text: t("photo_id", { ns: "translation" }) },
             type: EnumFieldType.FILE,
             required: true,
+            url: "/file",
+            displayName: "photo",
+            valueName: "id",
           },
 
           {
-            name: 'type_id',
-            label: { text: t('type_id', { ns: 'translation' }) },
+            name: "type_id",
+            label: { text: t("type_id", { ns: "translation" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
-            url: '/person-type',
-            displayName: 'type',
-            valueName: 'id',
+            url: "/person-type",
+            displayName: "type",
+            valueName: "id",
           },
 
           {
-            name: 'birth_at',
-            label: { text: t('birth_at', { ns: 'translation' }) },
+            name: "birth_at",
+            label: { text: t("birth_at", { ns: "translation" }) },
             type: EnumFieldType.DATEPICKER,
             required: true,
           },
         ]}
-        button={{ text: t('create', { ns: 'actions' }) }}
+        button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
-          const createdData = await createPerson(data)
-          if (typeof onCreated === 'function') {
-            onCreated(createdData)
+          const createdData = await createPerson(data);
+          if (typeof onCreated === "function") {
+            onCreated(createdData);
           }
         }}
       />
-    )
-  }
-)
+    );
+  },
+);
 
-PersonCreatePanel.displayName = 'PersonCreatePanel'
+PersonCreatePanel.displayName = "PersonCreatePanel";
 
-export default PersonCreatePanel
+export default PersonCreatePanel;

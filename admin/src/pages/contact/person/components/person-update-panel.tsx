@@ -1,12 +1,18 @@
 import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
 import { Overlay } from "@/components/custom/overlay";
 import { TabPanel } from "@/components/panels/tab-panel";
-import { EnumFieldType } from "@/enums/EnumFieldType";
 import { usePersonGet, usePersonUpdate } from "@/features/contact/person";
 import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
 import { Person } from "@/types/models";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { EnumFieldType } from "@/enums/EnumFieldType";
+
+import DataPanel from "@/components/panels/data-panel";
+import { PersonAddress } from "@/types/models/PersonAddress.ts";
+import { PersonContact } from "@/types/models/PersonContact.ts";
+import { PersonDocument } from "@/types/models/PersonDocument.ts";
+import { PersonCustom } from "@/types/models/PersonCustom.ts";
 
 export type PersonUpdatePanelProps = {
   data: Person;
@@ -19,6 +25,11 @@ const PersonUpdatePanel = forwardRef(
     const { data: item, isLoading } = usePersonGet(data.id as number);
     const { mutate: personUpdate } = usePersonUpdate();
     const formRef = useRef<FormPanelRef>(null);
+
+    const personAddressRef = useRef<any>(null);
+    const personContactRef = useRef<any>(null);
+    const personDocumentRef = useRef<any>(null);
+    const personCustomRef = useRef<any>(null);
 
     useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
@@ -49,7 +60,7 @@ const PersonUpdatePanel = forwardRef(
                     {
                       name: "photo_id",
                       label: { text: t("photo_id", { ns: "translation" }) },
-                      type: EnumFieldType.COMBOBOX,
+                      type: EnumFieldType.FILE,
                       required: true,
                       url: "/file",
                       displayName: "photo",
@@ -93,12 +104,12 @@ const PersonUpdatePanel = forwardRef(
                 selectable
                 multiple
                 layout="list"
-                id={`person-address-${item.id}`}
-                url={`/person/${item.id}/address`}
+                id={`person-address-${item?.id}`}
+                url={`/person/${item?.id}/address`}
                 render={(item: PersonAddress) => (
                   <div className="flex flex-row gap-2">
                     <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-                      {street}: {item.street}
+                      street: {item.street}
                     </span>
                   </div>
                 )}
@@ -113,7 +124,6 @@ const PersonUpdatePanel = forwardRef(
             ],
           },
 
-          ,
           {
             title: t("contact", { ns: "modules" }),
             children: (
@@ -122,12 +132,12 @@ const PersonUpdatePanel = forwardRef(
                 selectable
                 multiple
                 layout="list"
-                id={`person-contact-${item.id}`}
-                url={`/person/${item.id}/contact`}
+                id={`person-contact-${item?.id}`}
+                url={`/person/${item?.id}/contact`}
                 render={(item: PersonContact) => (
                   <div className="flex flex-row gap-2">
                     <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-                      {value}: {item.value}
+                      value: {item.value}
                     </span>
                   </div>
                 )}
@@ -142,7 +152,6 @@ const PersonUpdatePanel = forwardRef(
             ],
           },
 
-          ,
           {
             title: t("document", { ns: "modules" }),
             children: (
@@ -151,12 +160,12 @@ const PersonUpdatePanel = forwardRef(
                 selectable
                 multiple
                 layout="list"
-                id={`person-document-${item.id}`}
-                url={`/person/${item.id}/document`}
+                id={`person-document-${item?.id}`}
+                url={`/person/${item?.id}/document`}
                 render={(item: PersonDocument) => (
                   <div className="flex flex-row gap-2">
                     <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-                      {value}: {item.value}
+                      value: {item.value}
                     </span>
                   </div>
                 )}
@@ -171,7 +180,6 @@ const PersonUpdatePanel = forwardRef(
             ],
           },
 
-          ,
           {
             title: t("custom", { ns: "modules" }),
             children: (
@@ -180,12 +188,12 @@ const PersonUpdatePanel = forwardRef(
                 selectable
                 multiple
                 layout="list"
-                id={`person-custom-${item.id}`}
-                url={`/person/${item.id}/custom`}
+                id={`person-custom-${item?.id}`}
+                url={`/person/${item?.id}/custom`}
                 render={(item: PersonCustom) => (
                   <div className="flex flex-row gap-2">
                     <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-                      {id}: {item.id}
+                      id: {item.id}
                     </span>
                   </div>
                 )}

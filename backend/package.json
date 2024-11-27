@@ -25,10 +25,10 @@
   },
   "dependencies": {
     "@hedhog/admin": "^0.7.3",
-    "@hedhog/contact": "^0.7.8",
+    "@hedhog/contact": "^0.7.11",
     "@hedhog/core": "^0.0.1",
     "@hedhog/country": "^0.0.4",
-    "@hedhog/file": "^0.7.1",
+    "@hedhog/file": "^0.7.2",
     "@hedhog/locale": "^0.7.2",
     "@hedhog/mail": "^0.7.1",
     "@hedhog/pagination": "^0.7.1",
