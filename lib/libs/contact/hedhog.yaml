@@ -35,24 +35,6 @@ screens:
         title:
           en: Custom
           pt: Personalizado
-  person_test:
-    title:
-      en: Person Test
-      pt: Teste de Pessoa
-    menu:
-      menu_id:
-        where:
-          slug: /management/person
-      url: /management/person/person-test
-      icon: id
-      name:
-        en: Person Test
-        pt: Teste de Pessoa
-      slug: /management/person/person-test
-      relations:
-        role:
-          - where:
-              slug: admin
   person_type:
     title:
       en: Person Type
@@ -729,14 +711,6 @@ data:
         pt: Tela para gerenciar personalização da pessoa
       icon: adjustments
     - name:
-        en: PersonTest
-        pt: PersonTest
-      slug: person-test
-      description:
-        en: Screen to manage person_test
-        pt: Tela para gerenciar person_test
-      icon: file
-    - name:
         en: PersonValue
         pt: PersonValue
       slug: person-value
@@ -757,12 +731,6 @@ tables:
       - name: value
         type: varchar
         length: 255
-      - type: created_at
-      - type: updated_at
-  person_test:
-    columns:
-      - type: pk
-      - type: slug
       - type: created_at
       - type: updated_at
   person_type:
