@@ -457,7 +457,7 @@ export class LocaleService {
       );
 
       return this.paginationService.paginate(
-        this.prismaService.person_address_type,
+        this.prismaService[modelName],
         paginationParams,
         {
           where: {
