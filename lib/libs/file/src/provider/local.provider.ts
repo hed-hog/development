@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { createReadStream, existsSync } from 'fs';
 import { mkdir, unlink, writeFile } from 'fs/promises';
 import * as jsonwebtoken from 'jsonwebtoken';
-import { join } from 'path';
+import { join, sep } from 'path';
 import { Stream } from 'stream';
 import { AbstractProvider } from './abstract,provider';
 
@@ -12,7 +12,7 @@ export class LocalProvider extends AbstractProvider {
   }
 
   async createForderRecursive(path: string) {
-    const folders = path.split('/');
+    const folders = join(path).split(sep);
     let currentPath = '';
     for (const folder of folders) {
       currentPath = join(currentPath, folder);
