@@ -400,7 +400,68 @@
       }
     },
     "routes": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "lazy": {
+                        "type": "object",
+                        "properties": {
+                          "component": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "component"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "path"
+                    ]
+                  }
+                },
+                "lazy": {
+                  "type": "object",
+                  "properties": {
+                    "component": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "component"
+                  ]
+                }
+              },
+              "required": [
+                "path"
+              ]
+            }
+          }
+        },
+        "required": [
+          "path"
+        ]
+      }
     }
   },
   "required": [],
