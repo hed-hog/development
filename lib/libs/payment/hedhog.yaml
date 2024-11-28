@@ -180,7 +180,7 @@ data:
             description:
               en: Payment gateway slug
               pt: Slug do gateway de pagamento
-            value:
+            value: ""
           - slug: payment-mercado-pago-token
             type: string
             name:
@@ -189,7 +189,7 @@ data:
             description:
               en: Token used for authenticating with the Mercado Pago payment gateway
               pt: Token usado para autenticação com o gateway de pagamento Mercado Pago
-            value:
+            value: ""
           - slug: payment-mercado-pago-public-key
             type: string
             name:
@@ -198,7 +198,7 @@ data:
             description:
               en: Public key used for authenticating with the Mercado Pago payment gateway
               pt: Chave pública usada para autenticação com o gateway de pagamento Mercado Pago
-            value:
+            value: ""
           - slug: payment-stripe-secret-key
             type: string
             name:
@@ -207,7 +207,7 @@ data:
             description:
               en: Secret key used for authenticating with the Stripe payment gateway
               pt: Chave secreta usada para autenticação com o gateway de pagamento Stripe
-            value:
+            value: ""
 
   route:
     - url: /plan
