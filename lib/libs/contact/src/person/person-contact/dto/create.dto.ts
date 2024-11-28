@@ -1,16 +1,17 @@
-import { IsInt, IsBoolean, IsString, Length } from 'class-validator';
+import { IsNumber } from 'class-validator';
+import { IsBoolean } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateDTO {
-  @IsInt()
+  @IsNumber()
   person_id: number;
 
-  @IsInt()
+  @IsNumber()
   type_id: number;
 
   @IsBoolean()
   primary: boolean;
 
   @IsString()
-  @Length(0, 255)
   value: string;
 }

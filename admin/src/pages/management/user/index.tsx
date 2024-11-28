@@ -1,3 +1,4 @@
+import { PageTitle } from '@/components/custom/page-title'
 import { DataPanel } from '@/components/panels/data-panel'
 import FormPanel from '@/components/panels/form-panel'
 import { TabPanel } from '@/components/panels/tab-panel'
@@ -13,7 +14,6 @@ import { queryClient } from '@/lib/query-provider'
 import { Role, User } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef } from 'react'
-import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -213,16 +213,8 @@ export default function Page() {
 
   return (
     <>
-      <Helmet>
-        <title>{modulesT('user')} - Hedhog</title>
-      </Helmet>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('user')}
-          </h1>
-        </div>
-      </div>
+      <PageTitle title={modulesT('user')} />
+
       <DataPanel
         url='/user'
         layout='table'

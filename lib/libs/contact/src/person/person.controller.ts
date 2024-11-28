@@ -1,4 +1,5 @@
 import { Pagination } from '@hedhog/pagination';
+import { Locale } from '@hedhog/locale';
 import {
   Body,
   Controller,

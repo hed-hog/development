@@ -1,4 +1,5 @@
-import { Role, OptionalParseIntPipe } from '@hedhog/core';
+import { Pagination } from '@hedhog/pagination';
+import { Role } from '@hedhog/core';
 import {
   Body,
   Controller,
@@ -8,7 +9,8 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query
+  Inject,
+  forwardRef
 } from '@nestjs/common';
 import { PersonContactService } from './person-contact.service';
 import { CreateDTO } from './dto/create.dto';
@@ -16,39 +18,36 @@ import { UpdateDTO } from './dto/update.dto';
 import { DeleteDTO } from '@hedhog/core';
 
 @Role()
-@Controller('person/:personId/contact')
+@Controller('person/:personId/person-contact')
 export class PersonContactController {
-  constructor(private readonly contactService: PersonContactService) {}
+  constructor(
+    @Inject(forwardRef(() => PersonContactService))
+    private readonly personContactService: PersonContactService
+  ) {}
+
   @Post()
   create(
     @Param('personId', ParseIntPipe) personId: number,
     @Body() data: CreateDTO
   ) {
-    return this.contactService.create(personId, data);
+    return this.personContactService.create(personId, data);
   }
 
   @Get()
   list(
     @Param('personId', ParseIntPipe) personId: number,
-    @Query('typeId', OptionalParseIntPipe) typeId?: number,
-    @Query('id', OptionalParseIntPipe) contactId?: number
+    @Pagination() paginationParams
   ) {
-    if (contactId) {
-      return this.contactService.list(personId, null, contactId);
-    }
-    if (typeId) {
-      return this.contactService.list(personId, typeId);
-    }
-    return this.contactService.list(personId);
+    return this.personContactService.list(personId, paginationParams);
   }
 
-  @Patch(':contactId')
+  @Patch(':id')
   update(
     @Param('personId', ParseIntPipe) personId: number,
-    @Param('contactId', ParseIntPipe) contactId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateDTO
   ) {
-    return this.contactService.update(personId, contactId, data);
+    return this.personContactService.update(personId, id, data);
   }
 
   @Delete()
@@ -56,6 +55,6 @@ export class PersonContactController {
     @Param('personId', ParseIntPipe) personId: number,
     @Body() { ids }: DeleteDTO
   ) {
-    return this.contactService.delete(personId, { ids });
+    return this.personContactService.delete(personId, { ids });
   }
 }

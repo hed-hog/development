@@ -1,34 +1,26 @@
-import {
-  IsInt,
-  IsBoolean,
-  IsString,
-  Length,
-  IsDateString,
-  IsOptional,
-} from 'class-validator';
+import { IsNumber } from 'class-validator';
+import { IsBoolean } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateDTO {
-  @IsInt()
+  @IsNumber()
   person_id: number;
 
-  @IsInt()
+  @IsNumber()
   type_id: number;
 
-  @IsInt()
+  @IsNumber()
   country_id: number;
 
   @IsBoolean()
   primary: boolean;
 
   @IsString()
-  @Length(0, 63)
   value: string;
 
-  @IsDateString()
-  @IsOptional()
-  issued_at?: string;
+  @IsString()
+  issued_at: string;
 
-  @IsDateString()
-  @IsOptional()
-  expiry_at?: string;
+  @IsString()
+  expiry_at: string;
 }

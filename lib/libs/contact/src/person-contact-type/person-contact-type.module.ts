@@ -4,6 +4,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { PersonContactTypeService } from './person-contact-type.service';
 import { PersonContactTypeController } from './person-contact-type.controller';
+
 @Module({
   imports: [
     forwardRef(() => AdminModule),
@@ -12,6 +13,6 @@ import { PersonContactTypeController } from './person-contact-type.controller';
   ],
   controllers: [PersonContactTypeController],
   providers: [PersonContactTypeService],
-  exports: [forwardRef(() => PersonContactTypeService)]
+  exports: [PersonContactTypeService]
 })
 export class PersonContactTypeModule {}

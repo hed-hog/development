@@ -9,7 +9,6 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
-
 import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
@@ -22,49 +21,20 @@ export class PersonCustomTypeService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-
     @Inject(forwardRef(() => LocaleService))
     private readonly localeService: LocaleService
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
-    const fields = ['slug'];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
-      fields,
+    return this.localeService.listModelWithLocale(
+      locale,
+      this.modelName,
       paginationParams
-    );
-
-    const include = {
-      person_custom_type_locale: {
-        where: {
-          locale: {
-            code: locale
-          }
-        },
-        select: {
-          name: true
-        }
-      }
-    };
-
-    return this.paginationService.paginate(
-      this.prismaService.person_custom_type,
-      paginationParams,
-      {
-        where: {
-          OR
-        },
-        include
-      },
-      'person_custom_type_locale'
     );
   }
 
-  async get(personCustomTypeId: number) {
-    return this.localeService.getModelWithLocale(
-      this.modelName,
-      personCustomTypeId
-    );
+  async get(id: number) {
+    return this.localeService.getModelWithLocale(this.modelName, id);
   }
 
   async create(data: CreateDTO) {

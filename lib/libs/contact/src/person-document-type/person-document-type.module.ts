@@ -4,6 +4,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { PersonDocumentTypeService } from './person-document-type.service';
 import { PersonDocumentTypeController } from './person-document-type.controller';
+
 @Module({
   imports: [
     forwardRef(() => AdminModule),
@@ -12,6 +13,6 @@ import { PersonDocumentTypeController } from './person-document-type.controller'
   ],
   controllers: [PersonDocumentTypeController],
   providers: [PersonDocumentTypeService],
-  exports: [forwardRef(() => PersonDocumentTypeService)]
+  exports: [PersonDocumentTypeService]
 })
 export class PersonDocumentTypeModule {}

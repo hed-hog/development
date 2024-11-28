@@ -1,11 +1,11 @@
 {
-  "create": "Criar tipo de documento pessoal",
-  "createText": "Preencha as informações do tipo de documento pessoal.",
-  "createTooltip": "Criar novo tipo de documento pessoal",
-  "delete": "Excluir tipo de documento pessoal",
-  "deleteText": "Tem certeza de que deseja excluir esses tipos de documento pessoal?",
-  "deleteTooltip": "Excluir o tipo de documento pessoal selecionado",
-  "edit": "Editar tipo de documento pessoal",
-  "editText": "Visualizar e editar informações do tipo de documento pessoal.",
-  "editTooltip": "Editar o tipo de documento pessoal selecionado"
+  "create": "Criar documento de pessoa",
+  "createText": "Preencha as informações do documento de pessoa.",
+  "createTooltip": "Criar novo documento de pessoa",
+  "delete": "Excluir documento de pessoa",
+  "deleteText": "Você tem certeza de que deseja excluir esses documentos de pessoa?",
+  "deleteTooltip": "Excluir o documento de pessoa selecionado",
+  "edit": "Editar documento de pessoa",
+  "editText": "Visualizar e editar informações do documento de pessoa.",
+  "editTooltip": "Editar o documento de pessoa selecionado"
 }

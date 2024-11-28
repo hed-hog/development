@@ -1,3 +1,4 @@
+import { PageTitle } from '@/components/custom/page-title'
 import { DataPanel } from '@/components/panels/data-panel'
 import { useDeleteRole } from '@/features/role/api'
 import { useApp } from '@/hooks/use-app'
@@ -5,8 +6,8 @@ import RoleCreatePanel from '@/pages/management/role/components/role-create-pane
 import { RoleEditPanel } from '@/pages/management/role/components/role-edit-panel'
 import { Menu, Role, Route, Screen } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
+import { url } from 'inspector'
 import { useState } from 'react'
-import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 
 export default function Page() {
@@ -79,16 +80,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet>
-        <title>{modulesT('role')} - Hedhog</title>
-      </Helmet>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('role')}
-          </h1>
-        </div>
-      </div>
+      <PageTitle title={modulesT('role')} />
 
       <DataPanel
         url='/role'

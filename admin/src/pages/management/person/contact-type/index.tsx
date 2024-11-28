@@ -1,3 +1,4 @@
+import { PageTitle } from '@/components/custom/page-title'
 import DataPanel from '@/components/panels/data-panel'
 import FormPanel from '@/components/panels/form-panel'
 import { TabPanel } from '@/components/panels/tab-panel'
@@ -12,7 +13,6 @@ import { PersonContact } from '@/types/models'
 
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
-import { Helmet } from 'react-helmet'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -163,17 +163,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet>
-        <title>{modulesT('contactTypes')} - Hedhog</title>
-      </Helmet>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>
-            {modulesT('contactTypes')}
-          </h1>
-        </div>
-      </div>
-
+      <PageTitle title={modulesT('contactTypes')} />
       <DataPanel
         url='/person-contact-type'
         layout='table'

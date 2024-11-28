@@ -1,4 +1,5 @@
-import { Role, OptionalParseIntPipe } from '@hedhog/core';
+import { Pagination } from '@hedhog/pagination';
+import { Role } from '@hedhog/core';
 import {
   Body,
   Controller,
@@ -8,7 +9,8 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query
+  Inject,
+  forwardRef
 } from '@nestjs/common';
 import { PersonDocumentService } from './person-document.service';
 import { CreateDTO } from './dto/create.dto';
@@ -16,39 +18,36 @@ import { UpdateDTO } from './dto/update.dto';
 import { DeleteDTO } from '@hedhog/core';
 
 @Role()
-@Controller('person/:personId/document')
+@Controller('person/:personId/person-document')
 export class PersonDocumentController {
-  constructor(private readonly documentService: PersonDocumentService) {}
+  constructor(
+    @Inject(forwardRef(() => PersonDocumentService))
+    private readonly personDocumentService: PersonDocumentService
+  ) {}
+
   @Post()
   create(
     @Param('personId', ParseIntPipe) personId: number,
     @Body() data: CreateDTO
   ) {
-    return this.documentService.create(personId, data);
+    return this.personDocumentService.create(personId, data);
   }
 
   @Get()
   list(
     @Param('personId', ParseIntPipe) personId: number,
-    @Query('typeId', OptionalParseIntPipe) typeId?: number,
-    @Query('id', OptionalParseIntPipe) documentId?: number
+    @Pagination() paginationParams
   ) {
-    if (documentId) {
-      return this.documentService.list(personId, null, documentId);
-    }
-    if (typeId) {
-      return this.documentService.list(personId, typeId);
-    }
-    return this.documentService.list(personId);
+    return this.personDocumentService.list(personId, paginationParams);
   }
 
-  @Patch(':documentId')
+  @Patch(':id')
   update(
     @Param('personId', ParseIntPipe) personId: number,
-    @Param('documentId', ParseIntPipe) documentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateDTO
   ) {
-    return this.documentService.update(personId, documentId, data);
+    return this.personDocumentService.update(personId, id, data);
   }
 
   @Delete()
@@ -56,6 +55,6 @@ export class PersonDocumentController {
     @Param('personId', ParseIntPipe) personId: number,
     @Body() { ids }: DeleteDTO
   ) {
-    return this.documentService.delete(personId, { ids });
+    return this.personDocumentService.delete(personId, { ids });
   }
 }

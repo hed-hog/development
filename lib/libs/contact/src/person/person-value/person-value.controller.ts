@@ -1,4 +1,5 @@
-import { DeleteDTO, OptionalParseIntPipe, Role } from '@hedhog/core';
+import { Pagination } from '@hedhog/pagination';
+import { Role } from '@hedhog/core';
 import {
   Body,
   Controller,
@@ -8,49 +9,52 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
+  Inject,
+  forwardRef
 } from '@nestjs/common';
+import { PersonValueService } from './person-value.service';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { PersonValueService } from './person-value.service';
+import { DeleteDTO } from '@hedhog/core';
 
 @Role()
-@Controller('person/:personId/value')
+@Controller('person/:personId/person-value')
 export class PersonValueController {
-  constructor(private readonly valueService: PersonValueService) {}
+  constructor(
+    @Inject(forwardRef(() => PersonValueService))
+    private readonly personValueService: PersonValueService
+  ) {}
+
   @Post()
   create(
     @Param('personId', ParseIntPipe) personId: number,
-    @Body() data: CreateDTO,
+    @Body() data: CreateDTO
   ) {
-    return this.valueService.create(personId, data);
+    return this.personValueService.create(personId, data);
   }
 
   @Get()
   list(
     @Param('personId', ParseIntPipe) personId: number,
-    @Query('id', OptionalParseIntPipe) valueId?: number,
+    @Pagination() paginationParams
   ) {
-    if (valueId) {
-      return this.valueService.list(personId, null, valueId);
-    }
-    return this.valueService.list(personId);
+    return this.personValueService.list(personId, paginationParams);
   }
 
-  @Patch(':valueId')
+  @Patch(':id')
   update(
     @Param('personId', ParseIntPipe) personId: number,
-    @Param('valueId', ParseIntPipe) valueId: number,
-    @Body() data: UpdateDTO,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UpdateDTO
   ) {
-    return this.valueService.update(personId, valueId, data);
+    return this.personValueService.update(personId, id, data);
   }
 
   @Delete()
   delete(
     @Param('personId', ParseIntPipe) personId: number,
-    @Body() { ids }: DeleteDTO,
+    @Body() { ids }: DeleteDTO
   ) {
-    return this.valueService.delete(personId, { ids });
+    return this.personValueService.delete(personId, { ids });
   }
 }

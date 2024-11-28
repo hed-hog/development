@@ -4,6 +4,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { PersonCustomTypeService } from './person-custom-type.service';
 import { PersonCustomTypeController } from './person-custom-type.controller';
+
 @Module({
   imports: [
     forwardRef(() => AdminModule),
@@ -12,6 +13,6 @@ import { PersonCustomTypeController } from './person-custom-type.controller';
   ],
   controllers: [PersonCustomTypeController],
   providers: [PersonCustomTypeService],
-  exports: [forwardRef(() => PersonCustomTypeService)]
+  exports: [PersonCustomTypeService]
 })
 export class PersonCustomTypeModule {}

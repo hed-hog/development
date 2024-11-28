@@ -1,56 +1,60 @@
-import { DeleteDTO } from '@hedhog/core';
 import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException
+} from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
+import { DeleteDTO } from '@hedhog/core';
 
 @Injectable()
 export class PersonValueService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly paginationService: PaginationService,
+    private readonly paginationService: PaginationService
   ) {}
 
   async create(personId: number, data: CreateDTO) {
-    return this.prismaService.person_value.create({
+    return this.prismaService.personValue.create({
       data: {
         person_id: personId,
-        ...data,
-      },
+        ...data
+      }
     });
   }
 
-  async list(personId?: number, valueId?: number) {
+  async list(personId?: number, id?: number) {
     const where: any = {};
     if (personId !== undefined) where.person_id = personId;
-    if (valueId !== undefined) where.id = valueId;
+    if (id !== undefined) where.id = id;
 
     return this.paginationService.paginate(
-      this.prismaService.person_value,
+      this.prismaService.personValue,
       {
-        fields: 'id,person_id,value',
+        fields: 'value'
       },
       {
-        where,
-      },
+        where
+      }
     );
   }
 
-  async update(personId: number, valueId: number, data: UpdateDTO) {
-    return this.prismaService.person_value.update({
+  async update(personId: number, id: number, data: UpdateDTO) {
+    return this.prismaService.personValue.updateMany({
       where: {
         person_id: personId,
-        id: valueId,
+        id: id
       },
-      data,
+      data
     });
   }
 
   async delete(personId: number, { ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.',
+        'You must select at least one item to delete.'
       );
     }
 
@@ -58,9 +62,9 @@ export class PersonValueService {
       where: {
         person_id: personId,
         id: {
-          in: ids,
-        },
-      },
+          in: ids
+        }
+      }
     });
   }
 }

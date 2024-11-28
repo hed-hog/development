@@ -1,83 +1,72 @@
-import { PaginationService } from '@hedhog/pagination';
+import { DeleteDTO } from '@hedhog/core';
+import { LocaleService } from '@hedhog/locale';
+import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
-  Injectable,
-  NotFoundException,
-  BadRequestException
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { DeleteDTO } from '@hedhog/core';
 
 @Injectable()
 export class PersonCustomService {
+  private readonly modelName = 'person_custom';
+  private readonly foreignKey = 'custom_id';
+
   constructor(
+    @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
-    private readonly paginationService: PaginationService
+    @Inject(forwardRef(() => PaginationService))
+    private readonly paginationService: PaginationService,
+    @Inject(forwardRef(() => LocaleService))
+    private readonly localeService: LocaleService
   ) {}
 
-  async create(personId: number, data: CreateDTO) {
-    return this.prismaService.person_custom.create({
-      data: {
-        person_id: personId,
-        ...data
-      }
-    });
-  }
-
-  async list(personId?: number, typeId?: number, customId?: number) {
+  async list(
+    locale: string,
+    personId: number,
+    paginationParams: PaginationDTO
+  ) {
     const where: any = {};
     if (personId !== undefined) where.person_id = personId;
-    if (typeId !== undefined) where.type_id = typeId;
-    if (customId !== undefined) where.id = customId;
 
-    const customs = await this.prismaService.person_custom.findMany({
-      where,
-      include: {
-        person_custom_type: {
-          select: {
-            id: true,
-            name: true
-          }
-        }
-      }
-    });
-
-    if (Boolean(customId) && customs.length === 0) {
-      throw new NotFoundException(`custom with ID ${customId} not found`);
-    }
-
-    if (Boolean(typeId) && customs.length === 0) {
-      throw new NotFoundException(`Type with ID ${typeId} not found`);
-    }
-
-    return this.paginationService.paginate(
-      this.prismaService.person_custom,
+    return this.localeService.listModelWithLocale(
+      locale,
+      this.modelName,
+      paginationParams,
       {
-        fields: 'id,person_id,type_id,primary,value'
-      },
-      {
-        where,
-        include: {
-          person_custom_type: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        }
+        person_id: personId
       }
     );
   }
 
-  async update(personId: number, customId: number, data: UpdateDTO) {
-    return this.prismaService.person_custom.update({
-      where: {
-        person_id: personId,
-        id: customId
-      },
+  async get(id: number) {
+    return this.localeService.getModelWithLocale(this.modelName, id);
+  }
+
+  async create(personId: number, data: CreateDTO) {
+    data.person_id = personId;
+
+    return this.localeService.createModelWithLocale(
+      this.modelName,
+      this.foreignKey,
       data
-    });
+    );
+  }
+
+  async update(id: number, personId: number, data: UpdateDTO) {
+    return this.localeService.updateModelWithLocale(
+      this.modelName,
+      this.foreignKey,
+      id,
+      data,
+      {
+        person_id: personId
+      }
+    );
   }
 
   async delete(personId: number, { ids }: DeleteDTO) {

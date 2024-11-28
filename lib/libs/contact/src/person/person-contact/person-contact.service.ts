@@ -17,7 +17,7 @@ export class PersonContactService {
   ) {}
 
   async create(personId: number, data: CreateDTO) {
-    return this.prismaService.person_contact.create({
+    return this.prismaService.personContact.create({
       data: {
         person_id: personId,
         ...data
@@ -25,56 +25,27 @@ export class PersonContactService {
     });
   }
 
-  async list(personId?: number, typeId?: number, contactId?: number) {
+  async list(personId?: number, id?: number) {
     const where: any = {};
     if (personId !== undefined) where.person_id = personId;
-    if (typeId !== undefined) where.type_id = typeId;
-    if (contactId !== undefined) where.id = contactId;
-
-    const contacts = await this.prismaService.person_contact.findMany({
-      where,
-      include: {
-        person_contact_type: {
-          select: {
-            id: true,
-            name: true
-          }
-        }
-      }
-    });
-
-    if (Boolean(contactId) && contacts.length === 0) {
-      throw new NotFoundException(`contact with ID ${contactId} not found`);
-    }
-
-    if (Boolean(typeId) && contacts.length === 0) {
-      throw new NotFoundException(`Type with ID ${typeId} not found`);
-    }
+    if (id !== undefined) where.id = id;
 
     return this.paginationService.paginate(
-      this.prismaService.person_contact,
+      this.prismaService.personContact,
       {
-        fields: 'id,person_id,type_id,primary,value'
+        fields: 'primary,value'
       },
       {
-        where,
-        include: {
-          person_contact_type: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        }
+        where
       }
     );
   }
 
-  async update(personId: number, contactId: number, data: UpdateDTO) {
-    return this.prismaService.person_contact.update({
+  async update(personId: number, id: number, data: UpdateDTO) {
+    return this.prismaService.personContact.updateMany({
       where: {
         person_id: personId,
-        id: contactId
+        id: id
       },
       data
     });

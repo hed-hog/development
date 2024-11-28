@@ -41,9 +41,9 @@ export class PersonService {
     );
   }
 
-  async get(personId: number) {
+  async get(id: number) {
     return this.prismaService.person.findUnique({
-      where: { id: personId }
+      where: { id: id }
     });
   }
 
@@ -55,7 +55,7 @@ export class PersonService {
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
     return this.prismaService.person.update({
-      where: { id },
+      where: { id: id },
       data
     });
   }

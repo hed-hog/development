@@ -4,6 +4,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { PersonAddressTypeService } from './person-address-type.service';
 import { PersonAddressTypeController } from './person-address-type.controller';
+
 @Module({
   imports: [
     forwardRef(() => AdminModule),
@@ -12,6 +13,6 @@ import { PersonAddressTypeController } from './person-address-type.controller';
   ],
   controllers: [PersonAddressTypeController],
   providers: [PersonAddressTypeService],
-  exports: [forwardRef(() => PersonAddressTypeService)]
+  exports: [PersonAddressTypeService]
 })
 export class PersonAddressTypeModule {}

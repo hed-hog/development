@@ -1,14 +1,14 @@
-import { IsInt, IsString, IsOptional } from 'class-validator';
+import { IsNumber } from 'class-validator';
+import { IsString } from 'class-validator';
 import { WithLocaleDTO } from '@hedhog/locale';
 
 export class CreateDTO extends WithLocaleDTO {
-  @IsInt()
+  @IsNumber()
   person_id: number;
 
-  @IsInt()
+  @IsNumber()
   type_id: number;
 
   @IsString()
-  @IsOptional()
-  value?: string;
+  value: string;
 }
