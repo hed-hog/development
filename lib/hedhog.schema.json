@@ -272,6 +272,43 @@
                     "type": "string"
                   }
                 ]
+              },
+              "relations": {
+                "patternProperties": {
+                  "^\\w+$": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "patternProperties": {
+                        "^\\w+$": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "patternProperties": {
+                                "^\\w+$": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "object"
+                                    }
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
               }
             },
             "required": [],
@@ -280,6 +317,87 @@
         }
       },
       "additionalProperties": false
+    },
+    "screens": {
+      "type": "object",
+      "patternProperties": {
+        "^\\w+$": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "object",
+              "patternProperties": {
+                "^\\w+$": {
+                  "type": "string"
+                }
+              }
+            },
+            "menu": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^\\w+$": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "slug": {
+                  "type": "string"
+                },
+                "relations": {
+                  "patternProperties": {
+                    "^\\w+$": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "patternProperties": {
+                          "^\\w+$": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "patternProperties": {
+                                  "^\\w+$": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "object"
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "routes": {
+      "type": "array"
     }
   },
   "required": [],
