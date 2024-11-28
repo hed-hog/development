@@ -362,6 +362,7 @@ export class LocaleService {
     foreignKeyName: string,
     id: number,
     data: T,
+    where: any = {},
   ) {
     try {
       const { locale } = data as {
@@ -396,7 +397,7 @@ export class LocaleService {
       }
 
       return this.prismaService[modelName].update({
-        where: { id },
+        where: { ...where, id },
         data: this.getValidData(modelName, data),
       });
     } catch (error: any) {
@@ -445,6 +446,7 @@ export class LocaleService {
     locale: string,
     modelName: string,
     paginationParams: PaginationDTO,
+    where: any = {},
   ) {
     try {
       const fields = this.getFields(modelName);
@@ -459,6 +461,7 @@ export class LocaleService {
         paginationParams,
         {
           where: {
+            ...where,
             OR,
           },
           include: {
