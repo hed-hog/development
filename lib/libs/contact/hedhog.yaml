@@ -251,12 +251,12 @@ data:
     - menu_id:
         where:
           slug: /management/person
-      url: /management/person/address-type
+      url: /management/person/person-address-type
       icon: home-link
       name:
         en: Address Type
         pt: Tipos de Endereço
-      slug: /management/person/address-type
+      slug: /management/person/person-address-type
       relations:
         role:
           - where:
@@ -264,12 +264,12 @@ data:
     - menu_id:
         where:
           slug: /management/person
-      url: /management/person/contact-type
+      url: /management/person/person-contact-type
       icon: address-book
       name:
         en: Contact Type
         pt: Tipos de Contato
-      slug: /management/person/contact-type
+      slug: /management/person/person-contact-type
       relations:
         role:
           - where:
@@ -277,12 +277,12 @@ data:
     - menu_id:
         where:
           slug: /management/person
-      url: /management/person/custom-type
+      url: /management/person/person-custom-type
       icon: adjustments
       name:
         en: Custom Type
         pt: Tipos Personalizados
-      slug: /management/person/custom-type
+      slug: /management/person/person-custom-type
       relations:
         role:
           - where:
@@ -290,12 +290,12 @@ data:
     - menu_id:
         where:
           slug: /management/person
-      url: /management/person/document-type
+      url: /management/person/person-document-type
       icon: file-search
       name:
         en: Document Type
         pt: Tipos de Documento
-      slug: /management/person/document-type
+      slug: /management/person/person-document-type
       relations:
         role:
           - where:
@@ -314,19 +314,19 @@ data:
           - where:
               slug: admin
   route:
-    - url: /person/:personId/person_value
+    - url: /person/:personId/person-value
       method: GET
       relations: &a1
         role:
           - where:
               slug: admin
-    - url: /person/:personId/person_value
+    - url: /person/:personId/person-value
       method: POST
       relations: *a1
-    - url: /person/:personId/person_value/:id
+    - url: /person/:personId/person-value/:id
       method: PATCH
       relations: *a1
-    - url: /person/:personId/person_value
+    - url: /person/:personId/person-value
       method: DELETE
       relations: *a1
     - url: /person-type
