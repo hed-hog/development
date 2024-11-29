@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@hedhog/admin": "^0.7.3",
-    "@hedhog/contact": "^0.7.18",
+    "@hedhog/contact": "^0.7.19",
     "@hedhog/core": "^0.0.1",
     "@hedhog/country": "^0.0.4",
     "@hedhog/file": "^0.7.2",
