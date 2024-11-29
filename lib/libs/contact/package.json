@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/contact",
-  "version": "0.7.11",
+  "version": "0.7.18",
   "private": false,
   "main": "dist/index.js",
   "scripts": {

@@ -171,6 +171,7 @@ model person {
   person_contact  person_contact[]
   person_custom   person_custom[]
   person_document person_document[]
+  person_value    person_value[]
 }
 
 model person_address {
@@ -357,6 +358,15 @@ model person_type_locale {
   locale      locale      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3cac1af04c04a72706ca0e73242")
 
   @@id([type_id, locale_id], map: "PK_817fb03a35a6d045af0ef30603c")
+}
+
+model person_value {
+  id         Int      @id(map: "PK_85c28f48f06f5cc8291d45e1554") @default(autoincrement())
+  person_id  Int
+  value      String   @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  person     person   @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c14f1b61dff84649c565703578b")
 }
 
 model role {

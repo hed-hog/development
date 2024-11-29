@@ -1,6 +1,7 @@
 import { IsNumber } from 'class-validator';
 import { IsBoolean } from 'class-validator';
 import { IsString } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
@@ -18,9 +19,11 @@ export class CreateDTO {
   @IsString()
   value: string;
 
+  @IsOptional()
   @IsString()
-  issued_at: string;
+  issued_at?: string;
 
+  @IsOptional()
   @IsString()
-  expiry_at: string;
+  expiry_at?: string;
 }

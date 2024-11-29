@@ -1,6 +1,7 @@
 import { IsNumber } from 'class-validator';
 import { IsBoolean } from 'class-validator';
 import { IsString } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
@@ -18,11 +19,13 @@ export class CreateDTO {
   @IsString()
   street: string;
 
+  @IsOptional()
   @IsString()
-  number: string;
+  number?: string;
 
+  @IsOptional()
   @IsString()
-  complement: string;
+  complement?: string;
 
   @IsString()
   district: string;
@@ -36,6 +39,7 @@ export class CreateDTO {
   @IsString()
   postal_code: string;
 
+  @IsOptional()
   @IsString()
-  reference: string;
+  reference?: string;
 }

@@ -160,6 +160,7 @@ model person {
   person_contact  person_contact[]
   person_custom   person_custom[]
   person_document person_document[]
+  person_value    person_value[]
 }
 
 model country {
@@ -573,6 +574,15 @@ model user {
   role_user      role_user[]
   setting_user   setting_user[]
   multifactor    multifactor?   @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
+}
+
+model person_value {
+  id         Int      @id(map: "PK_85c28f48f06f5cc8291d45e1554") @default(autoincrement())
+  person_id  Int
+  value      String   @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  person     person   @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c14f1b61dff84649c565703578b")
 }
 
 enum setting_type_enum {

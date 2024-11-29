@@ -1,3 +1,4 @@
+import { IS_PUBLIC_KEY, WITH_ROLE } from '@hedhog/core';
 import { PrismaService } from '@hedhog/prisma';
 import {
   CanActivate,
@@ -11,7 +12,6 @@ import {
 import { METHOD_METADATA } from '@nestjs/common/constants';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { IS_PUBLIC_KEY, WITH_ROLE } from '@hedhog/core';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -92,6 +92,8 @@ export class RoleGuard implements CanActivate {
         httpMethod = 'ALL';
         break;
     }
+
+    console.log({ fullPath, httpMethod });
 
     const route = await this.prisma.route.count({
       where: {

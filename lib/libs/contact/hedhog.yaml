@@ -225,208 +225,6 @@ data:
         en: Shipping
         pt: Entrega
       slug: shipping
-  route:
-    - url: /person-type
-      method: GET
-      relations: &a1
-        role:
-          - where:
-              slug: admin
-    - url: /person-type
-      method: POST
-      relations: *a1
-    - url: /person-type/:id
-      method: GET
-      relations: *a1
-    - url: /person-type/:id
-      method: PATCH
-      relations: *a1
-    - url: /person-type
-      method: DELETE
-      relations: *a1
-    - url: /person
-      method: GET
-      relations: &a2
-        role:
-          - where:
-              slug: admin
-    - url: /person
-      method: POST
-      relations: *a2
-    - url: /person/:id
-      method: GET
-      relations: *a2
-    - url: /person/:id
-      method: PATCH
-      relations: *a2
-    - url: /person
-      method: DELETE
-      relations: *a2
-    - url: /person-document-type
-      method: GET
-      relations: &a3
-        role:
-          - where:
-              slug: admin
-    - url: /person-document-type
-      method: POST
-      relations: *a3
-    - url: /person-document-type/:id
-      method: GET
-      relations: *a3
-    - url: /person-document-type/:id
-      method: PATCH
-      relations: *a3
-    - url: /person-document-type
-      method: DELETE
-      relations: *a3
-    - url: /person/:personId/document
-      method: GET
-      relations: &a4
-        role:
-          - where:
-              slug: admin
-    - url: /person/:personId/document
-      method: POST
-      relations: *a4
-    - url: /person/:personId/document/:documentId
-      method: PATCH
-      relations: *a4
-    - url: /person/:personId/document
-      method: DELETE
-      relations: *a4
-    - url: /person-contact-type
-      method: GET
-      relations: &a5
-        role:
-          - where:
-              slug: admin
-    - url: /person-contact-type
-      method: POST
-      relations: *a5
-    - url: /person-contact-type/:id
-      method: GET
-      relations: *a5
-    - url: /person-contact-type/:id
-      method: PATCH
-      relations: *a5
-    - url: /person-contact-type
-      method: DELETE
-      relations: *a5
-    - url: /person/:personId/contact
-      method: GET
-      relations: &a6
-        role:
-          - where:
-              slug: admin
-    - url: /person/:personId/contact
-      method: POST
-      relations: *a6
-    - url: /person/:personId/contact/:contactId
-      method: PATCH
-      relations: *a6
-    - url: /person/:personId/contact
-      method: DELETE
-      relations: *a6
-    - url: /person-address-type
-      method: GET
-      relations: &a7
-        role:
-          - where:
-              slug: admin
-    - url: /person-address-type
-      method: POST
-      relations: *a7
-    - url: /person-address-type/:id
-      method: GET
-      relations: *a7
-    - url: /person-address-type/:id
-      method: PATCH
-      relations: *a7
-    - url: /person-address-type
-      method: DELETE
-      relations: *a7
-    - url: /person/:personId/address
-      method: GET
-      relations: &a8
-        role:
-          - where:
-              slug: admin
-    - url: /person/:personId/address
-      method: POST
-      relations: *a8
-    - url: /person/:personId/address/:addressId
-      method: PATCH
-      relations: *a8
-    - url: /person/:personId/address
-      method: DELETE
-      relations: *a8
-    - url: /person-custom-type
-      method: GET
-      relations: &a9
-        role:
-          - where:
-              slug: admin
-    - url: /person-custom-type
-      method: POST
-      relations: *a9
-    - url: /person-custom-type/:id
-      method: GET
-      relations: *a9
-    - url: /person-custom-type/:id
-      method: PATCH
-      relations: *a9
-    - url: /person-custom-type
-      method: DELETE
-      relations: *a9
-    - url: /person/:personId/custom
-      method: GET
-      relations: &a10
-        role:
-          - where:
-              slug: admin
-    - url: /person/:personId/custom
-      method: POST
-      relations: *a10
-    - url: /person/:personId/custom/:customId
-      method: PATCH
-      relations: *a10
-    - url: /person/:personId/custom
-      method: DELETE
-      relations: *a10
-    - url: /person-test
-      method: GET
-      relations: &a11
-        role:
-          - where:
-              slug: admin
-    - url: /person-test
-      method: POST
-      relations: *a11
-    - url: /person-test/:id
-      method: GET
-      relations: *a11
-    - url: /person-test/:id
-      method: PATCH
-      relations: *a11
-    - url: /person-test
-      method: DELETE
-      relations: *a11
-    - url: /person/:personId/value
-      method: GET
-      relations: &a12
-        role:
-          - where:
-              slug: admin
-    - url: /person/:personId/value
-      method: POST
-      relations: *a12
-    - url: /person/:personId/value/:valueId
-      method: PATCH
-      relations: *a12
-    - url: /person/:personId/value
-      method: DELETE
-      relations: *a12
   menu:
     - url: /contact/person
       icon: user-check
@@ -515,201 +313,191 @@ data:
         role:
           - where:
               slug: admin
-    - name:
-        en: PersonTest
-        pt: PersonTest
-      icon: file
-      url: /person-test
-      slug: person-test
+  route:
+    - url: /person/:personId/person_value
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/person_value
+      method: POST
+      relations: *a1
+    - url: /person/:personId/person_value/:id
+      method: PATCH
+      relations: *a1
+    - url: /person/:personId/person_value
+      method: DELETE
+      relations: *a1
+    - url: /person-type
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /person-type
+      method: POST
+      relations: *a2
+    - url: /person-type/:id
+      method: GET
+      relations: *a2
+    - url: /person-type/:id
+      method: PATCH
+      relations: *a2
+    - url: /person-type
+      method: DELETE
+      relations: *a2
+    - url: /person
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /person
+      method: POST
+      relations: *a3
+    - url: /person/:id
+      method: GET
+      relations: *a3
+    - url: /person/:id
+      method: PATCH
+      relations: *a3
+    - url: /person
+      method: DELETE
+      relations: *a3
+    - url: /person-document-type
+      method: GET
+      relations: &a4
+        role:
+          - where:
+              slug: admin
+    - url: /person-document-type
+      method: POST
+      relations: *a4
+    - url: /person-document-type/:id
+      method: GET
+      relations: *a4
+    - url: /person-document-type/:id
+      method: PATCH
+      relations: *a4
+    - url: /person-document-type
+      method: DELETE
+      relations: *a4
+    - url: /person/:personId/person_document
+      method: GET
+      relations: &a5
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/person_document
+      method: POST
+      relations: *a5
+    - url: /person/:personId/person_document/:id
+      method: PATCH
+      relations: *a5
+    - url: /person/:personId/person_document
+      method: DELETE
+      relations: *a5
+    - url: /person-contact-type
+      method: GET
+      relations: &a6
+        role:
+          - where:
+              slug: admin
+    - url: /person-contact-type
+      method: POST
+      relations: *a6
+    - url: /person-contact-type/:id
+      method: GET
+      relations: *a6
+    - url: /person-contact-type/:id
+      method: PATCH
+      relations: *a6
+    - url: /person-contact-type
+      method: DELETE
+      relations: *a6
+    - url: /person/:personId/person_contact
+      method: GET
+      relations: &a7
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/person_contact
+      method: POST
+      relations: *a7
+    - url: /person/:personId/person_contact/:id
+      method: PATCH
+      relations: *a7
+    - url: /person/:personId/person_contact
+      method: DELETE
+      relations: *a7
+    - url: /person-address-type
+      method: GET
+      relations: &a8
+        role:
+          - where:
+              slug: admin
+    - url: /person-address-type
+      method: POST
+      relations: *a8
+    - url: /person-address-type/:id
+      method: GET
+      relations: *a8
+    - url: /person-address-type/:id
+      method: PATCH
+      relations: *a8
+    - url: /person-address-type
+      method: DELETE
+      relations: *a8
+    - url: /person/:personId/person_address
+      method: GET
+      relations: &a9
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/person_address
+      method: POST
+      relations: *a9
+    - url: /person/:personId/person_address/:id
+      method: PATCH
+      relations: *a9
+    - url: /person/:personId/person_address
+      method: DELETE
+      relations: *a9
+    - url: /person-custom-type
+      method: GET
+      relations: &a10
+        role:
+          - where:
+              slug: admin
+    - url: /person-custom-type
+      method: POST
+      relations: *a10
+    - url: /person-custom-type/:id
+      method: GET
+      relations: *a10
+    - url: /person-custom-type/:id
+      method: PATCH
+      relations: *a10
+    - url: /person-custom-type
+      method: DELETE
+      relations: *a10
+    - url: /person/:personId/person_custom
+      method: GET
+      relations: &a11
+        role:
+          - where:
+              slug: admin
+    - url: /person/:personId/person_custom
+      method: POST
       relations: *a11
-    - name:
-        en: PersonType
-        pt: PersonType
-      icon: file
-      url: /person-type
-      slug: person-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Person
-        pt: Person
-      icon: file
-      url: /person
-      slug: person
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PersonDocumentType
-        pt: PersonDocumentType
-      icon: file
-      url: /person-document-type
-      slug: person-document-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PersonDocument
-        pt: PersonDocument
-      icon: file
-      url: /person-document
-      slug: person-document
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PersonContactType
-        pt: PersonContactType
-      icon: file
-      url: /person-contact-type
-      slug: person-contact-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PersonContact
-        pt: PersonContact
-      icon: file
-      url: /person-contact
-      slug: person-contact
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PersonAddressType
-        pt: PersonAddressType
-      icon: file
-      url: /person-address-type
-      slug: person-address-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PersonAddress
-        pt: PersonAddress
-      icon: file
-      url: /person-address
-      slug: person-address
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PersonValue
-        pt: PersonValue
-      icon: file
-      url: /person-value
-      slug: person-value
-      relations: *a12
-    - name:
-        en: PersonCustomType
-        pt: PersonCustomType
-      icon: file
-      url: /person-custom-type
-      slug: person-custom-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PersonCustom
-        pt: PersonCustom
-      icon: file
-      url: /person-custom
-      slug: person-custom
-      relations:
-        role:
-          - where:
-              slug: admin
+    - url: /person/:personId/person_custom/:id
+      method: PATCH
+      relations: *a11
+    - url: /person/:personId/person_custom
+      method: DELETE
+      relations: *a11
   screen:
-    - name:
-        en: Person Type
-        pt: Tipo de Pessoa
-      slug: person-type
-      description:
-        en: Screen to manage person type
-        pt: Tela para gerenciar tipo de pessoa
-      icon: user-check
-    - name:
-        en: Person
-        pt: Pessoa
-      slug: person
-      description:
-        en: Screen to manage person
-        pt: Tela para gerenciar pessoa
-      icon: user-check
-    - name:
-        en: Person Document Type
-        pt: Tipo de Documento da Pessoa
-      slug: person-document-type
-      description:
-        en: Screen to manage person document type
-        pt: Tela para gerenciar tipo de documento da pessoa
-      icon: file-search
-    - name:
-        en: Person Document
-        pt: Documento da Pessoa
-      slug: person-document
-      description:
-        en: Screen to manage person document
-        pt: Tela para gerenciar documento da pessoa
-      icon: file-search
-    - name:
-        en: Person Contact Type
-        pt: Tipo de Contato da Pessoa
-      slug: person-contact-type
-      description:
-        en: Screen to manage person contact type
-        pt: Tela para gerenciar tipo de contato da pessoa
-      icon: address-book
-    - name:
-        en: Person Contact
-        pt: Contato da Pessoa
-      slug: person-contact
-      description:
-        en: Screen to manage person contact
-        pt: Tela para gerenciar contato da pessoa
-      icon: address-book
-    - name:
-        en: Person Address Type
-        pt: Tipo de Endereço da Pessoa
-      slug: person-address-type
-      description:
-        en: Screen to manage person address type
-        pt: Tela para gerenciar tipo de endereço da pessoa
-      icon: home-link
-    - name:
-        en: Person Address
-        pt: Endereço da Pessoa
-      slug: person-address
-      description:
-        en: Screen to manage person address
-        pt: Tela para gerenciar endereço da pessoa
-      icon: home-link
-    - name:
-        en: Person Custom Type
-        pt: Tipo Personalizado da Pessoa
-      slug: person-custom-type
-      description:
-        en: Screen to manage person custom type
-        pt: Tela para gerenciar tipo personalizado da pessoa
-      icon: adjustments
-    - name:
-        en: Person Custom
-        pt: Personalização da Pessoa
-      slug: person-custom
-      description:
-        en: Screen to manage person custom
-        pt: Tela para gerenciar personalização da pessoa
-      icon: adjustments
     - name:
         en: PersonValue
         pt: PersonValue
@@ -717,6 +505,86 @@ data:
       description:
         en: Screen to manage person_value
         pt: Tela para gerenciar person_value
+      icon: file
+    - name:
+        en: PersonType
+        pt: PersonType
+      slug: person-type
+      description:
+        en: Screen to manage person_type
+        pt: Tela para gerenciar person_type
+      icon: file
+    - name:
+        en: Person
+        pt: Person
+      slug: person
+      description:
+        en: Screen to manage person
+        pt: Tela para gerenciar person
+      icon: file
+    - name:
+        en: PersonDocumentType
+        pt: PersonDocumentType
+      slug: person-document-type
+      description:
+        en: Screen to manage person_document_type
+        pt: Tela para gerenciar person_document_type
+      icon: file
+    - name:
+        en: PersonDocument
+        pt: PersonDocument
+      slug: person-document
+      description:
+        en: Screen to manage person_document
+        pt: Tela para gerenciar person_document
+      icon: file
+    - name:
+        en: PersonContactType
+        pt: PersonContactType
+      slug: person-contact-type
+      description:
+        en: Screen to manage person_contact_type
+        pt: Tela para gerenciar person_contact_type
+      icon: file
+    - name:
+        en: PersonContact
+        pt: PersonContact
+      slug: person-contact
+      description:
+        en: Screen to manage person_contact
+        pt: Tela para gerenciar person_contact
+      icon: file
+    - name:
+        en: PersonAddressType
+        pt: PersonAddressType
+      slug: person-address-type
+      description:
+        en: Screen to manage person_address_type
+        pt: Tela para gerenciar person_address_type
+      icon: file
+    - name:
+        en: PersonAddress
+        pt: PersonAddress
+      slug: person-address
+      description:
+        en: Screen to manage person_address
+        pt: Tela para gerenciar person_address
+      icon: file
+    - name:
+        en: PersonCustomType
+        pt: PersonCustomType
+      slug: person-custom-type
+      description:
+        en: Screen to manage person_custom_type
+        pt: Tela para gerenciar person_custom_type
+      icon: file
+    - name:
+        en: PersonCustom
+        pt: PersonCustom
+      slug: person-custom
+      description:
+        en: Screen to manage person_custom
+        pt: Tela para gerenciar person_custom
       icon: file
 tables:
   person_value:
@@ -1077,66 +945,27 @@ tables:
       - type: created_at
       - type: updated_at
 routes:
+  - path: management
+    children:
+      - path: person
+        children:
+          - path: person-type
+            lazy:
+              component: ./pages/contact/person-type/index.tsx
+          - path: person-address-type
+            lazy:
+              component: ./pages/contact/person-address-type/index.tsx
+          - path: person-contact-type
+            lazy:
+              component: ./pages/contact/person-contact-type/index.tsx
+          - path: person-custom-type
+            lazy:
+              component: ./pages/contact/person-custom-type/index.tsx
+          - path: person-document-type
+            lazy:
+              component: ./pages/contact/person-document-type/index.tsx
   - path: contact
     children:
       - path: person
         lazy:
           component: ./pages/contact/person/index.tsx
-      - path: person
-        lazy:
-          component: ./pages/contact/person/index.tsx
-      - path: person-test
-        lazy:
-          component: ./pages/contact/person-test/index.tsx
-      - path: person-type
-        lazy:
-          component: ./pages/contact/person-type/index.tsx
-      - path: person-address-type
-        lazy:
-          component: ./pages/contact/person-address-type/index.tsx
-      - path: person-contact-type
-        lazy:
-          component: ./pages/contact/person-contact-type/index.tsx
-      - path: person-custom-type
-        lazy:
-          component: ./pages/contact/person-custom-type/index.tsx
-      - path: person-document-type
-        lazy:
-          component: ./pages/contact/person-document-type/index.tsx
-      - path: person
-        lazy:
-          component: ./pages/contact/person/index.tsx
-      - path: person-type
-        lazy:
-          component: ./pages/contact/person-type/index.tsx
-      - path: person-address-type
-        lazy:
-          component: ./pages/contact/person-address-type/index.tsx
-      - path: person-contact-type
-        lazy:
-          component: ./pages/contact/person-contact-type/index.tsx
-      - path: person-custom-type
-        lazy:
-          component: ./pages/contact/person-custom-type/index.tsx
-      - path: person-document-type
-        lazy:
-          component: ./pages/contact/person-document-type/index.tsx
-  - path: management
-    children:
-      - path: person
-        children:
-          - path: address-type
-            lazy:
-              component: ./pages/contact/person-address-type/index.tsx
-          - path: contact-type
-            lazy:
-              component: ./pages/contact/person-contact-type/index.tsx
-          - path: custom-type
-            lazy:
-              component: ./pages/contact/person-custom-type/index.tsx
-          - path: document-type
-            lazy:
-              component: ./pages/contact/person-document-type/index.tsx
-          - path: person-type
-            lazy:
-              component: ./pages/contact/person-type/index.tsx

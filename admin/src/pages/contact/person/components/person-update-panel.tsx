@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { EnumFieldType } from "@/enums/EnumFieldType";
 
 import DataPanel from "@/components/panels/data-panel";
+import { PersonValue } from "@/types/models/PersonValue.ts";
 import { PersonAddress } from "@/types/models/PersonAddress.ts";
 import { PersonContact } from "@/types/models/PersonContact.ts";
 import { PersonDocument } from "@/types/models/PersonDocument.ts";
@@ -26,6 +27,7 @@ const PersonUpdatePanel = forwardRef(
     const { mutate: personUpdate } = usePersonUpdate();
     const formRef = useRef<FormPanelRef>(null);
 
+    const personValueRef = useRef<any>(null);
     const personAddressRef = useRef<any>(null);
     const personContactRef = useRef<any>(null);
     const personDocumentRef = useRef<any>(null);
@@ -95,17 +97,43 @@ const PersonUpdatePanel = forwardRef(
               </Overlay>
             ),
           },
-
           {
-            title: t("address", { ns: "modules" }),
+            title: t("person-value", { ns: "modules" }),
+            children: (
+              <DataPanel
+                ref={personValueRef}
+                selectable
+                multiple
+                layout="list"
+                id={`person-${item?.id}`}
+                url={`/person/${item?.id}/person-value`}
+                render={(item: PersonValue) => (
+                  <div className="flex flex-row gap-2">
+                    <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+                      value: {item.value}
+                    </span>
+                  </div>
+                )}
+              />
+            ),
+            buttons: [
+              {
+                text: t("apply", { ns: "actions" }),
+                variant: "default",
+                onClick: () => {},
+              },
+            ],
+          },
+          {
+            title: t("person-address", { ns: "modules" }),
             children: (
               <DataPanel
                 ref={personAddressRef}
                 selectable
                 multiple
                 layout="list"
-                id={`person-address-${item?.id}`}
-                url={`/person/${item?.id}/address`}
+                id={`person-${item?.id}`}
+                url={`/person/${item?.id}/person-address`}
                 render={(item: PersonAddress) => (
                   <div className="flex flex-row gap-2">
                     <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
@@ -123,17 +151,16 @@ const PersonUpdatePanel = forwardRef(
               },
             ],
           },
-
           {
-            title: t("contact", { ns: "modules" }),
+            title: t("person-contact", { ns: "modules" }),
             children: (
               <DataPanel
                 ref={personContactRef}
                 selectable
                 multiple
                 layout="list"
-                id={`person-contact-${item?.id}`}
-                url={`/person/${item?.id}/contact`}
+                id={`person-${item?.id}`}
+                url={`/person/${item?.id}/person-contact`}
                 render={(item: PersonContact) => (
                   <div className="flex flex-row gap-2">
                     <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
@@ -151,17 +178,16 @@ const PersonUpdatePanel = forwardRef(
               },
             ],
           },
-
           {
-            title: t("document", { ns: "modules" }),
+            title: t("person-document", { ns: "modules" }),
             children: (
               <DataPanel
                 ref={personDocumentRef}
                 selectable
                 multiple
                 layout="list"
-                id={`person-document-${item?.id}`}
-                url={`/person/${item?.id}/document`}
+                id={`person-${item?.id}`}
+                url={`/person/${item?.id}/person-document`}
                 render={(item: PersonDocument) => (
                   <div className="flex flex-row gap-2">
                     <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
@@ -179,17 +205,16 @@ const PersonUpdatePanel = forwardRef(
               },
             ],
           },
-
           {
-            title: t("custom", { ns: "modules" }),
+            title: t("person-custom", { ns: "modules" }),
             children: (
               <DataPanel
                 ref={personCustomRef}
                 selectable
                 multiple
                 layout="list"
-                id={`person-custom-${item?.id}`}
-                url={`/person/${item?.id}/custom`}
+                id={`person-${item?.id}`}
+                url={`/person/${item?.id}/person-custom`}
                 render={(item: PersonCustom) => (
                   <div className="flex flex-row gap-2">
                     <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
