@@ -383,118 +383,118 @@ data:
     - url: /person-document-type
       method: DELETE
       relations: *a4
-    - url: /person/:personId/person_document
+    - url: /person/:personId/person-document
       method: GET
-      relations: &a5
+      relations: *a5
         role:
           - where:
               slug: admin
-    - url: /person/:personId/person_document
+    - url: /person/:personId/person-document
       method: POST
       relations: *a5
-    - url: /person/:personId/person_document/:id
+    - url: /person/:personId/person-document/:id
       method: PATCH
       relations: *a5
-    - url: /person/:personId/person_document
+    - url: /person/:personId/person-document
       method: DELETE
       relations: *a5
-    - url: /person-contact-type
+    - url: /person/:personId/person-contact
       method: GET
-      relations: &a6
+      relations: *a6
         role:
           - where:
               slug: admin
-    - url: /person-contact-type
+    - url: /person/:personId/person-contact
       method: POST
       relations: *a6
-    - url: /person-contact-type/:id
-      method: GET
-      relations: *a6
-    - url: /person-contact-type/:id
+    - url: /person/:personId/person-contact/:id
       method: PATCH
       relations: *a6
-    - url: /person-contact-type
+    - url: /person/:personId/person-contact
       method: DELETE
       relations: *a6
-    - url: /person/:personId/person_contact
+    - url: /person/:personId/person-address
       method: GET
-      relations: &a7
+      relations: *a7
         role:
           - where:
               slug: admin
-    - url: /person/:personId/person_contact
+    - url: /person/:personId/person-address
       method: POST
       relations: *a7
-    - url: /person/:personId/person_contact/:id
+    - url: /person/:personId/person-address/:id
       method: PATCH
       relations: *a7
-    - url: /person/:personId/person_contact
+    - url: /person/:personId/person-address
       method: DELETE
       relations: *a7
-    - url: /person-address-type
+    - url: /person/:personId/person-custom
       method: GET
-      relations: &a8
+      relations: *a8
         role:
           - where:
               slug: admin
-    - url: /person-address-type
+    - url: /person/:personId/person-custom
       method: POST
       relations: *a8
-    - url: /person-address-type/:id
-      method: GET
-      relations: *a8
-    - url: /person-address-type/:id
+    - url: /person/:personId/person-custom/:id
       method: PATCH
       relations: *a8
-    - url: /person-address-type
+    - url: /person/:personId/person-custom
       method: DELETE
       relations: *a8
-    - url: /person/:personId/person_address
+    - url: /person-contact-type
       method: GET
       relations: &a9
         role:
           - where:
               slug: admin
-    - url: /person/:personId/person_address
+    - url: /person-contact-type
       method: POST
       relations: *a9
-    - url: /person/:personId/person_address/:id
+    - url: /person-contact-type/:id
+      method: GET
+      relations: *a9
+    - url: /person-contact-type/:id
       method: PATCH
       relations: *a9
-    - url: /person/:personId/person_address
+    - url: /person-contact-type
       method: DELETE
       relations: *a9
-    - url: /person-custom-type
+    - url: /person-address-type
       method: GET
       relations: &a10
         role:
           - where:
               slug: admin
-    - url: /person-custom-type
+    - url: /person-address-type
       method: POST
       relations: *a10
-    - url: /person-custom-type/:id
+    - url: /person-address-type/:id
       method: GET
       relations: *a10
-    - url: /person-custom-type/:id
+    - url: /person-address-type/:id
       method: PATCH
       relations: *a10
-    - url: /person-custom-type
+    - url: /person-address-type
       method: DELETE
       relations: *a10
-    - url: /person/:personId/person_custom
+    - url: /person-custom-type
       method: GET
       relations: &a11
         role:
           - where:
               slug: admin
-    - url: /person/:personId/person_custom
+    - url: /person-custom-type
       method: POST
       relations: *a11
-    - url: /person/:personId/person_custom/:id
+    - url: /person-custom-type/:id
+      method: GET
+      relations: *a11
+    - url: /person-custom-type/:id
       method: PATCH
       relations: *a11
-    - url: /person/:personId/person_custom
+    - url: /person-custom-type
       method: DELETE
       relations: *a11
   screen:
