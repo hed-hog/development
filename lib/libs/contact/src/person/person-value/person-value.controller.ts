@@ -38,7 +38,7 @@ export class PersonValueController {
     @Param('personId', ParseIntPipe) personId: number,
     @Pagination() paginationParams
   ) {
-    return this.personValueService.list(personId, paginationParams);
+    return this.personValueService.list(paginationParams, personId);
   }
 
   @Patch(':id')

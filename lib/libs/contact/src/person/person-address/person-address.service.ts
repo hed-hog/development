@@ -1,4 +1,4 @@
-import { PaginationService } from '@hedhog/pagination';
+import { PaginationService, PaginationDTO } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   Injectable,
@@ -17,7 +17,7 @@ export class PersonAddressService {
   ) {}
 
   async create(personId: number, data: CreateDTO) {
-    return this.prismaService.personAddress.create({
+    return this.prismaService.person_address.create({
       data: {
         person_id: personId,
         ...data
@@ -25,16 +25,16 @@ export class PersonAddressService {
     });
   }
 
-  async list(personId?: number, id?: number) {
+  async list(paginationParams: PaginationDTO, personId?: number) {
     const where: any = {};
     if (personId !== undefined) where.person_id = personId;
-    if (id !== undefined) where.id = id;
 
     return this.paginationService.paginate(
-      this.prismaService.personAddress,
+      this.prismaService.person_address,
       {
         fields:
-          'primary,street,number,complement,district,city,state,postal_code,reference'
+          'primary,street,number,complement,district,city,state,postal_code,reference',
+        ...paginationParams
       },
       {
         where
@@ -43,7 +43,7 @@ export class PersonAddressService {
   }
 
   async update(personId: number, id: number, data: UpdateDTO) {
-    return this.prismaService.personAddress.updateMany({
+    return this.prismaService.person_address.updateMany({
       where: {
         person_id: personId,
         id: id
