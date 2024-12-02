@@ -29,6 +29,7 @@
   "person_address.complement": "Complemento",
   "person_address.district": "Bairro",
   "person_address.city": "Cidade",
+  "person_address.state": "Estado",
   "person_address.postal_code": "CEP",
   "person_address.reference": "Referência",
   "person_address_type_locale.name": "Nome",
