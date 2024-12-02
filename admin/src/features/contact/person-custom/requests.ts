@@ -9,10 +9,10 @@ export function requests() {
 
   const personCustomList = async (
     personId: number,
-    params: PaginationParams & { typeId?: number; customId?: number },
+    params: PaginationParams & { id?: number },
   ) => {
     return request<PaginationResult<PersonCustomType>>({
-      url: `/person/${personId}/custom`,
+      url: `/person/${personId}/person-custom`,
       params,
     }).then((res) => res.data);
   };
@@ -22,7 +22,7 @@ export function requests() {
     data: PersonCustomType,
   ) => {
     return request<PersonCustomType>({
-      url: `/person/${personId}/custom`,
+      url: `/person/${personId}/person-custom>`,
       method: HttpMethod.POST,
       data: formatDataWithLocale(data),
     }).then((res) => res.data);
@@ -30,11 +30,11 @@ export function requests() {
 
   const personCustomUpdate = async (
     personId: number,
-    customId: number,
+    id: number,
     data: PersonCustomType,
   ) => {
     return request<PersonCustomType>({
-      url: `/person/${personId}/custom/${customId}`,
+      url: `/person/${personId}/person-custom/${id}`,
       method: HttpMethod.PATCH,
       data: formatDataWithLocale(data),
     }).then((res) => res.data);
@@ -42,7 +42,7 @@ export function requests() {
 
   const personCustomDelete = async (personId: number, ids: number[]) => {
     return request<Delete>({
-      url: `/person/${personId}/custom`,
+      url: `/person/${personId}/person-custom`,
       method: HttpMethod.DELETE,
       data: { ids },
     }).then((res) => res.data);

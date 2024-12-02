@@ -47,30 +47,6 @@ const PersonCustomUpdatePanel = forwardRef(
                   ref={formRef}
                   fields={[
                     {
-                      name: "person_id",
-                      label: {
-                        text: t("person_custom.person_id", { ns: "fields" }),
-                      },
-                      type: EnumFieldType.COMBOBOX,
-                      required: true,
-                      url: "/person",
-                      displayName: "person",
-                      valueName: "id",
-                    },
-
-                    {
-                      name: "type_id",
-                      label: {
-                        text: t("person_custom.type_id", { ns: "fields" }),
-                      },
-                      type: EnumFieldType.COMBOBOX,
-                      required: true,
-                      url: "/person-custom-type",
-                      displayName: "type",
-                      valueName: "id",
-                    },
-
-                    {
                       name: "value",
                       label: {
                         text: t("person_custom.value", { ns: "fields" }),

@@ -44,18 +44,6 @@ const PersonValueUpdatePanel = forwardRef(
                   ref={formRef}
                   fields={[
                     {
-                      name: "person_id",
-                      label: {
-                        text: t("person_value.person_id", { ns: "fields" }),
-                      },
-                      type: EnumFieldType.COMBOBOX,
-                      required: true,
-                      url: "/person",
-                      displayName: "person",
-                      valueName: "id",
-                    },
-
-                    {
                       name: "value",
                       label: {
                         text: t("person_value.value", { ns: "fields" }),
