@@ -599,12 +599,18 @@ tables:
       - name: value
         type: varchar
         length: 255
+        locale:
+          en: Value
+          pt: Valor
       - type: created_at
       - type: updated_at
   person_type:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
     ifNotExists: true
@@ -628,6 +634,9 @@ tables:
         type: varchar
         length: 31
         isUnique: true
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
     ifNotExists: true
@@ -637,6 +646,9 @@ tables:
       - name: name
         type: varchar
         length: 255
+        locale:
+          en: Name
+          pt: Nome
       - name: photo_id
         type: fk
         isNullable: true
@@ -644,6 +656,9 @@ tables:
           table: file
           column: id
           onDelete: SET NULL
+        locale:
+          en: Photo
+          pt: Foto
       - name: type_id
         type: fk
         isPrimary: false
@@ -651,9 +666,15 @@ tables:
           table: person_type
           column: id
           onDelete: CASCADE
+        locale:
+          en: Type
+          pt: Tipo
       - name: birth_at
         type: date
         isNullable: true
+        locale:
+          en: Birth
+          pt: Nascimento
       - type: created_at
       - type: updated_at
     ifNotExists: true
@@ -666,6 +687,9 @@ tables:
           table: country
           column: id
           onDelete: RESTRICT
+        locale:
+          en: Country
+          pt: País
       - type: slug
       - type: created_at
       - type: updated_at
@@ -688,6 +712,9 @@ tables:
       - name: name
         type: varchar
         length: 63
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
   person_document:
@@ -705,24 +732,42 @@ tables:
           table: person_document_type
           column: id
           onDelete: CASCADE
+        locale:
+          en: Type
+          pt: Tipo
       - name: country_id
         type: fk
         references:
           table: country
           column: id
           onDelete: RESTRICT
+        locale:
+          en: Country
+          pt: País
       - name: primary
         type: boolean
         default: false
+        locale:
+          en: Primary
+          pt: Principal
       - name: value
         type: varchar
         length: 63
+        locale:
+          en: Value
+          pt: Valor
       - name: issued_at
         type: date
         isNullable: true
+        locale:
+          en: Issued
+          pt: Emissão
       - name: expiry_at
         type: date
         isNullable: true
+        locale:
+          en: Expiry
+          pt: Validade
       - type: created_at
       - type: updated_at
     indices:
@@ -736,6 +781,9 @@ tables:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   person_contact_type_locale:
@@ -757,6 +805,9 @@ tables:
       - name: name
         type: varchar
         length: 63
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
   person_contact:
@@ -774,12 +825,21 @@ tables:
           table: person_contact_type
           column: id
           onDelete: CASCADE
+        locale:
+          en: Type
+          pt: Tipo
       - name: primary
         type: boolean
         default: false
+        locale:
+          en: Primary
+          pt: Principal
       - name: value
         type: varchar
         length: 255
+        locale:
+          en: Value
+          pt: Valor
       - type: created_at
       - type: updated_at
     indices:
@@ -793,6 +853,9 @@ tables:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   person_address:
@@ -810,42 +873,72 @@ tables:
           table: country
           column: id
           onDelete: RESTRICT
+        locale:
+          en: Country
+          pt: País
       - name: type_id
         type: fk
         references:
           table: person_address_type
           column: id
           onDelete: CASCADE
+        locale:
+          en: Type
+          pt: Tipo
       - name: primary
         type: boolean
         default: false
+        locale:
+          en: Primary
+          pt: Principal
       - name: street
         type: varchar
         length: 255
+        locale:
+          en: Street
+          pt: Rua
       - name: number
         type: varchar
         length: 15
         isNullable: true
+        locale:
+          en: Number
+          pt: Número
       - name: complement
         type: varchar
         length: 255
         isNullable: true
+        locale:
+          en: Complement
+          pt: Complemento
       - name: district
         type: varchar
         length: 255
+        locale:
+          en: District
+          pt: Bairro
       - name: city
         type: varchar
         length: 255
+        locale:
+          en: City
+          pt: Cidade
       - name: state
         type: varchar
         length: 255
       - name: postal_code
         type: varchar
         length: 20
+        locale:
+          en: Postal Code
+          pt: CEP
       - name: reference
         type: varchar
         length: 60
         isNullable: true
+        locale:
+          en: Reference
+          pt: Referência
       - type: created_at
       - type: updated_at
     ifNotExists: true
@@ -868,12 +961,18 @@ tables:
       - name: name
         type: varchar
         length: 31
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
   person_custom_type:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   person_custom_type_locale:
@@ -895,6 +994,9 @@ tables:
       - name: name
         type: varchar
         length: 31
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
   person_custom:
@@ -915,6 +1017,9 @@ tables:
       - name: value
         type: text
         isNullable: true
+        locale:
+          en: Value
+          pt: Valor
       - type: created_at
       - type: updated_at
     indices:
@@ -942,6 +1047,9 @@ tables:
       - name: name
         type: varchar
         length: 31
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
 routes:

@@ -1,7 +1,7 @@
 import { useApp } from '@/hooks/use-app'
 import { Delete, PaginationParams, PaginationResult } from '@/types'
-import { PersonCustomType } from '@/types/models'
 import { HttpMethod } from '@/types/http-method'
+import { PersonCustomType } from '@/types/models'
 import { formatDataWithLocale } from '@hedhog/utils'
 
 export function requests() {
