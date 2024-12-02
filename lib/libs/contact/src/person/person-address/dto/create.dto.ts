@@ -5,9 +5,6 @@ import { IsOptional } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
-  person_id: number;
-
-  @IsNumber()
   country_id: number;
 
   @IsNumber()
