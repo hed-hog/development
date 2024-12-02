@@ -14,12 +14,16 @@ export default function Page() {
   const [selectedItems, setSelectedItems] = useState<PersonCustomType[]>([]);
   const { mutate: deletePersonCustomType } = usePersonCustomTypeDelete();
   const { openSheet, confirm, closeSheet } = useApp();
-  const { t } = useTranslation(['person-custom-type', 'modules', 'actions']);
+  const { t } = useTranslation([
+    'contact.person-custom-type',
+    'modules',
+    'actions'
+  ]);
 
   const openCreate = () => {
     const id = openSheet({
-      title: t('create', { ns: 'actions' }),
-      description: t('createText', { ns: 'person-custom-type' }),
+      title: t('create', { ns: 'contact.person-custom-type' }),
+      description: t('createText', { ns: 'contact.person-custom-type' }),
       children: () => (
         <PersonCustomTypeCreatePanel onCreated={() => closeSheet(id)} />
       )
@@ -30,8 +34,8 @@ export default function Page() {
 
   const openDelete = (items: PersonCustomType[]) => {
     return confirm({
-      title: `${t('delete', { ns: 'actions' })} ${items.length} ${isPlural(items.length) ? t('items', { ns: 'actions' }) : t('item', { ns: 'actions' })}`,
-      description: t('deleteText', { ns: 'person-custom-type' })
+      title: `${t('delete', { ns: 'contact.person-custom-type' })} ${items.length} ${isPlural(items.length) ? t('items', { ns: 'actions' }) : t('item', { ns: 'actions' })}`,
+      description: t('deleteText', { ns: 'contact.person-custom-type' })
     })
       .then(() =>
         deletePersonCustomType(
@@ -49,8 +53,8 @@ export default function Page() {
           onUpdated={() => closeSheet(id)}
         />
       ),
-      title: t('edit', { ns: 'person-custom-type' }),
-      description: t('editText', { ns: 'person-custom-type' })
+      title: t('edit', { ns: 'contact.person-custom-type' }),
+      description: t('editText', { ns: 'contact.person-custom-type' })
     });
 
     return id;
@@ -77,7 +81,7 @@ export default function Page() {
           {
             icon: <IconEdit className="mr-1 w-8 cursor-pointer" />,
             label: t('edit', { ns: 'actions' }),
-            tooltip: t('editTooltip', { ns: 'person-custom-type' }),
+            tooltip: t('editTooltip', { ns: 'contact.person-custom-type' }),
             handler: (items: PersonCustomType[]) => {
               if (items.length === 1) openUpdate(items[0]);
             },
@@ -86,7 +90,7 @@ export default function Page() {
           {
             icon: <IconTrash className="mr-1 w-8 cursor-pointer" />,
             label: t('delete', { ns: 'actions' }),
-            tooltip: t('deleteTooltip', { ns: 'person-custom-type' }),
+            tooltip: t('deleteTooltip', { ns: 'contact.person-custom-type' }),
             variant: 'destructive',
             handler: (items: PersonCustomType[]) => {
               openDelete(items);
@@ -96,7 +100,7 @@ export default function Page() {
           {
             icon: <IconPlus className="mr-1 w-8 cursor-pointer" />,
             label: t('create', { ns: 'actions' }),
-            tooltip: t('createTooltip', { ns: 'person-custom-type' }),
+            tooltip: t('createTooltip', { ns: 'contact.person-custom-type' }),
             variant: 'default',
             handler: () => {
               openCreate();
