@@ -7,6 +7,7 @@
   "person.type_id": "Type",
   "person.birth_at": "Birth",
   "person_document_type.country_id": "Country",
+  "person_document_type.slug": "Slug",
   "person_document_type_locale.name": "Name",
   "person_document.type_id": "Type",
   "person_document.country_id": "Country",
