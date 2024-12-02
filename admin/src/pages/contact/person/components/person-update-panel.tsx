@@ -67,6 +67,18 @@ const PersonUpdatePanel = forwardRef(
 
       return id;
     };
+    const openDeletePersonValue = (items: PersonValue[]) => {
+      return confirm({
+        title: `${t("delete", { ns: "actions" })} ${items.length} ${isPlural(items.length) ? t("items", { ns: "actions" }) : t("item", { ns: "actions" })}`,
+        description: t("deleteText", { ns: "contact.person-value" }),
+      })
+        .then(() =>
+          deletePersonValue(
+            items.map((item) => item.id).filter((id) => id !== undefined),
+          ),
+        )
+        .catch(() => setSelectedItems(items));
+    };
     const personAddressRef = useRef<any>(null);
     const openCreatePersonAddress = () => {
       const id = openDialog({
@@ -92,6 +104,18 @@ const PersonUpdatePanel = forwardRef(
       });
 
       return id;
+    };
+    const openDeletePersonAddress = (items: PersonAddress[]) => {
+      return confirm({
+        title: `${t("delete", { ns: "actions" })} ${items.length} ${isPlural(items.length) ? t("items", { ns: "actions" }) : t("item", { ns: "actions" })}`,
+        description: t("deleteText", { ns: "contact.person-address" }),
+      })
+        .then(() =>
+          deletePersonAddress(
+            items.map((item) => item.id).filter((id) => id !== undefined),
+          ),
+        )
+        .catch(() => setSelectedItems(items));
     };
     const personContactRef = useRef<any>(null);
     const openCreatePersonContact = () => {
@@ -119,6 +143,18 @@ const PersonUpdatePanel = forwardRef(
 
       return id;
     };
+    const openDeletePersonContact = (items: PersonContact[]) => {
+      return confirm({
+        title: `${t("delete", { ns: "actions" })} ${items.length} ${isPlural(items.length) ? t("items", { ns: "actions" }) : t("item", { ns: "actions" })}`,
+        description: t("deleteText", { ns: "contact.person-contact" }),
+      })
+        .then(() =>
+          deletePersonContact(
+            items.map((item) => item.id).filter((id) => id !== undefined),
+          ),
+        )
+        .catch(() => setSelectedItems(items));
+    };
     const personDocumentRef = useRef<any>(null);
     const openCreatePersonDocument = () => {
       const id = openDialog({
@@ -145,6 +181,18 @@ const PersonUpdatePanel = forwardRef(
 
       return id;
     };
+    const openDeletePersonDocument = (items: PersonDocument[]) => {
+      return confirm({
+        title: `${t("delete", { ns: "actions" })} ${items.length} ${isPlural(items.length) ? t("items", { ns: "actions" }) : t("item", { ns: "actions" })}`,
+        description: t("deleteText", { ns: "contact.person-document" }),
+      })
+        .then(() =>
+          deletePersonDocument(
+            items.map((item) => item.id).filter((id) => id !== undefined),
+          ),
+        )
+        .catch(() => setSelectedItems(items));
+    };
     const personCustomRef = useRef<any>(null);
     const openCreatePersonCustom = () => {
       const id = openDialog({
@@ -170,6 +218,18 @@ const PersonUpdatePanel = forwardRef(
       });
 
       return id;
+    };
+    const openDeletePersonCustom = (items: PersonCustom[]) => {
+      return confirm({
+        title: `${t("delete", { ns: "actions" })} ${items.length} ${isPlural(items.length) ? t("items", { ns: "actions" }) : t("item", { ns: "actions" })}`,
+        description: t("deleteText", { ns: "contact.person-custom" }),
+      })
+        .then(() =>
+          deletePersonCustom(
+            items.map((item) => item.id).filter((id) => id !== undefined),
+          ),
+        )
+        .catch(() => setSelectedItems(items));
     };
 
     useEffectAfterFirstUpdate(() => {

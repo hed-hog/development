@@ -29,6 +29,7 @@
   "person_address.complement": "Complement",
   "person_address.district": "District",
   "person_address.city": "City",
+  "person_address.state": "State",
   "person_address.postal_code": "Postal Code",
   "person_address.reference": "Reference",
   "person_address_type_locale.name": "Name",
