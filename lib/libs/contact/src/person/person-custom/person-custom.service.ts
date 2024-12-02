@@ -48,7 +48,7 @@ export class PersonCustomService {
   }
 
   async create(personId: number, data: CreateDTO) {
-    data.person_id = personId;
+    (data as any).person_id = personId;
 
     return this.localeService.createModelWithLocale(
       this.modelName,
