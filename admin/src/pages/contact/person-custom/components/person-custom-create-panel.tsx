@@ -19,7 +19,7 @@ export type PersonCustomCreatePanelProps = {
 const PersonCustomCreatePanel = forwardRef(
   ({ onCreated }: PersonCustomCreatePanelProps, ref) => {
     const formRef = useRef<FormPanelRef>(null);
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { mutateAsync: createPersonCustom } = usePersonCustomCreate();
 
     useImperativeHandle(
@@ -38,7 +38,7 @@ const PersonCustomCreatePanel = forwardRef(
         fields={[
           {
             name: "person_id",
-            label: { text: t("person_id", { ns: "translation" }) },
+            label: { text: t("person_custom.person_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/person",
@@ -48,7 +48,7 @@ const PersonCustomCreatePanel = forwardRef(
 
           {
             name: "type_id",
-            label: { text: t("type_id", { ns: "translation" }) },
+            label: { text: t("person_custom.type_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/person-custom-type",
@@ -58,7 +58,7 @@ const PersonCustomCreatePanel = forwardRef(
 
           {
             name: "value",
-            label: { text: t("value", { ns: "translation" }) },
+            label: { text: t("person_custom.value", { ns: "fields" }) },
             type: EnumFieldType.RICHTEXT,
             required: true,
           },

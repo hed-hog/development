@@ -16,7 +16,7 @@ export type PersonContactCreatePanelProps = {
 const PersonContactCreatePanel = forwardRef(
   ({ onCreated }: PersonContactCreatePanelProps, ref) => {
     const formRef = useRef<FormPanelRef>(null);
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { mutateAsync: createPersonContact } = usePersonContactCreate();
 
     useImperativeHandle(
@@ -35,7 +35,7 @@ const PersonContactCreatePanel = forwardRef(
         fields={[
           {
             name: "person_id",
-            label: { text: t("person_id", { ns: "translation" }) },
+            label: { text: t("person_contact.person_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/person",
@@ -45,7 +45,7 @@ const PersonContactCreatePanel = forwardRef(
 
           {
             name: "type_id",
-            label: { text: t("type_id", { ns: "translation" }) },
+            label: { text: t("person_contact.type_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/person-contact-type",
@@ -55,14 +55,14 @@ const PersonContactCreatePanel = forwardRef(
 
           {
             name: "primary",
-            label: { text: t("primary", { ns: "translation" }) },
+            label: { text: t("person_contact.primary", { ns: "fields" }) },
             type: EnumFieldType.SWITCH,
             required: true,
           },
 
           {
             name: "value",
-            label: { text: t("value", { ns: "translation" }) },
+            label: { text: t("person_contact.value", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },

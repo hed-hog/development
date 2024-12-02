@@ -16,7 +16,7 @@ export type PersonValueCreatePanelProps = {
 const PersonValueCreatePanel = forwardRef(
   ({ onCreated }: PersonValueCreatePanelProps, ref) => {
     const formRef = useRef<FormPanelRef>(null);
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { mutateAsync: createPersonValue } = usePersonValueCreate();
 
     useImperativeHandle(
@@ -35,7 +35,7 @@ const PersonValueCreatePanel = forwardRef(
         fields={[
           {
             name: "person_id",
-            label: { text: t("person_id", { ns: "translation" }) },
+            label: { text: t("person_value.person_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/person",
@@ -45,7 +45,7 @@ const PersonValueCreatePanel = forwardRef(
 
           {
             name: "value",
-            label: { text: t("value", { ns: "translation" }) },
+            label: { text: t("person_value.value", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },

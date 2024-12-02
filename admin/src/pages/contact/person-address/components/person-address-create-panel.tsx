@@ -16,7 +16,7 @@ export type PersonAddressCreatePanelProps = {
 const PersonAddressCreatePanel = forwardRef(
   ({ onCreated }: PersonAddressCreatePanelProps, ref) => {
     const formRef = useRef<FormPanelRef>(null);
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { mutateAsync: createPersonAddress } = usePersonAddressCreate();
 
     useImperativeHandle(
@@ -35,7 +35,7 @@ const PersonAddressCreatePanel = forwardRef(
         fields={[
           {
             name: "person_id",
-            label: { text: t("person_id", { ns: "translation" }) },
+            label: { text: t("person_address.person_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/person",
@@ -45,7 +45,7 @@ const PersonAddressCreatePanel = forwardRef(
 
           {
             name: "country_id",
-            label: { text: t("country_id", { ns: "translation" }) },
+            label: { text: t("person_address.country_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/country",
@@ -55,7 +55,7 @@ const PersonAddressCreatePanel = forwardRef(
 
           {
             name: "type_id",
-            label: { text: t("type_id", { ns: "translation" }) },
+            label: { text: t("person_address.type_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/person-address-type",
@@ -65,63 +65,63 @@ const PersonAddressCreatePanel = forwardRef(
 
           {
             name: "primary",
-            label: { text: t("primary", { ns: "translation" }) },
+            label: { text: t("person_address.primary", { ns: "fields" }) },
             type: EnumFieldType.SWITCH,
             required: true,
           },
 
           {
             name: "street",
-            label: { text: t("street", { ns: "translation" }) },
+            label: { text: t("person_address.street", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
 
           {
             name: "number",
-            label: { text: t("number", { ns: "translation" }) },
+            label: { text: t("person_address.number", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
 
           {
             name: "complement",
-            label: { text: t("complement", { ns: "translation" }) },
+            label: { text: t("person_address.complement", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
 
           {
             name: "district",
-            label: { text: t("district", { ns: "translation" }) },
+            label: { text: t("person_address.district", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
 
           {
             name: "city",
-            label: { text: t("city", { ns: "translation" }) },
+            label: { text: t("person_address.city", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
 
           {
             name: "state",
-            label: { text: t("state", { ns: "translation" }) },
+            label: { text: t("person_address.state", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
 
           {
             name: "postal_code",
-            label: { text: t("postal_code", { ns: "translation" }) },
+            label: { text: t("person_address.postal_code", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
 
           {
             name: "reference",
-            label: { text: t("reference", { ns: "translation" }) },
+            label: { text: t("person_address.reference", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },

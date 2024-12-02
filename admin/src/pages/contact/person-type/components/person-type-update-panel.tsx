@@ -21,7 +21,7 @@ export type PersonTypeUpdatePanelProps = {
 
 const PersonTypeUpdatePanel = forwardRef(
   ({ data, onUpdated }: PersonTypeUpdatePanelProps, ref) => {
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { data: item, isLoading } = usePersonTypeGet(data.id as number);
     const { mutate: personTypeUpdate } = usePersonTypeUpdate();
     const formRef = useRef<FormPanelRef>(null);
@@ -47,7 +47,7 @@ const PersonTypeUpdatePanel = forwardRef(
                   fields={[
                     {
                       name: "slug",
-                      label: { text: t("slug", { ns: "translation" }) },
+                      label: { text: t("person_type.slug", { ns: "fields" }) },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },

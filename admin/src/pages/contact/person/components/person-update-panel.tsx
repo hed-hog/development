@@ -34,7 +34,7 @@ export type PersonUpdatePanelProps = {
 
 const PersonUpdatePanel = forwardRef(
   ({ data, onUpdated }: PersonUpdatePanelProps, ref) => {
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { data: item, isLoading } = usePersonGet(data.id as number);
     const { mutate: personUpdate } = usePersonUpdate();
     const formRef = useRef<FormPanelRef>(null);
@@ -192,14 +192,14 @@ const PersonUpdatePanel = forwardRef(
                   fields={[
                     {
                       name: "name",
-                      label: { text: t("name", { ns: "translation" }) },
+                      label: { text: t("person.name", { ns: "fields" }) },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
                       name: "photo_id",
-                      label: { text: t("photo_id", { ns: "translation" }) },
+                      label: { text: t("person.photo_id", { ns: "fields" }) },
                       type: EnumFieldType.FILE,
                       required: true,
                       url: "/file",
@@ -209,7 +209,7 @@ const PersonUpdatePanel = forwardRef(
 
                     {
                       name: "type_id",
-                      label: { text: t("type_id", { ns: "translation" }) },
+                      label: { text: t("person.type_id", { ns: "fields" }) },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
                       url: "/person-type",
@@ -219,7 +219,7 @@ const PersonUpdatePanel = forwardRef(
 
                     {
                       name: "birth_at",
-                      label: { text: t("birth_at", { ns: "translation" }) },
+                      label: { text: t("person.birth_at", { ns: "fields" }) },
                       type: EnumFieldType.DATEPICKER,
                       required: true,
                     },

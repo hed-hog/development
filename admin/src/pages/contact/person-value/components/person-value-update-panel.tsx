@@ -18,7 +18,7 @@ export type PersonValueUpdatePanelProps = {
 
 const PersonValueUpdatePanel = forwardRef(
   ({ data, onUpdated }: PersonValueUpdatePanelProps, ref) => {
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { data: item, isLoading } = usePersonValueGet(data.id as number);
     const { mutate: personValueUpdate } = usePersonValueUpdate();
     const formRef = useRef<FormPanelRef>(null);
@@ -44,7 +44,9 @@ const PersonValueUpdatePanel = forwardRef(
                   fields={[
                     {
                       name: "person_id",
-                      label: { text: t("person_id", { ns: "translation" }) },
+                      label: {
+                        text: t("person_value.person_id", { ns: "fields" }),
+                      },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
                       url: "/person",
@@ -54,7 +56,9 @@ const PersonValueUpdatePanel = forwardRef(
 
                     {
                       name: "value",
-                      label: { text: t("value", { ns: "translation" }) },
+                      label: {
+                        text: t("person_value.value", { ns: "fields" }),
+                      },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },

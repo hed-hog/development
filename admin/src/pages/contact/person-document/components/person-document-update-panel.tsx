@@ -18,7 +18,7 @@ export type PersonDocumentUpdatePanelProps = {
 
 const PersonDocumentUpdatePanel = forwardRef(
   ({ data, onUpdated }: PersonDocumentUpdatePanelProps, ref) => {
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { data: item, isLoading } = usePersonDocumentGet(data.id as number);
     const { mutate: personDocumentUpdate } = usePersonDocumentUpdate();
     const formRef = useRef<FormPanelRef>(null);
@@ -44,7 +44,9 @@ const PersonDocumentUpdatePanel = forwardRef(
                   fields={[
                     {
                       name: "person_id",
-                      label: { text: t("person_id", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document.person_id", { ns: "fields" }),
+                      },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
                       url: "/person",
@@ -54,7 +56,9 @@ const PersonDocumentUpdatePanel = forwardRef(
 
                     {
                       name: "type_id",
-                      label: { text: t("type_id", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document.type_id", { ns: "fields" }),
+                      },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
                       url: "/person-document-type",
@@ -64,7 +68,9 @@ const PersonDocumentUpdatePanel = forwardRef(
 
                     {
                       name: "country_id",
-                      label: { text: t("country_id", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document.country_id", { ns: "fields" }),
+                      },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
                       url: "/country",
@@ -74,28 +80,36 @@ const PersonDocumentUpdatePanel = forwardRef(
 
                     {
                       name: "primary",
-                      label: { text: t("primary", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document.primary", { ns: "fields" }),
+                      },
                       type: EnumFieldType.SWITCH,
                       required: true,
                     },
 
                     {
                       name: "value",
-                      label: { text: t("value", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document.value", { ns: "fields" }),
+                      },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
                       name: "issued_at",
-                      label: { text: t("issued_at", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document.issued_at", { ns: "fields" }),
+                      },
                       type: EnumFieldType.DATEPICKER,
                       required: true,
                     },
 
                     {
                       name: "expiry_at",
-                      label: { text: t("expiry_at", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document.expiry_at", { ns: "fields" }),
+                      },
                       type: EnumFieldType.DATEPICKER,
                       required: true,
                     },

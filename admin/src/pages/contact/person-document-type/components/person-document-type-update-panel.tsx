@@ -21,7 +21,7 @@ export type PersonDocumentTypeUpdatePanelProps = {
 
 const PersonDocumentTypeUpdatePanel = forwardRef(
   ({ data, onUpdated }: PersonDocumentTypeUpdatePanelProps, ref) => {
-    const { t } = useTranslation(["actions"]);
+    const { t } = useTranslation(["actions", "fields", "translations"]);
     const { data: item, isLoading } = usePersonDocumentTypeGet(
       data.id as number,
     );
@@ -49,7 +49,11 @@ const PersonDocumentTypeUpdatePanel = forwardRef(
                   fields={[
                     {
                       name: "country_id",
-                      label: { text: t("country_id", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document_type.country_id", {
+                          ns: "fields",
+                        }),
+                      },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
                       url: "/country",
@@ -59,7 +63,9 @@ const PersonDocumentTypeUpdatePanel = forwardRef(
 
                     {
                       name: "slug",
-                      label: { text: t("slug", { ns: "translation" }) },
+                      label: {
+                        text: t("person_document_type.slug", { ns: "fields" }),
+                      },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
