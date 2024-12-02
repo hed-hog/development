@@ -929,6 +929,9 @@ tables:
       - name: state
         type: varchar
         length: 255
+        locale:
+          en: State
+          pt: Estado
       - name: postal_code
         type: varchar
         length: 20
