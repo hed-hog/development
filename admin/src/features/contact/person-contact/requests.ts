@@ -23,12 +23,10 @@ export function requests() {
   }) => {
     const { personId, data } = params
 
-    console.log({ params })
-
     return request<PersonContactType>({
-      url: `/person/${personId}/contact`,
+      url: `/person/${personId}/person-contact`,
       method: HttpMethod.POST,
-      data: formatDataWithLocale(data),
+      data,
     }).then((res) => res.data)
   }
 

@@ -3,7 +3,7 @@ import { PrismaService } from '@hedhog/prisma';
 import {
   Injectable,
   NotFoundException,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
@@ -13,15 +13,15 @@ import { DeleteDTO } from '@hedhog/core';
 export class PersonContactService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   async create(personId: number, data: CreateDTO) {
     return this.prismaService.person_contact.create({
       data: {
         person_id: personId,
-        ...data
-      }
+        ...data,
+      },
     });
   }
 
@@ -33,11 +33,11 @@ export class PersonContactService {
       this.prismaService.person_contact,
       {
         fields: 'primary,value',
-        ...paginationParams
+        ...paginationParams,
       },
       {
-        where
-      }
+        where,
+      },
     );
   }
 
@@ -45,16 +45,16 @@ export class PersonContactService {
     return this.prismaService.person_contact.updateMany({
       where: {
         person_id: personId,
-        id: id
+        id: id,
       },
-      data
+      data,
     });
   }
 
   async delete(personId: number, { ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
@@ -62,9 +62,9 @@ export class PersonContactService {
       where: {
         person_id: personId,
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }

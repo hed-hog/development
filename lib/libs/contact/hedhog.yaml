@@ -313,6 +313,26 @@ data:
         role:
           - where:
               slug: admin
+    - name:
+        en: PersonValue
+        pt: PersonValue
+      icon: file
+      url: /person-value
+      slug: person-value
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonType
+        pt: PersonType
+      icon: file
+      url: /person-type
+      slug: person-type
+      relations:
+        role:
+          - where:
+              slug: admin
   route:
     - url: /person/:personId/person-value
       method: GET

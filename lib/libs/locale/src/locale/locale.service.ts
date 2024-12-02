@@ -299,7 +299,7 @@ export class LocaleService {
   ) {
     try {
       const model = await this.prismaService[modelName].create({
-        data: this.getValidData(modelName, data),
+        data: this.prismaService.getValidData(modelName, data),
       });
 
       const { locale } = data as {
@@ -343,20 +343,6 @@ export class LocaleService {
     }
   }
 
-  getFields(modelName: string) {
-    return Object.keys(this.prismaService[modelName].fields);
-  }
-
-  getValidData(modelName: string, data: any) {
-    const validData: any = {};
-
-    for (const fieldName of this.getFields(modelName)) {
-      validData[fieldName] = data[fieldName];
-    }
-
-    return validData;
-  }
-
   async updateModelWithLocale<T>(
     modelName: string,
     foreignKeyName: string,
@@ -398,7 +384,7 @@ export class LocaleService {
 
       return this.prismaService[modelName].update({
         where: { ...where, id },
-        data: this.getValidData(modelName, data),
+        data: this.prismaService.getValidData(modelName, data),
       });
     } catch (error: any) {
       if (error.message.includes('Unique constraint failed')) {
@@ -449,7 +435,7 @@ export class LocaleService {
     where: any = {},
   ) {
     try {
-      const fields = this.getFields(modelName);
+      const fields = this.prismaService.getFields(modelName);
 
       const OR: any[] = this.prismaService.createInsensitiveSearch(
         fields,

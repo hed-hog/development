@@ -4,7 +4,7 @@ import { TabPanel } from '@/components/panels/tab-panel'
 import { usePersonGet, usePersonUpdate } from '@/features/contact/person'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { Person } from '@/types/models'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { EnumFieldType } from '@/enums/EnumFieldType'
@@ -123,7 +123,10 @@ const PersonUpdatePanel = forwardRef(
         title: t('create', { ns: 'actions' }),
         description: t('createText', { ns: 'person-contact' }),
         children: () => (
-          <PersonContactCreatePanel onCreated={() => closeDialog(id)} />
+          <PersonContactCreatePanel
+            personId={Number(data.id)}
+            onCreated={() => closeDialog(id)}
+          />
         ),
       })
 
