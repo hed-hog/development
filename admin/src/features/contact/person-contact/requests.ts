@@ -22,7 +22,6 @@ export function requests() {
     data: PersonContactType
   }) => {
     const { personId, data } = params
-
     return request<PersonContactType>({
       url: `/person/${personId}/person-contact`,
       method: HttpMethod.POST,
