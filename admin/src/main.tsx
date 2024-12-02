@@ -25,6 +25,9 @@ i18n
   .init({
     fallbackLng: 'en',
     lng: localStorage.getItem('i18nextLng') || 'en',
+    react: {
+      useSuspense: false,
+    },
   })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
