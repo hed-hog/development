@@ -691,6 +691,9 @@ tables:
           en: Country
           pt: País
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   person_document_type_locale:
