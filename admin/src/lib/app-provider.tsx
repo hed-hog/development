@@ -23,11 +23,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { useDialog } from '@/hooks/use-dialog'
 import useLocalStorage, { LocalStorageKeys } from '@/hooks/use-local-storage'
-import { useSheet } from '@/hooks/use-sheet'
-import { DialogType, OpenDialogType } from '@/types/dialog'
-import { OpenSheetType, SheetType } from '@/types/sheet'
+import { OpenDialogType } from '@/types/dialog'
+import { OpenSheetType } from '@/types/sheet'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import React, {
   createContext,
@@ -40,6 +38,7 @@ import React, {
 import { useTranslation } from 'react-i18next'
 import { toast, Toaster } from 'sonner'
 import { useMediaQuery } from 'usehooks-ts'
+import { v4 as uuidv4 } from 'uuid'
 import { decodeToken } from './decode-token'
 import { getBaseURL } from './get-base-url'
 import { QueryClientProvider } from './query-provider'
@@ -94,11 +93,24 @@ export type AppProviderProps = {
   children: ReactNode
 }
 
+export type ModalType = (
+  | {
+      type: 'dialog'
+      dialog: OpenDialogType
+    }
+  | {
+      type: 'sheet'
+      sheet: OpenSheetType
+    }
+) & {
+  id: string
+  open: boolean
+}
+
 export const AppProvider = ({ children }: AppProviderProps) => {
   const { t } = useTranslation(['module', 'success', 'error'])
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const [dialogs, setDialogs] = useState<DialogType[]>([])
-  const [sheets, setSheets] = useState<SheetType[]>([])
+  const [modals, setModals] = useState<ModalType[]>([])
 
   const [token, setToken] = useLocalStorage({
     defaultValue: '',
@@ -109,8 +121,26 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     key: LocalStorageKeys.User,
   })
 
-  const { openDialog, closeDialog } = useDialog(dialogs, setDialogs)
-  const { openSheet, closeSheet } = useSheet(sheets, setSheets)
+  const openDialog = (dialog: OpenDialogType) => {
+    const id = uuidv4()
+    setModals((modals) => {
+      return [...modals, { type: 'dialog', dialog, id, open: true }]
+    })
+    return id
+  }
+
+  const openSheet = (sheet: OpenSheetType) => {
+    const id = uuidv4()
+    setModals((modals) => [...modals, { type: 'sheet', sheet, id, open: true }])
+    return id
+  }
+
+  const closeModal = useCallback((id: string) => {
+    setModals((modals) => modals.filter((modal) => modal.id !== id))
+  }, [])
+
+  const closeDialog = closeModal
+  const closeSheet = closeModal
 
   const confirm = useCallback(
     ({ title, description, okButton, cancelButton }: AppConfirmDialogType) => {
@@ -264,9 +294,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     parseToken(token)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
+
+  useEffect(() => {
+    console.log('modals', modals)
+  }, [modals])
+
   return (
     <>
-      {sheets.filter((s) => s.open).length > 0 && (
+      {modals.filter((s) => s.open).length > 0 && (
         <div
           className='fixed h-full w-full bg-black/80'
           style={{ zIndex: 50 }}
@@ -287,33 +322,133 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         }}
       >
         <QueryClientProvider>
-          {dialogs.map(
-            ({
-              id,
-              open,
-              dialog: { title, children, description, buttons, props },
-            }) => {
-              if (typeof props !== 'object') {
-                props = {}
-              }
+          <Fragment key='dialogs'>
+            {modals
+              .filter((m) => m.type === 'dialog')
+              .map(
+                ({
+                  id,
+                  open,
+                  dialog: { title, children, description, buttons, props },
+                }) => {
+                  if (typeof props !== 'object') {
+                    props = {}
+                  }
 
-              return (
-                <Fragment key={id}>
-                  {isDesktop ? (
-                    <Dialog
-                      open={open}
-                      onOpenChange={(value) => !value && closeDialog(id)}
-                    >
-                      <DialogContent className='flex max-h-full flex-col sm:max-w-[425px]'>
-                        {(title || description) && (
-                          <DialogHeader>
-                            {title && <DialogTitle>{title}</DialogTitle>}
-                            {description && (
-                              <DialogDescription>
-                                {description}
-                              </DialogDescription>
+                  return (
+                    <Fragment key={id}>
+                      {isDesktop ? (
+                        <Dialog
+                          open={open}
+                          onOpenChange={(value) => !value && closeDialog(id)}
+                          modal={false}
+                        >
+                          <DialogContent className='flex max-h-full flex-col sm:max-w-[425px]'>
+                            {(title || description) && (
+                              <DialogHeader>
+                                {title && <DialogTitle>{title}</DialogTitle>}
+                                {description && (
+                                  <DialogDescription>
+                                    {description}
+                                  </DialogDescription>
+                                )}
+                              </DialogHeader>
                             )}
-                          </DialogHeader>
+                            {children && (
+                              <div
+                                key={`${id}-body`}
+                                className='mt-8 flex flex-1 overflow-y-auto'
+                              >
+                                {React.createElement(children, {
+                                  ...props,
+                                  block: children,
+                                })}
+                              </div>
+                            )}
+                            {!children && (
+                              <div key={`${id}-space`} className='h-4' />
+                            )}
+                            <DialogFooter className='gap-1 sm:justify-end'>
+                              {(buttons ?? []).map(
+                                ({ text, ...props }, index) => (
+                                  <Button
+                                    key={`${id}-footer-btn-${index}`}
+                                    {...props}
+                                  >
+                                    {text}
+                                  </Button>
+                                )
+                              )}
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      ) : (
+                        <Drawer
+                          open={open}
+                          onOpenChange={(value) => !value && closeDialog(id)}
+                          modal={false}
+                        >
+                          <DrawerContent>
+                            {(title || description) && (
+                              <DrawerHeader className='text-left'>
+                                {title && <DrawerTitle>{title}</DrawerTitle>}
+                                {description && (
+                                  <DrawerDescription>
+                                    {description}
+                                  </DrawerDescription>
+                                )}
+                              </DrawerHeader>
+                            )}
+                            {children && (
+                              <div key={`${id}-body`} className='px-4'>
+                                {React.createElement(children, {
+                                  ...props,
+                                  block: children,
+                                })}
+                              </div>
+                            )}
+                            {!children && (
+                              <div key={`${id}-space`} className='h-4' />
+                            )}
+                            <DrawerFooter className='gap-1 sm:justify-end'>
+                              {(buttons ?? []).map(({ text, ...props }) => (
+                                <Button {...props}>{text}</Button>
+                              ))}
+                            </DrawerFooter>
+                          </DrawerContent>
+                        </Drawer>
+                      )}
+                    </Fragment>
+                  )
+                }
+              )}
+          </Fragment>
+          <Fragment key='sheets'>
+            {modals
+              .filter((m) => m.type === 'sheet')
+              .map(
+                ({
+                  id,
+                  open,
+                  sheet: { children, side, description, title, buttons, props },
+                }) => (
+                  <Fragment key={id}>
+                    <Sheet
+                      open={open}
+                      onOpenChange={(value) => !value && closeSheet(id)}
+                      modal={false}
+                    >
+                      <SheetContent
+                        className={`flex flex-col ${['bottom', 'top'].includes(side ?? '') && 'max-h-full'}`}
+                        side={side}
+                      >
+                        {(title || description) && (
+                          <SheetHeader>
+                            {title && <SheetTitle>{title}</SheetTitle>}
+                            {description && (
+                              <SheetDescription>{description}</SheetDescription>
+                            )}
+                          </SheetHeader>
                         )}
                         {children && (
                           <div
@@ -329,105 +464,17 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                         {!children && (
                           <div key={`${id}-space`} className='h-4' />
                         )}
-                        <DialogFooter className='gap-1 sm:justify-end'>
-                          {(buttons ?? []).map(({ text, ...props }, index) => (
-                            <Button
-                              key={`${id}-footer-btn-${index}`}
-                              {...props}
-                            >
-                              {text}
-                            </Button>
-                          ))}
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  ) : (
-                    <Drawer
-                      open={open}
-                      onOpenChange={(value) => !value && closeDialog(id)}
-                    >
-                      <DrawerContent>
-                        {(title || description) && (
-                          <DrawerHeader className='text-left'>
-                            {title && <DrawerTitle>{title}</DrawerTitle>}
-                            {description && (
-                              <DrawerDescription>
-                                {description}
-                              </DrawerDescription>
-                            )}
-                          </DrawerHeader>
-                        )}
-                        {children && (
-                          <div key={`${id}-body`} className='px-4'>
-                            {React.createElement(children, {
-                              ...props,
-                              block: children,
-                            })}
-                          </div>
-                        )}
-                        {!children && (
-                          <div key={`${id}-space`} className='h-4' />
-                        )}
-                        <DrawerFooter className='gap-1 sm:justify-end'>
+                        <SheetFooter>
                           {(buttons ?? []).map(({ text, ...props }) => (
                             <Button {...props}>{text}</Button>
                           ))}
-                        </DrawerFooter>
-                      </DrawerContent>
-                    </Drawer>
-                  )}
-                </Fragment>
-              )
-            }
-          )}
-
-          {sheets.map(
-            ({
-              id,
-              open,
-              sheet: { children, side, description, title, buttons, props },
-            }) => (
-              <Fragment key={id}>
-                <Sheet
-                  open={open}
-                  onOpenChange={(value) => !value && closeSheet(id)}
-                  modal={false}
-                >
-                  <SheetContent
-                    className={`flex flex-col ${['bottom', 'top'].includes(side ?? '') && 'max-h-full'}`}
-                    side={side}
-                  >
-                    {(title || description) && (
-                      <SheetHeader>
-                        {title && <SheetTitle>{title}</SheetTitle>}
-                        {description && (
-                          <SheetDescription>{description}</SheetDescription>
-                        )}
-                      </SheetHeader>
-                    )}
-                    {children && (
-                      <div
-                        key={`${id}-body`}
-                        className='mt-8 flex flex-1 overflow-y-auto'
-                      >
-                        {React.createElement(children, {
-                          ...props,
-                          block: children,
-                        })}
-                      </div>
-                    )}
-                    {!children && <div key={`${id}-space`} className='h-4' />}
-                    <SheetFooter>
-                      {(buttons ?? []).map(({ text, ...props }) => (
-                        <Button {...props}>{text}</Button>
-                      ))}
-                    </SheetFooter>
-                  </SheetContent>
-                </Sheet>
-              </Fragment>
-            )
-          )}
-
+                        </SheetFooter>
+                      </SheetContent>
+                    </Sheet>
+                  </Fragment>
+                )
+              )}
+          </Fragment>
           {children}
         </QueryClientProvider>
         <Toaster richColors />
