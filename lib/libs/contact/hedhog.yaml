@@ -329,6 +329,9 @@ data:
     - url: /person/:personId/person-value
       method: DELETE
       relations: *a1
+    - url: /person/:personId/person-value/:id
+      method: GET
+      relations: *a1
     - url: /person-type
       method: GET
       relations: &a2
@@ -398,6 +401,9 @@ data:
     - url: /person/:personId/person-document
       method: DELETE
       relations: *a5
+    - url: /person/:personId/person-document/:id
+      method: GET
+      relations: *a5
     - url: /person/:personId/person-contact
       method: GET
       relations: &a6
@@ -412,6 +418,9 @@ data:
       relations: *a6
     - url: /person/:personId/person-contact
       method: DELETE
+      relations: *a6
+    - url: /person/:personId/person-contact/:id
+      method: GET
       relations: *a6
     - url: /person/:personId/person-address
       method: GET
@@ -428,6 +437,9 @@ data:
     - url: /person/:personId/person-address
       method: DELETE
       relations: *a7
+    - url: /person/:personId/person-address/:id
+      method: GET
+      relations: *a7
     - url: /person/:personId/person-custom
       method: GET
       relations: &a8
@@ -442,6 +454,9 @@ data:
       relations: *a8
     - url: /person/:personId/person-custom
       method: DELETE
+      relations: *a8
+    - url: /person/:personId/person-custom/:id
+      method: GET
       relations: *a8
     - url: /person-contact-type
       method: GET
@@ -496,21 +511,6 @@ data:
       relations: *a11
     - url: /person-custom-type
       method: DELETE
-      relations: *a11
-    - url: /person/:personId/person-value/:id
-      method: GET
-      relations: *a11
-    - url: /person/:personId/person-document/:id
-      method: GET
-      relations: *a11
-    - url: /person/:personId/person-contact/:id
-      method: GET
-      relations: *a11
-    - url: /person/:personId/person-address/:id
-      method: GET
-      relations: *a11
-    - url: /person/:personId/person-custom/:id
-      method: GET
       relations: *a11
   screen:
     - name:
