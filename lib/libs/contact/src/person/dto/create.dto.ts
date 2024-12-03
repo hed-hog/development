@@ -1,6 +1,4 @@
-import { IsString } from 'class-validator';
-import { IsNumber } from 'class-validator';
-import { IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateDTO {
   @IsString()

@@ -1,7 +1,4 @@
-import { IsNumber } from 'class-validator';
-import { IsBoolean } from 'class-validator';
-import { IsString } from 'class-validator';
-import { IsOptional } from 'class-validator';
+import { IsNumber, IsBoolean, IsString, IsOptional } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
