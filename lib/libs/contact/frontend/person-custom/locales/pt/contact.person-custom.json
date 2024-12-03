@@ -1,0 +1,11 @@
+{
+  "create": "Criar pessoa personalizada",
+  "createText": "Preencha as informações da pessoa personalizada.",
+  "createTooltip": "Criar nova pessoa personalizada",
+  "delete": "Excluir pessoa personalizada",
+  "deleteText": "Você tem certeza de que deseja excluir estas pessoa personalizada?",
+  "deleteTooltip": "Excluir a pessoa personalizada selecionada",
+  "edit": "Editar pessoa personalizada",
+  "editText": "Visualizar e editar informações da pessoa personalizada.",
+  "editTooltip": "Editar a pessoa personalizada selecionada"
+}

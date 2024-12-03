@@ -191,8 +191,11 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
         <div>
           <FormControl>
             <Switch
-              value={value as unknown as string}
-              onCheckedChange={(value) => props.onChange(value)}
+              value={(value || '0') as unknown as string}
+              onCheckedChange={(value) => {
+                console.log('switch value', value)
+                props.onChange(value)
+              }}
             />
           </FormControl>
         </div>
