@@ -19,10 +19,10 @@ export function usePersonCustomUpdate() {
   return useDefaultMutation(scope, "update", personCustomUpdate);
 }
 
-export function usePersonCustomGet(id: number) {
+export function usePersonCustomGet(personId: number, id: number) {
   const { personCustomGet } = requests();
   return useQuery({
     queryKey: [scope, "get"],
-    queryFn: () => personCustomGet(id),
+    queryFn: () => personCustomGet({ personId, id }),
   });
 }

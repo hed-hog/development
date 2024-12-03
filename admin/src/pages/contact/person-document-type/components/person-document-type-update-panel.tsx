@@ -75,7 +75,10 @@ const PersonDocumentTypeUpdatePanel = forwardRef(
                   ]}
                   button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {
-                    personDocumentTypeUpdate({ id: data.id, data });
+                    personDocumentTypeUpdate({
+                      id: data.id,
+                      data,
+                    });
                     if (typeof onUpdated === "function") {
                       onUpdated(data);
                     }

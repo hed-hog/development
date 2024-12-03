@@ -29,11 +29,13 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personDocumentUpdate = async (
-    personId: number,
-    id: number,
-    data: PersonDocumentType,
-  ) => {
+  const personDocumentUpdate = async (params: {
+    personId: number;
+    id: number;
+    data: PersonDocumentType;
+  }) => {
+    const { personId, id, data } = params;
+
     return request<PersonDocumentType>({
       url: `/person/${personId}/person-document/${id}`,
       method: HttpMethod.PATCH,
@@ -54,10 +56,22 @@ export function requests() {
     }).then((res) => res.data);
   };
 
+  const personDocumentGet = async (params: {
+    personId: number;
+    id: number;
+  }) => {
+    const { personId, id } = params;
+
+    return request<PersonDocumentType>({
+      url: `/person/${personId}/person-document/${id}`,
+    }).then((res) => res.data);
+  };
+
   return {
     personDocumentCreate,
     personDocumentUpdate,
     personDocumentDelete,
     personDocumentList,
+    personDocumentGet,
   };
 }

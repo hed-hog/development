@@ -16,14 +16,15 @@ import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { EnumFieldType } from "@/enums/EnumFieldType";
 
 export type PersonCustomUpdatePanelProps = {
+  id: number;
   data: PersonCustom;
   onUpdated?: (data: PersonCustom) => void;
 };
 
 const PersonCustomUpdatePanel = forwardRef(
-  ({ data, onUpdated }: PersonCustomUpdatePanelProps, ref) => {
+  ({ id, data, onUpdated }: PersonCustomUpdatePanelProps, ref) => {
     const { t } = useTranslation(["actions", "fields", "translations"]);
-    const { data: item, isLoading } = usePersonCustomGet(data.id as number);
+    const { data: item, isLoading } = usePersonCustomGet(id, data.id as number);
     const { mutate: personCustomUpdate } = usePersonCustomUpdate();
     const formRef = useRef<FormPanelRef>(null);
 
@@ -59,7 +60,11 @@ const PersonCustomUpdatePanel = forwardRef(
                   ]}
                   button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {
-                    personCustomUpdate({ id: data.id, data });
+                    personCustomUpdate({
+                      personId: id,
+                      id: data.id,
+                      data,
+                    });
                     if (typeof onUpdated === "function") {
                       onUpdated(data);
                     }

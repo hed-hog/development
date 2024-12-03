@@ -29,11 +29,13 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personValueUpdate = async (
-    personId: number,
-    id: number,
-    data: PersonValueType,
-  ) => {
+  const personValueUpdate = async (params: {
+    personId: number;
+    id: number;
+    data: PersonValueType;
+  }) => {
+    const { personId, id, data } = params;
+
     return request<PersonValueType>({
       url: `/person/${personId}/person-value/${id}`,
       method: HttpMethod.PATCH,
@@ -51,10 +53,19 @@ export function requests() {
     }).then((res) => res.data);
   };
 
+  const personValueGet = async (params: { personId: number; id: number }) => {
+    const { personId, id } = params;
+
+    return request<PersonValueType>({
+      url: `/person/${personId}/person-value/${id}`,
+    }).then((res) => res.data);
+  };
+
   return {
     personValueCreate,
     personValueUpdate,
     personValueDelete,
     personValueList,
+    personValueGet,
   };
 }

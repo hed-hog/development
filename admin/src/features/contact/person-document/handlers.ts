@@ -19,10 +19,10 @@ export function usePersonDocumentUpdate() {
   return useDefaultMutation(scope, "update", personDocumentUpdate);
 }
 
-export function usePersonDocumentGet(id: number) {
+export function usePersonDocumentGet(personId: number, id: number) {
   const { personDocumentGet } = requests();
   return useQuery({
     queryKey: [scope, "get"],
-    queryFn: () => personDocumentGet(id),
+    queryFn: () => personDocumentGet({ personId, id }),
   });
 }

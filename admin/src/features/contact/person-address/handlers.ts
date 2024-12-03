@@ -19,10 +19,10 @@ export function usePersonAddressUpdate() {
   return useDefaultMutation(scope, "update", personAddressUpdate);
 }
 
-export function usePersonAddressGet(id: number) {
+export function usePersonAddressGet(personId: number, id: number) {
   const { personAddressGet } = requests();
   return useQuery({
     queryKey: [scope, "get"],
-    queryFn: () => personAddressGet(id),
+    queryFn: () => personAddressGet({ personId, id }),
   });
 }

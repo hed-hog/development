@@ -13,14 +13,15 @@ import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { EnumFieldType } from "@/enums/EnumFieldType";
 
 export type PersonValueUpdatePanelProps = {
+  id: number;
   data: PersonValue;
   onUpdated?: (data: PersonValue) => void;
 };
 
 const PersonValueUpdatePanel = forwardRef(
-  ({ data, onUpdated }: PersonValueUpdatePanelProps, ref) => {
+  ({ id, data, onUpdated }: PersonValueUpdatePanelProps, ref) => {
     const { t } = useTranslation(["actions", "fields", "translations"]);
-    const { data: item, isLoading } = usePersonValueGet(data.id as number);
+    const { data: item, isLoading } = usePersonValueGet(id, data.id as number);
     const { mutate: personValueUpdate } = usePersonValueUpdate();
     const formRef = useRef<FormPanelRef>(null);
 
@@ -54,7 +55,11 @@ const PersonValueUpdatePanel = forwardRef(
                   ]}
                   button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {
-                    personValueUpdate({ id: data.id, data });
+                    personValueUpdate({
+                      personId: id,
+                      id: data.id,
+                      data,
+                    });
                     if (typeof onUpdated === "function") {
                       onUpdated(data);
                     }

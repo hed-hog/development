@@ -30,11 +30,13 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personCustomUpdate = async (
-    personId: number,
-    id: number,
-    data: PersonCustomType,
-  ) => {
+  const personCustomUpdate = async (params: {
+    personId: number;
+    id: number;
+    data: PersonCustomType;
+  }) => {
+    const { personId, id, data } = params;
+
     return request<PersonCustomType>({
       url: `/person/${personId}/person-custom/${id}`,
       method: HttpMethod.PATCH,
@@ -52,10 +54,19 @@ export function requests() {
     }).then((res) => res.data);
   };
 
+  const personCustomGet = async (params: { personId: number; id: number }) => {
+    const { personId, id } = params;
+
+    return request<PersonCustomType>({
+      url: `/person/${personId}/person-custom/${id}`,
+    }).then((res) => res.data);
+  };
+
   return {
     personCustomCreate,
     personCustomUpdate,
     personCustomDelete,
     personCustomList,
+    personCustomGet,
   };
 }

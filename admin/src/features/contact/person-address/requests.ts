@@ -29,11 +29,13 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personAddressUpdate = async (
-    personId: number,
-    id: number,
-    data: PersonAddressType,
-  ) => {
+  const personAddressUpdate = async (params: {
+    personId: number;
+    id: number;
+    data: PersonAddressType;
+  }) => {
+    const { personId, id, data } = params;
+
     return request<PersonAddressType>({
       url: `/person/${personId}/person-address/${id}`,
       method: HttpMethod.PATCH,
@@ -51,10 +53,19 @@ export function requests() {
     }).then((res) => res.data);
   };
 
+  const personAddressGet = async (params: { personId: number; id: number }) => {
+    const { personId, id } = params;
+
+    return request<PersonAddressType>({
+      url: `/person/${personId}/person-address/${id}`,
+    }).then((res) => res.data);
+  };
+
   return {
     personAddressCreate,
     personAddressUpdate,
     personAddressDelete,
     personAddressList,
+    personAddressGet,
   };
 }
