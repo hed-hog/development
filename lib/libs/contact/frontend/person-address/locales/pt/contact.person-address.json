@@ -1,0 +1,11 @@
+{
+  "create": "Criar endereço de pessoa",
+  "createText": "Preencha as informações do endereço da pessoa.",
+  "createTooltip": "Criar novo endereço de pessoa",
+  "delete": "Excluir endereço de pessoa",
+  "deleteText": "Você tem certeza de que deseja excluir esses endereços de pessoa?",
+  "deleteTooltip": "Excluir o endereço de pessoa selecionado",
+  "edit": "Editar endereço de pessoa",
+  "editText": "Visualizar e editar as informações do endereço de pessoa.",
+  "editTooltip": "Editar o endereço de pessoa selecionado"
+}
