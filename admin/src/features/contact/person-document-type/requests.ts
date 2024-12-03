@@ -20,7 +20,10 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personDocumentTypeCreate = async (data: PersonDocumentType) => {
+  const personDocumentTypeCreate = async (params: {
+    data: PersonDocumentType;
+  }) => {
+    const { data } = params;
     return request<PersonDocumentType>({
       url: "/person-document-type",
       method: HttpMethod.POST,

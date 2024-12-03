@@ -69,9 +69,11 @@ const PersonCreatePanel = forwardRef(
         ]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
-          const createdData = await createPerson(data);
+          const createdData = await createPerson({
+            data,
+          });
           if (typeof onCreated === "function") {
-            onCreated(createdData);
+            onCreated(createdData as any);
           }
         }}
       />

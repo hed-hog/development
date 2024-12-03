@@ -13,11 +13,12 @@ export type PersonCustomCreatePanelRef = {
 };
 
 export type PersonCustomCreatePanelProps = {
+  id: number;
   onCreated?: (data: PersonCustom) => void;
 };
 
 const PersonCustomCreatePanel = forwardRef(
-  ({ onCreated }: PersonCustomCreatePanelProps, ref) => {
+  ({ id, onCreated }: PersonCustomCreatePanelProps, ref) => {
     const formRef = useRef<FormPanelRef>(null);
     const { t } = useTranslation(["actions", "fields", "translations"]);
     const { mutateAsync: createPersonCustom } = usePersonCustomCreate();
@@ -47,9 +48,12 @@ const PersonCustomCreatePanel = forwardRef(
         ]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
-          const createdData = await createPersonCustom(data);
+          const createdData = await createPersonCustom({
+            personId: Number(id),
+            data,
+          });
           if (typeof onCreated === "function") {
-            onCreated(createdData);
+            onCreated(createdData as any);
           }
         }}
       />

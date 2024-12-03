@@ -20,7 +20,8 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personCustomTypeCreate = async (data: PersonCustomType) => {
+  const personCustomTypeCreate = async (params: { data: PersonCustomType }) => {
+    const { data } = params;
     return request<PersonCustomType>({
       url: "/person-custom-type",
       method: HttpMethod.POST,

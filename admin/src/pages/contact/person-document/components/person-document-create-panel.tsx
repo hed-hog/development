@@ -10,11 +10,12 @@ export type PersonDocumentCreatePanelRef = {
 };
 
 export type PersonDocumentCreatePanelProps = {
+  id: number;
   onCreated?: (data: PersonDocument) => void;
 };
 
 const PersonDocumentCreatePanel = forwardRef(
-  ({ onCreated }: PersonDocumentCreatePanelProps, ref) => {
+  ({ id, onCreated }: PersonDocumentCreatePanelProps, ref) => {
     const formRef = useRef<FormPanelRef>(null);
     const { t } = useTranslation(["actions", "fields", "translations"]);
     const { mutateAsync: createPersonDocument } = usePersonDocumentCreate();
@@ -83,9 +84,12 @@ const PersonDocumentCreatePanel = forwardRef(
         ]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
-          const createdData = await createPersonDocument(data);
+          const createdData = await createPersonDocument({
+            personId: Number(id),
+            data,
+          });
           if (typeof onCreated === "function") {
-            onCreated(createdData);
+            onCreated(createdData as any);
           }
         }}
       />

@@ -17,12 +17,14 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personCustomCreate = async (
-    personId: number,
-    data: PersonCustomType,
-  ) => {
+  const personCustomCreate = async (params: {
+    personId: number;
+    data: PersonCustomType;
+  }) => {
+    const { personId, data } = params;
+
     return request<PersonCustomType>({
-      url: `/person/${personId}/person-custom>`,
+      url: `/person/${personId}/person-custom`,
       method: HttpMethod.POST,
       data: formatDataWithLocale(data),
     }).then((res) => res.data);
