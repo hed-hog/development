@@ -17,7 +17,8 @@ export default function Page() {
   const { t } = useTranslation([
     'contact.person-contact-type',
     'modules',
-    'actions'
+    'actions',
+    'fields'
   ]);
 
   const openCreate = () => {
@@ -71,7 +72,10 @@ export default function Page() {
         columns={[
           { key: 'id', header: 'ID', width: 64 },
 
-          { key: 'slug', header: t('slug', { ns: 'person-contact-type' }) }
+          {
+            key: 'slug',
+            header: t('person_contact_type.slug', { ns: 'fields' })
+          }
         ]}
         selected={selectedItems as PersonContactType[]}
         multiple
