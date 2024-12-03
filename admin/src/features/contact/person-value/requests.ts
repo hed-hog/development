@@ -41,9 +41,11 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personValueDelete = async (personId: number, ids: number[]) => {
+  const personValueDelete = async (params: { id: number; ids: number[] }) => {
+    const { id, ids } = params;
+
     return request<Delete>({
-      url: `/person/${personId}/person-value`,
+      url: `/person/${id}/person-value`,
       method: HttpMethod.DELETE,
       data: { ids },
     }).then((res) => res.data);

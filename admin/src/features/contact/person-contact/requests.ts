@@ -41,9 +41,11 @@ export function requests() {
     }).then((res) => res.data);
   };
 
-  const personContactDelete = async (personId: number, ids: number[]) => {
+  const personContactDelete = async (params: { id: number; ids: number[] }) => {
+    const { id, ids } = params;
+
     return request<Delete>({
-      url: `/person/${personId}/person-contact`,
+      url: `/person/${id}/person-contact`,
       method: HttpMethod.DELETE,
       data: { ids },
     }).then((res) => res.data);

@@ -12,21 +12,27 @@ import { EnumFieldType } from "@/enums/EnumFieldType";
 import DataPanel from "@/components/panels/data-panel";
 
 import { useApp } from "@/hooks/use-app";
+import { isPlural } from "@/lib/utils";
+import { PersonValue } from "@/types/models/PersonValue.ts";
+import { usePersonValueDelete } from "@/features/contact/person-value";
 import PersonValueCreatePanel from "@/pages/contact/person-value/components/person-value-create-panel";
 import PersonValueUpdatePanel from "@/pages/contact/person-value/components/person-value-update-panel";
-import { PersonValue } from "@/types/models/PersonValue.ts";
+import { PersonAddress } from "@/types/models/PersonAddress.ts";
+import { usePersonAddressDelete } from "@/features/contact/person-address";
 import PersonAddressCreatePanel from "@/pages/contact/person-address/components/person-address-create-panel";
 import PersonAddressUpdatePanel from "@/pages/contact/person-address/components/person-address-update-panel";
-import { PersonAddress } from "@/types/models/PersonAddress.ts";
+import { PersonContact } from "@/types/models/PersonContact.ts";
+import { usePersonContactDelete } from "@/features/contact/person-contact";
 import PersonContactCreatePanel from "@/pages/contact/person-contact/components/person-contact-create-panel";
 import PersonContactUpdatePanel from "@/pages/contact/person-contact/components/person-contact-update-panel";
-import { PersonContact } from "@/types/models/PersonContact.ts";
+import { PersonDocument } from "@/types/models/PersonDocument.ts";
+import { usePersonDocumentDelete } from "@/features/contact/person-document";
 import PersonDocumentCreatePanel from "@/pages/contact/person-document/components/person-document-create-panel";
 import PersonDocumentUpdatePanel from "@/pages/contact/person-document/components/person-document-update-panel";
-import { PersonDocument } from "@/types/models/PersonDocument.ts";
+import { PersonCustom } from "@/types/models/PersonCustom.ts";
+import { usePersonCustomDelete } from "@/features/contact/person-custom";
 import PersonCustomCreatePanel from "@/pages/contact/person-custom/components/person-custom-create-panel";
 import PersonCustomUpdatePanel from "@/pages/contact/person-custom/components/person-custom-update-panel";
-import { PersonCustom } from "@/types/models/PersonCustom.ts";
 
 export type PersonUpdatePanelProps = {
   data: Person;
@@ -42,6 +48,7 @@ const PersonUpdatePanel = forwardRef(
 
     const { openDialog, confirm, closeDialog } = useApp();
     const personValueRef = useRef<any>(null);
+    const { mutate: personValueDelete } = usePersonValueDelete();
     const openCreatePersonValue = () => {
       const id = openDialog({
         title: t("create", { ns: "actions" }),
@@ -76,13 +83,15 @@ const PersonUpdatePanel = forwardRef(
         description: t("deleteText", { ns: "contact.person-value" }),
       })
         .then(() =>
-          deletePersonValue(
-            items.map((item) => item.id).filter((id) => id !== undefined),
-          ),
+          personValueDelete({
+            id: Number(data.id),
+            ids: items.map((item) => item.id).filter((id) => id !== undefined),
+          }),
         )
         .catch(() => setSelectedItems(items));
     };
     const personAddressRef = useRef<any>(null);
+    const { mutate: personAddressDelete } = usePersonAddressDelete();
     const openCreatePersonAddress = () => {
       const id = openDialog({
         title: t("create", { ns: "actions" }),
@@ -117,13 +126,15 @@ const PersonUpdatePanel = forwardRef(
         description: t("deleteText", { ns: "contact.person-address" }),
       })
         .then(() =>
-          deletePersonAddress(
-            items.map((item) => item.id).filter((id) => id !== undefined),
-          ),
+          personAddressDelete({
+            id: Number(data.id),
+            ids: items.map((item) => item.id).filter((id) => id !== undefined),
+          }),
         )
         .catch(() => setSelectedItems(items));
     };
     const personContactRef = useRef<any>(null);
+    const { mutate: personContactDelete } = usePersonContactDelete();
     const openCreatePersonContact = () => {
       const id = openDialog({
         title: t("create", { ns: "actions" }),
@@ -158,13 +169,15 @@ const PersonUpdatePanel = forwardRef(
         description: t("deleteText", { ns: "contact.person-contact" }),
       })
         .then(() =>
-          deletePersonContact(
-            items.map((item) => item.id).filter((id) => id !== undefined),
-          ),
+          personContactDelete({
+            id: Number(data.id),
+            ids: items.map((item) => item.id).filter((id) => id !== undefined),
+          }),
         )
         .catch(() => setSelectedItems(items));
     };
     const personDocumentRef = useRef<any>(null);
+    const { mutate: personDocumentDelete } = usePersonDocumentDelete();
     const openCreatePersonDocument = () => {
       const id = openDialog({
         title: t("create", { ns: "actions" }),
@@ -199,13 +212,15 @@ const PersonUpdatePanel = forwardRef(
         description: t("deleteText", { ns: "contact.person-document" }),
       })
         .then(() =>
-          deletePersonDocument(
-            items.map((item) => item.id).filter((id) => id !== undefined),
-          ),
+          personDocumentDelete({
+            id: Number(data.id),
+            ids: items.map((item) => item.id).filter((id) => id !== undefined),
+          }),
         )
         .catch(() => setSelectedItems(items));
     };
     const personCustomRef = useRef<any>(null);
+    const { mutate: personCustomDelete } = usePersonCustomDelete();
     const openCreatePersonCustom = () => {
       const id = openDialog({
         title: t("create", { ns: "actions" }),
@@ -240,9 +255,10 @@ const PersonUpdatePanel = forwardRef(
         description: t("deleteText", { ns: "contact.person-custom" }),
       })
         .then(() =>
-          deletePersonCustom(
-            items.map((item) => item.id).filter((id) => id !== undefined),
-          ),
+          personCustomDelete({
+            id: Number(data.id),
+            ids: items.map((item) => item.id).filter((id) => id !== undefined),
+          }),
         )
         .catch(() => setSelectedItems(items));
     };
