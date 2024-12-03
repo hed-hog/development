@@ -1,6 +1,6 @@
 import { RouteScreen } from './RouteScreen';
-import { RoleScreen } from './RoleScreen';
 import { MenuScreen } from './MenuScreen';
+import { RoleScreen } from './RoleScreen';
 import { ScreenLocale } from './ScreenLocale';
 
 export type Screen = {
@@ -10,8 +10,8 @@ export type Screen = {
   created_at?: string;
   updated_at?: string;
   route_screen?: RouteScreen[];
-  role_screen?: RoleScreen[];
   menu_screen?: MenuScreen[];
+  role_screen?: RoleScreen[];
   screen_locale?: ScreenLocale[];
   name?: string;
   description?: string;

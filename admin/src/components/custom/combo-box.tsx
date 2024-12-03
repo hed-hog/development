@@ -17,7 +17,7 @@ import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 export type ComboboxPrps = {
   value?: string
@@ -89,12 +89,14 @@ export function Combobox(props: ComboboxPrps) {
               !value && 'text-muted-foreground'
             )}
           >
-            {value && (
-              <span>
-                {value[displayName] ||
-                  (options.find((opt) => opt.id == value) || {}).name}
-              </span>
-            )}
+            <span>
+              {value && (
+                <Fragment>
+                  {value[displayName] ||
+                    (options.find((opt) => opt.id == value) || {}).name}
+                </Fragment>
+              )}
+            </span>
 
             <ChevronsUpDown className='ml-2 h-3 w-3 shrink-0 opacity-50' />
           </Button>

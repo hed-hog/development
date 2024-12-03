@@ -295,10 +295,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
-  useEffect(() => {
-    console.log('modals', modals)
-  }, [modals])
-
   return (
     <>
       {modals.filter((s) => s.open).length > 0 && (

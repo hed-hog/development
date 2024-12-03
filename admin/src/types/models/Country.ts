@@ -1,6 +1,6 @@
-import { CountryLocale } from './CountryLocale';
-import { PersonDocumentType } from './PersonDocumentType';
 import { PersonAddress } from './PersonAddress';
+import { PersonDocumentType } from './PersonDocumentType';
+import { CountryLocale } from './CountryLocale';
 import { PersonDocument } from './PersonDocument';
 
 export type Country = {
@@ -8,9 +8,9 @@ export type Country = {
   code: string;
   created_at?: string;
   updated_at?: string;
-  country_locale?: CountryLocale[];
-  person_document_type?: PersonDocumentType[];
   person_address?: PersonAddress[];
+  person_document_type?: PersonDocumentType[];
+  country_locale?: CountryLocale[];
   person_document?: PersonDocument[];
   name?: string;
 }

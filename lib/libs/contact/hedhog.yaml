@@ -313,6 +313,116 @@ data:
         role:
           - where:
               slug: admin
+    - name:
+        en: PersonValue
+        pt: PersonValue
+      icon: file
+      url: /person-value
+      slug: person-value
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonType
+        pt: PersonType
+      icon: file
+      url: /person-type
+      slug: person-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Person
+        pt: Person
+      icon: file
+      url: /person
+      slug: person
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonDocumentType
+        pt: PersonDocumentType
+      icon: file
+      url: /person-document-type
+      slug: person-document-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonDocument
+        pt: PersonDocument
+      icon: file
+      url: /person-document
+      slug: person-document
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonContactType
+        pt: PersonContactType
+      icon: file
+      url: /person-contact-type
+      slug: person-contact-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonContact
+        pt: PersonContact
+      icon: file
+      url: /person-contact
+      slug: person-contact
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonAddressType
+        pt: PersonAddressType
+      icon: file
+      url: /person-address-type
+      slug: person-address-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonAddress
+        pt: PersonAddress
+      icon: file
+      url: /person-address
+      slug: person-address
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonCustomType
+        pt: PersonCustomType
+      icon: file
+      url: /person-custom-type
+      slug: person-custom-type
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PersonCustom
+        pt: PersonCustom
+      icon: file
+      url: /person-custom
+      slug: person-custom
+      relations:
+        role:
+          - where:
+              slug: admin
   route:
     - url: /person/:personId/person-value
       method: GET
@@ -1074,27 +1184,23 @@ tables:
       - type: created_at
       - type: updated_at
 routes:
-  - path: management
-    children:
-      - path: person
-        children:
-          - path: person-type
-            lazy:
-              component: ./pages/contact/person-type/index.tsx
-          - path: person-address-type
-            lazy:
-              component: ./pages/contact/person-address-type/index.tsx
-          - path: person-contact-type
-            lazy:
-              component: ./pages/contact/person-contact-type/index.tsx
-          - path: person-custom-type
-            lazy:
-              component: ./pages/contact/person-custom-type/index.tsx
-          - path: person-document-type
-            lazy:
-              component: ./pages/contact/person-document-type/index.tsx
   - path: contact
     children:
       - path: person
         lazy:
           component: ./pages/contact/person/index.tsx
+      - path: person-type
+        lazy:
+          component: ./pages/contact/person-type/index.tsx
+      - path: person-address-type
+        lazy:
+          component: ./pages/contact/person-address-type/index.tsx
+      - path: person-contact-type
+        lazy:
+          component: ./pages/contact/person-contact-type/index.tsx
+      - path: person-custom-type
+        lazy:
+          component: ./pages/contact/person-custom-type/index.tsx
+      - path: person-document-type
+        lazy:
+          component: ./pages/contact/person-document-type/index.tsx
