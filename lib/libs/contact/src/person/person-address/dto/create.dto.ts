@@ -10,8 +10,9 @@ export class CreateDTO {
   @IsNumber()
   type_id: number;
 
+  @IsOptional()
   @IsBoolean()
-  primary: boolean;
+  primary?: boolean;
 
   @IsString()
   street: string;

@@ -10,8 +10,9 @@ export class CreateDTO {
   @IsNumber()
   country_id: number;
 
+  @IsOptional()
   @IsBoolean()
-  primary: boolean;
+  primary?: boolean;
 
   @IsString()
   value: string;
