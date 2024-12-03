@@ -24,6 +24,8 @@
     "typeorm": "ts-node --transpile-only ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
+    "@hedhog/admin": "^0.7.3",
+    "@hedhog/contact": "^0.7.49",
     "@hedhog/core": "^0.0.1",
     "@hedhog/prisma": "^0.7.2",
     "@nestjs/axios": "^3.0.3",
