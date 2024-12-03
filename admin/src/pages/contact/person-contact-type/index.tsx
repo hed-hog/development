@@ -70,7 +70,8 @@ export default function Page() {
         selectable
         columns={[
           { key: 'id', header: 'ID', width: 64 },
-          { key: 'name', header: t('name', { ns: 'person-contact-type' }) }
+
+          { key: 'slug', header: t('slug', { ns: 'person-contact-type' }) }
         ]}
         selected={selectedItems as PersonContactType[]}
         multiple
