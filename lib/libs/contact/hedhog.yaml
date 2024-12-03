@@ -497,6 +497,21 @@ data:
     - url: /person-custom-type
       method: DELETE
       relations: *a11
+    - url: /person/:personId/person-value/:id
+      method: GET
+      relations: *a12
+    - url: /person/:personId/person-document/:id
+      method: GET
+      relations: *a13
+    - url: /person/:personId/person-contact/:id
+      method: GET
+      relations: *a14
+    - url: /person/:personId/person-address/:id
+      method: GET
+      relations: *a15
+    - url: /person/:personId/person-custom/:id
+      method: GET
+      relations: *a16
   screen:
     - name:
         en: PersonValue

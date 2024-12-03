@@ -41,6 +41,14 @@ export class PersonDocumentController {
     return this.personDocumentService.list(paginationParams, personId);
   }
 
+  @Get(':id')
+  get(
+    @Param('personId', ParseIntPipe) personId: number,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.personDocumentService.get(personId, id);
+  }
+
   @Patch(':id')
   update(
     @Param('personId', ParseIntPipe) personId: number,

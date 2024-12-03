@@ -41,6 +41,14 @@ export class PersonAddressController {
     return this.personAddressService.list(paginationParams, personId);
   }
 
+  @Get(':id')
+  get(
+    @Param('personId', ParseIntPipe) personId: number,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.personAddressService.get(personId, id);
+  }
+
   @Patch(':id')
   update(
     @Param('personId', ParseIntPipe) personId: number,

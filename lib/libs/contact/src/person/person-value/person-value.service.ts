@@ -25,6 +25,15 @@ export class PersonValueService {
     });
   }
 
+  async get(personId: number, id: number) {
+    return this.prismaService.person_value.findFirst({
+      where: {
+        person_id: personId,
+        id: id
+      }
+    });
+  }
+
   async list(paginationParams: PaginationDTO, personId?: number) {
     const where: any = {};
     if (personId !== undefined) where.person_id = personId;

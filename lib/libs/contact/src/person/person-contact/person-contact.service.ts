@@ -25,6 +25,15 @@ export class PersonContactService {
     });
   }
 
+  async get(personId: number, id: number) {
+    return this.prismaService.person_contact.findFirst({
+      where: {
+        person_id: personId,
+        id: id
+      }
+    });
+  }
+
   async list(paginationParams: PaginationDTO, personId?: number) {
     const where: any = {};
     if (personId !== undefined) where.person_id = personId;
