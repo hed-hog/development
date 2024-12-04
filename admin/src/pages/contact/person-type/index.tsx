@@ -67,7 +67,9 @@ export default function Page() {
         columns={[
           { key: 'id', header: 'ID', width: 64 },
 
-          { key: 'slug', header: t('person_type.slug', { ns: 'fields' }) }
+          { key: 'slug', header: t('person_type.slug', { ns: 'fields' }) },
+
+          { key: 'name', header: t('person_type.name', { ns: 'fields' }) }
         ]}
         selected={selectedItems as PersonType[]}
         multiple

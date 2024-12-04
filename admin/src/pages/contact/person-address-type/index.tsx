@@ -75,6 +75,11 @@ export default function Page() {
           {
             key: 'slug',
             header: t('person_address_type.slug', { ns: 'fields' })
+          },
+
+          {
+            key: 'name',
+            header: t('person_address_type.name', { ns: 'fields' })
           }
         ]}
         selected={selectedItems as PersonAddressType[]}
