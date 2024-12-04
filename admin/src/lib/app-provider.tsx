@@ -136,6 +136,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   }
 
   const closeModal = useCallback((id: string) => {
+    console.log('closed!')
     setModals((modals) => modals.filter((modal) => modal.id !== id))
   }, [])
 
@@ -300,7 +301,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       {modals.filter((s) => s.open).length > 0 && (
         <div
           className='fixed h-full w-full bg-black/80'
-          style={{ zIndex: 50 }}
+          style={{ zIndex: 40 + modals.filter((s) => s.open).length * 10 }}
         ></div>
       )}
       <AppContext.Provider
@@ -336,7 +337,16 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                       {isDesktop ? (
                         <Dialog
                           open={open}
-                          onOpenChange={(value) => !value && closeDialog(id)}
+                          onOpenChange={(value) => {
+                            if (!value) {
+                              const otherModalOpen = modals.some(
+                                (modal) => modal.open && modal.id !== id
+                              )
+                              if (otherModalOpen) {
+                                closeDialog(id)
+                              }
+                            }
+                          }}
                           modal={false}
                         >
                           <DialogContent className='flex max-h-full flex-col sm:max-w-[425px]'>
@@ -381,7 +391,16 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                       ) : (
                         <Drawer
                           open={open}
-                          onOpenChange={(value) => !value && closeDialog(id)}
+                          onOpenChange={(value) => {
+                            if (!value) {
+                              const otherModalOpen = modals.some(
+                                (modal) => modal.open && modal.id !== id
+                              )
+                              if (otherModalOpen) {
+                                closeDialog(id)
+                              }
+                            }
+                          }}
                           modal={false}
                         >
                           <DrawerContent>
@@ -431,7 +450,16 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                   <Fragment key={id}>
                     <Sheet
                       open={open}
-                      onOpenChange={(value) => !value && closeSheet(id)}
+                      onOpenChange={(value) => {
+                        if (!value) {
+                          const otherModalOpen = modals.some(
+                            (modal) => modal.open && modal.id !== id
+                          )
+                          if (!otherModalOpen) {
+                            closeDialog(id)
+                          }
+                        }
+                      }}
                       modal={false}
                     >
                       <SheetContent
