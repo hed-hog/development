@@ -61,7 +61,11 @@ interface ITableViewProps<T> {
     index: number,
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => void
-  onSortChange?: (field: string, order: 'asc' | 'desc') => void
+  onSortChange?: (
+    field: string,
+    order: 'asc' | 'desc',
+    isLocale: boolean
+  ) => void
   onSelect?: (row: T, index: number) => void
   onUnselect?: (row: T, index: number) => void
   caption?: string
@@ -118,13 +122,13 @@ const TableViewInner = <T extends any>(
   }, [columns])
 
   const handleSort = useCallback(
-    (columnKey: string) => {
+    (columnKey: string, isLocale: boolean) => {
       const order = sortDirection === 'asc' ? 'desc' : 'asc'
       setSortColumn(columnKey)
       setSortDirection(order)
 
       if (typeof onSortChange === 'function') {
-        onSortChange(columnKey, order)
+        onSortChange(columnKey, order, isLocale)
       }
     },
     [sortDirection, onSortChange]
@@ -386,7 +390,9 @@ const TableViewInner = <T extends any>(
           {visibleColumns.map((col) => (
             <TableHead
               key={'key' in col ? col.key : 'actions'}
-              onClick={() => 'key' in col && sortable && handleSort(col.key)}
+              onClick={() =>
+                'key' in col && sortable && handleSort(col.key, col.isLocale)
+              }
               onMouseEnter={() => 'key' in col && setHoveredColumn(col.key)}
               onMouseLeave={() => setHoveredColumn(null)}
               className={
@@ -418,13 +424,17 @@ const TableViewInner = <T extends any>(
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem
-                        onClick={() => onSortChange(col.key, 'asc')}
+                        onClick={() =>
+                          onSortChange(col.key, 'asc', col.isLocale)
+                        }
                       >
                         <IconSortAscending className='mr-2' />
                         Ascendente
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        onClick={() => onSortChange(col.key, 'desc')}
+                        onClick={() =>
+                          onSortChange(col.key, 'desc', col.isLocale)
+                        }
                       >
                         <IconSortDescending className='mr-2' />
                         Descendente

@@ -14,6 +14,7 @@ export type ITableColumn<T> =
   | {
       key: string
       header: string
+      isLocale: boolean
       render?: (item: T, index: number) => JSX.Element
       width?: string | number
     }

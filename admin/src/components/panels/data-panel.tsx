@@ -251,9 +251,15 @@ const DataPanelInner = <T extends any>(
     [extractKey, getSelectedItems]
   )
 
-  const onSortChange = (field: string, order: 'asc' | 'desc') => {
-    setSortField(field)
-    setSortOrder(order)
+  const onSortChange = (
+    field: string,
+    order: 'asc' | 'desc',
+    isLocale: boolean
+  ) => {
+    if (!isLocale) {
+      setSortField(field)
+      setSortOrder(order)
+    }
   }
 
   const getSelectedItemsPanelProps = useCallback(() => {
