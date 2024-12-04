@@ -65,11 +65,19 @@ export default function Page() {
         id="person"
         selectable
         columns={[
-          { key: 'id', header: 'ID', width: 64 },
+          { key: 'id', header: 'ID', width: 64, isLocale: false },
 
-          { key: 'name', header: t('person.name', { ns: 'fields' }) },
+          {
+            key: 'name',
+            header: t('person.name', { ns: 'fields' }),
+            isLocale: false
+          },
 
-          { key: 'birth_at', header: t('person.birth_at', { ns: 'fields' }) }
+          {
+            key: 'birth_at',
+            header: t('person.birth_at', { ns: 'fields' }),
+            isLocale: false
+          }
         ]}
         selected={selectedItems as Person[]}
         multiple

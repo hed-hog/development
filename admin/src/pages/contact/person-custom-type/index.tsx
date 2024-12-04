@@ -70,16 +70,18 @@ export default function Page() {
         id="person-custom-type"
         selectable
         columns={[
-          { key: 'id', header: 'ID', width: 64 },
+          { key: 'id', header: 'ID', width: 64, isLocale: false },
 
           {
             key: 'slug',
-            header: t('person_custom_type.slug', { ns: 'fields' })
+            header: t('person_custom_type.slug', { ns: 'fields' }),
+            isLocale: false
           },
 
           {
             key: 'name',
-            header: t('person_custom_type.name', { ns: 'fields' })
+            header: t('person_custom_type.name', { ns: 'fields' }),
+            isLocale: true
           }
         ]}
         selected={selectedItems as PersonCustomType[]}
