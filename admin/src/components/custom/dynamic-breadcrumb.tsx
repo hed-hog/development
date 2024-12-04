@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { toCamelCase } from '@/lib/to-camel-case'
+import { capitalize, toSnakeCase } from '@/lib/convert-string'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { useMediaQuery } from 'usehooks-ts'
@@ -17,8 +17,8 @@ export const DynamicBreadcrumb = () => {
   const pathnames = location.pathname.split('/').filter((x) => x)
 
   const formatBreadcrumb = (segment: string) => {
-    const camelCaseSegment = toCamelCase(segment)
-    return t(camelCaseSegment, { defaultValue: camelCaseSegment })
+    const snakeCaseSegment = toSnakeCase(segment)
+    return capitalize(t(snakeCaseSegment, { defaultValue: snakeCaseSegment }))
   }
 
   return (

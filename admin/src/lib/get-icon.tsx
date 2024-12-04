@@ -1,5 +1,5 @@
 import * as TablerIcons from '@tabler/icons-react'
-import { toPascalCase } from '@/lib/to-pascal-case'
+import { toPascalCase } from '@/lib/convert-string'
 
 export const getIcon = (icon: string) => {
   if (icon !== '' && icon.length > 0) {
