@@ -10,6 +10,14 @@
   --scrollbar-thumb-dark: #020817;
   --text-size: 1rem;
   --font-family: ui-sans-serif, system-ui, sans-serif;
+  --text-size-xs: 0.75rem;
+  --text-size-sm: 0.875rem;
+  --text-size-md: 1rem;
+  --text-size-base: 1rem;
+  --text-size-lg: 1.125rem;
+  --text-size-xl: 1.25rem;
+  --text-size-2xl: 1.5rem;
+  --text-size-3xl: 1.875rem;
 }
 
 .scrollbar-hide {
