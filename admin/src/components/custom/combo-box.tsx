@@ -102,7 +102,7 @@ export function Combobox(props: ComboboxPrps) {
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className='z-50 w-[200px] p-0'>
+      <PopoverContent className='w-[200px] p-0' style={{ zIndex: 100 }}>
         <Command>
           <CommandInput placeholder='Search...' />
           <CommandEmpty>No framework found.</CommandEmpty>
