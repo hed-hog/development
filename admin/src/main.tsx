@@ -9,6 +9,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import { RouterProvider } from 'react-router-dom'
+import { SidebarProvider } from './context/sidebar-context'
 
 i18n.on('languageChanged', (lng) => {
   localStorage.setItem('i18nextLng', lng)
@@ -33,10 +34,12 @@ i18n
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AppProvider>
-      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-        <RouterProvider router={router} />
-        <Toaster />
-      </ThemeProvider>
+      <SidebarProvider>
+        <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+          <RouterProvider router={router} />
+          <Toaster />
+        </ThemeProvider>
+      </SidebarProvider>
     </AppProvider>
   </React.StrictMode>
 )

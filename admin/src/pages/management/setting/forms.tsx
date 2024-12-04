@@ -2,7 +2,6 @@ import ColorTheme from '@/components/custom/color-theme'
 import FormPanel from '@/components/panels/form-panel'
 import { SettingLocaleEnabled } from '@/components/settings/setting-locale-enabled'
 import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 import {
   useLocaleEnabled,
@@ -16,6 +15,7 @@ import { useCallback, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import SidebarNavRenderItems from './components/sidebar-nav'
 
 export default function Page() {
   const { t } = useTranslation(['translation', 'setting'])
@@ -30,7 +30,7 @@ export default function Page() {
     mode: 'onSubmit',
   })
   const { slug } = useParams()
-  const { data, isLoading } = useSettingFromGroup(String(slug))
+  const { data } = useSettingFromGroup(String(slug))
   const [localeEnabled, setLocalesEnabled] = useState<string[]>([])
 
   const handleDataChange = (dataValues: any) => {
@@ -411,178 +411,171 @@ export default function Page() {
     [locale, slug]
   )
 
-  if (isLoading) {
-    return (
-      <div className='w-full space-y-2'>
-        <Skeleton className='h-16 w-full' />
-        <Skeleton className='h-16 w-full' />
-        <Skeleton className='h-16 w-full' />
-      </div>
-    )
-  }
-
   return (
-    <div className='flex w-full flex-col gap-4'>
-      {slug === 'localization' && (
-        <SettingLocaleEnabled onChange={setLocalesEnabled} />
-      )}
-      {slug === 'appearance' && <ColorTheme onChange={handleDataChange} />}
-      <FormPanel
-        ref={formRef as any}
-        fields={
-          Array.isArray(data?.data)
-            ? (data.data.map((item: any) =>
-                getField(item)
-              ) as IFormFieldPropsBase[])
-            : []
-        }
-        form={form}
-        onSubmit={(data) => {
-          let hasErrors = false
-
-          switch (slug) {
-            case 'file-storage':
-              if (!data.storage) {
-                form.setError('storage', {
-                  type: 'required',
-                  message: t('storage is required', { ns: 'setting' }),
-                })
-                hasErrors = true
-              }
-
-              switch (data.storage) {
-                case 'local':
-                  if (!data['storage-local-path']) {
-                    form.setError('storage-local-path', {
-                      type: 'required',
-                      message: t('storage-local-path is required', {
-                        ns: 'setting',
-                      }),
-                    })
-                    hasErrors = true
-                  }
-                  break
-
-                case 'abs':
-                  if (!data['storage-abs-account']) {
-                    form.setError('storage-abs-account', {
-                      type: 'required',
-                      message: t('storage-abs-account is required', {
-                        ns: 'setting',
-                      }),
-                    })
-                    hasErrors = true
-                  }
-
-                  if (!data['storage-abs-key']) {
-                    form.setError('storage-abs-key', {
-                      type: 'required',
-                      message: t('storage-abs-key is required', {
-                        ns: 'setting',
-                      }),
-                    })
-                    hasErrors = true
-                  }
-
-                  if (!data['storage-abs-container']) {
-                    form.setError('storage-abs-container', {
-                      type: 'required',
-                      message: t('storage-abs-container is required', {
-                        ns: 'setting',
-                      }),
-                    })
-                    hasErrors = true
-                  }
-                  break
-
-                case 's3':
-                  if (!data['storage-s3-key']) {
-                    form.setError('storage-s3-key', {
-                      type: 'required',
-                      message: t('storage-s3-key is required', {
-                        ns: 'setting',
-                      }),
-                    })
-                    hasErrors = true
-                  }
-
-                  if (!data['storage-s3-secret']) {
-                    form.setError('storage-s3-secret', {
-                      type: 'required',
-                      message: t('storage-s3-secret is required', {
-                        ns: 'setting',
-                      }),
-                    })
-                    hasErrors = true
-                  }
-
-                  if (!data['storage-s3-region']) {
-                    form.setError('storage-s3-region', {
-                      type: 'required',
-                      message: t('storage-s3-region is required', {
-                        ns: 'setting',
-                      }),
-                    })
-                    hasErrors = true
-                  }
-
-                  if (!data['storage-s3-bucket']) {
-                    form.setError('storage-s3-bucket', {
-                      type: 'required',
-                      message: t('storage-s3-bucket is required', {
-                        ns: 'setting',
-                      }),
-                    })
-                    hasErrors = true
-                  }
-                  break
-              }
-
-              break
+    <div className='flex flex-row'>
+      <SidebarNavRenderItems />
+      <div className='flex w-full flex-col gap-4'>
+        {slug === 'localization' && (
+          <SettingLocaleEnabled onChange={setLocalesEnabled} />
+        )}
+        {slug === 'appearance' && <ColorTheme onChange={handleDataChange} />}
+        <FormPanel
+          ref={formRef as any}
+          fields={
+            Array.isArray(data?.data)
+              ? (data.data.map((item: any) =>
+                  getField(item)
+                ) as IFormFieldPropsBase[])
+              : []
           }
+          form={form}
+          onSubmit={(data) => {
+            let hasErrors = false
 
-          if (hasErrors) {
-            return false
-          }
+            switch (slug) {
+              case 'file-storage':
+                if (!data.storage) {
+                  form.setError('storage', {
+                    type: 'required',
+                    message: t('storage is required', { ns: 'setting' }),
+                  })
+                  hasErrors = true
+                }
 
-          const save = () => {
-            mutate(
-              Object.keys(data)
-                .map((key) => ({
-                  slug: key,
-                  value: data[key],
-                }))
-                .filter(
-                  (item) =>
-                    item.value !== undefined &&
-                    item.value !== null &&
-                    item.value !== ''
-                )
-            )
-          }
+                switch (data.storage) {
+                  case 'local':
+                    if (!data['storage-local-path']) {
+                      form.setError('storage-local-path', {
+                        type: 'required',
+                        message: t('storage-local-path is required', {
+                          ns: 'setting',
+                        }),
+                      })
+                      hasErrors = true
+                    }
+                    break
 
-          if (slug === 'localization') {
-            mutateLocale({
-              codes: localeEnabled,
-            }).then(() => {
-              if (!localeEnabled.includes(data.language)) {
-                data.language = localeEnabled[0]
-              }
+                  case 'abs':
+                    if (!data['storage-abs-account']) {
+                      form.setError('storage-abs-account', {
+                        type: 'required',
+                        message: t('storage-abs-account is required', {
+                          ns: 'setting',
+                        }),
+                      })
+                      hasErrors = true
+                    }
+
+                    if (!data['storage-abs-key']) {
+                      form.setError('storage-abs-key', {
+                        type: 'required',
+                        message: t('storage-abs-key is required', {
+                          ns: 'setting',
+                        }),
+                      })
+                      hasErrors = true
+                    }
+
+                    if (!data['storage-abs-container']) {
+                      form.setError('storage-abs-container', {
+                        type: 'required',
+                        message: t('storage-abs-container is required', {
+                          ns: 'setting',
+                        }),
+                      })
+                      hasErrors = true
+                    }
+                    break
+
+                  case 's3':
+                    if (!data['storage-s3-key']) {
+                      form.setError('storage-s3-key', {
+                        type: 'required',
+                        message: t('storage-s3-key is required', {
+                          ns: 'setting',
+                        }),
+                      })
+                      hasErrors = true
+                    }
+
+                    if (!data['storage-s3-secret']) {
+                      form.setError('storage-s3-secret', {
+                        type: 'required',
+                        message: t('storage-s3-secret is required', {
+                          ns: 'setting',
+                        }),
+                      })
+                      hasErrors = true
+                    }
+
+                    if (!data['storage-s3-region']) {
+                      form.setError('storage-s3-region', {
+                        type: 'required',
+                        message: t('storage-s3-region is required', {
+                          ns: 'setting',
+                        }),
+                      })
+                      hasErrors = true
+                    }
+
+                    if (!data['storage-s3-bucket']) {
+                      form.setError('storage-s3-bucket', {
+                        type: 'required',
+                        message: t('storage-s3-bucket is required', {
+                          ns: 'setting',
+                        }),
+                      })
+                      hasErrors = true
+                    }
+                    break
+                }
+
+                break
+            }
+
+            if (hasErrors) {
+              return false
+            }
+
+            const save = () => {
+              mutate(
+                Object.keys(data)
+                  .map((key) => ({
+                    slug: key,
+                    value: data[key],
+                  }))
+                  .filter(
+                    (item) =>
+                      item.value !== undefined &&
+                      item.value !== null &&
+                      item.value !== ''
+                  )
+              )
+            }
+
+            if (slug === 'localization') {
+              mutateLocale({
+                codes: localeEnabled,
+              }).then(() => {
+                if (!localeEnabled.includes(data.language)) {
+                  data.language = localeEnabled[0]
+                }
+                save()
+              })
+            } else {
               save()
-            })
-          } else {
-            save()
-          }
-        }}
-      />
-      <div>
-        <Button
-          loading={isPending || isPendingLocale}
-          disabled={isPending || isPendingLocale}
-          onClick={() => formRef.current?.submit()}
-        >
-          {t('apply')}
-        </Button>
+            }
+          }}
+        />
+        <div>
+          <Button
+            loading={isPending || isPendingLocale}
+            disabled={isPending || isPendingLocale}
+            onClick={() => formRef.current?.submit()}
+          >
+            {t('apply')}
+          </Button>
+        </div>
       </div>
     </div>
   )

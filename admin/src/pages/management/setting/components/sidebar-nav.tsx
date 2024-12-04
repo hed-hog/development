@@ -6,6 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useSidebar } from '@/context/sidebar-context'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -18,11 +20,7 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   }[]
 }
 
-export default function SidebarNav({
-  className,
-  items,
-  ...props
-}: SidebarNavProps) {
+function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [val, setVal] = useState(pathname ?? '/setting')
@@ -79,5 +77,23 @@ export default function SidebarNav({
         </nav>
       </div>
     </>
+  )
+}
+
+export default function SidebarNavRenderItems() {
+  const { sidebarNavItems, isLoading } = useSidebar()
+
+  return (
+    <aside className='mr-4 lg:w-1/5'>
+      {isLoading ? (
+        <div className='space-y-2'>
+          <Skeleton className='h-9 w-full' />
+          <Skeleton className='h-9 w-full' />
+          <Skeleton className='h-9 w-full' />
+        </div>
+      ) : (
+        <SidebarNav items={sidebarNavItems} />
+      )}
+    </aside>
   )
 }
