@@ -8,11 +8,12 @@ import { CardsChat } from '@/components/examples/chat'
 import Stats from '@/components/examples/stats'
 
 interface IProps {
+  defaultValues: any[] | undefined
   onChange?: (values: any) => void
   onSubmit?: (values: any) => void
 }
 
-export default function ColorTheme({ onChange }: IProps) {
+export default function ColorTheme({ defaultValues, onChange }: IProps) {
   const { theme } = useTheme()
   const [color, setColor] = useState('#bfaa40')
   const [saturation, setSaturation] = useState(50)
@@ -25,6 +26,16 @@ export default function ColorTheme({ onChange }: IProps) {
     setSaturation(hsl.s)
     setLightness(hsl.l)
   }, [color])
+
+  useEffect(() => {
+    const primaryColor = defaultValues?.find((v) =>
+      v.slug.includes('primary')
+    ).value
+    setHue(hexToHSL(primaryColor).h)
+    setSaturation(hexToHSL(primaryColor).s)
+    setLightness(hexToHSL(primaryColor).l)
+    setColor(primaryColor)
+  }, [defaultValues])
 
   useEffect(() => {
     const backgroundHSL = adjustHSL(hsl, 0, 15, -30)
@@ -109,7 +120,9 @@ export default function ColorTheme({ onChange }: IProps) {
       fontFamily: computedStyles.getPropertyValue('--font-family').trim(),
     }
 
-    onChange && onChange(savedValues)
+    if (typeof onChange === 'function') {
+      onChange(savedValues)
+    }
   }, [color, saturation, lightness, theme])
 
   useEffect(() => {

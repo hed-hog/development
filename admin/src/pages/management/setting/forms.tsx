@@ -164,7 +164,7 @@ export default function Page() {
           return {
             name: item.slug,
             type: EnumFieldType.RANGE,
-            defaultValue: item.value,
+            defaultValue: [item.value],
             value: item.value,
             required: false,
             label: {
@@ -174,7 +174,7 @@ export default function Page() {
               text: item.description,
             },
             sliderOptions: {
-              defaultValue: [0.5],
+              defaultValue: [item.value ?? 0.5],
               max: 1,
               step: 0.1,
             },
@@ -240,7 +240,7 @@ export default function Page() {
           return {
             name: item.slug,
             type: EnumFieldType.RANGE,
-            defaultValue: item.value,
+            defaultValue: [item.value],
             value: item.value,
             required: false,
             label: {
@@ -250,7 +250,7 @@ export default function Page() {
               text: item.description,
             },
             sliderOptions: {
-              defaultValue: [1],
+              defaultValue: [item.value ?? 1],
               max: 5,
               step: 0.1,
             },
@@ -264,7 +264,7 @@ export default function Page() {
           return {
             name: item.slug,
             type: EnumFieldType.RANGE,
-            defaultValue: item.value,
+            defaultValue: [item.value],
             value: item.value,
             required: false,
             label: {
@@ -274,7 +274,7 @@ export default function Page() {
               text: item.description,
             },
             sliderOptions: {
-              defaultValue: [100],
+              defaultValue: [item.value ?? 100],
               max: 100,
               step: 1,
             },
@@ -305,7 +305,7 @@ export default function Page() {
           return {
             name: item.slug,
             type: EnumFieldType.RANGE,
-            defaultValue: item.value,
+            defaultValue: [Number(item.value)],
             value: item.value,
             required: false,
             label: {
@@ -315,7 +315,7 @@ export default function Page() {
               text: item.description,
             },
             sliderOptions: {
-              defaultValue: [100],
+              defaultValue: [item.value ?? 100],
               max: 100,
               step: 1,
             },
@@ -416,7 +416,9 @@ export default function Page() {
         {slug === 'localization' && (
           <SettingLocaleEnabled onChange={setLocalesEnabled} />
         )}
-        {slug === 'appearance' && <ColorTheme onChange={handleDataChange} />}
+        {slug === 'appearance' && (
+          <ColorTheme onChange={handleDataChange} defaultValues={data?.data} />
+        )}
         <FormPanel
           ref={formRef as any}
           fields={
