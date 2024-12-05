@@ -178,8 +178,8 @@ export default function Page() {
               max: 1,
               step: 0.1,
             },
-            onChange: (value: number) => {
-              form.setValue(`theme-radius`, value)
+            onChange: (value: number[]) => {
+              form.setValue(`theme-radius`, value[0])
               document.documentElement.style.setProperty(
                 '--radius',
                 `${value}rem`
@@ -254,9 +254,9 @@ export default function Page() {
               max: 5,
               step: 0.1,
             },
-            onChange: (value: number) => {
-              form.setValue(`theme-text-size`, value)
-              setText(value)
+            onChange: (value: number[]) => {
+              form.setValue(`theme-text-size`, value[0])
+              setText(value[0])
             },
           }
 
@@ -281,8 +281,6 @@ export default function Page() {
             onChange: (value: number[]) => {
               const computedStyles = getComputedStyle(document.documentElement)
               const mutedHSL = computedStyles.getPropertyValue('--muted').trim()
-
-              // Extrair HSL do valor atual
               const [hue, lightness] = mutedHSL
                 .replace(/%/g, '')
                 .split(' ')
@@ -359,7 +357,7 @@ export default function Page() {
               text: item.description,
             },
             onChange: (value: boolean) => {
-              form.setValue('theme-light-dark-enabled', value)
+              form.setValue('theme-light-dark-enabled', String(value))
             },
           }
 
@@ -540,10 +538,16 @@ export default function Page() {
             const save = () => {
               mutate(
                 Object.keys(data)
-                  .map((key) => ({
-                    slug: key,
-                    value: data[key],
-                  }))
+                  .map((key) => {
+                    return {
+                      slug: key,
+                      value: Array.isArray(data[key])
+                        ? String(data[key][0])
+                        : typeof data[key] === 'boolean'
+                          ? String(data[key])
+                          : data[key],
+                    }
+                  })
                   .filter(
                     (item) =>
                       item.value !== undefined &&
