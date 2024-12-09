@@ -49,7 +49,6 @@ export default function FileUploader({ name, value: val, onChange }: IProps) {
   const handleFileChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = event.target.files?.[0]
-      console.log({ selectedFile })
 
       if (selectedFile) {
         setFile(selectedFile)

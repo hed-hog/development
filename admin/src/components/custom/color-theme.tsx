@@ -8,14 +8,19 @@ import { CardsChat } from '@/components/examples/chat'
 import Stats from '@/components/examples/stats'
 
 interface IProps {
+  mainColor: string
   defaultValues: any[] | undefined
   onChange?: (values: any) => void
   onSubmit?: (values: any) => void
 }
 
-export default function ColorTheme({ defaultValues, onChange }: IProps) {
+export default function ColorTheme({
+  mainColor,
+  defaultValues,
+  onChange,
+}: IProps) {
   const { theme } = useTheme()
-  const [color, setColor] = useState('#bfaa40')
+  const [color, setColor] = useState(mainColor)
   const [saturation, setSaturation] = useState(50)
   const [lightness, setLightness] = useState(50)
   const [hue, setHue] = useState(50)
@@ -27,15 +32,38 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
     setLightness(hsl.l)
   }, [color])
 
+  const colorSetter = (newColor: string) => {
+    setColor(newColor)
+    const hsl = hexToHSL(newColor)
+    setHue(hsl.h)
+    setSaturation(hsl.s)
+    setLightness(hsl.l)
+  }
+
   useEffect(() => {
-    const primaryColor = defaultValues?.find((v) =>
-      v.slug.includes('primary')
-    ).value
-    setHue(hexToHSL(primaryColor).h)
-    setSaturation(hexToHSL(primaryColor).s)
-    setLightness(hexToHSL(primaryColor).l)
-    setColor(primaryColor)
+    if (defaultValues) {
+      const primaryColor = defaultValues.find((v) =>
+        v.slug.includes('primary')
+      )?.value
+      if (primaryColor) {
+        colorSetter(primaryColor)
+      }
+    }
   }, [defaultValues])
+
+  useEffect(() => {
+    if (mainColor) {
+      colorSetter(mainColor)
+    }
+  }, [mainColor])
+
+  useEffect(() => {
+    if (typeof onChange === 'function') {
+      onChange({
+        primary: `${hexToHSL(color).h} ${hexToHSL(color).s}% ${hexToHSL(color).l}%`,
+      })
+    }
+  }, [color])
 
   useEffect(() => {
     const backgroundHSL = adjustHSL(hsl, 0, 15, -30)
@@ -149,7 +177,15 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
           <div className='mx-12 flex flex-col items-center space-y-4'>
             <HexColorPicker
               color={color}
-              onChange={setColor}
+              onChange={(newColor) => {
+                if (/^#([0-9A-F]{3}){1,2}$/i.test(newColor)) {
+                  setColor(newColor)
+                  const hsl = hexToHSL(newColor)
+                  setHue(hsl.h)
+                  setSaturation(hsl.s)
+                  setLightness(hsl.l)
+                }
+              }}
               className='h-64 w-64'
             />
             <div className='flex flex-col items-center space-x-2 pb-12'>
@@ -162,7 +198,15 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
               </div>
               <HexColorInput
                 color={color}
-                onChange={setColor}
+                onChange={(newColor) => {
+                  if (/^#([0-9A-F]{3}){1,2}$/i.test(newColor)) {
+                    setColor(newColor)
+                    const hsl = hexToHSL(newColor)
+                    setHue(hsl.h)
+                    setSaturation(hsl.s)
+                    setLightness(hsl.l)
+                  }
+                }}
                 className='rounded border border-gray-300 bg-primary px-2 py-1 text-primary-foreground'
                 prefixed
               />
