@@ -37,23 +37,24 @@ export default function Page() {
   const handleDataChange = (dataValues: any) => {
     Object.keys(dataValues).forEach((key) => {
       const value = dataValues[key]
+      if (!value.includes('NaN')) {
+        switch (key) {
+          case 'fontFamily':
+            form.setValue(`theme-${key}`, value)
+            break
 
-      switch (key) {
-        case 'fontFamily':
-          form.setValue(`theme-${key}`, value)
-          break
+          case 'primary':
+          case 'background':
+          case 'secondary':
+          case 'accent':
+          case 'muted':
+            form.setValue(`theme-${key}`, hslToHex(value))
+            break
 
-        case 'primary':
-        case 'background':
-        case 'secondary':
-        case 'accent':
-        case 'muted':
-          form.setValue(`theme-${key}`, hslToHex(value))
-          break
-
-        default:
-          form.setValue(`theme-${key}`, value)
-          break
+          default:
+            form.setValue(`theme-${key}`, value)
+            break
+        }
       }
     })
   }
