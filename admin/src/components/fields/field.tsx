@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import { Combobox } from '@/components/custom/combo-box'
 import { PasswordInput } from '@/components/fields/password-input-field'
 import { RichTextField } from '@/components/fields/rich-text-field'
@@ -31,6 +33,7 @@ import {
   useState,
 } from 'react'
 import FileUploader from './upload-field'
+import { useApp } from '@/hooks/use-app'
 
 export type FieldProps = (
   | {
@@ -82,6 +85,7 @@ export type FieldProps = (
   FieldPropsForm
 
 const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
+  const { request } = useApp()
   const [value, setValue] = useState<string | string[]>(props.value)
   const [options, setOptions] = useState(props.options)
 
@@ -89,8 +93,32 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
     setValue(props.value)
   }, [props.value])
 
+  if (!props.options?.length && typeof props.url === 'string') {
+    console.log({ url: props.url })
+    const { data, isLoading, error } = useQuery({
+      queryKey: [`options-${props.url}`],
+      queryFn: () =>
+        request({
+          url: props.url as string,
+        }),
+    })
+
+    useEffect(() => {
+      if (data && !isLoading && !error) {
+        const options = (data.data as any).data.map((item: any) => ({
+          label: item.name,
+          value: item.slug,
+        }))
+
+        setOptions(options)
+      }
+    }, [data, isLoading, error])
+  }
+
   useEffect(() => {
-    setOptions(props.options)
+    if (props.options?.length) {
+      setOptions(props.options)
+    }
   }, [props.options])
 
   switch (props.type) {
