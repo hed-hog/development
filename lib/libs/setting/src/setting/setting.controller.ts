@@ -11,9 +11,10 @@ import {
   Patch,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 import { Locale } from '@hedhog/locale';
-import { Role, User } from '@hedhog/core';
+import { Public, Role, User } from '@hedhog/core';
 import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingUserDTO } from './dto/setting-user.dto';
@@ -45,6 +46,14 @@ export class SettingsController {
   @Get('group')
   async listSettingGroups(@Pagination() paginationParams, @Locale() locale) {
     return this.settingService.listSettingGroups(locale, paginationParams);
+  }
+
+  @Public()
+  @Get('index.css')
+  async handleIndexStyleFile(@Res() res) {
+    const content = await this.settingService.handleIndexStyleFile();
+    res.header('Content-Type', 'text/css');
+    res.send(content);
   }
 
   @Get()

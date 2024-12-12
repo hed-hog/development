@@ -1,0 +1,32 @@
+:root {
+--primary: 214 75% 14%;
+--primary-foreground: 214 75% 14%;
+--secondary: 214 75% 14%;
+--secondary-foreground: 214 75% 14%;
+--accent: 214 75% 14%;
+--accent-foreground: 214 75% 14%;
+--background: 272 100% 79%;
+--background-foreground: 272 100% 79%;
+--muted: 214 75% 14%;
+--muted-foreground: 192 100% 72%;
+--radius: 0.1rem;
+--font-family: Arial, sans-serif;
+--text-size-xs: 0.75rem;
+--text-size-sm: 0.88rem;
+--text-size-md: 1.00rem;
+--text-size-base: 1.00rem;
+--text-size-lg: 1.13rem;
+--text-size-xl: 1.25rem;
+--text-size-2xl: 1.50rem;
+--text-size-3xl: 1.88rem;
+--muted-saturation:77;
+--muted-lightness:66;
+--light-dark-enabled: enabled;
+--light-dark-default:dark;
+language:en;
+timezone:UTC;
+storage:local;
+storage-accept-mimetype:application/pdf,image/jpeg,image/png,image/gif,image/webp,audio/mp3,video/mp4;
+storage-max-size:10485760;
+storage-local-path:storage;
+}
