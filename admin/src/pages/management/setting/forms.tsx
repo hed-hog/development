@@ -158,7 +158,7 @@ export default function Page() {
               form.setValue(item.slug, value)
               document.documentElement.style.setProperty(
                 `--${item.slug.split('-')[1]}-foreground`,
-                value
+                `${hexToHSL(value).h} ${hexToHSL(value).s}% ${hexToHSL(value).l}%`
               )
             },
           }
