@@ -1,12 +1,12 @@
 :root {
---primary: 148 98% 25%;
---primary-foreground: 0 0% 100%;
+--primary: 291 91% 34%;
+--primary-foreground: 272 100% 79%;
 --secondary: 0 0% 89%;
 --secondary-foreground: 214 75% 14%;
 --accent: 272 100% 79%;
---accent-foreground: 0 0% 89%;
+--accent-foreground: 95 100% 68%;
 --muted: 214 75% 14%;
---muted-foreground: 0 0% 89%;
+--muted-foreground: 31 100% 64%;
 --radius: 1rem;
 --font-family: Arial;
 --text-size-xs: 0.75rem;
@@ -19,14 +19,14 @@
 --text-size-3xl: 1.88rem;
 }
  .dark {
---primary: 148 98% 25%;
---primary-foreground: 0 0% 100%;
+--primary: 291 91% 34%;
+--primary-foreground: 272 100% 79%;
 --secondary: 0 0% 89%;
 --secondary-foreground: 214 75% 14%;
 --accent: 272 100% 79%;
---accent-foreground: 0 0% 89%;
+--accent-foreground: 95 100% 68%;
 --muted: 214 75% 14%;
---muted-foreground: 0 0% 89%;
+--muted-foreground: 31 100% 64%;
 --radius: 1rem;
 --font-family: Arial;
 --text-size-xs: 0.75rem;
@@ -40,14 +40,14 @@
 }
 }
  .light {
---primary: 148 98% 25%;
---primary-foreground: 0 0% 100%;
+--primary: 291 91% 34%;
+--primary-foreground: 272 100% 79%;
 --secondary: 0 0% 89%;
 --secondary-foreground: 214 75% 14%;
 --accent: 272 100% 79%;
---accent-foreground: 0 0% 89%;
+--accent-foreground: 95 100% 68%;
 --muted: 214 75% 14%;
---muted-foreground: 0 0% 89%;
+--muted-foreground: 31 100% 64%;
 --radius: 1rem;
 --font-family: Arial;
 --text-size-xs: 0.75rem;

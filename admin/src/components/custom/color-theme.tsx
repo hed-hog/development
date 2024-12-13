@@ -15,14 +15,9 @@ interface IProps {
 export default function ColorTheme({ defaultValues, onChange }: IProps) {
   const { theme } = useTheme()
   const [defaultPrimary, setDefaultPrimary] = useState('')
-  const [defaultPrimaryForeground, setDefaultPrimaryForeground] = useState('')
   const [defaultSecondary, setDefaultSecondary] = useState('')
-  const [defaultSecondaryForeground, setDefaultSecondaryForeground] =
-    useState('')
   const [defaultMuted, setDefaultMuted] = useState('')
-  const [defaultMutedForeground, setDefaultMutedForeground] = useState('')
   const [defaultAccent, setDefaultAccent] = useState('')
-  const [defaultAccentForeground, setDefaultAccentForeground] = useState('')
 
   useEffect(() => {
     console.log({ defaultValues })
@@ -40,22 +35,6 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
       setDefaultAccent(
         defaultValues.find((v) => v.slug.includes('theme-accent'))?.value
       )
-      setDefaultPrimaryForeground(
-        defaultValues.find((v) => v.slug.includes('theme-primary-foreground'))
-          ?.value
-      )
-      setDefaultSecondaryForeground(
-        defaultValues.find((v) => v.slug.includes('theme-secondary-foreground'))
-          ?.value
-      )
-      setDefaultMutedForeground(
-        defaultValues.find((v) => v.slug.includes('theme-muted-foreground'))
-          ?.value
-      )
-      setDefaultAccentForeground(
-        defaultValues.find((v) => v.slug.includes('theme-accent-foreground'))
-          ?.value
-      )
     }
   }, [defaultValues])
 
@@ -64,39 +43,10 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
     const secondaryHSL = hexToHSL(defaultSecondary)
     const accentHSL = hexToHSL(defaultAccent)
     const mutedHSL = hexToHSL(defaultMuted)
-    const primaryForegroundHSL = hexToHSL(defaultPrimaryForeground)
-    const secondaryForegroundHSL = hexToHSL(defaultSecondaryForeground)
-    const accentForegroundHSL = hexToHSL(defaultAccentForeground)
-    const mutedForegroundHSL = hexToHSL(defaultMutedForeground)
-
-    document.documentElement.style.setProperty(
-      '--primary-foreground',
-      `${primaryForegroundHSL.h} ${primaryForegroundHSL.s}% ${primaryForegroundHSL.l > 50 ? 20 : 80}%`
-    )
-
-    document.documentElement.style.setProperty(
-      '--secondary-foreground',
-      `${secondaryForegroundHSL.h} ${secondaryForegroundHSL.s}% ${secondaryForegroundHSL.l > 50 ? 20 : 80}%`
-    )
-
-    document.documentElement.style.setProperty(
-      '--accent-foreground',
-      `${accentForegroundHSL.h} ${accentForegroundHSL.s}% ${accentForegroundHSL.l > 50 ? 20 : 80}%`
-    )
-
-    document.documentElement.style.setProperty(
-      '--muted-foreground',
-      `${mutedForegroundHSL.h} ${mutedForegroundHSL.s}% ${mutedForegroundHSL.l > 50 ? 20 : 80}%`
-    )
 
     document.documentElement.style.setProperty(
       '--primary',
       `${primaryHSL.h} ${primaryHSL.s}% ${primaryHSL.l}%`
-    )
-
-    document.documentElement.style.setProperty(
-      '--primary-foreground',
-      `${primaryHSL.h} ${primaryHSL.s}%  ${primaryHSL.l > 50 ? 20 : 80}%`
     )
 
     theme === 'dark' &&
@@ -105,30 +55,14 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
         `${secondaryHSL.h} ${secondaryHSL.s}% ${secondaryHSL.l / 10}%`
       )
 
-    theme === 'dark' &&
-      document.documentElement.style.setProperty(
-        '--secondary-foreground',
-        `${secondaryHSL.h} ${secondaryHSL.s}% ${secondaryHSL.l > 50 ? 20 : 80}%`
-      )
-
     document.documentElement.style.setProperty(
       '--accent',
       `${accentHSL.h} ${accentHSL.s}% ${accentHSL.l / 10}%`
     )
 
     document.documentElement.style.setProperty(
-      '--accent-foreground',
-      `${accentHSL.h} ${accentHSL.s}% ${accentHSL.l > 50 ? 20 : 80}%`
-    )
-
-    document.documentElement.style.setProperty(
       '--muted',
       `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
-    )
-
-    document.documentElement.style.setProperty(
-      '--muted-foreground',
-      `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l > 50 ? 20 : 80}%`
     )
 
     const computedStyles = getComputedStyle(document.documentElement)
