@@ -68,7 +68,7 @@ export class SettingService {
     const parsedSlug = slug.replace('theme-', '--');
     switch (slug) {
       case 'theme-font':
-        return `--font-family: ${value};`;
+        return `--font-family: ${value} !important;`;
 
       case 'theme-text-size': {
         const baseSize = parseFloat(value);
@@ -84,7 +84,7 @@ export class SettingService {
         };
 
         return Object.entries(sizes)
-          .map(([sizeKey, sizeValue]) => `${sizeKey}: ${sizeValue};`)
+          .map(([sizeKey, sizeValue]) => `${sizeKey}: ${sizeValue} !important;`)
           .join('\n');
       }
 
@@ -99,17 +99,17 @@ export class SettingService {
       case 'theme-accent':
       case 'theme-accent-foreground': {
         const { h, s, l } = this.hexToHSL(value);
-        return `${parsedSlug}: ${h} ${s}% ${l}%;`;
+        return `${parsedSlug}: ${h} ${s}% ${l}% !important;`;
       }
 
       case 'theme-radius':
-        return `${parsedSlug}: ${value}rem;`;
+        return `${parsedSlug}: ${value}rem !important;`;
 
       case 'theme-light-dark-enabled':
-        return `${parsedSlug}: ${value === 'true' ? 'enabled' : 'disabled'};`;
+        return `${parsedSlug}: ${value === 'true' ? 'enabled' : 'disabled'} !important;`;
 
       default:
-        return `${parsedSlug}:${value};`;
+        return `${parsedSlug}:${value} !important;`;
     }
   }
 
@@ -156,7 +156,7 @@ export class SettingService {
         .map(({ slug, value }) => this.parseSlugAndValue(slug, value))
         .join('\n');
 
-      const cssContent = `:root {\n${cssVariables}\n}`;
+      const cssContent = `:root {\n${cssVariables}\n}\n .dark {\n${cssVariables}\n}\n}\n .light {\n${cssVariables}\n}\n}`;
 
       try {
         await writeFile(
