@@ -142,6 +142,25 @@
                       "enum"
                     ]
                   },
+                  "field": {
+                    "enum": [
+                      "richtext",
+                      "color",
+                      "text",
+                      "file",
+                      "password",
+                      "radio",
+                      "checkbox",
+                      "range",
+                      "select",
+                      "combobox",
+                      "multiselect",
+                      "datepicker",
+                      "sheetpicker",
+                      "switch",
+                      "switchlist"
+                    ]
+                  },
                   "default": {},
                   "onUpdate": {
                     "type": "string"
