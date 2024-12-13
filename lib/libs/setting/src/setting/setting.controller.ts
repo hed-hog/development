@@ -1,3 +1,5 @@
+import { Public, Role, User } from '@hedhog/core';
+import { Locale } from '@hedhog/locale';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -13,10 +15,8 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { Locale } from '@hedhog/locale';
-import { Public, Role, User } from '@hedhog/core';
-import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from './dto/delete.dto';
 import { SettingUserDTO } from './dto/setting-user.dto';
 import { SettingDTO } from './dto/setting.dto';
 import { UpdateDTO } from './dto/update.dto';
@@ -43,6 +43,7 @@ export class SettingsController {
     );
   }
 
+  @Public()
   @Get('group')
   async listSettingGroups(@Pagination() paginationParams, @Locale() locale) {
     return this.settingService.listSettingGroups(locale, paginationParams);

@@ -105,6 +105,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/contact/tsconfig.lib.json"
       }
+    },
+    "cbc": {
+      "type": "library",
+      "root": "libs/cbc",
+      "entryFile": "index",
+      "sourceRoot": "libs/cbc/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/cbc/tsconfig.lib.json"
+      }
     }
   }
 }

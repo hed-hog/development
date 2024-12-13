@@ -123,7 +123,8 @@
       "^@hedhog/payment(|/.*)$": "<rootDir>/libs/payment/src/$1",
       "^@hedhog/blog(|/.*)$": "<rootDir>/libs/blog/src/$1",
       "^@hedhog/locale(|/.*)$": "<rootDir>/libs/locale/src/$1",
-      "^@hedhog/contact(|/.*)$": "<rootDir>/libs/contact/src/$1"
+      "^@hedhog/contact(|/.*)$": "<rootDir>/libs/contact/src/$1",
+      "^@hedhog/cbc(|/.*)$": "<rootDir>/libs/cbc/src/$1"
     }
   }
 }

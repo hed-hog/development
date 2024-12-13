@@ -1,0 +1,11 @@
+{
+  "create": "Criar tipo de citação",
+  "createText": "Preencha as informações do tipo de citação.",
+  "createTooltip": "Criar novo tipo de citação",
+  "delete": "Deletar tipo de citação",
+  "deleteText": "Você tem certeza de que deseja deletar estes tipos de citação?",
+  "deleteTooltip": "Deletar o tipo de citação selecionado",
+  "edit": "Editar tipo de citação",
+  "editText": "Visualizar e editar informações do tipo de citação.",
+  "editTooltip": "Editar o tipo de citação selecionado"
+}

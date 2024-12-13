@@ -1,0 +1,11 @@
+{
+  "create": "Criar citação",
+  "createText": "Preencha as informações da citação.",
+  "createTooltip": "Criar nova citação",
+  "delete": "Deletar citação",
+  "deleteText": "Você tem certeza que deseja deletar estas citações?",
+  "deleteTooltip": "Deletar a citação selecionada",
+  "edit": "Editar citação",
+  "editText": "Ver e editar informações da citação.",
+  "editTooltip": "Editar a citação selecionada"
+}

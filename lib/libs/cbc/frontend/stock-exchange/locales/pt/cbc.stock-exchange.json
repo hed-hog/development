@@ -1,0 +1,11 @@
+{
+  "create": "Criar bolsa de valores",
+  "createText": "Preencha as informações da bolsa de valores.",
+  "createTooltip": "Criar nova bolsa de valores",
+  "delete": "Deletar bolsa de valores",
+  "deleteText": "Você tem certeza de que deseja deletar estas bolsas de valores?",
+  "deleteTooltip": "Deletar a bolsa de valores selecionada",
+  "edit": "Editar bolsa de valores",
+  "editText": "Ver e editar informações da bolsa de valores.",
+  "editTooltip": "Editar a bolsa de valores selecionada"
+}
