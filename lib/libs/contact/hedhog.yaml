@@ -661,6 +661,7 @@ tables:
       - name: name
         type: varchar
         length: 255
+        field: text
         locale:
           en: Name
           pt: Nome
@@ -677,6 +678,7 @@ tables:
       - name: type_id
         type: fk
         isPrimary: false
+        field: combobox
         references:
           table: person_type
           column: id

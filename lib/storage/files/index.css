@@ -1,0 +1,80 @@
+:root {
+--primary: 214 75% 14% !important;
+--primary-foreground: 0 0% 100% !important;
+--secondary: 214 75% 14% !important;
+--secondary-foreground: 0 0% 0% !important;
+--accent: 214 75% 14% !important;
+--accent-foreground: 0 0% 89% !important;
+--background: 214 75% 14% !important;
+--background-foreground: 0 0% 89% !important;
+--muted: 214 75% 14% !important;
+--muted-foreground: 0 0% 89% !important;
+--radius: 0.5rem !important;
+--font-family: Arial, sans-serif !important;
+--text-size-xs: 0.75rem !important;
+--text-size-sm: 0.88rem !important;
+--text-size-md: 1.00rem !important;
+--text-size-base: 1.00rem !important;
+--text-size-lg: 1.13rem !important;
+--text-size-xl: 1.25rem !important;
+--text-size-2xl: 1.50rem !important;
+--text-size-3xl: 1.88rem !important;
+--muted-saturation:100 !important;
+--muted-lightness:100 !important;
+--light-dark-enabled: enabled !important;
+--light-dark-default:dark !important;
+}
+ .dark {
+--primary: 214 75% 14% !important;
+--primary-foreground: 0 0% 100% !important;
+--secondary: 214 75% 14% !important;
+--secondary-foreground: 0 0% 0% !important;
+--accent: 214 75% 14% !important;
+--accent-foreground: 0 0% 89% !important;
+--background: 214 75% 14% !important;
+--background-foreground: 0 0% 89% !important;
+--muted: 214 75% 14% !important;
+--muted-foreground: 0 0% 89% !important;
+--radius: 0.5rem !important;
+--font-family: Arial, sans-serif !important;
+--text-size-xs: 0.75rem !important;
+--text-size-sm: 0.88rem !important;
+--text-size-md: 1.00rem !important;
+--text-size-base: 1.00rem !important;
+--text-size-lg: 1.13rem !important;
+--text-size-xl: 1.25rem !important;
+--text-size-2xl: 1.50rem !important;
+--text-size-3xl: 1.88rem !important;
+--muted-saturation:100 !important;
+--muted-lightness:100 !important;
+--light-dark-enabled: enabled !important;
+--light-dark-default:dark !important;
+}
+}
+ .light {
+--primary: 214 75% 14% !important;
+--primary-foreground: 0 0% 100% !important;
+--secondary: 214 75% 14% !important;
+--secondary-foreground: 0 0% 0% !important;
+--accent: 214 75% 14% !important;
+--accent-foreground: 0 0% 89% !important;
+--background: 214 75% 14% !important;
+--background-foreground: 0 0% 89% !important;
+--muted: 214 75% 14% !important;
+--muted-foreground: 0 0% 89% !important;
+--radius: 0.5rem !important;
+--font-family: Arial, sans-serif !important;
+--text-size-xs: 0.75rem !important;
+--text-size-sm: 0.88rem !important;
+--text-size-md: 1.00rem !important;
+--text-size-base: 1.00rem !important;
+--text-size-lg: 1.13rem !important;
+--text-size-xl: 1.25rem !important;
+--text-size-2xl: 1.50rem !important;
+--text-size-3xl: 1.88rem !important;
+--muted-saturation:100 !important;
+--muted-lightness:100 !important;
+--light-dark-enabled: enabled !important;
+--light-dark-default:dark !important;
+}
+}

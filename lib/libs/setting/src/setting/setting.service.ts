@@ -1,3 +1,4 @@
+import path = require('path');
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { itemTranslations } from '@hedhog/core';
@@ -11,6 +12,8 @@ import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingDTO } from './dto/setting.dto';
 import { UpdateDTO } from './dto/update.dto';
+import { readFile, writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
 
 @Injectable()
 export class SettingService {
@@ -20,6 +23,104 @@ export class SettingService {
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
   ) {}
+
+  hexToHSL(hex: string) {
+    hex = hex && hex.includes('#') ? hex.replace(/^#/, '') : '#000';
+    let r = parseInt(hex.substring(0, 2), 16) / 255;
+    let g = parseInt(hex.substring(2, 4), 16) / 255;
+    let b = parseInt(hex.substring(4, 6), 16) / 255;
+
+    let max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+    let h = (max + min) / 2;
+    let s = (max + min) / 2;
+    let l = (max + min) / 2;
+
+    if (max === min) {
+      h = s = 0;
+    } else {
+      let d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+
+      h /= 6;
+    }
+
+    h = Math.round(h * 360);
+    s = Math.round(s * 100);
+    l = Math.round(l * 100);
+
+    return { h, s, l };
+  }
+
+  parseSlugAndValue(slug: string, value: any) {
+    const parsedSlug = slug.replace('theme-', '--');
+    switch (slug) {
+      case 'theme-font':
+        return `--font-family: ${value} !important;`;
+
+      case 'theme-text-size': {
+        const baseSize = parseFloat(value);
+        const sizes = {
+          '--text-size-xs': `${(baseSize * 0.75).toFixed(2)}rem`,
+          '--text-size-sm': `${(baseSize * 0.875).toFixed(2)}rem`,
+          '--text-size-md': `${baseSize.toFixed(2)}rem`,
+          '--text-size-base': `${baseSize.toFixed(2)}rem`,
+          '--text-size-lg': `${(baseSize * 1.125).toFixed(2)}rem`,
+          '--text-size-xl': `${(baseSize * 1.25).toFixed(2)}rem`,
+          '--text-size-2xl': `${(baseSize * 1.5).toFixed(2)}rem`,
+          '--text-size-3xl': `${(baseSize * 1.875).toFixed(2)}rem`,
+        };
+
+        return Object.entries(sizes)
+          .map(([sizeKey, sizeValue]) => `${sizeKey}: ${sizeValue} !important;`)
+          .join('\n');
+      }
+
+      case 'theme-primary':
+      case 'theme-primary-foreground':
+      case 'theme-secondary':
+      case 'theme-secondary-foreground':
+      case 'theme-background':
+      case 'theme-background-foreground':
+      case 'theme-muted':
+      case 'theme-muted-foreground':
+      case 'theme-accent':
+      case 'theme-accent-foreground': {
+        const { h, s, l } = this.hexToHSL(value);
+        return `${parsedSlug}: ${h} ${s}% ${l}% !important;`;
+      }
+
+      case 'theme-radius':
+        return `${parsedSlug}: ${value}rem !important;`;
+
+      case 'theme-light-dark-enabled':
+        return `${parsedSlug}: ${value === 'true' ? 'enabled' : 'disabled'} !important;`;
+
+      default:
+        return `${parsedSlug}:${value} !important;`;
+    }
+  }
+
+  async handleIndexStyleFile() {
+    const cssIndexPath = path.join('storage', 'files', 'index.css');
+    if (existsSync(cssIndexPath)) {
+      return readFile(cssIndexPath, 'utf8');
+    } else {
+      return '';
+    }
+  }
 
   async setManySettings(data: SettingDTO) {
     const transaction = [];
@@ -50,7 +151,27 @@ export class SettingService {
       },
     });
 
-    return { success: true };
+    if (hasAppearance) {
+      const cssVariables = data.setting
+        .map(({ slug, value }) => this.parseSlugAndValue(slug, value))
+        .join('\n');
+
+      const cssContent = `:root {\n${cssVariables}\n}\n .dark {\n${cssVariables}\n}\n}\n .light {\n${cssVariables}\n}\n}`;
+
+      try {
+        await writeFile(
+          path.join('storage', 'files', 'index.css'),
+          cssContent,
+          'utf8',
+        );
+        console.log('CSS variables written to src/index.css');
+      } catch (error) {
+        console.error('Failed to write CSS variables:', error);
+        throw new Error('Could not write CSS variables to file.');
+      }
+
+      return { success: true };
+    }
   }
 
   async getSettingFromGroup(locale: any, paginationParams: any, slug: string) {
