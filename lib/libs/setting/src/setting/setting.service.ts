@@ -68,7 +68,7 @@ export class SettingService {
     const parsedSlug = slug.replace('theme-', '--');
     switch (slug) {
       case 'theme-font':
-        return `--font-family: ${value} !important;`;
+        return `--font-family: ${value};`;
 
       case 'theme-text-size': {
         const baseSize = parseFloat(value);
@@ -84,7 +84,7 @@ export class SettingService {
         };
 
         return Object.entries(sizes)
-          .map(([sizeKey, sizeValue]) => `${sizeKey}: ${sizeValue} !important;`)
+          .map(([sizeKey, sizeValue]) => `${sizeKey}: ${sizeValue};`)
           .join('\n');
       }
 
@@ -92,24 +92,19 @@ export class SettingService {
       case 'theme-primary-foreground':
       case 'theme-secondary':
       case 'theme-secondary-foreground':
-      case 'theme-background':
-      case 'theme-background-foreground':
       case 'theme-muted':
       case 'theme-muted-foreground':
       case 'theme-accent':
       case 'theme-accent-foreground': {
         const { h, s, l } = this.hexToHSL(value);
-        return `${parsedSlug}: ${h} ${s}% ${l}% !important;`;
+        return `${parsedSlug}: ${h} ${s}% ${l}%;`;
       }
 
       case 'theme-radius':
-        return `${parsedSlug}: ${value}rem !important;`;
-
-      case 'theme-light-dark-enabled':
-        return `${parsedSlug}: ${value === 'true' ? 'enabled' : 'disabled'} !important;`;
+        return `${parsedSlug}: ${value}rem;`;
 
       default:
-        return `${parsedSlug}:${value} !important;`;
+        return `${parsedSlug}:${value};`;
     }
   }
 

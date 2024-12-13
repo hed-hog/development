@@ -31,7 +31,6 @@ export default function Page() {
   })
   const { slug } = useParams()
   const { data } = useSettingFromGroup(String(slug))
-  const [mainColor, setMainColor] = useState<string>('')
   const [localeEnabled, setLocalesEnabled] = useState<string[]>([])
 
   const handleDataChange = (dataValues: any) => {
@@ -112,7 +111,6 @@ export default function Page() {
 
         case 'theme-primary':
         case 'theme-secondary':
-        case 'theme-background':
         case 'theme-muted':
         case 'theme-accent':
           return {
@@ -128,7 +126,6 @@ export default function Page() {
               text: item.description,
             },
             onChange: (value: string) => {
-              setMainColor(value)
               form.setValue(item.slug, value)
               document.documentElement.style.setProperty(
                 `--${item.slug.split('-')[1]}`,
@@ -139,7 +136,6 @@ export default function Page() {
 
         case 'theme-primary-foreground':
         case 'theme-secondary-foreground':
-        case 'theme-background-foreground':
         case 'theme-muted-foreground':
         case 'theme-accent-foreground':
           return {
@@ -263,136 +259,6 @@ export default function Page() {
             },
           }
 
-        case 'theme-muted-saturation':
-          return {
-            name: item.slug,
-            type: EnumFieldType.RANGE,
-            defaultValue: [item.value],
-            value: item.value,
-            required: false,
-            label: {
-              text: item.name,
-            },
-            description: {
-              text: item.description,
-            },
-            sliderOptions: {
-              defaultValue: [item.value ?? 100],
-              max: 100,
-              step: 1,
-            },
-            onChange: (value: number[]) => {
-              const computedStyles = getComputedStyle(document.documentElement)
-              const mutedHSL = computedStyles.getPropertyValue('--muted').trim()
-              const [hue, lightness] = mutedHSL
-                .replace(/%/g, '')
-                .split(' ')
-                .map(Number)
-
-              const newMutedHSL = {
-                h: hue,
-                s: value[0],
-                l: lightness,
-              }
-
-              document.documentElement.style.setProperty(
-                '--muted',
-                `${newMutedHSL.h} ${newMutedHSL.s}% ${newMutedHSL.l}%`
-              )
-
-              form.setValue(item.slug, value[0])
-            },
-          }
-
-        case 'theme-muted-lightness':
-          return {
-            name: item.slug,
-            type: EnumFieldType.RANGE,
-            defaultValue: [Number(item.value)],
-            value: item.value,
-            required: false,
-            label: {
-              text: item.name,
-            },
-            description: {
-              text: item.description,
-            },
-            sliderOptions: {
-              defaultValue: [item.value ?? 100],
-              max: 100,
-              step: 1,
-            },
-            onChange: (value: number[]) => {
-              const computedStyles = getComputedStyle(document.documentElement)
-              const mutedHSL = computedStyles.getPropertyValue('--muted').trim()
-
-              const [hue, saturation] = mutedHSL
-                .replace(/%/g, '')
-                .split(' ')
-                .map(Number)
-
-              const newMutedHSL = {
-                h: hue,
-                s: saturation,
-                l: value[0],
-              }
-
-              document.documentElement.style.setProperty(
-                '--muted',
-                `${newMutedHSL.h} ${newMutedHSL.s}% ${newMutedHSL.l}%`
-              )
-
-              form.setValue(item.slug, value[0])
-            },
-          }
-
-        case 'theme-light-dark-enabled':
-          return {
-            name: item.slug,
-            type: EnumFieldType.SWITCH,
-            defaultValue: item.value,
-            value: item.value,
-            required: false,
-            label: {
-              text: item.name,
-            },
-            description: {
-              text: item.description,
-            },
-            onChange: (value: boolean) => {
-              form.setValue('theme-light-dark-enabled', String(value))
-            },
-          }
-
-        case 'theme-light-dark-default':
-          return {
-            name: item.slug,
-            type: EnumFieldType.SELECT,
-            defaultValue: item.value,
-            value: item.value,
-            required: false,
-            label: {
-              text: item.name,
-            },
-            description: {
-              text: item.description,
-            },
-            options: [
-              {
-                value: 'light',
-                label: 'Light',
-              },
-              {
-                value: 'dark',
-                label: 'Dark',
-              },
-              {
-                value: 'Same as system',
-                label: 'Same as system',
-              },
-            ],
-          }
-
         default:
           return {
             name: item.slug,
@@ -420,11 +286,7 @@ export default function Page() {
           <SettingLocaleEnabled onChange={setLocalesEnabled} />
         )}
         {slug === 'appearance' && (
-          <ColorTheme
-            onChange={handleDataChange}
-            mainColor={mainColor}
-            defaultValues={data?.data}
-          />
+          <ColorTheme onChange={handleDataChange} defaultValues={data?.data} />
         )}
         <FormPanel
           ref={formRef as any}

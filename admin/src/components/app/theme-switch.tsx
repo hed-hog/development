@@ -2,20 +2,9 @@ import { IconMoon, IconSun } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import { useTheme } from './theme-provider'
 import { Button } from '@/components/ui/button'
-import { useQuery } from '@tanstack/react-query'
-import { useApp } from '@/hooks/use-app'
 
 export default function ThemeSwitch() {
   const { theme, setTheme } = useTheme()
-  const { request } = useApp()
-
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['theme-switch'],
-    queryFn: () =>
-      request({
-        url: '/setting/index.css',
-      }),
-  })
 
   useEffect(() => {
     const themeColor = theme === 'dark' ? '#000' : '#fff'
@@ -23,16 +12,14 @@ export default function ThemeSwitch() {
     metaThemeColor && metaThemeColor.setAttribute('content', themeColor)
   }, [theme])
 
-  if (!data?.data && !isLoading && !error) {
-    return (
-      <Button
-        size='icon'
-        variant='ghost'
-        className='min-w-2 rounded-full'
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        {theme === 'light' ? <IconMoon size={20} /> : <IconSun size={20} />}
-      </Button>
-    )
-  }
+  return (
+    <Button
+      size='icon'
+      variant='ghost'
+      className='min-w-2 rounded-full'
+      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+    >
+      {theme === 'light' ? <IconMoon size={20} /> : <IconSun size={20} />}
+    </Button>
+  )
 }

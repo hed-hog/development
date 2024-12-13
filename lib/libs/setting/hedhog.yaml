@@ -96,24 +96,6 @@ data:
               en: The accent color foreground to use
               pt: O contraste da cor de realce a utilizar
             value: '#000000'
-          - slug: theme-background
-            type: string
-            name:
-              en: Background Color
-              pt: Cor de Fundo
-            description:
-              en: The background color to use
-              pt: A cor de fundo a utilizar
-            value: '#FFFFFF'
-          - slug: theme-background-foreground
-            type: string
-            name:
-              en: Background Color Foreground
-              pt: Contraste da Cor de Fundo
-            description:
-              en: The background color foreground to use
-              pt: O contraste da cor de fundo a utilizar
-            value: '#000000'
           - slug: theme-muted
             type: string
             name:
@@ -159,42 +141,15 @@ data:
               en: Text size of the application
               pt: Tamanho do texto da aplicação
             value: '1'
-          - slug: theme-muted-saturation
+          - slug: menu-width
             type: string
             name:
-              en: Muted Color Saturation
-              pt: Saturação da Cor Suave
+              en: Menu Width
+              pt: Largura do Menu
             description:
-              en: Saturação da Cor Suave a utilizar
-              pt: Muted Color Saturation to use
-            value: '100'
-          - slug: theme-muted-lightness
-            type: string
-            name:
-              en: Muted Color Lightness
-              pt: Luminância da Cor Suave
-            description:
-              en: Luminância da Cor Suave a utilizar
-              pt: Muted Color Lightness to use
-            value: '100'
-          - slug: theme-light-dark-enabled
-            type: boolean
-            name:
-              en: Light/Dark Themes Enabled
-              pt: Tema Claro/Escuro Habilitado
-            description:
-              en: Enable or disable toggling of light/dark themes
-              pt: Habilite ou desabilite a troca de tema claro/escuro
-            value: true
-          - slug: theme-light-dark-default
-            type: string
-            name:
-              en: Default Theme
-              pt: Tema Padrão
-            description:
-              en: System default theme
-              pt: Tema Padrão do sistema
-            value: dark
+              en: Menu width of the application
+              pt: Largura do Menu da aplicação
+            value: '16'
 
 tables:
   setting_group:
