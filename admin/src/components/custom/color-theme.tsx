@@ -20,8 +20,6 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
   const [defaultAccent, setDefaultAccent] = useState('')
 
   useEffect(() => {
-    console.log({ defaultValues })
-
     if (defaultValues) {
       setDefaultPrimary(
         defaultValues.find((v) => v.slug.includes('theme-primary'))?.value
@@ -87,18 +85,6 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
       onChange(savedValues)
     }
   }, [defaultPrimary, defaultSecondary, defaultMuted, defaultAccent, theme])
-
-  useEffect(() => {
-    document.documentElement.style.setProperty(
-      '--secondary',
-      `210 40% ${theme === 'dark' ? '0' : '100'}%`
-    )
-
-    document.documentElement.style.setProperty(
-      '--accent',
-      `210 40% ${theme === 'dark' ? '0' : '100'}%`
-    )
-  }, [theme])
 
   return (
     <div className='flex w-full flex-row justify-between'>
