@@ -259,6 +259,33 @@ export default function Page() {
             },
           }
 
+        case 'menu-width':
+          return {
+            name: item.slug,
+            type: EnumFieldType.RANGE,
+            defaultValue: [item.value],
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            sliderOptions: {
+              defaultValue: [item.value ?? 16],
+              max: 100,
+              step: 1,
+            },
+            onChange: (value: number[]) => {
+              form.setValue(`menu-width`, value[0])
+              document.documentElement.style.setProperty(
+                '--menu-width',
+                `${value[0]}rem`
+              )
+            },
+          }
+
         default:
           return {
             name: item.slug,
