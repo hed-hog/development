@@ -31,7 +31,6 @@ export default function Page() {
   })
   const { slug } = useParams()
   const { data } = useSettingFromGroup(String(slug))
-  const [mainColor, setMainColor] = useState<string>('')
   const [localeEnabled, setLocalesEnabled] = useState<string[]>([])
 
   const handleDataChange = (dataValues: any) => {
@@ -127,7 +126,6 @@ export default function Page() {
               text: item.description,
             },
             onChange: (value: string) => {
-              setMainColor(value)
               form.setValue(item.slug, value)
               document.documentElement.style.setProperty(
                 `--${item.slug.split('-')[1]}`,
@@ -400,11 +398,7 @@ export default function Page() {
           <SettingLocaleEnabled onChange={setLocalesEnabled} />
         )}
         {slug === 'appearance' && (
-          <ColorTheme
-            onChange={handleDataChange}
-            mainColor={mainColor}
-            defaultValues={data?.data}
-          />
+          <ColorTheme onChange={handleDataChange} defaultValues={data?.data} />
         )}
         <FormPanel
           ref={formRef as any}

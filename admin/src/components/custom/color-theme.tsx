@@ -1,6 +1,5 @@
 import { useTheme } from '@/components/app/theme-provider'
-import { Slider } from '@/components/ui/slider'
-import { adjustHSL, hexToHSL } from '@/lib/colors'
+import { hexToHSL } from '@/lib/colors'
 import { useEffect, useState } from 'react'
 import { HexColorInput, HexColorPicker } from 'react-colorful'
 import CalendarDemo from '@/components/examples/calendar'
@@ -8,34 +7,87 @@ import { CardsChat } from '@/components/examples/chat'
 import Stats from '@/components/examples/stats'
 
 interface IProps {
-  mainColor: string
   defaultValues: any[] | undefined
   onChange?: (values: any) => void
   onSubmit?: (values: any) => void
 }
 
-export default function ColorTheme({
-  mainColor,
-  defaultValues,
-  onChange,
-}: IProps) {
+export default function ColorTheme({ defaultValues, onChange }: IProps) {
   const { theme } = useTheme()
-  const [defaultPrimary, setDefaultPrimary] = useState(mainColor)
-  const [defaultSecondary, setDefaultSecondary] = useState(
-    defaultValues?.find((v) => v.slug.includes('secondary'))?.value
-  )
-  const [defaultMuted, setDefaultMuted] = useState(
-    defaultValues?.find((v) => v.slug.includes('muted'))?.value
-  )
-  const [defaultAccent, setDefaultAccent] = useState(
-    defaultValues?.find((v) => v.slug.includes('accent'))?.value
-  )
+  const [defaultPrimary, setDefaultPrimary] = useState('')
+  const [defaultPrimaryForeground, setDefaultPrimaryForeground] = useState('')
+  const [defaultSecondary, setDefaultSecondary] = useState('')
+  const [defaultSecondaryForeground, setDefaultSecondaryForeground] =
+    useState('')
+  const [defaultMuted, setDefaultMuted] = useState('')
+  const [defaultMutedForeground, setDefaultMutedForeground] = useState('')
+  const [defaultAccent, setDefaultAccent] = useState('')
+  const [defaultAccentForeground, setDefaultAccentForeground] = useState('')
+
+  useEffect(() => {
+    console.log({ defaultValues })
+
+    if (defaultValues) {
+      setDefaultPrimary(
+        defaultValues.find((v) => v.slug.includes('theme-primary'))?.value
+      )
+      setDefaultSecondary(
+        defaultValues.find((v) => v.slug.includes('theme-secondary'))?.value
+      )
+      setDefaultMuted(
+        defaultValues.find((v) => v.slug.includes('theme-muted'))?.value
+      )
+      setDefaultAccent(
+        defaultValues.find((v) => v.slug.includes('theme-accent'))?.value
+      )
+      setDefaultPrimaryForeground(
+        defaultValues.find((v) => v.slug.includes('theme-primary-foreground'))
+          ?.value
+      )
+      setDefaultSecondaryForeground(
+        defaultValues.find((v) => v.slug.includes('theme-secondary-foreground'))
+          ?.value
+      )
+      setDefaultMutedForeground(
+        defaultValues.find((v) => v.slug.includes('theme-muted-foreground'))
+          ?.value
+      )
+      setDefaultAccentForeground(
+        defaultValues.find((v) => v.slug.includes('theme-accent-foreground'))
+          ?.value
+      )
+    }
+  }, [defaultValues])
 
   useEffect(() => {
     const primaryHSL = hexToHSL(defaultPrimary)
     const secondaryHSL = hexToHSL(defaultSecondary)
     const accentHSL = hexToHSL(defaultAccent)
     const mutedHSL = hexToHSL(defaultMuted)
+    const primaryForegroundHSL = hexToHSL(defaultPrimaryForeground)
+    const secondaryForegroundHSL = hexToHSL(defaultSecondaryForeground)
+    const accentForegroundHSL = hexToHSL(defaultAccentForeground)
+    const mutedForegroundHSL = hexToHSL(defaultMutedForeground)
+
+    document.documentElement.style.setProperty(
+      '--primary-foreground',
+      `${primaryForegroundHSL.h} ${primaryForegroundHSL.s}% ${primaryForegroundHSL.l > 50 ? 20 : 80}%`
+    )
+
+    document.documentElement.style.setProperty(
+      '--secondary-foreground',
+      `${secondaryForegroundHSL.h} ${secondaryForegroundHSL.s}% ${secondaryForegroundHSL.l > 50 ? 20 : 80}%`
+    )
+
+    document.documentElement.style.setProperty(
+      '--accent-foreground',
+      `${accentForegroundHSL.h} ${accentForegroundHSL.s}% ${accentForegroundHSL.l > 50 ? 20 : 80}%`
+    )
+
+    document.documentElement.style.setProperty(
+      '--muted-foreground',
+      `${mutedForegroundHSL.h} ${mutedForegroundHSL.s}% ${mutedForegroundHSL.l > 50 ? 20 : 80}%`
+    )
 
     document.documentElement.style.setProperty(
       '--primary',
