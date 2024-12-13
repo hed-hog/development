@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@/components/app/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
 import '@/index.css'
+import '@/theme.css'
 import { AppProvider } from '@/lib/app-provider'
 import router from '@/router'
 import i18n from 'i18next'
