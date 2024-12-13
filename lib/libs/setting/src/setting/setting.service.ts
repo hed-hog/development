@@ -103,6 +103,9 @@ export class SettingService {
       case 'theme-radius':
         return `${parsedSlug}: ${value}rem;`;
 
+      case 'menu-width':
+        return `--menu-width: ${value}rem;`;
+
       default:
         return `${parsedSlug}:${value};`;
     }
@@ -151,7 +154,7 @@ export class SettingService {
         .map(({ slug, value }) => this.parseSlugAndValue(slug, value))
         .join('\n');
 
-      const cssContent = `:root {\n${cssVariables}\n}\n .dark {\n${cssVariables}\n}\n}\n .light {\n${cssVariables}\n}\n}`;
+      const cssContent = `:root {\n${cssVariables}\n}\n .dark {\n${cssVariables}\n}\n .light {\n${cssVariables}\n}`;
 
       try {
         await writeFile(
