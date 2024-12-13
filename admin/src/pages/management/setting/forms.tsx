@@ -112,7 +112,6 @@ export default function Page() {
 
         case 'theme-primary':
         case 'theme-secondary':
-        case 'theme-background':
         case 'theme-muted':
         case 'theme-accent':
           return {
@@ -139,7 +138,6 @@ export default function Page() {
 
         case 'theme-primary-foreground':
         case 'theme-secondary-foreground':
-        case 'theme-background-foreground':
         case 'theme-muted-foreground':
         case 'theme-accent-foreground':
           return {
@@ -343,24 +341,6 @@ export default function Page() {
               )
 
               form.setValue(item.slug, value[0])
-            },
-          }
-
-        case 'theme-light-dark-enabled':
-          return {
-            name: item.slug,
-            type: EnumFieldType.SWITCH,
-            defaultValue: item.value,
-            value: item.value,
-            required: false,
-            label: {
-              text: item.name,
-            },
-            description: {
-              text: item.description,
-            },
-            onChange: (value: boolean) => {
-              form.setValue('theme-light-dark-enabled', String(value))
             },
           }
 

@@ -92,8 +92,6 @@ export class SettingService {
       case 'theme-primary-foreground':
       case 'theme-secondary':
       case 'theme-secondary-foreground':
-      case 'theme-background':
-      case 'theme-background-foreground':
       case 'theme-muted':
       case 'theme-muted-foreground':
       case 'theme-accent':
@@ -104,9 +102,6 @@ export class SettingService {
 
       case 'theme-radius':
         return `${parsedSlug}: ${value}rem;`;
-
-      case 'theme-light-dark-enabled':
-        return `${parsedSlug}: ${value === 'true' ? 'enabled' : 'disabled'};`;
 
       default:
         return `${parsedSlug}:${value};`;
