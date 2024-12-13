@@ -1,12 +1,12 @@
 :root {
 --primary: 291 91% 34%;
 --primary-foreground: 272 100% 79%;
---secondary: 0 0% 89%;
---secondary-foreground: 214 75% 14%;
---accent: 272 100% 79%;
---accent-foreground: 95 100% 68%;
+--secondary: 214 75% 14%;
+--secondary-foreground: 0 0% 89%;
+--accent: 214 75% 14%;
+--accent-foreground: 0 0% 89%;
 --muted: 214 75% 14%;
---muted-foreground: 31 100% 64%;
+--muted-foreground: 0 0% 89%;
 --radius: 1rem;
 --font-family: Arial;
 --text-size-xs: 0.75rem;
@@ -21,12 +21,12 @@
  .dark {
 --primary: 291 91% 34%;
 --primary-foreground: 272 100% 79%;
---secondary: 0 0% 89%;
---secondary-foreground: 214 75% 14%;
---accent: 272 100% 79%;
---accent-foreground: 95 100% 68%;
+--secondary: 214 75% 14%;
+--secondary-foreground: 0 0% 89%;
+--accent: 214 75% 14%;
+--accent-foreground: 0 0% 89%;
 --muted: 214 75% 14%;
---muted-foreground: 31 100% 64%;
+--muted-foreground: 0 0% 89%;
 --radius: 1rem;
 --font-family: Arial;
 --text-size-xs: 0.75rem;
@@ -42,12 +42,12 @@
  .light {
 --primary: 291 91% 34%;
 --primary-foreground: 272 100% 79%;
---secondary: 0 0% 89%;
---secondary-foreground: 214 75% 14%;
---accent: 272 100% 79%;
---accent-foreground: 95 100% 68%;
+--secondary: 214 75% 14%;
+--secondary-foreground: 0 0% 89%;
+--accent: 214 75% 14%;
+--accent-foreground: 0 0% 89%;
 --muted: 214 75% 14%;
---muted-foreground: 31 100% 64%;
+--muted-foreground: 0 0% 89%;
 --radius: 1rem;
 --font-family: Arial;
 --text-size-xs: 0.75rem;
