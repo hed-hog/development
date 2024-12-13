@@ -1,0 +1,67 @@
+tables:
+  quote:
+    columns:
+      - type: pk
+      - name: name
+        type: varchar
+      - name: header
+        type: json
+      - name: filter
+        type: json
+      - type: created_at
+      - type: updated_at
+screens:
+  quote:
+    title:
+      en: Quotes
+      pt: Cotações
+    menu:
+      url: /quotes
+      icon: user-check
+      name:
+        en: Quotes
+        pt: Cotações
+      slug: /quotes
+data:
+  route:
+    - url: /quote
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /quote
+      method: POST
+      relations: *a1
+    - url: /quote/:id
+      method: GET
+      relations: *a1
+    - url: /quote/:id
+      method: PATCH
+      relations: *a1
+    - url: /quote
+      method: DELETE
+      relations: *a1
+  menu:
+    - name:
+        en: Quote
+        pt: Quote
+      icon: file
+      url: /quote
+      slug: quote
+      relations: *a1
+  screen:
+    - name:
+        en: Quote
+        pt: Quote
+      slug: quote
+      description:
+        en: Screen to manage quote
+        pt: Tela para gerenciar quote
+      icon: file
+routes:
+  - path: coinbitclub
+    children:
+      - path: quote
+        lazy:
+          component: ./pages/coinbitclub/quote/index.tsx
