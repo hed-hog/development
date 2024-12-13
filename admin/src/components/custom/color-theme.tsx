@@ -18,6 +18,7 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
   const [defaultSecondary, setDefaultSecondary] = useState('')
   const [defaultMuted, setDefaultMuted] = useState('')
   const [defaultAccent, setDefaultAccent] = useState('')
+  const [defaultMenuWidth, setDefaultMenuWidth] = useState('')
 
   useEffect(() => {
     if (defaultValues) {
@@ -32,6 +33,9 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
       )
       setDefaultAccent(
         defaultValues.find((v) => v.slug.includes('theme-accent'))?.value
+      )
+      setDefaultMenuWidth(
+        defaultValues.find((v) => v.slug.includes('menu-width'))?.value
       )
     }
   }, [defaultValues])
@@ -62,6 +66,11 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
       `${mutedHSL.h} ${mutedHSL.s}% ${mutedHSL.l}%`
     )
 
+    document.documentElement.style.setProperty(
+      '--menu-width',
+      `${defaultMenuWidth}rem`
+    )
+
     const computedStyles = getComputedStyle(document.documentElement)
     const savedValues = {
       primary: computedStyles.getPropertyValue('--primary').trim(),
@@ -83,7 +92,14 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
     if (typeof onChange === 'function') {
       onChange(savedValues)
     }
-  }, [defaultPrimary, defaultSecondary, defaultMuted, defaultAccent, theme])
+  }, [
+    defaultPrimary,
+    defaultSecondary,
+    defaultMuted,
+    defaultAccent,
+    defaultMenuWidth,
+    theme,
+  ])
 
   return (
     <div className='flex w-full flex-row justify-between'>
