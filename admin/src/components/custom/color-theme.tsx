@@ -47,15 +47,14 @@ export default function ColorTheme({ defaultValues, onChange }: IProps) {
       `${primaryHSL.h} ${primaryHSL.s}% ${primaryHSL.l}%`
     )
 
-    theme === 'dark' &&
-      document.documentElement.style.setProperty(
-        '--secondary',
-        `${secondaryHSL.h} ${secondaryHSL.s}% ${secondaryHSL.l / 10}%`
-      )
+    document.documentElement.style.setProperty(
+      '--secondary',
+      `${secondaryHSL.h} ${secondaryHSL.s}% ${secondaryHSL.l}%`
+    )
 
     document.documentElement.style.setProperty(
       '--accent',
-      `${accentHSL.h} ${accentHSL.s}% ${accentHSL.l / 10}%`
+      `${accentHSL.h} ${accentHSL.s}% ${accentHSL.l}%`
     )
 
     document.documentElement.style.setProperty(
