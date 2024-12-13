@@ -94,7 +94,6 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
   }, [props.value])
 
   if (!props.options?.length && typeof props.url === 'string') {
-    console.log({ url: props.url })
     const { data, isLoading, error } = useQuery({
       queryKey: [`options-${props.url}`],
       queryFn: () =>
