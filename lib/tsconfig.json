@@ -41,8 +41,8 @@
       "@hedhog/setting/*": ["libs/setting/src/*"],
       "@hedhog/contact": ["libs/contact/src"],
       "@hedhog/contact/*": ["libs/contact/src/*"],
-      "@hedhog/cbs": ["libs/cbs/src"],
-      "@hedhog/cbs/*": ["libs/cbs/src/*"]
+      "@hedhog/cbc": ["libs/cbc/src"],
+      "@hedhog/cbc/*": ["libs/cbc/src/*"]
     }
   },
   "exclude": ["libs/**/frontend", "node_modules", "dist"]

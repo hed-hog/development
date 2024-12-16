@@ -7,6 +7,7 @@ import { ContactModule } from '@hedhog/contact';
 import { PrismaModule } from '@hedhog/prisma';
 import { CountryModule } from '@hedhog/country';
 import { SettingModule } from '@hedhog/setting';
+import { CbcModule } from '@hedhog/cbc';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -35,6 +36,7 @@ import { AppService } from './app.service';
     LocaleModule,
     SettingModule,
     FileModule,
+    CbcModule,
   ],
   controllers: [AppController],
   providers: [AppService],
