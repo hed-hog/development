@@ -1380,6 +1380,9 @@ tables:
           table: trend_type
           column: id
           onDelete: CASCADE
+        locale:
+          pt: Classificação das Médias Móveis
+          en: Moving Averages Rating
 
       - name: oscillators_rating_id
         type: fk
@@ -1387,6 +1390,9 @@ tables:
           table: trend_type
           column: id
           onDelete: CASCADE
+        locale:
+          pt: Classificação dos Osciladores
+          en: Oscillators Rating
 
       - name: technical_rating_id
         type: fk
@@ -1394,6 +1400,9 @@ tables:
           table: trend_type
           column: id
           onDelete: CASCADE
+        locale:
+          pt: Classificação Técnica
+          en: Technical Rating
 
       - name: stock_exchange_id
         type: fk
@@ -1401,9 +1410,11 @@ tables:
           table: stock_exchange
           column: id
           onDelete: CASCADE
+        locale:
+          pt: Bolsa
+          en: Stock Exchange
 
       - type: created_at
-
       - type: updated_at
 
 data:
@@ -1615,6 +1626,7 @@ data:
         en: Screen to manage quotation
         pt: Tela para gerenciar cotação
       icon: brand-cashapp
+
 screens:
   coin:
     title:
@@ -1706,6 +1718,7 @@ screens:
         role:
           - where:
               slug: admin
+
 routes:
   - path: cbc
     children:
