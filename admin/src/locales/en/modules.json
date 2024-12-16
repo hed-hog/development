@@ -3,5 +3,16 @@
   "quotation_type": "Quotation Types",
   "stock_exchange": "Stock Exchanges",
   "trend_type": "Trend Types",
-  "quotation": "Quotations"
+  "quotation": "Quotations",
+  "person": "Contact",
+  "person_value": "Value",
+  "person_address": "Address",
+  "person_contact": "Contact",
+  "person_document": "Document",
+  "person_custom": "Custom",
+  "person_type": "Person Type",
+  "person_address_type": "Address Type",
+  "person_contact_type": "Contact Type",
+  "person_custom_type": "Custom Type",
+  "person_document_type": "Document Type"
 }

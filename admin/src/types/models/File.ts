@@ -1,5 +1,6 @@
 import { FileProvider } from './FileProvider';
 import { FileMimetype } from './FileMimetype';
+import { Person } from './Person';
 
 export type File = {
   id?: number;
@@ -13,4 +14,5 @@ export type File = {
   updated_at?: string;
   file_provider?: FileProvider;
   file_mimetype?: FileMimetype;
+  person?: Person[];
 }
