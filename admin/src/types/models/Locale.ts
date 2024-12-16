@@ -1,11 +1,11 @@
-import { MenuLocale } from './MenuLocale';
-import { SettingGroupLocale } from './SettingGroupLocale';
-import { MultifactorLocale } from './MultifactorLocale';
 import { SettingLocale } from './SettingLocale';
-import { TrendTypeLocale } from './TrendTypeLocale';
-import { ScreenLocale } from './ScreenLocale';
-import { RoleLocale } from './RoleLocale';
 import { Translation } from './Translation';
+import { ScreenLocale } from './ScreenLocale';
+import { SettingGroupLocale } from './SettingGroupLocale';
+import { TrendTypeLocale } from './TrendTypeLocale';
+import { MultifactorLocale } from './MultifactorLocale';
+import { MenuLocale } from './MenuLocale';
+import { RoleLocale } from './RoleLocale';
 
 export type Locale = {
   id?: number;
@@ -14,12 +14,12 @@ export type Locale = {
   enabled?: boolean;
   created_at?: string;
   updated_at?: string;
-  menu_locale?: MenuLocale[];
-  setting_group_locale?: SettingGroupLocale[];
-  multifactor_locale?: MultifactorLocale[];
   setting_locale?: SettingLocale[];
-  trend_type_locale?: TrendTypeLocale[];
-  screen_locale?: ScreenLocale[];
-  role_locale?: RoleLocale[];
   translation?: Translation[];
+  screen_locale?: ScreenLocale[];
+  setting_group_locale?: SettingGroupLocale[];
+  trend_type_locale?: TrendTypeLocale[];
+  multifactor_locale?: MultifactorLocale[];
+  menu_locale?: MenuLocale[];
+  role_locale?: RoleLocale[];
 }

@@ -1034,7 +1034,7 @@ screens:
         pt: Moedas
       icon: coin
       url: /cbc/coin
-      slug: coin
+      slug: /cbc/coin
       relations:
         role:
           - where:
@@ -1052,7 +1052,7 @@ screens:
         pt: Tipos de Cotação
       icon: adjustments-dollar
       url: /cbc/quotation-type
-      slug: quotation-type
+      slug: /cbc/quotation-type
       relations:
         role:
           - where:
@@ -1070,7 +1070,7 @@ screens:
         pt: Bolsas de Valores
       icon: exchange
       url: /cbc/stock-exchange
-      slug: stock-exchange
+      slug: /cbc/stock-exchange
       relations:
         role:
           - where:
@@ -1088,7 +1088,7 @@ screens:
         pt: Tipos de Tendência
       icon: trending-up
       url: /cbc/trend-type
-      slug: trend-type
+      slug: /cbc/trend-type
       relations:
         role:
           - where:
@@ -1106,7 +1106,7 @@ screens:
         pt: Quotation
       icon: brand-cashapp
       url: /cbc/quotation
-      slug: quotation
+      slug: /cbc/quotation
       relations:
         role:
           - where:

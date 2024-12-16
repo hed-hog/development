@@ -1,6 +1,6 @@
-import { MenuLocale } from './MenuLocale';
 import { MenuScreen } from './MenuScreen';
 import { RoleMenu } from './RoleMenu';
+import { MenuLocale } from './MenuLocale';
 
 export type Menu = {
   id?: number;
@@ -12,9 +12,9 @@ export type Menu = {
   created_at?: string;
   updated_at?: string;
   menu?: Menu;
-  menu_locale?: MenuLocale[];
   menu_screen?: MenuScreen[];
-  other_menu?: Menu[];
   role_menu?: RoleMenu[];
+  other_menu?: Menu[];
+  menu_locale?: MenuLocale[];
   name?: string;
 }
