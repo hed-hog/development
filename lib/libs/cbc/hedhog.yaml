@@ -932,7 +932,6 @@ data:
       icon: adjustments-dollar
       url: /cbc/quotation-type
       slug: quotation-type
-      relations: *a1
       menu_id:
         where:
           slug: /cbc
@@ -942,7 +941,6 @@ data:
       icon: exchange
       url: /cbc/stock-exchange
       slug: stock-exchange
-      relations: *a3
       menu_id:
         where:
           slug: /cbc
@@ -952,7 +950,6 @@ data:
       icon: trending-up
       url: /cbc/trend-type
       slug: trend-type
-      relations: *a4
       menu_id:
         where:
           slug: /cbc
@@ -962,7 +959,6 @@ data:
       icon: file
       url: /cbc/quotation
       slug: quotation
-      relations: *a5
       menu_id:
         where:
           slug: /cbc
@@ -975,10 +971,6 @@ data:
       menu_id:
         where:
           slug: /cbc
-      relations:
-        role:
-          - where:
-              slug: admin
   screen:
     - name:
         en: Quotation Type
