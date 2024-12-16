@@ -1,7 +1,7 @@
 :root {
 --primary: 192 100% 72%;
 --primary-foreground: 214 75% 14%;
---secondary: 0 0% 89%;
+--secondary: 214 75% 14%;
 --secondary-foreground: 192 100% 72%;
 --accent: 214 75% 14%;
 --accent-foreground: 192 100% 72%;
@@ -22,7 +22,7 @@
  .dark {
 --primary: 192 100% 72%;
 --primary-foreground: 214 75% 14%;
---secondary: 0 0% 89%;
+--secondary: 214 75% 14%;
 --secondary-foreground: 192 100% 72%;
 --accent: 214 75% 14%;
 --accent-foreground: 192 100% 72%;
@@ -43,7 +43,7 @@
  .light {
 --primary: 192 100% 72%;
 --primary-foreground: 214 75% 14%;
---secondary: 0 0% 89%;
+--secondary: 214 75% 14%;
 --secondary-foreground: 192 100% 72%;
 --accent: 214 75% 14%;
 --accent-foreground: 192 100% 72%;

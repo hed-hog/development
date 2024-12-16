@@ -68,7 +68,7 @@ data:
             description:
               en: The secondary color to use
               pt: A cor secundária a utilizar
-            value: '#E2E2E2'
+            value: '#09203f'
           - slug: theme-secondary-foreground
             type: string
             name:
