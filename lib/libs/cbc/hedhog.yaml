@@ -1607,32 +1607,56 @@ data:
               slug: admin
     - name:
         en: Banking
-        pt: Banking
-      icon: file
-      url: /banking
+        pt: Banca
       slug: banking
-      relations: *a6
+      icon: building-bank
+      url: /cbc/banking
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Operation
-        pt: Operation
-      icon: file
-      url: /operation
+        pt: Operação
+      icon: adjustments-cog
+      url: /cbc/operation
       slug: operation
-      relations: *a7
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Strategy
-        pt: Strategy
-      icon: file
-      url: /strategy
+        pt: Estratégia
+      icon: pencil-bolt
+      url: /cbc/strategy
       slug: strategy
-      relations: *a8
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: TradeSignalType
-        pt: TradeSignalType
-      icon: file
+        pt: Tipo de Sinal de Trade
+      icon: brand-stocktwits
       url: /trade-signal-type
       slug: trade-signal-type
-      relations: *a9
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
   screen:
     - name:
         en: Quotation Type
@@ -1675,77 +1699,37 @@ data:
         pt: Tela para gerenciar cotação
       icon: brand-cashapp
     - name:
-        en: QuotationType
-        pt: QuotationType
-      slug: quotation-type
-      description:
-        en: Screen to manage quotation_type
-        pt: Tela para gerenciar quotation_type
-      icon: file
-    - name:
-        en: Coin
-        pt: Coin
-      slug: coin
-      description:
-        en: Screen to manage coin
-        pt: Tela para gerenciar coin
-      icon: file
-    - name:
-        en: StockExchange
-        pt: StockExchange
-      slug: stock-exchange
-      description:
-        en: Screen to manage stock_exchange
-        pt: Tela para gerenciar stock_exchange
-      icon: file
-    - name:
-        en: TrendType
-        pt: TrendType
-      slug: trend-type
-      description:
-        en: Screen to manage trend_type
-        pt: Tela para gerenciar trend_type
-      icon: file
-    - name:
-        en: Quotation
-        pt: Quotation
-      slug: quotation
-      description:
-        en: Screen to manage quotation
-        pt: Tela para gerenciar quotation
-      icon: file
-    - name:
         en: Banking
-        pt: Banking
-      slug: banking
+        pt: Banca
+      slug: /cbc/banking
       description:
         en: Screen to manage banking
-        pt: Tela para gerenciar banking
-      icon: file
+        pt: Tela para gerenciar banca
+      icon: building-bank
     - name:
         en: Operation
-        pt: Operation
-      slug: operation
+        pt: Operação
+      slug: /cbc/operation
       description:
         en: Screen to manage operation
-        pt: Tela para gerenciar operation
-      icon: file
+        pt: Tela para gerenciar operação
+      icon: adjustments-cog
     - name:
         en: Strategy
-        pt: Strategy
-      slug: strategy
+        pt: Estratégia
+      slug: /cbc/strategy
       description:
         en: Screen to manage strategy
-        pt: Tela para gerenciar strategy
-      icon: file
+        pt: Tela para gerenciar estratégia
+      icon: pencil-bolt
     - name:
-        en: TradeSignalType
-        pt: TradeSignalType
-      slug: trade-signal-type
+        en: Trade Signal Type
+        pt: Tipo de Sinal de Trade
+      slug: /cbc/trade-signal-type
       description:
-        en: Screen to manage trade_signal_type
-        pt: Tela para gerenciar trade_signal_type
-      icon: file
+        en: Screen to manage trade signal type
+        pt: Tela para gerenciar tipo de sinal de trade
+      icon: brand-stocktwits
   strategy:
     - name: AI STRATEGY
     - name: BULL AI
@@ -1846,6 +1830,78 @@ screens:
       icon: brand-cashapp
       url: /cbc/quotation
       slug: /cbc/quotation
+      relations:
+        role:
+          - where:
+              slug: admin
+  banking:
+    title:
+      en: Banking
+      pt: Banca
+    menu:
+      menu_id:
+        where:
+          slug: /cbc
+      name:
+        en: Banking
+        pt: Banca
+      icon: building-bank
+      url: /cbc/banking
+      slug: /cbc/banking
+      relations:
+        role:
+          - where:
+              slug: admin
+  operation:
+    title:
+      en: Operation
+      pt: Operação
+    menu:
+      menu_id:
+        where:
+          slug: /cbc
+      name:
+        en: Operation
+        pt: Operação
+      icon: adjustments-cog
+      url: /cbc/operation
+      slug: /cbc/operation
+      relations:
+        role:
+          - where:
+              slug: admin
+  strategy:
+    title:
+      en: Strategy
+      pt: Estratégia
+    menu:
+      menu_id:
+        where:
+          slug: /cbc
+      name:
+        en: Strategy
+        pt: Estratégia
+      icon: pencil-bolt
+      url: /cbc/strategy
+      slug: /cbc/strategy
+      relations:
+        role:
+          - where:
+              slug: admin
+  trade_signal_type:
+    title:
+      en: Trade Signal Type
+      pt: Tipo de Sinal de Trade
+    menu:
+      menu_id:
+        where:
+          slug: /cbc
+      name:
+        en: Trade Signal Type
+        pt: Tipo de Sinal de Trade
+      icon: brand-stocktwits
+      url: /cbc/trade-signal-type
+      slug: /cbc/trade-signal-type
       relations:
         role:
           - where:
