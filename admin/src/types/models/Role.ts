@@ -1,8 +1,8 @@
 import { RoleMenu } from './RoleMenu';
-import { RoleRoute } from './RoleRoute';
 import { RoleScreen } from './RoleScreen';
-import { RoleLocale } from './RoleLocale';
 import { RoleUser } from './RoleUser';
+import { RoleRoute } from './RoleRoute';
+import { RoleLocale } from './RoleLocale';
 
 export type Role = {
   id?: number;
@@ -10,10 +10,10 @@ export type Role = {
   created_at?: string;
   updated_at?: string;
   role_menu?: RoleMenu[];
-  role_route?: RoleRoute[];
   role_screen?: RoleScreen[];
-  role_locale?: RoleLocale[];
   role_user?: RoleUser[];
+  role_route?: RoleRoute[];
+  role_locale?: RoleLocale[];
   name?: string;
   description?: string;
 }

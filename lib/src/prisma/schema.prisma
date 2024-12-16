@@ -14,6 +14,7 @@ model locale {
   enabled              Boolean                @default(true)
   created_at           DateTime               @default(now()) @db.Timestamp(6)
   updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  file_provider_locale file_provider_locale[]
   menu_locale          menu_locale[]
   multifactor_locale   multifactor_locale[]
   role_locale          role_locale[]
@@ -507,6 +508,49 @@ model trend_type_locale {
   trend_type trend_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c6675d648728e1408fc17e4be06")
 
   @@id([locale_id, type_id], map: "PK_55203e641eb3a574460644ec5d6")
+}
+
+model file {
+  id            Int           @id(map: "PK_36b46d232307066b3a2c9ea3a1d") @default(autoincrement())
+  filename      String        @db.VarChar
+  path          String        @db.VarChar
+  provider_id   Int
+  location      String        @db.VarChar
+  mimetype_id   Int
+  size          Int           @default(0)
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  file_mimetype file_mimetype @relation(fields: [mimetype_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_893f78c26bcde79a87cc0fe45a5")
+  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_afb71f4bd9709183d4f8d4c8ad2")
+}
+
+model file_mimetype {
+  id         Int      @id(map: "PK_893f78c26bcde79a87cc0fe45a5") @default(autoincrement())
+  name       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  file       file[]
+}
+
+model file_provider {
+  id                   Int                    @id(map: "PK_afb71f4bd9709183d4f8d4c8ad2") @default(autoincrement())
+  slug                 String                 @db.VarChar
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  file                 file[]
+  file_provider_locale file_provider_locale[]
+}
+
+model file_provider_locale {
+  provider_id   Int
+  locale_id     Int
+  name          String        @db.VarChar
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3ebdcb105301319377557c272bc")
+  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4fba1720defa9d0f6a9112ddc89")
+
+  @@id([provider_id, locale_id], map: "PK_c108e943a38100608cfae509b3a")
 }
 
 enum route_method_enum {
