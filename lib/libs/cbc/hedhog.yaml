@@ -972,7 +972,7 @@ data:
     - name:
         en: Quotation
         pt: Quotation
-      icon: file
+      icon: brand-cashapp
       url: /cbc/quotation
       slug: quotation
       menu_id:
