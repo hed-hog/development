@@ -920,27 +920,42 @@ data:
       method: DELETE
       relations: *a5
   menu:
+    - url: /cbc
+      icon: coin
+      name:
+        en: CoinbitClub
+        pt: CoinbitClub
+      slug: /cbc
     - name:
-        en: QuotationType
-        pt: QuotationType
-      icon: file
+        en: Quotation Type
+        pt: Tipo de Cotação
+      icon: adjustments-dollar
       url: /cbc/quotation-type
       slug: quotation-type
       relations: *a1
+      menu_id:
+        where:
+          slug: /cbc
     - name:
-        en: StockExchange
-        pt: StockExchange
-      icon: file
+        en: Stock Exchange
+        pt: Bolsa de Valores
+      icon: exchange
       url: /cbc/stock-exchange
       slug: stock-exchange
       relations: *a3
+      menu_id:
+        where:
+          slug: /cbc
     - name:
-        en: TrendType
-        pt: TrendType
-      icon: file
+        en: Trend Type
+        pt: Tipo de Tendência
+      icon: trending-up
       url: /cbc/trend-type
       slug: trend-type
       relations: *a4
+      menu_id:
+        where:
+          slug: /cbc
     - name:
         en: Quotation
         pt: Quotation
@@ -948,57 +963,63 @@ data:
       url: /cbc/quotation
       slug: quotation
       relations: *a5
+      menu_id:
+        where:
+          slug: /cbc
     - name:
         en: Coin
         pt: Coin
-      icon: file
+      icon: coin
       url: /cbc/coin
       slug: coin
+      menu_id:
+        where:
+          slug: /cbc
       relations:
         role:
           - where:
               slug: admin
   screen:
     - name:
-        en: QuotationType
-        pt: QuotationType
+        en: Quotation Type
+        pt: Tipo de Cotação
       slug: quotation-type
       description:
-        en: Screen to manage quotation_type
-        pt: Tela para gerenciar quotation_type
-      icon: file
+        en: Screen to manage quotation type
+        pt: Tela para gerenciar tipos de cotação
+      icon: adjustments-dollar
     - name:
         en: Coin
         pt: Coin
       slug: coin
       description:
         en: Screen to manage coin
-        pt: Tela para gerenciar coin
-      icon: file
+        pt: Tela para gerenciar moedas
+      icon: coin
     - name:
-        en: StockExchange
-        pt: StockExchange
+        en: Stock Exchange
+        pt: Bolsa de Valores
       slug: stock-exchange
       description:
-        en: Screen to manage stock_exchange
-        pt: Tela para gerenciar stock_exchange
-      icon: file
+        en: Screen to manage stock exchange
+        pt: Tela para gerenciar bolsa de valores
+      icon: exchange
     - name:
-        en: TrendType
-        pt: TrendType
+        en: Trend Type
+        pt: Tipo de Tendência
       slug: trend-type
       description:
-        en: Screen to manage trend_type
-        pt: Tela para gerenciar trend_type
-      icon: file
+        en: Screen to manage trend type
+        pt: Tela para gerenciar tipos de tendência
+      icon: trending-up
     - name:
         en: Quotation
-        pt: Quotation
+        pt: Cotação
       slug: quotation
       description:
         en: Screen to manage quotation
-        pt: Tela para gerenciar quotation
-      icon: file
+        pt: Tela para gerenciar cotação
+      icon: brand-cashapp
 screens:
   coin:
     title:
@@ -1006,8 +1027,8 @@ screens:
       pt: Moedas
     menu:
       name:
-        en: Coin
-        pt: Moeda
+        en: Coins
+        pt: Moedas
       icon: coin
       url: /cbc/coin
       slug: coin
@@ -1021,9 +1042,9 @@ screens:
       pt: Tipos de Cotação
     menu:
       name:
-        en: QuotationType
-        pt: QuotationType
-      icon: file
+        en: Quotation Types
+        pt: Tipos de Cotação
+      icon: adjustments-dollar
       url: /cbc/quotation-type
       slug: quotation-type
       relations:
@@ -1036,9 +1057,9 @@ screens:
       pt: Bolsas de Valores
     menu:
       name:
-        en: StockExchange
-        pt: StockExchange
-      icon: file
+        en: Stock Exchanges
+        pt: Bolsas de Valores
+      icon: exchange
       url: /cbc/stock-exchange
       slug: stock-exchange
       relations:
@@ -1051,9 +1072,9 @@ screens:
       pt: Tipos de Tendência
     menu:
       name:
-        en: TrendType
-        pt: TrendType
-      icon: file
+        en: Trend Types
+        pt: Tipos de Tendência
+      icon: trending-up
       url: /cbc/trend-type
       slug: trend-type
       relations:
@@ -1068,7 +1089,7 @@ screens:
       name:
         en: Quotation
         pt: Quotation
-      icon: file
+      icon: brand-cashapp
       url: /cbc/quotation
       slug: quotation
       relations:
