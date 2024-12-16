@@ -1265,7 +1265,6 @@ tables:
           pt: Bolsa
       - type: created_at
       - type: updated_at
-
   banking:
     columns:
       - type: pk
@@ -1281,7 +1280,6 @@ tables:
           pt: Nome
       - type: created_at
       - type: updated_at
-
   operation:
     columns:
       - type: pk
@@ -1347,7 +1345,6 @@ tables:
         isNullable: true
       - type: created_at
       - type: updated_at
-
   strategy:
     columns:
       - type: pk
@@ -1358,7 +1355,6 @@ tables:
           pt: Nome
       - type: created_at
       - type: updated_at
-
   trade_signal_type:
     columns:
       - type: pk
@@ -1369,7 +1365,6 @@ tables:
           pt: Nome
       - type: created_at
       - type: updated_at
-
 data:
   route:
     - url: /quotation-type
@@ -1462,6 +1457,78 @@ data:
     - url: /quotation
       method: DELETE
       relations: *a5
+    - url: /banking
+      method: GET
+      relations: &a6
+        role:
+          - where:
+              slug: admin
+    - url: /banking
+      method: POST
+      relations: *a6
+    - url: /banking/:id
+      method: GET
+      relations: *a6
+    - url: /banking/:id
+      method: PATCH
+      relations: *a6
+    - url: /banking
+      method: DELETE
+      relations: *a6
+    - url: /operation
+      method: GET
+      relations: &a7
+        role:
+          - where:
+              slug: admin
+    - url: /operation
+      method: POST
+      relations: *a7
+    - url: /operation/:id
+      method: GET
+      relations: *a7
+    - url: /operation/:id
+      method: PATCH
+      relations: *a7
+    - url: /operation
+      method: DELETE
+      relations: *a7
+    - url: /strategy
+      method: GET
+      relations: &a8
+        role:
+          - where:
+              slug: admin
+    - url: /strategy
+      method: POST
+      relations: *a8
+    - url: /strategy/:id
+      method: GET
+      relations: *a8
+    - url: /strategy/:id
+      method: PATCH
+      relations: *a8
+    - url: /strategy
+      method: DELETE
+      relations: *a8
+    - url: /trade-signal-type
+      method: GET
+      relations: &a9
+        role:
+          - where:
+              slug: admin
+    - url: /trade-signal-type
+      method: POST
+      relations: *a9
+    - url: /trade-signal-type/:id
+      method: GET
+      relations: *a9
+    - url: /trade-signal-type/:id
+      method: PATCH
+      relations: *a9
+    - url: /trade-signal-type
+      method: DELETE
+      relations: *a9
   menu:
     - url: /cbc
       icon: coin
@@ -1538,6 +1605,34 @@ data:
         role:
           - where:
               slug: admin
+    - name:
+        en: Banking
+        pt: Banking
+      icon: file
+      url: /banking
+      slug: banking
+      relations: *a6
+    - name:
+        en: Operation
+        pt: Operation
+      icon: file
+      url: /operation
+      slug: operation
+      relations: *a7
+    - name:
+        en: Strategy
+        pt: Strategy
+      icon: file
+      url: /strategy
+      slug: strategy
+      relations: *a8
+    - name:
+        en: TradeSignalType
+        pt: TradeSignalType
+      icon: file
+      url: /trade-signal-type
+      slug: trade-signal-type
+      relations: *a9
   screen:
     - name:
         en: Quotation Type
@@ -1579,6 +1674,78 @@ data:
         en: Screen to manage quotation
         pt: Tela para gerenciar cotação
       icon: brand-cashapp
+    - name:
+        en: QuotationType
+        pt: QuotationType
+      slug: quotation-type
+      description:
+        en: Screen to manage quotation_type
+        pt: Tela para gerenciar quotation_type
+      icon: file
+    - name:
+        en: Coin
+        pt: Coin
+      slug: coin
+      description:
+        en: Screen to manage coin
+        pt: Tela para gerenciar coin
+      icon: file
+    - name:
+        en: StockExchange
+        pt: StockExchange
+      slug: stock-exchange
+      description:
+        en: Screen to manage stock_exchange
+        pt: Tela para gerenciar stock_exchange
+      icon: file
+    - name:
+        en: TrendType
+        pt: TrendType
+      slug: trend-type
+      description:
+        en: Screen to manage trend_type
+        pt: Tela para gerenciar trend_type
+      icon: file
+    - name:
+        en: Quotation
+        pt: Quotation
+      slug: quotation
+      description:
+        en: Screen to manage quotation
+        pt: Tela para gerenciar quotation
+      icon: file
+    - name:
+        en: Banking
+        pt: Banking
+      slug: banking
+      description:
+        en: Screen to manage banking
+        pt: Tela para gerenciar banking
+      icon: file
+    - name:
+        en: Operation
+        pt: Operation
+      slug: operation
+      description:
+        en: Screen to manage operation
+        pt: Tela para gerenciar operation
+      icon: file
+    - name:
+        en: Strategy
+        pt: Strategy
+      slug: strategy
+      description:
+        en: Screen to manage strategy
+        pt: Tela para gerenciar strategy
+      icon: file
+    - name:
+        en: TradeSignalType
+        pt: TradeSignalType
+      slug: trade-signal-type
+      description:
+        en: Screen to manage trade_signal_type
+        pt: Tela para gerenciar trade_signal_type
+      icon: file
   strategy:
     - name: AI STRATEGY
     - name: BULL AI
@@ -1592,7 +1759,6 @@ data:
   stock_exchange:
     - name: BYBIT
     - name: BINANCE
-
 screens:
   coin:
     title:
@@ -1684,7 +1850,6 @@ screens:
         role:
           - where:
               slug: admin
-
 routes:
   - path: cbc
     children:

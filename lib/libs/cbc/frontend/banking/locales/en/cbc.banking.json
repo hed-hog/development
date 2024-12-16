@@ -1,0 +1,11 @@
+{
+  "create": "Create banking",
+  "createText": "Fill the banking informations.",
+  "createTooltip": "Create new banking",
+  "delete": "Delete banking",
+  "deleteText": "Are you sure to delete these banking?",
+  "deleteTooltip": "Delete the selected banking",
+  "edit": "Edit banking",
+  "editText": "View and edit banking information.",
+  "editTooltip": "Edit the selected banking"
+}

@@ -1,3 +1,7 @@
+import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.module';
+import { StrategyModule } from './strategy/strategy.module';
+import { OperationModule } from './operation/operation.module';
+import { BankingModule } from './banking/banking.module';
 import { AdminModule } from '@hedhog/admin';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
@@ -19,6 +23,10 @@ import { TrendTypeModule } from './trend-type/trend-type.module';
     forwardRef(() => QuotationTypeModule),
     forwardRef(() => StockExchangeModule),
     forwardRef(() => TrendTypeModule),
+    forwardRef(() => BankingModule),
+    forwardRef(() => OperationModule),
+    forwardRef(() => StrategyModule),
+    forwardRef(() => TradeSignalTypeModule),
   ],
   controllers: [],
   providers: [],

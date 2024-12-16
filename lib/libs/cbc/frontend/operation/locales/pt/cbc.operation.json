@@ -1,0 +1,11 @@
+{
+  "create": "Criar operação",
+  "createText": "Preencha as informações da operação.",
+  "createTooltip": "Criar nova operação",
+  "delete": "Deletar operação",
+  "deleteText": "Você tem certeza que deseja deletar estas operações?",
+  "deleteTooltip": "Deletar a operação selecionada",
+  "edit": "Editar operação",
+  "editText": "Visualizar e editar informações da operação.",
+  "editTooltip": "Editar a operação selecionada"
+}
