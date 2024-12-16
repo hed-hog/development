@@ -34,6 +34,13 @@ const BankingCreatePanel = forwardRef(
         ref={formRef}
         fields={[
           {
+            name: "name",
+            label: { text: t("banking.name", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
             name: "user_id",
             label: { text: t("banking.user_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,

@@ -111,6 +111,22 @@ const OperationUpdatePanel = forwardRef(
                       displayName: "coin",
                       valueName: "id",
                     },
+
+                    {
+                      name: "layers",
+                      label: { text: t("operation.layers", { ns: "fields" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "leverage",
+                      label: {
+                        text: t("operation.leverage", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
                   ]}
                   button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {

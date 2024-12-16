@@ -210,5 +210,6 @@
   "operation.trade_signal_type_id": "Trade Signal Type",
   "operation.coin_id": "Coin",
   "strategy.name": "Name",
-  "trade_signal_type.name": "Name"
+  "trade_signal_type.name": "Name",
+  "banking.user_id": "User"
 }
