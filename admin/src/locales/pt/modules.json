@@ -14,5 +14,9 @@
   "person_address_type": "Tipos de Endereço",
   "person_contact_type": "Tipos de Contato",
   "person_custom_type": "Tipos Personalizados",
-  "person_document_type": "Tipos de Documento"
+  "person_document_type": "Tipos de Documento",
+  "banking": "Banca",
+  "operation": "Operação",
+  "strategy": "Estratégia",
+  "trade_signal_type": "Tipo de Sinal de Trade"
 }

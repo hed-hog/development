@@ -1648,7 +1648,7 @@ data:
         en: TradeSignalType
         pt: Tipo de Sinal de Trade
       icon: brand-stocktwits
-      url: /trade-signal-type
+      url: /cbc/trade-signal-type
       slug: trade-signal-type
       menu_id:
         where:

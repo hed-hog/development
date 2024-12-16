@@ -16,3 +16,15 @@ routes:
       - path: quotation
         lazy:
           component: ./pages/cbc/quotation/index.tsx
+      - path: banking
+        lazy:
+          component: ./pages/cbc/banking/index.tsx
+      - path: operation
+        lazy:
+          component: ./pages/cbc/operation/index.tsx
+      - path: strategy
+        lazy:
+          component: ./pages/cbc/strategy/index.tsx
+      - path: trade-signal-type
+        lazy:
+          component: ./pages/cbc/trade-signal-type/index.tsx
