@@ -2,10 +2,10 @@
   "create": "Criar trend type",
   "createText": "Preencha as informações do trend type.",
   "createTooltip": "Criar novo trend type",
-  "delete": "Deletar trend type",
-  "deleteText": "Você tem certeza que deseja deletar esses trend type?",
-  "deleteTooltip": "Deletar o trend type selecionado",
+  "delete": "Excluir trend type",
+  "deleteText": "Você tem certeza de que deseja excluir esses trend types?",
+  "deleteTooltip": "Excluir o trend type selecionado",
   "edit": "Editar trend type",
-  "editText": "Ver e editar informações do trend type.",
+  "editText": "Visualizar e editar as informações do trend type.",
   "editTooltip": "Editar o trend type selecionado"
 }

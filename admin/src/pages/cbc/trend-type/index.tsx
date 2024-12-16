@@ -71,6 +71,12 @@ export default function Page() {
             key: 'slug',
             header: t('trend_type.slug', { ns: 'fields' }),
             isLocale: false
+          },
+
+          {
+            key: 'name',
+            header: t('trend_type.name', { ns: 'fields' }),
+            isLocale: true
           }
         ]}
         selected={selectedItems as TrendType[]}

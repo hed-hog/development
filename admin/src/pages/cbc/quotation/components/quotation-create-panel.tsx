@@ -1,5 +1,5 @@
 import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
-
+import { EnumFieldType } from "@/enums/EnumFieldType";
 import { useQuotationCreate } from "@/features/cbc/quotation";
 import { Quotation } from "@/types/models";
 import { forwardRef, useImperativeHandle, useRef } from "react";
@@ -32,7 +32,27 @@ const QuotationCreatePanel = forwardRef(
     return (
       <FormPanel
         ref={formRef}
-        fields={[]}
+        fields={[
+          {
+            name: "coin_id",
+            label: { text: t("quotation.coin_id", { ns: "fields" }) },
+            type: EnumFieldType.COMBOBOX,
+            required: true,
+            url: "/coin",
+            displayName: "coin",
+            valueName: "id",
+          },
+
+          {
+            name: "type_id",
+            label: { text: t("quotation.type_id", { ns: "fields" }) },
+            type: EnumFieldType.COMBOBOX,
+            required: true,
+            url: "/quotation-type",
+            displayName: "type",
+            valueName: "id",
+          },
+        ]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
           const createdData = await createQuotation({

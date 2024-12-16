@@ -7,6 +7,7 @@ import { Coin } from "@/types/models";
 import { useState, forwardRef, useImperativeHandle, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import { EnumFieldType } from "@/enums/EnumFieldType";
 
 export type CoinUpdatePanelProps = {
   data: Coin;
@@ -38,7 +39,21 @@ const CoinUpdatePanel = forwardRef(
               <Overlay loading={isLoading}>
                 <FormPanel
                   ref={formRef}
-                  fields={[]}
+                  fields={[
+                    {
+                      name: "name",
+                      label: { text: t("coin.name", { ns: "fields" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "code",
+                      label: { text: t("coin.code", { ns: "fields" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+                  ]}
                   button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {
                     coinUpdate({

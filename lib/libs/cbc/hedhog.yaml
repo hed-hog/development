@@ -11,11 +11,13 @@ tables:
         locale:
           en: Headers
           pt: Cabeçalhos
+        field: richtext
       - type: json
         name: filters
         locale:
           en: Filters
           pt: Filtros
+        field: richtext
       - type: created_at
       - type: updated_at
   coin:

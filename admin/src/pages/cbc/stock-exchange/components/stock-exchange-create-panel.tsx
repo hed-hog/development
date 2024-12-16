@@ -1,5 +1,5 @@
 import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
-
+import { EnumFieldType } from "@/enums/EnumFieldType";
 import { useStockExchangeCreate } from "@/features/cbc/stock-exchange";
 import { StockExchange } from "@/types/models";
 import { forwardRef, useImperativeHandle, useRef } from "react";
@@ -32,7 +32,14 @@ const StockExchangeCreatePanel = forwardRef(
     return (
       <FormPanel
         ref={formRef}
-        fields={[]}
+        fields={[
+          {
+            name: "name",
+            label: { text: t("stock_exchange.name", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+        ]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
           const createdData = await createStockExchange({

@@ -10,6 +10,7 @@ import { StockExchange } from "@/types/models";
 import { useState, forwardRef, useImperativeHandle, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import { EnumFieldType } from "@/enums/EnumFieldType";
 
 export type StockExchangeUpdatePanelProps = {
   data: StockExchange;
@@ -41,7 +42,16 @@ const StockExchangeUpdatePanel = forwardRef(
               <Overlay loading={isLoading}>
                 <FormPanel
                   ref={formRef}
-                  fields={[]}
+                  fields={[
+                    {
+                      name: "name",
+                      label: {
+                        text: t("stock_exchange.name", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+                  ]}
                   button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {
                     stockExchangeUpdate({
