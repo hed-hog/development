@@ -1,11 +1,19 @@
-import { SettingLocale } from './SettingLocale';
 import { Translation } from './Translation';
-import { ScreenLocale } from './ScreenLocale';
-import { SettingGroupLocale } from './SettingGroupLocale';
-import { TrendTypeLocale } from './TrendTypeLocale';
-import { MultifactorLocale } from './MultifactorLocale';
+import { PersonTypeLocale } from './PersonTypeLocale';
 import { MenuLocale } from './MenuLocale';
+import { MultifactorLocale } from './MultifactorLocale';
+import { SettingGroupLocale } from './SettingGroupLocale';
+import { SettingLocale } from './SettingLocale';
+import { FileProviderLocale } from './FileProviderLocale';
 import { RoleLocale } from './RoleLocale';
+import { ScreenLocale } from './ScreenLocale';
+import { TrendTypeLocale } from './TrendTypeLocale';
+import { CountryLocale } from './CountryLocale';
+import { PersonDocumentTypeLocale } from './PersonDocumentTypeLocale';
+import { PersonContactTypeLocale } from './PersonContactTypeLocale';
+import { PersonAddressTypeLocale } from './PersonAddressTypeLocale';
+import { PersonCustomTypeLocale } from './PersonCustomTypeLocale';
+import { PersonCustomLocale } from './PersonCustomLocale';
 
 export type Locale = {
   id?: number;
@@ -14,12 +22,20 @@ export type Locale = {
   enabled?: boolean;
   created_at?: string;
   updated_at?: string;
-  setting_locale?: SettingLocale[];
   translation?: Translation[];
-  screen_locale?: ScreenLocale[];
-  setting_group_locale?: SettingGroupLocale[];
-  trend_type_locale?: TrendTypeLocale[];
-  multifactor_locale?: MultifactorLocale[];
+  person_type_locale?: PersonTypeLocale[];
   menu_locale?: MenuLocale[];
+  multifactor_locale?: MultifactorLocale[];
+  setting_group_locale?: SettingGroupLocale[];
+  setting_locale?: SettingLocale[];
+  file_provider_locale?: FileProviderLocale[];
   role_locale?: RoleLocale[];
+  screen_locale?: ScreenLocale[];
+  trend_type_locale?: TrendTypeLocale[];
+  country_locale?: CountryLocale[];
+  person_document_type_locale?: PersonDocumentTypeLocale[];
+  person_contact_type_locale?: PersonContactTypeLocale[];
+  person_address_type_locale?: PersonAddressTypeLocale[];
+  person_custom_type_locale?: PersonCustomTypeLocale[];
+  person_custom_locale?: PersonCustomLocale[];
 }

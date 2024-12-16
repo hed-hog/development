@@ -1,10 +1,10 @@
 :root {
---primary: 214 72% 43%;
---primary-foreground: 0 0% 100%;
+--primary: 192 100% 72%;
+--primary-foreground: 0 0% 0%;
 --secondary: 0 0% 89%;
---secondary-foreground: 214 75% 14%;
+--secondary-foreground: 0 0% 0%;
 --accent: 214 75% 14%;
---accent-foreground: 0 0% 89%;
+--accent-foreground: 0 0% 100%;
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
@@ -17,15 +17,15 @@
 --text-size-xl: 1.25rem;
 --text-size-2xl: 1.50rem;
 --text-size-3xl: 1.88rem;
---menu-width: 18rem;
+--menu-width: 16rem;
 }
  .dark {
---primary: 214 72% 43%;
---primary-foreground: 0 0% 100%;
+--primary: 192 100% 72%;
+--primary-foreground: 0 0% 0%;
 --secondary: 0 0% 89%;
---secondary-foreground: 214 75% 14%;
+--secondary-foreground: 0 0% 0%;
 --accent: 214 75% 14%;
---accent-foreground: 0 0% 89%;
+--accent-foreground: 0 0% 100%;
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
@@ -38,15 +38,15 @@
 --text-size-xl: 1.25rem;
 --text-size-2xl: 1.50rem;
 --text-size-3xl: 1.88rem;
---menu-width: 18rem;
+--menu-width: 16rem;
 }
  .light {
---primary: 214 72% 43%;
---primary-foreground: 0 0% 100%;
+--primary: 192 100% 72%;
+--primary-foreground: 0 0% 0%;
 --secondary: 0 0% 89%;
---secondary-foreground: 214 75% 14%;
+--secondary-foreground: 0 0% 0%;
 --accent: 214 75% 14%;
---accent-foreground: 0 0% 89%;
+--accent-foreground: 0 0% 100%;
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
@@ -59,5 +59,5 @@
 --text-size-xl: 1.25rem;
 --text-size-2xl: 1.50rem;
 --text-size-3xl: 1.88rem;
---menu-width: 18rem;
+--menu-width: 16rem;
 }

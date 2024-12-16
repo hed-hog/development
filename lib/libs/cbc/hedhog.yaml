@@ -1505,49 +1505,65 @@ data:
         en: CoinbitClub
         pt: CoinbitClub
       slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Quotation Type
         pt: Tipo de Cotação
       icon: adjustments-dollar
       url: /cbc/quotation-type
       slug: quotation-type
-      relations: *a1
       menu_id:
         where:
           slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Stock Exchange
         pt: Bolsa de Valores
       icon: exchange
       url: /cbc/stock-exchange
       slug: stock-exchange
-      relations: *a3
       menu_id:
         where:
           slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Trend Type
         pt: Tipo de Tendência
       icon: trending-up
       url: /cbc/trend-type
       slug: trend-type
-      relations: *a4
       menu_id:
         where:
           slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Quotation
-        pt: Quotation
-      icon: file
+        pt: Cotação
+      icon: brand-cashapp
       url: /cbc/quotation
       slug: quotation
-      relations: *a5
       menu_id:
         where:
           slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Coin
-        pt: Coin
+        pt: Moeda
       icon: coin
       url: /cbc/coin
       slug: coin
@@ -1562,7 +1578,7 @@ data:
     - name:
         en: Quotation Type
         pt: Tipo de Cotação
-      slug: quotation-type
+      slug: /cbc/quotation-type
       description:
         en: Screen to manage quotation type
         pt: Tela para gerenciar tipos de cotação
@@ -1570,7 +1586,7 @@ data:
     - name:
         en: Coin
         pt: Coin
-      slug: coin
+      slug: /cbc/coin
       description:
         en: Screen to manage coin
         pt: Tela para gerenciar moedas
@@ -1578,7 +1594,7 @@ data:
     - name:
         en: Stock Exchange
         pt: Bolsa de Valores
-      slug: stock-exchange
+      slug: /cbc/stock-exchange
       description:
         en: Screen to manage stock exchange
         pt: Tela para gerenciar bolsa de valores
@@ -1586,7 +1602,7 @@ data:
     - name:
         en: Trend Type
         pt: Tipo de Tendência
-      slug: trend-type
+      slug: /cbc/trend-type
       description:
         en: Screen to manage trend type
         pt: Tela para gerenciar tipos de tendência
@@ -1594,7 +1610,7 @@ data:
     - name:
         en: Quotation
         pt: Cotação
-      slug: quotation
+      slug: /cbc/quotation
       description:
         en: Screen to manage quotation
         pt: Tela para gerenciar cotação
