@@ -971,7 +971,7 @@ data:
               slug: admin
     - name:
         en: Quotation
-        pt: Quotation
+        pt: Cotação
       icon: brand-cashapp
       url: /cbc/quotation
       slug: quotation
@@ -984,7 +984,7 @@ data:
               slug: admin
     - name:
         en: Coin
-        pt: Coin
+        pt: Moeda
       icon: coin
       url: /cbc/coin
       slug: coin

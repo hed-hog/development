@@ -8,7 +8,7 @@
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
---font-family: Arial, sans-serif;
+--font-family: ui-sans-serif, system-ui, sans-serif;
 --text-size-xs: 0.75rem;
 --text-size-sm: 0.88rem;
 --text-size-md: 1.00rem;
@@ -29,7 +29,7 @@
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
---font-family: Arial, sans-serif;
+--font-family: ui-sans-serif, system-ui, sans-serif;
 --text-size-xs: 0.75rem;
 --text-size-sm: 0.88rem;
 --text-size-md: 1.00rem;
@@ -50,7 +50,7 @@
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
---font-family: Arial, sans-serif;
+--font-family: ui-sans-serif, system-ui, sans-serif;
 --text-size-xs: 0.75rem;
 --text-size-sm: 0.88rem;
 --text-size-md: 1.00rem;
