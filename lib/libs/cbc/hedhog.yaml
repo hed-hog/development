@@ -1265,6 +1265,26 @@ tables:
           pt: Bolsa
       - type: created_at
       - type: updated_at
+  bankroll:
+    columns:
+      - type: pk
+      - name: name
+        type: varchar
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+  strategy:
+    columns:
+      - type: pk
+      - name: name
+        type: varchar
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
 
 data:
   route:
@@ -1475,6 +1495,12 @@ data:
         en: Screen to manage quotation
         pt: Tela para gerenciar cotação
       icon: brand-cashapp
+  strategy:
+    - name: AI STRATEGY
+    - name: BULL AI
+    - name: MILLIONAIRE STRATEY 9
+    - name: MULTPLICATION STRATEGY
+    - name: MILLIONAIRE STRATEY 9
 
 screens:
   coin:
