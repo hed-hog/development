@@ -3,5 +3,9 @@
   "quotation_type": "Tipos de Cotação",
   "stock_exchange": "Bolsas de Valores",
   "trend_type": "Tipos de Tendência",
-  "quotation": "Cotações"
+  "quotation": "Cotações",
+  "banking": "Banca",
+  "operation": "Operação",
+  "strategy": "Estratégia",
+  "trade_signal_type": "Tipo de Sinal de Trade"
 }
