@@ -10,6 +10,7 @@ tables:
     columns:
       - type: pk
       - name: code
+        isUnique: true
         type: char
         length: 2
       - name: region
