@@ -156,13 +156,16 @@
   "quotation.oscillators_rating_id": "Classificação dos Osciladores",
   "quotation.technical_rating_id": "Classificação Técnica",
   "quotation.stock_exchange_id": "Bolsa",
-  "banking.user_id": "Nome",
+  "banking.name": "Nome",
+  "banking.user_id": "Usuário",
   "operation.user_id": "Usuário",
   "operation.banking_id": "Banca",
   "operation.stock_exchange_id": "Bolsa",
   "operation.strategy_id": "Estratégia",
   "operation.trade_signal_type_id": "Tipo de Sinal de Negócio",
   "operation.coin_id": "Moeda",
+  "operation.layers": "Camadas",
+  "operation.leverage": "Alavancagem",
   "strategy.name": "Nome",
   "trade_signal_type.name": "Nome"
 }
