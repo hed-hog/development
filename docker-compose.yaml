@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: changeme
       POSTGRES_DB: hedhog
     volumes:
-      - ./data/postgresql:/var/lib/postgresql/data
+      - postgresql:/var/licb/postgresql/data
     ports:
       - 5432:5432
     healthcheck:
@@ -15,6 +15,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   mysql:
     image: mysql
     restart: always
@@ -24,7 +25,7 @@ services:
       MYSQL_USER: hedhog
       MYSQL_PASSWORD: changeme
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - mysql:/var/lib/mysql
     ports:
       - 3306:3306
     healthcheck:
@@ -32,3 +33,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+volumes:
+  postgresql:
+  mysql:
