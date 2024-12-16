@@ -50,7 +50,7 @@ data:
             description:
               en: The primary color to use
               pt: A cor primária a utilizar
-            value: '#000000'
+            value: '#70e2ff'
           - slug: theme-primary-foreground
             type: string
             name:
@@ -59,7 +59,7 @@ data:
             description:
               en: The primary color foreground to use
               pt: O contraste da cor primária a utilizar
-            value: '#ffffff'
+            value: '#09203f'
           - slug: theme-secondary
             type: string
             name:
@@ -68,7 +68,7 @@ data:
             description:
               en: The secondary color to use
               pt: A cor secundária a utilizar
-            value: '#FFFFFF'
+            value: '#E2E2E2'
           - slug: theme-secondary-foreground
             type: string
             name:
@@ -77,7 +77,7 @@ data:
             description:
               en: The secondary color foreground to use
               pt: O contraste da cor secundária a utilizar
-            value: '#000000'
+            value: '#70e2ff'
           - slug: theme-accent
             type: string
             name:
@@ -86,7 +86,7 @@ data:
             description:
               en: The accent color to use
               pt: A cor de realce a utilizar
-            value: '#FF0000'
+            value: '#09203f'
           - slug: theme-accent-foreground
             type: string
             name:
@@ -95,7 +95,7 @@ data:
             description:
               en: The accent color foreground to use
               pt: O contraste da cor de realce a utilizar
-            value: '#000000'
+            value: '#70e2ff'
           - slug: theme-muted
             type: string
             name:
@@ -104,7 +104,7 @@ data:
             description:
               en: The muted color to use
               pt: A cor suave a utilizar
-            value: '#F0F0F0'
+            value: '#09203f'
           - slug: theme-muted-foreground
             type: string
             name:
@@ -113,7 +113,7 @@ data:
             description:
               en: The muted color foreground to use
               pt: O contraste da cor suave a utilizar
-            value: '#000000'
+            value: '#E2E2E2'
           - slug: theme-radius
             type: string
             name:
@@ -131,7 +131,7 @@ data:
             description:
               en: The font to use
               pt: A fonte a utilizar
-            value: Arial, sans-serif
+            value: 'ui-sans-serif, system-ui, sans-serif'
           - slug: theme-text-size
             type: string
             name:

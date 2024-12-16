@@ -1,10 +1,10 @@
 :root {
 --primary: 192 100% 72%;
---primary-foreground: 0 0% 0%;
+--primary-foreground: 214 75% 14%;
 --secondary: 0 0% 89%;
---secondary-foreground: 0 0% 0%;
+--secondary-foreground: 192 100% 72%;
 --accent: 214 75% 14%;
---accent-foreground: 0 0% 100%;
+--accent-foreground: 192 100% 72%;
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
@@ -21,11 +21,11 @@
 }
  .dark {
 --primary: 192 100% 72%;
---primary-foreground: 0 0% 0%;
+--primary-foreground: 214 75% 14%;
 --secondary: 0 0% 89%;
---secondary-foreground: 0 0% 0%;
+--secondary-foreground: 192 100% 72%;
 --accent: 214 75% 14%;
---accent-foreground: 0 0% 100%;
+--accent-foreground: 192 100% 72%;
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
@@ -42,11 +42,11 @@
 }
  .light {
 --primary: 192 100% 72%;
---primary-foreground: 0 0% 0%;
+--primary-foreground: 214 75% 14%;
 --secondary: 0 0% 89%;
---secondary-foreground: 0 0% 0%;
+--secondary-foreground: 192 100% 72%;
 --accent: 214 75% 14%;
---accent-foreground: 0 0% 100%;
+--accent-foreground: 192 100% 72%;
 --muted: 214 75% 14%;
 --muted-foreground: 0 0% 89%;
 --radius: 0.5rem;
