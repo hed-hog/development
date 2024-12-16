@@ -1026,6 +1026,9 @@ screens:
       en: Coins
       pt: Moedas
     menu:
+      menu_id:
+        where:
+          slug: /cbc
       name:
         en: Coins
         pt: Moedas
@@ -1041,6 +1044,9 @@ screens:
       en: Quotation Types
       pt: Tipos de Cotação
     menu:
+      menu_id:
+        where:
+          slug: /cbc
       name:
         en: Quotation Types
         pt: Tipos de Cotação
@@ -1056,6 +1062,9 @@ screens:
       en: Stock Exchanges
       pt: Bolsas de Valores
     menu:
+      menu_id:
+        where:
+          slug: /cbc
       name:
         en: Stock Exchanges
         pt: Bolsas de Valores
@@ -1071,6 +1080,9 @@ screens:
       en: Trend Types
       pt: Tipos de Tendência
     menu:
+      menu_id:
+        where:
+          slug: /cbc
       name:
         en: Trend Types
         pt: Tipos de Tendência
@@ -1086,6 +1098,9 @@ screens:
       en: Quotations
       pt: Cotações
     menu:
+      menu_id:
+        where:
+          slug: /cbc
       name:
         en: Quotation
         pt: Quotation
