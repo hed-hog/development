@@ -3,29 +3,50 @@ tables:
     columns:
       - type: pk
       - name: name
+        locale:
+          en: Name
+          pt: Nome
       - type: json
         name: headers
+        locale:
+          en: Headers
+          pt: Cabeçalhos
       - type: json
         name: filters
+        locale:
+          en: Filters
+          pt: Filtros
       - type: created_at
       - type: updated_at
   coin:
     columns:
       - type: pk
       - name: name
+        locale:
+          en: Name
+          pt: Nome
       - name: code
+        locale:
+          en: Code
+          pt: Código
       - type: created_at
       - type: updated_at
   stock_exchange:
     columns:
       - type: pk
       - name: name
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
   trend_type:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   trend_type_locale:
@@ -45,6 +66,9 @@ tables:
           column: id
           onDelete: CASCADE
       - name: name
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
   quotation:
@@ -56,12 +80,18 @@ tables:
           table: coin
           column: id
           onDelete: CASCADE
+        locale:
+          en: Coin
+          pt: Moeda
       - name: type_id
         type: fk
         references:
           table: quotation_type
           column: id
           onDelete: CASCADE
+        locale:
+          en: Type
+          pt: Tipo
       - name: monthly_performance
         type: decimal
         precision: 36

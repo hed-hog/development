@@ -1,1 +1,13 @@
-{}
+{
+  "quotation_type.name": "Name",
+  "quotation_type.headers": "Headers",
+  "quotation_type.filters": "Filters",
+  "coin.name": "Name",
+  "coin.code": "Code",
+  "stock_exchange.name": "Name",
+  "trend_type.slug": "Slug",
+  "trend_type.name": "Name",
+  "trend_type_locale.name": "Name",
+  "quotation.coin_id": "Coin",
+  "quotation.type_id": "Type"
+}
