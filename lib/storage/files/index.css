@@ -1,0 +1,63 @@
+:root {
+--primary: 214 72% 43%;
+--primary-foreground: 0 0% 100%;
+--secondary: 0 0% 89%;
+--secondary-foreground: 214 75% 14%;
+--accent: 214 75% 14%;
+--accent-foreground: 0 0% 89%;
+--muted: 214 75% 14%;
+--muted-foreground: 0 0% 89%;
+--radius: 0.5rem;
+--font-family: ui-sans-serif, system-ui, sans-serif;
+--text-size-xs: 0.75rem;
+--text-size-sm: 0.88rem;
+--text-size-md: 1.00rem;
+--text-size-base: 1.00rem;
+--text-size-lg: 1.13rem;
+--text-size-xl: 1.25rem;
+--text-size-2xl: 1.50rem;
+--text-size-3xl: 1.88rem;
+--menu-width: 18rem;
+}
+ .dark {
+--primary: 214 72% 43%;
+--primary-foreground: 0 0% 100%;
+--secondary: 0 0% 89%;
+--secondary-foreground: 214 75% 14%;
+--accent: 214 75% 14%;
+--accent-foreground: 0 0% 89%;
+--muted: 214 75% 14%;
+--muted-foreground: 0 0% 89%;
+--radius: 0.5rem;
+--font-family: ui-sans-serif, system-ui, sans-serif;
+--text-size-xs: 0.75rem;
+--text-size-sm: 0.88rem;
+--text-size-md: 1.00rem;
+--text-size-base: 1.00rem;
+--text-size-lg: 1.13rem;
+--text-size-xl: 1.25rem;
+--text-size-2xl: 1.50rem;
+--text-size-3xl: 1.88rem;
+--menu-width: 18rem;
+}
+ .light {
+--primary: 214 72% 43%;
+--primary-foreground: 0 0% 100%;
+--secondary: 0 0% 89%;
+--secondary-foreground: 214 75% 14%;
+--accent: 214 75% 14%;
+--accent-foreground: 0 0% 89%;
+--muted: 214 75% 14%;
+--muted-foreground: 0 0% 89%;
+--radius: 0.5rem;
+--font-family: ui-sans-serif, system-ui, sans-serif;
+--text-size-xs: 0.75rem;
+--text-size-sm: 0.88rem;
+--text-size-md: 1.00rem;
+--text-size-base: 1.00rem;
+--text-size-lg: 1.13rem;
+--text-size-xl: 1.25rem;
+--text-size-2xl: 1.50rem;
+--text-size-3xl: 1.88rem;
+--menu-width: 18rem;
+}

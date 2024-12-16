@@ -1,11 +1,19 @@
 import { Translation } from './Translation';
 import { ScreenLocale } from './ScreenLocale';
+import { PersonDocumentTypeLocale } from './PersonDocumentTypeLocale';
 import { SettingGroupLocale } from './SettingGroupLocale';
-import { RoleLocale } from './RoleLocale';
 import { MultifactorLocale } from './MultifactorLocale';
 import { MenuLocale } from './MenuLocale';
-import { TrendTypeLocale } from './TrendTypeLocale';
+import { RoleLocale } from './RoleLocale';
+import { FileProviderLocale } from './FileProviderLocale';
+import { PersonTypeLocale } from './PersonTypeLocale';
 import { SettingLocale } from './SettingLocale';
+import { CountryLocale } from './CountryLocale';
+import { PersonContactTypeLocale } from './PersonContactTypeLocale';
+import { PersonAddressTypeLocale } from './PersonAddressTypeLocale';
+import { PersonCustomTypeLocale } from './PersonCustomTypeLocale';
+import { PersonCustomLocale } from './PersonCustomLocale';
+import { TrendTypeLocale } from './TrendTypeLocale';
 
 export type Locale = {
   id?: number;
@@ -16,10 +24,18 @@ export type Locale = {
   updated_at?: string;
   translation?: Translation[];
   screen_locale?: ScreenLocale[];
+  person_document_type_locale?: PersonDocumentTypeLocale[];
   setting_group_locale?: SettingGroupLocale[];
-  role_locale?: RoleLocale[];
   multifactor_locale?: MultifactorLocale[];
   menu_locale?: MenuLocale[];
-  trend_type_locale?: TrendTypeLocale[];
+  role_locale?: RoleLocale[];
+  file_provider_locale?: FileProviderLocale[];
+  person_type_locale?: PersonTypeLocale[];
   setting_locale?: SettingLocale[];
+  country_locale?: CountryLocale[];
+  person_contact_type_locale?: PersonContactTypeLocale[];
+  person_address_type_locale?: PersonAddressTypeLocale[];
+  person_custom_type_locale?: PersonCustomTypeLocale[];
+  person_custom_locale?: PersonCustomLocale[];
+  trend_type_locale?: TrendTypeLocale[];
 }
