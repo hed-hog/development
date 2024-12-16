@@ -1269,6 +1269,9 @@ tables:
     columns:
       - type: pk
       - name: name
+        locale:
+          en: Name
+          pt: Nome
       - name: user_id
         type: fk
         references:
@@ -1276,8 +1279,8 @@ tables:
           column: id
           onDelete: CASCADE
         locale:
-          en: Name
-          pt: Nome
+          en: User
+          pt: Usuário
       - type: created_at
       - type: updated_at
   operation:
@@ -1338,9 +1341,15 @@ tables:
           en: Coin
           pt: Moeda
       - name: layers
+        locale:
+          en: Layers
+          pt: Camadas
         type: int
         unsigned: true
       - name: leverage
+        locale:
+          en: Leverage
+          pt: Alavancagem
         type: decimal
         isNullable: true
       - type: created_at
