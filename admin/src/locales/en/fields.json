@@ -199,5 +199,14 @@
   "quotation.moving_averages_rating_id": "Moving Averages Rating",
   "quotation.oscillators_rating_id": "Oscillators Rating",
   "quotation.technical_rating_id": "Technical Rating",
-  "quotation.stock_exchange_id": "Stock Exchange"
+  "quotation.stock_exchange_id": "Stock Exchange",
+  "banking.user_id": "Name",
+  "operation.user_id": "User",
+  "operation.banking_id": "Banking",
+  "operation.stock_exchange_id": "Stock Exchange",
+  "operation.strategy_id": "Strategy",
+  "operation.trade_signal_type_id": "Trade Signal Type",
+  "operation.coin_id": "Coin",
+  "strategy.name": "Name",
+  "trade_signal_type.name": "Name"
 }

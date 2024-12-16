@@ -1,0 +1,11 @@
+{
+  "create": "Create trade signal type",
+  "createText": "Fill the trade signal type informations.",
+  "createTooltip": "Create new trade signal type",
+  "delete": "Delete trade signal type",
+  "deleteText": "Are you sure to delete these trade signal type?",
+  "deleteTooltip": "Delete the selected trade signal type",
+  "edit": "Edit trade signal type",
+  "editText": "View and edit trade signal type information.",
+  "editTooltip": "Edit the selected trade signal type"
+}

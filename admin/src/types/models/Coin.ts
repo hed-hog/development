@@ -1,4 +1,5 @@
 import { Quotation } from './Quotation';
+import { Operation } from './Operation';
 
 export type Coin = {
   id?: number;
@@ -7,4 +8,5 @@ export type Coin = {
   created_at?: string;
   updated_at?: string;
   quotation?: Quotation[];
+  operation?: Operation[];
 }

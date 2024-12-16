@@ -1,11 +1,12 @@
-import { Quotation } from './Quotation';
+import { User } from './User';
 import { Operation } from './Operation';
 
-export type StockExchange = {
+export type Banking = {
   id?: number;
   name: string;
+  user_id: number;
   created_at?: string;
   updated_at?: string;
-  quotation?: Quotation[];
+  user?: User;
   operation?: Operation[];
 }

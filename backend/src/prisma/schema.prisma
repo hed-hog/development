@@ -7,12 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model banking {
+  id         Int         @id(map: "PK_00bb6cea84dd3ccb76d075699cf") @default(autoincrement())
+  name       String      @db.VarChar
+  user_id    Int
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  user       user        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_389e6914094557544ce2008b92d")
+  operation  operation[]
+}
+
 model coin {
   id         Int         @id(map: "PK_650993fc71b789e4793b62fbcac") @default(autoincrement())
   name       String      @db.VarChar
   code       String      @db.VarChar
   created_at DateTime    @default(now()) @db.Timestamp(6)
   updated_at DateTime    @default(now()) @db.Timestamp(6)
+  operation  operation[]
   quotation  quotation[]
 }
 
@@ -85,7 +96,7 @@ model file_provider_locale {
 
 model locale {
   id                          Int                           @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
-  code                        String                        @db.Char(2)
+  code                        String                        @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
   region                      String                        @db.Char(2)
   enabled                     Boolean                       @default(true)
   created_at                  DateTime                      @default(now()) @db.Timestamp(6)
@@ -165,6 +176,26 @@ model multifactor_locale {
   locale         locale      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d5f92b6d1e95a38b5af8470f2fe")
 
   @@id([multifactor_id, locale_id], map: "PK_1cc26c48643e0908951b8528fd9")
+}
+
+model operation {
+  id                   Int               @id(map: "PK_18556ee6e49c005fc108078f3ab") @default(autoincrement())
+  user_id              Int
+  banking_id           Int
+  stock_exchange_id    Int
+  strategy_id          Int
+  trade_signal_type_id Int
+  coin_id              Int
+  layers               Int
+  leverage             Decimal?          @db.Decimal
+  created_at           DateTime          @default(now()) @db.Timestamp(6)
+  updated_at           DateTime          @default(now()) @db.Timestamp(6)
+  trade_signal_type    trade_signal_type @relation(fields: [trade_signal_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_08ee4a6e7abe44c16923a9ca8e2")
+  stock_exchange       stock_exchange    @relation(fields: [stock_exchange_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_27bbcc0e49b9ddb84c30f732bbe")
+  banking              banking           @relation(fields: [banking_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_30f984b7ec88305459d89593991")
+  strategy             strategy          @relation(fields: [strategy_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_a76ce9777e3a50c69ffc18efd37")
+  user                 user              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cfa8dd65df7df579953268253bf")
+  coin                 coin              @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f143cd8541c65629028dbdde6dd")
 }
 
 model person {
@@ -734,7 +765,24 @@ model stock_exchange {
   name       String      @db.VarChar
   created_at DateTime    @default(now()) @db.Timestamp(6)
   updated_at DateTime    @default(now()) @db.Timestamp(6)
+  operation  operation[]
   quotation  quotation[]
+}
+
+model strategy {
+  id         Int         @id(map: "PK_733d2c3d4a73c020375b9b3581d") @default(autoincrement())
+  name       String      @db.VarChar
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  operation  operation[]
+}
+
+model trade_signal_type {
+  id         Int         @id(map: "PK_dde118042ca4b5b948deb84e7cc") @default(autoincrement())
+  name       String      @unique(map: "UQ_89f446be615b91899943cfb1ea5") @db.VarChar
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  operation  operation[]
 }
 
 model translation {
@@ -791,6 +839,8 @@ model user {
   code           String?        @db.VarChar
   created_at     DateTime       @default(now()) @db.Timestamp(6)
   updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  banking        banking[]
+  operation      operation[]
   role_user      role_user[]
   setting_user   setting_user[]
   multifactor    multifactor?   @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
