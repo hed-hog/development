@@ -1265,7 +1265,90 @@ tables:
           pt: Bolsa
       - type: created_at
       - type: updated_at
-  bankroll:
+
+  banking:
+    columns:
+      - type: pk
+      - name: name
+      - name: user_id
+        type: fk
+        references:
+          table: user
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+
+  operation:
+    columns:
+      - type: pk
+      - name: user_id
+        type: fk
+        references:
+          table: user
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: User
+          pt: Usuário
+      - name: banking_id
+        type: fk
+        references:
+          table: banking
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Banking
+          pt: Banca
+      - name: stock_exchange_id
+        type: fk
+        references:
+          table: stock_exchange
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Stock Exchange
+          pt: Bolsa
+      - name: strategy_id
+        type: fk
+        references:
+          table: strategy
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Strategy
+          pt: Estratégia
+      - name: trade_signal_type_id
+        type: fk
+        references:
+          table: trade_signal_type
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Trade Signal Type
+          pt: Tipo de Sinal de Negócio
+      - name: coin_id
+        type: fk
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Coin
+          pt: Moeda
+      - name: layers
+        type: int
+        unsigned: true
+      - name: leverage
+        type: decimal
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+
+  strategy:
     columns:
       - type: pk
       - name: name
@@ -1275,11 +1358,12 @@ tables:
           pt: Nome
       - type: created_at
       - type: updated_at
-  strategy:
+
+  trade_signal_type:
     columns:
       - type: pk
       - name: name
-        type: varchar
+        isUnique: true
         locale:
           en: Name
           pt: Nome
@@ -1501,6 +1585,13 @@ data:
     - name: MILLIONAIRE STRATEY 9
     - name: MULTPLICATION STRATEGY
     - name: MILLIONAIRE STRATEY 9
+  trade_signal_type:
+    - name: LONG
+    - name: SHORT
+    - name: NEUTRAL
+  stock_exchange:
+    - name: BYBIT
+    - name: BINANCE
 
 screens:
   coin:
