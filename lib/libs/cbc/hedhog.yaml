@@ -1586,9 +1586,9 @@ data:
     - name: MULTPLICATION STRATEGY
     - name: MILLIONAIRE STRATEY 9
   trade_signal_type:
-    - name: LONG
-    - name: SHORT
     - name: NEUTRAL
+    - name: SHORT
+    - name: LONG
   stock_exchange:
     - name: BYBIT
     - name: BINANCE
