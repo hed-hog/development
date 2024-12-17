@@ -148,7 +148,11 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
         <FormControl>
           <Textarea
             value={value as string}
-            onChange={(event) => props.onChange(event.target.value)}
+            onChange={(event) => {
+              const newValue = event.target.value
+              setValue(newValue)
+              props.onChange(newValue)
+            }}
             required={props.required}
           />
         </FormControl>
@@ -161,7 +165,11 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
             required={props.required}
             type={props.type}
             value={value || ''}
-            onChange={(event) => props.onChange(event.target.value)}
+            onChange={(event) => {
+              const newValue = event.target.value
+              setValue(newValue)
+              props.onChange(newValue)
+            }}
           />
         </FormControl>
       )
@@ -181,7 +189,11 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
           name={props.name}
           required={props.required}
           value={value || ''}
-          onChange={props.onChange}
+          onChange={(event) => {
+            const newValue = event.target.value
+            setValue(newValue)
+            props.onChange(newValue)
+          }}
         />
       )
 
