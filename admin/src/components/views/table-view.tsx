@@ -395,12 +395,16 @@ const TableViewInner = <T extends any>(
               }
               onMouseEnter={() => 'key' in col && setHoveredColumn(col.key)}
               onMouseLeave={() => setHoveredColumn(null)}
-              className={
+              className={[
                 !('actions' in col) && sortable
                   ? 'relative cursor-pointer hover:bg-muted/50'
-                  : ''
-              }
-              style={{ width: 'width' in col ? col.width : 'auto' }}
+                  : '',
+                'overflow-hidden text-ellipsis whitespace-nowrap',
+              ].join(' ')}
+              style={{
+                width: 'width' in col ? col.width : 'auto',
+                maxWidth: '170px',
+              }}
             >
               {'header' in col ? col.header : ' '}
               {'key' in col && sortable && sortColumn === col.key && (
