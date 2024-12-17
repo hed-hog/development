@@ -1354,6 +1354,18 @@ tables:
         isNullable: true
       - type: created_at
       - type: updated_at
+      - name: margin_used
+        type: int
+      - name: first_order
+        type: int
+      - name: mmr
+        type: int
+      - name: stop_loss
+        type: int
+      - name: start_time
+        type: datetime
+      - name: end_time
+        type: datetime
   strategy:
     columns:
       - type: pk
