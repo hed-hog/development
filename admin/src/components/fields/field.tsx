@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
+import { Textarea } from '../ui/textarea'
 import { Combobox } from '@/components/custom/combo-box'
 import { PasswordInput } from '@/components/fields/password-input-field'
 import { RichTextField } from '@/components/fields/rich-text-field'
@@ -42,6 +42,7 @@ export type FieldProps = (
         | EnumFieldType.COLOR
         | EnumFieldType.SELECT
         | EnumFieldType.COMBOBOX
+        | EnumFieldType.TEXTAREA
       value: string
       onChange: (value: string) => void
     }
@@ -142,6 +143,16 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
         />
       )
 
+    case EnumFieldType.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea
+            value={value as string}
+            onChange={(event) => props.onChange(event.target.value)}
+            required={props.required}
+          />
+        </FormControl>
+      )
     case EnumFieldType.TEXT:
       return (
         <FormControl>

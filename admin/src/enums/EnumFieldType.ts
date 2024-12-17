@@ -1,5 +1,6 @@
 export enum EnumFieldType {
   RICHTEXT = 'richtext',
+  TEXTAREA = 'textarea',
   COLOR = 'color',
   TEXT = 'text',
   FILE = 'file',
