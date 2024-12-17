@@ -43,14 +43,14 @@ const QuotationTypeCreatePanel = forwardRef(
           {
             name: "headers",
             label: { text: t("quotation_type.headers", { ns: "fields" }) },
-            type: EnumFieldType.RICHTEXT,
+            type: EnumFieldType.TEXTAREA,
             required: true,
           },
 
           {
             name: "filters",
             label: { text: t("quotation_type.filters", { ns: "fields" }) },
-            type: EnumFieldType.RICHTEXT,
+            type: EnumFieldType.TEXTAREA,
             required: true,
           },
         ]}

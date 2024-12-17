@@ -57,7 +57,7 @@ const QuotationTypeUpdatePanel = forwardRef(
                       label: {
                         text: t("quotation_type.headers", { ns: "fields" }),
                       },
-                      type: EnumFieldType.RICHTEXT,
+                      type: EnumFieldType.TEXTAREA,
                       required: true,
                     },
 
@@ -66,7 +66,7 @@ const QuotationTypeUpdatePanel = forwardRef(
                       label: {
                         text: t("quotation_type.filters", { ns: "fields" }),
                       },
-                      type: EnumFieldType.RICHTEXT,
+                      type: EnumFieldType.TEXTAREA,
                       required: true,
                     },
                   ]}
