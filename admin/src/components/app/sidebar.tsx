@@ -20,7 +20,6 @@ export default function Sidebar({
   setIsCollapsed,
 }: SidebarProps) {
   const {
-    t,
     i18n: { language },
   } = useTranslation()
   const { request } = useApp()
@@ -36,24 +35,8 @@ export default function Sidebar({
       }),
   })
 
-  let sideLinks = getSideLinks((data?.data as any[]) || [])
-
-  if (!(sideLinks instanceof Array)) {
-    sideLinks = []
-  }
-
-  /* Make body not scrollable when navBar is opened */
-  useEffect(() => {
-    if (navOpened) {
-      document.body.classList.add('overflow-hidden')
-    } else {
-      document.body.classList.remove('overflow-hidden')
-    }
-  }, [navOpened])
-
-  useEffect(() => {
+  const refreshValues = () => {
     const rootStyle = getComputedStyle(document.documentElement)
-
     const imageUrlValue = rootStyle
       .getPropertyValue('--image-url')
       .trim()
@@ -72,7 +55,41 @@ export default function Sidebar({
     setImageUrl(imageUrlValue)
     setSystemName(systemNameValue)
     setSystemSlogan(systemSloganValue)
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'style') {
+        refreshValues()
+      }
+    })
+  })
+
+  useEffect(() => {
+    refreshValues()
+    observer.observe(document.documentElement, {
+      attributes: true,
+    })
+
+    return () => {
+      observer.disconnect()
+    }
   }, [])
+
+  let sideLinks = getSideLinks((data?.data as any[]) || [])
+
+  if (!(sideLinks instanceof Array)) {
+    sideLinks = []
+  }
+
+  /* Make body not scrollable when navBar is opened */
+  useEffect(() => {
+    if (navOpened) {
+      document.body.classList.add('overflow-hidden')
+    } else {
+      document.body.classList.remove('overflow-hidden')
+    }
+  }, [navOpened])
 
   return (
     <aside

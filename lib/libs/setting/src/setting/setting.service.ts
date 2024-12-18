@@ -12,7 +12,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingDTO } from './dto/setting.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { readFile, writeFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { existsSync } from 'fs';
 
 @Injectable()
@@ -106,13 +106,21 @@ export class SettingService {
       case 'menu-width':
         return `--menu-width: ${value}rem;`;
 
+      case 'system-name':
+      case 'system-slogan':
+      case 'image-url':
+        return `--${slug}: '${value}';`;
+
       default:
         return `${parsedSlug}:${value};`;
     }
   }
 
   async handleIndexStyleFile() {
-    const cssIndexPath = path.join('storage', 'files', 'index.css');
+    const storagePath = path.join('storage');
+    const filesPath = path.join(storagePath, 'files');
+    const cssIndexPath = path.join(filesPath, 'index.css');
+
     if (existsSync(cssIndexPath)) {
       return readFile(cssIndexPath, 'utf8');
     } else {
@@ -157,6 +165,10 @@ export class SettingService {
       const cssContent = `:root {\n${cssVariables}\n}\n .dark {\n${cssVariables}\n}\n .light {\n${cssVariables}\n}`;
 
       try {
+        if (!existsSync(path.join('storage', 'files'))) {
+          await mkdir(path.join('storage', 'files'), { recursive: true });
+        }
+
         await writeFile(
           path.join('storage', 'files', 'index.css'),
           cssContent,

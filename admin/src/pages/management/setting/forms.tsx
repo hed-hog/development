@@ -286,6 +286,30 @@ export default function Page() {
             },
           }
 
+        case 'system-name':
+        case 'system-slogan':
+        case 'image-url':
+          return {
+            name: item.slug,
+            type: EnumFieldType.TEXT,
+            defaultValue: item.value,
+            value: item.value,
+            required: false,
+            label: {
+              text: item.name,
+            },
+            description: {
+              text: item.description,
+            },
+            onChange: (value: string) => {
+              form.setValue(item.slug, value)
+              document.documentElement.style.setProperty(
+                `--${item.slug}`,
+                value
+              )
+            },
+          }
+
         default:
           return {
             name: item.slug,
