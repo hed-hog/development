@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 :root {
+  --image-url: '/images/favicon-dark.png';
+  --system-name: 'Hedhog';
+  --system-slogan: 'Administration Panel';
   --scrollbar-width: 8px;
   --scrollbar-track-light: #f9fafb;
   --scrollbar-thumb-light: #d1d5db;
