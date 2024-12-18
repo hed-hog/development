@@ -150,6 +150,33 @@ data:
               en: Menu width of the application
               pt: Largura do Menu da aplicação
             value: '16'
+          - slug: image-url
+            type: string
+            name:
+              en: System Image URL
+              pt: URL da Imagem do Sistema
+            description:
+              en: System Image URL
+              pt: URL da Imagem do Sistema
+            value: '/images/favicon-dark.png'
+          - slug: system-name
+            type: string
+            name:
+              en: System Name
+              pt: Nome do Sistema
+            description:
+              en: System Name to use
+              pt: Nome do Sistema a utilizar
+            value: 'Hedhog'
+          - slug: system-slogan
+            type: string
+            name:
+              en: System Slogan
+              pt: Slogan do Sistema
+            description:
+              en: System Slogan to use
+              pt: Slogan do Sistema a utilizar
+            value: 'Administration Panel'
 
 tables:
   setting_group:
