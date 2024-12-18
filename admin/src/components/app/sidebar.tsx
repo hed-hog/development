@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Nav from '../navs/nav'
+import { getValue } from '@/lib/get-property-value'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -36,25 +37,9 @@ export default function Sidebar({
   })
 
   const refreshValues = () => {
-    const rootStyle = getComputedStyle(document.documentElement)
-    const imageUrlValue = rootStyle
-      .getPropertyValue('--image-url')
-      .trim()
-      .replace(/['"]/g, '')
-
-    const systemNameValue = rootStyle
-      .getPropertyValue('--system-name')
-      .trim()
-      .replace(/['"]/g, '')
-
-    const systemSloganValue = rootStyle
-      .getPropertyValue('--system-slogan')
-      .trim()
-      .replace(/['"]/g, '')
-
-    setImageUrl(imageUrlValue)
-    setSystemName(systemNameValue)
-    setSystemSlogan(systemSloganValue)
+    setImageUrl(getValue('--image-url'))
+    setSystemName(getValue('--system-name'))
+    setSystemSlogan(getValue('--system-slogan'))
   }
 
   const observer = new MutationObserver((mutations) => {
