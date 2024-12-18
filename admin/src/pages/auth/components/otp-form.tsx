@@ -19,11 +19,10 @@ import { z } from 'zod'
 interface OtpFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function OtpForm({ className, ...props }: OtpFormProps) {
-  const { t: validationsT } = useTranslation('validations')
-  const { t: authT } = useTranslation('auth')
+  const { t } = useTranslation(['auth', 'validations'])
 
   const formSchema = z.object({
-    otp: z.string().min(1, { message: validationsT('emptyOTP') }),
+    otp: z.string().min(1, { message: t('emptyOTP', { ns: 'validations' }) }),
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -78,7 +77,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
               )}
             />
             <Button className='mt-2' disabled={disabledBtn} loading={isLoading}>
-              {authT('verify')}
+              {t('verify', { ns: 'auth' })}
             </Button>
           </div>
         </form>

@@ -20,27 +20,26 @@ import { z } from 'zod'
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
-  const { t: authT } = useTranslation('auth')
-  const { t: validationsT } = useTranslation('validations')
+  const { t } = useTranslation(['auth', 'validations'])
 
   const formSchema = z
     .object({
       email: z
         .string()
-        .min(1, { message: validationsT('emptyEmail') })
-        .email({ message: validationsT('invalidEmail') }),
+        .min(1, { message: t('emptyEmail', { ns: 'validations' }) })
+        .email({ message: t('invalidEmail', { ns: 'validations' }) }),
       password: z
         .string()
         .min(1, {
-          message: validationsT('emptyPassword'),
+          message: t('emptyPassword', { ns: 'validations' }),
         })
         .min(7, {
-          message: validationsT('minLengthPassword'),
+          message: t('minLengthPassword', { ns: 'validations' }),
         }),
       confirmPassword: z.string(),
     })
     .refine((data) => data.password === data.confirmPassword, {
-      message: validationsT('invalidPasswordConfirmation'),
+      message: t('invalidPasswordConfirmation', { ns: 'validations' }),
       path: ['confirmPassword'],
     })
 
@@ -75,7 +74,10 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 <FormItem className='space-y-1'>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder={authT('emailPlaceholder')} {...field} />
+                    <Input
+                      placeholder={t('emailPlaceholder', { ns: 'auth' })}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -86,7 +88,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               name='password'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>{authT('password')}</FormLabel>
+                  <FormLabel>{t('password', { ns: 'auth' })}</FormLabel>
                   <FormControl>
                     <PasswordInput placeholder='********' {...field} />
                   </FormControl>
@@ -99,7 +101,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               name='confirmPassword'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>{authT('confirmPassword')}</FormLabel>
+                  <FormLabel>{t('confirmPassword', { ns: 'auth' })}</FormLabel>
                   <FormControl>
                     <PasswordInput placeholder='********' {...field} />
                   </FormControl>
@@ -108,7 +110,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               )}
             />
             <Button className='mt-2' loading={isLoading}>
-              {authT('createAccount')}
+              {t('createAccount', { ns: 'auth' })}
             </Button>
 
             <div className='relative my-2'>
@@ -117,7 +119,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               </div>
               <div className='relative flex justify-center text-xs uppercase'>
                 <span className='bg-background px-2 text-muted-foreground'>
-                  {authT('continueCreating')}
+                  {t('continueCreating', { ns: 'auth' })}
                 </span>
               </div>
             </div>

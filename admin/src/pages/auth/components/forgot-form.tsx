@@ -18,14 +18,13 @@ import { z } from 'zod'
 interface ForgotFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function ForgotForm({ className, ...props }: ForgotFormProps) {
-  const { t: authT } = useTranslation('auth')
-  const { t: validationsT } = useTranslation('validations')
+  const { t } = useTranslation(['auth', 'validations'])
 
   const formSchema = z.object({
     email: z
       .string()
-      .min(1, { message: validationsT('emptyEmail') })
-      .email({ message: validationsT('invalidEmail') }),
+      .min(1, { message: t('emptyEmail', { ns: 'validations' }) })
+      .email({ message: t('invalidEmail', { ns: 'validations' }) }),
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -55,14 +54,17 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
                 <FormItem className='space-y-1'>
                   <FormLabel>E-mail</FormLabel>
                   <FormControl>
-                    <Input placeholder={authT('emailPlaceholder')} {...field} />
+                    <Input
+                      placeholder={t('emailPlaceholder', { ns: 'auth' })}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Button className='mt-2' loading={isLoading}>
-              {authT('proceed')}
+              {t('proceed', { ns: 'auth' })}
             </Button>
           </div>
         </form>

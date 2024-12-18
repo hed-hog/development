@@ -42,6 +42,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { decodeToken } from './decode-token'
 import { getBaseURL } from './get-base-url'
 import { QueryClientProvider } from './query-provider'
+import { getValue } from './get-property-value'
 
 export const BASE_URL = getBaseURL()
 
@@ -52,10 +53,17 @@ export type AppConfirmDialogType = {
   okButton?: ButtonProps & { text: string }
 }
 
+interface ISystemInfo {
+  name: string
+  slogan: string
+  imageUrl: string
+}
+
 type AppContextType = {
   logout: () => void
   login: (email: string, password: string) => Promise<void>
   user: any
+  systemInfo: ISystemInfo
   request: <T extends {}>(
     config?: AxiosRequestConfig
   ) => Promise<AxiosResponse<T, any>>
@@ -76,6 +84,11 @@ export const AppContext = createContext<AppContextType>({
   logout: () => {},
   login: () => Promise.resolve(),
   user: {},
+  systemInfo: {
+    name: 'Hedhog',
+    slogan: 'Administration Panel',
+    imageUrl: '/images/favicon-dark.png',
+  },
   request: () => new Promise(() => {}),
   openDialog: () => '',
   closeDialog: () => {},
@@ -116,10 +129,21 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     defaultValue: '',
     key: LocalStorageKeys.Token,
   })
+
   const [user, setUser] = useLocalStorage({
     defaultValue: {},
     key: LocalStorageKeys.User,
   })
+
+  const [systemName, setSystemName] = useState<string>('')
+  const [systemSlogan, setSystemSlogan] = useState<string>('')
+  const [imageUrl, setImageUrl] = useState<string>('')
+
+  useEffect(() => {
+    setSystemName(getValue('--system-name'))
+    setSystemSlogan(getValue('--system-slogan'))
+    setImageUrl(getValue('--image-url'))
+  }, [])
 
   const openDialog = (dialog: OpenDialogType) => {
     const id = uuidv4()
@@ -136,7 +160,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   }
 
   const closeModal = useCallback((id: string) => {
-    console.log('closed!')
     setModals((modals) => modals.filter((modal) => modal.id !== id))
   }, [])
 
@@ -308,6 +331,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         value={{
           login,
           user,
+          systemInfo: {
+            name: systemName,
+            slogan: systemSlogan,
+            imageUrl,
+          },
           request,
           logout,
           openDialog,

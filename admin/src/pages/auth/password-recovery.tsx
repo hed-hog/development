@@ -1,11 +1,10 @@
 import { LocaleChange } from '@/components/custom/locale-change'
 import { Card } from '@/components/ui/card'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import { OtpForm } from './components/otp-form'
+import PasswordRecoveryForm from './components/recovery-form'
 import { useApp } from '@/hooks/use-app'
 
-export default function Otp() {
+export default function PasswordRecovery() {
   const { t } = useTranslation('auth')
   const { systemInfo } = useApp()
 
@@ -27,21 +26,13 @@ export default function Otp() {
           <Card className='p-6'>
             <div className='mb-2 flex flex-col space-y-2 text-left'>
               <h1 className='text-md font-semibold tracking-tight'>
-                {t('2fa')}
+                {t('recoverPassword')}
               </h1>
-              <p className='text-sm text-muted-foreground'>{t('2faSteps')}</p>
+              <p className='text-sm text-muted-foreground'>
+                {t('recoverPasswordInstructions')}
+              </p>
             </div>
-            <OtpForm />
-            <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
-              {t('notReceived2fa')}{' '}
-              <Link
-                to='/resent-new-code'
-                className='underline underline-offset-4 hover:text-primary'
-              >
-                {t('resend2fa')}
-              </Link>
-              .
-            </p>
+            <PasswordRecoveryForm />
           </Card>
         </div>
       </div>
