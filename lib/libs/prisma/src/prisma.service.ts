@@ -41,13 +41,15 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       ) {
         OR.push({ method: { equals: searchValue } });
       } else if (field !== 'method') {
-        const condition = { [field]: { contains: searchValue } };
+        if (typeof searchValue === 'string') {
+          const condition = { [field]: { contains: searchValue } };
 
-        if (this.isPostgres()) {
-          (condition[field] as any).mode = 'insensitive';
+          if (this.isPostgres()) {
+            (condition[field] as any).mode = 'insensitive';
+          }
+
+          OR.push(condition);
         }
-
-        OR.push(condition);
       }
     });
 
