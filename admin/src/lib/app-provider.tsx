@@ -63,6 +63,11 @@ type AppContextType = {
   logout: () => void
   login: (email: string, password: string) => Promise<void>
   forget: (email: string) => Promise<void>
+  resetPassword: (
+    code: string,
+    newPassword: string,
+    confirmNewPassword: string
+  ) => Promise<void>
   user: any
   systemInfo: ISystemInfo
   request: <T extends {}>(
@@ -85,6 +90,7 @@ export const AppContext = createContext<AppContextType>({
   logout: () => {},
   login: () => Promise.resolve(),
   forget: () => Promise.resolve(),
+  resetPassword: () => Promise.resolve(),
   user: {},
   systemInfo: {
     name: 'Hedhog',
@@ -314,6 +320,35 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     })
   }
 
+  const resetPassword = (
+    code: string,
+    newPassword: string,
+    confirmNewPassword: string
+  ) => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const { data } = await request({
+          url: '/auth/reset',
+          method: 'POST',
+          data: {
+            code,
+            newPassword,
+            confirmNewPassword,
+          },
+        })
+
+        if (data) {
+          console.log({ data })
+          toast.success('Password has been reseted!')
+          resolve()
+        }
+      } catch (error) {
+        console.error('Failed to reset password.')
+        reject()
+      }
+    })
+  }
+
   const showToastHandler = (
     type: 'success' | 'error',
     name: string,
@@ -356,6 +391,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         value={{
           login,
           forget,
+          resetPassword,
           user,
           systemInfo: {
             name: systemName,
