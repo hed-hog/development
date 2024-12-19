@@ -31,7 +31,7 @@ export class MailService {
   async createRawEmail(mail: Mail) {
     if (mail.attachments instanceof Array && mail.attachments?.length) {
       const mailContent = mimemessage.factory({
-        contentType: 'multipart/mixed',
+        contentType: 'multipart/mixed;charset=utf-8',
         body: [],
       });
 
@@ -81,11 +81,14 @@ export class MailService {
 
       return encodedMessage;
     } else {
+
+      const encodedSubject = `=?utf-8?B?${Buffer.from(mail.subject).toString('base64')}?=`;
+
       const messageParts = [
+        'Content-Type: text/html;charset=utf-8',
         `From: ${mail.from}`,
         `To: ${mail.to instanceof Array ? mail.to.join(',') : mail.to}`,
-        `Subject: ${mail.subject}`,
-        'Content-Type: text/html; charset="UTF-8"',
+        `Subject: ${encodedSubject}`,
         '',
         mail.body,
       ];
