@@ -304,7 +304,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
         if (data) {
           console.log({ data })
-          toast.success('Email sent')
+          toast.success('Email has been sent!')
           resolve()
         }
       } catch (error) {

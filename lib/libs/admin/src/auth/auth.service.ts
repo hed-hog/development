@@ -14,6 +14,8 @@ import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
 import { User } from 'hcode-core';
+import { SUBJECT_RECOVERY } from './consts/subject';
+import { getBody } from './consts/body';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +26,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
-  ) { }
+  ) {}
 
   async verifyToken(token: string) {
     return this.jwt.verifyAsync(token, {
@@ -145,8 +147,10 @@ export class AuthService {
 
     await this.mail.send({
       to: email,
-      subject: subject ?? 'Reset password',
-      body: body ?? `Reset your password by clicking <a href="${process.env.FRONTEND_URL}/password-recovery/${code}">here</a>`,
+      subject: subject ?? SUBJECT_RECOVERY,
+      body:
+        body ??
+        getBody(`${process.env.FRONTEND_URL}/password-recovery/${code}`),
     });
 
     return true;
@@ -161,7 +165,6 @@ export class AuthService {
     newPassword: string;
     confirmNewPassword: string;
   }) {
-
     if (newPassword !== confirmNewPassword) {
       throw new BadRequestException("Passwords don't match");
     }
@@ -176,7 +179,6 @@ export class AuthService {
     });
 
     if (user) {
-
       const salt = await genSalt();
       const password = await hash(confirmNewPassword, salt);
 
@@ -190,11 +192,9 @@ export class AuthService {
       });
 
       return true;
-
     }
 
     return false;
-
   }
 
   async otp({ token, code }: OtpDTO) {
