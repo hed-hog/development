@@ -327,7 +327,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   ) => {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const { data } = await request({
+        const { data } = await request<RequestLoginType>({
           url: '/auth/reset',
           method: 'POST',
           data: {
@@ -337,8 +337,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           },
         })
 
-        if (data) {
-          console.log({ data })
+        if (data.token) {
+          setToken(data.token)
           toast.success('Password has been reseted!')
           resolve()
         }

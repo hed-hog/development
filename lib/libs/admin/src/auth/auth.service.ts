@@ -26,7 +26,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
-  ) { }
+  ) {}
 
   async verifyToken(token: string) {
     return this.jwt.verifyAsync(token, {
@@ -192,7 +192,7 @@ export class AuthService {
         },
       });
 
-      return true;
+      return this.getToken(user);
     }
 
     return false;
