@@ -13,10 +13,21 @@ async function copyDirectory(source, destination) {
     const sourcePath = join(source, entry.name);
     const destinationPath = join(destination, entry.name);
 
-    if (
-      ["node_modules", "k8s", ".storybook"].includes(entry.name) ||
-      sourcePath.endsWith("get-base-url.ts")
-    ) {
+    const shouldSkip =
+      [
+        "node_modules",
+        "k8s",
+        ".storybook",
+        "theme.css",
+        "router.tsx",
+        "get-base-url.ts",
+      ].some(
+        (skipItem) => entry.name === skipItem || sourcePath.endsWith(skipItem)
+      ) ||
+      sourcePath.includes("locales") ||
+      sourcePath.includes("types");
+
+    if (shouldSkip) {
       console.log(`Skipping ${sourcePath}`);
       continue;
     }

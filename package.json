@@ -7,7 +7,7 @@
     "preinstall": "ts-node scripts/install-all-deps.ts",
     "uninstall": "npx rimraf backend/node_modules backend/package-lock.json admin/node_modules admin/package-lock.json lib/node_modules lib/package-lock.json node_modules package-lock.json",
     "hedhog:update": "ts-node scripts/update-hedhog-deps.ts",
-    "copy:bootstrap": "ts-node scripts/copy-to-bootstrap.ts"
+    "copy:bootstrap": "hedhog reset && ts-node scripts/copy-to-bootstrap.ts"
   },
   "keywords": [],
   "author": "",
