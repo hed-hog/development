@@ -19,13 +19,10 @@ async function copyDirectory(source, destination) {
         "k8s",
         ".storybook",
         "theme.css",
-        "router.tsx",
         "get-base-url.ts",
       ].some(
         (skipItem) => entry.name === skipItem || sourcePath.endsWith(skipItem)
-      ) ||
-      sourcePath.includes("locales") ||
-      sourcePath.includes("types");
+      ) || sourcePath.includes("types");
 
     if (shouldSkip) {
       console.log(`Skipping ${sourcePath}`);
