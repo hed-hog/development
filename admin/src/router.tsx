@@ -24,7 +24,7 @@ const routes = [
     }),
   },
   {
-    path: '/password-recovery',
+    path: '/password-recovery/:code',
     lazy: async () => ({
       Component: (await import('./pages/auth/password-recovery.tsx')).default,
     }),

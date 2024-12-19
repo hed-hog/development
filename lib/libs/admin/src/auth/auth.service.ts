@@ -133,7 +133,7 @@ export class AuthService {
     await this.mail.send({
       to: email,
       subject: 'Reset password',
-      body: `Reset your password by clicking <a href="${process.env.FRONTEND_URL}/reset-password/${code}">here</a>`,
+      body: `Reset your password by clicking <a href="${process.env.FRONTEND_URL}/password-recovery/${code}">here</a>`,
     });
 
     return true;
