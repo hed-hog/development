@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { useApp } from '@/hooks/use-app'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { HTMLAttributes, useState } from 'react'
@@ -24,9 +25,11 @@ interface FormValues {
 
 export default function PasswordRecoveryForm({
   className,
+  code,
   ...props
-}: PasswordRecoveryFormProps) {
+}: PasswordRecoveryFormProps & { code: string }) {
   const { t } = useTranslation(['auth', 'validations'])
+  const { resetPassword } = useApp()
 
   const formSchema = z
     .object({
@@ -52,12 +55,16 @@ export default function PasswordRecoveryForm({
     defaultValues: { password: '', confirmPassword: '' },
   })
 
-  function onSubmit(data: FormValues) {
-    console.log({ data })
+  function onSubmit({ password, confirmPassword }: z.infer<typeof formSchema>) {
     setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+
+    resetPassword(code, password, confirmPassword)
+      .then(() => {
+        window.location.href = '/'
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (

@@ -3,10 +3,12 @@ import { Card } from '@/components/ui/card'
 import { useTranslation } from 'react-i18next'
 import PasswordRecoveryForm from './components/recovery-form'
 import { useApp } from '@/hooks/use-app'
+import { useParams } from 'react-router-dom'
 
 export default function PasswordRecovery() {
   const { t } = useTranslation('auth')
   const { systemInfo } = useApp()
+  const { code } = useParams<{ code: string }>()
 
   return (
     <>
@@ -32,7 +34,7 @@ export default function PasswordRecovery() {
                 {t('recoverPasswordInstructions')}
               </p>
             </div>
-            <PasswordRecoveryForm />
+            <PasswordRecoveryForm code={String(code)} />
           </Card>
         </div>
       </div>
