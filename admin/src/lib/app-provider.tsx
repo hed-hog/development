@@ -62,6 +62,7 @@ interface ISystemInfo {
 type AppContextType = {
   logout: () => void
   login: (email: string, password: string) => Promise<void>
+  forget: (email: string) => Promise<void>
   user: any
   systemInfo: ISystemInfo
   request: <T extends {}>(
@@ -83,6 +84,7 @@ type AppContextType = {
 export const AppContext = createContext<AppContextType>({
   logout: () => {},
   login: () => Promise.resolve(),
+  forget: () => Promise.resolve(),
   user: {},
   systemInfo: {
     name: 'Hedhog',
@@ -289,6 +291,29 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     })
   }
 
+  const forget = (email: string) => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const { data } = await request({
+          url: '/auth/forget',
+          method: 'POST',
+          data: {
+            email,
+          },
+        })
+
+        if (data) {
+          console.log({ data })
+          toast.success('Email sent')
+          resolve()
+        }
+      } catch (error) {
+        console.error('Failed to send email.')
+        reject()
+      }
+    })
+  }
+
   const showToastHandler = (
     type: 'success' | 'error',
     name: string,
@@ -330,6 +355,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       <AppContext.Provider
         value={{
           login,
+          forget,
           user,
           systemInfo: {
             name: systemName,

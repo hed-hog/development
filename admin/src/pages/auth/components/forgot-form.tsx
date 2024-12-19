@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useApp } from '@/hooks/use-app'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { HTMLAttributes, useState } from 'react'
@@ -19,7 +20,7 @@ interface ForgotFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function ForgotForm({ className, ...props }: ForgotFormProps) {
   const { t } = useTranslation(['auth', 'validations'])
-
+  const { forget } = useApp()
   const formSchema = z.object({
     email: z
       .string()
@@ -34,12 +35,16 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
     defaultValues: { email: '' },
   })
 
-  function onSubmit() {
+  function onSubmit({ email }: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    forget(email)
+      .then(() => {
+        window.location.href = '/email-sent'
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (
