@@ -23,12 +23,11 @@ import { AppService } from './app.service';
     PaginationModule,
     MailModule.forRoot({
       global: true,
-      type: 'SMTP',
-      host: 'changeme',
-      port: 465,
-      secure: false,
-      username: 'changeme',
-      password: 'changeme',
+      type: 'GMAIL',
+      clientId: String(process.env.MAIL_CLIENT_ID),
+      clientSecret: String(process.env.MAIL_CLIENT_SECRET),
+      refreshToken: String(process.env.REFRESH_TOKEN),
+      from: String(process.env.MAIL_FROM),
     }),
     AdminModule,
     ContactModule,
@@ -41,4 +40,4 @@ import { AppService } from './app.service';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

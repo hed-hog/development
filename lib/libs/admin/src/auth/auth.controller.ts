@@ -9,6 +9,7 @@ import {
 import { Role, Public, User } from '@hedhog/core';
 import { AuthService } from './auth.service';
 import { ForgetDTO } from './dto/forget.dto';
+import { ResetDTO } from './dto/reset.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { User as UserType } from './types/user.type';
@@ -18,7 +19,7 @@ export class AuthController {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly service: AuthService,
-  ) {}
+  ) { }
 
   @Role()
   @Get('verify')
@@ -40,7 +41,32 @@ export class AuthController {
 
   @Public()
   @Post('forget')
-  async forget(@Body() { email }: ForgetDTO) {
-    return this.service.forget({ email });
+  async forget(@Body() {
+    email,
+    subject,
+    body,
+  }: ForgetDTO & {
+    subject: string;
+    body: string;
+  }) {
+    return this.service.forget({
+      email,
+      subject,
+      body,
+    });
+  }
+
+  @Public()
+  @Post('reset')
+  async reset(@Body() {
+    newPassword,
+    confirmNewPassword,
+    code,
+  }: ResetDTO) {
+    return this.service.resetPassword({
+      newPassword,
+      confirmNewPassword,
+      code,
+    });
   }
 }

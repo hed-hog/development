@@ -13,7 +13,7 @@ export class MailService {
     private readonly mailConfig: MailModuleOptions,
     @Inject(forwardRef(() => HttpService))
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
 
   async send(mail: Mail) {
     switch (this.mailConfig.type) {
@@ -85,7 +85,7 @@ export class MailService {
         `From: ${mail.from}`,
         `To: ${mail.to instanceof Array ? mail.to.join(',') : mail.to}`,
         `Subject: ${mail.subject}`,
-        'Content-Type: text/plain; charset="UTF-8"',
+        'Content-Type: text/html; charset="UTF-8"',
         '',
         mail.body,
       ];
@@ -160,7 +160,7 @@ export class MailService {
       from,
     });
 
-    const url = 'https://www.googleapis.com/gmail/v1/user/me/messages/send';
+    const url = 'https://www.googleapis.com/gmail/v1/users/me/messages/send';
 
     const requestBody = {
       raw,

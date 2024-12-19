@@ -5,13 +5,15 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
+import { User } from 'hcode-core';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +24,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
-  ) {}
+  ) { }
 
   async verifyToken(token: string) {
     return this.jwt.verifyAsync(token, {
@@ -105,7 +107,14 @@ export class AuthService {
     };
   }
 
-  async forget({ email }: ForgetDTO) {
+  async forget({
+    email,
+    subject,
+    body,
+  }: ForgetDTO & {
+    subject?: string;
+    body?: string;
+  }) {
     const user = await this.prisma.user.findFirst({
       where: {
         email,
@@ -119,7 +128,11 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    const code = this.generateRandomString(32);
+    const payload = {
+      ...user,
+    };
+
+    const code = this.jwt.sign(payload);
 
     await this.prisma.user.update({
       where: {
@@ -132,11 +145,56 @@ export class AuthService {
 
     await this.mail.send({
       to: email,
-      subject: 'Reset password',
-      body: `Reset your password by clicking <a href="${process.env.FRONTEND_URL}/password-recovery/${code}">here</a>`,
+      subject: subject ?? 'Reset password',
+      body: body ?? `Reset your password by clicking <a href="${process.env.FRONTEND_URL}/password-recovery/${code}">here</a>`,
     });
 
     return true;
+  }
+
+  async resetPassword({
+    code,
+    newPassword,
+    confirmNewPassword,
+  }: {
+    code: string;
+    newPassword: string;
+    confirmNewPassword: string;
+  }) {
+
+    if (newPassword !== confirmNewPassword) {
+      throw new BadRequestException("Passwords don't match");
+    }
+
+    const { id } = this.jwt.decode(code) as User;
+
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id,
+        code,
+      },
+    });
+
+    if (user) {
+
+      const salt = await genSalt();
+      const password = await hash(confirmNewPassword, salt);
+
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          password,
+        },
+      });
+
+      return true;
+
+    }
+
+    return false;
+
   }
 
   async otp({ token, code }: OtpDTO) {
