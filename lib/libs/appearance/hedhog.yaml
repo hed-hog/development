@@ -9,7 +9,7 @@ data:
     - url: /appearance
       method: POST
       relations: *a1
-   menu:
+  menu:
     - url: /appearance
       icon: palette
       name:
