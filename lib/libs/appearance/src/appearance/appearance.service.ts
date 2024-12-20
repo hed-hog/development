@@ -109,7 +109,7 @@ export class AppearanceService {
     }
   }
 
-  async getAppearanceFromGroup(locale: any, paginationParams: any) {
+  async getAppearance(locale: any, paginationParams: any) {
     const fields = ['slug', 'value'];
 
     paginationParams.pageSize = 100;
@@ -186,7 +186,7 @@ export class AppearanceService {
     }
   }
 
-  async setManySettings(data: UpdateDTO) {
+  async setAppearance(data: UpdateDTO) {
     const transaction = [];
 
     for (const { slug, value } of data.setting) {

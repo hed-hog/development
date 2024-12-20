@@ -21,11 +21,8 @@ export class AppearanceController {
     private readonly appearanceService: AppearanceService,
   ) {}
   @Get()
-  async getSettingFromGroup(@Pagination() paginationParams, @Locale() locale) {
-    return this.appearanceService.getAppearanceFromGroup(
-      locale,
-      paginationParams,
-    );
+  async getAppearance(@Pagination() paginationParams, @Locale() locale) {
+    return this.appearanceService.getAppearance(locale, paginationParams);
   }
 
   @Public()
@@ -37,7 +34,7 @@ export class AppearanceController {
   }
 
   @Put()
-  async setManySettings(@Body() data: CreateDTO) {
-    return this.appearanceService.setManySettings(data);
+  async setAppearance(@Body() data: CreateDTO) {
+    return this.appearanceService.setAppearance(data);
   }
 }
