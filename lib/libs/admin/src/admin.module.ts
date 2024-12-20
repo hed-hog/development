@@ -8,10 +8,12 @@ import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
 import { ScreenModule } from './screen/screen.module';
 import { UserModule } from './user/user.module';
+import { MailModule } from '@hedhog/mail';
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
+    forwardRef(() => MailModule),
     forwardRef(() => MenuModule),
     forwardRef(() => PaginationModule),
     forwardRef(() => RoleModule),
@@ -24,6 +26,7 @@ import { UserModule } from './user/user.module';
   exports: [
     UserModule,
     AuthModule,
+    MailModule,
     RouteModule,
     RoleModule,
     MenuModule,
