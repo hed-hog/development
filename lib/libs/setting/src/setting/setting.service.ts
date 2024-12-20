@@ -109,6 +109,7 @@ export class SettingService {
       case 'system-name':
       case 'system-slogan':
       case 'image-url':
+      case 'icon-url':
         return `--${slug}: '${value}';`;
 
       default:

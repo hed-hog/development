@@ -57,6 +57,7 @@ interface ISystemInfo {
   name: string
   slogan: string
   imageUrl: string
+  iconUrl: string
 }
 
 type AppContextType = {
@@ -96,6 +97,7 @@ export const AppContext = createContext<AppContextType>({
     name: 'Hedhog',
     slogan: 'Administration Panel',
     imageUrl: '/images/favicon-dark.png',
+    iconUrl: '/images/favicon-dark.png',
   },
   request: () => new Promise(() => {}),
   openDialog: () => '',
@@ -146,11 +148,13 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [systemName, setSystemName] = useState<string>('')
   const [systemSlogan, setSystemSlogan] = useState<string>('')
   const [imageUrl, setImageUrl] = useState<string>('')
+  const [iconUrl, setIconUrl] = useState<string>('')
 
   useEffect(() => {
     setSystemName(getValue('--system-name'))
     setSystemSlogan(getValue('--system-slogan'))
     setImageUrl(getValue('--image-url'))
+    setIconUrl(getValue('--icon-url'))
   }, [])
 
   const openDialog = (dialog: OpenDialogType) => {
@@ -397,6 +401,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
             name: systemName,
             slogan: systemSlogan,
             imageUrl,
+            iconUrl,
           },
           request,
           logout,
