@@ -1,0 +1,57 @@
+data:
+  route:
+    - url: /appearance
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /appearance
+      method: POST
+      relations: *a1
+   menu:
+    - url: /appearance
+      icon: palette
+      name:
+        en: Appearance
+        pt: Aparência
+      slug: /management/appearance
+      relations:
+        role:
+          - where:
+              slug: admin
+  screen:
+    - name:
+        en: Appearance
+        pt: Aparência
+      slug: /management/appearance
+      description:
+        en: Screen to manage Appearance
+        pt: Tela para gerenciar aparência
+      icon: palette
+
+screens:
+  appearance:
+    title:
+      en: Appearance
+      pt: Aparência
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      name:
+        en: Appearance
+        pt: Aparência
+      icon: palette
+      url: /management/appearance
+      slug: /management/appearance
+      relations:
+        role:
+          - where:
+              slug: admin
+routes:
+  - path: management
+    children:
+      - path: appearance
+        lazy:
+          component: ./pages/appearance/appearance/index.tsx
