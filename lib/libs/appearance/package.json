@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/appearance",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -24,12 +24,16 @@
   "peerDependencies": {
     "@hedhog/admin": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/prisma": "latest"
+    "@hedhog/prisma": "latest",
+    "@hedhog/setting": "latest",
+    "@hedhog/file": "latest"
   },
   "devDependencies": {
     "@hedhog/admin": "^0.7.5",
     "@hedhog/pagination": "^0.7.1",
     "@hedhog/prisma": "^0.7.3",
+    "@hedhog/setting": "^0.7.7",
+    "@hedhog/file": "^0.7.2",
     "@nestjs/mapped-types": "^2.0.6"
   }
 }

@@ -7,7 +7,11 @@ data:
           - where:
               slug: admin
     - url: /appearance
-      method: POST
+      method: PUT
+      relations: *a1
+
+    - url: /appearance/index.css
+      method: GET
       relations: *a1
   menu:
     - url: /appearance
