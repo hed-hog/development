@@ -156,8 +156,17 @@ data:
               en: System Image URL
               pt: URL da Imagem do Sistema
             description:
-              en: System Image URL
-              pt: URL da Imagem do Sistema
+              en: System Image URL to use
+              pt: URL da Imagem do Sistema a utilizar
+            value: '/images/favicon-dark.png'
+          - slug: icon-url
+            type: string
+            name:
+              en: System Icon URL
+              pt: URL da Ícone do Sistema
+            description:
+              en: System Icon URL to use
+              pt: URL da Ícone do Sistema a utilizar
             value: '/images/favicon-dark.png'
           - slug: system-name
             type: string
