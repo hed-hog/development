@@ -42,7 +42,9 @@
       "@hedhog/contact": ["libs/contact/src"],
       "@hedhog/contact/*": ["libs/contact/src/*"],
       "@hedhog/cbc": ["libs/cbc/src"],
-      "@hedhog/cbc/*": ["libs/cbc/src/*"]
+      "@hedhog/cbc/*": ["libs/cbc/src/*"],
+      "@hedhog/appearance": ["libs/appearance/src"],
+      "@hedhog/appearance/*": ["libs/appearance/src/*"]
     }
   },
   "exclude": ["libs/**/frontend", "node_modules", "dist"]

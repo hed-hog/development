@@ -1,15 +1,9 @@
-import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  forwardRef,
-} from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO, itemTranslations } from '@hedhog/core';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { itemTranslations } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
-import path from 'path';
+const path = require('path');
 import { existsSync } from 'fs';
 import { mkdir, readFile, writeFile } from 'fs/promises';
 

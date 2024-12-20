@@ -18,6 +18,10 @@
 --text-size-2xl: 1.50rem;
 --text-size-3xl: 1.88rem;
 --menu-width: 16rem;
+--image-url: '/images/favicon-dark.png';
+--icon-url: '/images/favicon-dark.png';
+--system-name: 'Hedhog';
+--system-slogan: 'Administration Panel';
 }
  .dark {
 --primary: 192 100% 72%;
@@ -39,6 +43,10 @@
 --text-size-2xl: 1.50rem;
 --text-size-3xl: 1.88rem;
 --menu-width: 16rem;
+--image-url: '/images/favicon-dark.png';
+--icon-url: '/images/favicon-dark.png';
+--system-name: 'Hedhog';
+--system-slogan: 'Administration Panel';
 }
  .light {
 --primary: 192 100% 72%;
@@ -60,4 +68,8 @@
 --text-size-2xl: 1.50rem;
 --text-size-3xl: 1.88rem;
 --menu-width: 16rem;
+--image-url: '/images/favicon-dark.png';
+--icon-url: '/images/favicon-dark.png';
+--system-name: 'Hedhog';
+--system-slogan: 'Administration Panel';
 }

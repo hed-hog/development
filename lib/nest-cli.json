@@ -114,6 +114,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/cbc/tsconfig.lib.json"
       }
+    },
+    "appearance": {
+      "type": "library",
+      "root": "libs/appearance",
+      "entryFile": "index",
+      "sourceRoot": "libs/appearance/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/appearance/tsconfig.lib.json"
+      }
     }
   }
 }

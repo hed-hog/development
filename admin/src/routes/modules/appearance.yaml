@@ -1,0 +1,6 @@
+routes:
+  - path: management
+    children:
+      - path: appearance
+        lazy:
+          component: ./pages/appearance/appearance/index.tsx
