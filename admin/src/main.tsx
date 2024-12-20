@@ -12,6 +12,7 @@ import { initReactI18next } from 'react-i18next'
 import { RouterProvider } from 'react-router-dom'
 import { SidebarProvider } from './context/sidebar-context'
 import { PageTitle } from './components/custom/page-title'
+import FaviconSetting from './components/custom/favicon-setting'
 
 i18n.on('languageChanged', (lng) => {
   localStorage.setItem('i18nextLng', lng)
@@ -40,6 +41,7 @@ const App = () => {
         <SidebarProvider>
           <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
             <PageTitle />
+            <FaviconSetting />
             <RouterProvider router={router} />
             <Toaster />
           </ThemeProvider>
