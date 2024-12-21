@@ -14,7 +14,7 @@ data:
       method: GET
       relations: *a1
   menu:
-    - url: /appearance
+    - url: /management/appearance
       icon: palette
       name:
         en: Appearance
