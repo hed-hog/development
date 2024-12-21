@@ -14,7 +14,10 @@ data:
       method: GET
       relations: *a1
   menu:
-    - url: /management/appearance
+    - menu_id:
+        where:
+          slug: /management
+      url: /management/appearance
       icon: palette
       name:
         en: Appearance
