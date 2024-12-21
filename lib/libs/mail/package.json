@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/mail",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.production.json && npm version patch",
@@ -21,7 +21,9 @@
     "axios": "^1.7.7",
     "mimemessage": "1.0.5",
     "bcrypt": "^5.1.1",
-    "nodemailer": "^6.9.0"
+    "nodemailer": "^6.9.0",
+    "aws-sdk": "2.1691.0",
+    "googleapis": "144.0.0"
   },
   "peerDependencies": {
     "aws-sdk": "2.1691.0",
