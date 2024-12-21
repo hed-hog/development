@@ -6,19 +6,21 @@ import {
   useLocaleEnabled,
   useLocaleListEnabled,
 } from '@/features/locale/api/handlers'
-import { useSetting, useSettingFromGroup } from '@/features/setting'
+import {
+  useListAppearance,
+  useUpdateAppearance,
+} from '@/features/appearance/appearance'
 import { useSetProperties } from '@/hooks/use-set-properties'
 import { hexToHSL, hslToHex } from '@/lib/colors'
 import { IFormFieldPropsBase, ISliderProps } from '@/types/form-panel'
 import { useCallback, useRef } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 
 export default function Page() {
   const { t } = useTranslation(['translation', 'setting'])
   const { data: locale } = useLocaleListEnabled()
-  const { mutate, isPending } = useSetting()
+  const { mutate, isPending } = useUpdateAppearance()
   const { setText } = useSetProperties()
   const { isPending: isPendingLocale } = useLocaleEnabled()
   const formRef = useRef<HTMLFormElement>(null)
@@ -26,8 +28,7 @@ export default function Page() {
     defaultValues: {},
     mode: 'onSubmit',
   })
-  const { slug } = useParams()
-  const { data } = useSettingFromGroup('appearance')
+  const { data } = useListAppearance()
 
   const handleDataChange = (dataValues: any) => {
     Object.keys(dataValues).forEach((key) => {
@@ -297,7 +298,7 @@ export default function Page() {
           }
       }
     },
-    [locale, slug]
+    [locale]
   )
 
   return (
