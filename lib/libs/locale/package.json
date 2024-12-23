@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/locale",
-  "version": "0.13.1",
+  "version": "0.17.1",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
