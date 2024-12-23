@@ -27,7 +27,7 @@
     "@hedhog/prisma": "latest"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.7.4",
+    "@hedhog/admin": "^0.7.6",
     "@hedhog/pagination": "^0.7.1",
     "@hedhog/prisma": "^0.7.3",
     "@nestjs/mapped-types": "^2.0.5"

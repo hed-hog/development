@@ -23,17 +23,17 @@
   "description": "",
   "peerDependencies": {
     "@hedhog/admin": "latest",
+    "@hedhog/file": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
-    "@hedhog/setting": "latest",
-    "@hedhog/file": "latest"
+    "@hedhog/setting": "latest"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.7.5",
+    "@hedhog/admin": "^0.7.6",
+    "@hedhog/file": "^0.7.2",
     "@hedhog/pagination": "^0.7.1",
     "@hedhog/prisma": "^0.7.3",
-    "@hedhog/setting": "^0.7.7",
-    "@hedhog/file": "^0.7.2",
+    "@hedhog/setting": "^0.7.8",
     "@nestjs/mapped-types": "^2.0.6"
   }
 }
