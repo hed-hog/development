@@ -26,6 +26,7 @@
   "dependencies": {
     "@hedhog/admin": "^0.7.6",
     "@hedhog/appearance": "^0.0.8",
+    "@hedhog/cbc": "^0.0.35",
     "@hedhog/core": "^0.0.1",
     "@hedhog/file": "^0.7.2",
     "@hedhog/locale": "^0.7.6",

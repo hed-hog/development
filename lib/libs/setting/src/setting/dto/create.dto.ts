@@ -1,4 +1,4 @@
-import { IsString, Length, IsBoolean } from 'class-validator';
+import { IsString, IsInt, Length, IsBoolean } from 'class-validator';
 import { WithLocaleDTO } from '@hedhog/locale';
 
 export class CreateDTO extends WithLocaleDTO {
@@ -15,4 +15,7 @@ export class CreateDTO extends WithLocaleDTO {
 
   @IsBoolean()
   user_override: boolean;
+
+  @IsInt()
+  group_id: number;
 }

@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/locale",
-  "version": "0.7.7",
+  "version": "0.13.1",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -27,8 +27,8 @@
     "@hedhog/utils": "latest"
   },
   "devDependencies": {
-    "@hedhog/pagination": "^0.7.1",
-    "@hedhog/prisma": "^0.7.4",
+    "@hedhog/pagination": "^0.7.4",
+    "@hedhog/prisma": "^0.7.6",
     "@hedhog/utils": "^0.0.28",
     "@nestjs/mapped-types": "^2.0.5"
   }

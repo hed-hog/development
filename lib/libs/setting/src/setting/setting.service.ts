@@ -12,8 +12,6 @@ import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
 import { SettingDTO } from './dto/setting.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import { existsSync } from 'fs';
 
 @Injectable()
 export class SettingService {
@@ -212,14 +210,34 @@ export class SettingService {
 
   async create(data: CreateDTO) {
     return this.prismaService.setting.create({
-      data,
+      data: {
+        slug: data.slug,
+        type: data.type as any,
+        value: data.value,
+        user_override: data.user_override,
+        setting_group: {
+          connect: {
+            id: data.group_id,
+          },
+        },
+      },
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
     return this.prismaService.setting.update({
       where: { id },
-      data,
+      data: {
+        slug: data.slug,
+        type: data.type as any,
+        value: data.value,
+        user_override: data.user_override,
+        setting_group: {
+          connect: {
+            id: data.group_id,
+          },
+        },
+      },
     });
   }
 
