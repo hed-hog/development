@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/prisma",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "peerDependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
-    "@prisma/client": "^5.21.1"
+    "@prisma/client": "^6.10.1"
   },
   "devDependencies": {
     "ts-node": "^10.9.1",

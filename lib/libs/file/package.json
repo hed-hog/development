@@ -32,7 +32,7 @@
   ],
   "devDependencies": {
     "@hedhog/pagination": "^0.7.1",
-    "@hedhog/prisma": "^0.7.3",
+    "@hedhog/prisma": "^0.7.4",
     "@hedhog/setting": "^0.7.9",
     "@hedhog/utils": "^0.0.28",
     "@nestjs/jwt": "^10.2.0",

@@ -29,9 +29,9 @@
   },
   "devDependencies": {
     "@hedhog/admin": "^0.7.6",
-    "@hedhog/locale": "^0.7.6",
+    "@hedhog/locale": "^0.7.7",
     "@hedhog/pagination": "^0.7.1",
-    "@hedhog/prisma": "^0.7.3",
+    "@hedhog/prisma": "^0.7.4",
     "@nestjs/mapped-types": "^2.0.6"
   }
 }
