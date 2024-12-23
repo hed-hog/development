@@ -7,9 +7,9 @@ type PrivateProps = {
 }
 
 const Private = ({ children }: PrivateProps) => {
-  const { isValidSignature } = useApp()
+  const { user } = useApp()
 
-  if (!isValidSignature) {
+  if (!user.id) {
     return <Navigate to='/login' replace />
   }
 
