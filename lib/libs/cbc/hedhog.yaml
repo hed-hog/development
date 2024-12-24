@@ -1363,9 +1363,9 @@ tables:
       - name: stop_loss
         type: int
       - name: start_time
-        type: datetime
+        type: timestamp
       - name: end_time
-        type: datetime
+        type: timestamp
   strategy:
     columns:
       - type: pk
