@@ -5,8 +5,5 @@ export class CreateDTO {
   capital: number;
 
   @IsNumber()
-  initial_margin: number;
-
-  @IsNumber()
-  final_margin: number;
+  coins_count: number;
 }

@@ -20,7 +20,7 @@ export class FreeBalanceConditionService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['capital', 'initial_margin', 'final_margin'];
+    const fields = ['capital', 'coins_count'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams

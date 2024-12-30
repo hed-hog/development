@@ -169,6 +169,9 @@
   "strategy.name": "Nome",
   "trade_signal_type.name": "Nome",
   "free_balance_condition.capital": "Capital",
-  "free_balance_condition.initial_margin": "Margem Inicial",
-  "free_balance_condition.final_margin": "Margem Final"
+  "free_balance_condition.coins_count": "Contagem de Moedas",
+  "mmr.leverage": "Alavancagem",
+  "mmr.percentage": "Porcentagem",
+  "mmr.mmr_percentage": "Porcentagem MMR",
+  "mmr.addtiononal_margin": "Margem Adicional"
 }

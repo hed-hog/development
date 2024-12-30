@@ -1,7 +1,7 @@
+import { ScreenLocale } from './ScreenLocale';
 import { RouteScreen } from './RouteScreen';
 import { RoleScreen } from './RoleScreen';
 import { MenuScreen } from './MenuScreen';
-import { ScreenLocale } from './ScreenLocale';
 
 export type Screen = {
   id?: number;
@@ -9,10 +9,10 @@ export type Screen = {
   icon?: string;
   created_at?: string;
   updated_at?: string;
+  screen_locale?: ScreenLocale[];
   route_screen?: RouteScreen[];
   role_screen?: RoleScreen[];
   menu_screen?: MenuScreen[];
-  screen_locale?: ScreenLocale[];
   name?: string;
   description?: string;
 }

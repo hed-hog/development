@@ -17,6 +17,12 @@ export type Operation = {
   leverage?: any;
   created_at?: string;
   updated_at?: string;
+  margin_used: number;
+  first_order: number;
+  mmr: number;
+  stop_loss: number;
+  start_time: string;
+  end_time: string;
   user?: User;
   banking?: Banking;
   stock_exchange?: StockExchange;

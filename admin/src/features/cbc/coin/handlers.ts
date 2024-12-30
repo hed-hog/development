@@ -1,28 +1,28 @@
-import { useDefaultMutation } from "@/hooks/use-default-mutation";
-import { useQuery } from "@tanstack/react-query";
-import { requests } from "./requests";
+import { useDefaultMutation } from '@/hooks/use-default-mutation'
+import { useQuery } from '@tanstack/react-query'
+import { requests } from './requests'
 
-const scope = "coin";
+const scope = 'coin'
 
 export function useCoinCreate() {
-  const { coinCreate } = requests();
-  return useDefaultMutation(scope, "create", coinCreate);
+  const { coinCreate } = requests()
+  return useDefaultMutation(scope, 'create', coinCreate)
 }
 
 export function useCoinDelete() {
-  const { coinDelete } = requests();
-  return useDefaultMutation(scope, "delete", coinDelete);
+  const { coinDelete } = requests()
+  return useDefaultMutation(scope, 'delete', coinDelete)
 }
 
 export function useCoinUpdate() {
-  const { coinUpdate } = requests();
-  return useDefaultMutation(scope, "update", coinUpdate);
+  const { coinUpdate } = requests()
+  return useDefaultMutation(scope, 'update', coinUpdate)
 }
 
 export function useCoinGet(id: number) {
-  const { coinGet } = requests();
+  const { coinGet } = requests()
   return useQuery({
-    queryKey: [scope, "get"],
+    queryKey: [scope, 'get'],
     queryFn: () => coinGet(id),
-  });
+  })
 }

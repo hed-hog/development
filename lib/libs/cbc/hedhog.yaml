@@ -1394,119 +1394,124 @@ tables:
         locale:
           en: Capital
           pt: Capital
-      - name: initial_margin
+      - name: coins_count
         type: int
         locale:
-          en: Initial Margin
-          pt: Margem Inicial
-      - name: final_margin
+          en: Coins Count
+          pt: Contagem de Moedas
+      - type: created_at
+      - type: updated_at
+  mmr:
+    columns:
+      - type: pk
+      - name: leverage
         type: int
         locale:
-          en: Final Margin
-          pt: Margem Final
+          en: Leverage
+          pt: Alavancagem
+      - name: percentage
+        type: int
+        locale:
+          en: Percentage
+          pt: Porcentagem
+      - name: mmr_percentage
+        type: int
+        locale:
+          en: MMR Percentage
+          pt: Porcentagem MMR
+      - name: addtiononal_margin
+        type: int
+        locale:
+          en: Addtiononal Margin
+          pt: Margem Adicional
+      - name: mmr
       - type: created_at
       - type: updated_at
 data:
+  mmr:
+    - leverage: 3
+      percentage: 33.33
+      mmr_percentage: 15
+      additional_margin: 1
+    - leverage: 5
+      percentage: 20
+      mmr_percentage: 13
+      additional_margin: 1.5
+    - leverage: 10
+      percentage: 10
+      mmr_percentage: 10
+      additional_margin: 2
+    - leverage: 20
+      percentage: 5
+      mmr_percentage: 8
+      additional_margin: 2.5
   free_balance_condition:
-    - capital: 0
-      initial_margin: 0
-      final_margin: 0
+    - capital: null
+      coins_count: 0
+    - capital: 20
+      coins_count: 2
+    - capital: 50
+      coins_count: 3
+    - capital: 100
+      coins_count: 3
     - capital: 200
-      initial_margin: 1
-      final_margin: 2
+      coins_count: 4
+    - capital: 300
+      coins_count: 5
+    - capital: 400
+      coins_count: 6
     - capital: 500
-      initial_margin: 3
-      final_margin: 3
-    - capital: 1000
-      initial_margin: 3
-      final_margin: 3
-    - capital: 2000
-      initial_margin: 6
-      final_margin: 4
-    - capital: 3000
-      initial_margin: 6
-      final_margin: 5
-    - capital: 4000
-      initial_margin: 7
-      final_margin: 6
-    - capital: 5000
-      initial_margin: 8
-      final_margin: 6
-    - capital: 6000
-      initial_margin: 9
-      final_margin: 7
-    - capital: 7000
-      initial_margin: 9
-      final_margin: 7
-    - capital: 8000
-      initial_margin: 9
-      final_margin: 7
-    - capital: 9000
-      initial_margin: 9
-      final_margin: 7
+      coins_count: 6
+    - capital: 600
+      coins_count: 7
+    - capital: 700
+      coins_count: 7
+    - capital: 800
+      coins_count: 7
+    - capital: 900
+      coins_count: 7
     - capital: 10000
-      initial_margin: 10
-      final_margin: 8
+      coins_count: 8
     - capital: 11000
-      initial_margin: 10
-      final_margin: 8
+      coins_count: 8
     - capital: 12000
-      initial_margin: 10
-      final_margin: 8
+      coins_count: 8
     - capital: 13000
-      initial_margin: 10
-      final_margin: 8
+      coins_count: 8
     - capital: 14000
-      initial_margin: 10
-      final_margin: 8
+      coins_count: 8
     - capital: 15000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 16000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 17000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 18000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 19000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 20000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 21000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 22000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 23000
-      initial_margin: 11
-      final_margin: 9
+      coins_count: 9
     - capital: 24000
-      initial_margin: 12
-      final_margin: 10
+      coins_count: 10
     - capital: 25000
-      initial_margin: 12
-      final_margin: 10
+      coins_count: 10
     - capital: 26000
-      initial_margin: 12
-      final_margin: 10
+      coins_count: 10
     - capital: 27000
-      initial_margin: 12
-      final_margin: 10
+      coins_count: 10
     - capital: 28000
-      initial_margin: 12
-      final_margin: 10
+      coins_count: 10
     - capital: 29000
-      initial_margin: 12
-      final_margin: 10
+      coins_count: 10
     - capital: 30000
-      initial_margin: 12
-      final_margin: 10
+      coins_count: 10
   route:
     - url: /quotation-type
       method: GET
@@ -1688,6 +1693,24 @@ data:
     - url: /free-balance-condition
       method: DELETE
       relations: *a10
+    - url: /mmr
+      method: GET
+      relations: &a11
+        role:
+          - where:
+              slug: admin
+    - url: /mmr
+      method: POST
+      relations: *a11
+    - url: /mmr/:id
+      method: GET
+      relations: *a11
+    - url: /mmr/:id
+      method: PATCH
+      relations: *a11
+    - url: /mmr
+      method: DELETE
+      relations: *a11
   menu:
     - url: /cbc
       icon: coin
@@ -1829,6 +1852,13 @@ data:
         role:
           - where:
               slug: admin
+    - name:
+        en: Mmr
+        pt: Mmr
+      icon: file
+      url: /mmr
+      slug: mmr
+      relations: *a11
   screen:
     - name:
         en: Quotation Type
@@ -1910,6 +1940,86 @@ data:
         en: Screen to manage free balance condition
         pt: Tela para gerenciar condição de saldo livre
       icon: coin-bitcoin
+    - name:
+        en: QuotationType
+        pt: QuotationType
+      slug: quotation-type
+      description:
+        en: Screen to manage quotation_type
+        pt: Tela para gerenciar quotation_type
+      icon: file
+    - name:
+        en: Coin
+        pt: Coin
+      slug: coin
+      description:
+        en: Screen to manage coin
+        pt: Tela para gerenciar coin
+      icon: file
+    - name:
+        en: StockExchange
+        pt: StockExchange
+      slug: stock-exchange
+      description:
+        en: Screen to manage stock_exchange
+        pt: Tela para gerenciar stock_exchange
+      icon: file
+    - name:
+        en: TrendType
+        pt: TrendType
+      slug: trend-type
+      description:
+        en: Screen to manage trend_type
+        pt: Tela para gerenciar trend_type
+      icon: file
+    - name:
+        en: Quotation
+        pt: Quotation
+      slug: quotation
+      description:
+        en: Screen to manage quotation
+        pt: Tela para gerenciar quotation
+      icon: file
+    - name:
+        en: Banking
+        pt: Banking
+      slug: banking
+      description:
+        en: Screen to manage banking
+        pt: Tela para gerenciar banking
+      icon: file
+    - name:
+        en: Operation
+        pt: Operation
+      slug: operation
+      description:
+        en: Screen to manage operation
+        pt: Tela para gerenciar operation
+      icon: file
+    - name:
+        en: Strategy
+        pt: Strategy
+      slug: strategy
+      description:
+        en: Screen to manage strategy
+        pt: Tela para gerenciar strategy
+      icon: file
+    - name:
+        en: TradeSignalType
+        pt: TradeSignalType
+      slug: trade-signal-type
+      description:
+        en: Screen to manage trade_signal_type
+        pt: Tela para gerenciar trade_signal_type
+      icon: file
+    - name:
+        en: Mmr
+        pt: Mmr
+      slug: mmr
+      description:
+        en: Screen to manage mmr
+        pt: Tela para gerenciar mmr
+      icon: file
   strategy:
     - name: AI STRATEGY
     - name: BULL AI

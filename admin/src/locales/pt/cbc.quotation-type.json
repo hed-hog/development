@@ -3,9 +3,9 @@
   "createText": "Preencha as informações do tipo de citação.",
   "createTooltip": "Criar novo tipo de citação",
   "delete": "Excluir tipo de citação",
-  "deleteText": "Você tem certeza de que deseja excluir esses tipos de citação?",
+  "deleteText": "Você tem certeza de que deseja excluir estes tipos de citação?",
   "deleteTooltip": "Excluir o tipo de citação selecionado",
   "edit": "Editar tipo de citação",
-  "editText": "Visualizar e editar as informações do tipo de citação.",
+  "editText": "Ver e editar informações do tipo de citação.",
   "editTooltip": "Editar o tipo de citação selecionado"
 }

@@ -94,6 +94,14 @@ model file_provider_locale {
   @@id([provider_id, locale_id], map: "PK_c108e943a38100608cfae509b3a")
 }
 
+model free_balance_condition {
+  id          Int      @id(map: "PK_9bce6b974e0c668e51e62764d50") @default(autoincrement())
+  capital     Int
+  coins_count Int
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+}
+
 model locale {
   id                          Int                           @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
   code                        String                        @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
@@ -157,6 +165,17 @@ model menu_screen {
   @@id([menu_id, screen_id], map: "PK_cefac3ef25311287e1b40c1059d")
 }
 
+model mmr {
+  id                 Int      @id(map: "PK_bebfddc619c04e97b2a2fa30ad9") @default(autoincrement())
+  leverage           Int
+  percentage         Int
+  mmr_percentage     Int
+  addtiononal_margin Int
+  mmr                String   @db.VarChar
+  created_at         DateTime @default(now()) @db.Timestamp(6)
+  updated_at         DateTime @default(now()) @db.Timestamp(6)
+}
+
 model multifactor {
   id                 Int                  @id(map: "PK_dd28340c66eb211fbd352507167") @default(autoincrement())
   slug               String               @unique(map: "UQ_a108f605bb3787f098bd7169681") @db.VarChar(255)
@@ -190,6 +209,12 @@ model operation {
   leverage             Decimal?          @db.Decimal
   created_at           DateTime          @default(now()) @db.Timestamp(6)
   updated_at           DateTime          @default(now()) @db.Timestamp(6)
+  margin_used          Int
+  first_order          Int
+  mmr                  Int
+  stop_loss            Int
+  start_time           DateTime          @db.Timestamp(6)
+  end_time             DateTime          @db.Timestamp(6)
   trade_signal_type    trade_signal_type @relation(fields: [trade_signal_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_08ee4a6e7abe44c16923a9ca8e2")
   stock_exchange       stock_exchange    @relation(fields: [stock_exchange_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_27bbcc0e49b9ddb84c30f732bbe")
   banking              banking           @relation(fields: [banking_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_30f984b7ec88305459d89593991")
