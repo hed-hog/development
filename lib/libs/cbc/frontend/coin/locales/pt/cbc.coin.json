@@ -3,9 +3,9 @@
   "createText": "Preencha as informações da moeda.",
   "createTooltip": "Criar nova moeda",
   "delete": "Deletar moeda",
-  "deleteText": "Você tem certeza de que deseja deletar estas moedas?",
+  "deleteText": "Tem certeza de que deseja deletar estas moedas?",
   "deleteTooltip": "Deletar a moeda selecionada",
   "edit": "Editar moeda",
-  "editText": "Visualizar e editar informações da moeda.",
+  "editText": "Ver e editar as informações da moeda.",
   "editTooltip": "Editar a moeda selecionada"
 }

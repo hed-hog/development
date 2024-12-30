@@ -167,5 +167,8 @@
   "operation.layers": "Layers",
   "operation.leverage": "Leverage",
   "strategy.name": "Name",
-  "trade_signal_type.name": "Name"
+  "trade_signal_type.name": "Name",
+  "free_balance_condition.capital": "Capital",
+  "free_balance_condition.initial_margin": "Initial Margin",
+  "free_balance_condition.final_margin": "Final Margin"
 }

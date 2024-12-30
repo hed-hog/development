@@ -167,5 +167,8 @@
   "operation.layers": "Camadas",
   "operation.leverage": "Alavancagem",
   "strategy.name": "Nome",
-  "trade_signal_type.name": "Nome"
+  "trade_signal_type.name": "Nome",
+  "free_balance_condition.capital": "Capital",
+  "free_balance_condition.initial_margin": "Margem Inicial",
+  "free_balance_condition.final_margin": "Margem Final"
 }

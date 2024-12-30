@@ -1670,6 +1670,24 @@ data:
     - url: /trade-signal-type
       method: DELETE
       relations: *a9
+    - url: /free-balance-condition
+      method: GET
+      relations: &a10
+        role:
+          - where:
+              slug: admin
+    - url: /free-balance-condition
+      method: POST
+      relations: *a10
+    - url: /free-balance-condition/:id
+      method: GET
+      relations: *a10
+    - url: /free-balance-condition/:id
+      method: PATCH
+      relations: *a10
+    - url: /free-balance-condition
+      method: DELETE
+      relations: *a10
   menu:
     - url: /cbc
       icon: coin
@@ -1786,11 +1804,24 @@ data:
           - where:
               slug: admin
     - name:
-        en: TradeSignalType
+        en: Trade Signal Type
         pt: Tipo de Sinal de Trade
       icon: brand-stocktwits
       url: /cbc/trade-signal-type
       slug: trade-signal-type
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Free Balance Condition
+        pt: Condição de Saldo Livre
+      icon: coin-bitcoin
+      url: /free-balance-condition
+      slug: free-balance-condition
       menu_id:
         where:
           slug: /cbc
@@ -1809,7 +1840,7 @@ data:
       icon: adjustments-dollar
     - name:
         en: Coin
-        pt: Coin
+        pt: Moeda
       slug: /cbc/coin
       description:
         en: Screen to manage coin
@@ -1871,6 +1902,14 @@ data:
         en: Screen to manage trade signal type
         pt: Tela para gerenciar tipo de sinal de trade
       icon: brand-stocktwits
+    - name:
+        en: Free Balance Condition
+        pt: Condição de Saldo Livre
+      slug: free-balance-condition
+      description:
+        en: Screen to manage free balance condition
+        pt: Tela para gerenciar condição de saldo livre
+      icon: coin-bitcoin
   strategy:
     - name: AI STRATEGY
     - name: BULL AI

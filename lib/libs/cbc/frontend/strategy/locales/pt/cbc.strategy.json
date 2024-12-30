@@ -2,10 +2,10 @@
   "create": "Criar estratégia",
   "createText": "Preencha as informações da estratégia.",
   "createTooltip": "Criar nova estratégia",
-  "delete": "Deletar estratégia",
-  "deleteText": "Você tem certeza de que deseja deletar estas estratégias?",
-  "deleteTooltip": "Deletar a estratégia selecionada",
+  "delete": "Excluir estratégia",
+  "deleteText": "Tem certeza de que deseja excluir esta(s) estratégia(s)?",
+  "deleteTooltip": "Excluir a estratégia selecionada",
   "edit": "Editar estratégia",
-  "editText": "Visualizar e editar informações da estratégia.",
+  "editText": "Ver e editar informações da estratégia.",
   "editTooltip": "Editar a estratégia selecionada"
 }

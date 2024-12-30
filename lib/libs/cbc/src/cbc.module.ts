@@ -1,3 +1,4 @@
+import { FreeBalanceConditionModule } from './free-balance-condition/free-balance-condition.module';
 import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.module';
 import { StrategyModule } from './strategy/strategy.module';
 import { OperationModule } from './operation/operation.module';
@@ -27,6 +28,7 @@ import { TrendTypeModule } from './trend-type/trend-type.module';
     forwardRef(() => OperationModule),
     forwardRef(() => StrategyModule),
     forwardRef(() => TradeSignalTypeModule),
+    forwardRef(() => FreeBalanceConditionModule),
   ],
   controllers: [],
   providers: [],

@@ -11,7 +11,7 @@ import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class OperationService {
+export class FreeBalanceConditionService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -20,16 +20,7 @@ export class OperationService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = [
-      'layers',
-      'leverage',
-      'margin_used',
-      'first_order',
-      'mmr',
-      'stop_loss',
-      'start_time',
-      'end_time'
-    ];
+    const fields = ['capital', 'initial_margin', 'final_margin'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
@@ -40,7 +31,7 @@ export class OperationService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.operation,
+      this.prismaService.free_balance_condition,
       paginationParams,
       {
         where: {
@@ -51,19 +42,19 @@ export class OperationService {
   }
 
   async get(id: number) {
-    return this.prismaService.operation.findUnique({
+    return this.prismaService.free_balance_condition.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.operation.create({
+    return this.prismaService.free_balance_condition.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.operation.update({
+    return this.prismaService.free_balance_condition.update({
       where: { id: id },
       data
     });
@@ -76,7 +67,7 @@ export class OperationService {
       );
     }
 
-    return this.prismaService.operation.deleteMany({
+    return this.prismaService.free_balance_condition.deleteMany({
       where: {
         id: {
           in: ids
