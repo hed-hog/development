@@ -1386,7 +1386,127 @@ tables:
           pt: Nome
       - type: created_at
       - type: updated_at
+  free_balance_condition:
+    columns:
+      - type: pk
+      - name: capital
+        type: int
+        locale:
+          en: Capital
+          pt: Capital
+      - name: initial_margin
+        type: int
+        locale:
+          en: Initial Margin
+          pt: Margem Inicial
+      - name: final_margin
+        type: int
+        locale:
+          en: Final Margin
+          pt: Margem Final
+      - type: created_at
+      - type: updated_at
 data:
+  free_balance_condition:
+    - capital: 0
+      initial_margin: 0
+      final_margin: 0
+    - capital: 200
+      initial_margin: 1
+      final_margin: 2
+    - capital: 500
+      initial_margin: 3
+      final_margin: 3
+    - capital: 1000
+      initial_margin: 3
+      final_margin: 3
+    - capital: 2000
+      initial_margin: 6
+      final_margin: 4
+    - capital: 3000
+      initial_margin: 6
+      final_margin: 5
+    - capital: 4000
+      initial_margin: 7
+      final_margin: 6
+    - capital: 5000
+      initial_margin: 8
+      final_margin: 6
+    - capital: 6000
+      initial_margin: 9
+      final_margin: 7
+    - capital: 7000
+      initial_margin: 9
+      final_margin: 7
+    - capital: 8000
+      initial_margin: 9
+      final_margin: 7
+    - capital: 9000
+      initial_margin: 9
+      final_margin: 7
+    - capital: 10000
+      initial_margin: 10
+      final_margin: 8
+    - capital: 11000
+      initial_margin: 10
+      final_margin: 8
+    - capital: 12000
+      initial_margin: 10
+      final_margin: 8
+    - capital: 13000
+      initial_margin: 10
+      final_margin: 8
+    - capital: 14000
+      initial_margin: 10
+      final_margin: 8
+    - capital: 15000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 16000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 17000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 18000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 19000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 20000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 21000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 22000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 23000
+      initial_margin: 11
+      final_margin: 9
+    - capital: 24000
+      initial_margin: 12
+      final_margin: 10
+    - capital: 25000
+      initial_margin: 12
+      final_margin: 10
+    - capital: 26000
+      initial_margin: 12
+      final_margin: 10
+    - capital: 27000
+      initial_margin: 12
+      final_margin: 10
+    - capital: 28000
+      initial_margin: 12
+      final_margin: 10
+    - capital: 29000
+      initial_margin: 12
+      final_margin: 10
+    - capital: 30000
+      initial_margin: 12
+      final_margin: 10
   route:
     - url: /quotation-type
       method: GET
