@@ -1,5 +1,1481 @@
 tables:
-  quotation_type:
+  quotation:
+    columns:
+      - type: pk
+      - name: type_id
+        type: fk
+        references:
+          table: quotation_request_type
+          column: id
+          onDelete: CASCADE
+        locale:
+          pt: Tipo de Requisição
+          en: Request Type
+      - name: coin_id
+        type: fk
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+        locale:
+          pt: Moeda
+          en: Coin
+      - name: open
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: Abertura
+          en: Open
+      - name: high_all
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: Alta
+          en: High
+      - name: aroon_up
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: aroon_down
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: low_all
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: bb_lower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: bb_upper
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: donchch20_lower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: donchch20_upper
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: stock_exchange_id
+        type: fk
+        references:
+          table: stock_exchange
+          column: id
+          onDelete: CASCADE
+        locale:
+          pt: Bolsa
+          en: Stock Exchange
+      - name: bbpower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: kltchnl_lower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: kltchnl_upper
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: market_cap_calc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: recommend_ma
+        type: fk
+        references:
+          table: trend_type
+          column: id
+          onDelete: CASCADE
+        locale:
+          pt: Classificação das Médias Móveis
+          en: Moving Averages Rating
+      - name: recommend_other
+        type: fk
+        references:
+          table: trend_type
+          column: id
+          onDelete: CASCADE
+        locale:
+          pt: Classificação dos Osciladores
+          en: Oscillators Rating
+      - name: bid
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: perf_ytd
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: perf_y
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: perf_6m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: perf_3m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: perf_1m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: perf_w
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: stoch_d
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: stoch_k
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: gap
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ichimoku_lead1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ichimoku_lead2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: stoch_rsi_d
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: stoch_rsi_k
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: adx_minus_di
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: adx_plus_di
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: cci20
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rsi7
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rsi
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: adx
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ichimoku_bline
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ichimoku_cline
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: high_1m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: price_52_week_high
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: high_6m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: high_3m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: atr
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: adr
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: hullma9
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ema5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ema10
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ema20
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ema30
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ema50
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ema100
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ema200
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: vwma
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: sma5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: sma10
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: sma20
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: sma30
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: sma50
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: sma100
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: sma200
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: low_1m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: price_52_week_low
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: low_6m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: low_3m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: total_shares_outstanding
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: mom
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: macd_macd
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ao
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: perf_5y
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: perf_all
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_camarilla_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_camarilla_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_camarilla_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_camarilla_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_camarilla_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_camarilla_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_camarilla_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_classic_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_classic_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_classic_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_classic_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_classic_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_classic_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_classic_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_demark_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_demark_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_demark_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_fibonacci_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_fibonacci_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_fibonacci_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_fibonacci_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_fibonacci_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_fibonacci_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_fibonacci_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_woodie_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_woodie_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_woodie_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_woodie_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_woodie_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_woodie_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pivot_m_woodie_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: close
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: vwap
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: w_r
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: p_sar
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: macd_signal
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: roc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: recommend_all
+        type: fk
+        references:
+          table: trend_type
+          column: id
+          onDelete: CASCADE
+        locale:
+          pt: Classificação Técnica
+          en: Technical Rating
+      - name: total_shares_diluted
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: uo
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: market_cap_diluted_calc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: change
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: change_abs
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: change_from_open
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: change_from_open_abs
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ask
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: volatility_d
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: volatility_m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: volatility_w
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: volume
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: average_volume_10d_calc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: average_volume_30d_calc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: average_volume_60d_calc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: average_volume_90d_calc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: total_value_traded
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: relative_volume_10d_calc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: relative_volume_intraday_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: high
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: low
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: description
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: type
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: subtype
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: update_mode
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: pricescale
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: minmov
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: fractional
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: minmove2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rec_bbpower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: stoch_k_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: stoch_d_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rec_stoch_rsi
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: cci20_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rsi7_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rsi_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: adx_plus_di_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: adx_minus_di_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rec_ichimoku
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rec_hullma9
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rec_vwma
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: mom_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ao_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: ao_2_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_doji
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_abandonedbaby_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_abandonedbaby_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_doji_dragonfly
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_hangingman
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_engulfing_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_engulfing_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_shootingstar
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_morningstar
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_eveningstar
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_doji_gravestone
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_harami_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_harami_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_kicking_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_kicking_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_longshadow_lower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_longshadow_upper
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_hammer
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_invertedhammer
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_marubozu_white
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_marubozu_black
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_spinningtop_black
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_spinningtop_white
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_3blackcrows
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_tristar_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_tristar_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: candle_3whitesoldiers
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rec_wr
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - name: rec_uo
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          pt: ''
+          en: ''
+      - type: created_at
+      - type: updated_at
+
+  quotation_request_type:
     columns:
       - type: pk
       - name: name
@@ -71,1198 +1547,6 @@ tables:
         locale:
           en: Name
           pt: Nome
-      - type: created_at
-      - type: updated_at
-  quotation:
-    columns:
-      - type: pk
-      - name: coin_id
-        type: fk
-        references:
-          table: coin
-          column: id
-          onDelete: CASCADE
-        locale:
-          en: Coin
-          pt: Moeda
-      - name: type_id
-        type: fk
-        references:
-          table: quotation_type
-          column: id
-          onDelete: CASCADE
-        locale:
-          en: Type
-          pt: Tipo
-      - name: monthly_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Monthly Performance
-          pt: Performance Mensal
-      - name: weekly_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Weekly Performance
-          pt: Desempenho Semanal
-      - name: negative_directional_indicator_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Negative Directional Indicator (14)
-          pt: Indicador Direcional Negativo (14)
-      - name: positive_directional_indicator_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Positive Directional Indicator (14)
-          pt: Indicador Direcional Positivo (14)
-      - name: average_directional_index_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average Directional Index (14)
-          pt: Índice Direcional Médio (14)
-      - name: exponential_moving_average_200
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Exponential Moving Average (200)
-          pt: Media Móvel Exponencial (200)
-      - name: simple_moving_average_10
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (10)
-          pt: Media Móvel Simples (10)
-      - name: simple_moving_average_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (20)
-          pt: Media Móvel Simples (20)
-      - name: simple_moving_average_30
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (30)
-          pt: Media Móvel Simples (30)
-      - name: simple_moving_average_50
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (50)
-          pt: Media Móvel Simples (50)
-      - name: simple_moving_average_100
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (100)
-          pt: Media Móvel Simples (100)
-      - name: simple_moving_average_200
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (200)
-          pt: Media Móvel Simples (200)
-      - name: price
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Price
-          pt: Preço
-      - name: volatility
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Volatility
-          pt: Volatilidade
-      - name: opening
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Opening
-          pt: Abertura
-      - name: all_time_high
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: All Time High
-          pt: Maior Preço
-      - name: aroon_up_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Aroon Up (14)
-          pt: Aroon Up (14)
-      - name: aroon_down_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Aroon Down (14)
-          pt: Aroon Down (14)
-      - name: all_time_low
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: All Time Low
-          pt: Menor Preço
-      - name: bollinger_lower_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Bollinger Lower Band (20)
-          pt: Bollinger Lower Band (20)
-      - name: bollinger_upper_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Bollinger Upper Band (20)
-          pt: Bollinger Upper Band (20)
-      - name: donchian_channels_lower_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Donchian Channels Lower Band (20)
-          pt: Banda Inferior dos Canais de Donchian (20)
-      - name: donchian_channels_upper_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Donchian Channels Upper Band (20)
-          pt: Banda Superior dos Canais de Donchian (20)
-      - name: bull_bear_power
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Bull Bear Power
-          pt: Bull Bear Power
-      - name: keltner_channels_lower_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Keltner Channels Lower Band (20)
-          pt: Canais de Keltner Banda Superior (20)
-      - name: keltner_channels_upper_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Keltner Channels Upper Band (20)
-          pt: Canais de Keltner Banda Inferior (20)
-      - name: market_cap
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Market Cap
-          pt: Capitalização de Mercado
-      - name: buy
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Buy
-          pt: Compra
-      - name: year_to_date_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Year to Date Performance
-          pt: Desempenho Acumulado no Ano
-      - name: annual_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Annual Performance
-          pt: Desempenho Anual
-      - name: six_month_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Six Month Performance
-          pt: Desempenho em Seis Meses
-      - name: three_month_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Three Month Performance
-          pt: Desempenho em Três Meses
-      - name: stochastic_d
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Stochastic %D (14, 3, 3)
-          pt: Estocástico %D (14, 3, 3)
-      - name: stochastic_k
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Stochastic %K (14, 3, 3)
-          pt: Estocástico %K (14, 3, 3)
-      - name: gap_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Gap %
-          pt: Gap %
-      - name: ichimoku_leading_span_a
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Ichimoku Leading Span A (9, 26, 52, 26)
-          pt: Ichimoku Leading Span A (9, 26, 52, 26)
-      - name: ichimoku_leading_span_b
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Ichimoku Leading Span B (9, 26, 52, 26)
-          pt: Ichimoku Leading Span B (9, 26, 52, 26)
-      - name: slow_stochastic_rsi
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Slow Stochastic RSI (3, 3, 14, 14)
-          pt: IFR Estocástico Lento (3, 3, 14, 14)
-      - name: fast_stochastic_rsi
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fast Stochastic RSI (3, 3, 14, 14)
-          pt: IFR Estocástico Rápido (3, 3, 14, 14)
-      - name: commodity_channel_index_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Commodity Channel Index (20)
-          pt: Índice Canal de Commodities (20)
-      - name: relative_strength_index_7
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Relative Strength Index (7)
-          pt: Índice de Força Relativa (7)
-      - name: relative_strength_index_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Relative Strength Index (14)
-          pt: Índice de Força Relativa (14)
-      - name: ichimoku_base_line
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Ichimoku Base Line (9, 26, 52, 26)
-          pt: Linha Base Ichimoku (9, 26, 52, 26)
-      - name: ichimoku_conversion_line
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Ichimoku Conversion Line (9, 26, 52, 26)
-          pt: Linha de Conversão Ichimoku (9, 26, 52, 26)
-      - name: one_month_high
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: One Month High
-          pt: Máxima de 1 Mês
-      - name: fifty_two_week_high
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fifty Two Week High
-          pt: Máxima de 52 Semanas
-      - name: six_month_high
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Six Month High
-          pt: Máxima de 6 Mês
-      - name: three_month_high
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Three Month High
-          pt: Máxima de Três Meses
-      - name: average_true_range_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average True Range (14)
-          pt: Média de Amplitude de Variação (14)
-      - name: average_daily_range_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average Daily Range (14)
-          pt: Média do Range Diário (14)
-      - name: hull_moving_average_9
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Hull Moving Average (9)
-          pt: Média Móvel de Hull (9)
-      - name: exponential_moving_average_5
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Exponential Moving Average (5)
-          pt: Média Móvel Exponencial (5)
-      - name: exponential_moving_average_10
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Exponential Moving Average (10)
-          pt: Média Móvel Exponencial (10)
-      - name: exponential_moving_average_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Exponential Moving Average (20)
-          pt: Média Móvel Exponencial (20)
-      - name: exponential_moving_average_30
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Exponential Moving Average (30)
-          pt: Média Móvel Exponencial (30)
-      - name: exponential_moving_average_50
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Exponential Moving Average (50)
-          pt: Média Móvel Exponencial (50)
-      - name: exponential_moving_average_100
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Exponential Moving Average (100)
-          pt: Média Móvel Exponencial (100)
-      - name: volume_weighted_moving_average_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Volume Weighted Moving Average (20)
-          pt: Média Móvel Ponderada pelo Volume (20)
-      - name: simple_moving_average_5
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (5)
-          pt: Média Móvel Simples (5)
-      - name: one_month_low
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: One Month Low
-          pt: Mínima de 1 Mês
-      - name: fifty_two_week_low
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fifty-Two Week Low
-          pt: Mínima de 52 Semanas
-      - name: six_month_low
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Six Month Low
-          pt: Mínima de Seis Meses
-      - name: three_month_low
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Three Month Low
-          pt: Mínima de Três Meses
-      - name: available_currencies
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Available Currencies
-          pt: Moedas Disponíveis
-      - name: momentum_10
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Momentum (10)
-          pt: Momentum (10)
-      - name: macd_level_12_26
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: MACD Level (12,26)
-          pt: Nível MACD (12,26)
-      - name: awesome_oscillator
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Awesome Oscillator (AO)
-          pt: Oscilador Maravilhoso (AO)
-      - name: standard
-        isNullable: true
-        locale:
-          en: Standard
-          pt: Padrão
-      - name: five_year_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Five Year Performance
-          pt: Performance de 5A
-      - name: all_time_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: All Time Performance
-          pt: Performance de Todos os Tempos
-      - name: camarilla_pivot_p
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Camarilla Pivot P
-          pt: Pivô Camarilla P
-      - name: camarilla_pivot_r1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Camarilla Pivot R1
-          pt: Pivô Camarilla R1
-      - name: camarilla_pivot_r2
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Camarilla Pivot R2
-          pt: Pivô Camarilla R2
-      - name: camarilla_pivot_r3
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Camarilla Pivot R3
-          pt: Pivô Camarilla R3
-      - name: camarilla_pivot_s1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Camarilla Pivot S1
-          pt: Pivô Camarilla S1
-      - name: camarilla_pivot_s2
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Camarilla Pivot S2
-          pt: Pivô Camarilla S2
-      - name: camarilla_pivot_s3
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Camarilla Pivot S3
-          pt: Pivô Camarilla S3
-      - name: classic_pivot_p
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Classic Pivot P
-          pt: Pivô Clássico P
-      - name: classic_pivot_r1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Classic Pivot R1
-          pt: Pivô Clássico R1
-      - name: classic_pivot_r2
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Classic Pivot R2
-          pt: Pivô Clássico R2
-      - name: classic_pivot_r3
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Classic Pivot R3
-          pt: Pivô Clássico R3
-      - name: classic_pivot_s1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Classic Pivot S1
-          pt: Pivô Clássico S1
-      - name: classic_pivot_s2
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Classic Pivot S2
-          pt: Pivô Clássico S2
-      - name: classic_pivot_s3
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Classic Pivot S3
-          pt: Pivô Clássico S3
-      - name: dm_pivot_p
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: DM Pivot P
-          pt: Pivô DM P
-      - name: dm_pivot_r1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: DM Pivot R1
-          pt: Pivô DM R1
-      - name: dm_pivot_s1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: DM Pivot S1
-          pt: Pivô DM S1
-      - name: fibonacci_pivot_p
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fibonacci Pivot P
-          pt: Pivô Fibonacci P
-      - name: fibonacci_pivot_r1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fibonacci Pivot R1
-          pt: Pivô Fibonacci R1
-      - name: fibonacci_pivot_r2
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fibonacci Pivot R2
-          pt: Pivô Fibonacci R2
-      - name: fibonacci_pivot_r3
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fibonacci Pivot R3
-          pt: Pivô Fibonacci R3
-      - name: fibonacci_pivot_s1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fibonacci Pivot S1
-          pt: Pivô Fibonacci S1
-      - name: fibonacci_pivot_s2
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fibonacci Pivot S2
-          pt: Pivô Fibonacci S2
-      - name: fibonacci_pivot_s3
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Fibonacci Pivot S3
-          pt: Pivô Fibonacci S3
-      - name: woodie_pivot_p
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Woodie Pivot P
-          pt: Pivô Woodie P
-      - name: woodie_pivot_r1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Woodie Pivot R1
-          pt: Pivô Woodie R1
-      - name: woodie_pivot_r2
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Woodie Pivot R2
-          pt: Pivô Woodie R2
-      - name: woodie_pivot_r3
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Woodie Pivot R3
-          pt: Pivô Woodie R3
-      - name: woodie_pivot_s1
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Woodie Pivot S1
-          pt: Pivô Woodie S1
-      - name: woodie_pivot_s2
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Woodie Pivot S2
-          pt: Pivô Woodie S2
-      - name: woodie_pivot_s3
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Woodie Pivot S3
-          pt: Pivô Woodie S3
-      - name: volume_weighted_average_price
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Volume Weighted Average Price
-          pt: Preço Médio Ponderado pelo Volume
-      - name: williams_percent_range_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Williams Percent Range (14)
-          pt: Range Percentual de Williams (14)
-      - name: parabolic_sar
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Parabolic SAR
-          pt: SAR Parabólica
-      - name: macd_signal_12_26
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: MACD Signal (12,26)
-          pt: Sinal MACD (12,26)
-      - name: rate_of_change_9
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Rate of Change (9)
-          pt: Taxa de Mudança (9)
-      - name: total_units_currencies
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Total Units (Currencies)
-          pt: Total de Unidades (moedas)
-      - name: ultimate_oscillator
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Ultimate Oscillator
-          pt: Oscilador Final
-      - name: diluted_market_value
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Diluted Market Value
-          pt: Valor de Mercado Diluído
-      - name: percentage_change
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Percentage Change
-          pt: Variação %
-      - name: change
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change
-          pt: Variação
-      - name: change_1h_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1h, %
-          pt: Variação 1h, %
-      - name: change_1h
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1h
-          pt: Variação 1h
-      - name: change_1minute_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1m, %
-          pt: Variação 1m, %
-      - name: change_1minute
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1m
-          pt: Variação 1m
-      - name: change_1month_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1M, %
-          pt: Variação 1M, %
-      - name: change_1month
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1M
-          pt: Variação 1M
-      - name: change_1week_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1W, %
-          pt: Variação 1S, %
-      - name: change_1week
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1W
-          pt: Variação 1S
-      - name: change_4hour_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 4h, %
-          pt: Variação 4h, %
-      - name: change_4hour
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 4h
-          pt: Variação 4h
-      - name: change_5minute_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 5m, %
-          pt: Variação 5m, %
-      - name: change_5minute
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 5m
-          pt: Variação 5m
-      - name: change_15minute_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 15m, %
-          pt: Variação 15m, %
-      - name: change_15minute
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 15m
-          pt: Variação 15m
-      - name: percentage_change_from_open
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Percentage Change from Open
-          pt: Variação % da Abertura
-      - name: change_from_open
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change from Open
-          pt: Variação da Abertura
-      - name: percentage_change_in_24h_volume
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Percentage Change in 24h Volume
-          pt: Variação em % do Volume de 24h
-      - name: sell
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Sell
-          pt: Venda
-      - name: monthly_volatility
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Monthly Volatility
-          pt: Volatilidade Mensal
-      - name: weekly_volatility
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Weekly Volatility
-          pt: Volatilidade Semanal
-      - name: volume
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Volume
-          pt: Volume
-      - name: volume_24h_usd
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Volume 24h in USD
-          pt: Volume 24h em USD
-      - name: average_volume_10_days
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average Volume (10 Days)
-          pt: Volume Médio (10 dias)
-      - name: average_volume_30_days
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average Volume (30 Days)
-          pt: Volume Médio (30 dias)
-      - name: average_volume_60_days
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average Volume (60 Days)
-          pt: Volume Médio (60 Dias)
-      - name: average_volume_90_days
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average Volume (90 Days)
-          pt: Volume Médio (90 Dias)
-      - name: traded_volume
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Traded Volume
-          pt: Volume Negociado
-      - name: relative_volume
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Relative Volume
-          pt: Volume Relativo
-      - name: time_relative_volume
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Time Relative Volume
-          pt: Volume Relativo no Tempo
-      - name: maximum
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Maximum
-          pt: Máx
-      - name: minimum
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Minimum
-          pt: Mín
-      - name: moving_averages_rating_id
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
-        locale:
-          en: Moving Averages Rating
-          pt: Classificação das Médias Móveis
-      - name: oscillators_rating_id
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
-        locale:
-          en: Oscillators Rating
-          pt: Classificação dos Osciladores
-      - name: technical_rating_id
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
-        locale:
-          en: Technical Rating
-          pt: Classificação Técnica
-      - name: stock_exchange_id
-        type: fk
-        references:
-          table: stock_exchange
-          column: id
-          onDelete: CASCADE
-        locale:
-          en: Stock Exchange
-          pt: Bolsa
       - type: created_at
       - type: updated_at
   banking:
@@ -1726,6 +2010,42 @@ data:
     - url: /mmr
       method: DELETE
       relations: *a11
+    - url: /bot
+      method: GET
+      relations: &a12
+        role:
+          - where:
+              slug: admin
+    - url: /bot
+      method: POST
+      relations: *a12
+    - url: /bot/:id
+      method: GET
+      relations: *a12
+    - url: /bot/:id
+      method: PATCH
+      relations: *a12
+    - url: /bot
+      method: DELETE
+      relations: *a12
+    - url: /quotation-request-type
+      method: GET
+      relations: &a13
+        role:
+          - where:
+              slug: admin
+    - url: /quotation-request-type
+      method: POST
+      relations: *a13
+    - url: /quotation-request-type/:id
+      method: GET
+      relations: *a13
+    - url: /quotation-request-type/:id
+      method: PATCH
+      relations: *a13
+    - url: /quotation-request-type
+      method: DELETE
+      relations: *a13
   menu:
     - url: /cbc
       icon: coin
@@ -1874,6 +2194,20 @@ data:
       url: /mmr
       slug: mmr
       relations: *a11
+    - name:
+        en: Bot
+        pt: Bot
+      icon: file
+      url: /bot
+      slug: bot
+      relations: *a12
+    - name:
+        en: QuotationRequestType
+        pt: QuotationRequestType
+      icon: file
+      url: /quotation-request-type
+      slug: quotation-request-type
+      relations: *a13
   screen:
     - name:
         en: Quotation Type
@@ -1960,8 +2294,8 @@ data:
         pt: QuotationType
       slug: quotation-type
       description:
-        en: Screen to manage quotation_type
-        pt: Tela para gerenciar quotation_type
+        en: Screen to manage quotation_request_type
+        pt: Tela para gerenciar quotation_request_type
       icon: file
     - name:
         en: Coin
@@ -2035,6 +2369,22 @@ data:
         en: Screen to manage mmr
         pt: Tela para gerenciar mmr
       icon: file
+    - name:
+        en: Bot
+        pt: Bot
+      slug: bot
+      description:
+        en: Screen to manage bot
+        pt: Tela para gerenciar bot
+      icon: file
+    - name:
+        en: QuotationRequestType
+        pt: QuotationRequestType
+      slug: quotation-request-type
+      description:
+        en: Screen to manage quotation_request_type
+        pt: Tela para gerenciar quotation_request_type
+      icon: file
   strategy:
     - name: AI STRATEGY
     - name: BULL AI
@@ -2067,10 +2417,10 @@ screens:
         role:
           - where:
               slug: admin
-  quotation_type:
+  quotation_request_type:
     title:
-      en: Quotation Types
-      pt: Tipos de Cotação
+      en: Quotation Request Types
+      pt: Tipos de Solicitação de Cotação
     menu:
       menu_id:
         where:
@@ -2217,9 +2567,9 @@ routes:
       - path: coin
         lazy:
           component: ./pages/cbc/coin/index.tsx
-      - path: quotation-type
+      - path: quotation-request-type
         lazy:
-          component: ./pages/cbc/quotation-type/index.tsx
+          component: ./pages/cbc/quotation-request-type/index.tsx
       - path: stock-exchange
         lazy:
           component: ./pages/cbc/stock-exchange/index.tsx
