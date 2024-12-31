@@ -1,3 +1,5 @@
+import { QuotationRequestTypeModule } from './quotation-request-type/quotation-request-type.module';
+import { BotModule } from './bot/bot.module';
 import { MmrModule } from './mmr/mmr.module';
 import { FreeBalanceConditionModule } from './free-balance-condition/free-balance-condition.module';
 import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.module';
@@ -31,6 +33,8 @@ import { TrendTypeModule } from './trend-type/trend-type.module';
     forwardRef(() => TradeSignalTypeModule),
     forwardRef(() => FreeBalanceConditionModule),
     forwardRef(() => MmrModule),
+    forwardRef(() => BotModule),
+    forwardRef(() => QuotationRequestTypeModule),
   ],
   controllers: [],
   providers: [],

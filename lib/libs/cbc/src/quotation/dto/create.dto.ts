@@ -1,451 +1,327 @@
-import { IsNumber, IsString, IsOptional } from 'class-validator';
+import { IsNumber, IsOptional } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
-  coin_id: number;
-
-  @IsNumber()
   type_id: number;
 
-  @IsOptional()
-  @IsNumber()
-  monthly_performance?: number;
-
-  @IsOptional()
-  @IsNumber()
-  weekly_performance?: number;
-
-  @IsOptional()
-  @IsNumber()
-  negative_directional_indicator_14?: number;
-
-  @IsOptional()
-  @IsNumber()
-  positive_directional_indicator_14?: number;
-
-  @IsOptional()
-  @IsNumber()
-  average_directional_index_14?: number;
-
-  @IsOptional()
-  @IsNumber()
-  exponential_moving_average_200?: number;
-
-  @IsOptional()
-  @IsNumber()
-  simple_moving_average_10?: number;
-
-  @IsOptional()
-  @IsNumber()
-  simple_moving_average_20?: number;
-
-  @IsOptional()
-  @IsNumber()
-  simple_moving_average_30?: number;
-
-  @IsOptional()
-  @IsNumber()
-  simple_moving_average_50?: number;
-
-  @IsOptional()
-  @IsNumber()
-  simple_moving_average_100?: number;
-
-  @IsOptional()
-  @IsNumber()
-  simple_moving_average_200?: number;
-
-  @IsOptional()
-  @IsNumber()
-  price?: number;
-
-  @IsOptional()
-  @IsNumber()
-  volatility?: number;
-
-  @IsOptional()
-  @IsNumber()
-  opening?: number;
-
-  @IsOptional()
-  @IsNumber()
-  all_time_high?: number;
-
-  @IsOptional()
-  @IsNumber()
-  aroon_up_14?: number;
-
-  @IsOptional()
-  @IsNumber()
-  aroon_down_14?: number;
-
-  @IsOptional()
-  @IsNumber()
-  all_time_low?: number;
-
-  @IsOptional()
-  @IsNumber()
-  bollinger_lower_band_20?: number;
-
-  @IsOptional()
-  @IsNumber()
-  bollinger_upper_band_20?: number;
-
-  @IsOptional()
-  @IsNumber()
-  donchian_channels_lower_band_20?: number;
-
-  @IsOptional()
-  @IsNumber()
-  donchian_channels_upper_band_20?: number;
-
-  @IsOptional()
-  @IsNumber()
-  bull_bear_power?: number;
-
-  @IsOptional()
-  @IsNumber()
-  keltner_channels_lower_band_20?: number;
-
-  @IsOptional()
-  @IsNumber()
-  keltner_channels_upper_band_20?: number;
-
-  @IsOptional()
   @IsNumber()
-  market_cap?: number;
+  coin_id: number;
 
   @IsOptional()
   @IsNumber()
-  buy?: number;
+  open?: number;
 
   @IsOptional()
   @IsNumber()
-  year_to_date_performance?: number;
+  high_all?: number;
 
   @IsOptional()
   @IsNumber()
-  annual_performance?: number;
+  aroon_up?: number;
 
   @IsOptional()
   @IsNumber()
-  six_month_performance?: number;
+  aroon_down?: number;
 
   @IsOptional()
   @IsNumber()
-  three_month_performance?: number;
+  low_all?: number;
 
   @IsOptional()
   @IsNumber()
-  stochastic_d?: number;
+  bb_lower?: number;
 
   @IsOptional()
   @IsNumber()
-  stochastic_k?: number;
+  bb_upper?: number;
 
   @IsOptional()
   @IsNumber()
-  gap_percent?: number;
+  donchch20_lower?: number;
 
   @IsOptional()
   @IsNumber()
-  ichimoku_leading_span_a?: number;
+  donchch20_upper?: number;
 
-  @IsOptional()
-  @IsNumber()
-  ichimoku_leading_span_b?: number;
-
-  @IsOptional()
-  @IsNumber()
-  slow_stochastic_rsi?: number;
-
-  @IsOptional()
   @IsNumber()
-  fast_stochastic_rsi?: number;
+  stock_exchange_id: number;
 
   @IsOptional()
   @IsNumber()
-  commodity_channel_index_20?: number;
+  bbpower?: number;
 
   @IsOptional()
   @IsNumber()
-  relative_strength_index_7?: number;
+  kltchnl_lower?: number;
 
   @IsOptional()
   @IsNumber()
-  relative_strength_index_14?: number;
+  kltchnl_upper?: number;
 
   @IsOptional()
   @IsNumber()
-  ichimoku_base_line?: number;
+  market_cap_calc?: number;
 
-  @IsOptional()
   @IsNumber()
-  ichimoku_conversion_line?: number;
+  recommend_ma: number;
 
-  @IsOptional()
   @IsNumber()
-  one_month_high?: number;
+  recommend_other: number;
 
   @IsOptional()
   @IsNumber()
-  fifty_two_week_high?: number;
+  bid?: number;
 
   @IsOptional()
   @IsNumber()
-  six_month_high?: number;
+  perf_ytd?: number;
 
   @IsOptional()
   @IsNumber()
-  three_month_high?: number;
+  perf_y?: number;
 
   @IsOptional()
   @IsNumber()
-  average_true_range_14?: number;
+  perf_6m?: number;
 
   @IsOptional()
   @IsNumber()
-  average_daily_range_14?: number;
+  perf_3m?: number;
 
   @IsOptional()
   @IsNumber()
-  hull_moving_average_9?: number;
+  perf_1m?: number;
 
   @IsOptional()
   @IsNumber()
-  exponential_moving_average_5?: number;
+  perf_w?: number;
 
   @IsOptional()
   @IsNumber()
-  exponential_moving_average_10?: number;
+  stoch_d?: number;
 
   @IsOptional()
   @IsNumber()
-  exponential_moving_average_20?: number;
+  stoch_k?: number;
 
   @IsOptional()
   @IsNumber()
-  exponential_moving_average_30?: number;
+  gap?: number;
 
   @IsOptional()
   @IsNumber()
-  exponential_moving_average_50?: number;
+  ichimoku_lead1?: number;
 
   @IsOptional()
   @IsNumber()
-  exponential_moving_average_100?: number;
+  ichimoku_lead2?: number;
 
   @IsOptional()
   @IsNumber()
-  volume_weighted_moving_average_20?: number;
+  stoch_rsi_d?: number;
 
   @IsOptional()
   @IsNumber()
-  simple_moving_average_5?: number;
+  stoch_rsi_k?: number;
 
   @IsOptional()
   @IsNumber()
-  one_month_low?: number;
+  adx_minus_di?: number;
 
   @IsOptional()
   @IsNumber()
-  fifty_two_week_low?: number;
+  adx_plus_di?: number;
 
   @IsOptional()
   @IsNumber()
-  six_month_low?: number;
+  cci20?: number;
 
   @IsOptional()
   @IsNumber()
-  three_month_low?: number;
+  rsi7?: number;
 
   @IsOptional()
   @IsNumber()
-  available_currencies?: number;
+  rsi?: number;
 
   @IsOptional()
   @IsNumber()
-  momentum_10?: number;
+  adx?: number;
 
   @IsOptional()
   @IsNumber()
-  macd_level_12_26?: number;
+  ichimoku_bline?: number;
 
   @IsOptional()
   @IsNumber()
-  awesome_oscillator?: number;
+  ichimoku_cline?: number;
 
   @IsOptional()
-  @IsString()
-  standard?: string;
-
-  @IsOptional()
   @IsNumber()
-  five_year_performance?: number;
+  high_1m?: number;
 
   @IsOptional()
   @IsNumber()
-  all_time_performance?: number;
+  price_52_week_high?: number;
 
   @IsOptional()
   @IsNumber()
-  camarilla_pivot_p?: number;
+  high_6m?: number;
 
   @IsOptional()
   @IsNumber()
-  camarilla_pivot_r1?: number;
+  high_3m?: number;
 
   @IsOptional()
   @IsNumber()
-  camarilla_pivot_r2?: number;
+  atr?: number;
 
   @IsOptional()
   @IsNumber()
-  camarilla_pivot_r3?: number;
+  adr?: number;
 
   @IsOptional()
   @IsNumber()
-  camarilla_pivot_s1?: number;
+  hullma9?: number;
 
   @IsOptional()
   @IsNumber()
-  camarilla_pivot_s2?: number;
+  ema5?: number;
 
   @IsOptional()
   @IsNumber()
-  camarilla_pivot_s3?: number;
+  ema10?: number;
 
   @IsOptional()
   @IsNumber()
-  classic_pivot_p?: number;
+  ema20?: number;
 
   @IsOptional()
   @IsNumber()
-  classic_pivot_r1?: number;
+  ema30?: number;
 
   @IsOptional()
   @IsNumber()
-  classic_pivot_r2?: number;
+  ema50?: number;
 
   @IsOptional()
   @IsNumber()
-  classic_pivot_r3?: number;
+  ema100?: number;
 
   @IsOptional()
   @IsNumber()
-  classic_pivot_s1?: number;
+  ema200?: number;
 
   @IsOptional()
   @IsNumber()
-  classic_pivot_s2?: number;
+  vwma?: number;
 
   @IsOptional()
   @IsNumber()
-  classic_pivot_s3?: number;
+  sma5?: number;
 
   @IsOptional()
   @IsNumber()
-  dm_pivot_p?: number;
+  sma10?: number;
 
   @IsOptional()
   @IsNumber()
-  dm_pivot_r1?: number;
+  sma20?: number;
 
   @IsOptional()
   @IsNumber()
-  dm_pivot_s1?: number;
+  sma30?: number;
 
   @IsOptional()
   @IsNumber()
-  fibonacci_pivot_p?: number;
+  sma50?: number;
 
   @IsOptional()
   @IsNumber()
-  fibonacci_pivot_r1?: number;
+  sma100?: number;
 
   @IsOptional()
   @IsNumber()
-  fibonacci_pivot_r2?: number;
+  sma200?: number;
 
   @IsOptional()
   @IsNumber()
-  fibonacci_pivot_r3?: number;
+  low_1m?: number;
 
   @IsOptional()
   @IsNumber()
-  fibonacci_pivot_s1?: number;
+  price_52_week_low?: number;
 
   @IsOptional()
   @IsNumber()
-  fibonacci_pivot_s2?: number;
+  low_6m?: number;
 
   @IsOptional()
   @IsNumber()
-  fibonacci_pivot_s3?: number;
+  low_3m?: number;
 
   @IsOptional()
   @IsNumber()
-  woodie_pivot_p?: number;
+  total_shares_outstanding?: number;
 
   @IsOptional()
   @IsNumber()
-  woodie_pivot_r1?: number;
+  mom?: number;
 
   @IsOptional()
   @IsNumber()
-  woodie_pivot_r2?: number;
+  macd_macd?: number;
 
   @IsOptional()
   @IsNumber()
-  woodie_pivot_r3?: number;
+  ao?: number;
 
   @IsOptional()
   @IsNumber()
-  woodie_pivot_s1?: number;
+  perf_5y?: number;
 
   @IsOptional()
   @IsNumber()
-  woodie_pivot_s2?: number;
+  perf_all?: number;
 
   @IsOptional()
   @IsNumber()
-  woodie_pivot_s3?: number;
+  close?: number;
 
   @IsOptional()
   @IsNumber()
-  volume_weighted_average_price?: number;
+  vwap?: number;
 
   @IsOptional()
   @IsNumber()
-  williams_percent_range_14?: number;
+  w_r?: number;
 
   @IsOptional()
   @IsNumber()
-  parabolic_sar?: number;
+  p_sar?: number;
 
   @IsOptional()
   @IsNumber()
-  macd_signal_12_26?: number;
+  macd_signal?: number;
 
   @IsOptional()
   @IsNumber()
-  rate_of_change_9?: number;
+  roc?: number;
 
-  @IsOptional()
   @IsNumber()
-  total_units_currencies?: number;
+  recommend_all: number;
 
   @IsOptional()
   @IsNumber()
-  ultimate_oscillator?: number;
+  total_shares_diluted?: number;
 
   @IsOptional()
   @IsNumber()
-  diluted_market_value?: number;
+  uo?: number;
 
   @IsOptional()
   @IsNumber()
-  percentage_change?: number;
+  market_cap_diluted_calc?: number;
 
   @IsOptional()
   @IsNumber()
@@ -453,63 +329,7 @@ export class CreateDTO {
 
   @IsOptional()
   @IsNumber()
-  change_1h_percent?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_1h?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_1minute_percent?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_1minute?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_1month_percent?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_1month?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_1week_percent?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_1week?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_4hour_percent?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_4hour?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_5minute_percent?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_5minute?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_15minute_percent?: number;
-
-  @IsOptional()
-  @IsNumber()
-  change_15minute?: number;
-
-  @IsOptional()
-  @IsNumber()
-  percentage_change_from_open?: number;
+  change_abs?: number;
 
   @IsOptional()
   @IsNumber()
@@ -517,19 +337,23 @@ export class CreateDTO {
 
   @IsOptional()
   @IsNumber()
-  percentage_change_in_24h_volume?: number;
+  change_from_open_abs?: number;
 
   @IsOptional()
   @IsNumber()
-  sell?: number;
+  ask?: number;
 
   @IsOptional()
   @IsNumber()
-  monthly_volatility?: number;
+  volatility_d?: number;
 
   @IsOptional()
   @IsNumber()
-  weekly_volatility?: number;
+  volatility_m?: number;
+
+  @IsOptional()
+  @IsNumber()
+  volatility_w?: number;
 
   @IsOptional()
   @IsNumber()
@@ -537,53 +361,241 @@ export class CreateDTO {
 
   @IsOptional()
   @IsNumber()
-  volume_24h_usd?: number;
+  average_volume_10d_calc?: number;
 
   @IsOptional()
   @IsNumber()
-  average_volume_10_days?: number;
+  average_volume_30d_calc?: number;
 
   @IsOptional()
   @IsNumber()
-  average_volume_30_days?: number;
+  average_volume_60d_calc?: number;
 
   @IsOptional()
   @IsNumber()
-  average_volume_60_days?: number;
+  average_volume_90d_calc?: number;
 
   @IsOptional()
   @IsNumber()
-  average_volume_90_days?: number;
+  total_value_traded?: number;
 
   @IsOptional()
   @IsNumber()
-  traded_volume?: number;
+  relative_volume_10d_calc?: number;
 
   @IsOptional()
   @IsNumber()
-  relative_volume?: number;
+  high?: number;
 
   @IsOptional()
   @IsNumber()
-  time_relative_volume?: number;
+  low?: number;
 
   @IsOptional()
   @IsNumber()
-  maximum?: number;
+  description?: number;
 
   @IsOptional()
   @IsNumber()
-  minimum?: number;
+  type?: number;
 
+  @IsOptional()
   @IsNumber()
-  moving_averages_rating_id: number;
+  subtype?: number;
 
+  @IsOptional()
   @IsNumber()
-  oscillators_rating_id: number;
+  update_mode?: number;
 
+  @IsOptional()
   @IsNumber()
-  technical_rating_id: number;
+  pricescale?: number;
 
+  @IsOptional()
   @IsNumber()
-  stock_exchange_id: number;
+  minmov?: number;
+
+  @IsOptional()
+  @IsNumber()
+  fractional?: number;
+
+  @IsOptional()
+  @IsNumber()
+  minmove2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rec_bbpower?: number;
+
+  @IsOptional()
+  @IsNumber()
+  stoch_k_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  stoch_d_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rec_stoch_rsi?: number;
+
+  @IsOptional()
+  @IsNumber()
+  cci20_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rsi7_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rsi_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  adx_plus_di_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  adx_minus_di_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rec_ichimoku?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rec_hullma9?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rec_vwma?: number;
+
+  @IsOptional()
+  @IsNumber()
+  mom_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  ao_1_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  ao_2_?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_doji?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_abandonedbaby_bullish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_abandonedbaby_bearish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_doji_dragonfly?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_hangingman?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_engulfing_bullish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_engulfing_bearish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_shootingstar?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_morningstar?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_eveningstar?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_doji_gravestone?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_harami_bullish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_harami_bearish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_kicking_bullish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_kicking_bearish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_longshadow_lower?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_longshadow_upper?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_hammer?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_invertedhammer?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_marubozu_white?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_marubozu_black?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_spinningtop_black?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_spinningtop_white?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_3blackcrows?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_tristar_bullish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_tristar_bearish?: number;
+
+  @IsOptional()
+  @IsNumber()
+  candle_3whitesoldiers?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rec_wr?: number;
+
+  @IsOptional()
+  @IsNumber()
+  rec_uo?: number;
 }

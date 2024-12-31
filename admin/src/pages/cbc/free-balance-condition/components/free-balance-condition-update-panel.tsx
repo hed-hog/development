@@ -58,20 +58,9 @@ const FreeBalanceConditionUpdatePanel = forwardRef(
                     },
 
                     {
-                      name: "initial_margin",
+                      name: "coins_count",
                       label: {
-                        text: t("free_balance_condition.initial_margin", {
-                          ns: "fields",
-                        }),
-                      },
-                      type: EnumFieldType.TEXT,
-                      required: true,
-                    },
-
-                    {
-                      name: "final_margin",
-                      label: {
-                        text: t("free_balance_condition.final_margin", {
+                        text: t("free_balance_condition.coins_count", {
                           ns: "fields",
                         }),
                       },
