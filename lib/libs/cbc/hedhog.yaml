@@ -1427,6 +1427,21 @@ tables:
       - name: mmr
       - type: created_at
       - type: updated_at
+  bot:
+    columns:
+      - type: pk
+      - name: name
+        locale:
+          en: Name
+          pt: Nome
+      - name: description
+        locale:
+          en: Description
+          pt: Descrição
+      - name: cookies
+        type: text
+      - type: created_at
+      - type: updated_at
 data:
   mmr:
     - leverage: 3
