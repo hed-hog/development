@@ -1,5 +1,6 @@
 {
-  "quotation.type_id": "Tipo de Requisição",
+  "quotation.quotation_request_type_id": "Tipo de Requisição",
+  "quotation.bot_id": "Bot",
   "quotation.coin_id": "Cotação",
   "quotation.open": "Abertura",
   "quotation.high_all": "Alta Histórica",
@@ -151,7 +152,7 @@
   "quotation.rec_wr": "Recomendação WR",
   "quotation.rec_uo": "Recomendação UO",
   "quotation_request_type.name": "Nome",
-  "quotation_request_type.headers": "Cabeçalhos",
+  "quotation_request_type.description": "Descrição",
   "quotation_request_type.filters": "Filtros",
   "coin.name": "Nome",
   "coin.code": "Código",

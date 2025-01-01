@@ -20,7 +20,7 @@ export class QuotationRequestTypeService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'headers', 'filters'];
+    const fields = ['name', 'description', 'filters'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams

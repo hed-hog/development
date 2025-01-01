@@ -88,10 +88,11 @@ const routes = [
             }),
           },
           {
-            path: "quotation-type",
+            path: "quotation-request-type",
             lazy: async () => ({
-              Component: (await import("./pages/cbc/quotation-type/index.tsx"))
-                .default,
+              Component: (
+                await import("./pages/cbc/quotation-request-type/index.tsx")
+              ).default,
             }),
           },
           {

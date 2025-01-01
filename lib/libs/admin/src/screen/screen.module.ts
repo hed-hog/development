@@ -1,18 +1,18 @@
+import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
-import { Module, forwardRef } from '@nestjs/common';
-import { ScreenController } from './screen.controller';
+import { forwardRef, Module } from '@nestjs/common';
 import { ScreenService } from './screen.service';
-import { AuthModule } from '../auth/auth.module';
+import { ScreenController } from './screen.controller';
 
 @Module({
-  providers: [ScreenService],
-  exports: [ScreenService],
-  controllers: [ScreenController],
   imports: [
-    forwardRef(() => AuthModule),
+    forwardRef(() => AdminModule),
     forwardRef(() => PrismaModule),
-    forwardRef(() => PaginationModule),
+    forwardRef(() => PaginationModule)
   ],
+  controllers: [ScreenController],
+  providers: [ScreenService],
+  exports: [ScreenService]
 })
 export class ScreenModule {}

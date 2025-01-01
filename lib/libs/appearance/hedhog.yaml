@@ -9,7 +9,6 @@ data:
     - url: /appearance
       method: PUT
       relations: *a1
-
     - url: /appearance/index.css
       method: GET
       relations: *a1
@@ -55,7 +54,7 @@ data:
             description:
               en: The primary color to use
               pt: A cor primária a utilizar
-            value: '#70e2ff'
+            value: "#70e2ff"
           - slug: theme-primary-foreground
             type: string
             name:
@@ -64,7 +63,7 @@ data:
             description:
               en: The primary color foreground to use
               pt: O contraste da cor primária a utilizar
-            value: '#09203f'
+            value: "#09203f"
           - slug: theme-secondary
             type: string
             name:
@@ -73,7 +72,7 @@ data:
             description:
               en: The secondary color to use
               pt: A cor secundária a utilizar
-            value: '#09203f'
+            value: "#09203f"
           - slug: theme-secondary-foreground
             type: string
             name:
@@ -82,7 +81,7 @@ data:
             description:
               en: The secondary color foreground to use
               pt: O contraste da cor secundária a utilizar
-            value: '#70e2ff'
+            value: "#70e2ff"
           - slug: theme-accent
             type: string
             name:
@@ -91,7 +90,7 @@ data:
             description:
               en: The accent color to use
               pt: A cor de realce a utilizar
-            value: '#09203f'
+            value: "#09203f"
           - slug: theme-accent-foreground
             type: string
             name:
@@ -100,7 +99,7 @@ data:
             description:
               en: The accent color foreground to use
               pt: O contraste da cor de realce a utilizar
-            value: '#70e2ff'
+            value: "#70e2ff"
           - slug: theme-muted
             type: string
             name:
@@ -109,7 +108,7 @@ data:
             description:
               en: The muted color to use
               pt: A cor suave a utilizar
-            value: '#09203f'
+            value: "#09203f"
           - slug: theme-muted-foreground
             type: string
             name:
@@ -118,7 +117,7 @@ data:
             description:
               en: The muted color foreground to use
               pt: O contraste da cor suave a utilizar
-            value: '#E2E2E2'
+            value: "#E2E2E2"
           - slug: theme-radius
             type: string
             name:
@@ -127,7 +126,7 @@ data:
             description:
               en: The radius to use
               pt: O raio a utilizar
-            value: '0.5'
+            value: "0.5"
           - slug: theme-font
             type: string
             name:
@@ -136,7 +135,7 @@ data:
             description:
               en: The font to use
               pt: A fonte a utilizar
-            value: 'ui-sans-serif, system-ui, sans-serif'
+            value: ui-sans-serif, system-ui, sans-serif
           - slug: theme-text-size
             type: string
             name:
@@ -145,7 +144,7 @@ data:
             description:
               en: Text size of the application
               pt: Tamanho do texto da aplicação
-            value: '1'
+            value: "1"
           - slug: menu-width
             type: string
             name:
@@ -154,7 +153,7 @@ data:
             description:
               en: Menu width of the application
               pt: Largura do Menu da aplicação
-            value: '16'
+            value: "16"
           - slug: image-url
             type: string
             name:
@@ -163,7 +162,7 @@ data:
             description:
               en: System Image URL to use
               pt: URL da Imagem do Sistema a utilizar
-            value: '/images/favicon-dark.png'
+            value: /images/favicon-dark.png
           - slug: icon-url
             type: string
             name:
@@ -172,7 +171,7 @@ data:
             description:
               en: System Icon URL to use
               pt: URL da Ícone do Sistema a utilizar
-            value: '/images/favicon-dark.png'
+            value: /images/favicon-dark.png
           - slug: system-name
             type: string
             name:
@@ -181,7 +180,7 @@ data:
             description:
               en: System Name to use
               pt: Nome do Sistema a utilizar
-            value: 'Hedhog'
+            value: Hedhog
           - slug: system-slogan
             type: string
             name:
@@ -190,7 +189,7 @@ data:
             description:
               en: System Slogan to use
               pt: Slogan do Sistema a utilizar
-            value: 'Administration Panel'
+            value: Administration Panel
 screens:
   appearance:
     title:
@@ -211,7 +210,7 @@ screens:
           - where:
               slug: admin
 routes:
-  - path: management
+  - path: appearance
     children:
       - path: appearance
         lazy:

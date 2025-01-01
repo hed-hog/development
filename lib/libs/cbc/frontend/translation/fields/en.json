@@ -1,5 +1,6 @@
 {
-  "quotation.type_id": "Request Type",
+  "quotation.quotation_request_type_id": "Request Type",
+  "quotation.bot_id": "Bot",
   "quotation.coin_id": "Quote",
   "quotation.open": "Open",
   "quotation.high_all": "All-Time High",
@@ -151,7 +152,7 @@
   "quotation.rec_wr": "WR Recommendation",
   "quotation.rec_uo": "UO Recommendation",
   "quotation_request_type.name": "Name",
-  "quotation_request_type.headers": "Headers",
+  "quotation_request_type.description": "Description",
   "quotation_request_type.filters": "Filters",
   "coin.name": "Name",
   "coin.code": "Code",

@@ -2,7 +2,10 @@ import { IsNumber, IsOptional } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
-  type_id: number;
+  quotation_request_type_id: number;
+
+  @IsNumber()
+  bot_id: number;
 
   @IsNumber()
   coin_id: number;
@@ -43,8 +46,9 @@ export class CreateDTO {
   @IsNumber()
   donchch20_upper?: number;
 
+  @IsOptional()
   @IsNumber()
-  stock_exchange_id: number;
+  stock_exchange_id?: number;
 
   @IsOptional()
   @IsNumber()
@@ -62,11 +66,13 @@ export class CreateDTO {
   @IsNumber()
   market_cap_calc?: number;
 
+  @IsOptional()
   @IsNumber()
-  recommend_ma: number;
+  recommend_ma?: number;
 
+  @IsOptional()
   @IsNumber()
-  recommend_other: number;
+  recommend_other?: number;
 
   @IsOptional()
   @IsNumber()
@@ -308,8 +314,9 @@ export class CreateDTO {
   @IsNumber()
   roc?: number;
 
+  @IsOptional()
   @IsNumber()
-  recommend_all: number;
+  recommend_all?: number;
 
   @IsOptional()
   @IsNumber()

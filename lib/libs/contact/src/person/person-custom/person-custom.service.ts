@@ -14,7 +14,7 @@ import { UpdateDTO } from './dto/update.dto';
 @Injectable()
 export class PersonCustomService {
   private readonly modelName = 'person_custom';
-  private readonly foreignKey = 'custom_id';
+  private readonly foreignKey = '';
 
   constructor(
     @Inject(forwardRef(() => PrismaService))

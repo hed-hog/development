@@ -1,10 +1,10 @@
 import { Quotation } from './Quotation';
 
-export type QuotationType = {
+export type Bot = {
   id?: number;
   name: string;
-  headers: any;
-  filters: any;
+  description?: string;
+  cookies?: any;
   created_at?: string;
   updated_at?: string;
   quotation?: Quotation[];

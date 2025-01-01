@@ -4,13 +4,10 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef,
+  forwardRef
 } from '@nestjs/common';
-import { genSalt, hash } from 'bcrypt';
-import { DeleteDTO } from '../dto/delete.dto';
-import { UpdateIdsDTO } from '../dto/update-ids.dto';
-import { SALT_ROUNDS } from './constants/user.constants';
 import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
@@ -19,111 +16,63 @@ export class UserService {
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService,
+    private readonly paginationService: PaginationService
   ) {}
 
-  async listRoles(userId: number, paginationParams: PaginationDTO) {
-    return this.paginationService.paginate(
-      this.prismaService.role,
-      paginationParams,
-      {
-        include: {
-          role_user: {
-            where: {
-              user_id: userId,
-            },
-            select: {
-              user_id: true,
-              role_id: true,
-            },
-          },
-        },
-      },
-    );
-  }
-
-  async updateRoles(userId: number, { ids }: UpdateIdsDTO) {
-    await this.prismaService.role_user.deleteMany({
-      where: {
-        user_id: userId,
-      },
-    });
-
-    return this.prismaService.role_user.createMany({
-      data: ids.map((role) => {
-        return {
-          user_id: userId,
-          role_id: role,
-        };
-      }),
-      skipDuplicates: true,
-    });
-  }
-
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'email'];
-    const OR = this.prismaService.createInsensitiveSearch(
+    const fields = ['name', 'email', 'password', 'code'];
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams,
+      paginationParams
     );
+
+    if (paginationParams.search && !isNaN(+paginationParams.search)) {
+      OR.push({ id: { equals: +paginationParams.search } });
+    }
 
     return this.paginationService.paginate(
       this.prismaService.user,
       paginationParams,
       {
         where: {
-          OR,
-        },
-      },
+          OR
+        }
+      }
     );
   }
 
-  async get(userId: number) {
-    return this.prismaService.user.findUnique({ where: { id: userId } });
+  async get(id: number) {
+    return this.prismaService.user.findUnique({
+      where: { id: id }
+    });
   }
 
-  async hashPassword(password: string): Promise<string> {
-    const salt = await genSalt(SALT_ROUNDS);
-    return hash(password, salt);
-  }
-
-  async create({ email, name, password }: CreateDTO) {
-    const hashedPassword = await this.hashPassword(password);
-
+  async create(data: CreateDTO) {
     return this.prismaService.user.create({
-      data: {
-        email,
-        name,
-        password: hashedPassword,
-      },
+      data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
     return this.prismaService.user.update({
-      where: { id },
-      data,
+      where: { id: id },
+      data
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        `You must select at least one user to delete.`,
+        'You must select at least one item to delete.'
       );
     }
 
     return this.prismaService.user.deleteMany({
       where: {
         id: {
-          in: ids,
-        },
-        email: {
-          not: {
-            startsWith: 'root@',
-          },
-        },
-      },
+          in: ids
+        }
+      }
     });
   }
 }

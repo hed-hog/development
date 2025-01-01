@@ -1,0 +1,11 @@
+{
+  "create": "Create translation namespace",
+  "createText": "Fill the translation namespace informations.",
+  "createTooltip": "Create new translation namespace",
+  "delete": "Delete translation namespace",
+  "deleteText": "Are you sure to delete these translation namespace?",
+  "deleteTooltip": "Delete the selected translation namespace",
+  "edit": "Edit translation namespace",
+  "editText": "View and edit translation namespace information.",
+  "editTooltip": "Edit the selected translation namespace"
+}

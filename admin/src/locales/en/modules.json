@@ -1,6 +1,6 @@
 {
   "coin": "Coins",
-  "quotation_type": "Quotation Types",
+  "quotation_request_type": "Quotation Request Types",
   "stock_exchange": "Stock Exchanges",
   "trend_type": "Trend Types",
   "quotation": "Quotations",
