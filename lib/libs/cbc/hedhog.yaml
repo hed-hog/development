@@ -1469,6 +1469,37 @@ tables:
         type: text
       - type: created_at
       - type: updated_at
+  fear-and-greed:
+    columns:
+      - type: pk
+      - name: value
+        type: int
+      - name: value_classification
+  global-metrics:
+    columns:
+      - type: pk
+      - name: btc_dominance
+      - type: created_at
+      - type: updated_at
+  # Todo
+  gainers-losers:
+    columns:
+      - type: pk
+      - name: ''
+      - type: created_at
+      - type: updated_at
+  # Todo
+  top-coins:
+    columns:
+      - type: pk
+      - name: name
+      - name: symbol
+      - name: price
+        type: decimal
+      - name: percent_change_24h
+        type: decimal
+      - type: created_at
+      - type: updated_at
 data:
   mmr:
     - leverage: 3
