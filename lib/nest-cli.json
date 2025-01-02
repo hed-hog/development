@@ -123,6 +123,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/appearance/tsconfig.lib.json"
       }
+    },
+    "faq": {
+      "type": "library",
+      "root": "libs/faq",
+      "entryFile": "index",
+      "sourceRoot": "libs/faq/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/faq/tsconfig.lib.json"
+      }
     }
   }
 }

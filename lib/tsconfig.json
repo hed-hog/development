@@ -19,33 +19,95 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@hedhog/country": ["libs/country/src"],
-      "@hedhog/country/*": ["libs/country/src/*"],
-      "@hedhog/file": ["libs/file/src"],
-      "@hedhog/file/*": ["libs/file/src/*"],
-      "@hedhog/prisma": ["libs/prisma/src"],
-      "@hedhog/prisma/*": ["libs/prisma/src/*"],
-      "@hedhog/mail": ["libs/mail/src"],
-      "@hedhog/mail/*": ["libs/mail/src/*"],
-      "@hedhog/pagination": ["libs/pagination/src"],
-      "@hedhog/pagination/*": ["libs/pagination/src/*"],
-      "@hedhog/admin": ["libs/admin/src"],
-      "@hedhog/admin/*": ["libs/admin/src/*"],
-      "@hedhog/payment": ["libs/payment/src"],
-      "@hedhog/payment/*": ["libs/payment/src/*"],
-      "@hedhog/blog": ["libs/blog/src"],
-      "@hedhog/blog/*": ["libs/blog/src/*"],
-      "@hedhog/locale": ["libs/locale/src"],
-      "@hedhog/locale/*": ["libs/locale/src/*"],
-      "@hedhog/setting": ["libs/setting/src"],
-      "@hedhog/setting/*": ["libs/setting/src/*"],
-      "@hedhog/contact": ["libs/contact/src"],
-      "@hedhog/contact/*": ["libs/contact/src/*"],
-      "@hedhog/cbc": ["libs/cbc/src"],
-      "@hedhog/cbc/*": ["libs/cbc/src/*"],
-      "@hedhog/appearance": ["libs/appearance/src"],
-      "@hedhog/appearance/*": ["libs/appearance/src/*"]
+      "@hedhog/country": [
+        "libs/country/src"
+      ],
+      "@hedhog/country/*": [
+        "libs/country/src/*"
+      ],
+      "@hedhog/file": [
+        "libs/file/src"
+      ],
+      "@hedhog/file/*": [
+        "libs/file/src/*"
+      ],
+      "@hedhog/prisma": [
+        "libs/prisma/src"
+      ],
+      "@hedhog/prisma/*": [
+        "libs/prisma/src/*"
+      ],
+      "@hedhog/mail": [
+        "libs/mail/src"
+      ],
+      "@hedhog/mail/*": [
+        "libs/mail/src/*"
+      ],
+      "@hedhog/pagination": [
+        "libs/pagination/src"
+      ],
+      "@hedhog/pagination/*": [
+        "libs/pagination/src/*"
+      ],
+      "@hedhog/admin": [
+        "libs/admin/src"
+      ],
+      "@hedhog/admin/*": [
+        "libs/admin/src/*"
+      ],
+      "@hedhog/payment": [
+        "libs/payment/src"
+      ],
+      "@hedhog/payment/*": [
+        "libs/payment/src/*"
+      ],
+      "@hedhog/blog": [
+        "libs/blog/src"
+      ],
+      "@hedhog/blog/*": [
+        "libs/blog/src/*"
+      ],
+      "@hedhog/locale": [
+        "libs/locale/src"
+      ],
+      "@hedhog/locale/*": [
+        "libs/locale/src/*"
+      ],
+      "@hedhog/setting": [
+        "libs/setting/src"
+      ],
+      "@hedhog/setting/*": [
+        "libs/setting/src/*"
+      ],
+      "@hedhog/contact": [
+        "libs/contact/src"
+      ],
+      "@hedhog/contact/*": [
+        "libs/contact/src/*"
+      ],
+      "@hedhog/cbc": [
+        "libs/cbc/src"
+      ],
+      "@hedhog/cbc/*": [
+        "libs/cbc/src/*"
+      ],
+      "@hedhog/appearance": [
+        "libs/appearance/src"
+      ],
+      "@hedhog/appearance/*": [
+        "libs/appearance/src/*"
+      ],
+      "@hedhog/faq": [
+        "libs/faq/src"
+      ],
+      "@hedhog/faq/*": [
+        "libs/faq/src/*"
+      ]
     }
   },
-  "exclude": ["libs/**/frontend", "node_modules", "dist"]
+  "exclude": [
+    "libs/**/frontend",
+    "node_modules",
+    "dist"
+  ]
 }
