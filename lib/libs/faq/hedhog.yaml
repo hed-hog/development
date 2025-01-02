@@ -1,3 +1,23 @@
+screens:
+  faq:
+    title:
+      en: FAQ
+      pt: Perguntas Frequentes
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      name:
+        en: FAQ
+        pt: Perguntas Frequentes
+      icon: zoom-question
+      url: /management/faq
+      slug: /management/faq
+      relations:
+        role:
+          - where:
+              slug: admin
+
 tables:
   faq:
     columns:
@@ -51,8 +71,8 @@ data:
         en: FAQ
         pt: Perguntas Frequentes
       icon: zoom-question
-      url: /faq
-      slug: faq
+      url: /management/faq
+      slug: /management/faq
       relations: *a1
   screen:
     - name:

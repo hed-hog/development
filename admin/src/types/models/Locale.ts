@@ -13,6 +13,7 @@ import { PersonContactTypeLocale } from './PersonContactTypeLocale';
 import { PersonAddressTypeLocale } from './PersonAddressTypeLocale';
 import { PersonCustomTypeLocale } from './PersonCustomTypeLocale';
 import { PersonCustomLocale } from './PersonCustomLocale';
+import { FaqLocale } from './FaqLocale';
 
 export type Locale = {
   id?: number;
@@ -36,4 +37,5 @@ export type Locale = {
   person_address_type_locale?: PersonAddressTypeLocale[];
   person_custom_type_locale?: PersonCustomTypeLocale[];
   person_custom_locale?: PersonCustomLocale[];
+  faq_locale?: FaqLocale[];
 }
