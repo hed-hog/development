@@ -134,20 +134,18 @@ tables:
           en: Market Capitalization
           pt: Capitalização de Mercado
       - name: recommend_ma
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
           en: Moving Averages Rating
           pt: Classificação das Médias Móveis
       - name: recommend_other
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
           en: Oscillators Rating
           pt: Classificação dos Osciladores
@@ -632,11 +630,10 @@ tables:
           en: Rate of Change (9)
           pt: Taxa de Mudança (9)
       - name: recommend_all
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
           en: Technical Rating
           pt: Classificação Técnica
@@ -1261,37 +1258,6 @@ tables:
           pt: Nome
       - type: created_at
       - type: updated_at
-  trend_type:
-    columns:
-      - type: pk
-      - type: slug
-        locale:
-          en: Slug
-          pt: Slug
-      - type: created_at
-      - type: updated_at
-  trend_type_locale:
-    columns:
-      - type: fk
-        name: locale_id
-        isPrimary: true
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: type_id
-        isPrimary: true
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
-      - name: name
-        locale:
-          en: Name
-          pt: Nome
-      - type: created_at
-      - type: updated_at
   banking:
     columns:
       - type: pk
@@ -1481,14 +1447,14 @@ tables:
       - name: btc_dominance
       - type: created_at
       - type: updated_at
-  # Todo
   gainers-losers:
     columns:
       - type: pk
-      - name: ''
+      - name: name
+      - name: symbol
+      - name: slug
       - type: created_at
       - type: updated_at
-  # Todo
   top-coins:
     columns:
       - type: pk
@@ -1730,42 +1696,6 @@ data:
     - url: /strategy
       method: DELETE
       relations: *a8
-    - url: /trade-signal-type
-      method: GET
-      relations: &a9
-        role:
-          - where:
-              slug: admin
-    - url: /trade-signal-type
-      method: POST
-      relations: *a9
-    - url: /trade-signal-type/:id
-      method: GET
-      relations: *a9
-    - url: /trade-signal-type/:id
-      method: PATCH
-      relations: *a9
-    - url: /trade-signal-type
-      method: DELETE
-      relations: *a9
-    - url: /free-balance-condition
-      method: GET
-      relations: &a10
-        role:
-          - where:
-              slug: admin
-    - url: /free-balance-condition
-      method: POST
-      relations: *a10
-    - url: /free-balance-condition/:id
-      method: GET
-      relations: *a10
-    - url: /free-balance-condition/:id
-      method: PATCH
-      relations: *a10
-    - url: /free-balance-condition
-      method: DELETE
-      relations: *a10
     - url: /mmr
       method: GET
       relations: &a11
@@ -1820,6 +1750,78 @@ data:
     - url: /quotation-request-type
       method: DELETE
       relations: *a13
+    - url: /fear-and-greed
+      method: GET
+      relations: &a14
+        role:
+          - where:
+              slug: admin
+    - url: /fear-and-greed
+      method: POST
+      relations: *a14
+    - url: /fear-and-greed/:id
+      method: GET
+      relations: *a14
+    - url: /fear-and-greed/:id
+      method: PATCH
+      relations: *a14
+    - url: /fear-and-greed
+      method: DELETE
+      relations: *a14
+    - url: /global-metrics
+      method: GET
+      relations: &a15
+        role:
+          - where:
+              slug: admin
+    - url: /global-metrics
+      method: POST
+      relations: *a15
+    - url: /global-metrics/:id
+      method: GET
+      relations: *a15
+    - url: /global-metrics/:id
+      method: PATCH
+      relations: *a15
+    - url: /global-metrics
+      method: DELETE
+      relations: *a15
+    - url: /gainers-losers
+      method: GET
+      relations: &a16
+        role:
+          - where:
+              slug: admin
+    - url: /gainers-losers
+      method: POST
+      relations: *a16
+    - url: /gainers-losers/:id
+      method: GET
+      relations: *a16
+    - url: /gainers-losers/:id
+      method: PATCH
+      relations: *a16
+    - url: /gainers-losers
+      method: DELETE
+      relations: *a16
+    - url: /top-coins
+      method: GET
+      relations: &a17
+        role:
+          - where:
+              slug: admin
+    - url: /top-coins
+      method: POST
+      relations: *a17
+    - url: /top-coins/:id
+      method: GET
+      relations: *a17
+    - url: /top-coins/:id
+      method: PATCH
+      relations: *a17
+    - url: /top-coins
+      method: DELETE
+      relations: *a17
   menu:
     - url: /cbc
       icon: coin
@@ -1936,32 +1938,6 @@ data:
           - where:
               slug: admin
     - name:
-        en: Trade Signal Type
-        pt: Tipo de Sinal de Trade
-      icon: brand-stocktwits
-      url: /cbc/trade-signal-type
-      slug: trade-signal-type
-      menu_id:
-        where:
-          slug: /cbc
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Free Balance Condition
-        pt: Condição de Saldo Livre
-      icon: coin-bitcoin
-      url: /free-balance-condition
-      slug: free-balance-condition
-      menu_id:
-        where:
-          slug: /cbc
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
         en: Mmr
         pt: Mmr
       icon: file
@@ -1982,6 +1958,34 @@ data:
       url: /quotation-request-type
       slug: quotation-request-type
       relations: *a13
+    - name:
+        en: FearAndGreed
+        pt: FearAndGreed
+      icon: file
+      url: /fear-and-greed
+      slug: fear-and-greed
+      relations: *a14
+    - name:
+        en: GlobalMetrics
+        pt: GlobalMetrics
+      icon: file
+      url: /global-metrics
+      slug: global-metrics
+      relations: *a15
+    - name:
+        en: GainersLosers
+        pt: GainersLosers
+      icon: file
+      url: /gainers-losers
+      slug: gainers-losers
+      relations: *a16
+    - name:
+        en: TopCoins
+        pt: TopCoins
+      icon: file
+      url: /top-coins
+      slug: top-coins
+      relations: *a17
   screen:
     - name:
         en: Quotation Type
@@ -2048,22 +2052,6 @@ data:
         pt: Tela para gerenciar estratégia
       icon: pencil-bolt
     - name:
-        en: Trade Signal Type
-        pt: Tipo de Sinal de Trade
-      slug: /cbc/trade-signal-type
-      description:
-        en: Screen to manage trade signal type
-        pt: Tela para gerenciar tipo de sinal de trade
-      icon: brand-stocktwits
-    - name:
-        en: Free Balance Condition
-        pt: Condição de Saldo Livre
-      slug: free-balance-condition
-      description:
-        en: Screen to manage free balance condition
-        pt: Tela para gerenciar condição de saldo livre
-      icon: coin-bitcoin
-    - name:
         en: QuotationType
         pt: QuotationType
       slug: quotation-type
@@ -2086,14 +2074,6 @@ data:
       description:
         en: Screen to manage stock_exchange
         pt: Tela para gerenciar stock_exchange
-      icon: file
-    - name:
-        en: TrendType
-        pt: TrendType
-      slug: trend-type
-      description:
-        en: Screen to manage trend_type
-        pt: Tela para gerenciar trend_type
       icon: file
     - name:
         en: Quotation
@@ -2128,14 +2108,6 @@ data:
         pt: Tela para gerenciar strategy
       icon: file
     - name:
-        en: TradeSignalType
-        pt: TradeSignalType
-      slug: trade-signal-type
-      description:
-        en: Screen to manage trade_signal_type
-        pt: Tela para gerenciar trade_signal_type
-      icon: file
-    - name:
         en: Mmr
         pt: Mmr
       slug: mmr
@@ -2158,6 +2130,38 @@ data:
       description:
         en: Screen to manage quotation_request_type
         pt: Tela para gerenciar quotation_request_type
+      icon: file
+    - name:
+        en: FearAndGreed
+        pt: FearAndGreed
+      slug: fear-and-greed
+      description:
+        en: Screen to manage fear-and-greed
+        pt: Tela para gerenciar fear-and-greed
+      icon: file
+    - name:
+        en: GlobalMetrics
+        pt: GlobalMetrics
+      slug: global-metrics
+      description:
+        en: Screen to manage global-metrics
+        pt: Tela para gerenciar global-metrics
+      icon: file
+    - name:
+        en: GainersLosers
+        pt: GainersLosers
+      slug: gainers-losers
+      description:
+        en: Screen to manage gainers-losers
+        pt: Tela para gerenciar gainers-losers
+      icon: file
+    - name:
+        en: TopCoins
+        pt: TopCoins
+      slug: top-coins
+      description:
+        en: Screen to manage top-coins
+        pt: Tela para gerenciar top-coins
       icon: file
   strategy:
     - name: AI STRATEGY
@@ -2223,24 +2227,6 @@ screens:
       icon: exchange
       url: /cbc/stock-exchange
       slug: /cbc/stock-exchange
-      relations:
-        role:
-          - where:
-              slug: admin
-  trend_type:
-    title:
-      en: Trend Types
-      pt: Tipos de Tendência
-    menu:
-      menu_id:
-        where:
-          slug: /cbc
-      name:
-        en: Trend Types
-        pt: Tipos de Tendência
-      icon: trending-up
-      url: /cbc/trend-type
-      slug: /cbc/trend-type
       relations:
         role:
           - where:
@@ -2317,24 +2303,6 @@ screens:
         role:
           - where:
               slug: admin
-  trade_signal_type:
-    title:
-      en: Trade Signal Type
-      pt: Tipo de Sinal de Trade
-    menu:
-      menu_id:
-        where:
-          slug: /cbc
-      name:
-        en: Trade Signal Type
-        pt: Tipo de Sinal de Trade
-      icon: brand-stocktwits
-      url: /cbc/trade-signal-type
-      slug: /cbc/trade-signal-type
-      relations:
-        role:
-          - where:
-              slug: admin
 routes:
   - path: cbc
     children:
@@ -2347,9 +2315,6 @@ routes:
       - path: stock-exchange
         lazy:
           component: ./pages/cbc/stock-exchange/index.tsx
-      - path: trend-type
-        lazy:
-          component: ./pages/cbc/trend-type/index.tsx
       - path: quotation
         lazy:
           component: ./pages/cbc/quotation/index.tsx
@@ -2362,6 +2327,3 @@ routes:
       - path: strategy
         lazy:
           component: ./pages/cbc/strategy/index.tsx
-      - path: trade-signal-type
-        lazy:
-          component: ./pages/cbc/trade-signal-type/index.tsx
