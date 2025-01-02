@@ -1,20 +1,24 @@
-import { IsNumber, IsString, IsOptional } from 'class-validator';
+import { IsEmail, IsString, IsStrongPassword } from 'class-validator';
 
 export class CreateDTO {
-  @IsOptional()
-  @IsNumber()
-  multifactor_id?: number;
-
-  @IsString()
+  @IsString({ message: 'O nome deve ser uma string' })
   name: string;
 
-  @IsString()
+  @IsEmail({}, { message: 'O email deve ser um email válido' })
   email: string;
 
-  @IsString()
+  @IsStrongPassword(
+    {
+      minLength: 6,
+      minLowercase: 1,
+      minUppercase: 0,
+      minNumbers: 0,
+      minSymbols: 0,
+    },
+    {
+      message:
+        'A senha deve ter pelo menos 6 caracteres, contendo pelo menos uma letra minúscula',
+    },
+  )
   password: string;
-
-  @IsOptional()
-  @IsString()
-  code?: string;
 }

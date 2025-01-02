@@ -29,7 +29,7 @@
     "@hedhog/utils": "latest"
   },
   "devDependencies": {
-    "@hedhog/core": "^1.0.4",
+    "@hedhog/core": "^1.0.5",
     "@hedhog/locale": "^0.12.1",
     "@hedhog/pagination": "^0.12.1",
     "@hedhog/prisma": "^0.12.1",

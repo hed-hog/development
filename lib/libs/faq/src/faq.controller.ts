@@ -1,5 +1,6 @@
-import { Pagination } from '@hedhog/pagination';
+import { DeleteDTO, Role } from '@hedhog/core';
 import { Locale } from '@hedhog/locale';
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -10,19 +11,18 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { FaqService } from './faq.service';
-import { Role, DeleteDTO } from '@hedhog/core';
 
 @Role()
 @Controller('faq')
 export class FaqController {
   constructor(
     @Inject(forwardRef(() => FaqService))
-    private readonly faqService: FaqService
+    private readonly faqService: FaqService,
   ) {}
 
   @Get()
@@ -44,7 +44,7 @@ export class FaqController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.faqService.update({
       id,
-      data
+      data,
     });
   }
 

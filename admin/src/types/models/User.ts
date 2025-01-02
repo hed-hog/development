@@ -1,7 +1,5 @@
 import { Multifactor } from './Multifactor';
 import { SettingUser } from './SettingUser';
-import { Banking } from './Banking';
-import { Operation } from './Operation';
 import { RoleUser } from './RoleUser';
 
 export type User = {
@@ -15,7 +13,5 @@ export type User = {
   updated_at?: string;
   multifactor?: Multifactor;
   setting_user?: SettingUser[];
-  banking?: Banking[];
-  operation?: Operation[];
   role_user?: RoleUser[];
 }

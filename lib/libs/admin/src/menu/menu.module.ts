@@ -1,18 +1,18 @@
-import { AdminModule } from '@hedhog/admin';
+import { AuthModule } from '../auth/auth.module';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
-import { forwardRef, Module } from '@nestjs/common';
-import { MenuService } from './menu.service';
+import { Module, forwardRef } from '@nestjs/common';
 import { MenuController } from './menu.controller';
+import { MenuService } from './menu.service';
 
 @Module({
-  imports: [
-    forwardRef(() => AdminModule),
-    forwardRef(() => PrismaModule),
-    forwardRef(() => PaginationModule)
-  ],
-  controllers: [MenuController],
   providers: [MenuService],
-  exports: [MenuService]
+  exports: [MenuService],
+  controllers: [MenuController],
+  imports: [
+    forwardRef(() => AuthModule),
+    forwardRef(() => PrismaModule),
+    forwardRef(() => PaginationModule),
+  ],
 })
 export class MenuModule {}

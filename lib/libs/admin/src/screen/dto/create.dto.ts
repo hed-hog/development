@@ -1,11 +1,11 @@
-import { IsString, IsOptional } from 'class-validator';
-import { WithLocaleDTO } from '@hedhog/locale';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateDTO extends WithLocaleDTO {
-  @IsString()
+export class CreateDTO {
+  @IsString({ message: 'O slug deve ser uma string' })
+  @IsNotEmpty({ message: 'O slug é obrigatório.' })
   slug: string;
 
-  @IsOptional()
-  @IsString()
+  @IsString({ message: 'O ícone deve ser uma string' })
+  @IsNotEmpty({ message: 'A descrição é obrigatória.' })
   icon?: string;
 }

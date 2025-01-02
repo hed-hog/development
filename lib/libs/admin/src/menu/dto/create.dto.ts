@@ -1,22 +1,25 @@
-import { IsNumber, IsString, IsOptional } from 'class-validator';
-import { WithLocaleDTO } from '@hedhog/locale';
+import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 
-export class CreateDTO extends WithLocaleDTO {
-  @IsOptional()
-  @IsNumber()
-  menu_id?: number;
-
-  @IsString()
+export class CreateDTO {
+  @IsString({ message: 'O slug deve ser uma string' })
+  @IsNotEmpty({ message: 'O slug é obrigatório.' })
   slug: string;
 
-  @IsOptional()
-  @IsString()
-  url?: string;
+  @IsString({ message: 'A url deve ser uma string' })
+  @IsNotEmpty({ message: 'A url é obrigatório.' })
+  url: string;
 
-  @IsString()
-  order: string;
-
+  @IsInt({ message: 'Order deve ser um número.' })
+  @Min(1)
   @IsOptional()
-  @IsString()
+  order?: number;
+
+  @IsString({ message: 'O ícone deve ser uma string' })
+  @IsOptional()
   icon?: string;
+
+  @IsInt({ message: 'MenuID deve ser um número.' })
+  @Min(1)
+  @IsOptional()
+  menuId?: number;
 }

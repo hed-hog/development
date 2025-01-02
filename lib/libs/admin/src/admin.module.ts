@@ -1,6 +1,3 @@
-import { MultifactorModule } from './multifactor/multifactor.module';
-import { TranslationModule } from './translation/translation.module';
-import { TranslationNamespaceModule } from './translation-namespace/translation-namespace.module';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
@@ -25,9 +22,6 @@ import { MailModule } from '@hedhog/mail';
     forwardRef(() => ScreenModule),
     forwardRef(() => LocaleModule),
     forwardRef(() => UserModule),
-    forwardRef(() => TranslationNamespaceModule),
-    forwardRef(() => TranslationModule),
-    forwardRef(() => MultifactorModule),
   ],
   exports: [
     UserModule,

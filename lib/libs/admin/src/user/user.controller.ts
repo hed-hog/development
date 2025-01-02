@@ -1,5 +1,4 @@
 import { Pagination } from '@hedhog/pagination';
-import { Locale } from '@hedhog/locale';
 import {
   Body,
   Controller,
@@ -10,19 +9,21 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
+import { DeleteDTO } from '../dto/delete.dto';
+import { UpdateIdsDTO } from '../dto/update-ids.dto';
+import { Role } from '@hedhog/core';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';
-import { Role, DeleteDTO } from '@hedhog/core';
 
 @Role()
 @Controller('user')
 export class UserController {
   constructor(
     @Inject(forwardRef(() => UserService))
-    private readonly userService: UserService
+    private readonly userService: UserService,
   ) {}
 
   @Get()
@@ -30,21 +31,40 @@ export class UserController {
     return this.userService.list(paginationParams);
   }
 
-  @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.get(id);
+  @Get(':userId/role')
+  async listRoles(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Pagination() paginationParams,
+  ) {
+    return this.userService.listRoles(userId, paginationParams);
+  }
+
+  @Patch(':userId/role')
+  async updateRoles(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() data: UpdateIdsDTO,
+  ) {
+    return this.userService.updateRoles(userId, data);
+  }
+
+  @Get(':userId')
+  async get(@Param('userId', ParseIntPipe) userId: number) {
+    return this.userService.get(userId);
   }
 
   @Post()
-  async create(@Body() data: CreateDTO) {
+  create(@Body() data: CreateDTO) {
     return this.userService.create(data);
   }
 
-  @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
+  @Patch(':userId')
+  async update(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() data: UpdateDTO,
+  ) {
     return this.userService.update({
-      id,
-      data
+      id: userId,
+      data,
     });
   }
 
