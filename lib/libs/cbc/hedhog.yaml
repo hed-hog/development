@@ -1435,19 +1435,19 @@ tables:
         type: text
       - type: created_at
       - type: updated_at
-  fear-and-greed:
+  fear_and_greed:
     columns:
       - type: pk
       - name: value
         type: int
       - name: value_classification
-  global-metrics:
+  global_metrics:
     columns:
       - type: pk
       - name: btc_dominance
       - type: created_at
       - type: updated_at
-  gainers-losers:
+  gainers_losers:
     columns:
       - type: pk
       - name: name
@@ -1455,7 +1455,7 @@ tables:
       - name: slug
       - type: created_at
       - type: updated_at
-  top-coins:
+  top_coins:
     columns:
       - type: pk
       - name: name
