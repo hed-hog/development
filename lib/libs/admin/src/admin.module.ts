@@ -1,4 +1,3 @@
-import { MenuScreenModule } from './menu-screen/menu-screen.module';
 import { MultifactorModule } from './multifactor/multifactor.module';
 import { TranslationModule } from './translation/translation.module';
 import { TranslationNamespaceModule } from './translation-namespace/translation-namespace.module';
@@ -29,7 +28,6 @@ import { MailModule } from '@hedhog/mail';
     forwardRef(() => TranslationNamespaceModule),
     forwardRef(() => TranslationModule),
     forwardRef(() => MultifactorModule),
-    forwardRef(() => MenuScreenModule),
   ],
   exports: [
     UserModule,
