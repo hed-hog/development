@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { FaqModule } from '@hedhog/faq';
 import { AppearanceModule } from '@hedhog/appearance';
 import { ContactModule } from '@hedhog/contact';
 import { FileModule } from '@hedhog/file';
@@ -36,7 +35,6 @@ import { PrismaModule } from '@hedhog/prisma';
     FileModule,
     ContactModule,
     AppearanceModule,
-    FaqModule,
   ],
   controllers: [AppController],
   providers: [AppService],

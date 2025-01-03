@@ -18,18 +18,17 @@ model banking {
 }
 
 model bot {
-  id          Int         @id(map: "PK_bc6d59d7870eb2efd5f7f61e5ca") @default(autoincrement())
-  name        String      @db.VarChar
-  description String?     @db.VarChar
-  cookies     Json?       @db.Json
-  created_at  DateTime    @default(now()) @db.Timestamp(6)
-  updated_at  DateTime    @default(now()) @db.Timestamp(6)
-  quotation   quotation[]
+  id          Int      @id(map: "PK_bc6d59d7870eb2efd5f7f61e5ca") @default(autoincrement())
+  name        String   @db.VarChar
+  description String   @db.VarChar
+  cookies     String
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
 }
 
 model coin {
   id         Int         @id(map: "PK_650993fc71b789e4793b62fbcac") @default(autoincrement())
-  name       String      @unique(map: "UQ_cdd043775564c551f6856bfb3e3") @db.VarChar
+  name       String      @db.VarChar
   code       String      @db.VarChar
   created_at DateTime    @default(now()) @db.Timestamp(6)
   updated_at DateTime    @default(now()) @db.Timestamp(6)
@@ -60,24 +59,10 @@ model country_locale {
   @@id([country_id, locale_id], map: "PK_df7141e9042d27d998b49a9b325")
 }
 
-model faq {
-  id         Int          @id(map: "PK_d6f5a52b1a96dd8d0591f9fbc47") @default(autoincrement())
-  created_at DateTime     @default(now()) @db.Timestamp(6)
-  updated_at DateTime     @default(now()) @db.Timestamp(6)
-  faq_locale faq_locale[]
-}
-
-model faq_locale {
-  faq_id     Int
-  locale_id  Int
-  question   String   @db.VarChar
-  answer     String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  locale     locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_50d3de17398f8de283a91137c79")
-  faq        faq      @relation(fields: [faq_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7f452a3b8b391aa822725b0ed45")
-
-  @@id([faq_id, locale_id], map: "PK_53503b36e2adb7267a5eab03012")
+model fear_and_greed {
+  id                   Int    @id(map: "PK_e5ef5e5fc825d884e56eb4c83a1") @default(autoincrement())
+  value                Int
+  value_classification String @db.VarChar
 }
 
 model file {
@@ -132,6 +117,22 @@ model free_balance_condition {
   updated_at  DateTime @default(now()) @db.Timestamp(6)
 }
 
+model gainers_losers {
+  id         Int      @id(map: "PK_364a3f505dbbeca788b3d598b4c") @default(autoincrement())
+  name       String   @db.VarChar
+  symbol     String   @db.VarChar
+  slug       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+}
+
+model global_metrics {
+  id            Int      @id(map: "PK_1f537c8155d4ced345f7b4701a4") @default(autoincrement())
+  btc_dominance String   @db.VarChar
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+  updated_at    DateTime @default(now()) @db.Timestamp(6)
+}
+
 model locale {
   id                          Int                           @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
   code                        String                        @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
@@ -140,7 +141,6 @@ model locale {
   created_at                  DateTime                      @default(now()) @db.Timestamp(6)
   updated_at                  DateTime                      @default(now()) @db.Timestamp(6)
   country_locale              country_locale[]
-  faq_locale                  faq_locale[]
   file_provider_locale        file_provider_locale[]
   menu_locale                 menu_locale[]
   multifactor_locale          multifactor_locale[]
@@ -197,7 +197,7 @@ model menu_screen {
 
 model mmr {
   id                Int      @id(map: "PK_bebfddc619c04e97b2a2fa30ad9") @default(autoincrement())
-  leverage          Decimal  @db.Decimal
+  leverage          Int
   percentage        Decimal  @db.Decimal
   mmr_percentage    Decimal  @db.Decimal
   additional_margin Decimal  @db.Decimal
@@ -466,8 +466,7 @@ model person_value {
 
 model quotation {
   id                           Int                    @id(map: "PK_596c572d5858492d10d8cf5383d") @default(autoincrement())
-  quotation_request_type_id    Int
-  bot_id                       Int
+  type_id                      Int
   coin_id                      Int
   open                         Decimal?               @db.Decimal(36, 18)
   high_all                     Decimal?               @db.Decimal(36, 18)
@@ -478,7 +477,7 @@ model quotation {
   bb_upper                     Decimal?               @db.Decimal(36, 18)
   donchch20_lower              Decimal?               @db.Decimal(36, 18)
   donchch20_upper              Decimal?               @db.Decimal(36, 18)
-  stock_exchange_id            Int?
+  stock_exchange_id            Int
   bbpower                      Decimal?               @db.Decimal(36, 18)
   kltchnl_lower                Decimal?               @db.Decimal(36, 18)
   kltchnl_upper                Decimal?               @db.Decimal(36, 18)
@@ -566,13 +565,13 @@ model quotation {
   relative_volume_10d_calc     Decimal?               @db.Decimal(36, 18)
   high                         Decimal?               @db.Decimal(36, 18)
   low                          Decimal?               @db.Decimal(36, 18)
-  description                  String?                @db.VarChar
-  type                         String?                @db.VarChar
-  subtype                      String?                @db.VarChar
-  update_mode                  String?                @db.VarChar
+  description                  Decimal?               @db.Decimal(36, 18)
+  type                         Decimal?               @db.Decimal(36, 18)
+  subtype                      Decimal?               @db.Decimal(36, 18)
+  update_mode                  Decimal?               @db.Decimal(36, 18)
   pricescale                   Decimal?               @db.Decimal(36, 18)
   minmov                       Decimal?               @db.Decimal(36, 18)
-  fractional                   String?                @db.VarChar
+  fractional                   Decimal?               @db.Decimal(36, 18)
   minmove2                     Decimal?               @db.Decimal(36, 18)
   rec_bbpower                  Decimal?               @db.Decimal(36, 18)
   stoch_k_1_                   Decimal?               @db.Decimal(36, 18)
@@ -621,19 +620,18 @@ model quotation {
   created_at                   DateTime               @default(now()) @db.Timestamp(6)
   updated_at                   DateTime               @default(now()) @db.Timestamp(6)
   coin                         coin                   @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_89b96a52b39c363db51dc9abe0e")
-  quotation_request_type       quotation_request_type @relation(fields: [quotation_request_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cc423472bae4a8c7062f1750c30")
-  stock_exchange               stock_exchange?        @relation(fields: [stock_exchange_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e6efcdce45cde2bbaad69ca0e8c")
-  bot                          bot                    @relation(fields: [bot_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ec26537b2508479dc06aa548345")
+  quotation_request_type       quotation_request_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8e407a12f6502b9cfc63e7fa2c1")
+  stock_exchange               stock_exchange         @relation(fields: [stock_exchange_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e6efcdce45cde2bbaad69ca0e8c")
 }
 
 model quotation_request_type {
-  id          Int         @id(map: "PK_88b84fb401bb82b19bf48eabe16") @default(autoincrement())
-  name        String      @db.VarChar
-  description String?     @db.VarChar
-  filters     Json        @db.Json
-  created_at  DateTime    @default(now()) @db.Timestamp(6)
-  updated_at  DateTime    @default(now()) @db.Timestamp(6)
-  quotation   quotation[]
+  id         Int         @id(map: "PK_88b84fb401bb82b19bf48eabe16") @default(autoincrement())
+  name       String      @db.VarChar
+  headers    Json        @db.Json
+  filters    Json        @db.Json
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  quotation  quotation[]
 }
 
 model role {
@@ -831,6 +829,16 @@ model strategy {
   created_at DateTime    @default(now()) @db.Timestamp(6)
   updated_at DateTime    @default(now()) @db.Timestamp(6)
   operation  operation[]
+}
+
+model top_coins {
+  id                 Int      @id(map: "PK_d81b7c5203a7c75b1acbfe2b1a4") @default(autoincrement())
+  name               String   @db.VarChar
+  symbol             String   @db.VarChar
+  price              Decimal  @db.Decimal
+  percent_change_24h Decimal  @db.Decimal
+  created_at         DateTime @default(now()) @db.Timestamp(6)
+  updated_at         DateTime @default(now()) @db.Timestamp(6)
 }
 
 model trade_signal_type {
