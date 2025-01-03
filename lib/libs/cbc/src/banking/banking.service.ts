@@ -21,7 +21,7 @@ export class BankingService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['name'];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class BankingService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.banking,
+      (this.prismaService as any).banking,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class BankingService {
   }
 
   async get(id: number) {
-    return this.prismaService.banking.findUnique({
+    return (this.prismaService as any).banking.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.banking.create({
+    return (this.prismaService as any).banking.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.banking.update({
+    return (this.prismaService as any).banking.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class BankingService {
       );
     }
 
-    return this.prismaService.banking.deleteMany({
+    return (this.prismaService as any).banking.deleteMany({
       where: {
         id: {
           in: ids

@@ -21,7 +21,7 @@ export class StrategyService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['name'];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class StrategyService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.strategy,
+      (this.prismaService as any).strategy,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class StrategyService {
   }
 
   async get(id: number) {
-    return this.prismaService.strategy.findUnique({
+    return (this.prismaService as any).strategy.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.strategy.create({
+    return (this.prismaService as any).strategy.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.strategy.update({
+    return (this.prismaService as any).strategy.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class StrategyService {
       );
     }
 
-    return this.prismaService.strategy.deleteMany({
+    return (this.prismaService as any).strategy.deleteMany({
       where: {
         id: {
           in: ids

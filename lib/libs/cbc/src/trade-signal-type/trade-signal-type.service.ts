@@ -21,7 +21,7 @@ export class TradeSignalTypeService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['name'];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class TradeSignalTypeService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.trade_signal_type,
+      (this.prismaService as any).trade_signal_type,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class TradeSignalTypeService {
   }
 
   async get(id: number) {
-    return this.prismaService.trade_signal_type.findUnique({
+    return (this.prismaService as any).trade_signal_type.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.trade_signal_type.create({
+    return (this.prismaService as any).trade_signal_type.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.trade_signal_type.update({
+    return (this.prismaService as any).trade_signal_type.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class TradeSignalTypeService {
       );
     }
 
-    return this.prismaService.trade_signal_type.deleteMany({
+    return (this.prismaService as any).trade_signal_type.deleteMany({
       where: {
         id: {
           in: ids

@@ -21,7 +21,7 @@ export class FearAndGreedService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['value', 'value_classification'];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class FearAndGreedService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.fear_and_greed,
+      (this.prismaService as any).fear_and_greed,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class FearAndGreedService {
   }
 
   async get(id: number) {
-    return this.prismaService.fear_and_greed.findUnique({
+    return (this.prismaService as any).fear_and_greed.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.fear_and_greed.create({
+    return (this.prismaService as any).fear_and_greed.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.fear_and_greed.update({
+    return (this.prismaService as any).fear_and_greed.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class FearAndGreedService {
       );
     }
 
-    return this.prismaService.fear_and_greed.deleteMany({
+    return (this.prismaService as any).fear_and_greed.deleteMany({
       where: {
         id: {
           in: ids

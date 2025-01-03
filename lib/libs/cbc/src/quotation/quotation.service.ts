@@ -170,7 +170,7 @@ export class QuotationService {
       'rec_wr',
       'rec_uo'
     ];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -180,7 +180,7 @@ export class QuotationService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.quotation,
+      (this.prismaService as any).quotation,
       paginationParams,
       {
         where: {
@@ -191,19 +191,19 @@ export class QuotationService {
   }
 
   async get(id: number) {
-    return this.prismaService.quotation.findUnique({
+    return (this.prismaService as any).quotation.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.quotation.create({
+    return (this.prismaService as any).quotation.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.quotation.update({
+    return (this.prismaService as any).quotation.update({
       where: { id: id },
       data
     });
@@ -216,7 +216,7 @@ export class QuotationService {
       );
     }
 
-    return this.prismaService.quotation.deleteMany({
+    return (this.prismaService as any).quotation.deleteMany({
       where: {
         id: {
           in: ids

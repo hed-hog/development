@@ -21,7 +21,7 @@ export class GainersLosersService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['name', 'symbol', 'slug'];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class GainersLosersService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.gainers_losers,
+      (this.prismaService as any).gainers_losers,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class GainersLosersService {
   }
 
   async get(id: number) {
-    return this.prismaService.gainers_losers.findUnique({
+    return (this.prismaService as any).gainers_losers.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.gainers_losers.create({
+    return (this.prismaService as any).gainers_losers.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.gainers_losers.update({
+    return (this.prismaService as any).gainers_losers.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class GainersLosersService {
       );
     }
 
-    return this.prismaService.gainers_losers.deleteMany({
+    return (this.prismaService as any).gainers_losers.deleteMany({
       where: {
         id: {
           in: ids

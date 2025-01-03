@@ -30,7 +30,7 @@ export class OperationService {
       'start_time',
       'end_time'
     ];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -40,7 +40,7 @@ export class OperationService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.operation,
+      (this.prismaService as any).operation,
       paginationParams,
       {
         where: {
@@ -51,19 +51,19 @@ export class OperationService {
   }
 
   async get(id: number) {
-    return this.prismaService.operation.findUnique({
+    return (this.prismaService as any).operation.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.operation.create({
+    return (this.prismaService as any).operation.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.operation.update({
+    return (this.prismaService as any).operation.update({
       where: { id: id },
       data
     });
@@ -76,7 +76,7 @@ export class OperationService {
       );
     }
 
-    return this.prismaService.operation.deleteMany({
+    return (this.prismaService as any).operation.deleteMany({
       where: {
         id: {
           in: ids

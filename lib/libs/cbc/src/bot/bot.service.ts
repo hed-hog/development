@@ -21,7 +21,7 @@ export class BotService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['name', 'description', 'cookies'];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class BotService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.bot,
+      (this.prismaService as any).bot,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class BotService {
   }
 
   async get(id: number) {
-    return this.prismaService.bot.findUnique({
+    return (this.prismaService as any).bot.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.bot.create({
+    return (this.prismaService as any).bot.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.bot.update({
+    return (this.prismaService as any).bot.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class BotService {
       );
     }
 
-    return this.prismaService.bot.deleteMany({
+    return (this.prismaService as any).bot.deleteMany({
       where: {
         id: {
           in: ids
