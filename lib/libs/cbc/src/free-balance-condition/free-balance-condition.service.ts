@@ -21,7 +21,7 @@ export class FreeBalanceConditionService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['capital', 'coins_count'];
-    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class FreeBalanceConditionService {
     }
 
     return this.paginationService.paginate(
-      (this.prismaService as any).free_balance_condition,
+      this.prismaService.free_balance_condition,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class FreeBalanceConditionService {
   }
 
   async get(id: number) {
-    return (this.prismaService as any).free_balance_condition.findUnique({
+    return this.prismaService.free_balance_condition.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return (this.prismaService as any).free_balance_condition.create({
+    return this.prismaService.free_balance_condition.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return (this.prismaService as any).free_balance_condition.update({
+    return this.prismaService.free_balance_condition.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class FreeBalanceConditionService {
       );
     }
 
-    return (this.prismaService as any).free_balance_condition.deleteMany({
+    return this.prismaService.free_balance_condition.deleteMany({
       where: {
         id: {
           in: ids

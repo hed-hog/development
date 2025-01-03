@@ -21,7 +21,7 @@ export class StockExchangeService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['name'];
-    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class StockExchangeService {
     }
 
     return this.paginationService.paginate(
-      (this.prismaService as any).stock_exchange,
+      this.prismaService.stock_exchange,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class StockExchangeService {
   }
 
   async get(id: number) {
-    return (this.prismaService as any).stock_exchange.findUnique({
+    return this.prismaService.stock_exchange.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return (this.prismaService as any).stock_exchange.create({
+    return this.prismaService.stock_exchange.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return (this.prismaService as any).stock_exchange.update({
+    return this.prismaService.stock_exchange.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class StockExchangeService {
       );
     }
 
-    return (this.prismaService as any).stock_exchange.deleteMany({
+    return this.prismaService.stock_exchange.deleteMany({
       where: {
         id: {
           in: ids

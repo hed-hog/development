@@ -26,7 +26,7 @@ export class MmrService {
       'mmr_percentage',
       'additional_margin'
     ];
-    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -36,7 +36,7 @@ export class MmrService {
     }
 
     return this.paginationService.paginate(
-      (this.prismaService as any).mmr,
+      this.prismaService.mmr,
       paginationParams,
       {
         where: {
@@ -47,19 +47,19 @@ export class MmrService {
   }
 
   async get(id: number) {
-    return (this.prismaService as any).mmr.findUnique({
+    return this.prismaService.mmr.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return (this.prismaService as any).mmr.create({
+    return this.prismaService.mmr.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return (this.prismaService as any).mmr.update({
+    return this.prismaService.mmr.update({
       where: { id: id },
       data
     });
@@ -72,7 +72,7 @@ export class MmrService {
       );
     }
 
-    return (this.prismaService as any).mmr.deleteMany({
+    return this.prismaService.mmr.deleteMany({
       where: {
         id: {
           in: ids

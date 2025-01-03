@@ -21,7 +21,7 @@ export class TopCoinsService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['name', 'symbol', 'price', 'percent_change_24h'];
-    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class TopCoinsService {
     }
 
     return this.paginationService.paginate(
-      (this.prismaService as any).top_coins,
+      this.prismaService.top_coins,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class TopCoinsService {
   }
 
   async get(id: number) {
-    return (this.prismaService as any).top_coins.findUnique({
+    return this.prismaService.top_coins.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return (this.prismaService as any).top_coins.create({
+    return this.prismaService.top_coins.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return (this.prismaService as any).top_coins.update({
+    return this.prismaService.top_coins.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class TopCoinsService {
       );
     }
 
-    return (this.prismaService as any).top_coins.deleteMany({
+    return this.prismaService.top_coins.deleteMany({
       where: {
         id: {
           in: ids

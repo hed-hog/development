@@ -21,7 +21,7 @@ export class GlobalMetricsService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['btc_dominance'];
-    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
     );
@@ -31,7 +31,7 @@ export class GlobalMetricsService {
     }
 
     return this.paginationService.paginate(
-      (this.prismaService as any).global_metrics,
+      this.prismaService.global_metrics,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class GlobalMetricsService {
   }
 
   async get(id: number) {
-    return (this.prismaService as any).global_metrics.findUnique({
+    return this.prismaService.global_metrics.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return (this.prismaService as any).global_metrics.create({
+    return this.prismaService.global_metrics.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return (this.prismaService as any).global_metrics.update({
+    return this.prismaService.global_metrics.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class GlobalMetricsService {
       );
     }
 
-    return (this.prismaService as any).global_metrics.deleteMany({
+    return this.prismaService.global_metrics.deleteMany({
       where: {
         id: {
           in: ids
