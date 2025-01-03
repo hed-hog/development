@@ -19,7 +19,7 @@ export class RoleGuard implements CanActivate {
     private reflector: Reflector,
     @Inject(forwardRef(() => PrismaService))
     private readonly prisma: PrismaService,
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -95,7 +95,7 @@ export class RoleGuard implements CanActivate {
 
     console.log({ fullPath, httpMethod });
 
-    const route = await this.prisma.route.count({
+    const route = await (this.prisma as any).route.count({
       where: {
         method: httpMethod,
         url: fullPath,
