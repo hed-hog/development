@@ -1,7 +1,7 @@
 
 export type Mmr = {
   id?: number;
-  leverage: any;
+  leverage: number;
   percentage: any;
   mmr_percentage: any;
   additional_margin: any;

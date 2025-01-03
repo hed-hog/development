@@ -1,0 +1,11 @@
+{
+  "create": "Criar translation",
+  "createText": "Preencha as informações da translation.",
+  "createTooltip": "Criar nova translation",
+  "delete": "Excluir translation",
+  "deleteText": "Você tem certeza de que deseja excluir estas translation?",
+  "deleteTooltip": "Excluir a translation selecionada",
+  "edit": "Editar translation",
+  "editText": "Ver e editar as informações da translation.",
+  "editTooltip": "Editar a translation selecionada"
+}

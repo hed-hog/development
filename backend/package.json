@@ -30,6 +30,7 @@
     "@hedhog/contact": "^0.7.55",
     "@hedhog/core": "^1.0.5",
     "@hedhog/country": "^0.17.1",
+    "@hedhog/faq": "^0.0.2",
     "@hedhog/file": "^0.7.3",
     "@hedhog/locale": "^0.17.1",
     "@hedhog/mail": "^0.17.1",

@@ -82,8 +82,8 @@ export default function Page() {
           },
 
           {
-            key: 'description',
-            header: t('quotation_request_type.description', { ns: 'fields' }),
+            key: 'headers',
+            header: t('quotation_request_type.headers', { ns: 'fields' }),
             isLocale: false
           },
 

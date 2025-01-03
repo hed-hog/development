@@ -58,9 +58,9 @@ const QuotationRequestTypeUpdatePanel = forwardRef(
                     },
 
                     {
-                      name: "description",
+                      name: "headers",
                       label: {
-                        text: t("quotation_request_type.description", {
+                        text: t("quotation_request_type.headers", {
                           ns: "fields",
                         }),
                       },

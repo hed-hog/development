@@ -59,6 +59,26 @@ model country_locale {
   @@id([country_id, locale_id], map: "PK_df7141e9042d27d998b49a9b325")
 }
 
+model faq {
+  id         Int          @id(map: "PK_d6f5a52b1a96dd8d0591f9fbc47") @default(autoincrement())
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  updated_at DateTime     @default(now()) @db.Timestamp(6)
+  faq_locale faq_locale[]
+}
+
+model faq_locale {
+  faq_id     Int
+  locale_id  Int
+  question   String   @db.VarChar
+  answer     String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  locale     locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_50d3de17398f8de283a91137c79")
+  faq        faq      @relation(fields: [faq_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7f452a3b8b391aa822725b0ed45")
+
+  @@id([faq_id, locale_id], map: "PK_53503b36e2adb7267a5eab03012")
+}
+
 model fear_and_greed {
   id                   Int    @id(map: "PK_e5ef5e5fc825d884e56eb4c83a1") @default(autoincrement())
   value                Int
@@ -141,6 +161,7 @@ model locale {
   created_at                  DateTime                      @default(now()) @db.Timestamp(6)
   updated_at                  DateTime                      @default(now()) @db.Timestamp(6)
   country_locale              country_locale[]
+  faq_locale                  faq_locale[]
   file_provider_locale        file_provider_locale[]
   menu_locale                 menu_locale[]
   multifactor_locale          multifactor_locale[]

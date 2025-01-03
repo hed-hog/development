@@ -1,1 +1,20 @@
-{}
+{
+  "coin": "Moedas",
+  "quotation_request_type": "Tipos de Solicitação de Cotação",
+  "stock_exchange": "Bolsas de Valores",
+  "quotation": "Cotações",
+  "banking": "Banca",
+  "operation": "Operação",
+  "strategy": "Estratégia",
+  "person": "Contatos",
+  "person_value": "Valores",
+  "person_address": "Endereços",
+  "person_contact": "Contatos",
+  "person_document": "Documentos",
+  "person_custom": "Personalizado",
+  "person_type": "Tipos de Pessoa",
+  "person_address_type": "Tipos de Endereço",
+  "person_contact_type": "Tipos de Contato",
+  "person_custom_type": "Tipos Personalizados",
+  "person_document_type": "Tipos de Documento"
+}

@@ -64,9 +64,9 @@ const MmrUpdatePanel = forwardRef(
                     },
 
                     {
-                      name: "addtiononal_margin",
+                      name: "additional_margin",
                       label: {
-                        text: t("mmr.addtiononal_margin", { ns: "fields" }),
+                        text: t("mmr.additional_margin", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,

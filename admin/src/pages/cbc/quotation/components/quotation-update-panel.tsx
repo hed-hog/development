@@ -41,26 +41,12 @@ const QuotationUpdatePanel = forwardRef(
                   ref={formRef}
                   fields={[
                     {
-                      name: "quotation_request_type_id",
-                      label: {
-                        text: t("quotation.quotation_request_type_id", {
-                          ns: "fields",
-                        }),
-                      },
+                      name: "type_id",
+                      label: { text: t("quotation.type_id", { ns: "fields" }) },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
                       url: "/quotation-request-type",
-                      displayName: "quotation_request_type",
-                      valueName: "id",
-                    },
-
-                    {
-                      name: "bot_id",
-                      label: { text: t("quotation.bot_id", { ns: "fields" }) },
-                      type: EnumFieldType.COMBOBOX,
-                      required: true,
-                      url: "/bot",
-                      displayName: "bot",
+                      displayName: "type",
                       valueName: "id",
                     },
 
@@ -204,11 +190,8 @@ const QuotationUpdatePanel = forwardRef(
                       label: {
                         text: t("quotation.recommend_ma", { ns: "fields" }),
                       },
-                      type: EnumFieldType.COMBOBOX,
+                      type: EnumFieldType.TEXT,
                       required: true,
-                      url: "/trend-type",
-                      displayName: "recommend_ma",
-                      valueName: "name",
                     },
 
                     {
@@ -216,11 +199,8 @@ const QuotationUpdatePanel = forwardRef(
                       label: {
                         text: t("quotation.recommend_other", { ns: "fields" }),
                       },
-                      type: EnumFieldType.COMBOBOX,
+                      type: EnumFieldType.TEXT,
                       required: true,
-                      url: "/trend-type",
-                      displayName: "recommend_other",
-                      valueName: "name",
                     },
 
                     {
@@ -684,11 +664,8 @@ const QuotationUpdatePanel = forwardRef(
                       label: {
                         text: t("quotation.recommend_all", { ns: "fields" }),
                       },
-                      type: EnumFieldType.COMBOBOX,
+                      type: EnumFieldType.TEXT,
                       required: true,
-                      url: "/trend-type",
-                      displayName: "recommend_all",
-                      valueName: "name",
                     },
 
                     {

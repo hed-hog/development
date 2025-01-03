@@ -1,0 +1,11 @@
+{
+  "create": "Criar menu screen",
+  "createText": "Preencha as informações do menu screen.",
+  "createTooltip": "Criar novo menu screen",
+  "delete": "Excluir menu screen",
+  "deleteText": "Você tem certeza de que deseja excluir estes menu screen?",
+  "deleteTooltip": "Excluir o menu screen selecionado",
+  "edit": "Editar menu screen",
+  "editText": "Visualizar e editar as informações do menu screen.",
+  "editTooltip": "Editar o menu screen selecionado"
+}

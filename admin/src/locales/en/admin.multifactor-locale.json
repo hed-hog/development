@@ -1,0 +1,11 @@
+{
+  "create": "Create multifactor locale",
+  "createText": "Fill the multifactor locale informations.",
+  "createTooltip": "Create new multifactor locale",
+  "delete": "Delete multifactor locale",
+  "deleteText": "Are you sure to delete these multifactor locale?",
+  "deleteTooltip": "Delete the selected multifactor locale",
+  "edit": "Edit multifactor locale",
+  "editText": "View and edit multifactor locale information.",
+  "editTooltip": "Edit the selected multifactor locale"
+}

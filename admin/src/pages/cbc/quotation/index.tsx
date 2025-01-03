@@ -146,6 +146,18 @@ export default function Page() {
           },
 
           {
+            key: 'recommend_ma',
+            header: t('quotation.recommend_ma', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'recommend_other',
+            header: t('quotation.recommend_other', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
             key: 'bid',
             header: t('quotation.bid', { ns: 'fields' }),
             isLocale: false
@@ -502,6 +514,12 @@ export default function Page() {
           {
             key: 'roc',
             header: t('quotation.roc', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'recommend_all',
+            header: t('quotation.recommend_all', { ns: 'fields' }),
             isLocale: false
           },
 

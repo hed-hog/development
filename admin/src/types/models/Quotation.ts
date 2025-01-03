@@ -1,12 +1,10 @@
 import { QuotationRequestType } from './QuotationRequestType';
-import { Bot } from './Bot';
 import { Coin } from './Coin';
 import { StockExchange } from './StockExchange';
 
 export type Quotation = {
   id?: number;
-  quotation_request_type_id: number;
-  bot_id: number;
+  type_id: number;
   coin_id: number;
   open?: any;
   high_all?: any;
@@ -17,7 +15,7 @@ export type Quotation = {
   bb_upper?: any;
   donchch20_lower?: any;
   donchch20_upper?: any;
-  stock_exchange_id?: number;
+  stock_exchange_id: number;
   bbpower?: any;
   kltchnl_lower?: any;
   kltchnl_upper?: any;
@@ -105,13 +103,13 @@ export type Quotation = {
   relative_volume_10d_calc?: any;
   high?: any;
   low?: any;
-  description?: string;
-  type?: string;
-  subtype?: string;
-  update_mode?: string;
+  description?: any;
+  type?: any;
+  subtype?: any;
+  update_mode?: any;
   pricescale?: any;
   minmov?: any;
-  fractional?: string;
+  fractional?: any;
   minmove2?: any;
   rec_bbpower?: any;
   stoch_k_1_?: any;
@@ -160,7 +158,6 @@ export type Quotation = {
   created_at?: string;
   updated_at?: string;
   quotation_request_type?: QuotationRequestType;
-  bot?: Bot;
   coin?: Coin;
   stock_exchange?: StockExchange;
 }
