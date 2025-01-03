@@ -4,9 +4,6 @@ routes:
       - path: coin
         lazy:
           component: ./pages/cbc/coin/index.tsx
-      - path: quotation-request-type
-        lazy:
-          component: ./pages/cbc/quotation-request-type/index.tsx
       - path: stock-exchange
         lazy:
           component: ./pages/cbc/stock-exchange/index.tsx

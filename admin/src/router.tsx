@@ -88,14 +88,6 @@ const routes = [
             }),
           },
           {
-            path: "quotation-request-type",
-            lazy: async () => ({
-              Component: (
-                await import("./pages/cbc/quotation-request-type/index.tsx")
-              ).default,
-            }),
-          },
-          {
             path: "stock-exchange",
             lazy: async () => ({
               Component: (await import("./pages/cbc/stock-exchange/index.tsx"))
@@ -106,18 +98,6 @@ const routes = [
             path: "strategy",
             lazy: async () => ({
               Component: (await import("./pages/cbc/strategy/index.tsx"))
-                .default,
-            }),
-          },
-        ],
-      },
-      {
-        path: "contact",
-        children: [
-          {
-            path: "person",
-            lazy: async () => ({
-              Component: (await import("./pages/contact/person/index.tsx"))
                 .default,
             }),
           },
@@ -146,57 +126,6 @@ const routes = [
               Component: (await import("./pages/management/menu/index.tsx"))
                 .default,
             }),
-          },
-          {
-            path: "person",
-            children: [
-              {
-                path: "person-address-type",
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      "./pages/contact/person-address-type/index.tsx"
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: "person-contact-type",
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      "./pages/contact/person-contact-type/index.tsx"
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: "person-custom-type",
-                lazy: async () => ({
-                  Component: (
-                    await import("./pages/contact/person-custom-type/index.tsx")
-                  ).default,
-                }),
-              },
-              {
-                path: "person-document-type",
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      "./pages/contact/person-document-type/index.tsx"
-                    )
-                  ).default,
-                }),
-              },
-              {
-                path: "person-type",
-                lazy: async () => ({
-                  Component: (
-                    await import("./pages/contact/person-type/index.tsx")
-                  ).default,
-                }),
-              },
-            ],
           },
           {
             path: "role",
