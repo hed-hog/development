@@ -1551,312 +1551,294 @@ data:
     - capital: 30000
       coins_count: 10
   route:
-    - url: /quotation-type
+    - url: /coin
       method: GET
       relations: &a1
         role:
           - where:
               slug: admin
-    - url: /quotation-type
+    - url: /coin
       method: POST
       relations: *a1
-    - url: /quotation-type/:id
+    - url: /coin/:id
       method: GET
       relations: *a1
-    - url: /quotation-type/:id
+    - url: /coin/:id
       method: PATCH
       relations: *a1
-    - url: /quotation-type
+    - url: /coin
       method: DELETE
       relations: *a1
-    - url: /coin
+    - url: /stock-exchange
       method: GET
       relations: &a2
         role:
           - where:
               slug: admin
-    - url: /coin
+    - url: /stock-exchange
       method: POST
       relations: *a2
-    - url: /coin/:id
+    - url: /stock-exchange/:id
       method: GET
       relations: *a2
-    - url: /coin/:id
+    - url: /stock-exchange/:id
       method: PATCH
       relations: *a2
-    - url: /coin
+    - url: /stock-exchange
       method: DELETE
       relations: *a2
-    - url: /stock-exchange
+    - url: /trend-type
       method: GET
       relations: &a3
         role:
           - where:
               slug: admin
-    - url: /stock-exchange
+    - url: /trend-type
       method: POST
       relations: *a3
-    - url: /stock-exchange/:id
+    - url: /trend-type/:id
       method: GET
       relations: *a3
-    - url: /stock-exchange/:id
+    - url: /trend-type/:id
       method: PATCH
       relations: *a3
-    - url: /stock-exchange
+    - url: /trend-type
       method: DELETE
       relations: *a3
-    - url: /trend-type
+    - url: /quotation
       method: GET
       relations: &a4
         role:
           - where:
               slug: admin
-    - url: /trend-type
+    - url: /quotation
       method: POST
       relations: *a4
-    - url: /trend-type/:id
+    - url: /quotation/:id
       method: GET
       relations: *a4
-    - url: /trend-type/:id
+    - url: /quotation/:id
       method: PATCH
       relations: *a4
-    - url: /trend-type
+    - url: /quotation
       method: DELETE
       relations: *a4
-    - url: /quotation
+    - url: /banking
       method: GET
       relations: &a5
         role:
           - where:
               slug: admin
-    - url: /quotation
+    - url: /banking
       method: POST
       relations: *a5
-    - url: /quotation/:id
+    - url: /banking/:id
       method: GET
       relations: *a5
-    - url: /quotation/:id
+    - url: /banking/:id
       method: PATCH
       relations: *a5
-    - url: /quotation
+    - url: /banking
       method: DELETE
       relations: *a5
-    - url: /banking
+    - url: /operation
       method: GET
       relations: &a6
         role:
           - where:
               slug: admin
-    - url: /banking
+    - url: /operation
       method: POST
       relations: *a6
-    - url: /banking/:id
+    - url: /operation/:id
       method: GET
       relations: *a6
-    - url: /banking/:id
+    - url: /operation/:id
       method: PATCH
       relations: *a6
-    - url: /banking
+    - url: /operation
       method: DELETE
       relations: *a6
-    - url: /operation
+    - url: /strategy
       method: GET
       relations: &a7
         role:
           - where:
               slug: admin
-    - url: /operation
+    - url: /strategy
       method: POST
       relations: *a7
-    - url: /operation/:id
+    - url: /strategy/:id
       method: GET
       relations: *a7
-    - url: /operation/:id
+    - url: /strategy/:id
       method: PATCH
       relations: *a7
-    - url: /operation
+    - url: /strategy
       method: DELETE
       relations: *a7
-    - url: /strategy
+    - url: /mmr
       method: GET
       relations: &a8
         role:
           - where:
               slug: admin
-    - url: /strategy
+    - url: /mmr
       method: POST
       relations: *a8
-    - url: /strategy/:id
+    - url: /mmr/:id
       method: GET
       relations: *a8
-    - url: /strategy/:id
+    - url: /mmr/:id
       method: PATCH
       relations: *a8
-    - url: /strategy
+    - url: /mmr
       method: DELETE
       relations: *a8
-    - url: /mmr
+    - url: /bot
       method: GET
       relations: &a9
         role:
           - where:
               slug: admin
-    - url: /mmr
+    - url: /bot
       method: POST
       relations: *a9
-    - url: /mmr/:id
+    - url: /bot/:id
       method: GET
       relations: *a9
-    - url: /mmr/:id
+    - url: /bot/:id
       method: PATCH
       relations: *a9
-    - url: /mmr
+    - url: /bot
       method: DELETE
       relations: *a9
-    - url: /bot
+    - url: /quotation-request-type
       method: GET
       relations: &a10
         role:
           - where:
               slug: admin
-    - url: /bot
+    - url: /quotation-request-type
       method: POST
       relations: *a10
-    - url: /bot/:id
+    - url: /quotation-request-type/:id
       method: GET
       relations: *a10
-    - url: /bot/:id
+    - url: /quotation-request-type/:id
       method: PATCH
       relations: *a10
-    - url: /bot
+    - url: /quotation-request-type
       method: DELETE
       relations: *a10
-    - url: /quotation-request-type
+    - url: /fear-and-greed
       method: GET
       relations: &a11
         role:
           - where:
               slug: admin
-    - url: /quotation-request-type
+    - url: /fear-and-greed
       method: POST
       relations: *a11
-    - url: /quotation-request-type/:id
+    - url: /fear-and-greed/:id
       method: GET
       relations: *a11
-    - url: /quotation-request-type/:id
+    - url: /fear-and-greed/:id
       method: PATCH
       relations: *a11
-    - url: /quotation-request-type
+    - url: /fear-and-greed
       method: DELETE
       relations: *a11
-    - url: /fear-and-greed
+    - url: /global-metrics
       method: GET
       relations: &a12
         role:
           - where:
               slug: admin
-    - url: /fear-and-greed
+    - url: /global-metrics
       method: POST
       relations: *a12
-    - url: /fear-and-greed/:id
+    - url: /global-metrics/:id
       method: GET
       relations: *a12
-    - url: /fear-and-greed/:id
+    - url: /global-metrics/:id
       method: PATCH
       relations: *a12
-    - url: /fear-and-greed
+    - url: /global-metrics
       method: DELETE
       relations: *a12
-    - url: /global-metrics
+    - url: /gainers-losers
       method: GET
       relations: &a13
         role:
           - where:
               slug: admin
-    - url: /global-metrics
+    - url: /gainers-losers
       method: POST
       relations: *a13
-    - url: /global-metrics/:id
+    - url: /gainers-losers/:id
       method: GET
       relations: *a13
-    - url: /global-metrics/:id
+    - url: /gainers-losers/:id
       method: PATCH
       relations: *a13
-    - url: /global-metrics
+    - url: /gainers-losers
       method: DELETE
       relations: *a13
-    - url: /gainers-losers
+    - url: /top-coins
       method: GET
       relations: &a14
         role:
           - where:
               slug: admin
-    - url: /gainers-losers
+    - url: /top-coins
       method: POST
       relations: *a14
-    - url: /gainers-losers/:id
+    - url: /top-coins/:id
       method: GET
       relations: *a14
-    - url: /gainers-losers/:id
+    - url: /top-coins/:id
       method: PATCH
       relations: *a14
-    - url: /gainers-losers
+    - url: /top-coins
       method: DELETE
       relations: *a14
-    - url: /top-coins
+    - url: /trade-signal-type
       method: GET
       relations: &a15
         role:
           - where:
               slug: admin
-    - url: /top-coins
+    - url: /trade-signal-type
       method: POST
       relations: *a15
-    - url: /top-coins/:id
+    - url: /trade-signal-type/:id
       method: GET
       relations: *a15
-    - url: /top-coins/:id
+    - url: /trade-signal-type/:id
       method: PATCH
       relations: *a15
-    - url: /top-coins
+    - url: /trade-signal-type
       method: DELETE
       relations: *a15
-    - url: /trade-signal-type
+    - url: /free-balance-condition
       method: GET
       relations: &a16
         role:
           - where:
               slug: admin
-    - url: /trade-signal-type
-      method: POST
-      relations: *a16
-    - url: /trade-signal-type/:id
-      method: GET
-      relations: *a16
-    - url: /trade-signal-type/:id
-      method: PATCH
-      relations: *a16
-    - url: /trade-signal-type
-      method: DELETE
-      relations: *a16
-    - url: /free-balance-condition
-      method: GET
-      relations: &a17
-        role:
-          - where:
-              slug: admin
     - url: /free-balance-condition
       method: POST
-      relations: *a17
+      relations: *a16
     - url: /free-balance-condition/:id
       method: GET
-      relations: *a17
+      relations: *a16
     - url: /free-balance-condition/:id
       method: PATCH
-      relations: *a17
+      relations: *a16
     - url: /free-balance-condition
       method: DELETE
-      relations: *a17
+      relations: *a16
   menu:
     - url: /cbc
       icon: coin
@@ -1864,19 +1846,6 @@ data:
         en: CoinbitClub
         pt: CoinbitClub
       slug: /cbc
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Quotation Type
-        pt: Tipo de Cotação
-      icon: adjustments-dollar
-      url: /cbc/quotation-type
-      slug: quotation-type
-      menu_id:
-        where:
-          slug: /cbc
       relations:
         role:
           - where:
@@ -1978,72 +1947,64 @@ data:
       icon: file
       url: /mmr
       slug: mmr
-      relations: *a9
+      relations: *a8
     - name:
         en: Bot
         pt: Bot
       icon: file
       url: /bot
       slug: bot
-      relations: *a10
+      relations: *a9
     - name:
         en: QuotationRequestType
         pt: QuotationRequestType
       icon: file
       url: /quotation-request-type
       slug: quotation-request-type
-      relations: *a11
+      relations: *a10
     - name:
         en: FearAndGreed
         pt: FearAndGreed
       icon: file
       url: /fear-and-greed
       slug: fear-and-greed
-      relations: *a12
+      relations: *a11
     - name:
         en: GlobalMetrics
         pt: GlobalMetrics
       icon: file
       url: /global-metrics
       slug: global-metrics
-      relations: *a13
+      relations: *a12
     - name:
         en: GainersLosers
         pt: GainersLosers
       icon: file
       url: /gainers-losers
       slug: gainers-losers
-      relations: *a14
+      relations: *a13
     - name:
         en: TopCoins
         pt: TopCoins
       icon: file
       url: /top-coins
       slug: top-coins
-      relations: *a15
+      relations: *a14
     - name:
         en: TradeSignalType
         pt: TradeSignalType
       icon: file
       url: /trade-signal-type
       slug: trade-signal-type
-      relations: *a16
+      relations: *a15
     - name:
         en: FreeBalanceCondition
         pt: FreeBalanceCondition
       icon: file
       url: /free-balance-condition
       slug: free-balance-condition
-      relations: *a17
+      relations: *a16
   screen:
-    - name:
-        en: Quotation Type
-        pt: Tipo de Cotação
-      slug: /cbc/quotation-type
-      description:
-        en: Screen to manage quotation type
-        pt: Tela para gerenciar tipos de cotação
-      icon: adjustments-dollar
     - name:
         en: Coin
         pt: Moeda
@@ -2100,14 +2061,6 @@ data:
         en: Screen to manage strategy
         pt: Tela para gerenciar estratégia
       icon: pencil-bolt
-    - name:
-        en: QuotationType
-        pt: QuotationType
-      slug: quotation-type
-      description:
-        en: Screen to manage quotation_request_type
-        pt: Tela para gerenciar quotation_request_type
-      icon: file
     - name:
         en: Coin
         pt: Coin
@@ -2260,24 +2213,6 @@ screens:
         role:
           - where:
               slug: admin
-  quotation_request_type:
-    title:
-      en: Quotation Request Types
-      pt: Tipos de Solicitação de Cotação
-    menu:
-      menu_id:
-        where:
-          slug: /cbc
-      name:
-        en: Quotation Types
-        pt: Tipos de Cotação
-      icon: adjustments-dollar
-      url: /cbc/quotation-type
-      slug: /cbc/quotation-type
-      relations:
-        role:
-          - where:
-              slug: admin
   stock_exchange:
     title:
       en: Stock Exchanges
@@ -2374,9 +2309,6 @@ routes:
       - path: coin
         lazy:
           component: ./pages/cbc/coin/index.tsx
-      - path: quotation-request-type
-        lazy:
-          component: ./pages/cbc/quotation-request-type/index.tsx
       - path: stock-exchange
         lazy:
           component: ./pages/cbc/stock-exchange/index.tsx

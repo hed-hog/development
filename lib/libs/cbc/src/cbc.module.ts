@@ -13,13 +13,11 @@ import { GlobalMetricsModule } from './global-metrics/global-metrics.module';
 import { MmrModule } from './mmr/mmr.module';
 import { OperationModule } from './operation/operation.module';
 import { QuotationRequestTypeModule } from './quotation-request-type/quotation-request-type.module';
-import { QuotationTypeModule } from './quotation-type/quotation-type.module';
 import { QuotationModule } from './quotation/quotation.module';
 import { StockExchangeModule } from './stock-exchange/stock-exchange.module';
 import { StrategyModule } from './strategy/strategy.module';
 import { TopCoinsModule } from './top-coins/top-coins.module';
 import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.module';
-import { TrendTypeModule } from './trend-type/trend-type.module';
 @Module({
   imports: [
     forwardRef(() => AdminModule),
@@ -28,9 +26,7 @@ import { TrendTypeModule } from './trend-type/trend-type.module';
     forwardRef(() => PaginationModule),
     forwardRef(() => CoinModule),
     forwardRef(() => QuotationModule),
-    forwardRef(() => QuotationTypeModule),
     forwardRef(() => StockExchangeModule),
-    forwardRef(() => TrendTypeModule),
     forwardRef(() => BankingModule),
     forwardRef(() => OperationModule),
     forwardRef(() => StrategyModule),
