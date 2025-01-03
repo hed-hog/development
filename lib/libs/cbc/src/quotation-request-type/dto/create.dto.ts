@@ -1,12 +1,11 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateDTO {
   @IsString()
   name: string;
 
-  @IsOptional()
   @IsString()
-  description?: string;
+  headers: string;
 
   @IsString()
   filters: string;

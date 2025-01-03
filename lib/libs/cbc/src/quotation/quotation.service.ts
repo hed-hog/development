@@ -1,13 +1,13 @@
-import { DeleteDTO } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef,
+  forwardRef
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class QuotationService {
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService,
+    private readonly paginationService: PaginationService
   ) {}
 
   async list(paginationParams: PaginationDTO) {
@@ -34,6 +34,8 @@ export class QuotationService {
       'kltchnl_lower',
       'kltchnl_upper',
       'market_cap_calc',
+      'recommend_ma',
+      'recommend_other',
       'bid',
       'perf_ytd',
       'perf_y',
@@ -94,6 +96,7 @@ export class QuotationService {
       'p_sar',
       'macd_signal',
       'roc',
+      'recommend_all',
       'total_shares_diluted',
       'uo',
       'market_cap_diluted_calc',
@@ -165,11 +168,11 @@ export class QuotationService {
       'candle_tristar_bearish',
       'candle_3whitesoldiers',
       'rec_wr',
-      'rec_uo',
+      'rec_uo'
     ];
-    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams,
+      paginationParams
     );
 
     if (paginationParams.search && !isNaN(+paginationParams.search)) {
@@ -177,48 +180,48 @@ export class QuotationService {
     }
 
     return this.paginationService.paginate(
-      (this.prismaService as any).quotation,
+      this.prismaService.quotation,
       paginationParams,
       {
         where: {
-          OR,
-        },
-      },
+          OR
+        }
+      }
     );
   }
 
   async get(id: number) {
-    return (this.prismaService as any).quotation.findUnique({
-      where: { id: id },
+    return this.prismaService.quotation.findUnique({
+      where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return (this.prismaService as any).quotation.create({
-      data,
+    return this.prismaService.quotation.create({
+      data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return (this.prismaService as any).quotation.update({
+    return this.prismaService.quotation.update({
       where: { id: id },
-      data,
+      data
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.',
+        'You must select at least one item to delete.'
       );
     }
 
-    return (this.prismaService as any).quotation.deleteMany({
+    return this.prismaService.quotation.deleteMany({
       where: {
         id: {
-          in: ids,
-        },
-      },
+          in: ids
+        }
+      }
     });
   }
 }

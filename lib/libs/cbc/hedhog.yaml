@@ -1403,21 +1403,20 @@ tables:
           en: Leverage
           pt: Alavancagem
       - name: percentage
-        type: int
+        type: decimal
         locale:
           en: Percentage
           pt: Porcentagem
       - name: mmr_percentage
-        type: int
+        type: decimal
         locale:
           en: MMR Percentage
           pt: Porcentagem MMR
-      - name: addtiononal_margin
-        type: int
+      - name: additional_margin
+        type: decimal
         locale:
-          en: Addtiononal Margin
+          en: Additional Margin
           pt: Margem Adicional
-      - name: mmr
       - type: created_at
       - type: updated_at
   bot:
@@ -1698,128 +1697,164 @@ data:
       relations: *a8
     - url: /mmr
       method: GET
-      relations: &a11
+      relations: &a9
         role:
           - where:
               slug: admin
     - url: /mmr
       method: POST
-      relations: *a11
+      relations: *a9
     - url: /mmr/:id
       method: GET
-      relations: *a11
+      relations: *a9
     - url: /mmr/:id
       method: PATCH
-      relations: *a11
+      relations: *a9
     - url: /mmr
       method: DELETE
-      relations: *a11
+      relations: *a9
     - url: /bot
+      method: GET
+      relations: &a10
+        role:
+          - where:
+              slug: admin
+    - url: /bot
+      method: POST
+      relations: *a10
+    - url: /bot/:id
+      method: GET
+      relations: *a10
+    - url: /bot/:id
+      method: PATCH
+      relations: *a10
+    - url: /bot
+      method: DELETE
+      relations: *a10
+    - url: /quotation-request-type
+      method: GET
+      relations: &a11
+        role:
+          - where:
+              slug: admin
+    - url: /quotation-request-type
+      method: POST
+      relations: *a11
+    - url: /quotation-request-type/:id
+      method: GET
+      relations: *a11
+    - url: /quotation-request-type/:id
+      method: PATCH
+      relations: *a11
+    - url: /quotation-request-type
+      method: DELETE
+      relations: *a11
+    - url: /fear-and-greed
       method: GET
       relations: &a12
         role:
           - where:
               slug: admin
-    - url: /bot
+    - url: /fear-and-greed
       method: POST
       relations: *a12
-    - url: /bot/:id
+    - url: /fear-and-greed/:id
       method: GET
       relations: *a12
-    - url: /bot/:id
+    - url: /fear-and-greed/:id
       method: PATCH
       relations: *a12
-    - url: /bot
+    - url: /fear-and-greed
       method: DELETE
       relations: *a12
-    - url: /quotation-request-type
+    - url: /global-metrics
       method: GET
       relations: &a13
         role:
           - where:
               slug: admin
-    - url: /quotation-request-type
+    - url: /global-metrics
       method: POST
       relations: *a13
-    - url: /quotation-request-type/:id
+    - url: /global-metrics/:id
       method: GET
       relations: *a13
-    - url: /quotation-request-type/:id
+    - url: /global-metrics/:id
       method: PATCH
       relations: *a13
-    - url: /quotation-request-type
+    - url: /global-metrics
       method: DELETE
       relations: *a13
-    - url: /fear-and-greed
+    - url: /gainers-losers
       method: GET
       relations: &a14
         role:
           - where:
               slug: admin
-    - url: /fear-and-greed
+    - url: /gainers-losers
       method: POST
       relations: *a14
-    - url: /fear-and-greed/:id
+    - url: /gainers-losers/:id
       method: GET
       relations: *a14
-    - url: /fear-and-greed/:id
+    - url: /gainers-losers/:id
       method: PATCH
       relations: *a14
-    - url: /fear-and-greed
+    - url: /gainers-losers
       method: DELETE
       relations: *a14
-    - url: /global-metrics
+    - url: /top-coins
       method: GET
       relations: &a15
         role:
           - where:
               slug: admin
-    - url: /global-metrics
+    - url: /top-coins
       method: POST
       relations: *a15
-    - url: /global-metrics/:id
+    - url: /top-coins/:id
       method: GET
       relations: *a15
-    - url: /global-metrics/:id
+    - url: /top-coins/:id
       method: PATCH
       relations: *a15
-    - url: /global-metrics
+    - url: /top-coins
       method: DELETE
       relations: *a15
-    - url: /gainers-losers
+    - url: /trade-signal-type
       method: GET
       relations: &a16
         role:
           - where:
               slug: admin
-    - url: /gainers-losers
+    - url: /trade-signal-type
       method: POST
       relations: *a16
-    - url: /gainers-losers/:id
+    - url: /trade-signal-type/:id
       method: GET
       relations: *a16
-    - url: /gainers-losers/:id
+    - url: /trade-signal-type/:id
       method: PATCH
       relations: *a16
-    - url: /gainers-losers
+    - url: /trade-signal-type
       method: DELETE
       relations: *a16
-    - url: /top-coins
+    - url: /free-balance-condition
       method: GET
       relations: &a17
         role:
           - where:
               slug: admin
-    - url: /top-coins
+    - url: /free-balance-condition
       method: POST
       relations: *a17
-    - url: /top-coins/:id
+    - url: /free-balance-condition/:id
       method: GET
       relations: *a17
-    - url: /top-coins/:id
+    - url: /free-balance-condition/:id
       method: PATCH
       relations: *a17
-    - url: /top-coins
+    - url: /free-balance-condition
       method: DELETE
       relations: *a17
   menu:
@@ -1943,48 +1978,62 @@ data:
       icon: file
       url: /mmr
       slug: mmr
-      relations: *a11
+      relations: *a9
     - name:
         en: Bot
         pt: Bot
       icon: file
       url: /bot
       slug: bot
-      relations: *a12
+      relations: *a10
     - name:
         en: QuotationRequestType
         pt: QuotationRequestType
       icon: file
       url: /quotation-request-type
       slug: quotation-request-type
-      relations: *a13
+      relations: *a11
     - name:
         en: FearAndGreed
         pt: FearAndGreed
       icon: file
       url: /fear-and-greed
       slug: fear-and-greed
-      relations: *a14
+      relations: *a12
     - name:
         en: GlobalMetrics
         pt: GlobalMetrics
       icon: file
       url: /global-metrics
       slug: global-metrics
-      relations: *a15
+      relations: *a13
     - name:
         en: GainersLosers
         pt: GainersLosers
       icon: file
       url: /gainers-losers
       slug: gainers-losers
-      relations: *a16
+      relations: *a14
     - name:
         en: TopCoins
         pt: TopCoins
       icon: file
       url: /top-coins
       slug: top-coins
+      relations: *a15
+    - name:
+        en: TradeSignalType
+        pt: TradeSignalType
+      icon: file
+      url: /trade-signal-type
+      slug: trade-signal-type
+      relations: *a16
+    - name:
+        en: FreeBalanceCondition
+        pt: FreeBalanceCondition
+      icon: file
+      url: /free-balance-condition
+      slug: free-balance-condition
       relations: *a17
   screen:
     - name:
@@ -2162,6 +2211,22 @@ data:
       description:
         en: Screen to manage top-coins
         pt: Tela para gerenciar top-coins
+      icon: file
+    - name:
+        en: TradeSignalType
+        pt: TradeSignalType
+      slug: trade-signal-type
+      description:
+        en: Screen to manage trade_signal_type
+        pt: Tela para gerenciar trade_signal_type
+      icon: file
+    - name:
+        en: FreeBalanceCondition
+        pt: FreeBalanceCondition
+      slug: free-balance-condition
+      description:
+        en: Screen to manage free_balance_condition
+        pt: Tela para gerenciar free_balance_condition
       icon: file
   strategy:
     - name: AI STRATEGY

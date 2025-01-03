@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
@@ -11,8 +11,5 @@ export class CreateDTO {
   mmr_percentage: number;
 
   @IsNumber()
-  addtiononal_margin: number;
-
-  @IsString()
-  mmr: string;
+  additional_margin: number;
 }

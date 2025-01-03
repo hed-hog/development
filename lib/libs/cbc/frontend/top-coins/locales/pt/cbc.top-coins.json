@@ -1,0 +1,11 @@
+{
+  "create": "Criar top coins",
+  "createText": "Preencha as informações das top coins.",
+  "createTooltip": "Criar novas top coins",
+  "delete": "Excluir top coins",
+  "deleteText": "Você tem certeza que deseja excluir essas top coins?",
+  "deleteTooltip": "Excluir as top coins selecionadas",
+  "edit": "Editar top coins",
+  "editText": "Visualizar e editar informações das top coins.",
+  "editTooltip": "Editar as top coins selecionadas"
+}

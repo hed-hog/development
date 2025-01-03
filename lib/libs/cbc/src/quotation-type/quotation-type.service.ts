@@ -17,11 +17,11 @@ export class QuotationTypeService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['name', 'headers', 'filters'];
-    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
     );
@@ -31,7 +31,7 @@ export class QuotationTypeService {
     }
 
     return this.paginationService.paginate(
-      (this.prismaService as any).quotation_type,
+      this.prismaService.quotation_type,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class QuotationTypeService {
   }
 
   async get(id: number) {
-    return (this.prismaService as any).quotation_type.findUnique({
+    return this.prismaService.quotation_type.findUnique({
       where: { id: id },
     });
   }
 
   async create(data: CreateDTO) {
-    return (this.prismaService as any).quotation_type.create({
+    return this.prismaService.quotation_type.create({
       data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return (this.prismaService as any).quotation_type.update({
+    return this.prismaService.quotation_type.update({
       where: { id: id },
       data,
     });
@@ -67,7 +67,7 @@ export class QuotationTypeService {
       );
     }
 
-    return (this.prismaService as any).quotation_type.deleteMany({
+    return this.prismaService.quotation_type.deleteMany({
       where: {
         id: {
           in: ids,

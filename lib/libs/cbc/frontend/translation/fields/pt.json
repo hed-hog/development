@@ -1,6 +1,5 @@
 {
-  "quotation.quotation_request_type_id": "Tipo de Requisição",
-  "quotation.bot_id": "Bot",
+  "quotation.type_id": "Tipo de Requisição",
   "quotation.coin_id": "Cotação",
   "quotation.open": "Abertura",
   "quotation.high_all": "Alta Histórica",
@@ -152,14 +151,11 @@
   "quotation.rec_wr": "Recomendação WR",
   "quotation.rec_uo": "Recomendação UO",
   "quotation_request_type.name": "Nome",
-  "quotation_request_type.description": "Descrição",
+  "quotation_request_type.headers": "Cabeçalhos",
   "quotation_request_type.filters": "Filtros",
   "coin.name": "Nome",
   "coin.code": "Código",
   "stock_exchange.name": "Nome",
-  "trend_type.slug": "Slug",
-  "trend_type.name": "Nome",
-  "trend_type_locale.name": "Nome",
   "banking.name": "Nome",
   "banking.user_id": "Usuário",
   "operation.user_id": "Usuário",
@@ -177,7 +173,7 @@
   "mmr.leverage": "Alavancagem",
   "mmr.percentage": "Porcentagem",
   "mmr.mmr_percentage": "Porcentagem MMR",
-  "mmr.addtiononal_margin": "Margem Adicional",
+  "mmr.additional_margin": "Margem Adicional",
   "bot.name": "Nome",
   "bot.description": "Descrição"
 }
