@@ -175,5 +175,10 @@
   "mmr.mmr_percentage": "Porcentagem MMR",
   "mmr.additional_margin": "Margem Adicional",
   "bot.name": "Nome",
-  "bot.description": "Descrição"
+  "bot.description": "Descrição",
+  "simulations.name": "Nome",
+  "simulations.description": "Descrição",
+  "simulations.start_time": "Hora de Início",
+  "simulations.end_time": "Hora de Término",
+  "simulations.user_id": "Usuário"
 }

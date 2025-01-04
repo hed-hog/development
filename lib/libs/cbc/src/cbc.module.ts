@@ -1,3 +1,4 @@
+import { SimulationsModule } from './simulations/simulations.module';
 import { AdminModule } from '@hedhog/admin';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
@@ -39,9 +40,10 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => GlobalMetricsModule),
     forwardRef(() => GainersLosersModule),
     forwardRef(() => TopCoinsModule),
+    forwardRef(() => SimulationsModule),
   ],
   controllers: [],
   providers: [],
   exports: [],
 })
-export class CbcModule { }
+export class CbcModule {}

@@ -1427,11 +1427,13 @@ tables:
           en: Name
           pt: Nome
       - name: description
+        isNullable: true
         locale:
           en: Description
           pt: Descrição
       - name: cookies
         type: text
+        isNullable: true
       - type: created_at
       - type: updated_at
   fear_and_greed:
@@ -1463,6 +1465,47 @@ tables:
         type: decimal
       - name: percent_change_24h
         type: decimal
+      - type: created_at
+      - type: updated_at
+  simulations:
+    columns:
+      - type: pk
+      - name: name
+        locale:
+          en: Name
+          pt: Nome
+      - name: description
+        isNullable: true
+        locale:
+          en: Description
+          pt: Descrição
+      - name: start_time
+        type: timestamp
+        locale:
+          en: Start Time
+          pt: Hora de Início
+      - name: end_time
+        type: timestamp
+        locale:
+          en: End Time
+          pt: Hora de Término
+      - name: operation_id
+        type: fixed
+        references:
+          table: operation
+          column: id
+        locale:
+          en: Operation
+          pt: Operação
+      - name: user_id
+        type: fk
+        references:
+          table: user
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: User
+          pt: Usuário
       - type: created_at
       - type: updated_at
 data:
@@ -1839,6 +1882,24 @@ data:
     - url: /free-balance-condition
       method: DELETE
       relations: *a16
+    - url: /simulations
+      method: GET
+      relations: &a17
+        role:
+          - where:
+              slug: admin
+    - url: /simulations
+      method: POST
+      relations: *a17
+    - url: /simulations/:id
+      method: GET
+      relations: *a17
+    - url: /simulations/:id
+      method: PATCH
+      relations: *a17
+    - url: /simulations
+      method: DELETE
+      relations: *a17
   menu:
     - url: /cbc
       icon: coin
@@ -2004,6 +2065,13 @@ data:
       url: /free-balance-condition
       slug: free-balance-condition
       relations: *a16
+    - name:
+        en: Simulations
+        pt: Simulations
+      icon: file
+      url: /simulations
+      slug: simulations
+      relations: *a17
   screen:
     - name:
         en: Coin
@@ -2180,6 +2248,14 @@ data:
       description:
         en: Screen to manage free_balance_condition
         pt: Tela para gerenciar free_balance_condition
+      icon: file
+    - name:
+        en: Simulations
+        pt: Simulations
+      slug: simulations
+      description:
+        en: Screen to manage simulations
+        pt: Tela para gerenciar simulations
       icon: file
   strategy:
     - name: AI STRATEGY

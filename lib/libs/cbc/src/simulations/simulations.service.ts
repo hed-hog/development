@@ -5,25 +5,25 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class BotService {
+export class SimulationsService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'description', 'cookies'];
+    const fields = ['name', 'description', 'start_time', 'end_time'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams
+      paginationParams,
     );
 
     if (paginationParams.search && !isNaN(+paginationParams.search)) {
@@ -31,48 +31,48 @@ export class BotService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.bot,
+      this.prismaService.simulations,
       paginationParams,
       {
         where: {
-          OR
-        }
-      }
+          OR,
+        },
+      },
     );
   }
 
   async get(id: number) {
-    return this.prismaService.bot.findUnique({
-      where: { id: id }
+    return this.prismaService.simulations.findUnique({
+      where: { id: id },
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.bot.create({
-      data
+    return this.prismaService.simulations.create({
+      data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.bot.update({
+    return this.prismaService.simulations.update({
       where: { id: id },
-      data
+      data,
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
-    return this.prismaService.bot.deleteMany({
+    return this.prismaService.simulations.deleteMany({
       where: {
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }
