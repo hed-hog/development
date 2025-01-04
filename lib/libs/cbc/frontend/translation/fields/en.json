@@ -1,6 +1,7 @@
 {
   "quotation.type_id": "Request Type",
   "quotation.coin_id": "Quote",
+  "quotation.bot_id": "Bot",
   "quotation.open": "Open",
   "quotation.high_all": "All-Time High",
   "quotation.aroon_up": "Aroon Up (14)",
@@ -158,6 +159,15 @@
   "stock_exchange.name": "Name",
   "banking.name": "Name",
   "banking.user_id": "User",
+  "simulation.user_id": "User",
+  "simulation.banking_id": "Banking",
+  "simulation.stock_exchange_id": "Stock Exchange",
+  "simulation.strategy_id": "Strategy",
+  "simulation.trade_signal_type_id": "Trade Signal Type",
+  "simulation.coin_id": "Coin",
+  "simulation.layers": "Layers",
+  "simulation.leverage": "Leverage",
+  "operation.simulation_id": "Simulation",
   "operation.user_id": "User",
   "operation.banking_id": "Banking",
   "operation.stock_exchange_id": "Stock Exchange",
@@ -175,10 +185,5 @@
   "mmr.mmr_percentage": "MMR Percentage",
   "mmr.additional_margin": "Additional Margin",
   "bot.name": "Name",
-  "bot.description": "Description",
-  "simulations.name": "Name",
-  "simulations.description": "Description",
-  "simulations.start_time": "Start Time",
-  "simulations.end_time": "End Time",
-  "simulations.user_id": "User"
+  "bot.description": "Description"
 }

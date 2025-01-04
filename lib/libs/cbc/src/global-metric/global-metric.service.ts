@@ -11,7 +11,7 @@ import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class BotService {
+export class GlobalMetricService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -20,7 +20,7 @@ export class BotService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'description', 'cookies'];
+    const fields = ['btc_dominance'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
@@ -31,7 +31,7 @@ export class BotService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.bot,
+      this.prismaService.global_metric,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class BotService {
   }
 
   async get(id: number) {
-    return this.prismaService.bot.findUnique({
+    return this.prismaService.global_metric.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.bot.create({
+    return this.prismaService.global_metric.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.bot.update({
+    return this.prismaService.global_metric.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class BotService {
       );
     }
 
-    return this.prismaService.bot.deleteMany({
+    return this.prismaService.global_metric.deleteMany({
       where: {
         id: {
           in: ids

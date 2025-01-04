@@ -11,7 +11,7 @@ import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class BotService {
+export class SimulationService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -20,7 +20,16 @@ export class BotService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'description', 'cookies'];
+    const fields = [
+      'layers',
+      'leverage',
+      'margin_used',
+      'first_order',
+      'mmr',
+      'stop_loss',
+      'start_time',
+      'end_time'
+    ];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
@@ -31,7 +40,7 @@ export class BotService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.bot,
+      this.prismaService.simulation,
       paginationParams,
       {
         where: {
@@ -42,19 +51,19 @@ export class BotService {
   }
 
   async get(id: number) {
-    return this.prismaService.bot.findUnique({
+    return this.prismaService.simulation.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.bot.create({
+    return this.prismaService.simulation.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.bot.update({
+    return this.prismaService.simulation.update({
       where: { id: id },
       data
     });
@@ -67,7 +76,7 @@ export class BotService {
       );
     }
 
-    return this.prismaService.bot.deleteMany({
+    return this.prismaService.simulation.deleteMany({
       where: {
         id: {
           in: ids

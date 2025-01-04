@@ -1,10 +1,6 @@
 import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateDTO {
-  @IsOptional()
-  @IsNumber()
-  simulation_id?: number;
-
   @IsNumber()
   user_id: number;
 

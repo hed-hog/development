@@ -1,6 +1,7 @@
 {
   "quotation.type_id": "Tipo de Requisição",
   "quotation.coin_id": "Cotação",
+  "quotation.bot_id": "Bot",
   "quotation.open": "Abertura",
   "quotation.high_all": "Alta Histórica",
   "quotation.aroon_up": "Aroon de Alta (14)",
@@ -158,6 +159,15 @@
   "stock_exchange.name": "Nome",
   "banking.name": "Nome",
   "banking.user_id": "Usuário",
+  "simulation.user_id": "Usuário",
+  "simulation.banking_id": "Banca",
+  "simulation.stock_exchange_id": "Bolsa",
+  "simulation.strategy_id": "Estratégia",
+  "simulation.trade_signal_type_id": "Tipo de Sinal de Negócio",
+  "simulation.coin_id": "Moeda",
+  "simulation.layers": "Camadas",
+  "simulation.leverage": "Alavancagem",
+  "operation.simulation_id": "Simulação",
   "operation.user_id": "Usuário",
   "operation.banking_id": "Banca",
   "operation.stock_exchange_id": "Bolsa",
@@ -175,10 +185,5 @@
   "mmr.mmr_percentage": "Porcentagem MMR",
   "mmr.additional_margin": "Margem Adicional",
   "bot.name": "Nome",
-  "bot.description": "Descrição",
-  "simulations.name": "Nome",
-  "simulations.description": "Descrição",
-  "simulations.start_time": "Hora de Início",
-  "simulations.end_time": "Hora de Término",
-  "simulations.user_id": "Usuário"
+  "bot.description": "Descrição"
 }

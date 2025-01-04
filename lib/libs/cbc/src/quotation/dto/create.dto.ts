@@ -7,6 +7,9 @@ export class CreateDTO {
   @IsNumber()
   coin_id: number;
 
+  @IsNumber()
+  bot_id: number;
+
   @IsOptional()
   @IsNumber()
   open?: number;
