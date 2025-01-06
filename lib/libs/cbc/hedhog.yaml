@@ -1544,10 +1544,23 @@ tables:
       - name: value
         type: int
       - name: value_classification
+      - type: created_at
+      - type: updated_at
   global_metric:
     columns:
       - type: pk
       - name: btc_dominance
+        type: decimal
+        precision: 36
+        scale: 18
+      - name: total_market_cap_yesterday_percentage_change
+        type: decimal
+        precision: 36
+        scale: 18
+      - name: total_market_cap
+        type: decimal
+        precision: 36
+        scale: 18
       - type: created_at
       - type: updated_at
   gainers_loser:

@@ -1,6 +1,12 @@
-import { IsString } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class CreateDTO {
-  @IsString()
-  btc_dominance: string;
+  @IsNumber()
+  btc_dominance: number;
+
+  @IsNumber()
+  total_market_cap_yesterday_percentage_change: number;
+
+  @IsNumber()
+  total_market_cap: number;
 }
