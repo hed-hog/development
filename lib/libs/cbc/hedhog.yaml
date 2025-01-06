@@ -2064,8 +2064,8 @@ data:
           - where:
               slug: admin
     - name:
-        en: Mmr
-        pt: Mmr
+        en: MMR
+        pt: MMR
       icon: file
       url: /mmr
       slug: mmr
@@ -2078,40 +2078,12 @@ data:
       slug: bot
       relations: *a9
     - name:
-        en: QuotationRequestType
-        pt: QuotationRequestType
+        en: Quotation Request Type
+        pt: Quotation Request Type
       icon: file
       url: /quotation-request-type
       slug: quotation-request-type
       relations: *a10
-    - name:
-        en: FearAndGreed
-        pt: FearAndGreed
-      icon: file
-      url: /fear-and-greed
-      slug: fear-and-greed
-      relations: *a11
-    - name:
-        en: Globalmetric
-        pt: Globalmetric
-      icon: file
-      url: /global-metric
-      slug: global-metric
-      relations: *a12
-    - name:
-        en: GainersLoser
-        pt: GainersLoser
-      icon: file
-      url: /gainers-loser
-      slug: gainers-loser
-      relations: *a13
-    - name:
-        en: TopCoins
-        pt: TopCoins
-      icon: file
-      url: /top-coins
-      slug: top-coins
-      relations: *a14
     - name:
         en: TradeSignalType
         pt: TradeSignalType
@@ -2133,6 +2105,46 @@ data:
       url: /simulation
       slug: simulation
       relations: *a17
+    - name:
+        en: FearAndGreed
+        pt: FearAndGreed
+      icon: file
+      url: /fear-and-greed
+      slug: fear-and-greed
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: GlobalMetric
+        pt: GlobalMetric
+      icon: file
+      url: /global-metric
+      slug: global-metric
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: GainersLoser
+        pt: GainersLoser
+      icon: file
+      url: /gainers-loser
+      slug: gainers-loser
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: TopCoins
+        pt: TopCoins
+      icon: file
+      url: /top-coins
+      slug: top-coins
+      relations:
+        role:
+          - where:
+              slug: admin
   screen:
     - name:
         en: Coin
@@ -2199,8 +2211,8 @@ data:
         pt: Tela para gerenciar coin
       icon: file
     - name:
-        en: StockExchange
-        pt: StockExchange
+        en: Stock Exchange
+        pt: Stock Exchange
       slug: stock-exchange
       description:
         en: Screen to manage stock_exchange
@@ -2239,12 +2251,12 @@ data:
         pt: Tela para gerenciar strategy
       icon: file
     - name:
-        en: Mmr
-        pt: Mmr
+        en: MMR
+        pt: MMR
       slug: mmr
       description:
-        en: Screen to manage mmr
-        pt: Tela para gerenciar mmr
+        en: Screen to manage MMR
+        pt: Tela para gerenciar MMR
       icon: file
     - name:
         en: Bot
@@ -2255,68 +2267,68 @@ data:
         pt: Tela para gerenciar bot
       icon: file
     - name:
-        en: QuotationRequestType
-        pt: QuotationRequestType
+        en: Quotation Request Type
+        pt: Quotation Request Type
       slug: quotation-request-type
       description:
         en: Screen to manage quotation_request_type
         pt: Tela para gerenciar quotation_request_type
       icon: file
     - name:
-        en: FearAndGreed
-        pt: FearAndGreed
+        en: Market sentiment
+        pt: Sentimento do mercado
       slug: fear-and-greed
       description:
-        en: Screen to manage fear-and-greed
-        pt: Tela para gerenciar fear-and-greed
+        en: Screen to manage Market sentiment
+        pt: Tela para gerenciar Sentimento do mercado
       icon: file
     - name:
-        en: Globalmetric
-        pt: Globalmetric
+        en: Top Coins
+        pt: Top Coins
+      slug: top-coins
+      description:
+        en: Screen to manage Top Coins
+        pt: Tela para gerenciar Top Coins
+      icon: file
+    - name:
+        en: Trade Signal Type
+        pt: Trade Signal Type
+      slug: trade-signal-type
+      description:
+        en: Screen to manage Trade Signal Type
+        pt: Tela para gerenciar Trade Signal Type
+      icon: file
+    - name:
+        en: Free Balance Condition
+        pt: Condição de Saldo Livre
+      slug: free-balance-condition
+      description:
+        en: Screen to manage Free Balance Condition
+        pt: Tela para gerenciar Condição de Saldo Livre
+      icon: file
+    - name:
+        en: Simulation
+        pt: Simulação
+      slug: simulation
+      description:
+        en: Screen to manage Simulations
+        pt: Tela para gerenciar Simulações
+      icon: file
+    - name:
+        en: GlobalMetric
+        pt: GlobalMetric
       slug: global-metric
       description:
-        en: Screen to manage global-metric
-        pt: Tela para gerenciar global-metric
+        en: Screen to manage global_metric
+        pt: Tela para gerenciar global_metric
       icon: file
     - name:
         en: GainersLoser
         pt: GainersLoser
       slug: gainers-loser
       description:
-        en: Screen to manage gainers-loser
-        pt: Tela para gerenciar gainers-loser
-      icon: file
-    - name:
-        en: TopCoins
-        pt: TopCoins
-      slug: top-coins
-      description:
-        en: Screen to manage top-coins
-        pt: Tela para gerenciar top-coins
-      icon: file
-    - name:
-        en: TradeSignalType
-        pt: TradeSignalType
-      slug: trade-signal-type
-      description:
-        en: Screen to manage trade_signal_type
-        pt: Tela para gerenciar trade_signal_type
-      icon: file
-    - name:
-        en: FreeBalanceCondition
-        pt: FreeBalanceCondition
-      slug: free-balance-condition
-      description:
-        en: Screen to manage free_balance_condition
-        pt: Tela para gerenciar free_balance_condition
-      icon: file
-    - name:
-        en: Simulation
-        pt: Simulation
-      slug: simulation
-      description:
-        en: Screen to manage simulation
-        pt: Tela para gerenciar simulation
+        en: Screen to manage gainers_loser
+        pt: Tela para gerenciar gainers_loser
       icon: file
   strategy:
     - name: AI STRATEGY
