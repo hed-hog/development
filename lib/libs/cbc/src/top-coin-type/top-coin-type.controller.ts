@@ -14,35 +14,35 @@ import {
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { TopCoinsService } from './top-coins.service';
+import { TopCoinTypeService } from './top-coin-type.service';
 import { Role, DeleteDTO } from '@hedhog/core';
 
 @Role()
-@Controller('top-coins')
-export class TopCoinsController {
+@Controller('top-coin-type')
+export class TopCoinTypeController {
   constructor(
-    @Inject(forwardRef(() => TopCoinsService))
-    private readonly topCoinsService: TopCoinsService
+    @Inject(forwardRef(() => TopCoinTypeService))
+    private readonly topCoinTypeService: TopCoinTypeService
   ) {}
 
   @Get()
   async list(@Pagination() paginationParams) {
-    return this.topCoinsService.list(paginationParams);
+    return this.topCoinTypeService.list(paginationParams);
   }
 
   @Get(':id')
   async get(@Param('id', ParseIntPipe) id: number) {
-    return this.topCoinsService.get(id);
+    return this.topCoinTypeService.get(id);
   }
 
   @Post()
   async create(@Body() data: CreateDTO) {
-    return this.topCoinsService.create(data);
+    return this.topCoinTypeService.create(data);
   }
 
   @Patch(':id')
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
-    return this.topCoinsService.update({
+    return this.topCoinTypeService.update({
       id,
       data
     });
@@ -50,6 +50,6 @@ export class TopCoinsController {
 
   @Delete()
   async delete(@Body() data: DeleteDTO) {
-    return this.topCoinsService.delete(data);
+    return this.topCoinTypeService.delete(data);
   }
 }

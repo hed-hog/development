@@ -2,8 +2,8 @@ import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
-import { TopCoinsService } from './top-coins.service';
-import { TopCoinsController } from './top-coins.controller';
+import { TopCoinTypeService } from './top-coin-type.service';
+import { TopCoinTypeController } from './top-coin-type.controller';
 
 @Module({
   imports: [
@@ -11,8 +11,8 @@ import { TopCoinsController } from './top-coins.controller';
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule)
   ],
-  controllers: [TopCoinsController],
-  providers: [TopCoinsService],
-  exports: [TopCoinsService]
+  controllers: [TopCoinTypeController],
+  providers: [TopCoinTypeService],
+  exports: [TopCoinTypeService]
 })
-export class TopCoinsModule {}
+export class TopCoinTypeModule {}

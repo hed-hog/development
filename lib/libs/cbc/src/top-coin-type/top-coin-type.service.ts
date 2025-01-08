@@ -11,7 +11,7 @@ import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class CoinService {
+export class TopCoinTypeService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -20,7 +20,7 @@ export class CoinService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'slug'];
+    const fields = ['name'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -31,7 +31,7 @@ export class CoinService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.coin,
+      this.prismaService.top_coin_type,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class CoinService {
   }
 
   async get(id: number) {
-    return this.prismaService.coin.findUnique({
+    return this.prismaService.top_coin_type.findUnique({
       where: { id: id },
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.coin.create({
+    return this.prismaService.top_coin_type.create({
       data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.coin.update({
+    return this.prismaService.top_coin_type.update({
       where: { id: id },
       data,
     });
@@ -67,7 +67,7 @@ export class CoinService {
       );
     }
 
-    return this.prismaService.coin.deleteMany({
+    return this.prismaService.top_coin_type.deleteMany({
       where: {
         id: {
           in: ids,

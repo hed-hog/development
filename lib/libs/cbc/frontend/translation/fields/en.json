@@ -154,8 +154,6 @@
   "quotation_request_type.name": "Name",
   "quotation_request_type.headers": "Headers",
   "quotation_request_type.filters": "Filters",
-  "coin.name": "Name",
-  "coin.code": "Code",
   "stock_exchange.name": "Name",
   "banking.name": "Name",
   "banking.user_id": "User",

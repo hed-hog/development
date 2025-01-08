@@ -1,29 +1,28 @@
+import { DeleteDTO } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
-import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class TopCoinsService {
+export class TopCoinService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'symbol', 'price', 'percent_change_24h'];
+    const fields = ['order'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams
+      paginationParams,
     );
 
     if (paginationParams.search && !isNaN(+paginationParams.search)) {
@@ -31,48 +30,48 @@ export class TopCoinsService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.top_coins,
+      this.prismaService.top_coin,
       paginationParams,
       {
         where: {
-          OR
-        }
-      }
+          OR,
+        },
+      },
     );
   }
 
   async get(id: number) {
-    return this.prismaService.top_coins.findUnique({
-      where: { id: id }
+    return this.prismaService.top_coin.findUnique({
+      where: { id: id },
     });
   }
 
-  async create(data: CreateDTO) {
-    return this.prismaService.top_coins.create({
-      data
+  async create(data: any) {
+    return this.prismaService.top_coin.create({
+      data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.top_coins.update({
+    return this.prismaService.top_coin.update({
       where: { id: id },
-      data
+      data,
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
-    return this.prismaService.top_coins.deleteMany({
+    return this.prismaService.top_coin.deleteMany({
       where: {
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }

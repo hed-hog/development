@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/cbc",
-  "version": "0.12.41",
+  "version": "0.12.43",
   "private": false,
   "main": "dist/index.js",
   "scripts": {

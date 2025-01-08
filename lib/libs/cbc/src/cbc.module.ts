@@ -17,7 +17,8 @@ import { QuotationModule } from './quotation/quotation.module';
 import { SimulationModule } from './simulation/simulation.module';
 import { StockExchangeModule } from './stock-exchange/stock-exchange.module';
 import { StrategyModule } from './strategy/strategy.module';
-import { TopCoinsModule } from './top-coins/top-coins.module';
+import { TopCoinTypeModule } from './top-coin-type/top-coin-type.module';
+import { TopCoinModule } from './top-coin/top-coin.module';
 import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.module';
 @Module({
   imports: [
@@ -37,10 +38,11 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => BotModule),
     forwardRef(() => QuotationRequestTypeModule),
     forwardRef(() => FearAndGreedModule),
-    forwardRef(() => TopCoinsModule),
     forwardRef(() => SimulationModule),
     forwardRef(() => GainersLoserModule),
     forwardRef(() => GlobalMetricModule),
+    forwardRef(() => TopCoinTypeModule),
+    forwardRef(() => TopCoinModule),
   ],
   controllers: [],
   providers: [],

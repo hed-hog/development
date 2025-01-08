@@ -1249,13 +1249,7 @@ tables:
     columns:
       - type: pk
       - name: name
-        locale:
-          en: Name
-          pt: Nome
-      - name: code
-        locale:
-          en: Code
-          pt: Código
+      - type: slug
       - type: created_at
       - type: updated_at
   stock_exchange:
@@ -1553,6 +1547,10 @@ tables:
         type: decimal
         precision: 36
         scale: 18
+      - name: btc_dominance_24h_percentage_change
+        type: decimal
+        precision: 36
+        scale: 18
       - name: total_market_cap_yesterday_percentage_change
         type: decimal
         precision: 36
@@ -1571,18 +1569,36 @@ tables:
       - name: slug
       - type: created_at
       - type: updated_at
-  top_coins:
+  top_coin_type:
     columns:
       - type: pk
       - name: name
-      - name: symbol
-      - name: price
-        type: decimal
-      - name: percent_change_24h
-        type: decimal
+      - type: created_at
+      - type: updated_at
+  top_coin:
+    columns:
+      - type: pk
+      - type: fk
+        name: coin_id
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: type_id
+        references:
+          table: top_coin_type
+          column: id
+          onDelete: CASCADE
+      - name: order
+        type: int
       - type: created_at
       - type: updated_at
 data:
+  bot:
+    - name: Bot 1
+      description: Bot 1 description
+      cookies: cookie1=value1; cookie2=value2
   mmr:
     - leverage: 3
       percentage: 33.33
@@ -1974,6 +1990,42 @@ data:
     - url: /simulation
       method: DELETE
       relations: *a17
+    - url: /top-coin-type
+      method: GET
+      relations: &a18
+        role:
+          - where:
+              slug: admin
+    - url: /top-coin-type
+      method: POST
+      relations: *a18
+    - url: /top-coin-type/:id
+      method: GET
+      relations: *a18
+    - url: /top-coin-type/:id
+      method: PATCH
+      relations: *a18
+    - url: /top-coin-type
+      method: DELETE
+      relations: *a18
+    - url: /top-coin
+      method: GET
+      relations: &a19
+        role:
+          - where:
+              slug: admin
+    - url: /top-coin
+      method: POST
+      relations: *a19
+    - url: /top-coin/:id
+      method: GET
+      relations: *a19
+    - url: /top-coin/:id
+      method: PATCH
+      relations: *a19
+    - url: /top-coin
+      method: DELETE
+      relations: *a19
   menu:
     - url: /cbc
       icon: coin
@@ -2158,6 +2210,20 @@ data:
         role:
           - where:
               slug: admin
+    - name:
+        en: TopCoinType
+        pt: TopCoinType
+      icon: file
+      url: /top-coin-type
+      slug: top-coin-type
+      relations: *a18
+    - name:
+        en: TopCoin
+        pt: TopCoin
+      icon: file
+      url: /top-coin
+      slug: top-coin
+      relations: *a19
   screen:
     - name:
         en: Coin
@@ -2343,6 +2409,22 @@ data:
         en: Screen to manage gainers_loser
         pt: Tela para gerenciar gainers_loser
       icon: file
+    - name:
+        en: TopCoinType
+        pt: TopCoinType
+      slug: top-coin-type
+      description:
+        en: Screen to manage top_coin_type
+        pt: Tela para gerenciar top_coin_type
+      icon: file
+    - name:
+        en: TopCoin
+        pt: TopCoin
+      slug: top-coin
+      description:
+        en: Screen to manage top_coin
+        pt: Tela para gerenciar top_coin
+      icon: file
   strategy:
     - name: AI STRATEGY
     - name: BULL AI
@@ -2356,6 +2438,9 @@ data:
   stock_exchange:
     - name: BYBIT
     - name: BINANCE
+  top_coin_type:
+    - name: TOP Cryptos
+    - name: TOP Sensações
 screens:
   coin:
     title:
