@@ -1601,7 +1601,7 @@ data:
       mmr_percentage: 8
       additional_margin: 2.5
   free_balance_condition:
-    - capital: null
+    - capital: 0
       coins_count: 0
     - capital: 20
       coins_count: 2
