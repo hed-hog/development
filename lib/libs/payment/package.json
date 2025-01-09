@@ -31,6 +31,7 @@
     "@hedhog/contact": "^0.7.55",
     "@hedhog/pagination": "^0.17.1",
     "@hedhog/prisma": "^0.17.2",
+    "@hedhog/setting": "^0.12.1",
     "@nestjs/mapped-types": "^2.0.6"
   }
 }
