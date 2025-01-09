@@ -20,7 +20,7 @@ export class GainersLoserService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'symbol', 'slug'];
+    const fields = ['percent_change_24h', 'price'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams

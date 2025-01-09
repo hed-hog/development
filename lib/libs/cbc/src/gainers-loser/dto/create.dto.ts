@@ -1,12 +1,12 @@
-import { IsString } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class CreateDTO {
-  @IsString()
-  name: string;
+  @IsNumber()
+  coin_id: number;
 
-  @IsString()
-  symbol: string;
+  @IsNumber()
+  percent_change_24h: number;
 
-  @IsString()
-  slug: string;
+  @IsNumber()
+  price: number;
 }
