@@ -108,6 +108,12 @@
       ],
       "@hedhog/subscription/*": [
         "libs/subscription/src/*"
+      ],
+      "@hedhog/page": [
+        "libs/page/src"
+      ],
+      "@hedhog/page/*": [
+        "libs/page/src/*"
       ]
     }
   },

@@ -141,6 +141,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/subscription/tsconfig.lib.json"
       }
+    },
+    "page": {
+      "type": "library",
+      "root": "libs/page",
+      "entryFile": "index",
+      "sourceRoot": "libs/page/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/page/tsconfig.lib.json"
+      }
     }
   }
 }

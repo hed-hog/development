@@ -1,5 +1,5 @@
 {
-  "name": "@hedhog/subscription",
+  "name": "@hedhog/page",
   "version": "0.0.0",
   "private": false,
   "main": "dist/index.js",
@@ -30,7 +30,6 @@
     "@hedhog/admin": "^0.12.5",
     "@hedhog/pagination": "^0.17.1",
     "@hedhog/prisma": "^0.17.1",
-    "@nestjs/mapped-types": "^2.0.6",
-    "@hedhog/contact": "0.7.55"
+    "@nestjs/mapped-types": "^2.0.6"
   }
 }
