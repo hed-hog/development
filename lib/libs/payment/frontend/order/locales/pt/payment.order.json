@@ -1,0 +1,11 @@
+{
+  "create": "Criar ordem",
+  "createText": "Preencha as informações da ordem.",
+  "createTooltip": "Criar nova ordem",
+  "delete": "Excluir ordem",
+  "deleteText": "Você tem certeza de que deseja excluir estas ordens?",
+  "deleteTooltip": "Excluir a ordem selecionada",
+  "edit": "Editar ordem",
+  "editText": "Ver e editar as informações da ordem.",
+  "editTooltip": "Editar a ordem selecionada"
+}

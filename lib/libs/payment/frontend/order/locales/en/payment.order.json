@@ -1,0 +1,11 @@
+{
+  "create": "Create order",
+  "createText": "Fill the order informations.",
+  "createTooltip": "Create new order",
+  "delete": "Delete order",
+  "deleteText": "Are you sure to delete these order?",
+  "deleteTooltip": "Delete the selected order",
+  "edit": "Edit order",
+  "editText": "View and edit order information.",
+  "editTooltip": "Edit the selected order"
+}

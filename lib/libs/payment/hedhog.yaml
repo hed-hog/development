@@ -1,0 +1,185 @@
+data:
+  gateway:
+    - name: Stripe
+    - name: Mercado Pago
+  payment_status:
+    - name:
+        en: Pending
+        pt: Pendente
+    - name:
+        en: Paid
+        pt: Pago
+    - name:
+        en: Canceled
+        pt: Cancelado
+    - name:
+        en: Expired
+        pt: Expirado
+    - name:
+        en: Refunded
+        pt: Reembolsado
+  route:
+    - url: /gateway
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /gateway
+      method: POST
+      relations: *a1
+    - url: /gateway/:id
+      method: GET
+      relations: *a1
+    - url: /gateway/:id
+      method: PATCH
+      relations: *a1
+    - url: /gateway
+      method: DELETE
+      relations: *a1
+    - url: /payment-status
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /payment-status
+      method: POST
+      relations: *a2
+    - url: /payment-status/:id
+      method: GET
+      relations: *a2
+    - url: /payment-status/:id
+      method: PATCH
+      relations: *a2
+    - url: /payment-status
+      method: DELETE
+      relations: *a2
+  menu:
+    - name:
+        en: Gateway
+        pt: Gateway
+      icon: file
+      url: /gateway
+      slug: gateway
+      relations: *a1
+    - name:
+        en: PaymentStatus
+        pt: PaymentStatus
+      icon: file
+      url: /payment-status
+      slug: payment-status
+      relations: *a2
+  screen:
+    - name:
+        en: Gateway
+        pt: Gateway
+      slug: gateway
+      description:
+        en: Screen to manage gateway
+        pt: Tela para gerenciar gateway
+      icon: file
+    - name:
+        en: PaymentStatus
+        pt: PaymentStatus
+      slug: payment-status
+      description:
+        en: Screen to manage payment_status
+        pt: Tela para gerenciar payment_status
+      icon: file
+tables:
+  gateway:
+    columns:
+      - type: pk
+      - name: name
+        length: 63
+        locale:
+          en: Gateway Name
+          pt: Nome do Gateway
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  payment_status:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  payment_status_locale:
+    columns:
+      - type: fk
+        name: payment_status_id
+        isPrimary: true
+        references:
+          table: payment_status
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        length: 63
+        locale:
+          en: Status Name
+          pt: Nome do Status
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  payment_method:
+    columns:
+      - type: pk
+      - name: name
+        length: 63
+        locale:
+          en: Method Name
+          pt: Nome do Método
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  payment:
+    columns:
+      - type: pk
+      - type: slug
+      - type: fk
+        name: person_id
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: gateway_id
+        references:
+          table: gateway
+          column: id
+          onDelete: RESTRICT
+      - name: amaunt
+        type: decimal
+        precision: 10
+        scale: 2
+      - name: status_id
+        type: fk
+        references:
+          table: payment_status
+          column: id
+          onDelete: RESTRICT
+      - name: document
+        length: 14
+      - type: datetime
+        name: payment_at
+        isNullable: true
+      - name: currency
+        length: 3
+      - name: method_id
+        type: fk
+        references:
+          table: payment_method
+          column: id
+          onDelete: RESTRICT
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true

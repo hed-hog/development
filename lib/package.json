@@ -126,7 +126,8 @@
       "^@hedhog/contact(|/.*)$": "<rootDir>/libs/contact/src/$1",
       "^@hedhog/cbc(|/.*)$": "<rootDir>/libs/cbc/src/$1",
       "^@hedhog/appearance(|/.*)$": "<rootDir>/libs/appearance/src/$1",
-      "^@hedhog/faq(|/.*)$": "<rootDir>/libs/faq/src/$1"
+      "^@hedhog/faq(|/.*)$": "<rootDir>/libs/faq/src/$1",
+      "^@hedhog/subscription(|/.*)$": "<rootDir>/libs/subscription/src/$1"
     }
   }
 }

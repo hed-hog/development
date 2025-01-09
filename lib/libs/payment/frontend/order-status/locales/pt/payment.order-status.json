@@ -1,0 +1,11 @@
+{
+  "create": "Criar status do pedido",
+  "createText": "Preencha as informações do status do pedido.",
+  "createTooltip": "Criar novo status do pedido",
+  "delete": "Excluir status do pedido",
+  "deleteText": "Você tem certeza de que deseja excluir estes status do pedido?",
+  "deleteTooltip": "Excluir o status do pedido selecionado",
+  "edit": "Editar status do pedido",
+  "editText": "Visualizar e editar informações do status do pedido.",
+  "editTooltip": "Editar o status do pedido selecionado"
+}

@@ -102,6 +102,12 @@
       ],
       "@hedhog/faq/*": [
         "libs/faq/src/*"
+      ],
+      "@hedhog/subscription": [
+        "libs/subscription/src"
+      ],
+      "@hedhog/subscription/*": [
+        "libs/subscription/src/*"
       ]
     }
   },
