@@ -323,15 +323,16 @@ model bot {
 }
 
 model coin {
-  id         Int          @id(map: "PK_650993fc71b789e4793b62fbcac") @default(autoincrement())
-  name       String       @db.VarChar
-  slug       String       @unique(map: "UQ_da6f2597c260cc4877def859e72") @db.VarChar(255)
-  created_at DateTime     @default(now()) @db.Timestamp(6)
-  updated_at DateTime     @default(now()) @db.Timestamp(6)
-  operation  operation[]
-  quotation  quotation[]
-  simulation simulation[]
-  top_coin   top_coin[]
+  id            Int             @id(map: "PK_650993fc71b789e4793b62fbcac") @default(autoincrement())
+  name          String          @db.VarChar
+  slug          String          @unique(map: "UQ_da6f2597c260cc4877def859e72") @db.VarChar(255)
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @db.Timestamp(6)
+  gainers_loser gainers_loser[]
+  operation     operation[]
+  quotation     quotation[]
+  simulation    simulation[]
+  top_coin      top_coin[]
 }
 
 model fear_and_greed {
@@ -621,12 +622,13 @@ model trade_signal_type {
 }
 
 model gainers_loser {
-  id         Int      @id(map: "PK_4c69c03d795e6db52eaeb2bdd27") @default(autoincrement())
-  name       String   @db.VarChar
-  symbol     String   @db.VarChar
-  slug       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
+  id                 Int      @id(map: "PK_4c69c03d795e6db52eaeb2bdd27") @default(autoincrement())
+  coin_id            Int
+  percent_change_24h Decimal  @db.Decimal(36, 18)
+  price              Decimal  @db.Decimal(36, 18)
+  created_at         DateTime @default(now()) @db.Timestamp(6)
+  updated_at         DateTime @default(now()) @db.Timestamp(6)
+  coin               coin     @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_dbc49e50f00583919173dfb98e0")
 }
 
 model global_metric {
