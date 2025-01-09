@@ -590,6 +590,262 @@ tables:
         locale:
           en: All-Time Performance
           pt: Performance de Todos os Tempos
+      - name: pivot_m_camarilla_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_middle
+          pt: pivot_m_camarilla_middle
+      - name: pivot_m_camarilla_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_r1
+          pt: pivot_m_camarilla_r1
+      - name: pivot_m_camarilla_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_r2
+          pt: pivot_m_camarilla_r2
+      - name: pivot_m_camarilla_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_r3
+          pt: pivot_m_camarilla_r3
+      - name: pivot_m_camarilla_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_s1
+          pt: pivot_m_camarilla_s1
+      - name: pivot_m_camarilla_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_s2
+          pt: pivot_m_camarilla_s2
+      - name: pivot_m_camarilla_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_s3
+          pt: pivot_m_camarilla_s3
+      - name: pivot_m_classic_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_middle
+          pt: pivot_m_classic_middle
+      - name: pivot_m_classic_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_r1
+          pt: pivot_m_classic_r1
+      - name: pivot_m_classic_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_r2
+          pt: pivot_m_classic_r2
+      - name: pivot_m_classic_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_r3
+          pt: pivot_m_classic_r3
+      - name: pivot_m_classic_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_s1
+          pt: pivot_m_classic_s1
+      - name: pivot_m_classic_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_s2
+          pt: pivot_m_classic_s2
+      - name: pivot_m_classic_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_s3
+          pt: pivot_m_classic_s3
+      - name: pivot_m_demark_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_demark_middle
+          pt: pivot_m_demark_middle
+      - name: pivot_m_demark_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_demark_r1
+          pt: pivot_m_demark_r1
+      - name: pivot_m_demark_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_demark_s1
+          pt: pivot_m_demark_s1
+      - name: pivot_m_fibonacci_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_middle
+          pt: pivot_m_fibonacci_middle
+      - name: pivot_m_fibonacci_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r1
+          pt: pivot_m_fibonacci_r1
+      - name: pivot_m_fibonacci_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r2
+          pt: pivot_m_fibonacci_r2
+      - name: pivot_m_fibonacci_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r3
+          pt: pivot_m_fibonacci_r3
+      - name: pivot_m_fibonacci_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s1
+          pt: pivot_m_fibonacci_s1
+      - name: pivot_m_fibonacci_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s2
+          pt: pivot_m_fibonacci_s2
+      - name: pivot_m_fibonacci_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s3
+          pt: pivot_m_fibonacci_s3
+      - name: pivot_m_woodie_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_middle
+          pt: pivot_m_woodie_middle
+      - name: pivot_m_woodie_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_r1
+          pt: pivot_m_woodie_r1
+      - name: pivot_m_woodie_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_r2
+          pt: pivot_m_woodie_r2
+      - name: pivot_m_woodie_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_r3
+          pt: pivot_m_woodie_r3
+      - name: pivot_m_woodie_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_s1
+          pt: pivot_m_woodie_s1
+      - name: pivot_m_woodie_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_s2
+          pt: pivot_m_woodie_s2
+      - name: pivot_m_woodie_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_s3
+          pt: pivot_m_woodie_s3
+      - name: relative_volume_intraday_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: relative_volume_intraday_5
+          pt: relative_volume_intraday_5
       - name: close
         type: decimal
         precision: 36
@@ -807,33 +1063,21 @@ tables:
           en: Low
           pt: Baixa
       - name: description
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Description
           pt: Descrição
       - name: type
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Type
           pt: Tipo
       - name: subtype
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Subtype
           pt: Subtipo
       - name: update_mode
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Update Mode
@@ -855,9 +1099,6 @@ tables:
           en: Minimum Move
           pt: Movimento Mínimo
       - name: fractional
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Fractional
@@ -1255,7 +1496,7 @@ tables:
   stock_exchange:
     columns:
       - type: pk
-      - name: name
+      - type: slug
         locale:
           en: Name
           pt: Nome
@@ -1564,9 +1805,16 @@ tables:
   gainers_loser:
     columns:
       - type: pk
-      - name: name
-      - name: symbol
-      - name: slug
+      - name: coin_id
+        type: fk
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+      - name: percent_change_24h
+        type: decimal
+        precision: 36
+        scale: 18
       - type: created_at
       - type: updated_at
   top_coin_type:
@@ -2435,9 +2683,6 @@ data:
     - name: NEUTRAL
     - name: SHORT
     - name: LONG
-  stock_exchange:
-    - name: BYBIT
-    - name: BINANCE
   top_coin_type:
     - name: TOP Cryptos
     - name: TOP Sensações

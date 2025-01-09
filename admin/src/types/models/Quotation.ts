@@ -1,11 +1,13 @@
 import { QuotationRequestType } from './QuotationRequestType';
 import { Coin } from './Coin';
+import { Bot } from './Bot';
 import { StockExchange } from './StockExchange';
 
 export type Quotation = {
   id?: number;
   type_id: number;
   coin_id: number;
+  bot_id: number;
   open?: any;
   high_all?: any;
   aroon_up?: any;
@@ -76,6 +78,38 @@ export type Quotation = {
   ao?: any;
   perf_5y?: any;
   perf_all?: any;
+  pivot_m_camarilla_middle?: any;
+  pivot_m_camarilla_r1?: any;
+  pivot_m_camarilla_r2?: any;
+  pivot_m_camarilla_r3?: any;
+  pivot_m_camarilla_s1?: any;
+  pivot_m_camarilla_s2?: any;
+  pivot_m_camarilla_s3?: any;
+  pivot_m_classic_middle?: any;
+  pivot_m_classic_r1?: any;
+  pivot_m_classic_r2?: any;
+  pivot_m_classic_r3?: any;
+  pivot_m_classic_s1?: any;
+  pivot_m_classic_s2?: any;
+  pivot_m_classic_s3?: any;
+  pivot_m_demark_middle?: any;
+  pivot_m_demark_r1?: any;
+  pivot_m_demark_s1?: any;
+  pivot_m_fibonacci_middle?: any;
+  pivot_m_fibonacci_r1?: any;
+  pivot_m_fibonacci_r2?: any;
+  pivot_m_fibonacci_r3?: any;
+  pivot_m_fibonacci_s1?: any;
+  pivot_m_fibonacci_s2?: any;
+  pivot_m_fibonacci_s3?: any;
+  pivot_m_woodie_middle?: any;
+  pivot_m_woodie_r1?: any;
+  pivot_m_woodie_r2?: any;
+  pivot_m_woodie_r3?: any;
+  pivot_m_woodie_s1?: any;
+  pivot_m_woodie_s2?: any;
+  pivot_m_woodie_s3?: any;
+  relative_volume_intraday_5?: any;
   close?: any;
   vwap?: any;
   w_r?: any;
@@ -103,13 +137,13 @@ export type Quotation = {
   relative_volume_10d_calc?: any;
   high?: any;
   low?: any;
-  description?: any;
-  type?: any;
-  subtype?: any;
-  update_mode?: any;
+  description?: string;
+  type?: string;
+  subtype?: string;
+  update_mode?: string;
   pricescale?: any;
   minmov?: any;
-  fractional?: any;
+  fractional?: string;
   minmove2?: any;
   rec_bbpower?: any;
   stoch_k_1_?: any;
@@ -159,5 +193,6 @@ export type Quotation = {
   updated_at?: string;
   quotation_request_type?: QuotationRequestType;
   coin?: Coin;
+  bot?: Bot;
   stock_exchange?: StockExchange;
 }

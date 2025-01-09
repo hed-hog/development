@@ -1,15 +1,10 @@
-import { MenuLocale } from './MenuLocale';
-import { SettingLocale } from './SettingLocale';
+import { Translation } from './Translation';
+import { ScreenLocale } from './ScreenLocale';
 import { SettingGroupLocale } from './SettingGroupLocale';
 import { MultifactorLocale } from './MultifactorLocale';
-import { ScreenLocale } from './ScreenLocale';
-import { Translation } from './Translation';
+import { MenuLocale } from './MenuLocale';
 import { RoleLocale } from './RoleLocale';
-import { CountryLocale } from './CountryLocale';
-import { FileProviderLocale } from './FileProviderLocale';
-import { PersonTypeLocale } from './PersonTypeLocale';
-import { PersonDocumentTypeLocale } from './PersonDocumentTypeLocale';
-import { FaqLocale } from './FaqLocale';
+import { SettingLocale } from './SettingLocale';
 
 export type Locale = {
   id?: number;
@@ -18,16 +13,11 @@ export type Locale = {
   enabled?: boolean;
   created_at?: string;
   updated_at?: string;
-  menu_locale?: MenuLocale[];
-  setting_locale?: SettingLocale[];
+  translation?: Translation[];
+  screen_locale?: ScreenLocale[];
   setting_group_locale?: SettingGroupLocale[];
   multifactor_locale?: MultifactorLocale[];
-  screen_locale?: ScreenLocale[];
-  translation?: Translation[];
+  menu_locale?: MenuLocale[];
   role_locale?: RoleLocale[];
-  country_locale?: CountryLocale[];
-  file_provider_locale?: FileProviderLocale[];
-  person_type_locale?: PersonTypeLocale[];
-  person_document_type_locale?: PersonDocumentTypeLocale[];
-  faq_locale?: FaqLocale[];
+  setting_locale?: SettingLocale[];
 }

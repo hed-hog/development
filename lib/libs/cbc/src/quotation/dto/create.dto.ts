@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
@@ -291,6 +291,134 @@ export class CreateDTO {
 
   @IsOptional()
   @IsNumber()
+  pivot_m_camarilla_middle?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_camarilla_r1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_camarilla_r2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_camarilla_r3?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_camarilla_s1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_camarilla_s2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_camarilla_s3?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_classic_middle?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_classic_r1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_classic_r2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_classic_r3?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_classic_s1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_classic_s2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_classic_s3?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_demark_middle?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_demark_r1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_demark_s1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_fibonacci_middle?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_fibonacci_r1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_fibonacci_r2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_fibonacci_r3?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_fibonacci_s1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_fibonacci_s2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_fibonacci_s3?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_woodie_middle?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_woodie_r1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_woodie_r2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_woodie_r3?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_woodie_s1?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_woodie_s2?: number;
+
+  @IsOptional()
+  @IsNumber()
+  pivot_m_woodie_s3?: number;
+
+  @IsOptional()
+  @IsNumber()
+  relative_volume_intraday_5?: number;
+
+  @IsOptional()
+  @IsNumber()
   close?: number;
 
   @IsOptional()
@@ -398,20 +526,20 @@ export class CreateDTO {
   low?: number;
 
   @IsOptional()
-  @IsNumber()
-  description?: number;
+  @IsString()
+  description?: string;
 
   @IsOptional()
-  @IsNumber()
-  type?: number;
+  @IsString()
+  type?: string;
 
   @IsOptional()
-  @IsNumber()
-  subtype?: number;
+  @IsString()
+  subtype?: string;
 
   @IsOptional()
-  @IsNumber()
-  update_mode?: number;
+  @IsString()
+  update_mode?: string;
 
   @IsOptional()
   @IsNumber()
@@ -422,8 +550,8 @@ export class CreateDTO {
   minmov?: number;
 
   @IsOptional()
-  @IsNumber()
-  fractional?: number;
+  @IsString()
+  fractional?: string;
 
   @IsOptional()
   @IsNumber()

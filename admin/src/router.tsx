@@ -113,14 +113,6 @@ const routes = [
             }),
           },
           {
-            path: "appearance",
-            lazy: async () => ({
-              Component: (
-                await import("./pages/appearance/appearance/index.tsx")
-              ).default,
-            }),
-          },
-          {
             path: "menu",
             lazy: async () => ({
               Component: (await import("./pages/management/menu/index.tsx"))

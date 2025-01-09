@@ -44,9 +44,9 @@ const StockExchangeUpdatePanel = forwardRef(
                   ref={formRef}
                   fields={[
                     {
-                      name: "name",
+                      name: "slug",
                       label: {
-                        text: t("stock_exchange.name", { ns: "fields" }),
+                        text: t("stock_exchange.slug", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,

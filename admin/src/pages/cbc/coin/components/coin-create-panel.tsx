@@ -1,5 +1,5 @@
 import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
-import { EnumFieldType } from "@/enums/EnumFieldType";
+
 import { useCoinCreate } from "@/features/cbc/coin";
 import { Coin } from "@/types/models";
 import { forwardRef, useImperativeHandle, useRef } from "react";
@@ -32,21 +32,7 @@ const CoinCreatePanel = forwardRef(
     return (
       <FormPanel
         ref={formRef}
-        fields={[
-          {
-            name: "name",
-            label: { text: t("coin.name", { ns: "fields" }) },
-            type: EnumFieldType.TEXT,
-            required: true,
-          },
-
-          {
-            name: "code",
-            label: { text: t("coin.code", { ns: "fields" }) },
-            type: EnumFieldType.TEXT,
-            required: true,
-          },
-        ]}
+        fields={[]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
           const createdData = await createCoin({

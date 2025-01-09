@@ -34,6 +34,16 @@ const OperationCreatePanel = forwardRef(
         ref={formRef}
         fields={[
           {
+            name: "simulation_id",
+            label: { text: t("operation.simulation_id", { ns: "fields" }) },
+            type: EnumFieldType.COMBOBOX,
+            required: true,
+            url: "/simulation",
+            displayName: "simulation",
+            valueName: "id",
+          },
+
+          {
             name: "user_id",
             label: { text: t("operation.user_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
