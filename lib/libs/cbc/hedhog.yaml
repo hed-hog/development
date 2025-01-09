@@ -1815,6 +1815,10 @@ tables:
         type: decimal
         precision: 36
         scale: 18
+      - name: price
+        type: decimal
+        precision: 36
+        scale: 18
       - type: created_at
       - type: updated_at
   top_coin_type:
