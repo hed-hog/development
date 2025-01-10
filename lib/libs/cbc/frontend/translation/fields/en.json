@@ -1,4 +1,7 @@
 {
+  "quotation_request_type.name": "Name",
+  "quotation_request_type.headers": "Headers",
+  "quotation_request_type.filters": "Filters",
   "quotation.type_id": "Request Type",
   "quotation.coin_id": "Quote",
   "quotation.bot_id": "Bot",
@@ -183,9 +186,6 @@
   "quotation.candle_3whitesoldiers": "Candle 3 White Soldiers",
   "quotation.rec_wr": "WR Recommendation",
   "quotation.rec_uo": "UO Recommendation",
-  "quotation_request_type.name": "Name",
-  "quotation_request_type.headers": "Headers",
-  "quotation_request_type.filters": "Filters",
   "stock_exchange.slug": "Name",
   "banking.name": "Name",
   "banking.user_id": "User",
