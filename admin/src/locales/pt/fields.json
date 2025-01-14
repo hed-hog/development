@@ -1,4 +1,8 @@
 {
+  "quotation_request_type.name": "Nome",
+  "quotation_request_type.headers": "Cabeçalhos",
+  "quotation_request_type.filters": "Filtros",
+  "coin_variation_type.name": "Nome",
   "quotation.type_id": "Tipo de Requisição",
   "quotation.coin_id": "Cotação",
   "quotation.bot_id": "Bot",
@@ -183,9 +187,6 @@
   "quotation.candle_3whitesoldiers": "Candle Três Soldados Brancos",
   "quotation.rec_wr": "Recomendação WR",
   "quotation.rec_uo": "Recomendação UO",
-  "quotation_request_type.name": "Nome",
-  "quotation_request_type.headers": "Cabeçalhos",
-  "quotation_request_type.filters": "Filtros",
   "stock_exchange.slug": "Nome",
   "banking.name": "Nome",
   "banking.user_id": "Usuário",

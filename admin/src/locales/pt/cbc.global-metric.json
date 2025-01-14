@@ -3,9 +3,9 @@
   "createText": "Preencha as informações da métrica global.",
   "createTooltip": "Criar nova métrica global",
   "delete": "Excluir métrica global",
-  "deleteText": "Tem certeza de que deseja excluir essas métricas globais?",
+  "deleteText": "Você tem certeza de que deseja excluir estas métricas globais?",
   "deleteTooltip": "Excluir a métrica global selecionada",
   "edit": "Editar métrica global",
-  "editText": "Visualizar e editar informações da métrica global.",
+  "editText": "Ver e editar informações da métrica global.",
   "editTooltip": "Editar a métrica global selecionada"
 }

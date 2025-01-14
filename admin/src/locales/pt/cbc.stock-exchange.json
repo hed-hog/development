@@ -3,9 +3,9 @@
   "createText": "Preencha as informações da bolsa de valores.",
   "createTooltip": "Criar nova bolsa de valores",
   "delete": "Excluir bolsa de valores",
-  "deleteText": "Tem certeza de que deseja excluir estas bolsas de valores?",
+  "deleteText": "Você tem certeza de que deseja excluir estas bolsas de valores?",
   "deleteTooltip": "Excluir a bolsa de valores selecionada",
   "edit": "Editar bolsa de valores",
-  "editText": "Visualizar e editar informações da bolsa de valores.",
+  "editText": "Visualizar e editar as informações da bolsa de valores.",
   "editTooltip": "Editar a bolsa de valores selecionada"
 }

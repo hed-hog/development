@@ -333,6 +333,7 @@ model coin {
   quotation     quotation[]
   simulation    simulation[]
   top_coin      top_coin[]
+  top_variation top_variation[]
 }
 
 model fear_and_greed {
@@ -685,6 +686,32 @@ model top_coin_type {
   created_at DateTime   @default(now()) @db.Timestamp(6)
   updated_at DateTime   @default(now()) @db.Timestamp(6)
   top_coin   top_coin[]
+}
+
+model coin_variation_type {
+  id            Int             @id(map: "PK_b2539a8ec9d9cd0496d6722c8b9") @default(autoincrement())
+  name          String          @db.VarChar
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @db.Timestamp(6)
+  top_variation top_variation[]
+}
+
+model top_100 {
+  id                          Int      @id(map: "PK_42855e532dc549f5a18234bfa42") @default(autoincrement())
+  value                       Decimal  @db.Decimal
+  value_24h_percentage_change Decimal  @db.Decimal
+  created_at                  DateTime @default(now()) @db.Timestamp(6)
+  updated_at                  DateTime @default(now()) @db.Timestamp(6)
+}
+
+model top_variation {
+  id                  Int                 @id(map: "PK_cd8e060cd681f69bc193031f179") @default(autoincrement())
+  coin_id             Int
+  type_id             Int
+  created_at          DateTime            @default(now()) @db.Timestamp(6)
+  updated_at          DateTime            @default(now()) @db.Timestamp(6)
+  coin                coin                @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_861192e6c1e25bbb86c6b369265")
+  coin_variation_type coin_variation_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_eb2ed4df2f0d18d4a2aa67e6b98")
 }
 
 enum setting_type_enum {
