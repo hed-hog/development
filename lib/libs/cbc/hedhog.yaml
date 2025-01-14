@@ -1,5 +1,5 @@
 tables:
-  top_100:
+  top_cmc:
     columns:
       - type: pk
       - name: value
@@ -27,23 +27,6 @@ tables:
           en: Filters
           pt: Filtros
         field: textarea
-      - type: created_at
-      - type: updated_at
-  top_variation:
-    columns:
-      - type: pk
-      - name: coin_id
-        type: fk
-        references:
-          table: coin
-          column: id
-          onDelete: CASCADE
-      - name: type_id
-        type: fk
-        references:
-          table: coin_variation_type
-          column: id
-          onDelete: CASCADE
       - type: created_at
       - type: updated_at
   coin_variation_type:
@@ -1837,13 +1820,19 @@ tables:
         scale: 18
       - type: created_at
       - type: updated_at
-  gainers_loser:
+  gainer_loser:
     columns:
       - type: pk
       - name: coin_id
         type: fk
         references:
           table: coin
+          column: id
+          onDelete: CASCADE
+      - name: type_id
+        type: fk
+        references:
+          table: coin_variation_type
           column: id
           onDelete: CASCADE
       - name: percent_change_24h
@@ -2370,6 +2359,42 @@ data:
     - url: /top-variation
       method: DELETE
       relations: *a22
+    - url: /gainer-loser
+      method: GET
+      relations: &a23
+        role:
+          - where:
+              slug: admin
+    - url: /gainer-loser
+      method: POST
+      relations: *a23
+    - url: /gainer-loser/:id
+      method: GET
+      relations: *a23
+    - url: /gainer-loser/:id
+      method: PATCH
+      relations: *a23
+    - url: /gainer-loser
+      method: DELETE
+      relations: *a23
+    - url: /top-cmc
+      method: GET
+      relations: &a24
+        role:
+          - where:
+              slug: admin
+    - url: /top-cmc
+      method: POST
+      relations: *a24
+    - url: /top-cmc/:id
+      method: GET
+      relations: *a24
+    - url: /top-cmc/:id
+      method: PATCH
+      relations: *a24
+    - url: /top-cmc
+      method: DELETE
+      relations: *a24
   menu:
     - url: /cbc
       icon: coin
@@ -2589,6 +2614,20 @@ data:
       url: /top-variation
       slug: top-variation
       relations: *a22
+    - name:
+        en: GainerLoser
+        pt: GainerLoser
+      icon: file
+      url: /gainer-loser
+      slug: gainer-loser
+      relations: *a23
+    - name:
+        en: TopCmc
+        pt: TopCmc
+      icon: file
+      url: /top-cmc
+      slug: top-cmc
+      relations: *a24
   screen:
     - name:
         en: Coin
@@ -2813,6 +2852,22 @@ data:
       description:
         en: Screen to manage top_variation
         pt: Tela para gerenciar top_variation
+      icon: file
+    - name:
+        en: GainerLoser
+        pt: GainerLoser
+      slug: gainer-loser
+      description:
+        en: Screen to manage gainer_loser
+        pt: Tela para gerenciar gainer_loser
+      icon: file
+    - name:
+        en: TopCmc
+        pt: TopCmc
+      slug: top-cmc
+      description:
+        en: Screen to manage top_cmc
+        pt: Tela para gerenciar top_cmc
       icon: file
   strategy:
     - name: AI STRATEGY

@@ -1,11 +1,11 @@
 {
-  "create": "Criar top coin",
-  "createText": "Preencha as informações da top coin.",
-  "createTooltip": "Criar nova top coin",
-  "delete": "Deletar top coin",
-  "deleteText": "Você tem certeza de que deseja deletar estas top coin?",
-  "deleteTooltip": "Deletar a top coin selecionada",
-  "edit": "Editar top coin",
-  "editText": "Visualizar e editar informações da top coin.",
-  "editTooltip": "Editar a top coin selecionada"
+  "create": "Create Top coin",
+  "createText": "Fill the top coin informations.",
+  "createTooltip": "Create new top coin",
+  "delete": "Delete Top coin",
+  "deleteText": "Are you sure to delete these top coins?",
+  "deleteTooltip": "Delete the selected top coins",
+  "edit": "Edit Top coin",
+  "editText": "View and edit top coin information.",
+  "editTooltip": "Edit the selected top coins"
 }
