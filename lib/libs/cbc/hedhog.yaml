@@ -1886,6 +1886,9 @@ data:
     - name: Bot 1
       description: Bot 1 description
       cookies: cookie1=value1; cookie2=value2
+  coin_variation_type:
+    - name: UP
+    - name: DOWN
   mmr:
     - leverage: 3
       percentage: 33.33
