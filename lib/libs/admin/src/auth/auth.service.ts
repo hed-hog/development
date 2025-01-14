@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   async loginWithEmailAndPassword(email: string, password: string) {
-    const user = await this.prisma.user.findFirst({
+    const user = await (this.prisma as any).user.findFirst({
       where: {
         email,
       },
@@ -73,7 +73,7 @@ export class AuthService {
       if (user.multifactor_id === MultifactorType.EMAIL) {
         const code = this.generateRandomNumber();
 
-        await this.prisma.user.update({
+        await (this.prisma as any).user.update({
           where: {
             id: user.id,
           },
@@ -117,7 +117,7 @@ export class AuthService {
     subject?: string;
     body?: string;
   }) {
-    const user = await this.prisma.user.findFirst({
+    const user = await (this.prisma as any).user.findFirst({
       where: {
         email,
       },
@@ -136,7 +136,7 @@ export class AuthService {
 
     const code = this.jwt.sign(payload);
 
-    await this.prisma.user.update({
+    await (this.prisma as any).user.update({
       where: {
         id: user.id,
       },
@@ -171,7 +171,7 @@ export class AuthService {
 
     const { id } = this.jwt.decode(code) as User;
 
-    const user = await this.prisma.user.findFirst({
+    const user = await (this.prisma as any).user.findFirst({
       where: {
         id,
         code,
@@ -182,7 +182,7 @@ export class AuthService {
       const salt = await genSalt();
       const password = await hash(confirmNewPassword, salt);
 
-      await this.prisma.user.update({
+      await (this.prisma as any).user.update({
         where: {
           id: user.id,
         },
@@ -192,7 +192,7 @@ export class AuthService {
         },
       });
 
-      return true;
+      return this.getToken(user);
     }
 
     return false;
@@ -201,7 +201,7 @@ export class AuthService {
   async otp({ token, code }: OtpDTO) {
     const data = this.jwt.decode(token);
 
-    const user = await this.prisma.user.findFirst({
+    const user = await (this.prisma as any).user.findFirst({
       where: {
         id: data['id'],
         code: String(code),
@@ -212,7 +212,7 @@ export class AuthService {
       throw new NotFoundException('Invalid code');
     }
 
-    await this.prisma.user.update({
+    await (this.prisma as any).user.update({
       where: {
         id: user.id,
       },
@@ -229,6 +229,6 @@ export class AuthService {
   }
 
   verify(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+    return (this.prisma as any).user.findUnique({ where: { id } });
   }
 }

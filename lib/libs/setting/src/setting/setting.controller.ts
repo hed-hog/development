@@ -49,14 +49,6 @@ export class SettingsController {
     return this.settingService.listSettingGroups(locale, paginationParams);
   }
 
-  @Public()
-  @Get('index.css')
-  async handleIndexStyleFile(@Res() res) {
-    const content = await this.settingService.handleIndexStyleFile();
-    res.header('Content-Type', 'text/css');
-    res.send(content);
-  }
-
   @Get()
   async listSettings(@Pagination() paginationParams, @Locale() locale) {
     return this.settingService.listSettings(locale, paginationParams);

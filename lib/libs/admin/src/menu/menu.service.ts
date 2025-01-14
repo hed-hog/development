@@ -20,7 +20,7 @@ export class MenuService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async updateScreens(menuId: number, data: UpdateIdsDTO) {
     await this.prismaService.menu_screen.deleteMany({

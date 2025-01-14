@@ -1,6 +1,10 @@
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateDTO {
+  @IsOptional()
+  @IsNumber()
+  simulation_id?: number;
+
   @IsNumber()
   user_id: number;
 
@@ -25,4 +29,22 @@ export class CreateDTO {
   @IsOptional()
   @IsNumber()
   leverage?: number;
+
+  @IsNumber()
+  margin_used: number;
+
+  @IsNumber()
+  first_order: number;
+
+  @IsNumber()
+  mmr: number;
+
+  @IsNumber()
+  stop_loss: number;
+
+  @IsString()
+  start_time: string;
+
+  @IsString()
+  end_time: string;
 }

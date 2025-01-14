@@ -13,7 +13,7 @@ export class RouteService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['url', 'method'];

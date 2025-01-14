@@ -1,0 +1,11 @@
+{
+  "create": "Create screen locale",
+  "createText": "Fill the screen locale informations.",
+  "createTooltip": "Create new screen locale",
+  "delete": "Delete screen locale",
+  "deleteText": "Are you sure to delete these screen locale?",
+  "deleteTooltip": "Delete the selected screen locale",
+  "edit": "Edit screen locale",
+  "editText": "View and edit screen locale information.",
+  "editTooltip": "Edit the selected screen locale"
+}

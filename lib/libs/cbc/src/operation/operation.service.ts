@@ -20,7 +20,16 @@ export class OperationService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['layers', 'leverage'];
+    const fields = [
+      'layers',
+      'leverage',
+      'margin_used',
+      'first_order',
+      'mmr',
+      'stop_loss',
+      'start_time',
+      'end_time'
+    ];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams

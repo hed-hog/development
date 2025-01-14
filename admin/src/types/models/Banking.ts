@@ -1,4 +1,5 @@
 import { User } from './User';
+import { Simulation } from './Simulation';
 import { Operation } from './Operation';
 
 export type Banking = {
@@ -8,5 +9,6 @@ export type Banking = {
   created_at?: string;
   updated_at?: string;
   user?: User;
+  simulation?: Simulation[];
   operation?: Operation[];
 }

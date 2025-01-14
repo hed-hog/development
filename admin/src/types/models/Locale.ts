@@ -5,15 +5,6 @@ import { MultifactorLocale } from './MultifactorLocale';
 import { MenuLocale } from './MenuLocale';
 import { RoleLocale } from './RoleLocale';
 import { SettingLocale } from './SettingLocale';
-import { TrendTypeLocale } from './TrendTypeLocale';
-import { CountryLocale } from './CountryLocale';
-import { FileProviderLocale } from './FileProviderLocale';
-import { PersonTypeLocale } from './PersonTypeLocale';
-import { PersonDocumentTypeLocale } from './PersonDocumentTypeLocale';
-import { PersonContactTypeLocale } from './PersonContactTypeLocale';
-import { PersonAddressTypeLocale } from './PersonAddressTypeLocale';
-import { PersonCustomTypeLocale } from './PersonCustomTypeLocale';
-import { PersonCustomLocale } from './PersonCustomLocale';
 
 export type Locale = {
   id?: number;
@@ -29,13 +20,4 @@ export type Locale = {
   menu_locale?: MenuLocale[];
   role_locale?: RoleLocale[];
   setting_locale?: SettingLocale[];
-  trend_type_locale?: TrendTypeLocale[];
-  country_locale?: CountryLocale[];
-  file_provider_locale?: FileProviderLocale[];
-  person_type_locale?: PersonTypeLocale[];
-  person_document_type_locale?: PersonDocumentTypeLocale[];
-  person_contact_type_locale?: PersonContactTypeLocale[];
-  person_address_type_locale?: PersonAddressTypeLocale[];
-  person_custom_type_locale?: PersonCustomTypeLocale[];
-  person_custom_locale?: PersonCustomLocale[];
 }

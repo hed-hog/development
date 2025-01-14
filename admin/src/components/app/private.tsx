@@ -9,7 +9,7 @@ type PrivateProps = {
 const Private = ({ children }: PrivateProps) => {
   const { user } = useApp()
 
-  if (!user?.id) {
+  if (!user.id) {
     return <Navigate to='/login' replace />
   }
 

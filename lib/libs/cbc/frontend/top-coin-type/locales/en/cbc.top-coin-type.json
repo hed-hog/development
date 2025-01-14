@@ -1,0 +1,11 @@
+{
+  "create": "Create top coin type",
+  "createText": "Fill the top coin type informations.",
+  "createTooltip": "Create new top coin type",
+  "delete": "Delete top coin type",
+  "deleteText": "Are you sure to delete these top coin type?",
+  "deleteTooltip": "Delete the selected top coin type",
+  "edit": "Edit top coin type",
+  "editText": "View and edit top coin type information.",
+  "editTooltip": "Edit the selected top coin type"
+}

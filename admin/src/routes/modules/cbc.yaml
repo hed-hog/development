@@ -4,15 +4,9 @@ routes:
       - path: coin
         lazy:
           component: ./pages/cbc/coin/index.tsx
-      - path: quotation-type
-        lazy:
-          component: ./pages/cbc/quotation-type/index.tsx
       - path: stock-exchange
         lazy:
           component: ./pages/cbc/stock-exchange/index.tsx
-      - path: trend-type
-        lazy:
-          component: ./pages/cbc/trend-type/index.tsx
       - path: quotation
         lazy:
           component: ./pages/cbc/quotation/index.tsx
@@ -25,6 +19,3 @@ routes:
       - path: strategy
         lazy:
           component: ./pages/cbc/strategy/index.tsx
-      - path: trade-signal-type
-        lazy:
-          component: ./pages/cbc/trade-signal-type/index.tsx

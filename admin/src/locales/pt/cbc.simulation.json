@@ -1,0 +1,11 @@
+{
+  "create": "Criar simulação",
+  "createText": "Preencha as informações da simulação.",
+  "createTooltip": "Criar nova simulação",
+  "delete": "Deletar simulação",
+  "deleteText": "Você tem certeza que deseja deletar estas simulações?",
+  "deleteTooltip": "Deletar a simulação selecionada",
+  "edit": "Editar simulação",
+  "editText": "Ver e editar informações da simulação.",
+  "editTooltip": "Editar a simulação selecionada"
+}

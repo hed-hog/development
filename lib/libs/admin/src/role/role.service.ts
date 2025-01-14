@@ -22,7 +22,7 @@ export class RoleService {
     private readonly paginationService: PaginationService,
     @Inject(forwardRef(() => LocaleService))
     private readonly localeService: LocaleService,
-  ) {}
+  ) { }
 
   async updateUsers(roleId: number, { ids }: UpdateIdsDTO) {
     await this.prismaService.role_user.deleteMany({

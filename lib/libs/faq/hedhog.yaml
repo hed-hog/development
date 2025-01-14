@@ -1,0 +1,85 @@
+screens:
+  faq:
+    title:
+      en: FAQ
+      pt: Perguntas Frequentes
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      name:
+        en: FAQ
+        pt: Perguntas Frequentes
+      icon: zoom-question
+      url: /management/faq
+      slug: /management/faq
+      relations:
+        role:
+          - where:
+              slug: admin
+
+tables:
+  faq:
+    columns:
+      - type: pk
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  faq_locale:
+    columns:
+      - name: faq_id
+        type: fk
+        isPrimary: true
+        references:
+          table: faq
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: question
+      - name: answer
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+data:
+  route:
+    - url: /faq
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /faq
+      method: POST
+      relations: *a1
+    - url: /faq/:id
+      method: GET
+      relations: *a1
+    - url: /faq/:id
+      method: PATCH
+      relations: *a1
+    - url: /faq
+      method: DELETE
+      relations: *a1
+  menu:
+    - name:
+        en: FAQ
+        pt: Perguntas Frequentes
+      icon: zoom-question
+      url: /management/faq
+      slug: /management/faq
+      relations: *a1
+  screen:
+    - name:
+        en: FAQ
+        pt: Perguntas Frequentes
+      slug: faq
+      description:
+        en: Screen to manage frequently asked questions
+        pt: Tela para gerenciar perguntas frequentes
+      icon: zoom-question

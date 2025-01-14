@@ -11,6 +11,8 @@ import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import { RouterProvider } from 'react-router-dom'
 import { SidebarProvider } from './context/sidebar-context'
+import { PageTitle } from './components/custom/page-title'
+import FaviconSetting from './components/custom/favicon-setting'
 
 i18n.on('languageChanged', (lng) => {
   localStorage.setItem('i18nextLng', lng)
@@ -32,15 +34,21 @@ i18n
     },
   })
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <AppProvider>
-      <SidebarProvider>
-        <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-          <RouterProvider router={router} />
-          <Toaster />
-        </ThemeProvider>
-      </SidebarProvider>
-    </AppProvider>
-  </React.StrictMode>
-)
+const App = () => {
+  return (
+    <React.StrictMode>
+      <AppProvider>
+        <SidebarProvider>
+          <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+            <PageTitle />
+            <FaviconSetting />
+            <RouterProvider router={router} />
+            <Toaster />
+          </ThemeProvider>
+        </SidebarProvider>
+      </AppProvider>
+    </React.StrictMode>
+  )
+}
+
+ReactDOM.createRoot(document.getElementById('root')!).render(<App />)

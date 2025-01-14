@@ -144,7 +144,105 @@ data:
       method: POST
     - url: /file
       method: DELETE
-
+    - url: /translation-namespace
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /translation-namespace
+      method: POST
+      relations: *a1
+    - url: /translation-namespace/:id
+      method: GET
+      relations: *a1
+    - url: /translation-namespace/:id
+      method: PATCH
+      relations: *a1
+    - url: /translation-namespace
+      method: DELETE
+      relations: *a1
+    - url: /translation
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /translation
+      method: POST
+      relations: *a2
+    - url: /translation/:id
+      method: GET
+      relations: *a2
+    - url: /translation/:id
+      method: PATCH
+      relations: *a2
+    - url: /translation
+      method: DELETE
+      relations: *a2
+    - url: /multifactor
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /multifactor
+      method: POST
+      relations: *a3
+    - url: /multifactor/:id
+      method: GET
+      relations: *a3
+    - url: /multifactor/:id
+      method: PATCH
+      relations: *a3
+    - url: /multifactor
+      method: DELETE
+      relations: *a3
+    - url: /user/:id
+      method: GET
+      relations: &a4
+        role:
+          - where:
+              slug: admin
+    - url: /user/:id
+      method: PATCH
+      relations: *a4
+    - url: /screen/:id
+      method: GET
+      relations: &a5
+        role:
+          - where:
+              slug: admin
+    - url: /screen/:id
+      method: PATCH
+      relations: *a5
+    - url: /menu/:id
+      method: GET
+      relations: &a6
+        role:
+          - where:
+              slug: admin
+    - url: /menu/:id
+      method: PATCH
+      relations: *a6
+    - url: /menu-screen
+      method: GET
+      relations: &a7
+        role:
+          - where:
+              slug: admin
+    - url: /menu-screen
+      method: POST
+      relations: *a7
+    - url: /menu-screen/:menu_id
+      method: GET
+      relations: *a7
+    - url: /menu-screen/:menu_id
+      method: PATCH
+      relations: *a7
+    - url: /menu-screen
+      method: DELETE
+      relations: *a7
   menu:
     - url: /
       icon: dashboard
@@ -244,6 +342,55 @@ data:
       icon: world
       url: /settings/locale
       slug: /settings/locale
+    - name:
+        en: TranslationNamespace
+        pt: TranslationNamespace
+      icon: file
+      url: /translation-namespace
+      slug: translation-namespace
+      relations: *a1
+    - name:
+        en: Translation
+        pt: Translation
+      icon: file
+      url: /translation
+      slug: translation
+      relations: *a2
+    - name:
+        en: Multifactor
+        pt: Multifactor
+      icon: file
+      url: /multifactor
+      slug: multifactor
+      relations: *a3
+    - name:
+        en: User
+        pt: User
+      icon: file
+      url: /user
+      slug: user
+      relations: *a4
+    - name:
+        en: Screen
+        pt: Screen
+      icon: file
+      url: /screen
+      slug: screen
+      relations: *a5
+    - name:
+        en: Menu
+        pt: Menu
+      icon: file
+      url: /menu
+      slug: menu
+      relations: *a6
+    - name:
+        en: MenuScreen
+        pt: MenuScreen
+      icon: file
+      url: /menu-screen
+      slug: menu-screen
+      relations: *a7
   screen:
     - slug: /management/user
       icon: user
@@ -352,7 +499,62 @@ data:
           - where:
               url:
                 like: /locale%
-
+    - name:
+        en: TranslationNamespace
+        pt: TranslationNamespace
+      slug: translation-namespace
+      description:
+        en: Screen to manage translation_namespace
+        pt: Tela para gerenciar translation_namespace
+      icon: file
+    - name:
+        en: Translation
+        pt: Translation
+      slug: translation
+      description:
+        en: Screen to manage translation
+        pt: Tela para gerenciar translation
+      icon: file
+    - name:
+        en: Multifactor
+        pt: Multifactor
+      slug: multifactor
+      description:
+        en: Screen to manage multifactor
+        pt: Tela para gerenciar multifactor
+      icon: file
+    - name:
+        en: User
+        pt: User
+      slug: user
+      description:
+        en: Screen to manage user
+        pt: Tela para gerenciar user
+      icon: file
+    - name:
+        en: Screen
+        pt: Screen
+      slug: screen
+      description:
+        en: Screen to manage screen
+        pt: Tela para gerenciar screen
+      icon: file
+    - name:
+        en: Menu
+        pt: Menu
+      slug: menu
+      description:
+        en: Screen to manage menu
+        pt: Tela para gerenciar menu
+      icon: file
+    - name:
+        en: MenuScreen
+        pt: MenuScreen
+      slug: menu-screen
+      description:
+        en: Screen to manage menu_screen
+        pt: Tela para gerenciar menu_screen
+      icon: file
   multifactor:
     - name:
         en: Email
@@ -440,7 +642,6 @@ data:
               url:
                 in:
                   - /setting/:slug
-
   translation_namespace:
     - name: translation
       relations:
@@ -475,7 +676,6 @@ data:
                 code: pt
             name: pt
             value: Português
-
 tables:
   translation_namespace:
     columns:
@@ -660,7 +860,9 @@ tables:
       - type: created_at
       - type: updated_at
     indices:
-      - columns: ['url', 'method']
+      - columns:
+          - url
+          - method
         isUnique: true
     ifNotExists: true
   role:
@@ -729,7 +931,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   role_screen:
     columns:
       - name: role_id
@@ -749,7 +950,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   role_user:
     columns:
       - name: role_id
@@ -769,7 +969,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   role_route:
     columns:
       - name: role_id
@@ -789,7 +988,6 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-
   setting_user:
     columns:
       - name: user_id

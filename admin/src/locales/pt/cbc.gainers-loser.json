@@ -1,0 +1,11 @@
+{
+  "create": "Criar gainers loser",
+  "createText": "Preencha as informações do gainers loser.",
+  "createTooltip": "Criar novo gainers loser",
+  "delete": "Excluir gainers loser",
+  "deleteText": "Você tem certeza de que deseja excluir esses gainers loser?",
+  "deleteTooltip": "Excluir o gainers loser selecionado",
+  "edit": "Editar gainers loser",
+  "editText": "Visualizar e editar informações do gainers loser.",
+  "editTooltip": "Editar o gainers loser selecionado"
+}

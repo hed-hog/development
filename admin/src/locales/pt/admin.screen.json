@@ -1,0 +1,11 @@
+{
+  "create": "Criar tela",
+  "createText": "Preencha as informações da tela.",
+  "createTooltip": "Criar nova tela",
+  "delete": "Excluir tela",
+  "deleteText": "Você tem certeza de que deseja excluir estas telas?",
+  "deleteTooltip": "Excluir a tela selecionada",
+  "edit": "Editar tela",
+  "editText": "Ver e editar informações da tela.",
+  "editTooltip": "Editar a tela selecionada"
+}

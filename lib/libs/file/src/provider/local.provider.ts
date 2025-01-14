@@ -17,7 +17,7 @@ export class LocalProvider extends AbstractProvider {
     for (const folder of folders) {
       currentPath = join(currentPath, folder);
       if (!existsSync(currentPath)) {
-        await mkdir(currentPath);
+        await mkdir(currentPath, { recursive: true });
       }
     }
   }

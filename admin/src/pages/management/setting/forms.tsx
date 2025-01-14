@@ -289,6 +289,7 @@ export default function Page() {
         case 'system-name':
         case 'system-slogan':
         case 'image-url':
+        case 'icon-url':
           return {
             name: item.slug,
             type: EnumFieldType.TEXT,

@@ -1,5 +1,14 @@
 tables:
-  quotation_type:
+  top_100:
+    columns:
+      - type: pk
+      - name: value
+        type: decimal
+      - name: value_24h_percentage_change
+        type: decimal
+      - type: created_at
+      - type: updated_at
+  quotation_request_type:
     columns:
       - type: pk
       - name: name
@@ -20,60 +29,7 @@ tables:
         field: textarea
       - type: created_at
       - type: updated_at
-  coin:
-    columns:
-      - type: pk
-      - name: name
-        locale:
-          en: Name
-          pt: Nome
-      - name: code
-        locale:
-          en: Code
-          pt: Código
-      - type: created_at
-      - type: updated_at
-  stock_exchange:
-    columns:
-      - type: pk
-      - name: name
-        locale:
-          en: Name
-          pt: Nome
-      - type: created_at
-      - type: updated_at
-  trend_type:
-    columns:
-      - type: pk
-      - type: slug
-        locale:
-          en: Slug
-          pt: Slug
-      - type: created_at
-      - type: updated_at
-  trend_type_locale:
-    columns:
-      - type: fk
-        name: locale_id
-        isPrimary: true
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: type_id
-        isPrimary: true
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
-      - name: name
-        locale:
-          en: Name
-          pt: Nome
-      - type: created_at
-      - type: updated_at
-  quotation:
+  top_variation:
     columns:
       - type: pk
       - name: coin_id
@@ -82,27 +38,238 @@ tables:
           table: coin
           column: id
           onDelete: CASCADE
-        locale:
-          en: Coin
-          pt: Moeda
       - name: type_id
         type: fk
         references:
-          table: quotation_type
+          table: coin_variation_type
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+  coin_variation_type:
+    columns:
+      - type: pk
+      - name: name
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+  coin:
+    columns:
+      - type: pk
+      - name: name
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  quotation:
+    columns:
+      - type: pk
+      - name: type_id
+        type: fk
+        references:
+          table: quotation_request_type
           column: id
           onDelete: CASCADE
         locale:
-          en: Type
-          pt: Tipo
-      - name: monthly_performance
+          en: Request Type
+          pt: Tipo de Requisição
+      - name: coin_id
+        type: fk
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Quote
+          pt: Cotação
+      - name: bot_id
+        type: fk
+        references:
+          table: bot
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Bot
+          pt: Bot
+      - name: open
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Open
+          pt: Abertura
+      - name: high_all
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: All-Time High
+          pt: Alta Histórica
+      - name: aroon_up
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Aroon Up (14)
+          pt: Aroon de Alta (14)
+      - name: aroon_down
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Aroon Down (14)
+          pt: Aroon de Baixa (14)
+      - name: low_all
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: All-Time Low
+          pt: Baixa Histórica
+      - name: bb_lower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Bollinger Band Lower (20)
+          pt: Banda de Bollinger Inferior (20)
+      - name: bb_upper
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Bollinger Band Upper (20)
+          pt: Banda de Bollinger Superior (20)
+      - name: donchch20_lower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Donchian Channel Lower (20)
+          pt: Banda Inferior dos Canais de Donchian (20)
+      - name: donchch20_upper
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Donchian Channel Upper (20)
+          pt: Banda Superior dos Canais de Donchian (20)
+      - name: stock_exchange_id
+        type: fk
+        references:
+          table: stock_exchange
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Stock Exchange
+          pt: Bolsa
+      - name: bbpower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: BB Power
+          pt: Potência da BB
+      - name: kltchnl_lower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Keltner Channels Lower Band (20)
+          pt: Canais de Keltner Banda Inferior (20)
+      - name: kltchnl_upper
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Keltner Channels Upper Band (20)
+          pt: Canais de Keltner Banda Superior (20)
+      - name: market_cap_calc
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Market Capitalization
+          pt: Capitalização de Mercado
+      - name: recommend_ma
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Moving Averages Rating
+          pt: Classificação das Médias Móveis
+      - name: recommend_other
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Oscillators Rating
+          pt: Classificação dos Osciladores
+      - name: bid
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Bid
+          pt: Compra
+      - name: perf_ytd
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Year-to-Date Performance
+          pt: Desempenho Acumulado no Ano
+      - name: perf_y
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Yearly Performance
+          pt: Desempenho Anual
+      - name: perf_6m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Six-Month Performance
+          pt: Desempenho em Seis Meses
+      - name: perf_3m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Three-Month Performance
+          pt: Desempenho em Três Meses
+      - name: perf_1m
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Monthly Performance
-          pt: Performance Mensal
-      - name: weekly_performance
+          pt: Desempenho Mensal
+      - name: perf_w
         type: decimal
         precision: 36
         scale: 18
@@ -110,247 +277,7 @@ tables:
         locale:
           en: Weekly Performance
           pt: Desempenho Semanal
-      - name: negative_directional_indicator_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Negative Directional Indicator (14)
-          pt: Indicador Direcional Negativo (14)
-      - name: positive_directional_indicator_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Positive Directional Indicator (14)
-          pt: Indicador Direcional Positivo (14)
-      - name: average_directional_index_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average Directional Index (14)
-          pt: Índice Direcional Médio (14)
-      - name: exponential_moving_average_200
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Exponential Moving Average (200)
-          pt: Media Móvel Exponencial (200)
-      - name: simple_moving_average_10
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (10)
-          pt: Media Móvel Simples (10)
-      - name: simple_moving_average_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (20)
-          pt: Media Móvel Simples (20)
-      - name: simple_moving_average_30
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (30)
-          pt: Media Móvel Simples (30)
-      - name: simple_moving_average_50
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (50)
-          pt: Media Móvel Simples (50)
-      - name: simple_moving_average_100
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (100)
-          pt: Media Móvel Simples (100)
-      - name: simple_moving_average_200
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Simple Moving Average (200)
-          pt: Media Móvel Simples (200)
-      - name: price
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Price
-          pt: Preço
-      - name: volatility
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Volatility
-          pt: Volatilidade
-      - name: opening
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Opening
-          pt: Abertura
-      - name: all_time_high
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: All Time High
-          pt: Maior Preço
-      - name: aroon_up_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Aroon Up (14)
-          pt: Aroon Up (14)
-      - name: aroon_down_14
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Aroon Down (14)
-          pt: Aroon Down (14)
-      - name: all_time_low
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: All Time Low
-          pt: Menor Preço
-      - name: bollinger_lower_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Bollinger Lower Band (20)
-          pt: Bollinger Lower Band (20)
-      - name: bollinger_upper_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Bollinger Upper Band (20)
-          pt: Bollinger Upper Band (20)
-      - name: donchian_channels_lower_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Donchian Channels Lower Band (20)
-          pt: Banda Inferior dos Canais de Donchian (20)
-      - name: donchian_channels_upper_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Donchian Channels Upper Band (20)
-          pt: Banda Superior dos Canais de Donchian (20)
-      - name: bull_bear_power
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Bull Bear Power
-          pt: Bull Bear Power
-      - name: keltner_channels_lower_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Keltner Channels Lower Band (20)
-          pt: Canais de Keltner Banda Superior (20)
-      - name: keltner_channels_upper_band_20
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Keltner Channels Upper Band (20)
-          pt: Canais de Keltner Banda Inferior (20)
-      - name: market_cap
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Market Cap
-          pt: Capitalização de Mercado
-      - name: buy
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Buy
-          pt: Compra
-      - name: year_to_date_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Year to Date Performance
-          pt: Desempenho Acumulado no Ano
-      - name: annual_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Annual Performance
-          pt: Desempenho Anual
-      - name: six_month_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Six Month Performance
-          pt: Desempenho em Seis Meses
-      - name: three_month_performance
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Three Month Performance
-          pt: Desempenho em Três Meses
-      - name: stochastic_d
+      - name: stoch_d
         type: decimal
         precision: 36
         scale: 18
@@ -358,7 +285,7 @@ tables:
         locale:
           en: Stochastic %D (14, 3, 3)
           pt: Estocástico %D (14, 3, 3)
-      - name: stochastic_k
+      - name: stoch_k
         type: decimal
         precision: 36
         scale: 18
@@ -366,7 +293,7 @@ tables:
         locale:
           en: Stochastic %K (14, 3, 3)
           pt: Estocástico %K (14, 3, 3)
-      - name: gap_percent
+      - name: gap
         type: decimal
         precision: 36
         scale: 18
@@ -374,7 +301,7 @@ tables:
         locale:
           en: Gap %
           pt: Gap %
-      - name: ichimoku_leading_span_a
+      - name: ichimoku_lead1
         type: decimal
         precision: 36
         scale: 18
@@ -382,7 +309,7 @@ tables:
         locale:
           en: Ichimoku Leading Span A (9, 26, 52, 26)
           pt: Ichimoku Leading Span A (9, 26, 52, 26)
-      - name: ichimoku_leading_span_b
+      - name: ichimoku_lead2
         type: decimal
         precision: 36
         scale: 18
@@ -390,23 +317,39 @@ tables:
         locale:
           en: Ichimoku Leading Span B (9, 26, 52, 26)
           pt: Ichimoku Leading Span B (9, 26, 52, 26)
-      - name: slow_stochastic_rsi
+      - name: stoch_rsi_d
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Slow Stochastic RSI (3, 3, 14, 14)
+          en: Stochastic RSI %D (3, 3, 14, 14)
           pt: IFR Estocástico Lento (3, 3, 14, 14)
-      - name: fast_stochastic_rsi
+      - name: stoch_rsi_k
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fast Stochastic RSI (3, 3, 14, 14)
+          en: Stochastic RSI %K (3, 3, 14, 14)
           pt: IFR Estocástico Rápido (3, 3, 14, 14)
-      - name: commodity_channel_index_20
+      - name: adx_minus_di
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Negative Directional Indicator (14)
+          pt: Indicador Direcional Negativo (14)
+      - name: adx_plus_di
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Positive Directional Indicator (14)
+          pt: Indicador Direcional Positivo (14)
+      - name: cci20
         type: decimal
         precision: 36
         scale: 18
@@ -414,7 +357,7 @@ tables:
         locale:
           en: Commodity Channel Index (20)
           pt: Índice Canal de Commodities (20)
-      - name: relative_strength_index_7
+      - name: rsi7
         type: decimal
         precision: 36
         scale: 18
@@ -422,7 +365,7 @@ tables:
         locale:
           en: Relative Strength Index (7)
           pt: Índice de Força Relativa (7)
-      - name: relative_strength_index_14
+      - name: rsi
         type: decimal
         precision: 36
         scale: 18
@@ -430,7 +373,15 @@ tables:
         locale:
           en: Relative Strength Index (14)
           pt: Índice de Força Relativa (14)
-      - name: ichimoku_base_line
+      - name: adx
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Average Directional Index (14)
+          pt: Índice Direcional Médio (14)
+      - name: ichimoku_bline
         type: decimal
         precision: 36
         scale: 18
@@ -438,7 +389,7 @@ tables:
         locale:
           en: Ichimoku Base Line (9, 26, 52, 26)
           pt: Linha Base Ichimoku (9, 26, 52, 26)
-      - name: ichimoku_conversion_line
+      - name: ichimoku_cline
         type: decimal
         precision: 36
         scale: 18
@@ -446,39 +397,39 @@ tables:
         locale:
           en: Ichimoku Conversion Line (9, 26, 52, 26)
           pt: Linha de Conversão Ichimoku (9, 26, 52, 26)
-      - name: one_month_high
+      - name: high_1m
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: One Month High
+          en: 1-Month High
           pt: Máxima de 1 Mês
-      - name: fifty_two_week_high
+      - name: price_52_week_high
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fifty Two Week High
+          en: 52-Week High
           pt: Máxima de 52 Semanas
-      - name: six_month_high
+      - name: high_6m
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Six Month High
-          pt: Máxima de 6 Mês
-      - name: three_month_high
+          en: 6-Month High
+          pt: Máxima de Seis Meses
+      - name: high_3m
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Three Month High
+          en: 3-Month High
           pt: Máxima de Três Meses
-      - name: average_true_range_14
+      - name: atr
         type: decimal
         precision: 36
         scale: 18
@@ -486,7 +437,7 @@ tables:
         locale:
           en: Average True Range (14)
           pt: Média de Amplitude de Variação (14)
-      - name: average_daily_range_14
+      - name: adr
         type: decimal
         precision: 36
         scale: 18
@@ -494,7 +445,7 @@ tables:
         locale:
           en: Average Daily Range (14)
           pt: Média do Range Diário (14)
-      - name: hull_moving_average_9
+      - name: hullma9
         type: decimal
         precision: 36
         scale: 18
@@ -502,55 +453,63 @@ tables:
         locale:
           en: Hull Moving Average (9)
           pt: Média Móvel de Hull (9)
-      - name: exponential_moving_average_5
+      - name: ema5
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Exponential Moving Average (5)
-          pt: Média Móvel Exponencial (5)
-      - name: exponential_moving_average_10
+          pt: Média Movel Exponencial (5)
+      - name: ema10
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Exponential Moving Average (10)
-          pt: Média Móvel Exponencial (10)
-      - name: exponential_moving_average_20
+          pt: Média Movel Exponencial (10)
+      - name: ema20
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Exponential Moving Average (20)
-          pt: Média Móvel Exponencial (20)
-      - name: exponential_moving_average_30
+          pt: Média Movel Exponencial (20)
+      - name: ema30
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Exponential Moving Average (30)
-          pt: Média Móvel Exponencial (30)
-      - name: exponential_moving_average_50
+          pt: Média Movel Exponencial (30)
+      - name: ema50
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Exponential Moving Average (50)
-          pt: Média Móvel Exponencial (50)
-      - name: exponential_moving_average_100
+          pt: Média Movel Exponencial (50)
+      - name: ema100
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Exponential Moving Average (100)
-          pt: Média Móvel Exponencial (100)
-      - name: volume_weighted_moving_average_20
+          pt: Média Movel Exponencial (100)
+      - name: ema200
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Exponential Moving Average (200)
+          pt: Média Movel Exponencial (200)
+      - name: vwma
         type: decimal
         precision: 36
         scale: 18
@@ -558,55 +517,103 @@ tables:
         locale:
           en: Volume Weighted Moving Average (20)
           pt: Média Móvel Ponderada pelo Volume (20)
-      - name: simple_moving_average_5
+      - name: sma5
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Simple Moving Average (5)
-          pt: Média Móvel Simples (5)
-      - name: one_month_low
+          pt: Média Movel Simples (5)
+      - name: sma10
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: One Month Low
+          en: Simple Moving Average (10)
+          pt: Média Movel Simples (10)
+      - name: sma20
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Simple Moving Average (20)
+          pt: Média Movel Simples (20)
+      - name: sma30
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Simple Moving Average (30)
+          pt: Média Movel Simples (30)
+      - name: sma50
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Simple Moving Average (50)
+          pt: Média Movel Simples (50)
+      - name: sma100
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Simple Moving Average (100)
+          pt: Média Movel Simples (100)
+      - name: sma200
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Simple Moving Average (200)
+          pt: Média Movel Simples (200)
+      - name: low_1m
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: 1-Month Low
           pt: Mínima de 1 Mês
-      - name: fifty_two_week_low
+      - name: price_52_week_low
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fifty-Two Week Low
+          en: 52-Week Low
           pt: Mínima de 52 Semanas
-      - name: six_month_low
+      - name: low_6m
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Six Month Low
+          en: 6-Month Low
           pt: Mínima de Seis Meses
-      - name: three_month_low
+      - name: low_3m
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Three Month Low
+          en: 3-Month Low
           pt: Mínima de Três Meses
-      - name: available_currencies
+      - name: total_shares_outstanding
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Available Currencies
+          en: Available Coins
           pt: Moedas Disponíveis
-      - name: momentum_10
+      - name: mom
         type: decimal
         precision: 36
         scale: 18
@@ -614,7 +621,7 @@ tables:
         locale:
           en: Momentum (10)
           pt: Momentum (10)
-      - name: macd_level_12_26
+      - name: macd_macd
         type: decimal
         precision: 36
         scale: 18
@@ -622,7 +629,7 @@ tables:
         locale:
           en: MACD Level (12,26)
           pt: Nível MACD (12,26)
-      - name: awesome_oscillator
+      - name: ao
         type: decimal
         precision: 36
         scale: 18
@@ -630,292 +637,303 @@ tables:
         locale:
           en: Awesome Oscillator (AO)
           pt: Oscilador Maravilhoso (AO)
-      - name: standard
-        isNullable: true
-        locale:
-          en: Standard
-          pt: Padrão
-      - name: five_year_performance
+      - name: perf_5y
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Five Year Performance
+          en: 5-Year Performance
           pt: Performance de 5A
-      - name: all_time_performance
+      - name: perf_all
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: All Time Performance
+          en: All-Time Performance
           pt: Performance de Todos os Tempos
-      - name: camarilla_pivot_p
+      - name: pivot_m_camarilla_middle
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Camarilla Pivot P
-          pt: Pivô Camarilla P
-      - name: camarilla_pivot_r1
+          en: pivot_m_camarilla_middle
+          pt: pivot_m_camarilla_middle
+      - name: pivot_m_camarilla_r1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Camarilla Pivot R1
-          pt: Pivô Camarilla R1
-      - name: camarilla_pivot_r2
+          en: pivot_m_camarilla_r1
+          pt: pivot_m_camarilla_r1
+      - name: pivot_m_camarilla_r2
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Camarilla Pivot R2
-          pt: Pivô Camarilla R2
-      - name: camarilla_pivot_r3
+          en: pivot_m_camarilla_r2
+          pt: pivot_m_camarilla_r2
+      - name: pivot_m_camarilla_r3
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Camarilla Pivot R3
-          pt: Pivô Camarilla R3
-      - name: camarilla_pivot_s1
+          en: pivot_m_camarilla_r3
+          pt: pivot_m_camarilla_r3
+      - name: pivot_m_camarilla_s1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Camarilla Pivot S1
-          pt: Pivô Camarilla S1
-      - name: camarilla_pivot_s2
+          en: pivot_m_camarilla_s1
+          pt: pivot_m_camarilla_s1
+      - name: pivot_m_camarilla_s2
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Camarilla Pivot S2
-          pt: Pivô Camarilla S2
-      - name: camarilla_pivot_s3
+          en: pivot_m_camarilla_s2
+          pt: pivot_m_camarilla_s2
+      - name: pivot_m_camarilla_s3
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Camarilla Pivot S3
-          pt: Pivô Camarilla S3
-      - name: classic_pivot_p
+          en: pivot_m_camarilla_s3
+          pt: pivot_m_camarilla_s3
+      - name: pivot_m_classic_middle
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Classic Pivot P
-          pt: Pivô Clássico P
-      - name: classic_pivot_r1
+          en: pivot_m_classic_middle
+          pt: pivot_m_classic_middle
+      - name: pivot_m_classic_r1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Classic Pivot R1
-          pt: Pivô Clássico R1
-      - name: classic_pivot_r2
+          en: pivot_m_classic_r1
+          pt: pivot_m_classic_r1
+      - name: pivot_m_classic_r2
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Classic Pivot R2
-          pt: Pivô Clássico R2
-      - name: classic_pivot_r3
+          en: pivot_m_classic_r2
+          pt: pivot_m_classic_r2
+      - name: pivot_m_classic_r3
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Classic Pivot R3
-          pt: Pivô Clássico R3
-      - name: classic_pivot_s1
+          en: pivot_m_classic_r3
+          pt: pivot_m_classic_r3
+      - name: pivot_m_classic_s1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Classic Pivot S1
-          pt: Pivô Clássico S1
-      - name: classic_pivot_s2
+          en: pivot_m_classic_s1
+          pt: pivot_m_classic_s1
+      - name: pivot_m_classic_s2
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Classic Pivot S2
-          pt: Pivô Clássico S2
-      - name: classic_pivot_s3
+          en: pivot_m_classic_s2
+          pt: pivot_m_classic_s2
+      - name: pivot_m_classic_s3
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Classic Pivot S3
-          pt: Pivô Clássico S3
-      - name: dm_pivot_p
+          en: pivot_m_classic_s3
+          pt: pivot_m_classic_s3
+      - name: pivot_m_demark_middle
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: DM Pivot P
-          pt: Pivô DM P
-      - name: dm_pivot_r1
+          en: pivot_m_demark_middle
+          pt: pivot_m_demark_middle
+      - name: pivot_m_demark_r1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: DM Pivot R1
-          pt: Pivô DM R1
-      - name: dm_pivot_s1
+          en: pivot_m_demark_r1
+          pt: pivot_m_demark_r1
+      - name: pivot_m_demark_s1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: DM Pivot S1
-          pt: Pivô DM S1
-      - name: fibonacci_pivot_p
+          en: pivot_m_demark_s1
+          pt: pivot_m_demark_s1
+      - name: pivot_m_fibonacci_middle
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fibonacci Pivot P
-          pt: Pivô Fibonacci P
-      - name: fibonacci_pivot_r1
+          en: pivot_m_fibonacci_middle
+          pt: pivot_m_fibonacci_middle
+      - name: pivot_m_fibonacci_r1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fibonacci Pivot R1
-          pt: Pivô Fibonacci R1
-      - name: fibonacci_pivot_r2
+          en: pivot_m_fibonacci_r1
+          pt: pivot_m_fibonacci_r1
+      - name: pivot_m_fibonacci_r2
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fibonacci Pivot R2
-          pt: Pivô Fibonacci R2
-      - name: fibonacci_pivot_r3
+          en: pivot_m_fibonacci_r2
+          pt: pivot_m_fibonacci_r2
+      - name: pivot_m_fibonacci_r3
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fibonacci Pivot R3
-          pt: Pivô Fibonacci R3
-      - name: fibonacci_pivot_s1
+          en: pivot_m_fibonacci_r3
+          pt: pivot_m_fibonacci_r3
+      - name: pivot_m_fibonacci_s1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fibonacci Pivot S1
-          pt: Pivô Fibonacci S1
-      - name: fibonacci_pivot_s2
+          en: pivot_m_fibonacci_s1
+          pt: pivot_m_fibonacci_s1
+      - name: pivot_m_fibonacci_s2
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fibonacci Pivot S2
-          pt: Pivô Fibonacci S2
-      - name: fibonacci_pivot_s3
+          en: pivot_m_fibonacci_s2
+          pt: pivot_m_fibonacci_s2
+      - name: pivot_m_fibonacci_s3
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Fibonacci Pivot S3
-          pt: Pivô Fibonacci S3
-      - name: woodie_pivot_p
+          en: pivot_m_fibonacci_s3
+          pt: pivot_m_fibonacci_s3
+      - name: pivot_m_woodie_middle
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Woodie Pivot P
-          pt: Pivô Woodie P
-      - name: woodie_pivot_r1
+          en: pivot_m_woodie_middle
+          pt: pivot_m_woodie_middle
+      - name: pivot_m_woodie_r1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Woodie Pivot R1
-          pt: Pivô Woodie R1
-      - name: woodie_pivot_r2
+          en: pivot_m_woodie_r1
+          pt: pivot_m_woodie_r1
+      - name: pivot_m_woodie_r2
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Woodie Pivot R2
-          pt: Pivô Woodie R2
-      - name: woodie_pivot_r3
+          en: pivot_m_woodie_r2
+          pt: pivot_m_woodie_r2
+      - name: pivot_m_woodie_r3
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Woodie Pivot R3
-          pt: Pivô Woodie R3
-      - name: woodie_pivot_s1
+          en: pivot_m_woodie_r3
+          pt: pivot_m_woodie_r3
+      - name: pivot_m_woodie_s1
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Woodie Pivot S1
-          pt: Pivô Woodie S1
-      - name: woodie_pivot_s2
+          en: pivot_m_woodie_s1
+          pt: pivot_m_woodie_s1
+      - name: pivot_m_woodie_s2
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Woodie Pivot S2
-          pt: Pivô Woodie S2
-      - name: woodie_pivot_s3
+          en: pivot_m_woodie_s2
+          pt: pivot_m_woodie_s2
+      - name: pivot_m_woodie_s3
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Woodie Pivot S3
-          pt: Pivô Woodie S3
-      - name: volume_weighted_average_price
+          en: pivot_m_woodie_s3
+          pt: pivot_m_woodie_s3
+      - name: relative_volume_intraday_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: relative_volume_intraday_5
+          pt: relative_volume_intraday_5
+      - name: close
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Close
+          pt: Fechamento
+      - name: vwap
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
           en: Volume Weighted Average Price
-          pt: Preço Médio Ponderado pelo Volume
-      - name: williams_percent_range_14
+          pt: Preço Médio Ponderado por Volume
+      - name: w_r
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Williams Percent Range (14)
+          en: Williams %R (14)
           pt: Range Percentual de Williams (14)
-      - name: parabolic_sar
+      - name: p_sar
         type: decimal
         precision: 36
         scale: 18
@@ -923,7 +941,7 @@ tables:
         locale:
           en: Parabolic SAR
           pt: SAR Parabólica
-      - name: macd_signal_12_26
+      - name: macd_signal
         type: decimal
         precision: 36
         scale: 18
@@ -931,7 +949,7 @@ tables:
         locale:
           en: MACD Signal (12,26)
           pt: Sinal MACD (12,26)
-      - name: rate_of_change_9
+      - name: roc
         type: decimal
         precision: 36
         scale: 18
@@ -939,39 +957,47 @@ tables:
         locale:
           en: Rate of Change (9)
           pt: Taxa de Mudança (9)
-      - name: total_units_currencies
+      - name: recommend_all
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Total Units (Currencies)
+          en: Technical Rating
+          pt: Classificação Técnica
+      - name: total_shares_diluted
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Total Units (coins)
           pt: Total de Unidades (moedas)
-      - name: ultimate_oscillator
+      - name: uo
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Ultimate Oscillator
-          pt: Oscilador Final
-      - name: diluted_market_value
+          en: Ultimate Oscillator (7, 14, 28)
+          pt: Ultimate Oscillator (7, 14, 28)
+      - name: market_cap_diluted_calc
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Diluted Market Value
+          en: Diluted Market Cap
           pt: Valor de Mercado Diluído
-      - name: percentage_change
+      - name: change
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Percentage Change
+          en: Change %
           pt: Variação %
-      - name: change
+      - name: change_abs
         type: decimal
         precision: 36
         scale: 18
@@ -979,127 +1005,15 @@ tables:
         locale:
           en: Change
           pt: Variação
-      - name: change_1h_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1h, %
-          pt: Variação 1h, %
-      - name: change_1h
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1h
-          pt: Variação 1h
-      - name: change_1minute_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1m, %
-          pt: Variação 1m, %
-      - name: change_1minute
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1m
-          pt: Variação 1m
-      - name: change_1month_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1M, %
-          pt: Variação 1M, %
-      - name: change_1month
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1M
-          pt: Variação 1M
-      - name: change_1week_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1W, %
-          pt: Variação 1S, %
-      - name: change_1week
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 1W
-          pt: Variação 1S
-      - name: change_4hour_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 4h, %
-          pt: Variação 4h, %
-      - name: change_4hour
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 4h
-          pt: Variação 4h
-      - name: change_5minute_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 5m, %
-          pt: Variação 5m, %
-      - name: change_5minute
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 5m
-          pt: Variação 5m
-      - name: change_15minute_percent
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 15m, %
-          pt: Variação 15m, %
-      - name: change_15minute
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Change 15m
-          pt: Variação 15m
-      - name: percentage_change_from_open
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Percentage Change from Open
-          pt: Variação % da Abertura
       - name: change_from_open
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Change % from Open
+          pt: Variação % da Abertura
+      - name: change_from_open_abs
         type: decimal
         precision: 36
         scale: 18
@@ -1107,23 +1021,23 @@ tables:
         locale:
           en: Change from Open
           pt: Variação da Abertura
-      - name: percentage_change_in_24h_volume
+      - name: ask
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Percentage Change in 24h Volume
-          pt: Variação em % do Volume de 24h
-      - name: sell
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Sell
+          en: Ask
           pt: Venda
-      - name: monthly_volatility
+      - name: volatility_d
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Daily Volatility
+          pt: Volatilidade Diária
+      - name: volatility_m
         type: decimal
         precision: 36
         scale: 18
@@ -1131,7 +1045,7 @@ tables:
         locale:
           en: Monthly Volatility
           pt: Volatilidade Mensal
-      - name: weekly_volatility
+      - name: volatility_w
         type: decimal
         precision: 36
         scale: 18
@@ -1147,122 +1061,480 @@ tables:
         locale:
           en: Volume
           pt: Volume
-      - name: volume_24h_usd
+      - name: average_volume_10d_calc
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Volume 24h in USD
-          pt: Volume 24h em USD
-      - name: average_volume_10_days
-        type: decimal
-        precision: 36
-        scale: 18
-        isNullable: true
-        locale:
-          en: Average Volume (10 Days)
+          en: Average Volume (10 days)
           pt: Volume Médio (10 dias)
-      - name: average_volume_30_days
+      - name: average_volume_30d_calc
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Average Volume (30 Days)
+          en: Average Volume (30 days)
           pt: Volume Médio (30 dias)
-      - name: average_volume_60_days
+      - name: average_volume_60d_calc
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Average Volume (60 Days)
+          en: Average Volume (60 days)
           pt: Volume Médio (60 Dias)
-      - name: average_volume_90_days
+      - name: average_volume_90d_calc
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Average Volume (90 Days)
+          en: Average Volume (90 days)
           pt: Volume Médio (90 Dias)
-      - name: traded_volume
+      - name: total_value_traded
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Traded Volume
-          pt: Volume Negociado
-      - name: relative_volume
+          en: Total Value Traded
+          pt: Valor Total Negociado
+      - name: relative_volume_10d_calc
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Relative Volume
-          pt: Volume Relativo
-      - name: time_relative_volume
+          en: Relative Volume (10 days)
+          pt: Volume Relativo (10 Dias)
+      - name: high
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Time Relative Volume
-          pt: Volume Relativo no Tempo
-      - name: maximum
+          en: High
+          pt: Alta
+      - name: low
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Maximum
-          pt: Máx
-      - name: minimum
+          en: Low
+          pt: Baixa
+      - name: description
+        isNullable: true
+        locale:
+          en: Description
+          pt: Descrição
+      - name: type
+        isNullable: true
+        locale:
+          en: Type
+          pt: Tipo
+      - name: subtype
+        isNullable: true
+        locale:
+          en: Subtype
+          pt: Subtipo
+      - name: update_mode
+        isNullable: true
+        locale:
+          en: Update Mode
+          pt: Modo de Atualização
+      - name: pricescale
         type: decimal
         precision: 36
         scale: 18
         isNullable: true
         locale:
-          en: Minimum
-          pt: Mín
-      - name: moving_averages_rating_id
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
+          en: Price Scale
+          pt: Escala de Preço
+      - name: minmov
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
-          en: Moving Averages Rating
-          pt: Classificação das Médias Móveis
-      - name: oscillators_rating_id
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
+          en: Minimum Move
+          pt: Movimento Mínimo
+      - name: fractional
+        isNullable: true
         locale:
-          en: Oscillators Rating
-          pt: Classificação dos Osciladores
-      - name: technical_rating_id
-        type: fk
-        references:
-          table: trend_type
-          column: id
-          onDelete: CASCADE
+          en: Fractional
+          pt: Fracionário
+      - name: minmove2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
-          en: Technical Rating
-          pt: Classificação Técnica
-      - name: stock_exchange_id
-        type: fk
-        references:
-          table: stock_exchange
-          column: id
-          onDelete: CASCADE
+          en: Minimum Move 2
+          pt: Movimento Mínimo 2
+      - name: rec_bbpower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
-          en: Stock Exchange
-          pt: Bolsa
+          en: BBPower Recommendation
+          pt: Recomendação BBPower
+      - name: stoch_k_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Stochastic K[1]
+          pt: Estocástico K[1]
+      - name: stoch_d_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Stochastic D[1]
+          pt: Estocástico D[1]
+      - name: rec_stoch_rsi
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Stochastic RSI Recommendation
+          pt: Recomendação Estocástico RSI
+      - name: cci20_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: CCI20[1]
+          pt: CCI20[1]
+      - name: rsi7_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: RSI7[1]
+          pt: RSI7[1]
+      - name: rsi_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: RSI[1]
+          pt: RSI[1]
+      - name: adx_plus_di_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: ADX+DI[1]
+          pt: ADX+DI[1]
+      - name: adx_minus_di_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: ADX-DI[1]
+          pt: ADX-DI[1]
+      - name: rec_ichimoku
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Ichimoku Recommendation
+          pt: Recomendação Ichimoku
+      - name: rec_hullma9
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Hull MA9 Recommendation
+          pt: Recomendação Hull MA9
+      - name: rec_vwma
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: VWMA Recommendation
+          pt: Recomendação VWMA
+      - name: mom_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Momentum[1]
+          pt: Momentum[1]
+      - name: ao_1_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: AO[1]
+          pt: AO[1]
+      - name: ao_2_
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: AO[2]
+          pt: AO[2]
+      - name: candle_doji
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Doji
+          pt: Candle Doji
+      - name: candle_abandonedbaby_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Abandoned Baby Bullish
+          pt: Candle Abandoned Baby Alta
+      - name: candle_abandonedbaby_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Abandoned Baby Bearish
+          pt: Candle Abandoned Baby Baixa
+      - name: candle_doji_dragonfly
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Doji Dragonfly
+          pt: Candle Doji Libélula
+      - name: candle_hangingman
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Hanging Man
+          pt: Candle Homem Enforcado
+      - name: candle_engulfing_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Engulfing Bullish
+          pt: Candle Engulfing Alta
+      - name: candle_engulfing_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Engulfing Bearish
+          pt: Candle Engulfing Baixa
+      - name: candle_shootingstar
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Shooting Star
+          pt: Candle Estrela Cadente
+      - name: candle_morningstar
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Morning Star
+          pt: Candle Estrela da Manhã
+      - name: candle_eveningstar
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Evening Star
+          pt: Candle Estrela da Noite
+      - name: candle_doji_gravestone
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Doji Gravestone
+          pt: Candle Doji Lápide
+      - name: candle_harami_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Harami Bullish
+          pt: Candle Harami Alta
+      - name: candle_harami_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Harami Bearish
+          pt: Candle Harami Baixa
+      - name: candle_kicking_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Kicking Bullish
+          pt: Candle Kicking Alta
+      - name: candle_kicking_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Kicking Bearish
+          pt: Candle Kicking Baixa
+      - name: candle_longshadow_lower
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Long Shadow Lower
+          pt: Candle Longa Sombra Inferior
+      - name: candle_longshadow_upper
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Long Shadow Upper
+          pt: Candle Longa Sombra Superior
+      - name: candle_hammer
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Hammer
+          pt: Candle Martelo
+      - name: candle_invertedhammer
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Inverted Hammer
+          pt: Candle Martelo Invertido
+      - name: candle_marubozu_white
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Marubozu White
+          pt: Candle Marubozu Branco
+      - name: candle_marubozu_black
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Marubozu Black
+          pt: Candle Marubozu Preto
+      - name: candle_spinningtop_black
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Spinning Top Black
+          pt: Candle Topo Giratório Preto
+      - name: candle_spinningtop_white
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle Spinning Top White
+          pt: Candle Topo Giratório Branco
+      - name: candle_3blackcrows
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle 3 Black Crows
+          pt: Candle Três Corvos Negros
+      - name: candle_tristar_bullish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle TriStar Bullish
+          pt: Candle TriStar Alta
+      - name: candle_tristar_bearish
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle TriStar Bearish
+          pt: Candle TriStar Baixa
+      - name: candle_3whitesoldiers
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Candle 3 White Soldiers
+          pt: Candle Três Soldados Brancos
+      - name: rec_wr
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: WR Recommendation
+          pt: Recomendação WR
+      - name: rec_uo
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: UO Recommendation
+          pt: Recomendação UO
+      - type: created_at
+      - type: updated_at
+  stock_exchange:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
   banking:
@@ -1283,7 +1555,7 @@ tables:
           pt: Usuário
       - type: created_at
       - type: updated_at
-  operation:
+  simulation:
     columns:
       - type: pk
       - name: user_id
@@ -1363,9 +1635,102 @@ tables:
       - name: stop_loss
         type: int
       - name: start_time
-        type: datetime
+        type: timestamp
       - name: end_time
-        type: datetime
+        type: timestamp
+  operation:
+    columns:
+      - type: pk
+      - type: fk
+        isNullable: true
+        name: simulation_id
+        references:
+          table: simulation
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Simulation
+          pt: Simulação
+      - name: user_id
+        type: fk
+        references:
+          table: user
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: User
+          pt: Usuário
+      - name: banking_id
+        type: fk
+        references:
+          table: banking
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Banking
+          pt: Banca
+      - name: stock_exchange_id
+        type: fk
+        references:
+          table: stock_exchange
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Stock Exchange
+          pt: Bolsa
+      - name: strategy_id
+        type: fk
+        references:
+          table: strategy
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Strategy
+          pt: Estratégia
+      - name: trade_signal_type_id
+        type: fk
+        references:
+          table: trade_signal_type
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Trade Signal Type
+          pt: Tipo de Sinal de Negócio
+      - name: coin_id
+        type: fk
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Coin
+          pt: Moeda
+      - name: layers
+        locale:
+          en: Layers
+          pt: Camadas
+        type: int
+        unsigned: true
+      - name: leverage
+        locale:
+          en: Leverage
+          pt: Alavancagem
+        type: decimal
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+      - name: margin_used
+        type: int
+      - name: first_order
+        type: int
+      - name: mmr
+        type: int
+      - name: stop_loss
+        type: int
+      - name: start_time
+        type: timestamp
+      - name: end_time
+        type: timestamp
   strategy:
     columns:
       - type: pk
@@ -1386,170 +1751,625 @@ tables:
           pt: Nome
       - type: created_at
       - type: updated_at
+  free_balance_condition:
+    columns:
+      - type: pk
+      - name: capital
+        type: int
+        locale:
+          en: Capital
+          pt: Capital
+      - name: coins_count
+        type: int
+        locale:
+          en: Coins Count
+          pt: Contagem de Moedas
+      - type: created_at
+      - type: updated_at
+  mmr:
+    columns:
+      - type: pk
+      - name: leverage
+        type: int
+        locale:
+          en: Leverage
+          pt: Alavancagem
+      - name: percentage
+        type: decimal
+        locale:
+          en: Percentage
+          pt: Porcentagem
+      - name: mmr_percentage
+        type: decimal
+        locale:
+          en: MMR Percentage
+          pt: Porcentagem MMR
+      - name: additional_margin
+        type: decimal
+        locale:
+          en: Additional Margin
+          pt: Margem Adicional
+      - type: created_at
+      - type: updated_at
+  bot:
+    columns:
+      - type: pk
+      - name: name
+        locale:
+          en: Name
+          pt: Nome
+      - name: description
+        isNullable: true
+        locale:
+          en: Description
+          pt: Descrição
+      - name: cookies
+        type: text
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+  fear_and_greed:
+    columns:
+      - type: pk
+      - name: value
+        type: int
+      - name: value_classification
+      - type: created_at
+      - type: updated_at
+  global_metric:
+    columns:
+      - type: pk
+      - name: btc_dominance
+        type: decimal
+        precision: 36
+        scale: 18
+      - name: btc_dominance_24h_percentage_change
+        type: decimal
+        precision: 36
+        scale: 18
+      - name: total_market_cap_yesterday_percentage_change
+        type: decimal
+        precision: 36
+        scale: 18
+      - name: total_market_cap
+        type: decimal
+        precision: 36
+        scale: 18
+      - type: created_at
+      - type: updated_at
+  gainers_loser:
+    columns:
+      - type: pk
+      - name: coin_id
+        type: fk
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+      - name: percent_change_24h
+        type: decimal
+        precision: 36
+        scale: 18
+      - name: price
+        type: decimal
+        precision: 36
+        scale: 18
+      - type: created_at
+      - type: updated_at
+  top_coin_type:
+    columns:
+      - type: pk
+      - name: name
+      - type: created_at
+      - type: updated_at
+  top_coin:
+    columns:
+      - type: pk
+      - type: fk
+        name: coin_id
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: type_id
+        references:
+          table: top_coin_type
+          column: id
+          onDelete: CASCADE
+      - name: order
+        type: int
+      - type: created_at
+      - type: updated_at
 data:
+  bot:
+    - name: Bot 1
+      description: Bot 1 description
+      cookies: cookie1=value1; cookie2=value2
+  coin_variation_type:
+    - name: UP
+    - name: DOWN
+  mmr:
+    - leverage: 3
+      percentage: 33.33
+      mmr_percentage: 15
+      additional_margin: 1
+    - leverage: 5
+      percentage: 20
+      mmr_percentage: 13
+      additional_margin: 1.5
+    - leverage: 10
+      percentage: 10
+      mmr_percentage: 10
+      additional_margin: 2
+    - leverage: 20
+      percentage: 5
+      mmr_percentage: 8
+      additional_margin: 2.5
+  free_balance_condition:
+    - capital: 0
+      coins_count: 0
+    - capital: 20
+      coins_count: 2
+    - capital: 50
+      coins_count: 3
+    - capital: 100
+      coins_count: 3
+    - capital: 200
+      coins_count: 4
+    - capital: 300
+      coins_count: 5
+    - capital: 400
+      coins_count: 6
+    - capital: 500
+      coins_count: 6
+    - capital: 600
+      coins_count: 7
+    - capital: 700
+      coins_count: 7
+    - capital: 800
+      coins_count: 7
+    - capital: 900
+      coins_count: 7
+    - capital: 10000
+      coins_count: 8
+    - capital: 11000
+      coins_count: 8
+    - capital: 12000
+      coins_count: 8
+    - capital: 13000
+      coins_count: 8
+    - capital: 14000
+      coins_count: 8
+    - capital: 15000
+      coins_count: 9
+    - capital: 16000
+      coins_count: 9
+    - capital: 17000
+      coins_count: 9
+    - capital: 18000
+      coins_count: 9
+    - capital: 19000
+      coins_count: 9
+    - capital: 20000
+      coins_count: 9
+    - capital: 21000
+      coins_count: 9
+    - capital: 22000
+      coins_count: 9
+    - capital: 23000
+      coins_count: 9
+    - capital: 24000
+      coins_count: 10
+    - capital: 25000
+      coins_count: 10
+    - capital: 26000
+      coins_count: 10
+    - capital: 27000
+      coins_count: 10
+    - capital: 28000
+      coins_count: 10
+    - capital: 29000
+      coins_count: 10
+    - capital: 30000
+      coins_count: 10
   route:
-    - url: /quotation-type
+    - url: /coin
       method: GET
       relations: &a1
         role:
           - where:
               slug: admin
-    - url: /quotation-type
+    - url: /coin
       method: POST
       relations: *a1
-    - url: /quotation-type/:id
+    - url: /coin/:id
       method: GET
       relations: *a1
-    - url: /quotation-type/:id
+    - url: /coin/:id
       method: PATCH
       relations: *a1
-    - url: /quotation-type
+    - url: /coin
       method: DELETE
       relations: *a1
-    - url: /coin
+    - url: /stock-exchange
       method: GET
       relations: &a2
         role:
           - where:
               slug: admin
-    - url: /coin
+    - url: /stock-exchange
       method: POST
       relations: *a2
-    - url: /coin/:id
+    - url: /stock-exchange/:id
       method: GET
       relations: *a2
-    - url: /coin/:id
+    - url: /stock-exchange/:id
       method: PATCH
       relations: *a2
-    - url: /coin
+    - url: /stock-exchange
       method: DELETE
       relations: *a2
-    - url: /stock-exchange
+    - url: /trend-type
       method: GET
       relations: &a3
         role:
           - where:
               slug: admin
-    - url: /stock-exchange
+    - url: /trend-type
       method: POST
       relations: *a3
-    - url: /stock-exchange/:id
+    - url: /trend-type/:id
       method: GET
       relations: *a3
-    - url: /stock-exchange/:id
+    - url: /trend-type/:id
       method: PATCH
       relations: *a3
-    - url: /stock-exchange
+    - url: /trend-type
       method: DELETE
       relations: *a3
-    - url: /trend-type
+    - url: /quotation
       method: GET
       relations: &a4
         role:
           - where:
               slug: admin
-    - url: /trend-type
+    - url: /quotation
       method: POST
       relations: *a4
-    - url: /trend-type/:id
+    - url: /quotation/:id
       method: GET
       relations: *a4
-    - url: /trend-type/:id
+    - url: /quotation/:id
       method: PATCH
       relations: *a4
-    - url: /trend-type
+    - url: /quotation
       method: DELETE
       relations: *a4
-    - url: /quotation
+    - url: /banking
       method: GET
       relations: &a5
         role:
           - where:
               slug: admin
-    - url: /quotation
+    - url: /banking
       method: POST
       relations: *a5
-    - url: /quotation/:id
+    - url: /banking/:id
       method: GET
       relations: *a5
-    - url: /quotation/:id
+    - url: /banking/:id
       method: PATCH
       relations: *a5
-    - url: /quotation
+    - url: /banking
       method: DELETE
       relations: *a5
-    - url: /banking
+    - url: /operation
       method: GET
       relations: &a6
         role:
           - where:
               slug: admin
-    - url: /banking
+    - url: /operation
       method: POST
       relations: *a6
-    - url: /banking/:id
+    - url: /operation/:id
       method: GET
       relations: *a6
-    - url: /banking/:id
+    - url: /operation/:id
       method: PATCH
       relations: *a6
-    - url: /banking
+    - url: /operation
       method: DELETE
       relations: *a6
-    - url: /operation
+    - url: /strategy
       method: GET
       relations: &a7
         role:
           - where:
               slug: admin
-    - url: /operation
+    - url: /strategy
       method: POST
       relations: *a7
-    - url: /operation/:id
+    - url: /strategy/:id
       method: GET
       relations: *a7
-    - url: /operation/:id
+    - url: /strategy/:id
       method: PATCH
       relations: *a7
-    - url: /operation
+    - url: /strategy
       method: DELETE
       relations: *a7
-    - url: /strategy
+    - url: /mmr
       method: GET
       relations: &a8
         role:
           - where:
               slug: admin
-    - url: /strategy
+    - url: /mmr
       method: POST
       relations: *a8
-    - url: /strategy/:id
+    - url: /mmr/:id
       method: GET
       relations: *a8
-    - url: /strategy/:id
+    - url: /mmr/:id
       method: PATCH
       relations: *a8
-    - url: /strategy
+    - url: /mmr
       method: DELETE
       relations: *a8
-    - url: /trade-signal-type
+    - url: /bot
       method: GET
       relations: &a9
         role:
           - where:
               slug: admin
-    - url: /trade-signal-type
+    - url: /bot
       method: POST
       relations: *a9
-    - url: /trade-signal-type/:id
+    - url: /bot/:id
       method: GET
       relations: *a9
-    - url: /trade-signal-type/:id
+    - url: /bot/:id
       method: PATCH
       relations: *a9
-    - url: /trade-signal-type
+    - url: /bot
       method: DELETE
       relations: *a9
+    - url: /quotation-request-type
+      method: GET
+      relations: &a10
+        role:
+          - where:
+              slug: admin
+    - url: /quotation-request-type
+      method: POST
+      relations: *a10
+    - url: /quotation-request-type/:id
+      method: GET
+      relations: *a10
+    - url: /quotation-request-type/:id
+      method: PATCH
+      relations: *a10
+    - url: /quotation-request-type
+      method: DELETE
+      relations: *a10
+    - url: /fear-and-greed
+      method: GET
+      relations: &a11
+        role:
+          - where:
+              slug: admin
+    - url: /fear-and-greed
+      method: POST
+      relations: *a11
+    - url: /fear-and-greed/:id
+      method: GET
+      relations: *a11
+    - url: /fear-and-greed/:id
+      method: PATCH
+      relations: *a11
+    - url: /fear-and-greed
+      method: DELETE
+      relations: *a11
+    - url: /global-metric
+      method: GET
+      relations: &a12
+        role:
+          - where:
+              slug: admin
+    - url: /global-metric
+      method: POST
+      relations: *a12
+    - url: /global-metric/:id
+      method: GET
+      relations: *a12
+    - url: /global-metric/:id
+      method: PATCH
+      relations: *a12
+    - url: /global-metric
+      method: DELETE
+      relations: *a12
+    - url: /gainers-loser
+      method: GET
+      relations: &a13
+        role:
+          - where:
+              slug: admin
+    - url: /gainers-loser
+      method: POST
+      relations: *a13
+    - url: /gainers-loser/:id
+      method: GET
+      relations: *a13
+    - url: /gainers-loser/:id
+      method: PATCH
+      relations: *a13
+    - url: /gainers-loser
+      method: DELETE
+      relations: *a13
+    - url: /top-coins
+      method: GET
+      relations: &a14
+        role:
+          - where:
+              slug: admin
+    - url: /top-coins
+      method: POST
+      relations: *a14
+    - url: /top-coins/:id
+      method: GET
+      relations: *a14
+    - url: /top-coins/:id
+      method: PATCH
+      relations: *a14
+    - url: /top-coins
+      method: DELETE
+      relations: *a14
+    - url: /trade-signal-type
+      method: GET
+      relations: &a15
+        role:
+          - where:
+              slug: admin
+    - url: /trade-signal-type
+      method: POST
+      relations: *a15
+    - url: /trade-signal-type/:id
+      method: GET
+      relations: *a15
+    - url: /trade-signal-type/:id
+      method: PATCH
+      relations: *a15
+    - url: /trade-signal-type
+      method: DELETE
+      relations: *a15
+    - url: /free-balance-condition
+      method: GET
+      relations: &a16
+        role:
+          - where:
+              slug: admin
+    - url: /free-balance-condition
+      method: POST
+      relations: *a16
+    - url: /free-balance-condition/:id
+      method: GET
+      relations: *a16
+    - url: /free-balance-condition/:id
+      method: PATCH
+      relations: *a16
+    - url: /free-balance-condition
+      method: DELETE
+      relations: *a16
+    - url: /simulation
+      method: GET
+      relations: &a17
+        role:
+          - where:
+              slug: admin
+    - url: /simulation
+      method: POST
+      relations: *a17
+    - url: /simulation/:id
+      method: GET
+      relations: *a17
+    - url: /simulation/:id
+      method: PATCH
+      relations: *a17
+    - url: /simulation
+      method: DELETE
+      relations: *a17
+    - url: /top-coin-type
+      method: GET
+      relations: &a18
+        role:
+          - where:
+              slug: admin
+    - url: /top-coin-type
+      method: POST
+      relations: *a18
+    - url: /top-coin-type/:id
+      method: GET
+      relations: *a18
+    - url: /top-coin-type/:id
+      method: PATCH
+      relations: *a18
+    - url: /top-coin-type
+      method: DELETE
+      relations: *a18
+    - url: /top-coin
+      method: GET
+      relations: &a19
+        role:
+          - where:
+              slug: admin
+    - url: /top-coin
+      method: POST
+      relations: *a19
+    - url: /top-coin/:id
+      method: GET
+      relations: *a19
+    - url: /top-coin/:id
+      method: PATCH
+      relations: *a19
+    - url: /top-coin
+      method: DELETE
+      relations: *a19
+    - url: /top-100
+      method: GET
+      relations: &a20
+        role:
+          - where:
+              slug: admin
+    - url: /top-100
+      method: POST
+      relations: *a20
+    - url: /top-100/:id
+      method: GET
+      relations: *a20
+    - url: /top-100/:id
+      method: PATCH
+      relations: *a20
+    - url: /top-100
+      method: DELETE
+      relations: *a20
+    - url: /coin-variation-type
+      method: GET
+      relations: &a21
+        role:
+          - where:
+              slug: admin
+    - url: /coin-variation-type
+      method: POST
+      relations: *a21
+    - url: /coin-variation-type/:id
+      method: GET
+      relations: *a21
+    - url: /coin-variation-type/:id
+      method: PATCH
+      relations: *a21
+    - url: /coin-variation-type
+      method: DELETE
+      relations: *a21
+    - url: /top-variation
+      method: GET
+      relations: &a22
+        role:
+          - where:
+              slug: admin
+    - url: /top-variation
+      method: POST
+      relations: *a22
+    - url: /top-variation/:id
+      method: GET
+      relations: *a22
+    - url: /top-variation/:id
+      method: PATCH
+      relations: *a22
+    - url: /top-variation
+      method: DELETE
+      relations: *a22
   menu:
     - url: /cbc
       icon: coin
@@ -1557,19 +2377,6 @@ data:
         en: CoinbitClub
         pt: CoinbitClub
       slug: /cbc
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Quotation Type
-        pt: Tipo de Cotação
-      icon: adjustments-dollar
-      url: /cbc/quotation-type
-      slug: quotation-type
-      menu_id:
-        where:
-          slug: /cbc
       relations:
         role:
           - where:
@@ -1666,30 +2473,126 @@ data:
           - where:
               slug: admin
     - name:
+        en: MMR
+        pt: MMR
+      icon: file
+      url: /mmr
+      slug: mmr
+      relations: *a8
+    - name:
+        en: Bot
+        pt: Bot
+      icon: file
+      url: /bot
+      slug: bot
+      relations: *a9
+    - name:
+        en: Quotation Request Type
+        pt: Quotation Request Type
+      icon: file
+      url: /quotation-request-type
+      slug: quotation-request-type
+      relations: *a10
+    - name:
         en: TradeSignalType
-        pt: Tipo de Sinal de Trade
-      icon: brand-stocktwits
-      url: /cbc/trade-signal-type
+        pt: TradeSignalType
+      icon: file
+      url: /trade-signal-type
       slug: trade-signal-type
-      menu_id:
-        where:
-          slug: /cbc
+      relations: *a15
+    - name:
+        en: FreeBalanceCondition
+        pt: FreeBalanceCondition
+      icon: file
+      url: /free-balance-condition
+      slug: free-balance-condition
+      relations: *a16
+    - name:
+        en: Simulation
+        pt: Simulation
+      icon: file
+      url: /simulation
+      slug: simulation
+      relations: *a17
+    - name:
+        en: FearAndGreed
+        pt: FearAndGreed
+      icon: file
+      url: /fear-and-greed
+      slug: fear-and-greed
       relations:
         role:
           - where:
               slug: admin
+    - name:
+        en: GlobalMetric
+        pt: GlobalMetric
+      icon: file
+      url: /global-metric
+      slug: global-metric
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: GainersLoser
+        pt: GainersLoser
+      icon: file
+      url: /gainers-loser
+      slug: gainers-loser
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: TopCoins
+        pt: TopCoins
+      icon: file
+      url: /top-coins
+      slug: top-coins
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: TopCoinType
+        pt: TopCoinType
+      icon: file
+      url: /top-coin-type
+      slug: top-coin-type
+      relations: *a18
+    - name:
+        en: TopCoin
+        pt: TopCoin
+      icon: file
+      url: /top-coin
+      slug: top-coin
+      relations: *a19
+    - name:
+        en: Top100
+        pt: Top100
+      icon: file
+      url: /top-100
+      slug: top-100
+      relations: *a20
+    - name:
+        en: CoinVariationType
+        pt: CoinVariationType
+      icon: file
+      url: /coin-variation-type
+      slug: coin-variation-type
+      relations: *a21
+    - name:
+        en: TopVariation
+        pt: TopVariation
+      icon: file
+      url: /top-variation
+      slug: top-variation
+      relations: *a22
   screen:
     - name:
-        en: Quotation Type
-        pt: Tipo de Cotação
-      slug: /cbc/quotation-type
-      description:
-        en: Screen to manage quotation type
-        pt: Tela para gerenciar tipos de cotação
-      icon: adjustments-dollar
-    - name:
         en: Coin
-        pt: Coin
+        pt: Moeda
       slug: /cbc/coin
       description:
         en: Screen to manage coin
@@ -1744,22 +2647,6 @@ data:
         pt: Tela para gerenciar estratégia
       icon: pencil-bolt
     - name:
-        en: Trade Signal Type
-        pt: Tipo de Sinal de Trade
-      slug: /cbc/trade-signal-type
-      description:
-        en: Screen to manage trade signal type
-        pt: Tela para gerenciar tipo de sinal de trade
-      icon: brand-stocktwits
-    - name:
-        en: QuotationType
-        pt: QuotationType
-      slug: quotation-type
-      description:
-        en: Screen to manage quotation_type
-        pt: Tela para gerenciar quotation_type
-      icon: file
-    - name:
         en: Coin
         pt: Coin
       slug: coin
@@ -1768,20 +2655,12 @@ data:
         pt: Tela para gerenciar coin
       icon: file
     - name:
-        en: StockExchange
-        pt: StockExchange
+        en: Stock Exchange
+        pt: Stock Exchange
       slug: stock-exchange
       description:
         en: Screen to manage stock_exchange
         pt: Tela para gerenciar stock_exchange
-      icon: file
-    - name:
-        en: TrendType
-        pt: TrendType
-      slug: trend-type
-      description:
-        en: Screen to manage trend_type
-        pt: Tela para gerenciar trend_type
       icon: file
     - name:
         en: Quotation
@@ -1816,12 +2695,124 @@ data:
         pt: Tela para gerenciar strategy
       icon: file
     - name:
-        en: TradeSignalType
-        pt: TradeSignalType
+        en: MMR
+        pt: MMR
+      slug: mmr
+      description:
+        en: Screen to manage MMR
+        pt: Tela para gerenciar MMR
+      icon: file
+    - name:
+        en: Bot
+        pt: Bot
+      slug: bot
+      description:
+        en: Screen to manage bot
+        pt: Tela para gerenciar bot
+      icon: file
+    - name:
+        en: Quotation Request Type
+        pt: Quotation Request Type
+      slug: quotation-request-type
+      description:
+        en: Screen to manage quotation_request_type
+        pt: Tela para gerenciar quotation_request_type
+      icon: file
+    - name:
+        en: Market sentiment
+        pt: Sentimento do mercado
+      slug: fear-and-greed
+      description:
+        en: Screen to manage Market sentiment
+        pt: Tela para gerenciar Sentimento do mercado
+      icon: file
+    - name:
+        en: Top Coins
+        pt: Top Coins
+      slug: top-coins
+      description:
+        en: Screen to manage Top Coins
+        pt: Tela para gerenciar Top Coins
+      icon: file
+    - name:
+        en: Trade Signal Type
+        pt: Trade Signal Type
       slug: trade-signal-type
       description:
-        en: Screen to manage trade_signal_type
-        pt: Tela para gerenciar trade_signal_type
+        en: Screen to manage Trade Signal Type
+        pt: Tela para gerenciar Trade Signal Type
+      icon: file
+    - name:
+        en: Free Balance Condition
+        pt: Condição de Saldo Livre
+      slug: free-balance-condition
+      description:
+        en: Screen to manage Free Balance Condition
+        pt: Tela para gerenciar Condição de Saldo Livre
+      icon: file
+    - name:
+        en: Simulation
+        pt: Simulação
+      slug: simulation
+      description:
+        en: Screen to manage Simulations
+        pt: Tela para gerenciar Simulações
+      icon: file
+    - name:
+        en: GlobalMetric
+        pt: GlobalMetric
+      slug: global-metric
+      description:
+        en: Screen to manage global_metric
+        pt: Tela para gerenciar global_metric
+      icon: file
+    - name:
+        en: GainersLoser
+        pt: GainersLoser
+      slug: gainers-loser
+      description:
+        en: Screen to manage gainers_loser
+        pt: Tela para gerenciar gainers_loser
+      icon: file
+    - name:
+        en: TopCoinType
+        pt: TopCoinType
+      slug: top-coin-type
+      description:
+        en: Screen to manage top_coin_type
+        pt: Tela para gerenciar top_coin_type
+      icon: file
+    - name:
+        en: TopCoin
+        pt: TopCoin
+      slug: top-coin
+      description:
+        en: Screen to manage top_coin
+        pt: Tela para gerenciar top_coin
+      icon: file
+    - name:
+        en: Top100
+        pt: Top100
+      slug: top-100
+      description:
+        en: Screen to manage top_100
+        pt: Tela para gerenciar top_100
+      icon: file
+    - name:
+        en: CoinVariationType
+        pt: CoinVariationType
+      slug: coin-variation-type
+      description:
+        en: Screen to manage coin_variation_type
+        pt: Tela para gerenciar coin_variation_type
+      icon: file
+    - name:
+        en: TopVariation
+        pt: TopVariation
+      slug: top-variation
+      description:
+        en: Screen to manage top_variation
+        pt: Tela para gerenciar top_variation
       icon: file
   strategy:
     - name: AI STRATEGY
@@ -1833,9 +2824,16 @@ data:
     - name: NEUTRAL
     - name: SHORT
     - name: LONG
-  stock_exchange:
-    - name: BYBIT
-    - name: BINANCE
+  top_coin_type:
+    - name: TOP Cryptos
+    - name: TOP Sensações
+  quotation_request_type:
+    - name: crypto
+      headers: '["Name", "Price"]'
+      filters: '{"filter":[{"left":"exchange","operation":"equal","right":"BYBIT"},{"left":"active_symbol","operation":"equal","right":true}],"options":{"lang":"pt"},"filter2":{"operator":"and","operands":[{"operation":{"operator":"or","operands":[{"expression":{"left":"typespecs","operation":"has","right":["perpetual"]}}]}}]},"markets":["crypto"],"symbols":{"query":{"types":[]},"tickers":[]},"columns":["name","open","High.All","Aroon.Up","Aroon.Down","Low.All","BB.lower","BB.upper","DonchCh20.Lower","DonchCh20.Upper","exchange","BBPower","KltChnl.lower","KltChnl.upper","market_cap_calc","Recommend.MA","Recommend.Other","bid","Perf.YTD","Perf.Y","Perf.6M","Perf.3M","Perf.1M","Perf.W","Stoch.D","Stoch.K","gap","Ichimoku.Lead1","Ichimoku.Lead2","Stoch.RSI.D","Stoch.RSI.K","ADX-DI","ADX+DI","CCI20","RSI7","RSI","ADX","Ichimoku.BLine","Ichimoku.CLine","High.1M","price_52_week_high","High.6M","High.3M","ATR","ADR","HullMA9","EMA5","EMA10","EMA20","EMA30","EMA50","EMA100","EMA200","VWMA","SMA5","SMA10","SMA20","SMA30","SMA50","SMA100","SMA200","Low.1M","price_52_week_low","Low.6M","Low.3M","total_shares_outstanding","Mom","MACD.macd","AO","Perf.5Y","Perf.All","Pivot.M.Camarilla.Middle","Pivot.M.Camarilla.R1","Pivot.M.Camarilla.R2","Pivot.M.Camarilla.R3","Pivot.M.Camarilla.S1","Pivot.M.Camarilla.S2","Pivot.M.Camarilla.S3","Pivot.M.Classic.Middle","Pivot.M.Classic.R1","Pivot.M.Classic.R2","Pivot.M.Classic.R3","Pivot.M.Classic.S1","Pivot.M.Classic.S2","Pivot.M.Classic.S3","Pivot.M.Demark.Middle","Pivot.M.Demark.R1","Pivot.M.Demark.S1","Pivot.M.Fibonacci.Middle","Pivot.M.Fibonacci.R1","Pivot.M.Fibonacci.R2","Pivot.M.Fibonacci.R3","Pivot.M.Fibonacci.S1","Pivot.M.Fibonacci.S2","Pivot.M.Fibonacci.S3","Pivot.M.Woodie.Middle","Pivot.M.Woodie.R1","Pivot.M.Woodie.R2","Pivot.M.Woodie.R3","Pivot.M.Woodie.S1","Pivot.M.Woodie.S2","Pivot.M.Woodie.S3","close","VWAP","W.R","P.SAR","MACD.signal","ROC","Recommend.All","total_shares_diluted","UO","market_cap_diluted_calc","change","change_abs","change_from_open","change_from_open_abs","ask","Volatility.D","Volatility.M","Volatility.W","volume","average_volume_10d_calc","average_volume_30d_calc","average_volume_60d_calc","average_volume_90d_calc","total_value_traded","relative_volume_10d_calc","relative_volume_intraday|5","high","low","description","type","subtype","update_mode","pricescale","minmov","fractional","minmove2","Rec.BBPower","Stoch.K[1]","Stoch.D[1]","Rec.Stoch.RSI","CCI20[1]","RSI7[1]","RSI[1]","ADX+DI[1]","ADX-DI[1]","Rec.Ichimoku","Rec.HullMA9","Rec.VWMA","Mom[1]","AO[1]","AO[2]","Candle.Doji","Candle.AbandonedBaby.Bullish","Candle.AbandonedBaby.Bearish","Candle.Doji.Dragonfly","Candle.HangingMan","Candle.Engulfing.Bullish","Candle.Engulfing.Bearish","Candle.ShootingStar","Candle.MorningStar","Candle.EveningStar","Candle.Doji.Gravestone","Candle.Harami.Bullish","Candle.Harami.Bearish","Candle.Kicking.Bullish","Candle.Kicking.Bearish","Candle.LongShadow.Lower","Candle.LongShadow.Upper","Candle.Hammer","Candle.InvertedHammer","Candle.Marubozu.White","Candle.Marubozu.Black","Candle.SpinningTop.Black","Candle.SpinningTop.White","Candle.3BlackCrows","Candle.TriStar.Bullish","Candle.TriStar.Bearish","Candle.3WhiteSoldiers","Rec.WR","Rec.UO"],"sort":{"sortBy":"name","sortOrder":"desc"},"price_conversion":{"to_symbol":false}}'
+    - name: crypto_2024
+      headers: '["Name", "Price"]'
+      filters: '{"filter":[{"left":"exchange","operation":"equal","right":"BYBIT"},{"left":"active_symbol","operation":"equal","right":true}],"options":{"lang":"pt"},"filter2":{"operator":"and","operands":[{"operation":{"operator":"or","operands":[{"expression":{"left":"typespecs","operation":"has","right":["perpetual"]}}]}}]},"markets":["crypto"],"symbols":{"query":{"types":[]},"tickers":[]},"columns":["name","open|5","High.All","Aroon.Up|5","Aroon.Down|5","Low.All","BB.lower|5","BB.upper|5","DonchCh20.Lower|5","DonchCh20.Upper|5","exchange","BBPower|5","KltChnl.lower|5","KltChnl.upper|5","market_cap_calc","Recommend.MA|5","Recommend.Other|5","bid","Perf.YTD","Perf.Y","Perf.6M","Perf.3M","Perf.1M","Perf.W","Stoch.D|5","Stoch.K|5","gap|5","Ichimoku.Lead1|5","Ichimoku.Lead2|5","Stoch.RSI.D|5","Stoch.RSI.K|5","ADX-DI|5","ADX+DI|5","CCI20|5","RSI7|5","RSI|5","ADX|5","Ichimoku.BLine|5","Ichimoku.CLine|5","High.1M","price_52_week_high","High.6M","High.3M","ATR|5","ADR|5","HullMA9|5","EMA5|5","EMA10|5","EMA20|5","EMA30|5","EMA50|5","EMA100|5","EMA200|5","VWMA|5","SMA5|5","SMA10|5","SMA20|5","SMA30|5","SMA50|5","SMA100|5","SMA200|5","Low.1M","price_52_week_low","Low.6M","Low.3M","total_shares_outstanding","Mom|5","MACD.macd|5","AO|5","Perf.5Y","Perf.All","Pivot.M.Camarilla.Middle|5","Pivot.M.Camarilla.R1|5","Pivot.M.Camarilla.R2|5","Pivot.M.Camarilla.R3|5","Pivot.M.Camarilla.S1|5","Pivot.M.Camarilla.S2|5","Pivot.M.Camarilla.S3|5","Pivot.M.Classic.Middle|5","Pivot.M.Classic.R1|5","Pivot.M.Classic.R2|5","Pivot.M.Classic.R3|5","Pivot.M.Classic.S1|5","Pivot.M.Classic.S2|5","Pivot.M.Classic.S3|5","Pivot.M.Demark.Middle|5","Pivot.M.Demark.R1|5","Pivot.M.Demark.S1|5","Pivot.M.Fibonacci.Middle|5","Pivot.M.Fibonacci.R1|5","Pivot.M.Fibonacci.R2|5","Pivot.M.Fibonacci.R3|5","Pivot.M.Fibonacci.S1|5","Pivot.M.Fibonacci.S2|5","Pivot.M.Fibonacci.S3|5","Pivot.M.Woodie.Middle|5","Pivot.M.Woodie.R1|5","Pivot.M.Woodie.R2|5","Pivot.M.Woodie.R3|5","Pivot.M.Woodie.S1|5","Pivot.M.Woodie.S2|5","Pivot.M.Woodie.S3|5","close|5","VWAP|5","W.R|5","P.SAR|5","MACD.signal|5","ROC|5","Recommend.All|5","total_shares_diluted","UO|5","market_cap_diluted_calc","change|5","change_abs|5","change_from_open|5","change_from_open_abs|5","ask","Volatility.D","Volatility.M","Volatility.W","volume|5","average_volume_10d_calc","average_volume_30d_calc","average_volume_60d_calc","average_volume_90d_calc","total_value_traded","relative_volume_10d_calc|5","relative_volume_intraday|5","high|5","low|5","description","type","subtype","update_mode|5","pricescale","minmov","fractional","minmove2","Rec.BBPower|5","Stoch.K[1]|5","Stoch.D[1]|5","Rec.Stoch.RSI|5","CCI20[1]|5","RSI7[1]|5","RSI[1]|5","ADX+DI[1]|5","ADX-DI[1]|5","Rec.Ichimoku|5","Rec.HullMA9|5","Rec.VWMA|5","Mom[1]|5","AO[1]|5","AO[2]|5","Candle.Doji|5","Candle.AbandonedBaby.Bullish|5","Candle.AbandonedBaby.Bearish|5","Candle.Doji.Dragonfly|5","Candle.HangingMan|5","Candle.Engulfing.Bullish|5","Candle.Engulfing.Bearish|5","Candle.ShootingStar|5","Candle.MorningStar|5","Candle.EveningStar|5","Candle.Doji.Gravestone|5","Candle.Harami.Bullish|5","Candle.Harami.Bearish|5","Candle.Kicking.Bullish|5","Candle.Kicking.Bearish|5","Candle.LongShadow.Lower|5","Candle.LongShadow.Upper|5","Candle.Hammer|5","Candle.InvertedHammer|5","Candle.Marubozu.White|5","Candle.Marubozu.Black|5","Candle.SpinningTop.Black|5","Candle.SpinningTop.White|5","Candle.3BlackCrows|5","Candle.TriStar.Bullish|5","Candle.TriStar.Bearish|5","Candle.3WhiteSoldiers|5","Rec.WR|5","Rec.UO|5"],"sort":{"sortBy":"name","sortOrder":"desc"},"price_conversion":{"to_symbol":false}}'
 screens:
   coin:
     title:
@@ -1855,24 +2853,6 @@ screens:
         role:
           - where:
               slug: admin
-  quotation_type:
-    title:
-      en: Quotation Types
-      pt: Tipos de Cotação
-    menu:
-      menu_id:
-        where:
-          slug: /cbc
-      name:
-        en: Quotation Types
-        pt: Tipos de Cotação
-      icon: adjustments-dollar
-      url: /cbc/quotation-type
-      slug: /cbc/quotation-type
-      relations:
-        role:
-          - where:
-              slug: admin
   stock_exchange:
     title:
       en: Stock Exchanges
@@ -1887,24 +2867,6 @@ screens:
       icon: exchange
       url: /cbc/stock-exchange
       slug: /cbc/stock-exchange
-      relations:
-        role:
-          - where:
-              slug: admin
-  trend_type:
-    title:
-      en: Trend Types
-      pt: Tipos de Tendência
-    menu:
-      menu_id:
-        where:
-          slug: /cbc
-      name:
-        en: Trend Types
-        pt: Tipos de Tendência
-      icon: trending-up
-      url: /cbc/trend-type
-      slug: /cbc/trend-type
       relations:
         role:
           - where:
@@ -1981,39 +2943,15 @@ screens:
         role:
           - where:
               slug: admin
-  trade_signal_type:
-    title:
-      en: Trade Signal Type
-      pt: Tipo de Sinal de Trade
-    menu:
-      menu_id:
-        where:
-          slug: /cbc
-      name:
-        en: Trade Signal Type
-        pt: Tipo de Sinal de Trade
-      icon: brand-stocktwits
-      url: /cbc/trade-signal-type
-      slug: /cbc/trade-signal-type
-      relations:
-        role:
-          - where:
-              slug: admin
 routes:
   - path: cbc
     children:
       - path: coin
         lazy:
           component: ./pages/cbc/coin/index.tsx
-      - path: quotation-type
-        lazy:
-          component: ./pages/cbc/quotation-type/index.tsx
       - path: stock-exchange
         lazy:
           component: ./pages/cbc/stock-exchange/index.tsx
-      - path: trend-type
-        lazy:
-          component: ./pages/cbc/trend-type/index.tsx
       - path: quotation
         lazy:
           component: ./pages/cbc/quotation/index.tsx
@@ -2026,6 +2964,3 @@ routes:
       - path: strategy
         lazy:
           component: ./pages/cbc/strategy/index.tsx
-      - path: trade-signal-type
-        lazy:
-          component: ./pages/cbc/trade-signal-type/index.tsx

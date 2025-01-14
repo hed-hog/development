@@ -1,0 +1,11 @@
+{
+  "create": "Criar medo e ganância",
+  "createText": "Preencha as informações sobre medo e ganância.",
+  "createTooltip": "Criar novo medo e ganância",
+  "delete": "Excluir medo e ganância",
+  "deleteText": "Você tem certeza de que deseja excluir esses medo e ganância?",
+  "deleteTooltip": "Excluir o medo e ganância selecionados",
+  "edit": "Editar medo e ganância",
+  "editText": "Ver e editar as informações sobre medo e ganância.",
+  "editTooltip": "Editar o medo e ganância selecionados"
+}

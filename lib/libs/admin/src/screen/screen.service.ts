@@ -18,7 +18,7 @@ export class ScreenService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async updateRoles(screenId: number, data: UpdateIdsDTO) {
     await this.prismaService.role_screen.deleteMany({

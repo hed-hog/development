@@ -1,0 +1,11 @@
+{
+  "create": "Criar métricas globais",
+  "createText": "Preencha as informações das métricas globais.",
+  "createTooltip": "Criar novas métricas globais",
+  "delete": "Excluir métricas globais",
+  "deleteText": "Você tem certeza de que deseja excluir essas métricas globais?",
+  "deleteTooltip": "Excluir as métricas globais selecionadas",
+  "edit": "Editar métricas globais",
+  "editText": "Ver e editar as informações das métricas globais.",
+  "editTooltip": "Editar as métricas globais selecionadas"
+}

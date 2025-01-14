@@ -436,11 +436,14 @@ export class LocaleService {
   ) {
     try {
       const fields = this.prismaService.getFields(modelName);
+      let OR: any[] = [];
 
-      const OR: any[] = this.prismaService.createInsensitiveSearch(
-        fields,
-        paginationParams,
-      );
+      if (fields) {
+        OR = this.prismaService.createInsensitiveSearch(
+          fields,
+          paginationParams,
+        );
+      }
 
       return this.paginationService.paginate(
         this.prismaService[modelName],

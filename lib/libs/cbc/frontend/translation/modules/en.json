@@ -1,11 +1,8 @@
 {
   "coin": "Coins",
-  "quotation_type": "Quotation Types",
   "stock_exchange": "Stock Exchanges",
-  "trend_type": "Trend Types",
   "quotation": "Quotations",
   "banking": "Banking",
   "operation": "Operation",
-  "strategy": "Strategy",
-  "trade_signal_type": "Trade Signal Type"
+  "strategy": "Strategy"
 }

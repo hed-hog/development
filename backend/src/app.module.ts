@@ -1,7 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ContactModule } from '@hedhog/contact';
-import { FileModule } from '@hedhog/file';
-import { CountryModule } from '@hedhog/country';
 import { CbcModule } from '@hedhog/cbc';
 import { AdminModule } from '@hedhog/admin';
 import { SettingModule } from '@hedhog/setting';
@@ -21,19 +18,15 @@ import { PrismaModule } from '@hedhog/prisma';
     LocaleModule,
     MailModule.forRoot({
       global: true,
-      type: 'SMTP',
-      host: 'changeme',
-      port: 465,
-      secure: false,
-      username: 'changeme',
-      password: 'changeme',
+      type: 'GMAIL',
+      clientId: String(process.env.MAIL_CLIENT_ID),
+      clientSecret: String(process.env.MAIL_CLIENT_SECRET),
+      refreshToken: String(process.env.REFRESH_TOKEN),
+      from: String(process.env.MAIL_FROM),
     }),
     SettingModule,
     AdminModule,
     CbcModule,
-    CountryModule,
-    FileModule,
-    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

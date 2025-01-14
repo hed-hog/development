@@ -8,115 +8,89 @@ datasource db {
 }
 
 model banking {
-  id         Int         @id(map: "PK_00bb6cea84dd3ccb76d075699cf") @default(autoincrement())
-  name       String      @db.VarChar
+  id         Int          @id(map: "PK_00bb6cea84dd3ccb76d075699cf") @default(autoincrement())
+  name       String       @db.VarChar
   user_id    Int
-  created_at DateTime    @default(now()) @db.Timestamp(6)
-  updated_at DateTime    @default(now()) @db.Timestamp(6)
-  user       user        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_389e6914094557544ce2008b92d")
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  updated_at DateTime     @default(now()) @db.Timestamp(6)
+  user       user         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_389e6914094557544ce2008b92d")
   operation  operation[]
+  simulation simulation[]
+}
+
+model bot {
+  id          Int         @id(map: "PK_bc6d59d7870eb2efd5f7f61e5ca") @default(autoincrement())
+  name        String      @db.VarChar
+  description String?     @db.VarChar
+  cookies     String?
+  created_at  DateTime    @default(now()) @db.Timestamp(6)
+  updated_at  DateTime    @default(now()) @db.Timestamp(6)
+  quotation   quotation[]
 }
 
 model coin {
-  id         Int         @id(map: "PK_650993fc71b789e4793b62fbcac") @default(autoincrement())
-  name       String      @db.VarChar
-  code       String      @db.VarChar
-  created_at DateTime    @default(now()) @db.Timestamp(6)
-  updated_at DateTime    @default(now()) @db.Timestamp(6)
-  operation  operation[]
-  quotation  quotation[]
+  id            Int             @id(map: "PK_650993fc71b789e4793b62fbcac") @default(autoincrement())
+  name          String          @db.VarChar
+  slug          String          @unique(map: "UQ_da6f2597c260cc4877def859e72") @db.VarChar(255)
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @db.Timestamp(6)
+  gainers_loser gainers_loser[]
+  operation     operation[]
+  quotation     quotation[]
+  simulation    simulation[]
+  top_coin      top_coin[]
 }
 
-model country {
-  id                   Int                    @id(map: "PK_bf6e37c231c4f4ea56dcd887269") @default(autoincrement())
-  code                 String                 @db.VarChar
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  country_locale       country_locale[]
-  person_address       person_address[]
-  person_document      person_document[]
-  person_document_type person_document_type[]
+model fear_and_greed {
+  id                   Int      @id(map: "PK_e5ef5e5fc825d884e56eb4c83a1") @default(autoincrement())
+  value                Int
+  value_classification String   @db.VarChar
+  created_at           DateTime @default(now()) @db.Timestamp(6)
+  updated_at           DateTime @default(now()) @db.Timestamp(6)
 }
 
-model country_locale {
-  country_id Int
-  locale_id  Int
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  locale     locale   @relation(fields: [locale_id], references: [id], onUpdate: NoAction, map: "FK_a9c5e221cc5ea25684c6e486b86")
-  country    country  @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_f6078a6569013351b3a316f8f98")
-
-  @@id([country_id, locale_id], map: "PK_df7141e9042d27d998b49a9b325")
+model free_balance_condition {
+  id          Int      @id(map: "PK_9bce6b974e0c668e51e62764d50") @default(autoincrement())
+  capital     Int
+  coins_count Int
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
 }
 
-model file {
-  id            Int           @id(map: "PK_36b46d232307066b3a2c9ea3a1d") @default(autoincrement())
-  filename      String        @db.VarChar
-  path          String        @db.VarChar
-  provider_id   Int
-  location      String        @db.VarChar
-  mimetype_id   Int
-  size          Int           @default(0)
-  created_at    DateTime      @default(now()) @db.Timestamp(6)
-  updated_at    DateTime      @default(now()) @db.Timestamp(6)
-  file_mimetype file_mimetype @relation(fields: [mimetype_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_893f78c26bcde79a87cc0fe45a5")
-  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_afb71f4bd9709183d4f8d4c8ad2")
-  person        person[]
+model gainers_loser {
+  id                 Int      @id(map: "PK_4c69c03d795e6db52eaeb2bdd27") @default(autoincrement())
+  coin_id            Int
+  percent_change_24h Decimal  @db.Decimal(36, 18)
+  price              Decimal  @db.Decimal(36, 18)
+  created_at         DateTime @default(now()) @db.Timestamp(6)
+  updated_at         DateTime @default(now()) @db.Timestamp(6)
+  coin               coin     @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_dbc49e50f00583919173dfb98e0")
 }
 
-model file_mimetype {
-  id         Int      @id(map: "PK_893f78c26bcde79a87cc0fe45a5") @default(autoincrement())
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  file       file[]
-}
-
-model file_provider {
-  id                   Int                    @id(map: "PK_afb71f4bd9709183d4f8d4c8ad2") @default(autoincrement())
-  slug                 String                 @db.VarChar
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  file                 file[]
-  file_provider_locale file_provider_locale[]
-}
-
-model file_provider_locale {
-  provider_id   Int
-  locale_id     Int
-  name          String        @db.VarChar
-  created_at    DateTime      @default(now()) @db.Timestamp(6)
-  updated_at    DateTime      @default(now()) @db.Timestamp(6)
-  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3ebdcb105301319377557c272bc")
-  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4fba1720defa9d0f6a9112ddc89")
-
-  @@id([provider_id, locale_id], map: "PK_c108e943a38100608cfae509b3a")
+model global_metric {
+  id                                           Int      @id(map: "PK_c304506ed05019b3309a89dd789") @default(autoincrement())
+  btc_dominance                                Decimal  @db.Decimal(36, 18)
+  btc_dominance_24h_percentage_change          Decimal  @db.Decimal(36, 18)
+  total_market_cap_yesterday_percentage_change Decimal  @db.Decimal(36, 18)
+  total_market_cap                             Decimal  @db.Decimal(36, 18)
+  created_at                                   DateTime @default(now()) @db.Timestamp(6)
+  updated_at                                   DateTime @default(now()) @db.Timestamp(6)
 }
 
 model locale {
-  id                          Int                           @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
-  code                        String                        @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
-  region                      String                        @db.Char(2)
-  enabled                     Boolean                       @default(true)
-  created_at                  DateTime                      @default(now()) @db.Timestamp(6)
-  updated_at                  DateTime                      @default(now()) @db.Timestamp(6)
-  country_locale              country_locale[]
-  file_provider_locale        file_provider_locale[]
-  menu_locale                 menu_locale[]
-  multifactor_locale          multifactor_locale[]
-  person_address_type_locale  person_address_type_locale[]
-  person_contact_type_locale  person_contact_type_locale[]
-  person_custom_locale        person_custom_locale[]
-  person_custom_type_locale   person_custom_type_locale[]
-  person_document_type_locale person_document_type_locale[]
-  person_type_locale          person_type_locale[]
-  role_locale                 role_locale[]
-  screen_locale               screen_locale[]
-  setting_group_locale        setting_group_locale[]
-  setting_locale              setting_locale[]
-  translation                 translation[]
-  trend_type_locale           trend_type_locale[]
+  id                   Int                    @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
+  code                 String                 @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
+  region               String                 @db.Char(2)
+  enabled              Boolean                @default(true)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  menu_locale          menu_locale[]
+  multifactor_locale   multifactor_locale[]
+  role_locale          role_locale[]
+  screen_locale        screen_locale[]
+  setting_group_locale setting_group_locale[]
+  setting_locale       setting_locale[]
+  translation          translation[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -157,6 +131,16 @@ model menu_screen {
   @@id([menu_id, screen_id], map: "PK_cefac3ef25311287e1b40c1059d")
 }
 
+model mmr {
+  id                Int      @id(map: "PK_bebfddc619c04e97b2a2fa30ad9") @default(autoincrement())
+  leverage          Int
+  percentage        Decimal  @db.Decimal
+  mmr_percentage    Decimal  @db.Decimal
+  additional_margin Decimal  @db.Decimal
+  created_at        DateTime @default(now()) @db.Timestamp(6)
+  updated_at        DateTime @default(now()) @db.Timestamp(6)
+}
+
 model multifactor {
   id                 Int                  @id(map: "PK_dd28340c66eb211fbd352507167") @default(autoincrement())
   slug               String               @unique(map: "UQ_a108f605bb3787f098bd7169681") @db.VarChar(255)
@@ -180,6 +164,7 @@ model multifactor_locale {
 
 model operation {
   id                   Int               @id(map: "PK_18556ee6e49c005fc108078f3ab") @default(autoincrement())
+  simulation_id        Int?
   user_id              Int
   banking_id           Int
   stock_exchange_id    Int
@@ -190,388 +175,217 @@ model operation {
   leverage             Decimal?          @db.Decimal
   created_at           DateTime          @default(now()) @db.Timestamp(6)
   updated_at           DateTime          @default(now()) @db.Timestamp(6)
+  margin_used          Int
+  first_order          Int
+  mmr                  Int
+  stop_loss            Int
+  start_time           DateTime          @db.Timestamp(6)
+  end_time             DateTime          @db.Timestamp(6)
   trade_signal_type    trade_signal_type @relation(fields: [trade_signal_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_08ee4a6e7abe44c16923a9ca8e2")
   stock_exchange       stock_exchange    @relation(fields: [stock_exchange_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_27bbcc0e49b9ddb84c30f732bbe")
   banking              banking           @relation(fields: [banking_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_30f984b7ec88305459d89593991")
+  simulation           simulation?       @relation(fields: [simulation_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5d2b8672b97c3bc92492ec258e9")
   strategy             strategy          @relation(fields: [strategy_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_a76ce9777e3a50c69ffc18efd37")
   user                 user              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cfa8dd65df7df579953268253bf")
   coin                 coin              @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f143cd8541c65629028dbdde6dd")
 }
 
-model person {
-  id              Int               @id(map: "PK_5fdaf670315c4b7e70cce85daa3") @default(autoincrement())
-  name            String            @db.VarChar(255)
-  photo_id        Int?
-  type_id         Int
-  birth_at        DateTime?         @db.Date
-  created_at      DateTime          @default(now()) @db.Timestamp(6)
-  updated_at      DateTime          @default(now()) @db.Timestamp(6)
-  file            file?             @relation(fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_0e7be389f108147763fc682c3c4")
-  person_type     person_type       @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f900a8c313411c7da8fcbba7975")
-  person_address  person_address[]
-  person_contact  person_contact[]
-  person_custom   person_custom[]
-  person_document person_document[]
-  person_value    person_value[]
-}
-
-model person_address {
-  id                  Int                 @id(map: "PK_cd587348ca3fec07931de208299") @default(autoincrement())
-  person_id           Int
-  country_id          Int
-  type_id             Int
-  primary             Boolean             @default(false)
-  street              String              @db.VarChar(255)
-  number              String?             @db.VarChar(15)
-  complement          String?             @db.VarChar(255)
-  district            String              @db.VarChar(255)
-  city                String              @db.VarChar(255)
-  state               String              @db.VarChar(255)
-  postal_code         String              @db.VarChar(20)
-  reference           String?             @db.VarChar(60)
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  person_address_type person_address_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_98a56bf4ddb0cfdc34900b208e8")
-  country             country             @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_c84bf730e2289bce49328cf2d55")
-  person              person              @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ce7df7591d4659be1f5f9218384")
-}
-
-model person_address_type {
-  id                         Int                          @id(map: "PK_98a56bf4ddb0cfdc34900b208e8") @default(autoincrement())
-  slug                       String                       @unique(map: "UQ_f86ef99dbbeeab917378b321b73") @db.VarChar(255)
-  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  person_address             person_address[]
-  person_address_type_locale person_address_type_locale[]
-}
-
-model person_address_type_locale {
-  type_id             Int
-  locale_id           Int
-  name                String              @db.VarChar(31)
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  person_address_type person_address_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_475216891864d349bf90a734948")
-  locale              locale              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8a2ce5d8f409bd9df2be9021cb5")
-
-  @@id([type_id, locale_id], map: "PK_abe72c4220e51c9098dfc80eaf1")
-}
-
-model person_contact {
-  id                  Int                 @id(map: "PK_1094fd036d694f9949ef1c19e39") @default(autoincrement())
-  person_id           Int
-  type_id             Int
-  primary             Boolean             @default(false)
-  value               String              @db.VarChar(255)
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  person_contact_type person_contact_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8b9415f3b74feaedaa9a168e2a9")
-  person              person              @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ed78b7b2d50539bbc6796c70b4e")
-
-  @@unique([person_id, type_id, value], map: "IDX_1c9c355240616acf5547da502b")
-}
-
-model person_contact_type {
-  id                         Int                          @id(map: "PK_8b9415f3b74feaedaa9a168e2a9") @default(autoincrement())
-  slug                       String                       @unique(map: "UQ_43846dd854b33149094feb9fb4e") @db.VarChar(255)
-  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  person_contact             person_contact[]
-  person_contact_type_locale person_contact_type_locale[]
-}
-
-model person_contact_type_locale {
-  type_id             Int
-  locale_id           Int
-  name                String              @db.VarChar(63)
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  person_contact_type person_contact_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_365b4ca1cad686ffa840bd6377c")
-  locale              locale              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_b982e2621abaf3f9efd9af4d573")
-
-  @@id([type_id, locale_id], map: "PK_15b4a1183c23cf4dedaae0014cb")
-}
-
-model person_custom {
-  id                   Int                    @id(map: "PK_e418892d4f99f4f134ad258bfc4") @default(autoincrement())
-  person_id            Int
-  type_id              Int
-  value                String?
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  person               person                 @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c27115f8d19d82195c606b7bcc3")
-  person_custom_type   person_custom_type     @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e825bcc04099f5404c566de8b84")
-  person_custom_locale person_custom_locale[]
-
-  @@unique([person_id, type_id], map: "IDX_48703a5e36d343a9b33145fe51")
-}
-
-model person_custom_locale {
-  custom_id     Int
-  locale_id     Int
-  name          String        @db.VarChar(31)
-  created_at    DateTime      @default(now()) @db.Timestamp(6)
-  updated_at    DateTime      @default(now()) @db.Timestamp(6)
-  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_25e4394cd983a5393fa880412d2")
-  person_custom person_custom @relation(fields: [custom_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ab0d1ed93722ccddfcb53652f47")
-
-  @@id([custom_id, locale_id], map: "PK_231532c3290c4a720f1dff45564")
-}
-
-model person_custom_type {
-  id                        Int                         @id(map: "PK_e825bcc04099f5404c566de8b84") @default(autoincrement())
-  slug                      String                      @unique(map: "UQ_cffbae416f17b46f8ee51418720") @db.VarChar(255)
-  created_at                DateTime                    @default(now()) @db.Timestamp(6)
-  updated_at                DateTime                    @default(now()) @db.Timestamp(6)
-  person_custom             person_custom[]
-  person_custom_type_locale person_custom_type_locale[]
-}
-
-model person_custom_type_locale {
-  type_id            Int
-  locale_id          Int
-  name               String             @db.VarChar(31)
-  created_at         DateTime           @default(now()) @db.Timestamp(6)
-  updated_at         DateTime           @default(now()) @db.Timestamp(6)
-  locale             locale             @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e9ac6d88013c883cd97bd2db28b")
-  person_custom_type person_custom_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f3118c1eddf9114712c5accf71e")
-
-  @@id([type_id, locale_id], map: "PK_f17d0fb0d468e783799bc5b3e26")
-}
-
-model person_document {
-  id                   Int                  @id(map: "PK_bcc56725609d81e79e21031dd56") @default(autoincrement())
-  person_id            Int
-  type_id              Int
-  country_id           Int
-  primary              Boolean              @default(false)
-  value                String               @db.VarChar(63)
-  issued_at            DateTime?            @db.Date
-  expiry_at            DateTime?            @db.Date
-  created_at           DateTime             @default(now()) @db.Timestamp(6)
-  updated_at           DateTime             @default(now()) @db.Timestamp(6)
-  country              country              @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_096c95b8ff0c64de1cfef949f87")
-  person               person               @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3d2eefc8668f687831146947b31")
-  person_document_type person_document_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_866923f2a0938b2fe81b6de8367")
-
-  @@unique([person_id, type_id, value], map: "IDX_610e49816c6705dc651e957d54")
-}
-
-model person_document_type {
-  id                          Int                           @id(map: "PK_866923f2a0938b2fe81b6de8367") @default(autoincrement())
-  country_id                  Int
-  slug                        String                        @unique(map: "UQ_181b871128bea16a4ae019d31e3") @db.VarChar(255)
-  created_at                  DateTime                      @default(now()) @db.Timestamp(6)
-  updated_at                  DateTime                      @default(now()) @db.Timestamp(6)
-  person_document             person_document[]
-  country                     country                       @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_9dc1f849a5626abefbc3bcc217a")
-  person_document_type_locale person_document_type_locale[]
-}
-
-model person_document_type_locale {
-  type_id              Int
-  locale_id            Int
-  name                 String               @db.VarChar(63)
-  created_at           DateTime             @default(now()) @db.Timestamp(6)
-  updated_at           DateTime             @default(now()) @db.Timestamp(6)
-  locale               locale               @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_482ef3427c9e444d7c27fddcb81")
-  person_document_type person_document_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_61c74c3561c064a68d351103ddb")
-
-  @@id([type_id, locale_id], map: "PK_a66b893bcdfc402febbb79227e7")
-}
-
-model person_type {
-  id                 Int                  @id(map: "PK_f900a8c313411c7da8fcbba7975") @default(autoincrement())
-  slug               String               @unique(map: "UQ_e450c84833fbeb5e6bce51b4805") @db.VarChar(255)
-  created_at         DateTime             @default(now()) @db.Timestamp(6)
-  updated_at         DateTime             @default(now()) @db.Timestamp(6)
-  person             person[]
-  person_type_locale person_type_locale[]
-}
-
-model person_type_locale {
-  type_id     Int
-  locale_id   Int
-  name        String      @unique(map: "UQ_5d4c8dea076f83721ef1a631315") @db.VarChar(31)
-  created_at  DateTime    @default(now()) @db.Timestamp(6)
-  updated_at  DateTime    @default(now()) @db.Timestamp(6)
-  person_type person_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2eb1f7db6f53ac7dca9cbff7b76")
-  locale      locale      @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3cac1af04c04a72706ca0e73242")
-
-  @@id([type_id, locale_id], map: "PK_817fb03a35a6d045af0ef30603c")
-}
-
-model person_value {
-  id         Int      @id(map: "PK_85c28f48f06f5cc8291d45e1554") @default(autoincrement())
-  person_id  Int
-  value      String   @db.VarChar(255)
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  person     person   @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c14f1b61dff84649c565703578b")
-}
-
 model quotation {
-  id                                                         Int            @id(map: "PK_596c572d5858492d10d8cf5383d") @default(autoincrement())
-  coin_id                                                    Int
-  type_id                                                    Int
-  monthly_performance                                        Decimal?       @db.Decimal(36, 18)
-  weekly_performance                                         Decimal?       @db.Decimal(36, 18)
-  negative_directional_indicator_14                          Decimal?       @db.Decimal(36, 18)
-  positive_directional_indicator_14                          Decimal?       @db.Decimal(36, 18)
-  average_directional_index_14                               Decimal?       @db.Decimal(36, 18)
-  exponential_moving_average_200                             Decimal?       @db.Decimal(36, 18)
-  simple_moving_average_10                                   Decimal?       @db.Decimal(36, 18)
-  simple_moving_average_20                                   Decimal?       @db.Decimal(36, 18)
-  simple_moving_average_30                                   Decimal?       @db.Decimal(36, 18)
-  simple_moving_average_50                                   Decimal?       @db.Decimal(36, 18)
-  simple_moving_average_100                                  Decimal?       @db.Decimal(36, 18)
-  simple_moving_average_200                                  Decimal?       @db.Decimal(36, 18)
-  price                                                      Decimal?       @db.Decimal(36, 18)
-  volatility                                                 Decimal?       @db.Decimal(36, 18)
-  opening                                                    Decimal?       @db.Decimal(36, 18)
-  all_time_high                                              Decimal?       @db.Decimal(36, 18)
-  aroon_up_14                                                Decimal?       @db.Decimal(36, 18)
-  aroon_down_14                                              Decimal?       @db.Decimal(36, 18)
-  all_time_low                                               Decimal?       @db.Decimal(36, 18)
-  bollinger_lower_band_20                                    Decimal?       @db.Decimal(36, 18)
-  bollinger_upper_band_20                                    Decimal?       @db.Decimal(36, 18)
-  donchian_channels_lower_band_20                            Decimal?       @db.Decimal(36, 18)
-  donchian_channels_upper_band_20                            Decimal?       @db.Decimal(36, 18)
-  bull_bear_power                                            Decimal?       @db.Decimal(36, 18)
-  keltner_channels_lower_band_20                             Decimal?       @db.Decimal(36, 18)
-  keltner_channels_upper_band_20                             Decimal?       @db.Decimal(36, 18)
-  market_cap                                                 Decimal?       @db.Decimal(36, 18)
-  buy                                                        Decimal?       @db.Decimal(36, 18)
-  year_to_date_performance                                   Decimal?       @db.Decimal(36, 18)
-  annual_performance                                         Decimal?       @db.Decimal(36, 18)
-  six_month_performance                                      Decimal?       @db.Decimal(36, 18)
-  three_month_performance                                    Decimal?       @db.Decimal(36, 18)
-  stochastic_d                                               Decimal?       @db.Decimal(36, 18)
-  stochastic_k                                               Decimal?       @db.Decimal(36, 18)
-  gap_percent                                                Decimal?       @db.Decimal(36, 18)
-  ichimoku_leading_span_a                                    Decimal?       @db.Decimal(36, 18)
-  ichimoku_leading_span_b                                    Decimal?       @db.Decimal(36, 18)
-  slow_stochastic_rsi                                        Decimal?       @db.Decimal(36, 18)
-  fast_stochastic_rsi                                        Decimal?       @db.Decimal(36, 18)
-  commodity_channel_index_20                                 Decimal?       @db.Decimal(36, 18)
-  relative_strength_index_7                                  Decimal?       @db.Decimal(36, 18)
-  relative_strength_index_14                                 Decimal?       @db.Decimal(36, 18)
-  ichimoku_base_line                                         Decimal?       @db.Decimal(36, 18)
-  ichimoku_conversion_line                                   Decimal?       @db.Decimal(36, 18)
-  one_month_high                                             Decimal?       @db.Decimal(36, 18)
-  fifty_two_week_high                                        Decimal?       @db.Decimal(36, 18)
-  six_month_high                                             Decimal?       @db.Decimal(36, 18)
-  three_month_high                                           Decimal?       @db.Decimal(36, 18)
-  average_true_range_14                                      Decimal?       @db.Decimal(36, 18)
-  average_daily_range_14                                     Decimal?       @db.Decimal(36, 18)
-  hull_moving_average_9                                      Decimal?       @db.Decimal(36, 18)
-  exponential_moving_average_5                               Decimal?       @db.Decimal(36, 18)
-  exponential_moving_average_10                              Decimal?       @db.Decimal(36, 18)
-  exponential_moving_average_20                              Decimal?       @db.Decimal(36, 18)
-  exponential_moving_average_30                              Decimal?       @db.Decimal(36, 18)
-  exponential_moving_average_50                              Decimal?       @db.Decimal(36, 18)
-  exponential_moving_average_100                             Decimal?       @db.Decimal(36, 18)
-  volume_weighted_moving_average_20                          Decimal?       @db.Decimal(36, 18)
-  simple_moving_average_5                                    Decimal?       @db.Decimal(36, 18)
-  one_month_low                                              Decimal?       @db.Decimal(36, 18)
-  fifty_two_week_low                                         Decimal?       @db.Decimal(36, 18)
-  six_month_low                                              Decimal?       @db.Decimal(36, 18)
-  three_month_low                                            Decimal?       @db.Decimal(36, 18)
-  available_currencies                                       Decimal?       @db.Decimal(36, 18)
-  momentum_10                                                Decimal?       @db.Decimal(36, 18)
-  macd_level_12_26                                           Decimal?       @db.Decimal(36, 18)
-  awesome_oscillator                                         Decimal?       @db.Decimal(36, 18)
-  standard                                                   String?        @db.VarChar
-  five_year_performance                                      Decimal?       @db.Decimal(36, 18)
-  all_time_performance                                       Decimal?       @db.Decimal(36, 18)
-  camarilla_pivot_p                                          Decimal?       @db.Decimal(36, 18)
-  camarilla_pivot_r1                                         Decimal?       @db.Decimal(36, 18)
-  camarilla_pivot_r2                                         Decimal?       @db.Decimal(36, 18)
-  camarilla_pivot_r3                                         Decimal?       @db.Decimal(36, 18)
-  camarilla_pivot_s1                                         Decimal?       @db.Decimal(36, 18)
-  camarilla_pivot_s2                                         Decimal?       @db.Decimal(36, 18)
-  camarilla_pivot_s3                                         Decimal?       @db.Decimal(36, 18)
-  classic_pivot_p                                            Decimal?       @db.Decimal(36, 18)
-  classic_pivot_r1                                           Decimal?       @db.Decimal(36, 18)
-  classic_pivot_r2                                           Decimal?       @db.Decimal(36, 18)
-  classic_pivot_r3                                           Decimal?       @db.Decimal(36, 18)
-  classic_pivot_s1                                           Decimal?       @db.Decimal(36, 18)
-  classic_pivot_s2                                           Decimal?       @db.Decimal(36, 18)
-  classic_pivot_s3                                           Decimal?       @db.Decimal(36, 18)
-  dm_pivot_p                                                 Decimal?       @db.Decimal(36, 18)
-  dm_pivot_r1                                                Decimal?       @db.Decimal(36, 18)
-  dm_pivot_s1                                                Decimal?       @db.Decimal(36, 18)
-  fibonacci_pivot_p                                          Decimal?       @db.Decimal(36, 18)
-  fibonacci_pivot_r1                                         Decimal?       @db.Decimal(36, 18)
-  fibonacci_pivot_r2                                         Decimal?       @db.Decimal(36, 18)
-  fibonacci_pivot_r3                                         Decimal?       @db.Decimal(36, 18)
-  fibonacci_pivot_s1                                         Decimal?       @db.Decimal(36, 18)
-  fibonacci_pivot_s2                                         Decimal?       @db.Decimal(36, 18)
-  fibonacci_pivot_s3                                         Decimal?       @db.Decimal(36, 18)
-  woodie_pivot_p                                             Decimal?       @db.Decimal(36, 18)
-  woodie_pivot_r1                                            Decimal?       @db.Decimal(36, 18)
-  woodie_pivot_r2                                            Decimal?       @db.Decimal(36, 18)
-  woodie_pivot_r3                                            Decimal?       @db.Decimal(36, 18)
-  woodie_pivot_s1                                            Decimal?       @db.Decimal(36, 18)
-  woodie_pivot_s2                                            Decimal?       @db.Decimal(36, 18)
-  woodie_pivot_s3                                            Decimal?       @db.Decimal(36, 18)
-  volume_weighted_average_price                              Decimal?       @db.Decimal(36, 18)
-  williams_percent_range_14                                  Decimal?       @db.Decimal(36, 18)
-  parabolic_sar                                              Decimal?       @db.Decimal(36, 18)
-  macd_signal_12_26                                          Decimal?       @db.Decimal(36, 18)
-  rate_of_change_9                                           Decimal?       @db.Decimal(36, 18)
-  total_units_currencies                                     Decimal?       @db.Decimal(36, 18)
-  ultimate_oscillator                                        Decimal?       @db.Decimal(36, 18)
-  diluted_market_value                                       Decimal?       @db.Decimal(36, 18)
-  percentage_change                                          Decimal?       @db.Decimal(36, 18)
-  change                                                     Decimal?       @db.Decimal(36, 18)
-  change_1h_percent                                          Decimal?       @db.Decimal(36, 18)
-  change_1h                                                  Decimal?       @db.Decimal(36, 18)
-  change_1minute_percent                                     Decimal?       @db.Decimal(36, 18)
-  change_1minute                                             Decimal?       @db.Decimal(36, 18)
-  change_1month_percent                                      Decimal?       @db.Decimal(36, 18)
-  change_1month                                              Decimal?       @db.Decimal(36, 18)
-  change_1week_percent                                       Decimal?       @db.Decimal(36, 18)
-  change_1week                                               Decimal?       @db.Decimal(36, 18)
-  change_4hour_percent                                       Decimal?       @db.Decimal(36, 18)
-  change_4hour                                               Decimal?       @db.Decimal(36, 18)
-  change_5minute_percent                                     Decimal?       @db.Decimal(36, 18)
-  change_5minute                                             Decimal?       @db.Decimal(36, 18)
-  change_15minute_percent                                    Decimal?       @db.Decimal(36, 18)
-  change_15minute                                            Decimal?       @db.Decimal(36, 18)
-  percentage_change_from_open                                Decimal?       @db.Decimal(36, 18)
-  change_from_open                                           Decimal?       @db.Decimal(36, 18)
-  percentage_change_in_24h_volume                            Decimal?       @db.Decimal(36, 18)
-  sell                                                       Decimal?       @db.Decimal(36, 18)
-  monthly_volatility                                         Decimal?       @db.Decimal(36, 18)
-  weekly_volatility                                          Decimal?       @db.Decimal(36, 18)
-  volume                                                     Decimal?       @db.Decimal(36, 18)
-  volume_24h_usd                                             Decimal?       @db.Decimal(36, 18)
-  average_volume_10_days                                     Decimal?       @db.Decimal(36, 18)
-  average_volume_30_days                                     Decimal?       @db.Decimal(36, 18)
-  average_volume_60_days                                     Decimal?       @db.Decimal(36, 18)
-  average_volume_90_days                                     Decimal?       @db.Decimal(36, 18)
-  traded_volume                                              Decimal?       @db.Decimal(36, 18)
-  relative_volume                                            Decimal?       @db.Decimal(36, 18)
-  time_relative_volume                                       Decimal?       @db.Decimal(36, 18)
-  maximum                                                    Decimal?       @db.Decimal(36, 18)
-  minimum                                                    Decimal?       @db.Decimal(36, 18)
-  moving_averages_rating_id                                  Int
-  oscillators_rating_id                                      Int
-  technical_rating_id                                        Int
-  stock_exchange_id                                          Int
-  created_at                                                 DateTime       @default(now()) @db.Timestamp(6)
-  updated_at                                                 DateTime       @default(now()) @db.Timestamp(6)
-  trend_type_quotation_oscillators_rating_idTotrend_type     trend_type     @relation("quotation_oscillators_rating_idTotrend_type", fields: [oscillators_rating_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_339187fcc1791180758b08aef7b")
-  trend_type_quotation_moving_averages_rating_idTotrend_type trend_type     @relation("quotation_moving_averages_rating_idTotrend_type", fields: [moving_averages_rating_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_85eb7569f135d4f4182b6428917")
-  coin                                                       coin           @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_89b96a52b39c363db51dc9abe0e")
-  quotation_type                                             quotation_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8e407a12f6502b9cfc63e7fa2c1")
-  trend_type_quotation_technical_rating_idTotrend_type       trend_type     @relation("quotation_technical_rating_idTotrend_type", fields: [technical_rating_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cd28aed12202354a318e1200e5c")
-  stock_exchange                                             stock_exchange @relation(fields: [stock_exchange_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e6efcdce45cde2bbaad69ca0e8c")
+  id                           Int                    @id(map: "PK_596c572d5858492d10d8cf5383d") @default(autoincrement())
+  type_id                      Int
+  coin_id                      Int
+  bot_id                       Int
+  open                         Decimal?               @db.Decimal(36, 18)
+  high_all                     Decimal?               @db.Decimal(36, 18)
+  aroon_up                     Decimal?               @db.Decimal(36, 18)
+  aroon_down                   Decimal?               @db.Decimal(36, 18)
+  low_all                      Decimal?               @db.Decimal(36, 18)
+  bb_lower                     Decimal?               @db.Decimal(36, 18)
+  bb_upper                     Decimal?               @db.Decimal(36, 18)
+  donchch20_lower              Decimal?               @db.Decimal(36, 18)
+  donchch20_upper              Decimal?               @db.Decimal(36, 18)
+  stock_exchange_id            Int
+  bbpower                      Decimal?               @db.Decimal(36, 18)
+  kltchnl_lower                Decimal?               @db.Decimal(36, 18)
+  kltchnl_upper                Decimal?               @db.Decimal(36, 18)
+  market_cap_calc              Decimal?               @db.Decimal(36, 18)
+  recommend_ma                 Decimal?               @db.Decimal(36, 18)
+  recommend_other              Decimal?               @db.Decimal(36, 18)
+  bid                          Decimal?               @db.Decimal(36, 18)
+  perf_ytd                     Decimal?               @db.Decimal(36, 18)
+  perf_y                       Decimal?               @db.Decimal(36, 18)
+  perf_6m                      Decimal?               @db.Decimal(36, 18)
+  perf_3m                      Decimal?               @db.Decimal(36, 18)
+  perf_1m                      Decimal?               @db.Decimal(36, 18)
+  perf_w                       Decimal?               @db.Decimal(36, 18)
+  stoch_d                      Decimal?               @db.Decimal(36, 18)
+  stoch_k                      Decimal?               @db.Decimal(36, 18)
+  gap                          Decimal?               @db.Decimal(36, 18)
+  ichimoku_lead1               Decimal?               @db.Decimal(36, 18)
+  ichimoku_lead2               Decimal?               @db.Decimal(36, 18)
+  stoch_rsi_d                  Decimal?               @db.Decimal(36, 18)
+  stoch_rsi_k                  Decimal?               @db.Decimal(36, 18)
+  adx_minus_di                 Decimal?               @db.Decimal(36, 18)
+  adx_plus_di                  Decimal?               @db.Decimal(36, 18)
+  cci20                        Decimal?               @db.Decimal(36, 18)
+  rsi7                         Decimal?               @db.Decimal(36, 18)
+  rsi                          Decimal?               @db.Decimal(36, 18)
+  adx                          Decimal?               @db.Decimal(36, 18)
+  ichimoku_bline               Decimal?               @db.Decimal(36, 18)
+  ichimoku_cline               Decimal?               @db.Decimal(36, 18)
+  high_1m                      Decimal?               @db.Decimal(36, 18)
+  price_52_week_high           Decimal?               @db.Decimal(36, 18)
+  high_6m                      Decimal?               @db.Decimal(36, 18)
+  high_3m                      Decimal?               @db.Decimal(36, 18)
+  atr                          Decimal?               @db.Decimal(36, 18)
+  adr                          Decimal?               @db.Decimal(36, 18)
+  hullma9                      Decimal?               @db.Decimal(36, 18)
+  ema5                         Decimal?               @db.Decimal(36, 18)
+  ema10                        Decimal?               @db.Decimal(36, 18)
+  ema20                        Decimal?               @db.Decimal(36, 18)
+  ema30                        Decimal?               @db.Decimal(36, 18)
+  ema50                        Decimal?               @db.Decimal(36, 18)
+  ema100                       Decimal?               @db.Decimal(36, 18)
+  ema200                       Decimal?               @db.Decimal(36, 18)
+  vwma                         Decimal?               @db.Decimal(36, 18)
+  sma5                         Decimal?               @db.Decimal(36, 18)
+  sma10                        Decimal?               @db.Decimal(36, 18)
+  sma20                        Decimal?               @db.Decimal(36, 18)
+  sma30                        Decimal?               @db.Decimal(36, 18)
+  sma50                        Decimal?               @db.Decimal(36, 18)
+  sma100                       Decimal?               @db.Decimal(36, 18)
+  sma200                       Decimal?               @db.Decimal(36, 18)
+  low_1m                       Decimal?               @db.Decimal(36, 18)
+  price_52_week_low            Decimal?               @db.Decimal(36, 18)
+  low_6m                       Decimal?               @db.Decimal(36, 18)
+  low_3m                       Decimal?               @db.Decimal(36, 18)
+  total_shares_outstanding     Decimal?               @db.Decimal(36, 18)
+  mom                          Decimal?               @db.Decimal(36, 18)
+  macd_macd                    Decimal?               @db.Decimal(36, 18)
+  ao                           Decimal?               @db.Decimal(36, 18)
+  perf_5y                      Decimal?               @db.Decimal(36, 18)
+  perf_all                     Decimal?               @db.Decimal(36, 18)
+  pivot_m_camarilla_middle     Decimal?               @db.Decimal(36, 18)
+  pivot_m_camarilla_r1         Decimal?               @db.Decimal(36, 18)
+  pivot_m_camarilla_r2         Decimal?               @db.Decimal(36, 18)
+  pivot_m_camarilla_r3         Decimal?               @db.Decimal(36, 18)
+  pivot_m_camarilla_s1         Decimal?               @db.Decimal(36, 18)
+  pivot_m_camarilla_s2         Decimal?               @db.Decimal(36, 18)
+  pivot_m_camarilla_s3         Decimal?               @db.Decimal(36, 18)
+  pivot_m_classic_middle       Decimal?               @db.Decimal(36, 18)
+  pivot_m_classic_r1           Decimal?               @db.Decimal(36, 18)
+  pivot_m_classic_r2           Decimal?               @db.Decimal(36, 18)
+  pivot_m_classic_r3           Decimal?               @db.Decimal(36, 18)
+  pivot_m_classic_s1           Decimal?               @db.Decimal(36, 18)
+  pivot_m_classic_s2           Decimal?               @db.Decimal(36, 18)
+  pivot_m_classic_s3           Decimal?               @db.Decimal(36, 18)
+  pivot_m_demark_middle        Decimal?               @db.Decimal(36, 18)
+  pivot_m_demark_r1            Decimal?               @db.Decimal(36, 18)
+  pivot_m_demark_s1            Decimal?               @db.Decimal(36, 18)
+  pivot_m_fibonacci_middle     Decimal?               @db.Decimal(36, 18)
+  pivot_m_fibonacci_r1         Decimal?               @db.Decimal(36, 18)
+  pivot_m_fibonacci_r2         Decimal?               @db.Decimal(36, 18)
+  pivot_m_fibonacci_r3         Decimal?               @db.Decimal(36, 18)
+  pivot_m_fibonacci_s1         Decimal?               @db.Decimal(36, 18)
+  pivot_m_fibonacci_s2         Decimal?               @db.Decimal(36, 18)
+  pivot_m_fibonacci_s3         Decimal?               @db.Decimal(36, 18)
+  pivot_m_woodie_middle        Decimal?               @db.Decimal(36, 18)
+  pivot_m_woodie_r1            Decimal?               @db.Decimal(36, 18)
+  pivot_m_woodie_r2            Decimal?               @db.Decimal(36, 18)
+  pivot_m_woodie_r3            Decimal?               @db.Decimal(36, 18)
+  pivot_m_woodie_s1            Decimal?               @db.Decimal(36, 18)
+  pivot_m_woodie_s2            Decimal?               @db.Decimal(36, 18)
+  pivot_m_woodie_s3            Decimal?               @db.Decimal(36, 18)
+  relative_volume_intraday_5   Decimal?               @db.Decimal(36, 18)
+  close                        Decimal?               @db.Decimal(36, 18)
+  vwap                         Decimal?               @db.Decimal(36, 18)
+  w_r                          Decimal?               @db.Decimal(36, 18)
+  p_sar                        Decimal?               @db.Decimal(36, 18)
+  macd_signal                  Decimal?               @db.Decimal(36, 18)
+  roc                          Decimal?               @db.Decimal(36, 18)
+  recommend_all                Decimal?               @db.Decimal(36, 18)
+  total_shares_diluted         Decimal?               @db.Decimal(36, 18)
+  uo                           Decimal?               @db.Decimal(36, 18)
+  market_cap_diluted_calc      Decimal?               @db.Decimal(36, 18)
+  change                       Decimal?               @db.Decimal(36, 18)
+  change_abs                   Decimal?               @db.Decimal(36, 18)
+  change_from_open             Decimal?               @db.Decimal(36, 18)
+  change_from_open_abs         Decimal?               @db.Decimal(36, 18)
+  ask                          Decimal?               @db.Decimal(36, 18)
+  volatility_d                 Decimal?               @db.Decimal(36, 18)
+  volatility_m                 Decimal?               @db.Decimal(36, 18)
+  volatility_w                 Decimal?               @db.Decimal(36, 18)
+  volume                       Decimal?               @db.Decimal(36, 18)
+  average_volume_10d_calc      Decimal?               @db.Decimal(36, 18)
+  average_volume_30d_calc      Decimal?               @db.Decimal(36, 18)
+  average_volume_60d_calc      Decimal?               @db.Decimal(36, 18)
+  average_volume_90d_calc      Decimal?               @db.Decimal(36, 18)
+  total_value_traded           Decimal?               @db.Decimal(36, 18)
+  relative_volume_10d_calc     Decimal?               @db.Decimal(36, 18)
+  high                         Decimal?               @db.Decimal(36, 18)
+  low                          Decimal?               @db.Decimal(36, 18)
+  description                  String?                @db.VarChar
+  type                         String?                @db.VarChar
+  subtype                      String?                @db.VarChar
+  update_mode                  String?                @db.VarChar
+  pricescale                   Decimal?               @db.Decimal(36, 18)
+  minmov                       Decimal?               @db.Decimal(36, 18)
+  fractional                   String?                @db.VarChar
+  minmove2                     Decimal?               @db.Decimal(36, 18)
+  rec_bbpower                  Decimal?               @db.Decimal(36, 18)
+  stoch_k_1_                   Decimal?               @db.Decimal(36, 18)
+  stoch_d_1_                   Decimal?               @db.Decimal(36, 18)
+  rec_stoch_rsi                Decimal?               @db.Decimal(36, 18)
+  cci20_1_                     Decimal?               @db.Decimal(36, 18)
+  rsi7_1_                      Decimal?               @db.Decimal(36, 18)
+  rsi_1_                       Decimal?               @db.Decimal(36, 18)
+  adx_plus_di_1_               Decimal?               @db.Decimal(36, 18)
+  adx_minus_di_1_              Decimal?               @db.Decimal(36, 18)
+  rec_ichimoku                 Decimal?               @db.Decimal(36, 18)
+  rec_hullma9                  Decimal?               @db.Decimal(36, 18)
+  rec_vwma                     Decimal?               @db.Decimal(36, 18)
+  mom_1_                       Decimal?               @db.Decimal(36, 18)
+  ao_1_                        Decimal?               @db.Decimal(36, 18)
+  ao_2_                        Decimal?               @db.Decimal(36, 18)
+  candle_doji                  Decimal?               @db.Decimal(36, 18)
+  candle_abandonedbaby_bullish Decimal?               @db.Decimal(36, 18)
+  candle_abandonedbaby_bearish Decimal?               @db.Decimal(36, 18)
+  candle_doji_dragonfly        Decimal?               @db.Decimal(36, 18)
+  candle_hangingman            Decimal?               @db.Decimal(36, 18)
+  candle_engulfing_bullish     Decimal?               @db.Decimal(36, 18)
+  candle_engulfing_bearish     Decimal?               @db.Decimal(36, 18)
+  candle_shootingstar          Decimal?               @db.Decimal(36, 18)
+  candle_morningstar           Decimal?               @db.Decimal(36, 18)
+  candle_eveningstar           Decimal?               @db.Decimal(36, 18)
+  candle_doji_gravestone       Decimal?               @db.Decimal(36, 18)
+  candle_harami_bullish        Decimal?               @db.Decimal(36, 18)
+  candle_harami_bearish        Decimal?               @db.Decimal(36, 18)
+  candle_kicking_bullish       Decimal?               @db.Decimal(36, 18)
+  candle_kicking_bearish       Decimal?               @db.Decimal(36, 18)
+  candle_longshadow_lower      Decimal?               @db.Decimal(36, 18)
+  candle_longshadow_upper      Decimal?               @db.Decimal(36, 18)
+  candle_hammer                Decimal?               @db.Decimal(36, 18)
+  candle_invertedhammer        Decimal?               @db.Decimal(36, 18)
+  candle_marubozu_white        Decimal?               @db.Decimal(36, 18)
+  candle_marubozu_black        Decimal?               @db.Decimal(36, 18)
+  candle_spinningtop_black     Decimal?               @db.Decimal(36, 18)
+  candle_spinningtop_white     Decimal?               @db.Decimal(36, 18)
+  candle_3blackcrows           Decimal?               @db.Decimal(36, 18)
+  candle_tristar_bullish       Decimal?               @db.Decimal(36, 18)
+  candle_tristar_bearish       Decimal?               @db.Decimal(36, 18)
+  candle_3whitesoldiers        Decimal?               @db.Decimal(36, 18)
+  rec_wr                       Decimal?               @db.Decimal(36, 18)
+  rec_uo                       Decimal?               @db.Decimal(36, 18)
+  created_at                   DateTime               @default(now()) @db.Timestamp(6)
+  updated_at                   DateTime               @default(now()) @db.Timestamp(6)
+  coin                         coin                   @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_89b96a52b39c363db51dc9abe0e")
+  quotation_request_type       quotation_request_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8e407a12f6502b9cfc63e7fa2c1")
+  stock_exchange               stock_exchange         @relation(fields: [stock_exchange_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e6efcdce45cde2bbaad69ca0e8c")
+  bot                          bot                    @relation(fields: [bot_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ec26537b2508479dc06aa548345")
 }
 
-model quotation_type {
-  id         Int         @id(map: "PK_8e407a12f6502b9cfc63e7fa2c1") @default(autoincrement())
+model quotation_request_type {
+  id         Int         @id(map: "PK_88b84fb401bb82b19bf48eabe16") @default(autoincrement())
   name       String      @db.VarChar
   headers    Json        @db.Json
   filters    Json        @db.Json
@@ -760,29 +574,78 @@ model setting_user {
   @@id([user_id, setting_id], map: "PK_9b9f9a08cecc632f2da8f12f4da")
 }
 
+model simulation {
+  id                   Int               @id(map: "PK_4b32674039366f76e42c51a2e9d") @default(autoincrement())
+  user_id              Int
+  banking_id           Int
+  stock_exchange_id    Int
+  strategy_id          Int
+  trade_signal_type_id Int
+  coin_id              Int
+  layers               Int
+  leverage             Decimal?          @db.Decimal
+  created_at           DateTime          @default(now()) @db.Timestamp(6)
+  updated_at           DateTime          @default(now()) @db.Timestamp(6)
+  margin_used          Int
+  first_order          Int
+  mmr                  Int
+  stop_loss            Int
+  start_time           DateTime          @db.Timestamp(6)
+  end_time             DateTime          @db.Timestamp(6)
+  operation            operation[]
+  user                 user              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_432202adbf37390e1bd7ca6864e")
+  strategy             strategy          @relation(fields: [strategy_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_525bd69f6d16dc4cb93c9955397")
+  banking              banking           @relation(fields: [banking_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_68e1444a736793287f5f26b5725")
+  stock_exchange       stock_exchange    @relation(fields: [stock_exchange_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_6c2b86cc5017176219268f45055")
+  trade_signal_type    trade_signal_type @relation(fields: [trade_signal_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_938f73455c9454ba3a6563b1e1e")
+  coin                 coin              @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_a3be6da1a66d35c42601a2ca03a")
+}
+
 model stock_exchange {
-  id         Int         @id(map: "PK_852d756a8417b8b46aeb5760688") @default(autoincrement())
-  name       String      @db.VarChar
-  created_at DateTime    @default(now()) @db.Timestamp(6)
-  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  id         Int          @id(map: "PK_852d756a8417b8b46aeb5760688") @default(autoincrement())
+  slug       String       @unique(map: "UQ_b871966953be9d0dc6e0feb4721") @db.VarChar(255)
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  updated_at DateTime     @default(now()) @db.Timestamp(6)
   operation  operation[]
   quotation  quotation[]
+  simulation simulation[]
 }
 
 model strategy {
-  id         Int         @id(map: "PK_733d2c3d4a73c020375b9b3581d") @default(autoincrement())
-  name       String      @db.VarChar
-  created_at DateTime    @default(now()) @db.Timestamp(6)
-  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  id         Int          @id(map: "PK_733d2c3d4a73c020375b9b3581d") @default(autoincrement())
+  name       String       @db.VarChar
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  updated_at DateTime     @default(now()) @db.Timestamp(6)
   operation  operation[]
+  simulation simulation[]
+}
+
+model top_coin {
+  id            Int           @id(map: "PK_6b94f9229d5badca165acb929f1") @default(autoincrement())
+  coin_id       Int
+  type_id       Int
+  order         Int
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  coin          coin          @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1660ba7dc9f6901dc695ca01a4e")
+  top_coin_type top_coin_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5d4966055678cc122a3e2f76fbe")
+}
+
+model top_coin_type {
+  id         Int        @id(map: "PK_5d4966055678cc122a3e2f76fbe") @default(autoincrement())
+  name       String     @db.VarChar
+  created_at DateTime   @default(now()) @db.Timestamp(6)
+  updated_at DateTime   @default(now()) @db.Timestamp(6)
+  top_coin   top_coin[]
 }
 
 model trade_signal_type {
-  id         Int         @id(map: "PK_dde118042ca4b5b948deb84e7cc") @default(autoincrement())
-  name       String      @unique(map: "UQ_89f446be615b91899943cfb1ea5") @db.VarChar
-  created_at DateTime    @default(now()) @db.Timestamp(6)
-  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  id         Int          @id(map: "PK_dde118042ca4b5b948deb84e7cc") @default(autoincrement())
+  name       String       @unique(map: "UQ_89f446be615b91899943cfb1ea5") @db.VarChar
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  updated_at DateTime     @default(now()) @db.Timestamp(6)
   operation  operation[]
+  simulation simulation[]
 }
 
 model translation {
@@ -807,29 +670,6 @@ model translation_namespace {
   translation translation[]
 }
 
-model trend_type {
-  id                                                        Int                 @id(map: "PK_f82a6fe0e344987b3eef3a9ae0a") @default(autoincrement())
-  slug                                                      String              @unique(map: "UQ_5afd304673d1c5618b18598ffd9") @db.VarChar(255)
-  created_at                                                DateTime            @default(now()) @db.Timestamp(6)
-  updated_at                                                DateTime            @default(now()) @db.Timestamp(6)
-  quotation_quotation_oscillators_rating_idTotrend_type     quotation[]         @relation("quotation_oscillators_rating_idTotrend_type")
-  quotation_quotation_moving_averages_rating_idTotrend_type quotation[]         @relation("quotation_moving_averages_rating_idTotrend_type")
-  quotation_quotation_technical_rating_idTotrend_type       quotation[]         @relation("quotation_technical_rating_idTotrend_type")
-  trend_type_locale                                         trend_type_locale[]
-}
-
-model trend_type_locale {
-  locale_id  Int
-  type_id    Int
-  name       String     @db.VarChar
-  created_at DateTime   @default(now()) @db.Timestamp(6)
-  updated_at DateTime   @default(now()) @db.Timestamp(6)
-  locale     locale     @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_26062615ff978a8751c60a99118")
-  trend_type trend_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c6675d648728e1408fc17e4be06")
-
-  @@id([locale_id, type_id], map: "PK_55203e641eb3a574460644ec5d6")
-}
-
 model user {
   id             Int            @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
   multifactor_id Int?
@@ -843,6 +683,7 @@ model user {
   operation      operation[]
   role_user      role_user[]
   setting_user   setting_user[]
+  simulation     simulation[]
   multifactor    multifactor?   @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
 }
 

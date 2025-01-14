@@ -57,6 +57,7 @@ interface ISystemInfo {
   name: string
   slogan: string
   imageUrl: string
+  iconUrl: string
 }
 
 type AppContextType = {
@@ -69,6 +70,7 @@ type AppContextType = {
     confirmNewPassword: string
   ) => Promise<void>
   user: any
+  isValidSignature: boolean
   systemInfo: ISystemInfo
   request: <T extends {}>(
     config?: AxiosRequestConfig
@@ -92,10 +94,12 @@ export const AppContext = createContext<AppContextType>({
   forget: () => Promise.resolve(),
   resetPassword: () => Promise.resolve(),
   user: {},
+  isValidSignature: false,
   systemInfo: {
     name: 'Hedhog',
     slogan: 'Administration Panel',
     imageUrl: '/images/favicon-dark.png',
+    iconUrl: '/images/favicon-dark.png',
   },
   request: () => new Promise(() => {}),
   openDialog: () => '',
@@ -133,6 +137,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [modals, setModals] = useState<ModalType[]>([])
 
+  const [isValidSignature, setIsValidSignature] = useState<boolean>(false)
   const [token, setToken] = useLocalStorage({
     defaultValue: '',
     key: LocalStorageKeys.Token,
@@ -146,13 +151,35 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [systemName, setSystemName] = useState<string>('')
   const [systemSlogan, setSystemSlogan] = useState<string>('')
   const [imageUrl, setImageUrl] = useState<string>('')
+  const [iconUrl, setIconUrl] = useState<string>('')
 
   useEffect(() => {
     setSystemName(getValue('--system-name'))
     setSystemSlogan(getValue('--system-slogan'))
     setImageUrl(getValue('--image-url'))
+    setIconUrl(getValue('--icon-url'))
+
+    getValidSignature()
+      .then(() => setIsValidSignature(true))
+      .catch(() => {
+        setIsValidSignature(false)
+      })
   }, [])
 
+  const getValidSignature = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await request({
+          url: '/menu/system',
+          showErrors: false,
+        })
+
+        resolve(data)
+      } catch (error) {
+        reject()
+      }
+    })
+  }
   const openDialog = (dialog: OpenDialogType) => {
     const id = uuidv4()
     setModals((modals) => {
@@ -219,7 +246,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   }
 
   const request = useCallback(
-    <T extends {}>(config?: AxiosRequestConfig) => {
+    <T extends {}>(config?: AxiosRequestConfig & { showErrors?: boolean }) => {
+      if (config && typeof config?.showErrors === 'undefined') {
+        config.showErrors = true
+      }
+
       const instance = axios.create({ baseURL: BASE_URL })
 
       instance.interceptors.request.use(
@@ -233,7 +264,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           return cnf
         },
         (error) => {
-          handleError(error)
+          config?.showErrors && handleError(error)
           return Promise.reject(error)
         }
       )
@@ -243,7 +274,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           return response
         },
         (error) => {
-          handleError(error)
+          config?.showErrors && handleError(error)
           return Promise.reject(error)
         }
       )
@@ -327,7 +358,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   ) => {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const { data } = await request({
+        const { data } = await request<RequestLoginType>({
           url: '/auth/reset',
           method: 'POST',
           data: {
@@ -337,8 +368,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           },
         })
 
-        if (data) {
-          console.log({ data })
+        if (data.token) {
+          setToken(data.token)
           toast.success('Password has been reseted!')
           resolve()
         }
@@ -393,10 +424,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           forget,
           resetPassword,
           user,
+          isValidSignature,
           systemInfo: {
             name: systemName,
             slogan: systemSlogan,
             imageUrl,
+            iconUrl,
           },
           request,
           logout,

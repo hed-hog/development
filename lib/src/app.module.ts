@@ -12,6 +12,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AppearanceModule } from '@hedhog/appearance';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AppService } from './app.service';
       from: String(process.env.MAIL_FROM),
     }),
     AdminModule,
+    AppearanceModule,
     ContactModule,
     CountryModule,
     LocaleModule,
@@ -40,4 +42,4 @@ import { AppService } from './app.service';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
