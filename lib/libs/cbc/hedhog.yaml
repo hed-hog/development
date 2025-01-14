@@ -1607,8 +1607,6 @@ tables:
           pt: Alavancagem
         type: decimal
         isNullable: true
-      - type: created_at
-      - type: updated_at
       - name: margin_used
         type: int
       - name: first_order
@@ -1621,6 +1619,8 @@ tables:
         type: timestamp
       - name: end_time
         type: timestamp
+      - type: created_at
+      - type: updated_at
   operation:
     columns:
       - type: pk
