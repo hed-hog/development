@@ -4,7 +4,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '@hedhog/core';
@@ -16,14 +16,14 @@ export class Top100Service {
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['value', 'value_24h_percentage_change'];
-    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams
+      paginationParams,
     );
 
     if (paginationParams.search && !isNaN(+paginationParams.search)) {
@@ -31,48 +31,48 @@ export class Top100Service {
     }
 
     return this.paginationService.paginate(
-      (this.prismaService as any).top_100,
+      this.prismaService.top_100,
       paginationParams,
       {
         where: {
-          OR
-        }
-      }
+          OR,
+        },
+      },
     );
   }
 
   async get(id: number) {
-    return (this.prismaService as any).top_100.findUnique({
-      where: { id: id }
+    return this.prismaService.top_100.findUnique({
+      where: { id: id },
     });
   }
 
   async create(data: CreateDTO) {
-    return (this.prismaService as any).top_100.create({
-      data
+    return this.prismaService.top_100.create({
+      data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return (this.prismaService as any).top_100.update({
+    return this.prismaService.top_100.update({
       where: { id: id },
-      data
+      data,
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
-    return (this.prismaService as any).top_100.deleteMany({
+    return this.prismaService.top_100.deleteMany({
       where: {
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }
