@@ -1,3 +1,5 @@
+import { NotificationModule } from './notification/notification.module';
+import { NotificationTypeModule } from './notification-type/notification-type.module';
 import { TopCmcModule } from './top-cmc/top-cmc.module';
 import { AdminModule } from '@hedhog/admin';
 import { LocaleModule } from '@hedhog/locale';
@@ -49,6 +51,8 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => CoinVariationTypeModule),
     forwardRef(() => GainerLoserModule),
     forwardRef(() => TopCmcModule),
+    forwardRef(() => NotificationTypeModule),
+    forwardRef(() => NotificationModule),
   ],
   controllers: [],
   providers: [],

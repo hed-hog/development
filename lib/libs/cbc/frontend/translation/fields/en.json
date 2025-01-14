@@ -1,4 +1,9 @@
 {
+  "notification_type.slug": "Name",
+  "notification.type_id": "Type",
+  "notification.message": "Message",
+  "notification.user_id": "User",
+  "notification.coin_id": "Coin",
   "quotation_request_type.name": "Name",
   "quotation_request_type.headers": "Headers",
   "quotation_request_type.filters": "Filters",

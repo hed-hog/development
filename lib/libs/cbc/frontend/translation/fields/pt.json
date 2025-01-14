@@ -1,4 +1,9 @@
 {
+  "notification_type.slug": "Nome",
+  "notification.type_id": "Tipo",
+  "notification.message": "Mensagem",
+  "notification.user_id": "Usuário",
+  "notification.coin_id": "Moeda",
   "quotation_request_type.name": "Nome",
   "quotation_request_type.headers": "Cabeçalhos",
   "quotation_request_type.filters": "Filtros",
