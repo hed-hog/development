@@ -17,6 +17,7 @@ import { QuotationModule } from './quotation/quotation.module';
 import { SimulationModule } from './simulation/simulation.module';
 import { StockExchangeModule } from './stock-exchange/stock-exchange.module';
 import { StrategyModule } from './strategy/strategy.module';
+import { Top100Module } from './top-100/top-100.module';
 import { TopCoinTypeModule } from './top-coin-type/top-coin-type.module';
 import { TopCoinModule } from './top-coin/top-coin.module';
 import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.module';
@@ -43,6 +44,7 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => GlobalMetricModule),
     forwardRef(() => TopCoinTypeModule),
     forwardRef(() => TopCoinModule),
+    forwardRef(() => Top100Module),
   ],
   controllers: [],
   providers: [],

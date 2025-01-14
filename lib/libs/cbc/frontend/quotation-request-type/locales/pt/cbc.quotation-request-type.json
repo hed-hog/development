@@ -1,11 +1,11 @@
 {
-  "create": "Criar tipo de solicitação de cotação",
-  "createText": "Preencha as informações do tipo de solicitação de cotação.",
-  "createTooltip": "Criar novo tipo de solicitação de cotação",
-  "delete": "Excluir tipo de solicitação de cotação",
-  "deleteText": "Você tem certeza de que deseja excluir estes tipos de solicitação de cotação?",
-  "deleteTooltip": "Excluir o tipo de solicitação de cotação selecionado",
-  "edit": "Editar tipo de solicitação de cotação",
-  "editText": "Visualizar e editar informações do tipo de solicitação de cotação.",
-  "editTooltip": "Editar o tipo de solicitação de cotação selecionado"
+  "create": "Create Quotation request type",
+  "createText": "Fill the quotation request type informations.",
+  "createTooltip": "Create new quotation request type",
+  "delete": "Delete Quotation request type",
+  "deleteText": "Are you sure to delete these quotation request types?",
+  "deleteTooltip": "Delete the selected quotation request types",
+  "edit": "Edit Quotation request type",
+  "editText": "View and edit quotation request type information.",
+  "editTooltip": "Edit the selected quotation request types"
 }

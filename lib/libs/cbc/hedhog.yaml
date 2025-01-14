@@ -1,4 +1,13 @@
 tables:
+  top_100:
+    columns:
+      - type: pk
+      - name: value
+        type: decimal
+      - name: value_24h_percentage_change
+        type: decimal
+      - type: created_at
+      - type: updated_at
   quotation_request_type:
     columns:
       - type: pk
@@ -2278,6 +2287,24 @@ data:
     - url: /top-coin
       method: DELETE
       relations: *a19
+    - url: /top-100
+      method: GET
+      relations: &a20
+        role:
+          - where:
+              slug: admin
+    - url: /top-100
+      method: POST
+      relations: *a20
+    - url: /top-100/:id
+      method: GET
+      relations: *a20
+    - url: /top-100/:id
+      method: PATCH
+      relations: *a20
+    - url: /top-100
+      method: DELETE
+      relations: *a20
   menu:
     - url: /cbc
       icon: coin
@@ -2476,6 +2503,13 @@ data:
       url: /top-coin
       slug: top-coin
       relations: *a19
+    - name:
+        en: Top100
+        pt: Top100
+      icon: file
+      url: /top-100
+      slug: top-100
+      relations: *a20
   screen:
     - name:
         en: Coin
@@ -2676,6 +2710,14 @@ data:
       description:
         en: Screen to manage top_coin
         pt: Tela para gerenciar top_coin
+      icon: file
+    - name:
+        en: Top100
+        pt: Top100
+      slug: top-100
+      description:
+        en: Screen to manage top_100
+        pt: Tela para gerenciar top_100
       icon: file
   strategy:
     - name: AI STRATEGY
