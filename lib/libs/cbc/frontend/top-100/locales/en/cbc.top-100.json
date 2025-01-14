@@ -1,11 +1,11 @@
 {
-  "create": "Create Top 100",
+  "create": "Create top 100",
   "createText": "Fill the top 100 informations.",
   "createTooltip": "Create new top 100",
-  "delete": "Delete Top 100",
-  "deleteText": "Are you sure to delete these top 100s?",
-  "deleteTooltip": "Delete the selected top 100s",
-  "edit": "Edit Top 100",
+  "delete": "Delete top 100",
+  "deleteText": "Are you sure to delete these top 100?",
+  "deleteTooltip": "Delete the selected top 100",
+  "edit": "Edit top 100",
   "editText": "View and edit top 100 information.",
-  "editTooltip": "Edit the selected top 100s"
+  "editTooltip": "Edit the selected top 100"
 }

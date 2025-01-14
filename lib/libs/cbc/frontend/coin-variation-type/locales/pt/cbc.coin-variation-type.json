@@ -1,0 +1,11 @@
+{
+  "create": "Criar tipo de variação de moeda",
+  "createText": "Preencha as informações do tipo de variação de moeda.",
+  "createTooltip": "Criar novo tipo de variação de moeda",
+  "delete": "Excluir tipo de variação de moeda",
+  "deleteText": "Você tem certeza de que deseja excluir esses tipos de variação de moeda?",
+  "deleteTooltip": "Excluir o tipo de variação de moeda selecionado",
+  "edit": "Editar tipo de variação de moeda",
+  "editText": "Visualizar e editar informações do tipo de variação de moeda.",
+  "editTooltip": "Editar o tipo de variação de moeda selecionado"
+}

@@ -1,11 +1,11 @@
 {
-  "create": "Create Quotation",
+  "create": "Create quotation",
   "createText": "Fill the quotation informations.",
   "createTooltip": "Create new quotation",
-  "delete": "Delete Quotation",
+  "delete": "Delete quotation",
   "deleteText": "Are you sure to delete these quotations?",
-  "deleteTooltip": "Delete the selected quotations",
-  "edit": "Edit Quotation",
+  "deleteTooltip": "Delete the selected quotation",
+  "edit": "Edit quotation",
   "editText": "View and edit quotation information.",
-  "editTooltip": "Edit the selected quotations"
+  "editTooltip": "Edit the selected quotation"
 }

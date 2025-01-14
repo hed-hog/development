@@ -1,11 +1,11 @@
 {
-  "create": "Create Stock exchange",
+  "create": "Create stock exchange",
   "createText": "Fill the stock exchange informations.",
   "createTooltip": "Create new stock exchange",
-  "delete": "Delete Stock exchange",
-  "deleteText": "Are you sure to delete these stock exchanges?",
-  "deleteTooltip": "Delete the selected stock exchanges",
-  "edit": "Edit Stock exchange",
+  "delete": "Delete stock exchange",
+  "deleteText": "Are you sure to delete these stock exchange?",
+  "deleteTooltip": "Delete the selected stock exchange",
+  "edit": "Edit stock exchange",
   "editText": "View and edit stock exchange information.",
-  "editTooltip": "Edit the selected stock exchanges"
+  "editTooltip": "Edit the selected stock exchange"
 }

@@ -1,0 +1,11 @@
+{
+  "create": "Criar top variation",
+  "createText": "Preencha as informações do top variation.",
+  "createTooltip": "Criar novo top variation",
+  "delete": "Excluir top variation",
+  "deleteText": "Você tem certeza de que deseja excluir esses top variation?",
+  "deleteTooltip": "Excluir o top variation selecionado",
+  "edit": "Editar top variation",
+  "editText": "Visualizar e editar informações do top variation.",
+  "editTooltip": "Editar o top variation selecionado"
+}

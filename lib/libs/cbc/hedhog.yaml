@@ -29,6 +29,32 @@ tables:
         field: textarea
       - type: created_at
       - type: updated_at
+  top_variation:
+    columns:
+      - type: pk
+      - name: coin_id
+        type: fk
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+      - name: type_id
+        type: fk
+        references:
+          table: coin_variation_type
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+  coin_variation_type:
+    columns:
+      - type: pk
+      - name: name
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
   coin:
     columns:
       - type: pk
@@ -2305,6 +2331,42 @@ data:
     - url: /top-100
       method: DELETE
       relations: *a20
+    - url: /coin-variation-type
+      method: GET
+      relations: &a21
+        role:
+          - where:
+              slug: admin
+    - url: /coin-variation-type
+      method: POST
+      relations: *a21
+    - url: /coin-variation-type/:id
+      method: GET
+      relations: *a21
+    - url: /coin-variation-type/:id
+      method: PATCH
+      relations: *a21
+    - url: /coin-variation-type
+      method: DELETE
+      relations: *a21
+    - url: /top-variation
+      method: GET
+      relations: &a22
+        role:
+          - where:
+              slug: admin
+    - url: /top-variation
+      method: POST
+      relations: *a22
+    - url: /top-variation/:id
+      method: GET
+      relations: *a22
+    - url: /top-variation/:id
+      method: PATCH
+      relations: *a22
+    - url: /top-variation
+      method: DELETE
+      relations: *a22
   menu:
     - url: /cbc
       icon: coin
@@ -2510,6 +2572,20 @@ data:
       url: /top-100
       slug: top-100
       relations: *a20
+    - name:
+        en: CoinVariationType
+        pt: CoinVariationType
+      icon: file
+      url: /coin-variation-type
+      slug: coin-variation-type
+      relations: *a21
+    - name:
+        en: TopVariation
+        pt: TopVariation
+      icon: file
+      url: /top-variation
+      slug: top-variation
+      relations: *a22
   screen:
     - name:
         en: Coin
@@ -2718,6 +2794,22 @@ data:
       description:
         en: Screen to manage top_100
         pt: Tela para gerenciar top_100
+      icon: file
+    - name:
+        en: CoinVariationType
+        pt: CoinVariationType
+      slug: coin-variation-type
+      description:
+        en: Screen to manage coin_variation_type
+        pt: Tela para gerenciar coin_variation_type
+      icon: file
+    - name:
+        en: TopVariation
+        pt: TopVariation
+      slug: top-variation
+      description:
+        en: Screen to manage top_variation
+        pt: Tela para gerenciar top_variation
       icon: file
   strategy:
     - name: AI STRATEGY

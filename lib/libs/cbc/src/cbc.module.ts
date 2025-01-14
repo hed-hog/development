@@ -1,3 +1,5 @@
+import { CoinVariationTypeModule } from './coin-variation-type/coin-variation-type.module';
+import { TopVariationModule } from './top-variation/top-variation.module';
 import { AdminModule } from '@hedhog/admin';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
@@ -45,6 +47,9 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => TopCoinTypeModule),
     forwardRef(() => TopCoinModule),
     forwardRef(() => Top100Module),
+    forwardRef(() => Top100Module),
+    forwardRef(() => TopVariationModule),
+    forwardRef(() => CoinVariationTypeModule),
   ],
   controllers: [],
   providers: [],

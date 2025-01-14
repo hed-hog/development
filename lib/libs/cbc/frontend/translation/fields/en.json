@@ -2,6 +2,7 @@
   "quotation_request_type.name": "Name",
   "quotation_request_type.headers": "Headers",
   "quotation_request_type.filters": "Filters",
+  "coin_variation_type.name": "Name",
   "quotation.type_id": "Request Type",
   "quotation.coin_id": "Quote",
   "quotation.bot_id": "Bot",

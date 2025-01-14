@@ -2,6 +2,7 @@
   "quotation_request_type.name": "Nome",
   "quotation_request_type.headers": "Cabeçalhos",
   "quotation_request_type.filters": "Filtros",
+  "coin_variation_type.name": "Nome",
   "quotation.type_id": "Tipo de Requisição",
   "quotation.coin_id": "Cotação",
   "quotation.bot_id": "Bot",
