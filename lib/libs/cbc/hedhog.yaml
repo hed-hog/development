@@ -1607,6 +1607,26 @@ tables:
         locale:
           en: User
           pt: Usuário
+      - name: stock_exchange_id
+        type: fk
+        references:
+          table: stock_exchange
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Stock Exchange
+          pt: Bolsa
+      - name: strategy_id
+        type: fk
+        references:
+          table: strategy
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Strategy
+          pt: Estratégia
+      - name: balance
+        type: decimal
       - type: created_at
       - type: updated_at
   simulation:
@@ -3006,6 +3026,9 @@ data:
         en: Screen to manage notification
         pt: Tela para gerenciar notification
       icon: file
+  stock_exchange:
+    - slug: BYBIT
+    - slug: Binance
   strategy:
     - name: AI STRATEGY
     - name: BULL AI

@@ -1,11 +1,11 @@
 {
-  "create": "Create Mmr",
-  "createText": "Fill the mmr informations.",
-  "createTooltip": "Create new mmr",
-  "delete": "Delete Mmr",
-  "deleteText": "Are you sure to delete these mmrs?",
-  "deleteTooltip": "Delete the selected mmrs",
-  "edit": "Edit Mmr",
-  "editText": "View and edit mmr information.",
-  "editTooltip": "Edit the selected mmrs"
+  "create": "Criar mmr",
+  "createText": "Preencha as informações do mmr.",
+  "createTooltip": "Criar novo mmr",
+  "delete": "Excluir mmr",
+  "deleteText": "Você tem certeza de que deseja excluir estes mmr?",
+  "deleteTooltip": "Excluir o mmr selecionado",
+  "edit": "Editar mmr",
+  "editText": "Visualizar e editar informações do mmr.",
+  "editTooltip": "Editar o mmr selecionado"
 }
