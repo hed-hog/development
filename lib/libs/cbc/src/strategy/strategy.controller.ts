@@ -10,19 +10,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { StrategyService } from './strategy.service';
-import { Role, DeleteDTO } from '@hedhog/core';
+import { Public, DeleteDTO } from '@hedhog/core';
 
-@Role()
+@Public()
 @Controller('strategy')
 export class StrategyController {
   constructor(
     @Inject(forwardRef(() => StrategyService))
-    private readonly strategyService: StrategyService
+    private readonly strategyService: StrategyService,
   ) {}
 
   @Get()
@@ -44,7 +44,7 @@ export class StrategyController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.strategyService.update({
       id,
-      data
+      data,
     });
   }
 

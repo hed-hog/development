@@ -10,19 +10,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { BankingService } from './banking.service';
-import { Role, DeleteDTO } from '@hedhog/core';
+import { Public, DeleteDTO } from '@hedhog/core';
 
-@Role()
+@Public()
 @Controller('banking')
 export class BankingController {
   constructor(
     @Inject(forwardRef(() => BankingService))
-    private readonly bankingService: BankingService
+    private readonly bankingService: BankingService,
   ) {}
 
   @Get()
@@ -44,7 +44,7 @@ export class BankingController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.bankingService.update({
       id,
-      data
+      data,
     });
   }
 
