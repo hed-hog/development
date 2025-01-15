@@ -200,7 +200,10 @@ export class QuotationService {
       'candle_tristar_bearish',
       'candle_3whitesoldiers',
       'rec_wr',
-      'rec_uo'
+      'rec_uo',
+      'change_60',
+      'change_15',
+      'adx_1'
     ];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,

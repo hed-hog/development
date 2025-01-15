@@ -1,3 +1,4 @@
+import { DeleteDTO } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
@@ -7,7 +8,6 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class TopVariationService {
 
   async list(paginationParams: PaginationDTO) {
     const fields = [];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
+    const OR: any[] = (this.prismaService as any).createInsensitiveSearch(
       fields,
       paginationParams,
     );
@@ -31,7 +31,7 @@ export class TopVariationService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.top_variation,
+      (this.prismaService as any).top_variation,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class TopVariationService {
   }
 
   async get(id: number) {
-    return this.prismaService.top_variation.findUnique({
+    return (this.prismaService as any).top_variation.findUnique({
       where: { id: id },
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.top_variation.create({
+    return (this.prismaService as any).top_variation.create({
       data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.top_variation.update({
+    return (this.prismaService as any).top_variation.update({
       where: { id: id },
       data,
     });
@@ -67,7 +67,7 @@ export class TopVariationService {
       );
     }
 
-    return this.prismaService.top_variation.deleteMany({
+    return (this.prismaService as any).top_variation.deleteMany({
       where: {
         id: {
           in: ids,

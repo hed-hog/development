@@ -732,4 +732,16 @@ export class CreateDTO {
   @IsOptional()
   @IsNumber()
   rec_uo?: number;
+
+  @IsOptional()
+  @IsNumber()
+  change_60?: number;
+
+  @IsOptional()
+  @IsNumber()
+  change_15?: number;
+
+  @IsOptional()
+  @IsNumber()
+  adx_1?: number;
 }

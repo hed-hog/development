@@ -1,11 +1,11 @@
 {
-  "create": "Criar citação",
-  "createText": "Preencha as informações da citação.",
-  "createTooltip": "Criar nova citação",
-  "delete": "Excluir citação",
-  "deleteText": "Você tem certeza de que deseja excluir estas citação?",
-  "deleteTooltip": "Excluir a citação selecionada",
-  "edit": "Editar citação",
-  "editText": "Visualizar e editar informações da citação.",
-  "editTooltip": "Editar a citação selecionada"
+  "create": "Create Quotation",
+  "createText": "Fill the quotation informations.",
+  "createTooltip": "Create new quotation",
+  "delete": "Delete Quotation",
+  "deleteText": "Are you sure to delete these quotations?",
+  "deleteTooltip": "Delete the selected quotations",
+  "edit": "Edit Quotation",
+  "editText": "View and edit quotation information.",
+  "editTooltip": "Edit the selected quotations"
 }

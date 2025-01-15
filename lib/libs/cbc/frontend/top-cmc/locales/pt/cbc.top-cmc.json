@@ -1,0 +1,11 @@
+{
+  "create": "Create Top cmc",
+  "createText": "Fill the top cmc informations.",
+  "createTooltip": "Create new top cmc",
+  "delete": "Delete Top cmc",
+  "deleteText": "Are you sure to delete these top cmcs?",
+  "deleteTooltip": "Delete the selected top cmcs",
+  "edit": "Edit Top cmc",
+  "editText": "View and edit top cmc information.",
+  "editTooltip": "Edit the selected top cmcs"
+}

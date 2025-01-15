@@ -1,5 +1,52 @@
 tables:
-  top_100:
+  notification_type:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+  notification:
+    columns:
+      - type: pk
+      - name: type_id
+        type: fk
+        references:
+          table: notification_type
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Type
+          pt: Tipo
+      - name: message
+        locale:
+          en: Message
+          pt: Mensagem
+      - name: user_id
+        type: fk
+        isNullable: true
+        references:
+          table: user
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: User
+          pt: Usuário
+      - name: coin_id
+        type: fk
+        isNullable: true
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Coin
+          pt: Moeda
+      - type: created_at
+      - type: updated_at
+  top_cmc:
     columns:
       - type: pk
       - name: value
@@ -27,23 +74,6 @@ tables:
           en: Filters
           pt: Filtros
         field: textarea
-      - type: created_at
-      - type: updated_at
-  top_variation:
-    columns:
-      - type: pk
-      - name: coin_id
-        type: fk
-        references:
-          table: coin
-          column: id
-          onDelete: CASCADE
-      - name: type_id
-        type: fk
-        references:
-          table: coin_variation_type
-          column: id
-          onDelete: CASCADE
       - type: created_at
       - type: updated_at
   coin_variation_type:
@@ -1526,6 +1556,30 @@ tables:
         locale:
           en: UO Recommendation
           pt: Recomendação UO
+      - name: change_60
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: 1h, changes
+          pt: Variação em 1 Hora
+      - name: change_15
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: 15-Minute Change
+          pt: Variação de 15 Minutos
+      - name: adx_1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Average Directional Index (14), 1m
+          pt: Índice Direcional Médio (14), 1m
       - type: created_at
       - type: updated_at
   stock_exchange:
@@ -1624,8 +1678,6 @@ tables:
           pt: Alavancagem
         type: decimal
         isNullable: true
-      - type: created_at
-      - type: updated_at
       - name: margin_used
         type: int
       - name: first_order
@@ -1638,6 +1690,8 @@ tables:
         type: timestamp
       - name: end_time
         type: timestamp
+      - type: created_at
+      - type: updated_at
   operation:
     columns:
       - type: pk
@@ -1837,13 +1891,19 @@ tables:
         scale: 18
       - type: created_at
       - type: updated_at
-  gainers_loser:
+  gainer_loser:
     columns:
       - type: pk
       - name: coin_id
         type: fk
         references:
           table: coin
+          column: id
+          onDelete: CASCADE
+      - name: type_id
+        type: fk
+        references:
+          table: coin_variation_type
           column: id
           onDelete: CASCADE
       - name: percent_change_24h
@@ -2370,6 +2430,78 @@ data:
     - url: /top-variation
       method: DELETE
       relations: *a22
+    - url: /gainer-loser
+      method: GET
+      relations: &a23
+        role:
+          - where:
+              slug: admin
+    - url: /gainer-loser
+      method: POST
+      relations: *a23
+    - url: /gainer-loser/:id
+      method: GET
+      relations: *a23
+    - url: /gainer-loser/:id
+      method: PATCH
+      relations: *a23
+    - url: /gainer-loser
+      method: DELETE
+      relations: *a23
+    - url: /top-cmc
+      method: GET
+      relations: &a24
+        role:
+          - where:
+              slug: admin
+    - url: /top-cmc
+      method: POST
+      relations: *a24
+    - url: /top-cmc/:id
+      method: GET
+      relations: *a24
+    - url: /top-cmc/:id
+      method: PATCH
+      relations: *a24
+    - url: /top-cmc
+      method: DELETE
+      relations: *a24
+    - url: /notification-type
+      method: GET
+      relations: &a25
+        role:
+          - where:
+              slug: admin
+    - url: /notification-type
+      method: POST
+      relations: *a25
+    - url: /notification-type/:id
+      method: GET
+      relations: *a25
+    - url: /notification-type/:id
+      method: PATCH
+      relations: *a25
+    - url: /notification-type
+      method: DELETE
+      relations: *a25
+    - url: /notification
+      method: GET
+      relations: &a26
+        role:
+          - where:
+              slug: admin
+    - url: /notification
+      method: POST
+      relations: *a26
+    - url: /notification/:id
+      method: GET
+      relations: *a26
+    - url: /notification/:id
+      method: PATCH
+      relations: *a26
+    - url: /notification
+      method: DELETE
+      relations: *a26
   menu:
     - url: /cbc
       icon: coin
@@ -2589,6 +2721,34 @@ data:
       url: /top-variation
       slug: top-variation
       relations: *a22
+    - name:
+        en: GainerLoser
+        pt: GainerLoser
+      icon: file
+      url: /gainer-loser
+      slug: gainer-loser
+      relations: *a23
+    - name:
+        en: TopCmc
+        pt: TopCmc
+      icon: file
+      url: /top-cmc
+      slug: top-cmc
+      relations: *a24
+    - name:
+        en: NotificationType
+        pt: NotificationType
+      icon: file
+      url: /notification-type
+      slug: notification-type
+      relations: *a25
+    - name:
+        en: Notification
+        pt: Notification
+      icon: file
+      url: /notification
+      slug: notification
+      relations: *a26
   screen:
     - name:
         en: Coin
@@ -2813,6 +2973,38 @@ data:
       description:
         en: Screen to manage top_variation
         pt: Tela para gerenciar top_variation
+      icon: file
+    - name:
+        en: GainerLoser
+        pt: GainerLoser
+      slug: gainer-loser
+      description:
+        en: Screen to manage gainer_loser
+        pt: Tela para gerenciar gainer_loser
+      icon: file
+    - name:
+        en: TopCmc
+        pt: TopCmc
+      slug: top-cmc
+      description:
+        en: Screen to manage top_cmc
+        pt: Tela para gerenciar top_cmc
+      icon: file
+    - name:
+        en: NotificationType
+        pt: NotificationType
+      slug: notification-type
+      description:
+        en: Screen to manage notification_type
+        pt: Tela para gerenciar notification_type
+      icon: file
+    - name:
+        en: Notification
+        pt: Notification
+      slug: notification
+      description:
+        en: Screen to manage notification
+        pt: Tela para gerenciar notification
       icon: file
   strategy:
     - name: AI STRATEGY
