@@ -10,19 +10,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { StockExchangeService } from './stock-exchange.service';
-import { Role, DeleteDTO } from '@hedhog/core';
+import { Public, DeleteDTO } from '@hedhog/core';
 
-@Role()
+@Public()
 @Controller('stock-exchange')
 export class StockExchangeController {
   constructor(
     @Inject(forwardRef(() => StockExchangeService))
-    private readonly stockExchangeService: StockExchangeService
+    private readonly stockExchangeService: StockExchangeService,
   ) {}
 
   @Get()
@@ -44,7 +44,7 @@ export class StockExchangeController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.stockExchangeService.update({
       id,
-      data
+      data,
     });
   }
 
