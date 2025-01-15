@@ -198,6 +198,8 @@
   "stock_exchange.slug": "Nome",
   "banking.name": "Nome",
   "banking.user_id": "Usuário",
+  "banking.stock_exchange_id": "Bolsa",
+  "banking.strategy_id": "Estratégia",
   "simulation.user_id": "Usuário",
   "simulation.banking_id": "Banca",
   "simulation.stock_exchange_id": "Bolsa",

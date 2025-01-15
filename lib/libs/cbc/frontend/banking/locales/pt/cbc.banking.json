@@ -1,11 +1,11 @@
 {
-  "create": "Create Banking",
-  "createText": "Fill the banking informations.",
-  "createTooltip": "Create new banking",
-  "delete": "Delete Banking",
-  "deleteText": "Are you sure to delete these bankings?",
-  "deleteTooltip": "Delete the selected bankings",
-  "edit": "Edit Banking",
-  "editText": "View and edit banking information.",
-  "editTooltip": "Edit the selected bankings"
+  "create": "Criar banking",
+  "createText": "Preencha as informações do banking.",
+  "createTooltip": "Criar novo banking",
+  "delete": "Excluir banking",
+  "deleteText": "Você tem certeza que deseja excluir esses banking?",
+  "deleteTooltip": "Excluir o banking selecionado",
+  "edit": "Editar banking",
+  "editText": "Ver e editar as informações do banking.",
+  "editTooltip": "Editar o banking selecionado"
 }

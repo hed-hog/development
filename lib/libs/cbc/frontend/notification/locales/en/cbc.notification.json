@@ -1,11 +1,11 @@
 {
-  "create": "Create Notification",
+  "create": "Create notification",
   "createText": "Fill the notification informations.",
   "createTooltip": "Create new notification",
-  "delete": "Delete Notification",
+  "delete": "Delete notification",
   "deleteText": "Are you sure to delete these notifications?",
-  "deleteTooltip": "Delete the selected notifications",
-  "edit": "Edit Notification",
+  "deleteTooltip": "Delete the selected notification",
+  "edit": "Edit notification",
   "editText": "View and edit notification information.",
-  "editTooltip": "Edit the selected notifications"
+  "editTooltip": "Edit the selected notification"
 }

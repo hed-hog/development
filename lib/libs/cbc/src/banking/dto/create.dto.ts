@@ -6,4 +6,13 @@ export class CreateDTO {
 
   @IsNumber()
   user_id: number;
+
+  @IsNumber()
+  stock_exchange_id: number;
+
+  @IsNumber()
+  strategy_id: number;
+
+  @IsNumber()
+  balance: number;
 }
