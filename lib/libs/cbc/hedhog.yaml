@@ -1556,6 +1556,30 @@ tables:
         locale:
           en: UO Recommendation
           pt: Recomendação UO
+      - name: change_60
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: 1h, changes
+          pt: Variação em 1 Hora
+      - name: change_15
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: 15-Minute Change
+          pt: Variação de 15 Minutos
+      - name: adx_1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Average Directional Index (14), 1m
+          pt: Índice Direcional Médio (14), 1m
       - type: created_at
       - type: updated_at
   stock_exchange:
