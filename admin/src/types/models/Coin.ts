@@ -1,8 +1,9 @@
+import { GainersLoser } from './GainersLoser';
+import { TopVariation } from './TopVariation';
 import { Quotation } from './Quotation';
+import { TopCoin } from './TopCoin';
 import { Simulation } from './Simulation';
 import { Operation } from './Operation';
-import { GainersLoser } from './GainersLoser';
-import { TopCoin } from './TopCoin';
 
 export type Coin = {
   id?: number;
@@ -10,9 +11,10 @@ export type Coin = {
   slug: string;
   created_at?: string;
   updated_at?: string;
+  gainers_loser?: GainersLoser[];
+  top_variation?: TopVariation[];
   quotation?: Quotation[];
+  top_coin?: TopCoin[];
   simulation?: Simulation[];
   operation?: Operation[];
-  gainers_loser?: GainersLoser[];
-  top_coin?: TopCoin[];
 }

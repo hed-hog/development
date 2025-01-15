@@ -3,9 +3,9 @@
   "createText": "Preencha as informações da citação.",
   "createTooltip": "Criar nova citação",
   "delete": "Excluir citação",
-  "deleteText": "Você tem certeza de que deseja excluir essas citações?",
+  "deleteText": "Você tem certeza de que deseja excluir estas citação?",
   "deleteTooltip": "Excluir a citação selecionada",
   "edit": "Editar citação",
-  "editText": "Ver e editar informações da citação.",
+  "editText": "Visualizar e editar informações da citação.",
   "editTooltip": "Editar a citação selecionada"
 }
