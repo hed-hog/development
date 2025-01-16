@@ -1,6 +1,3 @@
-import { NotificationModule } from './notification/notification.module';
-import { NotificationTypeModule } from './notification-type/notification-type.module';
-import { TopCmcModule } from './top-cmc/top-cmc.module';
 import { AdminModule } from '@hedhog/admin';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
@@ -15,12 +12,14 @@ import { FreeBalanceConditionModule } from './free-balance-condition/free-balanc
 import { GainerLoserModule } from './gainer-loser/gainer-loser.module';
 import { GlobalMetricModule } from './global-metric/global-metric.module';
 import { MmrModule } from './mmr/mmr.module';
+import { NotificationTypeModule } from './notification-type/notification-type.module';
+import { NotificationModule } from './notification/notification.module';
 import { OperationModule } from './operation/operation.module';
-import { QuotationRequestTypeModule } from './quotation-request-type/quotation-request-type.module';
 import { QuotationModule } from './quotation/quotation.module';
 import { SimulationModule } from './simulation/simulation.module';
 import { StockExchangeModule } from './stock-exchange/stock-exchange.module';
 import { StrategyModule } from './strategy/strategy.module';
+import { TopCmcModule } from './top-cmc/top-cmc.module';
 import { TopCoinTypeModule } from './top-coin-type/top-coin-type.module';
 import { TopCoinModule } from './top-coin/top-coin.module';
 import { TopVariationModule } from './top-variation/top-variation.module';
@@ -41,7 +40,6 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => FreeBalanceConditionModule),
     forwardRef(() => MmrModule),
     forwardRef(() => BotModule),
-    forwardRef(() => QuotationRequestTypeModule),
     forwardRef(() => FearAndGreedModule),
     forwardRef(() => SimulationModule),
     forwardRef(() => GlobalMetricModule),

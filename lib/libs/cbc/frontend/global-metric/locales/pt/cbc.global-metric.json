@@ -1,11 +1,11 @@
 {
-  "create": "Criar métrica global",
-  "createText": "Preencha as informações da métrica global.",
-  "createTooltip": "Criar nova métrica global",
-  "delete": "Excluir métrica global",
-  "deleteText": "Você tem certeza de que deseja excluir estas métricas globais?",
-  "deleteTooltip": "Excluir a métrica global selecionada",
-  "edit": "Editar métrica global",
-  "editText": "Ver e editar informações da métrica global.",
-  "editTooltip": "Editar a métrica global selecionada"
+  "create": "Create Global metric",
+  "createText": "Fill the global metric informations.",
+  "createTooltip": "Create new global metric",
+  "delete": "Delete Global metric",
+  "deleteText": "Are you sure to delete these global metrics?",
+  "deleteTooltip": "Delete the selected global metrics",
+  "edit": "Edit Global metric",
+  "editText": "View and edit global metric information.",
+  "editTooltip": "Edit the selected global metrics"
 }

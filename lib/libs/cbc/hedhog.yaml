@@ -55,27 +55,6 @@ tables:
         type: decimal
       - type: created_at
       - type: updated_at
-  quotation_request_type:
-    columns:
-      - type: pk
-      - name: name
-        locale:
-          en: Name
-          pt: Nome
-      - type: json
-        name: headers
-        locale:
-          en: Headers
-          pt: Cabeçalhos
-        field: textarea
-      - type: json
-        name: filters
-        locale:
-          en: Filters
-          pt: Filtros
-        field: textarea
-      - type: created_at
-      - type: updated_at
   coin_variation_type:
     columns:
       - type: pk
@@ -95,15 +74,6 @@ tables:
   quotation:
     columns:
       - type: pk
-      - name: type_id
-        type: fk
-        references:
-          table: quotation_request_type
-          column: id
-          onDelete: CASCADE
-        locale:
-          en: Request Type
-          pt: Tipo de Requisição
       - name: coin_id
         type: fk
         references:
@@ -111,8 +81,8 @@ tables:
           column: id
           onDelete: CASCADE
         locale:
-          en: Quote
-          pt: Cotação
+          en: Coin
+          pt: Moeda
       - name: bot_id
         type: fk
         references:

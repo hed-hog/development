@@ -1,11 +1,11 @@
 {
-  "create": "Create coin",
+  "create": "Create Coin",
   "createText": "Fill the coin informations.",
   "createTooltip": "Create new coin",
-  "delete": "Delete coin",
-  "deleteText": "Are you sure to delete these coin?",
-  "deleteTooltip": "Delete the selected coin",
-  "edit": "Edit coin",
+  "delete": "Delete Coin",
+  "deleteText": "Are you sure to delete these coins?",
+  "deleteTooltip": "Delete the selected coins",
+  "edit": "Edit Coin",
   "editText": "View and edit coin information.",
-  "editTooltip": "Edit the selected coin"
+  "editTooltip": "Edit the selected coins"
 }
