@@ -1,0 +1,1 @@
+npx ts-node "scripts/install-all-deps.ts";
