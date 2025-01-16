@@ -1,3 +1,5 @@
+import { IndicesModule } from './indices/indices.module';
+import { IndicesTypeModule } from './indices-type/indices-type.module';
 import { AdminModule } from '@hedhog/admin';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
@@ -51,6 +53,8 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => TopCmcModule),
     forwardRef(() => NotificationTypeModule),
     forwardRef(() => NotificationModule),
+    forwardRef(() => IndicesTypeModule),
+    forwardRef(() => IndicesModule),
   ],
   controllers: [],
   providers: [],
