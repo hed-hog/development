@@ -28,7 +28,7 @@ tables:
         locale:
           en: Type
           pt: Tipo
-      - name: slug
+      - type: slug
         locale:
           en: Name
           pt: Nome
