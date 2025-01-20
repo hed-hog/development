@@ -1,0 +1,11 @@
+{
+  "create": "Criar pessoa",
+  "createText": "Preencha as informações da pessoa.",
+  "createTooltip": "Criar nova pessoa",
+  "delete": "Excluir pessoa",
+  "deleteText": "Você tem certeza de que deseja excluir estas pessoas?",
+  "deleteTooltip": "Excluir a pessoa selecionada",
+  "edit": "Editar pessoa",
+  "editText": "Ver e editar informações da pessoa.",
+  "editTooltip": "Editar a pessoa selecionada"
+}
