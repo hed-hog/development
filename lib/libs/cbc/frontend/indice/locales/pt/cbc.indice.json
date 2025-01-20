@@ -1,0 +1,11 @@
+{
+  "create": "Create Indice",
+  "createText": "Fill the indice informations.",
+  "createTooltip": "Create new indice",
+  "delete": "Delete Indice",
+  "deleteText": "Are you sure to delete these indices?",
+  "deleteTooltip": "Delete the selected indices",
+  "edit": "Edit Indice",
+  "editText": "View and edit indice information.",
+  "editTooltip": "Edit the selected indices"
+}
