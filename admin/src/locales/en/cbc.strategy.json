@@ -1,11 +1,11 @@
 {
-  "create": "Create strategy",
+  "create": "Create Strategy",
   "createText": "Fill the strategy informations.",
   "createTooltip": "Create new strategy",
-  "delete": "Delete strategy",
-  "deleteText": "Are you sure to delete these strategy?",
-  "deleteTooltip": "Delete the selected strategy",
-  "edit": "Edit strategy",
+  "delete": "Delete Strategy",
+  "deleteText": "Are you sure to delete these strategies?",
+  "deleteTooltip": "Delete the selected strategies",
+  "edit": "Edit Strategy",
   "editText": "View and edit strategy information.",
-  "editTooltip": "Edit the selected strategy"
+  "editTooltip": "Edit the selected strategies"
 }

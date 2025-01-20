@@ -41,16 +41,6 @@ const QuotationUpdatePanel = forwardRef(
                   ref={formRef}
                   fields={[
                     {
-                      name: "type_id",
-                      label: { text: t("quotation.type_id", { ns: "fields" }) },
-                      type: EnumFieldType.COMBOBOX,
-                      required: true,
-                      url: "/quotation-request-type",
-                      displayName: "type",
-                      valueName: "id",
-                    },
-
-                    {
                       name: "coin_id",
                       label: { text: t("quotation.coin_id", { ns: "fields" }) },
                       type: EnumFieldType.COMBOBOX,
@@ -124,6 +114,24 @@ const QuotationUpdatePanel = forwardRef(
                       name: "bb_upper",
                       label: {
                         text: t("quotation.bb_upper", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "bb_lower_5",
+                      label: {
+                        text: t("quotation.bb_lower_5", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "bb_upper_5",
+                      label: {
+                        text: t("quotation.bb_upper_5", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
@@ -594,9 +602,25 @@ const QuotationUpdatePanel = forwardRef(
                     },
 
                     {
+                      name: "mom_5",
+                      label: { text: t("quotation.mom_5", { ns: "fields" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
                       name: "macd_macd",
                       label: {
                         text: t("quotation.macd_macd", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "macd_macd_5",
+                      label: {
+                        text: t("quotation.macd_macd_5", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
@@ -890,9 +914,86 @@ const QuotationUpdatePanel = forwardRef(
                     },
 
                     {
-                      name: "pivot_m_woodie_middle",
+                      name: "pivot_m_fibonacci_middle_5",
                       label: {
-                        text: t("quotation.pivot_m_woodie_middle", {
+                        text: t("quotation.pivot_m_fibonacci_middle_5", {
+                          ns: "fields",
+                        }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "pivot_m_fibonacci_r1_5",
+                      label: {
+                        text: t("quotation.pivot_m_fibonacci_r1_5", {
+                          ns: "fields",
+                        }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "pivot_m_fibonacci_r2_5",
+                      label: {
+                        text: t("quotation.pivot_m_fibonacci_r2_5", {
+                          ns: "fields",
+                        }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "pivot_m_fibonacci_r3_5",
+                      label: {
+                        text: t("quotation.pivot_m_fibonacci_r3_5", {
+                          ns: "fields",
+                        }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "pivot_m_fibonacci_s1_5",
+                      label: {
+                        text: t("quotation.pivot_m_fibonacci_s1_5", {
+                          ns: "fields",
+                        }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "pivot_m_fibonacci_s2_5",
+                      label: {
+                        text: t("quotation.pivot_m_fibonacci_s2_5", {
+                          ns: "fields",
+                        }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "pivot_m_fibonacci_s3_5",
+                      label: {
+                        text: t("quotation.pivot_m_fibonacci_s3_5", {
+                          ns: "fields",
+                        }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "pivot_m_woodie_middle_5",
+                      label: {
+                        text: t("quotation.pivot_m_woodie_middle_5", {
                           ns: "fields",
                         }),
                       },
@@ -1009,6 +1110,15 @@ const QuotationUpdatePanel = forwardRef(
                       name: "macd_signal",
                       label: {
                         text: t("quotation.macd_signal", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "macd_signal_5",
+                      label: {
+                        text: t("quotation.macd_signal_5", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
@@ -1337,6 +1447,56 @@ const QuotationUpdatePanel = forwardRef(
                     {
                       name: "rsi_1_",
                       label: { text: t("quotation.rsi_1_", { ns: "fields" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "adx_5",
+                      label: { text: t("quotation.adx_5", { ns: "fields" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "adx_plus_di_5",
+                      label: {
+                        text: t("quotation.adx_plus_di_5", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "adx_minus_di_5",
+                      label: {
+                        text: t("quotation.adx_minus_di_5", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "adx_240",
+                      label: { text: t("quotation.adx_240", { ns: "fields" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "adx_plus_di_240",
+                      label: {
+                        text: t("quotation.adx_plus_di_240", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "adx_minus_di_240",
+                      label: {
+                        text: t("quotation.adx_minus_di_240", { ns: "fields" }),
+                      },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
@@ -1710,6 +1870,40 @@ const QuotationUpdatePanel = forwardRef(
                     {
                       name: "rec_uo",
                       label: { text: t("quotation.rec_uo", { ns: "fields" }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "change_60",
+                      label: {
+                        text: t("quotation.change_60", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "change_240",
+                      label: {
+                        text: t("quotation.change_240", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "change_15",
+                      label: {
+                        text: t("quotation.change_15", { ns: "fields" }),
+                      },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+
+                    {
+                      name: "adx_1",
+                      label: { text: t("quotation.adx_1", { ns: "fields" }) },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
