@@ -1,11 +1,9 @@
-import { QuotationRequestType } from './QuotationRequestType';
 import { Coin } from './Coin';
 import { Bot } from './Bot';
 import { StockExchange } from './StockExchange';
 
 export type Quotation = {
   id?: number;
-  type_id: number;
   coin_id: number;
   bot_id: number;
   open?: any;
@@ -15,6 +13,8 @@ export type Quotation = {
   low_all?: any;
   bb_lower?: any;
   bb_upper?: any;
+  bb_lower_5?: any;
+  bb_upper_5?: any;
   donchch20_lower?: any;
   donchch20_upper?: any;
   stock_exchange_id: number;
@@ -74,7 +74,9 @@ export type Quotation = {
   low_3m?: any;
   total_shares_outstanding?: any;
   mom?: any;
+  mom_5?: any;
   macd_macd?: any;
+  macd_macd_5?: any;
   ao?: any;
   perf_5y?: any;
   perf_all?: any;
@@ -102,7 +104,14 @@ export type Quotation = {
   pivot_m_fibonacci_s1?: any;
   pivot_m_fibonacci_s2?: any;
   pivot_m_fibonacci_s3?: any;
-  pivot_m_woodie_middle?: any;
+  pivot_m_fibonacci_middle_5?: any;
+  pivot_m_fibonacci_r1_5?: any;
+  pivot_m_fibonacci_r2_5?: any;
+  pivot_m_fibonacci_r3_5?: any;
+  pivot_m_fibonacci_s1_5?: any;
+  pivot_m_fibonacci_s2_5?: any;
+  pivot_m_fibonacci_s3_5?: any;
+  pivot_m_woodie_middle_5?: any;
   pivot_m_woodie_r1?: any;
   pivot_m_woodie_r2?: any;
   pivot_m_woodie_r3?: any;
@@ -115,6 +124,7 @@ export type Quotation = {
   w_r?: any;
   p_sar?: any;
   macd_signal?: any;
+  macd_signal_5?: any;
   roc?: any;
   recommend_all?: any;
   total_shares_diluted?: any;
@@ -152,6 +162,12 @@ export type Quotation = {
   cci20_1_?: any;
   rsi7_1_?: any;
   rsi_1_?: any;
+  adx_5?: any;
+  adx_plus_di_5?: any;
+  adx_minus_di_5?: any;
+  adx_240?: any;
+  adx_plus_di_240?: any;
+  adx_minus_di_240?: any;
   adx_plus_di_1_?: any;
   adx_minus_di_1_?: any;
   rec_ichimoku?: any;
@@ -189,9 +205,12 @@ export type Quotation = {
   candle_3whitesoldiers?: any;
   rec_wr?: any;
   rec_uo?: any;
+  change_60?: any;
+  change_240?: any;
+  change_15?: any;
+  adx_1?: any;
   created_at?: string;
   updated_at?: string;
-  quotation_request_type?: QuotationRequestType;
   coin?: Coin;
   bot?: Bot;
   stock_exchange?: StockExchange;
