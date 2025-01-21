@@ -71,13 +71,6 @@ data:
         en: FAQ
         pt: Perguntas Frequentes
       icon: zoom-question
-      url: /management/faq
-      slug: /management/faq
-      relations: *a1
-    - name:
-        en: Faq
-        pt: Faq
-      icon: file
       url: /faq
       slug: faq
       relations:
