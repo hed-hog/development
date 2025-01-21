@@ -342,55 +342,6 @@ data:
       icon: world
       url: /settings/locale
       slug: /settings/locale
-    - name:
-        en: TranslationNamespace
-        pt: TranslationNamespace
-      icon: file
-      url: /translation-namespace
-      slug: translation-namespace
-      relations: *a1
-    - name:
-        en: Translation
-        pt: Translation
-      icon: file
-      url: /translation
-      slug: translation
-      relations: *a2
-    - name:
-        en: Multifactor
-        pt: Multifactor
-      icon: file
-      url: /multifactor
-      slug: multifactor
-      relations: *a3
-    - name:
-        en: User
-        pt: User
-      icon: file
-      url: /user
-      slug: user
-      relations: *a4
-    - name:
-        en: Screen
-        pt: Screen
-      icon: file
-      url: /screen
-      slug: screen
-      relations: *a5
-    - name:
-        en: Menu
-        pt: Menu
-      icon: file
-      url: /menu
-      slug: menu
-      relations: *a6
-    - name:
-        en: MenuScreen
-        pt: MenuScreen
-      icon: file
-      url: /menu-screen
-      slug: menu-screen
-      relations: *a7
   screen:
     - slug: /management/user
       icon: user
@@ -477,7 +428,7 @@ data:
       description:
         en: Screen to manage a group of settings
         pt: Tela para gerenciar grupo de configurações
-      icon: file
+      icon: settings
     - name:
         en: Setting User
         pt: Configuração de Usuário
@@ -485,7 +436,7 @@ data:
       description:
         en: Screen to manage user settings
         pt: Tela para gerenciar configurações de usuário
-      icon: file
+      icon: user-cog
     - name:
         en: Locale
         pt: Locale
@@ -493,68 +444,12 @@ data:
       description:
         en: Screen to manage locale
         pt: Tela para gerenciar localização/tradução
-      icon: file
+      icon: world
       relations:
         route:
           - where:
               url:
                 like: /locale%
-    - name:
-        en: TranslationNamespace
-        pt: TranslationNamespace
-      slug: translation-namespace
-      description:
-        en: Screen to manage translation_namespace
-        pt: Tela para gerenciar translation_namespace
-      icon: file
-    - name:
-        en: Translation
-        pt: Translation
-      slug: translation
-      description:
-        en: Screen to manage translation
-        pt: Tela para gerenciar translation
-      icon: file
-    - name:
-        en: Multifactor
-        pt: Multifactor
-      slug: multifactor
-      description:
-        en: Screen to manage multifactor
-        pt: Tela para gerenciar multifactor
-      icon: file
-    - name:
-        en: User
-        pt: User
-      slug: user
-      description:
-        en: Screen to manage user
-        pt: Tela para gerenciar user
-      icon: file
-    - name:
-        en: Screen
-        pt: Screen
-      slug: screen
-      description:
-        en: Screen to manage screen
-        pt: Tela para gerenciar screen
-      icon: file
-    - name:
-        en: Menu
-        pt: Menu
-      slug: menu
-      description:
-        en: Screen to manage menu
-        pt: Tela para gerenciar menu
-      icon: file
-    - name:
-        en: MenuScreen
-        pt: MenuScreen
-      slug: menu-screen
-      description:
-        en: Screen to manage menu_screen
-        pt: Tela para gerenciar menu_screen
-      icon: file
   multifactor:
     - name:
         en: Email

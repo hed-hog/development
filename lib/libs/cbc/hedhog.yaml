@@ -2797,19 +2797,6 @@ data:
           - where:
               slug: admin
     - name:
-        en: Trend Type
-        pt: Tipo de Tendência
-      icon: trending-up
-      url: /cbc/trend-type
-      slug: trend-type
-      menu_id:
-        where:
-          slug: /cbc
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
         en: Quotation
         pt: Cotação
       icon: brand-cashapp
@@ -2877,169 +2864,263 @@ data:
     - name:
         en: MMR
         pt: MMR
-      icon: file
-      url: /mmr
+      icon: baseline-density-medium
+      url: /cbc/mmr
       slug: mmr
-      relations: *a8
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Bot
-        pt: Bot
-      icon: file
-      url: /bot
+        pt: Robô
+      icon: robot
+      url: /cbc/bot
       slug: bot
-      relations: *a9
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Quotation Request Type
-        pt: Quotation Request Type
-      icon: file
-      url: /quotation-request-type
+        pt: Tipo de Solicitação de Cotação
+      icon: http-get
+      url: /cbc/quotation-request-type
       slug: quotation-request-type
-      relations: *a10
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: TradeSignalType
-        pt: TradeSignalType
-      icon: file
-      url: /trade-signal-type
+        en: Trade Signal Type
+        pt: Tipo de Sinal de Trade
+      icon: trending-up
+      url: /cbc/trade-signal-type
       slug: trade-signal-type
-      relations: *a15
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: FreeBalanceCondition
-        pt: FreeBalanceCondition
-      icon: file
-      url: /free-balance-condition
+        en: Free Balance Condition
+        pt: Condição de Saldo Livre
+      icon: circle-number-0
+      url: /cbc/free-balance-condition
       slug: free-balance-condition
-      relations: *a16
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Simulation
-        pt: Simulation
-      icon: file
-      url: /simulation
+        pt: Simulação
+      icon: automation
+      url: /cbc/simulation
       slug: simulation
-      relations: *a17
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: FearAndGreed
-        pt: FearAndGreed
-      icon: file
-      url: /fear-and-greed
+        en: Fear And Greed
+        pt: Sentimento do Mercado
+      icon: mood-check
+      url: /cbc/fear-and-greed
       slug: fear-and-greed
+      menu_id:
+        where:
+          slug: /cbc
       relations:
         role:
           - where:
               slug: admin
     - name:
-        en: GlobalMetric
-        pt: GlobalMetric
-      icon: file
-      url: /global-metric
+        en: Global Metric
+        pt: Métricas Globais
+      icon: world-download
+      url: /cbc/global-metric
       slug: global-metric
+      menu_id:
+        where:
+          slug: /cbc
       relations:
         role:
           - where:
               slug: admin
     - name:
-        en: GainersLoser
-        pt: GainersLoser
-      icon: file
-      url: /gainers-loser
-      slug: gainers-loser
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: TopCoins
-        pt: TopCoins
-      icon: file
-      url: /top-coins
-      slug: top-coins
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: TopCoinType
-        pt: TopCoinType
-      icon: file
-      url: /top-coin-type
-      slug: top-coin-type
-      relations: *a18
-    - name:
-        en: TopCoin
-        pt: TopCoin
-      icon: file
-      url: /top-coin
-      slug: top-coin
-      relations: *a19
-    - name:
-        en: Top100
-        pt: Top100
-      icon: file
-      url: /top-100
-      slug: top-100
-      relations: *a20
-    - name:
-        en: CoinVariationType
-        pt: CoinVariationType
-      icon: file
-      url: /coin-variation-type
-      slug: coin-variation-type
-      relations: *a21
-    - name:
-        en: TopVariation
-        pt: TopVariation
-      icon: file
-      url: /top-variation
-      slug: top-variation
-      relations: *a22
-    - name:
-        en: GainerLoser
-        pt: GainerLoser
-      icon: file
-      url: /gainer-loser
+        en: Gainers and Losers
+        pt: Maiores Variações
+      icon: arrows-down-up
+      url: /cbc/gainer-loser
       slug: gainer-loser
-      relations: *a23
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: TopCmc
-        pt: TopCmc
-      icon: file
+        en: Top Coin
+        pt: Top Moeda
+      icon: coin
+      url: /cbc/top-coin
+      slug: top-coin
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Top Coin Type
+        pt: Tipo de Top Moeda
+      icon: coin
+      url: /cbc/top-coin-type
+      slug: top-coin-type
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Top 100
+        pt: Top 100
+      icon: number-100-small
+      url: /cbc/top-100
+      slug: top-100
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Coin Variation Type
+        pt: Tipo de Variação de Moeda
+      icon: navigation
+      url: /cbc/coin-variation-type
+      slug: coin-variation-type
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Top Variation
+        pt: Top Variações
+      icon: navigation
+      url: /cbc/top-variation
+      slug: top-variation
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Top CMC
+        pt: Top CMC
+      icon: coin
       url: /top-cmc
       slug: top-cmc
-      relations: *a24
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: NotificationType
-        pt: NotificationType
-      icon: file
-      url: /notification-type
+        en: Notification Type
+        pt: Tipo de Notificação
+      icon: bell
+      url: /cbc/notification-type
       slug: notification-type
-      relations: *a25
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Notification
-        pt: Notification
-      icon: file
-      url: /notification
+        pt: Notificação
+      icon: bell
+      url: /cbc/notification
       slug: notification
-      relations: *a26
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: IndicesType
-        pt: IndicesType
-      icon: file
-      url: /indice-type
+        en: Indice Type
+        pt: Tipo de Índice
+      icon: sitemap
+      url: /cbc/indice-type
       slug: indice-type
-      relations: *a27
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Indices
         pt: Indices
-      icon: file
-      url: /indice
+      icon: sitemap
+      url: /cbc/indice
       slug: indice
-      relations: *a28
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: AltcoinSeason
-        pt: AltcoinSeason
-      icon: file
-      url: /altcoin-season
+        en: Altcoin Season
+        pt: Temporada das Altcoins
+      icon: coin-taka
+      url: /cbc/altcoin-season
       slug: altcoin-season
-      relations: *a29
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
   screen:
     - name:
         en: Coin
