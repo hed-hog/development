@@ -1,3 +1,5 @@
+import { DeleteDTO } from '@hedhog/core';
+import { LocaleService } from '@hedhog/locale';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
@@ -7,9 +9,7 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
-import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
 export class FaqService {
