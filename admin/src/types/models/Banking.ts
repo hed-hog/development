@@ -1,8 +1,8 @@
 import { User } from './User';
 import { StockExchange } from './StockExchange';
 import { Strategy } from './Strategy';
-import { Operation } from './Operation';
 import { Simulation } from './Simulation';
+import { Operation } from './Operation';
 
 export type Banking = {
   id?: number;
@@ -16,6 +16,6 @@ export type Banking = {
   user?: User;
   stock_exchange?: StockExchange;
   strategy?: Strategy;
-  operation?: Operation[];
   simulation?: Simulation[];
+  operation?: Operation[];
 }

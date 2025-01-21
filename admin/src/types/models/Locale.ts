@@ -5,6 +5,7 @@ import { MultifactorLocale } from './MultifactorLocale';
 import { MenuLocale } from './MenuLocale';
 import { RoleLocale } from './RoleLocale';
 import { SettingLocale } from './SettingLocale';
+import { FaqLocale } from './FaqLocale';
 
 export type Locale = {
   id?: number;
@@ -20,4 +21,5 @@ export type Locale = {
   menu_locale?: MenuLocale[];
   role_locale?: RoleLocale[];
   setting_locale?: SettingLocale[];
+  faq_locale?: FaqLocale[];
 }
