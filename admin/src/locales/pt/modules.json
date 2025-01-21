@@ -1,4 +1,9 @@
 {
+  "user": "Usuários",
+  "menu": "Menus",
+  "screens": "Telas",
+  "role": "Cargos",
+  "route": "Rotas",
   "faq": "Perguntas Frequentes",
   "coin": "Moedas",
   "stock_exchange": "Bolsas de Valores",

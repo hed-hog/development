@@ -1,4 +1,9 @@
 {
+  "user": "Users",
+  "menu": "Menus",
+  "screens": "Screens",
+  "role": "Roles",
+  "route": "Routes",
   "faq": "FAQ",
   "coin": "Coins",
   "stock_exchange": "Stock Exchanges",
