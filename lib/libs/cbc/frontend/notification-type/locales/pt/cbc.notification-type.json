@@ -1,11 +1,11 @@
 {
-  "create": "Create Notification type",
-  "createText": "Fill the notification type informations.",
-  "createTooltip": "Create new notification type",
-  "delete": "Delete Notification type",
-  "deleteText": "Are you sure to delete these notification types?",
-  "deleteTooltip": "Delete the selected notification types",
-  "edit": "Edit Notification type",
-  "editText": "View and edit notification type information.",
-  "editTooltip": "Edit the selected notification types"
+  "create": "Criar tipo de notificação",
+  "createText": "Preencha as informações do tipo de notificação.",
+  "createTooltip": "Criar novo tipo de notificação",
+  "delete": "Excluir tipo de notificação",
+  "deleteText": "Você tem certeza de que deseja excluir esses tipos de notificação?",
+  "deleteTooltip": "Excluir o tipo de notificação selecionado",
+  "edit": "Editar tipo de notificação",
+  "editText": "Ver e editar as informações do tipo de notificação.",
+  "editTooltip": "Editar o tipo de notificação selecionado"
 }

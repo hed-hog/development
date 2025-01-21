@@ -1,11 +1,11 @@
 {
-  "create": "Create Operation",
+  "create": "Create operation",
   "createText": "Fill the operation informations.",
   "createTooltip": "Create new operation",
-  "delete": "Delete Operation",
-  "deleteText": "Are you sure to delete these operations?",
-  "deleteTooltip": "Delete the selected operations",
-  "edit": "Edit Operation",
+  "delete": "Delete operation",
+  "deleteText": "Are you sure to delete these operation?",
+  "deleteTooltip": "Delete the selected operation",
+  "edit": "Edit operation",
   "editText": "View and edit operation information.",
-  "editTooltip": "Edit the selected operations"
+  "editTooltip": "Edit the selected operation"
 }

@@ -1,11 +1,11 @@
 {
-  "create": "Create Simulation",
+  "create": "Create simulation",
   "createText": "Fill the simulation informations.",
   "createTooltip": "Create new simulation",
-  "delete": "Delete Simulation",
-  "deleteText": "Are you sure to delete these simulations?",
-  "deleteTooltip": "Delete the selected simulations",
-  "edit": "Edit Simulation",
+  "delete": "Delete simulation",
+  "deleteText": "Are you sure to delete these simulation?",
+  "deleteTooltip": "Delete the selected simulation",
+  "edit": "Edit simulation",
   "editText": "View and edit simulation information.",
-  "editTooltip": "Edit the selected simulations"
+  "editTooltip": "Edit the selected simulation"
 }
