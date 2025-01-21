@@ -1,53 +1,53 @@
 import FormPanel, {
   FormPanelRef,
   getFieldsLocale,
-} from "@/components/panels/form-panel";
+} from '@/components/panels/form-panel'
 
-import { useFaqCreate } from "@/features/faq/faq";
-import { Faq } from "@/types/models";
-import { forwardRef, useImperativeHandle, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import { useFaqCreate } from '@/features/faq/faq'
+import { Faq } from '@/types/models'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export type FaqCreatePanelRef = {
-  submit: () => void;
-};
+  submit: () => void
+}
 
 export type FaqCreatePanelProps = {
-  onCreated?: (data: Faq) => void;
-};
+  onCreated?: (data: Faq) => void
+}
 
 const FaqCreatePanel = forwardRef(({ onCreated }: FaqCreatePanelProps, ref) => {
-  const formRef = useRef<FormPanelRef>(null);
-  const { t } = useTranslation(["actions", "fields", "translations"]);
-  const { mutateAsync: createFaq } = useFaqCreate();
+  const formRef = useRef<FormPanelRef>(null)
+  const { t } = useTranslation(['actions', 'fields', 'translations'])
+  const { mutateAsync: createFaq } = useFaqCreate()
 
   useImperativeHandle(
     ref,
     () => ({
       submit: () => {
-        formRef.current?.submit();
+        formRef.current?.submit()
       },
     }),
-    [formRef],
-  );
+    [formRef]
+  )
 
   return (
     <FormPanel
       ref={formRef}
-      fields={[...getFieldsLocale([{ name: "name" }])]}
-      button={{ text: t("create", { ns: "actions" }) }}
+      fields={[...getFieldsLocale([{ name: 'question' }, { name: 'answer' }])]}
+      button={{ text: t('create', { ns: 'actions' }) }}
       onSubmit={async (data) => {
         const createdData = await createFaq({
           data,
-        });
-        if (typeof onCreated === "function") {
-          onCreated(createdData as any);
+        })
+        if (typeof onCreated === 'function') {
+          onCreated(createdData as any)
         }
       }}
     />
-  );
-});
+  )
+})
 
-FaqCreatePanel.displayName = "FaqCreatePanel";
+FaqCreatePanel.displayName = 'FaqCreatePanel'
 
-export default FaqCreatePanel;
+export default FaqCreatePanel

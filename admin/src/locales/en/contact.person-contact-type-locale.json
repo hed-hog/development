@@ -1,0 +1,11 @@
+{
+  "create": "Create person contact type locale",
+  "createText": "Fill the person contact type locale informations.",
+  "createTooltip": "Create new person contact type locale",
+  "delete": "Delete person contact type locale",
+  "deleteText": "Are you sure to delete these person contact type locales?",
+  "deleteTooltip": "Delete the selected person contact type locale",
+  "edit": "Edit person contact type locale",
+  "editText": "View and edit person contact type locale information.",
+  "editTooltip": "Edit the selected person contact type locale"
+}

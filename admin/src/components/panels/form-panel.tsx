@@ -1,3 +1,6 @@
+import Field from '@/components/fields/field'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormDescription,
@@ -18,9 +21,6 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
-import Field from '@/components/fields/field'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 
 export type FieldLocale = {
   name: string
@@ -34,7 +34,7 @@ export const getFieldsLocale = (fieldNames: FieldLocale[], itemData?: any) => {
 
   for (const locale of localeEnabled?.data || []) {
     for (const field of fieldNames) {
-      const fieldValue = itemData?.locale[locale.code]?.name || ''
+      const fieldValue = itemData?.locale[locale.code]?.[field.name] || ''
 
       fields.push({
         name: `${locale.code}-${field.name}`,

@@ -409,10 +409,22 @@ export class LocaleService {
 
       const localeData = model[this.getTableNameTranslations(modelName)].reduce(
         (acc, item) => {
-          acc[item.locale.code] = { name: item.name };
+          const localeCode = item.locale.code;
+
+          const strings = Object.entries(item)
+            .filter(([key, value]) => typeof value === 'string')
+            .reduce(
+              (obj, [key, value]) => {
+                obj[key] = value as string;
+                return obj;
+              },
+              {} as Record<string, string>,
+            );
+
+          acc[localeCode] = strings;
           return acc;
         },
-        {} as Record<string, { name: string }>,
+        {} as Record<string, Record<string, string>>,
       );
 
       return {

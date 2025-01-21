@@ -26,8 +26,11 @@
   "dependencies": {
     "@hedhog/admin": "^0.12.5",
     "@hedhog/cbc": "^0.12.76",
+    "@hedhog/contact": "^0.7.55",
     "@hedhog/core": "^1.0.5",
+    "@hedhog/country": "^0.17.1",
     "@hedhog/faq": "^0.0.3",
+    "@hedhog/file": "^0.7.3",
     "@hedhog/locale": "^0.17.1",
     "@hedhog/mail": "^0.17.1",
     "@hedhog/pagination": "^0.17.1",
