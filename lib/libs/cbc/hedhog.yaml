@@ -1,12 +1,19 @@
 tables:
-  indices_type:
+  altcoin_season:
+    columns:
+      - type: pk
+      - name: altcoinIndex
+        type: int
+      - type: created_at
+      - type: updated_at
+  indice_type:
     columns:
       - type: pk
       - type: slug
         locale:
           en: type
           pt: Tipo
-  indices:
+  indice:
     columns:
       - type: pk
       - name: bot_id
@@ -22,7 +29,7 @@ tables:
       - name: type_id
         type: fk
         references:
-          table: indices_type
+          table: indice_type
           column: id
           onDelete: CASCADE
         locale:
@@ -2148,7 +2155,7 @@ tables:
       - type: created_at
       - type: updated_at
 data:
-  indices_type:
+  indice_type:
     - slug: AMERICAN
     - slug: ASIAN
   bot:
@@ -2711,42 +2718,60 @@ data:
     - url: /notification
       method: DELETE
       relations: *a26
-    - url: /indices-type
+    - url: /indice-type
       method: GET
       relations: &a27
         role:
           - where:
               slug: admin
-    - url: /indices-type
+    - url: /indice-type
       method: POST
       relations: *a27
-    - url: /indices-type/:id
+    - url: /indice-type/:id
       method: GET
       relations: *a27
-    - url: /indices-type/:id
+    - url: /indice-type/:id
       method: PATCH
       relations: *a27
-    - url: /indices-type
+    - url: /indice-type
       method: DELETE
       relations: *a27
-    - url: /indices
+    - url: /indice
       method: GET
       relations: &a28
         role:
           - where:
               slug: admin
-    - url: /indices
+    - url: /indice
       method: POST
       relations: *a28
-    - url: /indices/:id
+    - url: /indice/:id
       method: GET
       relations: *a28
-    - url: /indices/:id
+    - url: /indice/:id
       method: PATCH
       relations: *a28
-    - url: /indices
+    - url: /indice
       method: DELETE
       relations: *a28
+    - url: /altcoin-season
+      method: GET
+      relations: &a29
+        role:
+          - where:
+              slug: admin
+    - url: /altcoin-season
+      method: POST
+      relations: *a29
+    - url: /altcoin-season/:id
+      method: GET
+      relations: *a29
+    - url: /altcoin-season/:id
+      method: PATCH
+      relations: *a29
+    - url: /altcoin-season
+      method: DELETE
+      relations: *a29
   menu:
     - url: /cbc
       icon: coin
@@ -2998,16 +3023,23 @@ data:
         en: IndicesType
         pt: IndicesType
       icon: file
-      url: /indices-type
-      slug: indices-type
+      url: /indice-type
+      slug: indice-type
       relations: *a27
     - name:
         en: Indices
         pt: Indices
       icon: file
-      url: /indices
-      slug: indices
+      url: /indice
+      slug: indice
       relations: *a28
+    - name:
+        en: AltcoinSeason
+        pt: AltcoinSeason
+      icon: file
+      url: /altcoin-season
+      slug: altcoin-season
+      relations: *a29
   screen:
     - name:
         en: Coin
@@ -3260,18 +3292,26 @@ data:
     - name:
         en: IndicesType
         pt: IndicesType
-      slug: indices-type
+      slug: indice-type
       description:
-        en: Screen to manage indices_type
-        pt: Tela para gerenciar indices_type
+        en: Screen to manage indice_type
+        pt: Tela para gerenciar indice_type
       icon: file
     - name:
         en: Indices
         pt: Indices
-      slug: indices
+      slug: indice
       description:
-        en: Screen to manage indices
-        pt: Tela para gerenciar indices
+        en: Screen to manage indice
+        pt: Tela para gerenciar indice
+      icon: file
+    - name:
+        en: AltcoinSeason
+        pt: AltcoinSeason
+      slug: altcoin-season
+      description:
+        en: Screen to manage altcoin-season
+        pt: Tela para gerenciar altcoin-season
       icon: file
   stock_exchange:
     - slug: BYBIT

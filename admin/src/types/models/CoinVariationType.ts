@@ -1,9 +1,9 @@
-import { TopVariation } from './TopVariation';
+import { GainerLoser } from './GainerLoser';
 
 export type CoinVariationType = {
   id?: number;
   name: string;
   created_at?: string;
   updated_at?: string;
-  top_variation?: TopVariation[];
+  gainer_loser?: GainerLoser[];
 }

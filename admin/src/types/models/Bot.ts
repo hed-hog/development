@@ -1,3 +1,4 @@
+import { Indice } from './Indice';
 import { Quotation } from './Quotation';
 
 export type Bot = {
@@ -7,5 +8,6 @@ export type Bot = {
   cookies?: string;
   created_at?: string;
   updated_at?: string;
+  indice?: Indice[];
   quotation?: Quotation[];
 }

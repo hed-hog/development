@@ -7,7 +7,8 @@ services:
       POSTGRES_PASSWORD: changeme
       POSTGRES_DB: hedhog
     volumes:
-      - postgresql:/var/licb/postgresql/data
+      - hedhog-development-postgresql:/var/lic/postgresql/data
+      - hedhog-development-postgresql:/var/lib/postgresql/data
     ports:
       - 5432:5432
     healthcheck:
@@ -15,6 +16,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1G
 
   # mysql:
   #   image: mysql
@@ -35,5 +41,5 @@ services:
   #     retries: 5
 
 volumes:
-  postgresql:
-  mysql:
+  hedhog-development-postgresql:
+  hedhog-development-mysql:
