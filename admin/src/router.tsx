@@ -104,6 +104,17 @@ const routes = [
         ],
       },
       {
+        path: "faq",
+        children: [
+          {
+            path: "faq",
+            lazy: async () => ({
+              Component: (await import("./pages/faq/index.tsx")).default,
+            }),
+          },
+        ],
+      },
+      {
         path: "management",
         children: [
           {

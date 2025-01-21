@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { FaqModule } from '@hedhog/faq';
 import { CbcModule } from '@hedhog/cbc';
 import { AdminModule } from '@hedhog/admin';
 import { SettingModule } from '@hedhog/setting';
@@ -27,6 +28,7 @@ import { PrismaModule } from '@hedhog/prisma';
     SettingModule,
     AdminModule,
     CbcModule,
+    FaqModule,
   ],
   controllers: [AppController],
   providers: [AppService],
