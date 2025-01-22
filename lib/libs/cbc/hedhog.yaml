@@ -2180,6 +2180,26 @@ tables:
       - name: name
       - type: created_at
       - type: updated_at
+  event_locale:
+    columns:
+      - name: event_id
+        type: fk
+        isPrimary: true
+        references:
+          table: event
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
   event_occurrence:
     columns:
       - type: pk
