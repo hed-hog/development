@@ -2174,9 +2174,6 @@ tables:
           column: id
           onDelete: CASCADE
       - type: slug
-        locale:
-          en: Event
-          pt: Evento
       - type: created_at
       - type: updated_at
   event_locale:
