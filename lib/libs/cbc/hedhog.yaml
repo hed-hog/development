@@ -3572,10 +3572,10 @@ data:
         where:
           slug: MEETING
   event_occurrence:
-    - event_id:
+    - event_at: 2025-03-09 00:00:00
+      event_id:
         where:
           slug: WINTER_TIME
-      event_at: "2025-03-09 00:00:00"
   #   - event_id:
   #       where:
   #         slug: WINTER_TIME
