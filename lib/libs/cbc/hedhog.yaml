@@ -3480,97 +3480,97 @@ data:
       type_id:
         where:
           slug: CHANGING_TIME
-    # - name:
-    #     en: Fim do Horário de verão americano
-    #     pt: Fim do Horário de verão americano
-    #   slug: SUMMER_TIME
-    #   type_id:
-    #     where:
-    #       slug: CHANGING_TIME
-    # - name:
-    #     en: Ano Novo
-    #     pt: Ano Novo
-    #   slug: NEW_YEAR
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     pt: Martin Luther King Day
-    #     en: Martin Luther King Day
-    #   slug: MARTIN_LUTHER_KING
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: President's Day
-    #     pt: Dia do Presidente
-    #   slug: PRESIDENT_DAY
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Memorial Day
-    #     pt: Memorial Day
-    #   slug: MEMORIAL_DAY
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Juneteenth
-    #     pt: Juneteenth
-    #   slug: JUNETEENTH
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Independence Day
-    #     pt: Dia da Independência
-    #   slug: INDEPENDENCE_DAY
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Labor Day
-    #     pt: Dia do trabalhador
-    #   slug: LABOR_DAY
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Columbus Day
-    #     pt: Dia de Cristóvão Colombo
-    #   slug: COLUMBUS_DAY
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Veteran's Day
-    #     pt: Dia do Veterano Militar das Forças Armadas
-    #   slug: VETERANS_DAY
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Thanksgiving
-    #     pt: Dia de Ação de Graças
-    #   slug: THANKSGIVING
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Christmas Day
-    #     pt: Natal
-    #   slug: CHRISTMAS_DAY
-    #   type_id:
-    #     where:
-    #       slug: HOLIDAY
-    # - name:
-    #     en: Reunião do FED
-    #     pt: Reunião do FED
-    #   slug: FED_MEETING
-    #   type_id:
-    #     where:
-    #       slug: MEETING
+    - name:
+        en: Fim do Horário de verão americano
+        pt: Fim do Horário de verão americano
+      slug: SUMMER_TIME
+      type_id:
+        where:
+          slug: CHANGING_TIME
+    - name:
+        en: Ano Novo
+        pt: Ano Novo
+      slug: NEW_YEAR
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        pt: Martin Luther King Day
+        en: Martin Luther King Day
+      slug: MARTIN_LUTHER_KING
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: President's Day
+        pt: Dia do Presidente
+      slug: PRESIDENT_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Memorial Day
+        pt: Memorial Day
+      slug: MEMORIAL_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Juneteenth
+        pt: Juneteenth
+      slug: JUNETEENTH
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Independence Day
+        pt: Dia da Independência
+      slug: INDEPENDENCE_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Labor Day
+        pt: Dia do trabalhador
+      slug: LABOR_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Columbus Day
+        pt: Dia de Cristóvão Colombo
+      slug: COLUMBUS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Veteran's Day
+        pt: Dia do Veterano Militar das Forças Armadas
+      slug: VETERANS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Thanksgiving
+        pt: Dia de Ação de Graças
+      slug: THANKSGIVING
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Christmas Day
+        pt: Natal
+      slug: CHRISTMAS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Reunião do FED
+        pt: Reunião do FED
+      slug: FED_MEETING
+      type_id:
+        where:
+          slug: MEETING
   # event_occurrence:
   #   - event_id:
   #     where:
