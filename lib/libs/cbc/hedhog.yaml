@@ -2177,7 +2177,6 @@ tables:
         locale:
           en: Event
           pt: Evento
-      - name: name
       - type: created_at
       - type: updated_at
   event_locale:
@@ -3477,7 +3476,9 @@ data:
     - name: Mudança de horário de verão ou inverno
       slug: CHANGING_TIME
   event:
-    - name: Fim do Horário de inverno americano
+    - name:
+        en: Fim do Horário de inverno americano
+        pt: Fim do Horário de inverno americano
       slug: WINTER_TIME
       type_id:
         where:
