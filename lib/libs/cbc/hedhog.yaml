@@ -2154,6 +2154,45 @@ tables:
         type: int
       - type: created_at
       - type: updated_at
+  event_type:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: Event Type
+          pt: Tipo de Evento
+      - name: name
+      - type: created_at
+      - type: updated_at
+  event:
+    columns:
+      - type: pk
+      - type: fk
+        name: type_id
+        references:
+          table: event_type
+          column: id
+          onDelete: CASCADE
+      - type: slug
+        locale:
+          en: Event
+          pt: Evento
+      - name: name
+      - type: created_at
+      - type: updated_at
+  event_occurrence:
+    columns:
+      - type: pk
+      - type: fk
+        name: event_id
+        references:
+          table: event
+          column: id
+          onDelete: CASCADE
+      - name: event_at
+        type: timestamp
+      - type: created_at
+      - type: updated_at
 data:
   indice_type:
     - slug: AMERICAN
@@ -3410,6 +3449,389 @@ data:
   top_coin_type:
     - name: TOP Cryptos
     - name: TOP Sensações
+  event_type:
+    - name: Feriados
+      slug: HOLIDAY
+    - name: Reuniões
+      slug: MEETING
+    - name: Mudança de horário de verão ou inverno
+      slug: CHANGING_TIME
+  event:
+    - name:
+        en: Fim do Horário de inverno americano
+        pt: Fim do Horário de inverno americano
+      slug: WINTER_TIME
+      type_id:
+        where:
+          slug: CHANGING_TIME
+    - name:
+        en: Fim do Horário de verão americano
+        pt: Fim do Horário de verão americano
+      slug: SUMMER_TIME
+      type_id:
+        where:
+          slug: CHANGING_TIME
+    - name:
+        en: Ano Novo
+        pt: Ano Novo
+      slug: NEW_YEAR
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        pt: Martin Luther King Day
+        en: Martin Luther King Day
+      slug: MARTIN_LUTHER_KING
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: President's Day
+        pt: Dia do Presidente
+      slug: PRESIDENT_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Memorial Day
+        pt: Memorial Day
+      slug: MEMORIAL_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Juneteenth
+        pt: Juneteenth
+      slug: JUNETEENTH
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Independence Day
+        pt: Dia da Independência
+      slug: INDEPENDENCE_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Labor Day
+        pt: Dia do trabalhador
+      slug: LABOR_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Columbus Day
+        pt: Dia de Cristóvão Colombo
+      slug: COLUMBUS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Veteran's Day
+        pt: Dia do Veterano Militar das Forças Armadas
+      slug: VETERANS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Thanksgiving
+        pt: Dia de Ação de Graças
+      slug: THANKSGIVING
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Christmas Day
+        pt: Natal
+      slug: CHRISTMAS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Reunião do FED
+        pt: Reunião do FED
+      slug: FED_MEETING
+      type_id:
+        where:
+          slug: MEETING
+  event_occurrence:
+    - event_id:
+      where:
+        slug: WINTER_TIME
+      event_at: 2025-03-09 00:00:00
+    - event_id:
+      where:
+        slug: WINTER_TIME
+      event_at: 2026-03-08 00:00:00
+    - event_id:
+      where:
+        slug: WINTER_TIME
+      event_at: 2027-03-14 00:00:00
+    - event_id:
+      where:
+        slug: WINTER_TIME
+      event_at: 2028-03-12 00:00:00
+    - event_id:
+      where:
+        slug: SUMMER_TIME
+      event_at: 2025-11-02 00:00:00
+    - event_id:
+      where:
+        slug: SUMMER_TIME
+      event_at: 2026-11-01 00:00:00
+    - event_id:
+      where:
+        slug: SUMMER_TIME
+      event_at: 2027-11-07 00:00:00
+    - event_id:
+      where:
+        slug: SUMMER_TIME
+      event_at: 2028-11-05 00:00:00
+    - event_id:
+      where:
+        slug: SUMMER_TIME
+      event_at: 2028-11-05 00:00:00
+    - event_id:
+      where:
+        slug: NEW_YEAR
+      event_at: 2025-01-01 00:00:00
+    - event_id:
+      where:
+        slug: NEW_YEAR
+      event_at: 2026-01-01 00:00:00
+    - event_id:
+      where:
+        slug: NEW_YEAR
+      event_at: 2027-01-01 00:00:00
+    - event_id:
+      where:
+        slug: NEW_YEAR
+      event_at: 2028-01-01 00:00:00
+    - event_id:
+      where:
+        slug: MARTIN_LUTHER_KING
+      event_at: 2025-01-20 00:00:00
+    - event_id:
+      where:
+        slug: MARTIN_LUTHER_KING
+      event_at: 2026-01-19 00:00:00
+    - event_id:
+      where:
+        slug: MARTIN_LUTHER_KING
+      event_at: 2027-01-20 00:00:00
+    - event_id:
+      where:
+        slug: MARTIN_LUTHER_KING
+      event_at: 2028-01-20 00:00:00
+    - event_id:
+      where:
+        slug: PRESIDENT_DAY
+      event_at: 2025-02-17 00:00:00
+    - event_id:
+      where:
+        slug: PRESIDENT_DAY
+      event_at: 2026-02-16 00:00:00
+    - event_id:
+      where:
+        slug: PRESIDENT_DAY
+      event_at: 2027-02-17 00:00:00
+    - event_id:
+      where:
+        slug: PRESIDENT_DAY
+      event_at: 2028-02-17 00:00:00
+    - event_id:
+      where:
+        slug: MEMORIAL_DAY
+      event_at: 2025-05-26 00:00:00
+    - event_id:
+      where:
+        slug: MEMORIAL_DAY
+      event_at: 2026-05-25 00:00:00
+    - event_id:
+      where:
+        slug: MEMORIAL_DAY
+      event_at: 2027-05-26 00:00:00
+    - event_id:
+      where:
+        slug: MEMORIAL_DAY
+      event_at: 2028-05-26 00:00:00
+    - event_id:
+      where:
+        slug: JUNETEENTH
+      event_at: 2025-06-19 00:00:00
+    - event_id:
+      where:
+        slug: JUNETEENTH
+      event_at: 2026-06-19 00:00:00
+    - event_id:
+      where:
+        slug: JUNETEENTH
+      event_at: 2027-06-19 00:00:00
+    - event_id:
+      where:
+        slug: JUNETEENTH
+      event_at: 2028-06-19 00:00:00
+    - event_id:
+      where:
+        slug: INDEPENDENCE_DAY
+      event_at: 2025-07-04 00:00:00
+    - event_id:
+      where:
+        slug: INDEPENDENCE_DAY
+      event_at: 2026-07-04 00:00:00
+    - event_id:
+      where:
+        slug: INDEPENDENCE_DAY
+      event_at: 2027-07-04 00:00:00
+    - event_id:
+      where:
+        slug: INDEPENDENCE_DAY
+      event_at: 2028-07-04 00:00:00
+    - event_id:
+      where:
+        slug: LABOR_DAY
+      event_at: 2025-09-01 00:00:00
+    - event_id:
+      where:
+        slug: LABOR_DAY
+      event_at: 2026-09-07 00:00:00
+    - event_id:
+      where:
+        slug: LABOR_DAY
+      event_at: 2027-09-01 00:00:00
+    - event_id:
+      where:
+        slug: LABOR_DAY
+      event_at: 2028-09-01 00:00:00
+    - event_id:
+      where:
+        slug: COLUMBUS_DAY
+      event_at: 2025-10-13 00:00:00
+    - event_id:
+      where:
+        slug: COLUMBUS_DAY
+      event_at: 2026-10-12 00:00:00
+    - event_id:
+      where:
+        slug: COLUMBUS_DAY
+      event_at: 2027-10-13 00:00:00
+    - event_id:
+      where:
+        slug: COLUMBUS_DAY
+      event_at: 2028-10-13 00:00:00
+    - event_id:
+      where:
+        slug: VETERANS_DAY
+      event_at: 2025-11-11 00:00:00
+    - event_id:
+      where:
+        slug: VETERANS_DAY
+      event_at: 2026-11-11 00:00:00
+    - event_id:
+      where:
+        slug: VETERANS_DAY
+      event_at: 2027-11-11 00:00:00
+    - event_id:
+      where:
+        slug: VETERANS_DAY
+      event_at: 2028-11-11 00:00:00
+    - event_id:
+      where:
+        slug: THANKSGIVING
+      event_at: 2025-11-27 00:00:00
+    - event_id:
+      where:
+        slug: THANKSGIVING
+      event_at: 2026-11-26 00:00:00
+    - event_id:
+      where:
+        slug: THANKSGIVING
+      event_at: 2027-11-27 00:00:00
+    - event_id:
+      where:
+        slug: THANKSGIVING
+      event_at: 2028-11-27 00:00:00
+    - event_id:
+      where:
+        slug: CHRISTMAS_DAY
+      event_at: 2025-12-25 00:00:00
+    - event_id:
+      where:
+        slug: CHRISTMAS_DAY
+      event_at: 2026-12-25 00:00:00
+    - event_id:
+      where:
+        slug: CHRISTMAS_DAY
+      event_at: 2027-12-25 00:00:00
+    - event_id:
+      where:
+        slug: CHRISTMAS_DAY
+      event_at: 2028-12-25 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-01-28 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-01-29 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-03-18 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-03-19 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-05-06 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-05-07 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-06-17 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-06-18 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-07-29 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-07-30 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-09-16 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-09-17 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-10-28 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-10-29 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-12-09 00:00:00
+    - event_id:
+      where:
+        slug: FED_MEETING
+      event_at: 2025-12-10 00:00:00
 screens:
   coin:
     title:
