@@ -250,5 +250,6 @@
   "mmr.mmr_percentage": "Porcentagem MMR",
   "mmr.additional_margin": "Margem Adicional",
   "bot.name": "Nome",
-  "bot.description": "Descrição"
+  "bot.description": "Descrição",
+  "event_type.slug": "Tipo de Evento"
 }

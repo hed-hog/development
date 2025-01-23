@@ -1,3 +1,6 @@
+import { EventOccurrenceModule } from './event-occurrence/event-occurrence.module';
+import { EventModule } from './event/event.module';
+import { EventTypeModule } from './event-type/event-type.module';
 import { AltcoinSeasonModule } from './altcoin-season/altcoin-season.module';
 import { IndiceModule } from './indice/indice.module';
 import { IndiceTypeModule } from './indice-type/indice-type.module';
@@ -57,6 +60,9 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => IndiceTypeModule),
     forwardRef(() => IndiceModule),
     forwardRef(() => AltcoinSeasonModule),
+    forwardRef(() => EventTypeModule),
+    forwardRef(() => EventModule),
+    forwardRef(() => EventOccurrenceModule),
   ],
   controllers: [],
   providers: [],

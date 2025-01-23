@@ -1,11 +1,11 @@
 {
-  "create": "Criar índice",
-  "createText": "Preencha as informações do índice.",
-  "createTooltip": "Criar novo índice",
-  "delete": "Deletar índice",
-  "deleteText": "Você tem certeza que deseja deletar este índice?",
-  "deleteTooltip": "Deletar o índice selecionado",
-  "edit": "Editar índice",
-  "editText": "Visualizar e editar informações do índice.",
-  "editTooltip": "Editar o índice selecionado"
+  "create": "Create Indice",
+  "createText": "Fill the indice informations.",
+  "createTooltip": "Create new indice",
+  "delete": "Delete Indice",
+  "deleteText": "Are you sure to delete these indices?",
+  "deleteTooltip": "Delete the selected indices",
+  "edit": "Edit Indice",
+  "editText": "View and edit indice information.",
+  "editTooltip": "Edit the selected indices"
 }

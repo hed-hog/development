@@ -1,11 +1,11 @@
 {
-  "create": "Criar moeda",
-  "createText": "Preencha as informações da moeda.",
-  "createTooltip": "Criar nova moeda",
-  "delete": "Deletar moeda",
-  "deleteText": "Você tem certeza de que deseja deletar estas moedas?",
-  "deleteTooltip": "Deletar a moeda selecionada",
-  "edit": "Editar moeda",
-  "editText": "Visualizar e editar informações da moeda.",
-  "editTooltip": "Editar a moeda selecionada"
+  "create": "Create Coin",
+  "createText": "Fill the coin informations.",
+  "createTooltip": "Create new coin",
+  "delete": "Delete Coin",
+  "deleteText": "Are you sure to delete these coins?",
+  "deleteTooltip": "Delete the selected coins",
+  "edit": "Edit Coin",
+  "editText": "View and edit coin information.",
+  "editTooltip": "Edit the selected coins"
 }

@@ -1,11 +1,11 @@
 {
-  "create": "Create altcoin season",
+  "create": "Create Altcoin season",
   "createText": "Fill the altcoin season informations.",
   "createTooltip": "Create new altcoin season",
-  "delete": "Delete altcoin season",
-  "deleteText": "Are you sure to delete these altcoin season?",
-  "deleteTooltip": "Delete the selected altcoin season",
-  "edit": "Edit altcoin season",
+  "delete": "Delete Altcoin season",
+  "deleteText": "Are you sure to delete these altcoin seasons?",
+  "deleteTooltip": "Delete the selected altcoin seasons",
+  "edit": "Edit Altcoin season",
   "editText": "View and edit altcoin season information.",
-  "editTooltip": "Edit the selected altcoin season"
+  "editTooltip": "Edit the selected altcoin seasons"
 }
