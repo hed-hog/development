@@ -67,7 +67,7 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => EventOccurrenceModule),
   ],
   controllers: [],
-  providers: [],
+  providers: [BankingService],
   exports: [BankingService],
 })
 export class CbcModule {}
