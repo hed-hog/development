@@ -1,0 +1,11 @@
+{
+  "create": "Create Order status",
+  "createText": "Fill the order status informations.",
+  "createTooltip": "Create new order status",
+  "delete": "Delete Order status",
+  "deleteText": "Are you sure to delete these order statuss?",
+  "deleteTooltip": "Delete the selected order statuss",
+  "edit": "Edit Order status",
+  "editText": "View and edit order status information.",
+  "editTooltip": "Edit the selected order statuss"
+}

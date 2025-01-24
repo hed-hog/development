@@ -1,0 +1,11 @@
+{
+  "create": "Create order status locale",
+  "createText": "Fill the order status locale informations.",
+  "createTooltip": "Create new order status locale",
+  "delete": "Delete order status locale",
+  "deleteText": "Are you sure to delete these order status locale?",
+  "deleteTooltip": "Delete the selected order status locale",
+  "edit": "Edit order status locale",
+  "editText": "View and edit order status locale information.",
+  "editTooltip": "Edit the selected order status locale"
+}

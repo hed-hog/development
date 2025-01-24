@@ -1,0 +1,10 @@
+{
+  "subscription_locale.name": "Nome da Assinatura",
+  "subscription_locale.description": "Descrição da Assinatura",
+  "subscription_plan_locale.name": "Nome do Plano",
+  "subscription_plan_locale.description": "Descrição do Plano",
+  "subscription_plan.name": "Nome do Plano",
+  "subscription_plan.description": "Descrição do Plano",
+  "subscription.name": "Nome da Assinatura",
+  "subscription.description": "Descrição da Assinatura"
+}

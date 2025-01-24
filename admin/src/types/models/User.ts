@@ -1,10 +1,6 @@
 import { Multifactor } from './Multifactor';
-import { SettingUser } from './SettingUser';
-import { Notification } from './Notification';
 import { RoleUser } from './RoleUser';
-import { Banking } from './Banking';
-import { Simulation } from './Simulation';
-import { Operation } from './Operation';
+import { SettingUser } from './SettingUser';
 
 export type User = {
   id?: number;
@@ -16,10 +12,6 @@ export type User = {
   created_at?: string;
   updated_at?: string;
   multifactor?: Multifactor;
-  setting_user?: SettingUser[];
-  notification?: Notification[];
   role_user?: RoleUser[];
-  banking?: Banking[];
-  simulation?: Simulation[];
-  operation?: Operation[];
+  setting_user?: SettingUser[];
 }

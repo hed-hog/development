@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { ContactModule } from '@hedhog/contact';
 import { FileModule } from '@hedhog/file';
 import { CountryModule } from '@hedhog/country';
-import { CbcModule } from '@hedhog/cbc';
-import { FaqModule } from '@hedhog/faq';
 import { AdminModule } from '@hedhog/admin';
 import { SettingModule } from '@hedhog/setting';
 import { MailModule } from '@hedhog/mail';
@@ -30,8 +28,11 @@ import { PrismaModule } from '@hedhog/prisma';
     }),
     SettingModule,
     AdminModule,
+<<<<<<< HEAD
     FaqModule,
     CbcModule,
+=======
+>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4
     CountryModule,
     FileModule,
     ContactModule,
@@ -39,4 +40,4 @@ import { PrismaModule } from '@hedhog/prisma';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,0 +1,174 @@
+tables:
+  subscription_locale:
+    columns:
+      - type: fk
+        name: subscription_id
+        isPrimary: true
+        references:
+          table: subscription
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        length: 63
+        locale:
+          en: Subscription Name
+          pt: Nome da Assinatura
+      - name: description
+        length: 255
+        locale:
+          en: Subscription Description
+          pt: Descrição da Assinatura
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  subscription_plan_locale:
+    columns:
+      - type: fk
+        name: plan_id
+        isPrimary: true
+        references:
+          table: subscription_plan
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        length: 63
+        locale:
+          en: Plan Name
+          pt: Nome do Plano
+      - name: description
+        length: 255
+        locale:
+          en: Plan Description
+          pt: Descrição do Plano
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  subscription_plan:
+    columns:
+      - type: pk
+      - type: slug
+      - name: duration
+        type: enum
+        enum:
+          - monthly
+          - yearly
+          - quarterly
+      - type: created_at
+      - type: updated_at
+  subscription:
+    columns:
+      - type: pk
+      - type: fk
+        name: plan_id
+        references:
+          table: subscription_plan
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: person_id
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: payment_id
+        references:
+          table: payment
+          column: id
+          onDelete: CASCADE
+      - type: datetime
+        name: start_at
+      - type: datetime
+        name: end_at
+      - type: enum
+        name: status
+        enum:
+          - active
+          - expired
+          - canceled
+      - type: created_at
+      - type: updated_at
+data:
+  route:
+    - url: /subscription-plan
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /subscription-plan
+      method: POST
+      relations: *a1
+    - url: /subscription-plan/:id
+      method: GET
+      relations: *a1
+    - url: /subscription-plan/:id
+      method: PATCH
+      relations: *a1
+    - url: /subscription-plan
+      method: DELETE
+      relations: *a1
+    - url: /subscription
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /subscription
+      method: POST
+      relations: *a2
+    - url: /subscription/:id
+      method: GET
+      relations: *a2
+    - url: /subscription/:id
+      method: PATCH
+      relations: *a2
+    - url: /subscription
+      method: DELETE
+      relations: *a2
+  menu:
+    - name:
+        en: SubscriptionPlan
+        pt: SubscriptionPlan
+      icon: file
+      url: /subscription-plan
+      slug: subscription-plan
+      relations: *a1
+    - name:
+        en: Subscription
+        pt: Subscription
+      icon: file
+      url: /subscription
+      slug: subscription
+      relations: *a2
+  screen:
+    - name:
+        en: SubscriptionPlan
+        pt: SubscriptionPlan
+      slug: subscription-plan
+      description:
+        en: Screen to manage subscription_plan
+        pt: Tela para gerenciar subscription_plan
+      icon: file
+    - name:
+        en: Subscription
+        pt: Subscription
+      slug: subscription
+      description:
+        en: Screen to manage subscription
+        pt: Tela para gerenciar subscription
+      icon: file

@@ -1,0 +1,252 @@
+data:
+  component_type:
+    - slug: layout
+      name:
+        en: Layout
+        pt: Layout
+    - slug: component
+      name:
+        en: Component
+        pt: Componente
+  component_prop_type:
+    - slug: text
+      name:
+        en: Text
+        pt: Texto
+    - slug: number
+      name:
+        en: Number
+        pt: Número
+    - slug: component
+      name:
+        en: Component
+        pt: Componente
+    - slug: list
+      name:
+        en: List
+        pt: Lista
+  route:
+    - url: /component-type
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /component-type
+      method: POST
+      relations: *a1
+    - url: /component-type/:id
+      method: GET
+      relations: *a1
+    - url: /component-type/:id
+      method: PATCH
+      relations: *a1
+    - url: /component-type
+      method: DELETE
+      relations: *a1
+    - url: /component
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /component
+      method: POST
+      relations: *a2
+    - url: /component/:id
+      method: GET
+      relations: *a2
+    - url: /component/:id
+      method: PATCH
+      relations: *a2
+    - url: /component
+      method: DELETE
+      relations: *a2
+    - url: /component-prop-type
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /component-prop-type
+      method: POST
+      relations: *a3
+    - url: /component-prop-type/:id
+      method: GET
+      relations: *a3
+    - url: /component-prop-type/:id
+      method: PATCH
+      relations: *a3
+    - url: /component-prop-type
+      method: DELETE
+      relations: *a3
+  menu:
+    - name:
+        en: ComponentType
+        pt: ComponentType
+      icon: file
+      url: /component-type
+      slug: component-type
+      relations: *a1
+    - name:
+        en: Component
+        pt: Component
+      icon: file
+      url: /component
+      slug: component
+      relations: *a2
+    - name:
+        en: ComponentPropType
+        pt: ComponentPropType
+      icon: file
+      url: /component-prop-type
+      slug: component-prop-type
+      relations: *a3
+  screen:
+    - name:
+        en: ComponentType
+        pt: ComponentType
+      slug: component-type
+      description:
+        en: Screen to manage component_type
+        pt: Tela para gerenciar component_type
+      icon: file
+    - name:
+        en: Component
+        pt: Component
+      slug: component
+      description:
+        en: Screen to manage component
+        pt: Tela para gerenciar component
+      icon: file
+    - name:
+        en: ComponentPropType
+        pt: ComponentPropType
+      slug: component-prop-type
+      description:
+        en: Screen to manage component_prop_type
+        pt: Tela para gerenciar component_prop_type
+      icon: file
+tables:
+  component_type:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  component_type_locale:
+    columns:
+      - type: fk
+        name: type_id
+        references:
+          table: component_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component:
+    columns:
+      - type: pk
+      - type: fk
+        name: type_id
+        references:
+          table: component_type
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component_prop_type:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  component_prop_type_locale:
+    columns:
+      - type: fk
+        name: type_id
+        references:
+          table: component_prop_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component_prop:
+    columns:
+      - type: pk
+      - type: fk
+        name: type_id
+        references:
+          table: component_prop_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: component_id
+        references:
+          table: component
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - name: default
+      - type: created_at
+      - type: updated_at
+  instance:
+    columns:
+      - type: pk
+      - type: fk
+        name: component_id
+        references:
+          table: component
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: fk
+        name: parent_id
+        references:
+          table: instance
+          column: id
+          onDelete: CASCADE
+      - type: order
+      - type: enum
+        name: visibility
+        default: private
+        enum:
+          - public
+          - private
+          - unlisted
+      - type: created_at
+      - type: updated_at
+  instance_prop:
+    columns:
+      - type: fk
+        name: prop_id
+        isPrimary: true
+        references:
+          table: component_prop
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: instance_id
+        isPrimary: true
+        references:
+          table: instance
+          column: id
+          onDelete: CASCADE
+      - name: value
+      - type: created_at
+      - type: updated_at
