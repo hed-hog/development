@@ -6,18 +6,23 @@ data:
     - name:
         en: Pending
         pt: Pendente
+      slug: PENDING
     - name:
         en: Paid
         pt: Pago
+      slug: PAID
     - name:
         en: Canceled
         pt: Cancelado
+      slug: CANCELED
     - name:
         en: Expired
         pt: Expirado
+      slug: EXPIRED
     - name:
         en: Refunded
         pt: Reembolsado
+      slug: REFUNDED
   discount_type:
     - name: Desconto com valor fixo
       slug: DISCOUNT_FIXED_VALUE
@@ -419,5 +424,17 @@ tables:
           column: id
           onDelete: RESTRICT
         isPrimary: true
+      - type: created_at
+      - type: updated_at
+  payment_notification:
+    columns:
+      - type: pk
+      - name: gateway_id
+        type: fk
+        references:
+          table: gateway
+          column: id
+          onDelete: RESTRICT
+      - name: log
       - type: created_at
       - type: updated_at
