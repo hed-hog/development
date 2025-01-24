@@ -463,6 +463,7 @@ tables:
       - type: slug
       - type: fk
         name: person_id
+        isNullable: true
         references:
           table: person
           column: id
@@ -485,29 +486,41 @@ tables:
           onDelete: RESTRICT
       - name: document
         length: 14
+        isNullable: true
       - type: timestamp
         name: payment_at
         isNullable: true
       - name: currency
         length: 3
       - name: method_id
+        isNullable: true
         type: fk
         references:
           table: payment_method
           column: id
           onDelete: RESTRICT
       - type: fk
+        isNullable: true
         name: brand_id
         references:
           table: card_brand
           column: id
           onDelete: CASCADE
-        isNullable: true
       - name: installments
         type: int
         default: 1
       - name: delivered
         type: int
+        default: 0
+      - type: fk
+        name: coupon_id
+        isNullable: true
+        references:
+          table: coupon
+          column: id
+          onDelete: RESTRICT
+      - type: decimal
+        name: discount
         default: 0
       - type: created_at
       - type: updated_at
@@ -543,6 +556,9 @@ tables:
       - name: delivered
         type: int
         default: 0
+      - name: quantity
+        type: int
+        default: 1
       - type: created_at
       - type: updated_at
   payment_method_item:

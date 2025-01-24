@@ -72,4 +72,66 @@ export class CheckoutService {
 
     return provider.createSubscription(priceId, customerId);
   }
+
+  async init(slug?: string, person_id?: number) {
+    let payment: any = null;
+
+    if (slug) {
+      payment = this.prismaService.payment.findFirst({
+        where: {
+          slug,
+          status_id: 1,
+        },
+      });
+
+      if (payment && !payment.person_id && person_id) {
+        await this.prismaService.payment.update({
+          where: {
+            id: payment.id,
+          },
+          data: {
+            person_id,
+          },
+        });
+      }
+    }
+
+    if (!payment) {
+      const item = await this.prismaService.item.findFirst();
+
+      payment = await this.prismaService.payment.create({
+        data: {
+          gateway_id: this.providerId,
+          person_id,
+          status_id: 1,
+          amount: item.price,
+        },
+      });
+
+      await this.prismaService.payment_item.create({
+        data: {
+          payment_id: payment.id,
+          item_id: item.id,
+          unit_price: item.price,
+        },
+      });
+    }
+
+    return this.prismaService.payment.findUnique({
+      where: {
+        id: payment.id,
+      },
+      include: {
+        payment_item: {
+          include: {
+            item: true,
+          },
+        },
+        payment_method: true,
+        card_brand: true,
+        payment_status: true,
+        person: true,
+      },
+    });
+  }
 }

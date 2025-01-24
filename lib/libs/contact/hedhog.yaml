@@ -712,6 +712,29 @@ data:
         pt: Tela para gerenciar person_custom
       icon: file
 tables:
+  person_user:
+    columns:
+      - type: pk
+      - name: person_id
+        type: fk
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - name: user_id
+        type: fk
+        references:
+          table: user
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns:
+          - person_id
+          - user_id
+        isUnique: true
+    ifNotExists: true
   person_value:
     columns:
       - type: pk
