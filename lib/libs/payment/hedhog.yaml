@@ -404,19 +404,20 @@ tables:
       - type: updated_at
     ifNotExists: true
   coupon_item:
-    - name: coupon_id
-      type: fk
-      references:
-        table: coupon
-        column: id
-        onDelete: RESTRICT
-      isPrimary: true
-    - name: item_id
-      type: fk
-      references:
-        table: item
-        column: id
-        onDelete: RESTRICT
-      isPrimary: true
-    - type: created_at
-    - type: updated_at
+    columns:
+      - name: coupon_id
+        type: fk
+        references:
+          table: coupon
+          column: id
+          onDelete: RESTRICT
+        isPrimary: true
+      - name: item_id
+        type: fk
+        references:
+          table: item
+          column: id
+          onDelete: RESTRICT
+        isPrimary: true
+      - type: created_at
+      - type: updated_at
