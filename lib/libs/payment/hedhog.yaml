@@ -273,7 +273,7 @@ tables:
           onDelete: RESTRICT
       - name: document
         length: 14
-      - type: datetime
+      - type: timestamp
         name: payment_at
         isNullable: true
       - name: currency
@@ -395,9 +395,9 @@ tables:
       - name: uses_qtd
         type: int
         default: 0
-      - type: datetime
+      - type: timestamp
         name: starts_at
-      - type: datetime
+      - type: timestamp
         name: ends_at
         isNullable: true
       - type: created_at
