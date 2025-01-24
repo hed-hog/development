@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/payment",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -24,7 +24,8 @@
   "peerDependencies": {
     "@hedhog/admin": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/prisma": "latest"
+    "@hedhog/prisma": "latest",
+    "@hedhog/contact": "latest"
   },
   "devDependencies": {
     "@hedhog/admin": "^0.12.5",
