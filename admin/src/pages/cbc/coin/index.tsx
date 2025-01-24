@@ -69,8 +69,8 @@ export default function Page() {
           },
 
           {
-            key: 'code',
-            header: t('coin.code', { ns: 'fields' }),
+            key: 'slug',
+            header: t('coin.slug', { ns: 'fields' }),
             isLocale: false
           }
         ]}

@@ -1,11 +1,11 @@
 {
-  "create": "Criar tipo de sinal de trade",
-  "createText": "Preencha as informações do tipo de sinal de trade.",
-  "createTooltip": "Criar novo tipo de sinal de trade",
-  "delete": "Excluir tipo de sinal de trade",
-  "deleteText": "Você tem certeza de que deseja excluir estes tipos de sinal de trade?",
-  "deleteTooltip": "Excluir o tipo de sinal de trade selecionado",
-  "edit": "Editar tipo de sinal de trade",
-  "editText": "Visualizar e editar informações do tipo de sinal de trade.",
-  "editTooltip": "Editar o tipo de sinal de trade selecionado"
+  "create": "Create Trade signal type",
+  "createText": "Fill the trade signal type informations.",
+  "createTooltip": "Create new trade signal type",
+  "delete": "Delete Trade signal type",
+  "deleteText": "Are you sure to delete these trade signal types?",
+  "deleteTooltip": "Delete the selected trade signal types",
+  "edit": "Edit Trade signal type",
+  "editText": "View and edit trade signal type information.",
+  "editTooltip": "Edit the selected trade signal types"
 }

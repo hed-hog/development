@@ -1,11 +1,11 @@
 {
-  "create": "Criar bot",
-  "createText": "Preencha as informações do bot.",
-  "createTooltip": "Criar novo bot",
-  "delete": "Excluir bot",
-  "deleteText": "Você tem certeza de que deseja excluir estes bots?",
-  "deleteTooltip": "Excluir o bot selecionado",
-  "edit": "Editar bot",
-  "editText": "Ver e editar as informações do bot.",
-  "editTooltip": "Editar o bot selecionado"
+  "create": "Create Bot",
+  "createText": "Fill the bot informations.",
+  "createTooltip": "Create new bot",
+  "delete": "Delete Bot",
+  "deleteText": "Are you sure to delete these bots?",
+  "deleteTooltip": "Delete the selected bots",
+  "edit": "Edit Bot",
+  "editText": "View and edit bot information.",
+  "editTooltip": "Edit the selected bots"
 }

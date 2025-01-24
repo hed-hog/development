@@ -1,18 +1,19 @@
 import { AdminModule } from '@hedhog/admin';
+import { AppearanceModule } from '@hedhog/appearance';
+import { CbcModule } from '@hedhog/cbc';
+import { ContactModule } from '@hedhog/contact';
+import { CountryModule } from '@hedhog/country';
+import { FaqModule } from '@hedhog/faq';
 import { FileModule } from '@hedhog/file';
 import { LocaleModule } from '@hedhog/locale';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
-import { ContactModule } from '@hedhog/contact';
 import { PrismaModule } from '@hedhog/prisma';
-import { CountryModule } from '@hedhog/country';
 import { SettingModule } from '@hedhog/setting';
-import { CbcModule } from '@hedhog/cbc';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AppearanceModule } from '@hedhog/appearance';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AppearanceModule } from '@hedhog/appearance';
     SettingModule,
     FileModule,
     CbcModule,
+    FaqModule,
   ],
   controllers: [AppController],
   providers: [AppService],

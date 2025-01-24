@@ -1,3 +1,5 @@
+import { Banking } from './Banking';
+import { Simulation } from './Simulation';
 import { Operation } from './Operation';
 
 export type Strategy = {
@@ -5,5 +7,7 @@ export type Strategy = {
   name: string;
   created_at?: string;
   updated_at?: string;
+  banking?: Banking[];
+  simulation?: Simulation[];
   operation?: Operation[];
 }

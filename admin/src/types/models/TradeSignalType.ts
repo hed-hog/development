@@ -1,3 +1,4 @@
+import { Simulation } from './Simulation';
 import { Operation } from './Operation';
 
 export type TradeSignalType = {
@@ -5,5 +6,6 @@ export type TradeSignalType = {
   name: string;
   created_at?: string;
   updated_at?: string;
+  simulation?: Simulation[];
   operation?: Operation[];
 }

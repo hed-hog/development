@@ -1,0 +1,11 @@
+{
+  "create": "Create Coin variation type",
+  "createText": "Fill the coin variation type informations.",
+  "createTooltip": "Create new coin variation type",
+  "delete": "Delete Coin variation type",
+  "deleteText": "Are you sure to delete these coin variation types?",
+  "deleteTooltip": "Delete the selected coin variation types",
+  "edit": "Edit Coin variation type",
+  "editText": "View and edit coin variation type information.",
+  "editTooltip": "Edit the selected coin variation types"
+}

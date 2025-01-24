@@ -34,22 +34,22 @@ const QuotationCreatePanel = forwardRef(
         ref={formRef}
         fields={[
           {
-            name: "type_id",
-            label: { text: t("quotation.type_id", { ns: "fields" }) },
-            type: EnumFieldType.COMBOBOX,
-            required: true,
-            url: "/quotation-request-type",
-            displayName: "type",
-            valueName: "id",
-          },
-
-          {
             name: "coin_id",
             label: { text: t("quotation.coin_id", { ns: "fields" }) },
             type: EnumFieldType.COMBOBOX,
             required: true,
             url: "/coin",
             displayName: "coin",
+            valueName: "id",
+          },
+
+          {
+            name: "bot_id",
+            label: { text: t("quotation.bot_id", { ns: "fields" }) },
+            type: EnumFieldType.COMBOBOX,
+            required: true,
+            url: "/bot",
+            displayName: "bot",
             valueName: "id",
           },
 
@@ -98,6 +98,20 @@ const QuotationCreatePanel = forwardRef(
           {
             name: "bb_upper",
             label: { text: t("quotation.bb_upper", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "bb_lower_5",
+            label: { text: t("quotation.bb_lower_5", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "bb_upper_5",
+            label: { text: t("quotation.bb_upper_5", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
@@ -523,8 +537,22 @@ const QuotationCreatePanel = forwardRef(
           },
 
           {
+            name: "mom_5",
+            label: { text: t("quotation.mom_5", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
             name: "macd_macd",
             label: { text: t("quotation.macd_macd", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "macd_macd_5",
+            label: { text: t("quotation.macd_macd_5", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
@@ -546,6 +574,341 @@ const QuotationCreatePanel = forwardRef(
           {
             name: "perf_all",
             label: { text: t("quotation.perf_all", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_camarilla_middle",
+            label: {
+              text: t("quotation.pivot_m_camarilla_middle", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_camarilla_r1",
+            label: {
+              text: t("quotation.pivot_m_camarilla_r1", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_camarilla_r2",
+            label: {
+              text: t("quotation.pivot_m_camarilla_r2", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_camarilla_r3",
+            label: {
+              text: t("quotation.pivot_m_camarilla_r3", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_camarilla_s1",
+            label: {
+              text: t("quotation.pivot_m_camarilla_s1", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_camarilla_s2",
+            label: {
+              text: t("quotation.pivot_m_camarilla_s2", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_camarilla_s3",
+            label: {
+              text: t("quotation.pivot_m_camarilla_s3", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_classic_middle",
+            label: {
+              text: t("quotation.pivot_m_classic_middle", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_classic_r1",
+            label: {
+              text: t("quotation.pivot_m_classic_r1", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_classic_r2",
+            label: {
+              text: t("quotation.pivot_m_classic_r2", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_classic_r3",
+            label: {
+              text: t("quotation.pivot_m_classic_r3", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_classic_s1",
+            label: {
+              text: t("quotation.pivot_m_classic_s1", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_classic_s2",
+            label: {
+              text: t("quotation.pivot_m_classic_s2", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_classic_s3",
+            label: {
+              text: t("quotation.pivot_m_classic_s3", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_demark_middle",
+            label: {
+              text: t("quotation.pivot_m_demark_middle", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_demark_r1",
+            label: { text: t("quotation.pivot_m_demark_r1", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_demark_s1",
+            label: { text: t("quotation.pivot_m_demark_s1", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_middle",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_middle", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_r1",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_r1", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_r2",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_r2", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_r3",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_r3", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_s1",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_s1", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_s2",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_s2", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_s3",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_s3", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_middle_5",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_middle_5", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_r1_5",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_r1_5", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_r2_5",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_r2_5", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_r3_5",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_r3_5", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_s1_5",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_s1_5", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_s2_5",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_s2_5", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_fibonacci_s3_5",
+            label: {
+              text: t("quotation.pivot_m_fibonacci_s3_5", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_woodie_middle_5",
+            label: {
+              text: t("quotation.pivot_m_woodie_middle_5", { ns: "fields" }),
+            },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_woodie_r1",
+            label: { text: t("quotation.pivot_m_woodie_r1", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_woodie_r2",
+            label: { text: t("quotation.pivot_m_woodie_r2", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_woodie_r3",
+            label: { text: t("quotation.pivot_m_woodie_r3", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_woodie_s1",
+            label: { text: t("quotation.pivot_m_woodie_s1", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_woodie_s2",
+            label: { text: t("quotation.pivot_m_woodie_s2", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "pivot_m_woodie_s3",
+            label: { text: t("quotation.pivot_m_woodie_s3", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "relative_volume_intraday_5",
+            label: {
+              text: t("quotation.relative_volume_intraday_5", { ns: "fields" }),
+            },
             type: EnumFieldType.TEXT,
             required: true,
           },
@@ -581,6 +944,13 @@ const QuotationCreatePanel = forwardRef(
           {
             name: "macd_signal",
             label: { text: t("quotation.macd_signal", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "macd_signal_5",
+            label: { text: t("quotation.macd_signal_5", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
@@ -858,6 +1228,48 @@ const QuotationCreatePanel = forwardRef(
           {
             name: "rsi_1_",
             label: { text: t("quotation.rsi_1_", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "adx_5",
+            label: { text: t("quotation.adx_5", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "adx_plus_di_5",
+            label: { text: t("quotation.adx_plus_di_5", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "adx_minus_di_5",
+            label: { text: t("quotation.adx_minus_di_5", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "adx_240",
+            label: { text: t("quotation.adx_240", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "adx_plus_di_240",
+            label: { text: t("quotation.adx_plus_di_240", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "adx_minus_di_240",
+            label: { text: t("quotation.adx_minus_di_240", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },
@@ -1169,6 +1581,34 @@ const QuotationCreatePanel = forwardRef(
           {
             name: "rec_uo",
             label: { text: t("quotation.rec_uo", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "change_60",
+            label: { text: t("quotation.change_60", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "change_240",
+            label: { text: t("quotation.change_240", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "change_15",
+            label: { text: t("quotation.change_15", { ns: "fields" }) },
+            type: EnumFieldType.TEXT,
+            required: true,
+          },
+
+          {
+            name: "adx_1",
+            label: { text: t("quotation.adx_1", { ns: "fields" }) },
             type: EnumFieldType.TEXT,
             required: true,
           },

@@ -20,7 +20,7 @@ export class CoinService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name', 'code'];
+    const fields = ['name', 'slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams

@@ -110,6 +110,18 @@ export default function Page() {
           },
 
           {
+            key: 'bb_lower_5',
+            header: t('quotation.bb_lower_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'bb_upper_5',
+            header: t('quotation.bb_upper_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
             key: 'donchch20_lower',
             header: t('quotation.donchch20_lower', { ns: 'fields' }),
             isLocale: false
@@ -458,8 +470,20 @@ export default function Page() {
           },
 
           {
+            key: 'mom_5',
+            header: t('quotation.mom_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
             key: 'macd_macd',
             header: t('quotation.macd_macd', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'macd_macd_5',
+            header: t('quotation.macd_macd_5', { ns: 'fields' }),
             isLocale: false
           },
 
@@ -478,6 +502,240 @@ export default function Page() {
           {
             key: 'perf_all',
             header: t('quotation.perf_all', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_camarilla_middle',
+            header: t('quotation.pivot_m_camarilla_middle', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_camarilla_r1',
+            header: t('quotation.pivot_m_camarilla_r1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_camarilla_r2',
+            header: t('quotation.pivot_m_camarilla_r2', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_camarilla_r3',
+            header: t('quotation.pivot_m_camarilla_r3', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_camarilla_s1',
+            header: t('quotation.pivot_m_camarilla_s1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_camarilla_s2',
+            header: t('quotation.pivot_m_camarilla_s2', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_camarilla_s3',
+            header: t('quotation.pivot_m_camarilla_s3', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_classic_middle',
+            header: t('quotation.pivot_m_classic_middle', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_classic_r1',
+            header: t('quotation.pivot_m_classic_r1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_classic_r2',
+            header: t('quotation.pivot_m_classic_r2', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_classic_r3',
+            header: t('quotation.pivot_m_classic_r3', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_classic_s1',
+            header: t('quotation.pivot_m_classic_s1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_classic_s2',
+            header: t('quotation.pivot_m_classic_s2', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_classic_s3',
+            header: t('quotation.pivot_m_classic_s3', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_demark_middle',
+            header: t('quotation.pivot_m_demark_middle', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_demark_r1',
+            header: t('quotation.pivot_m_demark_r1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_demark_s1',
+            header: t('quotation.pivot_m_demark_s1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_middle',
+            header: t('quotation.pivot_m_fibonacci_middle', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_r1',
+            header: t('quotation.pivot_m_fibonacci_r1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_r2',
+            header: t('quotation.pivot_m_fibonacci_r2', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_r3',
+            header: t('quotation.pivot_m_fibonacci_r3', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_s1',
+            header: t('quotation.pivot_m_fibonacci_s1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_s2',
+            header: t('quotation.pivot_m_fibonacci_s2', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_s3',
+            header: t('quotation.pivot_m_fibonacci_s3', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_middle_5',
+            header: t('quotation.pivot_m_fibonacci_middle_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_r1_5',
+            header: t('quotation.pivot_m_fibonacci_r1_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_r2_5',
+            header: t('quotation.pivot_m_fibonacci_r2_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_r3_5',
+            header: t('quotation.pivot_m_fibonacci_r3_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_s1_5',
+            header: t('quotation.pivot_m_fibonacci_s1_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_s2_5',
+            header: t('quotation.pivot_m_fibonacci_s2_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_fibonacci_s3_5',
+            header: t('quotation.pivot_m_fibonacci_s3_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_woodie_middle_5',
+            header: t('quotation.pivot_m_woodie_middle_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_woodie_r1',
+            header: t('quotation.pivot_m_woodie_r1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_woodie_r2',
+            header: t('quotation.pivot_m_woodie_r2', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_woodie_r3',
+            header: t('quotation.pivot_m_woodie_r3', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_woodie_s1',
+            header: t('quotation.pivot_m_woodie_s1', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_woodie_s2',
+            header: t('quotation.pivot_m_woodie_s2', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'pivot_m_woodie_s3',
+            header: t('quotation.pivot_m_woodie_s3', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'relative_volume_intraday_5',
+            header: t('quotation.relative_volume_intraday_5', { ns: 'fields' }),
             isLocale: false
           },
 
@@ -508,6 +766,12 @@ export default function Page() {
           {
             key: 'macd_signal',
             header: t('quotation.macd_signal', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'macd_signal_5',
+            header: t('quotation.macd_signal_5', { ns: 'fields' }),
             isLocale: false
           },
 
@@ -734,6 +998,42 @@ export default function Page() {
           },
 
           {
+            key: 'adx_5',
+            header: t('quotation.adx_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'adx_plus_di_5',
+            header: t('quotation.adx_plus_di_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'adx_minus_di_5',
+            header: t('quotation.adx_minus_di_5', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'adx_240',
+            header: t('quotation.adx_240', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'adx_plus_di_240',
+            header: t('quotation.adx_plus_di_240', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'adx_minus_di_240',
+            header: t('quotation.adx_minus_di_240', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
             key: 'adx_plus_di_1_',
             header: t('quotation.adx_plus_di_1_', { ns: 'fields' }),
             isLocale: false
@@ -956,6 +1256,30 @@ export default function Page() {
           {
             key: 'rec_uo',
             header: t('quotation.rec_uo', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'change_60',
+            header: t('quotation.change_60', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'change_240',
+            header: t('quotation.change_240', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'change_15',
+            header: t('quotation.change_15', { ns: 'fields' }),
+            isLocale: false
+          },
+
+          {
+            key: 'adx_1',
+            header: t('quotation.adx_1', { ns: 'fields' }),
             isLocale: false
           }
         ]}

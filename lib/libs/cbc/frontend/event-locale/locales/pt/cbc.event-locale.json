@@ -1,0 +1,11 @@
+{
+  "create": "Create Event locale",
+  "createText": "Fill the event locale informations.",
+  "createTooltip": "Create new event locale",
+  "delete": "Delete Event locale",
+  "deleteText": "Are you sure to delete these event locales?",
+  "deleteTooltip": "Delete the selected event locales",
+  "edit": "Edit Event locale",
+  "editText": "View and edit event locale information.",
+  "editTooltip": "Edit the selected event locales"
+}

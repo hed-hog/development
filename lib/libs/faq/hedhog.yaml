@@ -17,7 +17,6 @@ screens:
         role:
           - where:
               slug: admin
-
 tables:
   faq:
     columns:
@@ -43,6 +42,7 @@ tables:
           onDelete: CASCADE
       - name: question
       - name: answer
+        type: text
       - type: created_at
       - type: updated_at
     ifNotExists: true
@@ -71,9 +71,12 @@ data:
         en: FAQ
         pt: Perguntas Frequentes
       icon: zoom-question
-      url: /management/faq
-      slug: /management/faq
-      relations: *a1
+      url: /faq
+      slug: faq
+      relations:
+        role:
+          - where:
+              slug: admin
   screen:
     - name:
         en: FAQ
@@ -83,3 +86,9 @@ data:
         en: Screen to manage frequently asked questions
         pt: Tela para gerenciar perguntas frequentes
       icon: zoom-question
+routes:
+  - path: faq
+    children:
+      - path: faq
+        lazy:
+          component: ./pages/faq/index.tsx

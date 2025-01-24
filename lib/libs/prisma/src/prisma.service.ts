@@ -61,7 +61,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   getFields(modelName: string) {
-    return Object.keys(this[modelName].fields);
+    const fields = this[modelName]?.fields
+      ? Object.keys(this[modelName].fields)
+      : null;
+    return fields;
   }
 
   getValidData(modelName: string, data: any) {

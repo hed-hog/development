@@ -20,7 +20,7 @@ export class StockExchangeService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['name'];
+    const fields = ['slug'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams

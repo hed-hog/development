@@ -1,16 +1,150 @@
 tables:
-  quotation:
+  altcoin_season:
+    columns:
+      - type: pk
+      - name: altcoinIndex
+        type: int
+      - type: created_at
+      - type: updated_at
+  indice_type:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: type
+          pt: Tipo
+  indice:
+    columns:
+      - type: pk
+      - name: bot_id
+        type: fk
+        isNullable: true
+        references:
+          table: bot
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Bot
+          pt: Bot
+      - name: type_id
+        type: fk
+        references:
+          table: indice_type
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Type
+          pt: Tipo
+      - type: slug
+        locale:
+          en: Name
+          pt: Nome
+      - name: description
+        isNullable: true
+        locale:
+          en: Description
+          pt: Descrição
+      - name: in_inght_var_percentage
+        type: decimal
+        isNullable: true
+        locale:
+          en: Var, %
+          pt: Var, %
+      - name: in_inght_tech_rating
+        type: decimal
+        isNullable: true
+        locale:
+          en: Tech Rating
+          pt: Tendência Técnica
+      - name: future_var_percentage
+        type: decimal
+        isNullable: true
+        locale:
+          en: Var, %
+          pt: Var, %
+      - name: future_tech_rating
+        type: decimal
+        isNullable: true
+        locale:
+          en: Tech Rating
+          pt: Tendência Técnica
+      - type: created_at
+      - type: updated_at
+  notification_type:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+  notification:
     columns:
       - type: pk
       - name: type_id
         type: fk
         references:
-          table: quotation_request_type
+          table: notification_type
           column: id
           onDelete: CASCADE
         locale:
-          en: Request Type
-          pt: Tipo de Requisição
+          en: Type
+          pt: Tipo
+      - name: message
+        locale:
+          en: Message
+          pt: Mensagem
+      - name: user_id
+        type: fk
+        isNullable: true
+        references:
+          table: user
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: User
+          pt: Usuário
+      - name: coin_id
+        type: fk
+        isNullable: true
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Coin
+          pt: Moeda
+      - type: created_at
+      - type: updated_at
+  top_cmc:
+    columns:
+      - type: pk
+      - name: value
+        type: decimal
+      - name: value_24h_percentage_change
+        type: decimal
+      - type: created_at
+      - type: updated_at
+  coin_variation_type:
+    columns:
+      - type: pk
+      - name: name
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+  coin:
+    columns:
+      - type: pk
+      - name: name
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  quotation:
+    columns:
+      - type: pk
       - name: coin_id
         type: fk
         references:
@@ -18,8 +152,8 @@ tables:
           column: id
           onDelete: CASCADE
         locale:
-          en: Quote
-          pt: Cotação
+          en: Coin
+          pt: Moeda
       - name: bot_id
         type: fk
         references:
@@ -85,6 +219,22 @@ tables:
         locale:
           en: Bollinger Band Upper (20)
           pt: Banda de Bollinger Superior (20)
+      - name: bb_lower_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Bollinger Band Lower (5)
+          pt: Banda de Bollinger Inferior (5)
+      - name: bb_upper_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Bollinger Band Upper (5)
+          pt: Banda de Bollinger Superior (5)
       - name: donchch20_lower
         type: decimal
         precision: 36
@@ -558,6 +708,14 @@ tables:
         locale:
           en: Momentum (10)
           pt: Momentum (10)
+      - name: mom_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: Momentum (5)
+          pt: Momentum (5)
       - name: macd_macd
         type: decimal
         precision: 36
@@ -566,6 +724,14 @@ tables:
         locale:
           en: MACD Level (12,26)
           pt: Nível MACD (12,26)
+      - name: macd_macd_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: MACD Level (5)
+          pt: Nível MACD (5)
       - name: ao
         type: decimal
         precision: 36
@@ -590,6 +756,318 @@ tables:
         locale:
           en: All-Time Performance
           pt: Performance de Todos os Tempos
+      - name: pivot_m_camarilla_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_middle
+          pt: pivot_m_camarilla_middle
+      - name: pivot_m_camarilla_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_r1
+          pt: pivot_m_camarilla_r1
+      - name: pivot_m_camarilla_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_r2
+          pt: pivot_m_camarilla_r2
+      - name: pivot_m_camarilla_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_r3
+          pt: pivot_m_camarilla_r3
+      - name: pivot_m_camarilla_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_s1
+          pt: pivot_m_camarilla_s1
+      - name: pivot_m_camarilla_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_s2
+          pt: pivot_m_camarilla_s2
+      - name: pivot_m_camarilla_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_camarilla_s3
+          pt: pivot_m_camarilla_s3
+      - name: pivot_m_classic_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_middle
+          pt: pivot_m_classic_middle
+      - name: pivot_m_classic_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_r1
+          pt: pivot_m_classic_r1
+      - name: pivot_m_classic_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_r2
+          pt: pivot_m_classic_r2
+      - name: pivot_m_classic_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_r3
+          pt: pivot_m_classic_r3
+      - name: pivot_m_classic_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_s1
+          pt: pivot_m_classic_s1
+      - name: pivot_m_classic_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_s2
+          pt: pivot_m_classic_s2
+      - name: pivot_m_classic_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_classic_s3
+          pt: pivot_m_classic_s3
+      - name: pivot_m_demark_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_demark_middle
+          pt: pivot_m_demark_middle
+      - name: pivot_m_demark_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_demark_r1
+          pt: pivot_m_demark_r1
+      - name: pivot_m_demark_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_demark_s1
+          pt: pivot_m_demark_s1
+      - name: pivot_m_fibonacci_middle
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_middle
+          pt: pivot_m_fibonacci_middle
+      - name: pivot_m_fibonacci_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r1
+          pt: pivot_m_fibonacci_r1
+      - name: pivot_m_fibonacci_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r2
+          pt: pivot_m_fibonacci_r2
+      - name: pivot_m_fibonacci_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r3
+          pt: pivot_m_fibonacci_r3
+      - name: pivot_m_fibonacci_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s1
+          pt: pivot_m_fibonacci_s1
+      - name: pivot_m_fibonacci_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s2
+          pt: pivot_m_fibonacci_s2
+      - name: pivot_m_fibonacci_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s3
+          pt: pivot_m_fibonacci_s3
+      - name: pivot_m_fibonacci_middle_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_middle_5
+          pt: pivot_m_fibonacci_middle_5
+      - name: pivot_m_fibonacci_r1_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r1_5
+          pt: pivot_m_fibonacci_r1_5
+      - name: pivot_m_fibonacci_r2_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r2_5
+          pt: pivot_m_fibonacci_r2_5
+      - name: pivot_m_fibonacci_r3_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_r3_5
+          pt: pivot_m_fibonacci_r3_5
+      - name: pivot_m_fibonacci_s1_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s1_5
+          pt: pivot_m_fibonacci_s1_5
+      - name: pivot_m_fibonacci_s2_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s2_5
+          pt: pivot_m_fibonacci_s2_5
+      - name: pivot_m_fibonacci_s3_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_fibonacci_s3_5
+          pt: pivot_m_fibonacci_s3_5
+      - name: pivot_m_woodie_middle_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_middle_5
+          pt: pivot_m_woodie_middle_5
+      - name: pivot_m_woodie_r1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_r1
+          pt: pivot_m_woodie_r1
+      - name: pivot_m_woodie_r2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_r2
+          pt: pivot_m_woodie_r2
+      - name: pivot_m_woodie_r3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_r3
+          pt: pivot_m_woodie_r3
+      - name: pivot_m_woodie_s1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_s1
+          pt: pivot_m_woodie_s1
+      - name: pivot_m_woodie_s2
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_s2
+          pt: pivot_m_woodie_s2
+      - name: pivot_m_woodie_s3
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: pivot_m_woodie_s3
+          pt: pivot_m_woodie_s3
+      - name: relative_volume_intraday_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: relative_volume_intraday_5
+          pt: relative_volume_intraday_5
       - name: close
         type: decimal
         precision: 36
@@ -630,6 +1108,14 @@ tables:
         locale:
           en: MACD Signal (12,26)
           pt: Sinal MACD (12,26)
+      - name: macd_signal_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: MACD Signal (5)
+          pt: Sinal MACD (5)
       - name: roc
         type: decimal
         precision: 36
@@ -807,33 +1293,21 @@ tables:
           en: Low
           pt: Baixa
       - name: description
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Description
           pt: Descrição
       - name: type
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Type
           pt: Tipo
       - name: subtype
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Subtype
           pt: Subtipo
       - name: update_mode
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Update Mode
@@ -855,9 +1329,6 @@ tables:
           en: Minimum Move
           pt: Movimento Mínimo
       - name: fractional
-        type: decimal
-        precision: 36
-        scale: 18
         isNullable: true
         locale:
           en: Fractional
@@ -926,6 +1397,54 @@ tables:
         locale:
           en: RSI[1]
           pt: RSI[1]
+      - name: adx_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: ADX|5
+          pt: ADX|5
+      - name: adx_plus_di_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: ADX+DI|5
+          pt: ADX+DI|5
+      - name: adx_minus_di_5
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: ADX+DI|5
+          pt: ADX+DI|5
+      - name: adx_240
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: ADX|240
+          pt: ADX|240
+      - name: adx_plus_di_240
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: ADX+DI|240
+          pt: ADX+DI|240
+      - name: adx_minus_di_240
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
+        locale:
+          en: ADX+DI|240
+          pt: ADX+DI|240
       - name: adx_plus_di_1_
         type: decimal
         precision: 36
@@ -1222,46 +1741,44 @@ tables:
         locale:
           en: UO Recommendation
           pt: Recomendação UO
-      - type: created_at
-      - type: updated_at
-  quotation_request_type:
-    columns:
-      - type: pk
-      - name: name
+      - name: change_60
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
-          en: Name
-          pt: Nome
-      - type: json
-        name: headers
+          en: 1h, changes
+          pt: Variação em 1 Hora
+      - name: change_240
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
-          en: Headers
-          pt: Cabeçalhos
-        field: textarea
-      - type: json
-        name: filters
+          en: 4h, changes
+          pt: Variação em 4 Horas
+      - name: change_15
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
-          en: Filters
-          pt: Filtros
-        field: textarea
-      - type: created_at
-      - type: updated_at
-  coin:
-    columns:
-      - type: pk
-      - name: name
+          en: 15-Minute Change
+          pt: Variação de 15 Minutos
+      - name: adx_1
+        type: decimal
+        precision: 36
+        scale: 18
+        isNullable: true
         locale:
-          en: Name
-          pt: Nome
-      - name: code
-        locale:
-          en: Code
-          pt: Código
+          en: Average Directional Index (14), 1m
+          pt: Índice Direcional Médio (14), 1m
       - type: created_at
       - type: updated_at
   stock_exchange:
     columns:
       - type: pk
-      - name: name
+      - type: slug
         locale:
           en: Name
           pt: Nome
@@ -1283,6 +1800,26 @@ tables:
         locale:
           en: User
           pt: Usuário
+      - name: stock_exchange_id
+        type: fk
+        references:
+          table: stock_exchange
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Stock Exchange
+          pt: Bolsa
+      - name: strategy_id
+        type: fk
+        references:
+          table: strategy
+          column: id
+          onDelete: CASCADE
+        locale:
+          en: Strategy
+          pt: Estratégia
+      - name: balance
+        type: decimal
       - type: created_at
       - type: updated_at
   simulation:
@@ -1354,8 +1891,6 @@ tables:
           pt: Alavancagem
         type: decimal
         isNullable: true
-      - type: created_at
-      - type: updated_at
       - name: margin_used
         type: int
       - name: first_order
@@ -1368,6 +1903,8 @@ tables:
         type: timestamp
       - name: end_time
         type: timestamp
+      - type: created_at
+      - type: updated_at
   operation:
     columns:
       - type: pk
@@ -1553,6 +2090,10 @@ tables:
         type: decimal
         precision: 36
         scale: 18
+      - name: btc_dominance_24h_percentage_change
+        type: decimal
+        precision: 36
+        scale: 18
       - name: total_market_cap_yesterday_percentage_change
         type: decimal
         precision: 36
@@ -1563,26 +2104,122 @@ tables:
         scale: 18
       - type: created_at
       - type: updated_at
-  gainers_loser:
+  gainer_loser:
     columns:
       - type: pk
-      - name: name
-      - name: symbol
-      - name: slug
-      - type: created_at
-      - type: updated_at
-  top_coins:
-    columns:
-      - type: pk
-      - name: name
-      - name: symbol
-      - name: price
-        type: decimal
+      - name: coin_id
+        type: fk
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+      - name: type_id
+        type: fk
+        references:
+          table: coin_variation_type
+          column: id
+          onDelete: CASCADE
       - name: percent_change_24h
         type: decimal
+        precision: 36
+        scale: 18
+      - name: price
+        type: decimal
+        precision: 36
+        scale: 18
+      - type: created_at
+      - type: updated_at
+  top_coin_type:
+    columns:
+      - type: pk
+      - name: name
+      - type: created_at
+      - type: updated_at
+  top_coin:
+    columns:
+      - type: pk
+      - type: fk
+        name: coin_id
+        references:
+          table: coin
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: type_id
+        references:
+          table: top_coin_type
+          column: id
+          onDelete: CASCADE
+      - name: order
+        type: int
+      - type: created_at
+      - type: updated_at
+  event_type:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: Event Type
+          pt: Tipo de Evento
+      - name: name
+      - type: created_at
+      - type: updated_at
+  event:
+    columns:
+      - type: pk
+      - type: fk
+        name: type_id
+        references:
+          table: event_type
+          column: id
+          onDelete: CASCADE
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  event_locale:
+    columns:
+      - name: event_id
+        type: fk
+        isPrimary: true
+        references:
+          table: event
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  event_occurrence:
+    columns:
+      - type: pk
+      - type: fk
+        name: event_id
+        references:
+          table: event
+          column: id
+          onDelete: CASCADE
+      - name: event_at
+        type: timestamp
       - type: created_at
       - type: updated_at
 data:
+  indice_type:
+    - slug: AMERICAN
+    - slug: ASIAN
+  bot:
+    - name: Bot 1
+      description: Bot 1 description
+      cookies: cookie1=value1; cookie2=value2
+  coin_variation_type:
+    - name: UP
+    - name: DOWN
   mmr:
     - leverage: 3
       percentage: 33.33
@@ -1974,6 +2611,276 @@ data:
     - url: /simulation
       method: DELETE
       relations: *a17
+    - url: /top-coin-type
+      method: GET
+      relations: &a18
+        role:
+          - where:
+              slug: admin
+    - url: /top-coin-type
+      method: POST
+      relations: *a18
+    - url: /top-coin-type/:id
+      method: GET
+      relations: *a18
+    - url: /top-coin-type/:id
+      method: PATCH
+      relations: *a18
+    - url: /top-coin-type
+      method: DELETE
+      relations: *a18
+    - url: /top-coin
+      method: GET
+      relations: &a19
+        role:
+          - where:
+              slug: admin
+    - url: /top-coin
+      method: POST
+      relations: *a19
+    - url: /top-coin/:id
+      method: GET
+      relations: *a19
+    - url: /top-coin/:id
+      method: PATCH
+      relations: *a19
+    - url: /top-coin
+      method: DELETE
+      relations: *a19
+    - url: /top-100
+      method: GET
+      relations: &a20
+        role:
+          - where:
+              slug: admin
+    - url: /top-100
+      method: POST
+      relations: *a20
+    - url: /top-100/:id
+      method: GET
+      relations: *a20
+    - url: /top-100/:id
+      method: PATCH
+      relations: *a20
+    - url: /top-100
+      method: DELETE
+      relations: *a20
+    - url: /coin-variation-type
+      method: GET
+      relations: &a21
+        role:
+          - where:
+              slug: admin
+    - url: /coin-variation-type
+      method: POST
+      relations: *a21
+    - url: /coin-variation-type/:id
+      method: GET
+      relations: *a21
+    - url: /coin-variation-type/:id
+      method: PATCH
+      relations: *a21
+    - url: /coin-variation-type
+      method: DELETE
+      relations: *a21
+    - url: /top-variation
+      method: GET
+      relations: &a22
+        role:
+          - where:
+              slug: admin
+    - url: /top-variation
+      method: POST
+      relations: *a22
+    - url: /top-variation/:id
+      method: GET
+      relations: *a22
+    - url: /top-variation/:id
+      method: PATCH
+      relations: *a22
+    - url: /top-variation
+      method: DELETE
+      relations: *a22
+    - url: /gainer-loser
+      method: GET
+      relations: &a23
+        role:
+          - where:
+              slug: admin
+    - url: /gainer-loser
+      method: POST
+      relations: *a23
+    - url: /gainer-loser/:id
+      method: GET
+      relations: *a23
+    - url: /gainer-loser/:id
+      method: PATCH
+      relations: *a23
+    - url: /gainer-loser
+      method: DELETE
+      relations: *a23
+    - url: /top-cmc
+      method: GET
+      relations: &a24
+        role:
+          - where:
+              slug: admin
+    - url: /top-cmc
+      method: POST
+      relations: *a24
+    - url: /top-cmc/:id
+      method: GET
+      relations: *a24
+    - url: /top-cmc/:id
+      method: PATCH
+      relations: *a24
+    - url: /top-cmc
+      method: DELETE
+      relations: *a24
+    - url: /notification-type
+      method: GET
+      relations: &a25
+        role:
+          - where:
+              slug: admin
+    - url: /notification-type
+      method: POST
+      relations: *a25
+    - url: /notification-type/:id
+      method: GET
+      relations: *a25
+    - url: /notification-type/:id
+      method: PATCH
+      relations: *a25
+    - url: /notification-type
+      method: DELETE
+      relations: *a25
+    - url: /notification
+      method: GET
+      relations: &a26
+        role:
+          - where:
+              slug: admin
+    - url: /notification
+      method: POST
+      relations: *a26
+    - url: /notification/:id
+      method: GET
+      relations: *a26
+    - url: /notification/:id
+      method: PATCH
+      relations: *a26
+    - url: /notification
+      method: DELETE
+      relations: *a26
+    - url: /indice-type
+      method: GET
+      relations: &a27
+        role:
+          - where:
+              slug: admin
+    - url: /indice-type
+      method: POST
+      relations: *a27
+    - url: /indice-type/:id
+      method: GET
+      relations: *a27
+    - url: /indice-type/:id
+      method: PATCH
+      relations: *a27
+    - url: /indice-type
+      method: DELETE
+      relations: *a27
+    - url: /indice
+      method: GET
+      relations: &a28
+        role:
+          - where:
+              slug: admin
+    - url: /indice
+      method: POST
+      relations: *a28
+    - url: /indice/:id
+      method: GET
+      relations: *a28
+    - url: /indice/:id
+      method: PATCH
+      relations: *a28
+    - url: /indice
+      method: DELETE
+      relations: *a28
+    - url: /altcoin-season
+      method: GET
+      relations: &a29
+        role:
+          - where:
+              slug: admin
+    - url: /altcoin-season
+      method: POST
+      relations: *a29
+    - url: /altcoin-season/:id
+      method: GET
+      relations: *a29
+    - url: /altcoin-season/:id
+      method: PATCH
+      relations: *a29
+    - url: /altcoin-season
+      method: DELETE
+      relations: *a29
+    - url: /event-type
+      method: GET
+      relations: &a30
+        role:
+          - where:
+              slug: admin
+    - url: /event-type
+      method: POST
+      relations: *a30
+    - url: /event-type/:id
+      method: GET
+      relations: *a30
+    - url: /event-type/:id
+      method: PATCH
+      relations: *a30
+    - url: /event-type
+      method: DELETE
+      relations: *a30
+    - url: /event
+      method: GET
+      relations: &a31
+        role:
+          - where:
+              slug: admin
+    - url: /event
+      method: POST
+      relations: *a31
+    - url: /event/:id
+      method: GET
+      relations: *a31
+    - url: /event/:id
+      method: PATCH
+      relations: *a31
+    - url: /event
+      method: DELETE
+      relations: *a31
+    - url: /event-occurrence
+      method: GET
+      relations: &a32
+        role:
+          - where:
+              slug: admin
+    - url: /event-occurrence
+      method: POST
+      relations: *a32
+    - url: /event-occurrence/:id
+      method: GET
+      relations: *a32
+    - url: /event-occurrence/:id
+      method: PATCH
+      relations: *a32
+    - url: /event-occurrence
+      method: DELETE
+      relations: *a32
   menu:
     - url: /cbc
       icon: coin
@@ -1991,19 +2898,6 @@ data:
       icon: exchange
       url: /cbc/stock-exchange
       slug: stock-exchange
-      menu_id:
-        where:
-          slug: /cbc
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Trend Type
-        pt: Tipo de Tendência
-      icon: trending-up
-      url: /cbc/trend-type
-      slug: trend-type
       menu_id:
         where:
           slug: /cbc
@@ -2079,85 +2973,284 @@ data:
     - name:
         en: MMR
         pt: MMR
-      icon: file
-      url: /mmr
+      icon: baseline-density-medium
+      url: /cbc/mmr
       slug: mmr
-      relations: *a8
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Bot
-        pt: Bot
-      icon: file
-      url: /bot
+        pt: Robô
+      icon: robot
+      url: /cbc/bot
       slug: bot
-      relations: *a9
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Quotation Request Type
-        pt: Quotation Request Type
-      icon: file
-      url: /quotation-request-type
+        pt: Tipo de Solicitação de Cotação
+      icon: http-get
+      url: /cbc/quotation-request-type
       slug: quotation-request-type
-      relations: *a10
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: TradeSignalType
-        pt: TradeSignalType
-      icon: file
-      url: /trade-signal-type
+        en: Trade Signal Type
+        pt: Tipo de Sinal de Trade
+      icon: trending-up
+      url: /cbc/trade-signal-type
       slug: trade-signal-type
-      relations: *a15
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: FreeBalanceCondition
-        pt: FreeBalanceCondition
-      icon: file
-      url: /free-balance-condition
+        en: Free Balance Condition
+        pt: Condição de Saldo Livre
+      icon: circle-number-0
+      url: /cbc/free-balance-condition
       slug: free-balance-condition
-      relations: *a16
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Simulation
-        pt: Simulation
-      icon: file
-      url: /simulation
+        pt: Simulação
+      icon: automation
+      url: /cbc/simulation
       slug: simulation
-      relations: *a17
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: FearAndGreed
-        pt: FearAndGreed
-      icon: file
-      url: /fear-and-greed
+        en: Fear And Greed
+        pt: Sentimento do Mercado
+      icon: mood-check
+      url: /cbc/fear-and-greed
       slug: fear-and-greed
+      menu_id:
+        where:
+          slug: /cbc
       relations:
         role:
           - where:
               slug: admin
     - name:
-        en: GlobalMetric
-        pt: GlobalMetric
-      icon: file
-      url: /global-metric
+        en: Global Metric
+        pt: Métricas Globais
+      icon: world-download
+      url: /cbc/global-metric
       slug: global-metric
+      menu_id:
+        where:
+          slug: /cbc
       relations:
         role:
           - where:
               slug: admin
     - name:
-        en: GainersLoser
-        pt: GainersLoser
-      icon: file
-      url: /gainers-loser
-      slug: gainers-loser
+        en: Gainers and Losers
+        pt: Maiores Variações
+      icon: arrows-down-up
+      url: /cbc/gainer-loser
+      slug: gainer-loser
+      menu_id:
+        where:
+          slug: /cbc
       relations:
         role:
           - where:
               slug: admin
     - name:
-        en: TopCoins
-        pt: TopCoins
-      icon: file
-      url: /top-coins
-      slug: top-coins
+        en: Top Coin
+        pt: Top Moeda
+      icon: coin
+      url: /cbc/top-coin
+      slug: top-coin
+      menu_id:
+        where:
+          slug: /cbc
       relations:
         role:
           - where:
               slug: admin
+    - name:
+        en: Top Coin Type
+        pt: Tipo de Top Moeda
+      icon: coin
+      url: /cbc/top-coin-type
+      slug: top-coin-type
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Top 100
+        pt: Top 100
+      icon: number-100-small
+      url: /cbc/top-100
+      slug: top-100
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Coin Variation Type
+        pt: Tipo de Variação de Moeda
+      icon: navigation
+      url: /cbc/coin-variation-type
+      slug: coin-variation-type
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Top Variation
+        pt: Top Variações
+      icon: navigation
+      url: /cbc/top-variation
+      slug: top-variation
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Top CMC
+        pt: Top CMC
+      icon: coin
+      url: /top-cmc
+      slug: top-cmc
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Notification Type
+        pt: Tipo de Notificação
+      icon: bell
+      url: /cbc/notification-type
+      slug: notification-type
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Notification
+        pt: Notificação
+      icon: bell
+      url: /cbc/notification
+      slug: notification
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Indice Type
+        pt: Tipo de Índice
+      icon: sitemap
+      url: /cbc/indice-type
+      slug: indice-type
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Indices
+        pt: Indices
+      icon: sitemap
+      url: /cbc/indice
+      slug: indice
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Altcoin Season
+        pt: Temporada das Altcoins
+      icon: coin-taka
+      url: /cbc/altcoin-season
+      slug: altcoin-season
+      menu_id:
+        where:
+          slug: /cbc
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: EventType
+        pt: EventType
+      icon: file
+      url: /event-type
+      slug: event-type
+      relations: *a30
+    - name:
+        en: Event
+        pt: Event
+      icon: file
+      url: /event
+      slug: event
+      relations: *a31
+    - name:
+        en: EventOccurrence
+        pt: EventOccurrence
+      icon: file
+      url: /event-occurrence
+      slug: event-occurrence
+      relations: *a32
   screen:
     - name:
         en: Coin
@@ -2280,14 +3373,6 @@ data:
         pt: Tela para gerenciar bot
       icon: file
     - name:
-        en: Quotation Request Type
-        pt: Quotation Request Type
-      slug: quotation-request-type
-      description:
-        en: Screen to manage quotation_request_type
-        pt: Tela para gerenciar quotation_request_type
-      icon: file
-    - name:
         en: Market sentiment
         pt: Sentimento do mercado
       slug: fear-and-greed
@@ -2343,6 +3428,129 @@ data:
         en: Screen to manage gainers_loser
         pt: Tela para gerenciar gainers_loser
       icon: file
+    - name:
+        en: TopCoinType
+        pt: TopCoinType
+      slug: top-coin-type
+      description:
+        en: Screen to manage top_coin_type
+        pt: Tela para gerenciar top_coin_type
+      icon: file
+    - name:
+        en: TopCoin
+        pt: TopCoin
+      slug: top-coin
+      description:
+        en: Screen to manage top_coin
+        pt: Tela para gerenciar top_coin
+      icon: file
+    - name:
+        en: Top100
+        pt: Top100
+      slug: top-100
+      description:
+        en: Screen to manage top_100
+        pt: Tela para gerenciar top_100
+      icon: file
+    - name:
+        en: CoinVariationType
+        pt: CoinVariationType
+      slug: coin-variation-type
+      description:
+        en: Screen to manage coin_variation_type
+        pt: Tela para gerenciar coin_variation_type
+      icon: file
+    - name:
+        en: TopVariation
+        pt: TopVariation
+      slug: top-variation
+      description:
+        en: Screen to manage top_variation
+        pt: Tela para gerenciar top_variation
+      icon: file
+    - name:
+        en: GainerLoser
+        pt: GainerLoser
+      slug: gainer-loser
+      description:
+        en: Screen to manage gainer_loser
+        pt: Tela para gerenciar gainer_loser
+      icon: file
+    - name:
+        en: TopCmc
+        pt: TopCmc
+      slug: top-cmc
+      description:
+        en: Screen to manage top_cmc
+        pt: Tela para gerenciar top_cmc
+      icon: file
+    - name:
+        en: NotificationType
+        pt: NotificationType
+      slug: notification-type
+      description:
+        en: Screen to manage notification_type
+        pt: Tela para gerenciar notification_type
+      icon: file
+    - name:
+        en: Notification
+        pt: Notification
+      slug: notification
+      description:
+        en: Screen to manage notification
+        pt: Tela para gerenciar notification
+      icon: file
+    - name:
+        en: IndicesType
+        pt: IndicesType
+      slug: indice-type
+      description:
+        en: Screen to manage indice_type
+        pt: Tela para gerenciar indice_type
+      icon: file
+    - name:
+        en: Indices
+        pt: Indices
+      slug: indice
+      description:
+        en: Screen to manage indice
+        pt: Tela para gerenciar indice
+      icon: file
+    - name:
+        en: AltcoinSeason
+        pt: AltcoinSeason
+      slug: altcoin-season
+      description:
+        en: Screen to manage altcoin-season
+        pt: Tela para gerenciar altcoin-season
+      icon: file
+    - name:
+        en: EventType
+        pt: EventType
+      slug: event-type
+      description:
+        en: Screen to manage event_type
+        pt: Tela para gerenciar event_type
+      icon: file
+    - name:
+        en: Event
+        pt: Event
+      slug: event
+      description:
+        en: Screen to manage event
+        pt: Tela para gerenciar event
+      icon: file
+    - name:
+        en: EventOccurrence
+        pt: EventOccurrence
+      slug: event-occurrence
+      description:
+        en: Screen to manage event_occurrence
+        pt: Tela para gerenciar event_occurrence
+      icon: file
+  stock_exchange:
+    - slug: BYBIT
+    - slug: Binance
   strategy:
     - name: AI STRATEGY
     - name: BULL AI
@@ -2353,9 +3561,392 @@ data:
     - name: NEUTRAL
     - name: SHORT
     - name: LONG
-  stock_exchange:
-    - name: BYBIT
-    - name: BINANCE
+  top_coin_type:
+    - name: TOP Cryptos
+    - name: TOP Sensações
+  event_type:
+    - name: Feriados
+      slug: HOLIDAY
+    - name: Reuniões
+      slug: MEETING
+    - name: Mudança de horário de verão ou inverno
+      slug: CHANGING_TIME
+  event:
+    - name:
+        en: Fim do Horário de inverno americano
+        pt: Fim do Horário de inverno americano
+      slug: WINTER_TIME
+      type_id:
+        where:
+          slug: CHANGING_TIME
+    - name:
+        en: Fim do Horário de verão americano
+        pt: Fim do Horário de verão americano
+      slug: SUMMER_TIME
+      type_id:
+        where:
+          slug: CHANGING_TIME
+    - name:
+        en: Ano Novo
+        pt: Ano Novo
+      slug: NEW_YEAR
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        pt: Martin Luther King Day
+        en: Martin Luther King Day
+      slug: MARTIN_LUTHER_KING
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: President's Day
+        pt: Dia do Presidente
+      slug: PRESIDENT_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Memorial Day
+        pt: Memorial Day
+      slug: MEMORIAL_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Juneteenth
+        pt: Juneteenth
+      slug: JUNETEENTH
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Independence Day
+        pt: Dia da Independência
+      slug: INDEPENDENCE_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Labor Day
+        pt: Dia do trabalhador
+      slug: LABOR_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Columbus Day
+        pt: Dia de Cristóvão Colombo
+      slug: COLUMBUS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Veteran's Day
+        pt: Dia do Veterano Militar das Forças Armadas
+      slug: VETERANS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Thanksgiving
+        pt: Dia de Ação de Graças
+      slug: THANKSGIVING
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Christmas Day
+        pt: Natal
+      slug: CHRISTMAS_DAY
+      type_id:
+        where:
+          slug: HOLIDAY
+    - name:
+        en: Reunião do FED
+        pt: Reunião do FED
+      slug: FED_MEETING
+      type_id:
+        where:
+          slug: MEETING
+  event_occurrence:
+    - event_id:
+        where:
+          slug: WINTER_TIME
+      event_at: '2025-03-09 00:00:00'
+    - event_id:
+        where:
+          slug: WINTER_TIME
+      event_at: '2026-03-08 00:00:00'
+    - event_id:
+        where:
+          slug: WINTER_TIME
+      event_at: '2027-03-14 00:00:00'
+    - event_id:
+        where:
+          slug: WINTER_TIME
+      event_at: '2028-03-12 00:00:00'
+    - event_id:
+        where:
+          slug: SUMMER_TIME
+      event_at: '2025-11-02 00:00:00'
+    - event_id:
+        where:
+          slug: SUMMER_TIME
+      event_at: '2026-11-01 00:00:00'
+    - event_id:
+        where:
+          slug: SUMMER_TIME
+      event_at: '2027-11-07 00:00:00'
+    - event_id:
+        where:
+          slug: SUMMER_TIME
+      event_at: '2028-11-05 00:00:00'
+    - event_id:
+        where:
+          slug: SUMMER_TIME
+      event_at: '2028-11-05 00:00:00'
+    - event_id:
+        where:
+          slug: NEW_YEAR
+      event_at: '2025-01-01 00:00:00'
+    - event_id:
+        where:
+          slug: NEW_YEAR
+      event_at: '2026-01-01 00:00:00'
+    - event_id:
+        where:
+          slug: NEW_YEAR
+      event_at: '2027-01-01 00:00:00'
+    - event_id:
+        where:
+          slug: NEW_YEAR
+      event_at: '2028-01-01 00:00:00'
+    - event_id:
+        where:
+          slug: MARTIN_LUTHER_KING
+      event_at: '2025-01-20 00:00:00'
+    - event_id:
+        where:
+          slug: MARTIN_LUTHER_KING
+      event_at: '2026-01-19 00:00:00'
+    - event_id:
+        where:
+          slug: MARTIN_LUTHER_KING
+      event_at: '2027-01-20 00:00:00'
+    - event_id:
+        where:
+          slug: MARTIN_LUTHER_KING
+      event_at: '2028-01-20 00:00:00'
+    - event_id:
+        where:
+          slug: PRESIDENT_DAY
+      event_at: '2025-02-17 00:00:00'
+    - event_id:
+        where:
+          slug: PRESIDENT_DAY
+      event_at: '2026-02-16 00:00:00'
+    - event_id:
+        where:
+          slug: PRESIDENT_DAY
+      event_at: '2027-02-17 00:00:00'
+    - event_id:
+        where:
+          slug: PRESIDENT_DAY
+      event_at: '2028-02-17 00:00:00'
+    - event_id:
+        where:
+          slug: MEMORIAL_DAY
+      event_at: '2025-05-26 00:00:00'
+    - event_id:
+        where:
+          slug: MEMORIAL_DAY
+      event_at: '2026-05-25 00:00:00'
+    - event_id:
+        where:
+          slug: MEMORIAL_DAY
+      event_at: '2027-05-26 00:00:00'
+    - event_id:
+        where:
+          slug: MEMORIAL_DAY
+      event_at: '2028-05-26 00:00:00'
+    - event_id:
+        where:
+          slug: JUNETEENTH
+      event_at: '2025-06-19 00:00:00'
+    - event_id:
+        where:
+          slug: JUNETEENTH
+      event_at: '2026-06-19 00:00:00'
+    - event_id:
+        where:
+          slug: JUNETEENTH
+      event_at: '2027-06-19 00:00:00'
+    - event_id:
+        where:
+          slug: JUNETEENTH
+      event_at: '2028-06-19 00:00:00'
+    - event_id:
+        where:
+          slug: INDEPENDENCE_DAY
+      event_at: '2025-07-04 00:00:00'
+    - event_id:
+        where:
+          slug: INDEPENDENCE_DAY
+      event_at: '2026-07-04 00:00:00'
+    - event_id:
+        where:
+          slug: INDEPENDENCE_DAY
+      event_at: '2027-07-04 00:00:00'
+    - event_id:
+        where:
+          slug: INDEPENDENCE_DAY
+      event_at: '2028-07-04 00:00:00'
+    - event_id:
+        where:
+          slug: LABOR_DAY
+      event_at: '2025-09-01 00:00:00'
+    - event_id:
+        where:
+          slug: LABOR_DAY
+      event_at: '2026-09-07 00:00:00'
+    - event_id:
+        where:
+          slug: LABOR_DAY
+      event_at: '2027-09-01 00:00:00'
+    - event_id:
+        where:
+          slug: LABOR_DAY
+      event_at: '2028-09-01 00:00:00'
+    - event_id:
+        where:
+          slug: COLUMBUS_DAY
+      event_at: '2025-10-13 00:00:00'
+    - event_id:
+        where:
+          slug: COLUMBUS_DAY
+      event_at: '2026-10-12 00:00:00'
+    - event_id:
+        where:
+          slug: COLUMBUS_DAY
+      event_at: '2027-10-13 00:00:00'
+    - event_id:
+        where:
+          slug: COLUMBUS_DAY
+      event_at: '2028-10-13 00:00:00'
+    - event_id:
+        where:
+          slug: VETERANS_DAY
+      event_at: '2025-11-11 00:00:00'
+    - event_id:
+        where:
+          slug: VETERANS_DAY
+      event_at: '2026-11-11 00:00:00'
+    - event_id:
+        where:
+          slug: VETERANS_DAY
+      event_at: '2027-11-11 00:00:00'
+    - event_id:
+        where:
+          slug: VETERANS_DAY
+      event_at: '2028-11-11 00:00:00'
+    - event_id:
+        where:
+          slug: THANKSGIVING
+      event_at: '2025-11-27 00:00:00'
+    - event_id:
+        where:
+          slug: THANKSGIVING
+      event_at: '2026-11-26 00:00:00'
+    - event_id:
+        where:
+          slug: THANKSGIVING
+      event_at: '2027-11-27 00:00:00'
+    - event_id:
+        where:
+          slug: THANKSGIVING
+      event_at: '2028-11-27 00:00:00'
+    - event_id:
+        where:
+          slug: CHRISTMAS_DAY
+      event_at: '2025-12-25 00:00:00'
+    - event_id:
+        where:
+          slug: CHRISTMAS_DAY
+      event_at: '2026-12-25 00:00:00'
+    - event_id:
+        where:
+          slug: CHRISTMAS_DAY
+      event_at: '2027-12-25 00:00:00'
+    - event_id:
+        where:
+          slug: CHRISTMAS_DAY
+      event_at: '2028-12-25 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-01-28 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-01-29 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-03-18 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-03-19 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-05-06 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-05-07 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-06-17 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-06-18 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-07-29 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-07-30 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-09-16 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-09-17 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-10-28 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-10-29 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-12-09 00:00:00'
+    - event_id:
+        where:
+          slug: FED_MEETING
+      event_at: '2025-12-10 00:00:00'
 screens:
   coin:
     title:

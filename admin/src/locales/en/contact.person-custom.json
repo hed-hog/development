@@ -1,0 +1,11 @@
+{
+  "create": "Create person custom",
+  "createText": "Fill the person custom informations.",
+  "createTooltip": "Create new person custom",
+  "delete": "Delete person custom",
+  "deleteText": "Are you sure to delete these person custom?",
+  "deleteTooltip": "Delete the selected person custom",
+  "edit": "Edit person custom",
+  "editText": "View and edit person custom information.",
+  "editTooltip": "Edit the selected person custom"
+}

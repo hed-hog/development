@@ -73,8 +73,8 @@ export default function Page() {
           { key: 'id', header: 'ID', width: 64, isLocale: false },
 
           {
-            key: 'name',
-            header: t('stock_exchange.name', { ns: 'fields' }),
+            key: 'slug',
+            header: t('stock_exchange.slug', { ns: 'fields' }),
             isLocale: false
           }
         ]}

@@ -1,11 +1,11 @@
 {
-  "create": "Criar bolsa de valores",
-  "createText": "Preencha as informações da bolsa de valores.",
-  "createTooltip": "Criar nova bolsa de valores",
-  "delete": "Excluir bolsa de valores",
-  "deleteText": "Tem certeza de que deseja excluir estas bolsas de valores?",
-  "deleteTooltip": "Excluir a bolsa de valores selecionada",
-  "edit": "Editar bolsa de valores",
-  "editText": "Visualizar e editar informações da bolsa de valores.",
-  "editTooltip": "Editar a bolsa de valores selecionada"
+  "create": "Create Stock exchange",
+  "createText": "Fill the stock exchange informations.",
+  "createTooltip": "Create new stock exchange",
+  "delete": "Delete Stock exchange",
+  "deleteText": "Are you sure to delete these stock exchanges?",
+  "deleteTooltip": "Delete the selected stock exchanges",
+  "edit": "Edit Stock exchange",
+  "editText": "View and edit stock exchange information.",
+  "editTooltip": "Edit the selected stock exchanges"
 }

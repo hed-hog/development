@@ -5,5 +5,5 @@ export class CreateDTO {
   name: string;
 
   @IsString()
-  code: string;
+  slug: string;
 }

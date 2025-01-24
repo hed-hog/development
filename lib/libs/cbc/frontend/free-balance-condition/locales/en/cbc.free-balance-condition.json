@@ -1,11 +1,11 @@
 {
-  "create": "Create free balance condition",
+  "create": "Create Free balance condition",
   "createText": "Fill the free balance condition informations.",
   "createTooltip": "Create new free balance condition",
-  "delete": "Delete free balance condition",
-  "deleteText": "Are you sure to delete these free balance condition?",
-  "deleteTooltip": "Delete the selected free balance condition",
-  "edit": "Edit free balance condition",
+  "delete": "Delete Free balance condition",
+  "deleteText": "Are you sure to delete these free balance conditions?",
+  "deleteTooltip": "Delete the selected free balance conditions",
+  "edit": "Edit Free balance condition",
   "editText": "View and edit free balance condition information.",
-  "editTooltip": "Edit the selected free balance condition"
+  "editTooltip": "Edit the selected free balance conditions"
 }

@@ -1,11 +1,11 @@
 {
-  "create": "Criar operação",
-  "createText": "Preencha as informações da operação.",
-  "createTooltip": "Criar nova operação",
-  "delete": "Excluir operação",
-  "deleteText": "Você tem certeza de que deseja excluir estas operações?",
-  "deleteTooltip": "Excluir a operação selecionada",
-  "edit": "Editar operação",
-  "editText": "Visualizar e editar informações da operação.",
-  "editTooltip": "Editar a operação selecionada"
+  "create": "Create Operation",
+  "createText": "Fill the operation informations.",
+  "createTooltip": "Create new operation",
+  "delete": "Delete Operation",
+  "deleteText": "Are you sure to delete these operations?",
+  "deleteTooltip": "Delete the selected operations",
+  "edit": "Edit Operation",
+  "editText": "View and edit operation information.",
+  "editTooltip": "Edit the selected operations"
 }
