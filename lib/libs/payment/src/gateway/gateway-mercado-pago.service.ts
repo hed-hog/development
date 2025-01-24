@@ -16,7 +16,7 @@ export class GatewayMercadoPagoService {
   constructor(
     @Inject(forwardRef(() => SettingService))
     private readonly settingService: SettingService,
-  ) {}
+  ) { }
 
   async loadSetting() {
     this.setting = await this.settingService.getSettingValues([
@@ -43,7 +43,7 @@ export class GatewayMercadoPagoService {
       return response.data;
     } catch (error) {
       throw new Error(
-        `Error creating payment: ${error.response?.data?.message || error.message}`,
+        `Error creating payment: ${(error as any).response?.data?.message || (error as any).message}`,
       );
     }
   }
@@ -61,7 +61,7 @@ export class GatewayMercadoPagoService {
       return response.data;
     } catch (error) {
       throw new Error(
-        `Error fetching payment status: ${error.response?.data?.message || error.message}`,
+        `Error fetching payment status: ${(error as any).response?.data?.message || (error as any).message}`,
       );
     }
   }

@@ -26,7 +26,7 @@ export class GatewayStripeService {
       return response.data;
     } catch (error) {
       throw new Error(
-        `Error creating payment: ${error.response?.data?.error?.message || error.message}`,
+        `Error creating payment: ${(error as any).response?.data?.error?.message || (error as any).message}`,
       );
     }
   }
@@ -44,7 +44,7 @@ export class GatewayStripeService {
       return response.data;
     } catch (error) {
       throw new Error(
-        `Error fetching payment status: ${error.response?.data?.error?.message || error.message}`,
+        `Error fetching payment status: ${(error as any).response?.data?.error?.message || (error as any).message}`,
       );
     }
   }
