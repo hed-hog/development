@@ -12,11 +12,13 @@ import { PrismaModule } from '@hedhog/prisma';
 import { SettingModule } from '@hedhog/setting';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { CheckoutModule } from './../libs/payment/src/checkout/checkout.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
   imports: [
+    CheckoutModule,
     PrismaModule,
     ConfigModule.forRoot({
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`, // Carrega o arquivo com base no NODE_ENV

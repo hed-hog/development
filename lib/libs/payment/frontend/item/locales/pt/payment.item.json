@@ -1,0 +1,11 @@
+{
+  "create": "Criar item",
+  "createText": "Preencha as informações do item.",
+  "createTooltip": "Criar novo item",
+  "delete": "Excluir item",
+  "deleteText": "Você tem certeza de que deseja excluir estes itens?",
+  "deleteTooltip": "Excluir o item selecionado",
+  "edit": "Editar item",
+  "editText": "Ver e editar informações do item.",
+  "editTooltip": "Editar o item selecionado"
+}

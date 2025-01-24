@@ -1,7 +1,48 @@
 data:
+  setting_group:
+    - slug: payment
+      icon: wallet
+      name:
+        en: Payment
+        pt: Pagamento
+      description:
+        en: Payment settings
+        pt: Configurações de pagamento
+      relations:
+        setting:
+          - slug: payment-provider
+            type: string
+            name:
+              en: Payment Provider
+              pt: Provedor de Pagamento
+            description:
+              en: The payment provider to use
+              pt: O provedor de pagamento a utilizar
+            value: en
+            user_override: true
+          - slug: payment-mercado-pago-token
+            type: string
+            name:
+              en: Mercado Pago Token
+              pt: Token do Mercado Pago
+            description:
+              en: The token to use with Mercado Pago
+              pt: O token a utilizar com o Mercado Pago
+            value: ''
+          - slug: payment-mercado-pago-client-id
+            type: string
+            name:
+              en: Mercado Pago Client ID
+              pt: ID do Cliente do Mercado Pago
+            description:
+              en: The client ID to use with Mercado Pago
+              pt: O ID do cliente a utilizar com o Mercado Pago
+            value: ''
   gateway:
     - name: Stripe
+      slug: stripe
     - name: Mercado Pago
+      slug: mercado-pago
   payment_status:
     - name:
         en: Pending
@@ -139,6 +180,96 @@ data:
     - url: /payment-status
       method: DELETE
       relations: *a2
+    - url: /payment-method
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /payment-method
+      method: POST
+      relations: *a3
+    - url: /payment-method/:id
+      method: GET
+      relations: *a3
+    - url: /payment-method/:id
+      method: PATCH
+      relations: *a3
+    - url: /payment-method
+      method: DELETE
+      relations: *a3
+    - url: /card-brand
+      method: GET
+      relations: &a4
+        role:
+          - where:
+              slug: admin
+    - url: /card-brand
+      method: POST
+      relations: *a4
+    - url: /card-brand/:id
+      method: GET
+      relations: *a4
+    - url: /card-brand/:id
+      method: PATCH
+      relations: *a4
+    - url: /card-brand
+      method: DELETE
+      relations: *a4
+    - url: /discount-type
+      method: GET
+      relations: &a5
+        role:
+          - where:
+              slug: admin
+    - url: /discount-type
+      method: POST
+      relations: *a5
+    - url: /discount-type/:id
+      method: GET
+      relations: *a5
+    - url: /discount-type/:id
+      method: PATCH
+      relations: *a5
+    - url: /discount-type
+      method: DELETE
+      relations: *a5
+    - url: /payment
+      method: GET
+      relations: &a6
+        role:
+          - where:
+              slug: admin
+    - url: /payment
+      method: POST
+      relations: *a6
+    - url: /payment/:id
+      method: GET
+      relations: *a6
+    - url: /payment/:id
+      method: PATCH
+      relations: *a6
+    - url: /payment
+      method: DELETE
+      relations: *a6
+    - url: /item
+      method: GET
+      relations: &a7
+        role:
+          - where:
+              slug: admin
+    - url: /item
+      method: POST
+      relations: *a7
+    - url: /item/:id
+      method: GET
+      relations: *a7
+    - url: /item/:id
+      method: PATCH
+      relations: *a7
+    - url: /item
+      method: DELETE
+      relations: *a7
   menu:
     - name:
         en: Gateway
@@ -154,6 +285,41 @@ data:
       url: /payment-status
       slug: payment-status
       relations: *a2
+    - name:
+        en: PaymentMethod
+        pt: PaymentMethod
+      icon: file
+      url: /payment-method
+      slug: payment-method
+      relations: *a3
+    - name:
+        en: CardBrand
+        pt: CardBrand
+      icon: file
+      url: /card-brand
+      slug: card-brand
+      relations: *a4
+    - name:
+        en: DiscountType
+        pt: DiscountType
+      icon: file
+      url: /discount-type
+      slug: discount-type
+      relations: *a5
+    - name:
+        en: Payment
+        pt: Payment
+      icon: file
+      url: /payment
+      slug: payment
+      relations: *a6
+    - name:
+        en: Item
+        pt: Item
+      icon: file
+      url: /item
+      slug: item
+      relations: *a7
   screen:
     - name:
         en: Gateway
@@ -171,10 +337,51 @@ data:
         en: Screen to manage payment_status
         pt: Tela para gerenciar payment_status
       icon: file
+    - name:
+        en: PaymentMethod
+        pt: PaymentMethod
+      slug: payment-method
+      description:
+        en: Screen to manage payment_method
+        pt: Tela para gerenciar payment_method
+      icon: file
+    - name:
+        en: CardBrand
+        pt: CardBrand
+      slug: card-brand
+      description:
+        en: Screen to manage card_brand
+        pt: Tela para gerenciar card_brand
+      icon: file
+    - name:
+        en: DiscountType
+        pt: DiscountType
+      slug: discount-type
+      description:
+        en: Screen to manage discount_type
+        pt: Tela para gerenciar discount_type
+      icon: file
+    - name:
+        en: Payment
+        pt: Payment
+      slug: payment
+      description:
+        en: Screen to manage payment
+        pt: Tela para gerenciar payment
+      icon: file
+    - name:
+        en: Item
+        pt: Item
+      slug: item
+      description:
+        en: Screen to manage item
+        pt: Tela para gerenciar item
+      icon: file
 tables:
   gateway:
     columns:
       - type: pk
+      - type: slug
       - name: name
         length: 63
         locale:
