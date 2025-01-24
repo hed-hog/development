@@ -25,7 +25,8 @@
     "@hedhog/admin": "latest",
     "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/prisma": "latest"
+    "@hedhog/prisma": "latest",
+    "@hedhog/contact": "latest"
   },
   "devDependencies": {
     "@hedhog/admin": "^0.12.5",

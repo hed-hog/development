@@ -157,7 +157,7 @@ tables:
           table: gateway
           column: id
           onDelete: RESTRICT
-      - name: amaunt
+      - name: amount
         type: decimal
         precision: 10
         scale: 2

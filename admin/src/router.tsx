@@ -58,46 +58,12 @@ const routes = [
         }),
       },
       {
-        path: "cbc",
+        path: "contact",
         children: [
           {
-            path: "banking",
+            path: "person",
             lazy: async () => ({
-              Component: (await import("./pages/cbc/banking/index.tsx"))
-                .default,
-            }),
-          },
-          {
-            path: "coin",
-            lazy: async () => ({
-              Component: (await import("./pages/cbc/coin/index.tsx")).default,
-            }),
-          },
-          {
-            path: "operation",
-            lazy: async () => ({
-              Component: (await import("./pages/cbc/operation/index.tsx"))
-                .default,
-            }),
-          },
-          {
-            path: "quotation",
-            lazy: async () => ({
-              Component: (await import("./pages/cbc/quotation/index.tsx"))
-                .default,
-            }),
-          },
-          {
-            path: "stock-exchange",
-            lazy: async () => ({
-              Component: (await import("./pages/cbc/stock-exchange/index.tsx"))
-                .default,
-            }),
-          },
-          {
-            path: "strategy",
-            lazy: async () => ({
-              Component: (await import("./pages/cbc/strategy/index.tsx"))
+              Component: (await import("./pages/contact/person/index.tsx"))
                 .default,
             }),
           },
@@ -113,19 +79,62 @@ const routes = [
             }),
           },
           {
-            path: "appearance",
-            lazy: async () => ({
-              Component: (
-                await import("./pages/appearance/appearance/index.tsx")
-              ).default,
-            }),
-          },
-          {
             path: "menu",
             lazy: async () => ({
               Component: (await import("./pages/management/menu/index.tsx"))
                 .default,
             }),
+          },
+          {
+            path: "person",
+            children: [
+              {
+                path: "person-address-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-address-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "person-contact-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-contact-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "person-custom-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/contact/person-custom-type/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "person-document-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-document-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "person-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/contact/person-type/index.tsx")
+                  ).default,
+                }),
+              },
+            ],
           },
           {
             path: "role",

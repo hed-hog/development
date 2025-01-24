@@ -1,15 +1,18 @@
-import { MenuLocale } from './MenuLocale';
-import { SettingLocale } from './SettingLocale';
-import { SettingGroupLocale } from './SettingGroupLocale';
-import { MultifactorLocale } from './MultifactorLocale';
-import { ScreenLocale } from './ScreenLocale';
 import { Translation } from './Translation';
-import { RoleLocale } from './RoleLocale';
+import { ScreenLocale } from './ScreenLocale';
 import { CountryLocale } from './CountryLocale';
+import { SettingGroupLocale } from './SettingGroupLocale';
+import { PersonContactTypeLocale } from './PersonContactTypeLocale';
+import { PersonCustomTypeLocale } from './PersonCustomTypeLocale';
+import { PersonCustomLocale } from './PersonCustomLocale';
+import { RoleLocale } from './RoleLocale';
 import { FileProviderLocale } from './FileProviderLocale';
 import { PersonTypeLocale } from './PersonTypeLocale';
+import { MultifactorLocale } from './MultifactorLocale';
+import { MenuLocale } from './MenuLocale';
+import { SettingLocale } from './SettingLocale';
 import { PersonDocumentTypeLocale } from './PersonDocumentTypeLocale';
-import { FaqLocale } from './FaqLocale';
+import { PersonAddressTypeLocale } from './PersonAddressTypeLocale';
 
 export type Locale = {
   id?: number;
@@ -18,16 +21,19 @@ export type Locale = {
   enabled?: boolean;
   created_at?: string;
   updated_at?: string;
-  menu_locale?: MenuLocale[];
-  setting_locale?: SettingLocale[];
-  setting_group_locale?: SettingGroupLocale[];
-  multifactor_locale?: MultifactorLocale[];
-  screen_locale?: ScreenLocale[];
   translation?: Translation[];
-  role_locale?: RoleLocale[];
+  screen_locale?: ScreenLocale[];
   country_locale?: CountryLocale[];
+  setting_group_locale?: SettingGroupLocale[];
+  person_contact_type_locale?: PersonContactTypeLocale[];
+  person_custom_type_locale?: PersonCustomTypeLocale[];
+  person_custom_locale?: PersonCustomLocale[];
+  role_locale?: RoleLocale[];
   file_provider_locale?: FileProviderLocale[];
   person_type_locale?: PersonTypeLocale[];
+  multifactor_locale?: MultifactorLocale[];
+  menu_locale?: MenuLocale[];
+  setting_locale?: SettingLocale[];
   person_document_type_locale?: PersonDocumentTypeLocale[];
-  faq_locale?: FaqLocale[];
+  person_address_type_locale?: PersonAddressTypeLocale[];
 }
