@@ -1,7 +1,7 @@
 
 export type AltcoinSeason = {
   id?: number;
-  altcoinIndex: number;
+  altcoin_index: number;
   created_at?: string;
   updated_at?: string;
 }

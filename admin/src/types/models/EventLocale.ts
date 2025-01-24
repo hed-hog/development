@@ -1,12 +1,12 @@
-import { PersonCustom } from './PersonCustom';
+import { Event } from './Event';
 import { Locale } from './Locale';
 
-export type PersonCustomLocale = {
-  custom_id?: number;
+export type EventLocale = {
+  event_id?: number;
   locale_id?: number;
   name: string;
   created_at?: string;
   updated_at?: string;
-  person_custom?: PersonCustom;
+  event?: Event;
   locale?: Locale;
 }

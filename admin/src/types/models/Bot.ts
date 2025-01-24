@@ -1,5 +1,5 @@
-import { Indice } from './Indice';
 import { Quotation } from './Quotation';
+import { Indice } from './Indice';
 
 export type Bot = {
   id?: number;
@@ -8,6 +8,6 @@ export type Bot = {
   cookies?: string;
   created_at?: string;
   updated_at?: string;
-  indice?: Indice[];
   quotation?: Quotation[];
+  indice?: Indice[];
 }
