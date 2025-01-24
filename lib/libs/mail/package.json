@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/mail",
-  "version": "0.17.1",
+  "version": "0.18.1",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.production.json && npm version patch",
