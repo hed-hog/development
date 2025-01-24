@@ -1,0 +1,11 @@
+{
+  "create": "Criar tipo de prop de componente",
+  "createText": "Preencha as informações do tipo de prop de componente.",
+  "createTooltip": "Criar novo tipo de prop de componente",
+  "delete": "Excluir tipo de prop de componente",
+  "deleteText": "Você tem certeza de que deseja excluir esses tipos de prop de componente?",
+  "deleteTooltip": "Excluir o tipo de prop de componente selecionado",
+  "edit": "Editar tipo de prop de componente",
+  "editText": "Visualizar e editar as informações do tipo de prop de componente.",
+  "editTooltip": "Editar o tipo de prop de componente selecionado"
+}

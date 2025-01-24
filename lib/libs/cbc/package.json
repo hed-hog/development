@@ -23,14 +23,18 @@
   "description": "",
   "peerDependencies": {
     "@hedhog/admin": "latest",
+    "@hedhog/contact": "latest",
     "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
+    "@hedhog/payment": "latest",
     "@hedhog/prisma": "latest"
   },
   "devDependencies": {
     "@hedhog/admin": "^0.12.6",
+    "@hedhog/contact": "^0.7.55",
     "@hedhog/locale": "^0.17.2",
     "@hedhog/pagination": "^0.17.1",
+    "@hedhog/payment": "^0.0.2",
     "@hedhog/prisma": "^0.17.1",
     "@nestjs/mapped-types": "^2.0.6"
   }
