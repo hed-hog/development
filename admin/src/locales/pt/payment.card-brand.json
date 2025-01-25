@@ -1,0 +1,11 @@
+{
+  "create": "Criar marca de cartão",
+  "createText": "Preencha as informações da marca de cartão.",
+  "createTooltip": "Criar nova marca de cartão",
+  "delete": "Excluir marca de cartão",
+  "deleteText": "Você tem certeza de que deseja excluir estas marcas de cartão?",
+  "deleteTooltip": "Excluir a marca de cartão selecionada",
+  "edit": "Editar marca de cartão",
+  "editText": "Visualizar e editar informações da marca de cartão.",
+  "editTooltip": "Editar a marca de cartão selecionada"
+}

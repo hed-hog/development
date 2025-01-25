@@ -1,0 +1,11 @@
+{
+  "create": "Criar contato de pessoa",
+  "createText": "Preencha as informações do contato de pessoa.",
+  "createTooltip": "Criar novo contato de pessoa",
+  "delete": "Excluir contato de pessoa",
+  "deleteText": "Tem certeza de que deseja excluir esses contatos de pessoa?",
+  "deleteTooltip": "Excluir o contato de pessoa selecionado",
+  "edit": "Editar contato de pessoa",
+  "editText": "Visualizar e editar as informações do contato de pessoa.",
+  "editTooltip": "Editar o contato de pessoa selecionado"
+}

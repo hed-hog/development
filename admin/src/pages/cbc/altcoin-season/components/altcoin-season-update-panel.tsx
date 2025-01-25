@@ -5,24 +5,24 @@ import FormPanel, {
 import { Overlay } from "@/components/custom/overlay";
 import { TabPanel } from "@/components/panels/tab-panel";
 import {
-<<<<<<<< HEAD:admin/src/pages/cbc/altcoin-season/components/altcoin-season-update-panel.tsx
+<<<<<<<< HEAD:lib/libs/cbc/frontend/altcoin-season/components/update-panel.tsx.ejs
   useAltcoinSeasonGet,
   useAltcoinSeasonUpdate,
 } from "@/features/cbc/altcoin-season";
 import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
 import { AltcoinSeason } from "@/types/models";
 ========
-  useOrderStatusGet,
-  useOrderStatusUpdate,
-} from "@/features/payment/order-status";
+  useComponentTypeGet,
+  useComponentTypeUpdate,
+} from "@/features/page/component-type";
 import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
-import { OrderStatus } from "@/types/models";
->>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4:lib/libs/payment/frontend/order-status/components/update-panel.tsx.ejs
+import { ComponentType } from "@/types/models";
+>>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4:lib/libs/page/frontend/component-type/components/update-panel.tsx.ejs
 import { useState, forwardRef, useImperativeHandle, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 
-<<<<<<<< HEAD:admin/src/pages/cbc/altcoin-season/components/altcoin-season-update-panel.tsx
+<<<<<<<< HEAD:lib/libs/cbc/frontend/altcoin-season/components/update-panel.tsx.ejs
 export type AltcoinSeasonUpdatePanelProps = {
   data: AltcoinSeason;
   onUpdated?: (data: AltcoinSeason) => void;
@@ -34,17 +34,17 @@ const AltcoinSeasonUpdatePanel = forwardRef(
     const { data: item, isLoading } = useAltcoinSeasonGet(data.id as number);
     const { mutate: altcoinSeasonUpdate } = useAltcoinSeasonUpdate();
 ========
-export type OrderStatusUpdatePanelProps = {
-  data: OrderStatus;
-  onUpdated?: (data: OrderStatus) => void;
+export type ComponentTypeUpdatePanelProps = {
+  data: ComponentType;
+  onUpdated?: (data: ComponentType) => void;
 };
 
-const OrderStatusUpdatePanel = forwardRef(
-  ({ data, onUpdated }: OrderStatusUpdatePanelProps, ref) => {
+const ComponentTypeUpdatePanel = forwardRef(
+  ({ data, onUpdated }: ComponentTypeUpdatePanelProps, ref) => {
     const { t } = useTranslation(["actions", "fields", "translations"]);
-    const { data: item, isLoading } = useOrderStatusGet(data.id as number);
-    const { mutate: orderStatusUpdate } = useOrderStatusUpdate();
->>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4:lib/libs/payment/frontend/order-status/components/update-panel.tsx.ejs
+    const { data: item, isLoading } = useComponentTypeGet(data.id as number);
+    const { mutate: componentTypeUpdate } = useComponentTypeUpdate();
+>>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4:lib/libs/page/frontend/component-type/components/update-panel.tsx.ejs
     const formRef = useRef<FormPanelRef>(null);
 
     useEffectAfterFirstUpdate(() => {
@@ -68,11 +68,11 @@ const OrderStatusUpdatePanel = forwardRef(
                   fields={[...getFieldsLocale([{ name: "name" }], item)]}
                   button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {
-<<<<<<<< HEAD:admin/src/pages/cbc/altcoin-season/components/altcoin-season-update-panel.tsx
+<<<<<<<< HEAD:lib/libs/cbc/frontend/altcoin-season/components/update-panel.tsx.ejs
                     altcoinSeasonUpdate({
 ========
-                    orderStatusUpdate({
->>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4:lib/libs/payment/frontend/order-status/components/update-panel.tsx.ejs
+                    componentTypeUpdate({
+>>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4:lib/libs/page/frontend/component-type/components/update-panel.tsx.ejs
                       id: data.id,
                       data,
                     });
@@ -90,12 +90,12 @@ const OrderStatusUpdatePanel = forwardRef(
   },
 );
 
-<<<<<<<< HEAD:admin/src/pages/cbc/altcoin-season/components/altcoin-season-update-panel.tsx
+<<<<<<<< HEAD:lib/libs/cbc/frontend/altcoin-season/components/update-panel.tsx.ejs
 AltcoinSeasonUpdatePanel.displayName = "AltcoinSeasonUpdatePanel";
 
 export default AltcoinSeasonUpdatePanel;
 ========
-OrderStatusUpdatePanel.displayName = "OrderStatusUpdatePanel";
+ComponentTypeUpdatePanel.displayName = "ComponentTypeUpdatePanel";
 
-export default OrderStatusUpdatePanel;
->>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4:lib/libs/payment/frontend/order-status/components/update-panel.tsx.ejs
+export default ComponentTypeUpdatePanel;
+>>>>>>>> 50c5a03d428dc939c5a678ea0cd821d0075e3bd4:lib/libs/page/frontend/component-type/components/update-panel.tsx.ejs

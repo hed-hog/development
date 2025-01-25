@@ -12,8 +12,8 @@ export type Menu = {
   created_at?: string;
   updated_at?: string;
   menu?: Menu;
-  other_menu?: Menu[];
   menu_screen?: MenuScreen[];
+  other_menu?: Menu[];
   menu_locale?: MenuLocale[];
   role_menu?: RoleMenu[];
   name?: string;

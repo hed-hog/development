@@ -7,6 +7,7 @@ export type PaymentItem = {
   item_id: number;
   unit_price?: any;
   delivered?: number;
+  quantity?: number;
   created_at?: string;
   updated_at?: string;
   payment?: Payment;
