@@ -266,6 +266,7 @@ model gainer_loser {
 model gateway {
   id                   Int                    @id(map: "PK_22c5b7ecdd6313de143815f9991") @default(autoincrement())
   name                 String                 @db.VarChar(63)
+  slug                    String               @db.VarChar(255)
   created_at           DateTime               @default(now()) @db.Timestamp(6)
   updated_at           DateTime               @default(now()) @db.Timestamp(6)
   payment              payment[]
@@ -465,7 +466,7 @@ model payment {
   gateway_id     Int
   amount         Decimal         @db.Decimal(10, 2)
   status_id      Int
-  document       String          @db.VarChar(14)
+  document       String?          @db.VarChar(14)
   payment_at     DateTime?       @db.Timestamp(6)
   currency       String          @db.VarChar(3)
   method_id      Int

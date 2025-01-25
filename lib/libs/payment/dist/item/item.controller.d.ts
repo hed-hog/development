@@ -14,9 +14,30 @@ export declare class ItemController {
         next: number;
         data: any;
     }>;
-    get(id: number): Promise<any>;
-    create(data: CreateDTO): Promise<any>;
-    update(id: number, data: UpdateDTO): Promise<any>;
-    delete(data: DeleteDTO): Promise<any>;
+    get(id: number): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+        price: import("@prisma/client/runtime/library").Decimal;
+    }>;
+    create(data: CreateDTO): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+        price: import("@prisma/client/runtime/library").Decimal;
+    }>;
+    update(id: number, data: UpdateDTO): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+        price: import("@prisma/client/runtime/library").Decimal;
+    }>;
+    delete(data: DeleteDTO): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }
 //# sourceMappingURL=item.controller.d.ts.map

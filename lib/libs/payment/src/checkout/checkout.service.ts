@@ -90,7 +90,7 @@ export class CheckoutService {
             id: payment.id,
           },
           data: {
-            person_id,
+            person_id: person_id ?? undefined,
           },
         });
       }
@@ -98,16 +98,19 @@ export class CheckoutService {
 
     if (!payment) {
       const item = await this.prismaService.item.findFirst();
-
+      /*
       payment = await this.prismaService.payment.create({
         data: {
           gateway_id: this.providerId,
-          person_id,
+          person_id: person_id ?? undefined,
           status_id: 1,
           amount: item.price,
+          currency: 'brl',
+          document: '00000000000',
+          slug: Math.random().toString(36).substring(7),
         },
       });
-
+      */
       await this.prismaService.payment_item.create({
         data: {
           payment_id: payment.id,

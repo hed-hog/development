@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/subscription",
-  "version": "0.0.0",
+  "version": "0.46.1",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -23,14 +23,19 @@
   "description": "",
   "peerDependencies": {
     "@hedhog/admin": "latest",
+    "@hedhog/contact": "latest",
+    "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
+    "@hedhog/payment": "latest",
     "@hedhog/prisma": "latest"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.12.5",
-    "@hedhog/pagination": "^0.17.1",
-    "@hedhog/prisma": "^0.17.1",
-    "@nestjs/mapped-types": "^2.0.6",
-    "@hedhog/contact": "0.7.55"
+    "@hedhog/admin": "^0.36.2",
+    "@hedhog/contact": "^0.7.56",
+    "@hedhog/locale": "^0.36.1",
+    "@hedhog/pagination": "^0.36.1",
+    "@hedhog/payment": "^0.0.7",
+    "@hedhog/prisma": "^0.36.1",
+    "@nestjs/mapped-types": "^2.0.6"
   }
 }

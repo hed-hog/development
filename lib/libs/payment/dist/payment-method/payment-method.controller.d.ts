@@ -14,9 +14,27 @@ export declare class PaymentMethodController {
         next: number;
         data: any;
     }>;
-    get(id: number): Promise<any>;
-    create(data: CreateDTO): Promise<any>;
-    update(id: number, data: UpdateDTO): Promise<any>;
-    delete(data: DeleteDTO): Promise<any>;
+    get(id: number): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+    }>;
+    create(data: CreateDTO): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+    }>;
+    update(id: number, data: UpdateDTO): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+    }>;
+    delete(data: DeleteDTO): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }
 //# sourceMappingURL=payment-method.controller.d.ts.map

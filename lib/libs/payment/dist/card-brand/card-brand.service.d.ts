@@ -16,12 +16,30 @@ export declare class CardBrandService {
         next: number;
         data: any;
     }>;
-    get(id: number): Promise<any>;
-    create(data: CreateDTO): Promise<any>;
+    get(id: number): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+    }>;
+    create(data: CreateDTO): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+    }>;
     update({ id, data }: {
         id: number;
         data: UpdateDTO;
-    }): Promise<any>;
-    delete({ ids }: DeleteDTO): Promise<any>;
+    }): Promise<{
+        name: string;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+    }>;
+    delete({ ids }: DeleteDTO): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }
 //# sourceMappingURL=card-brand.service.d.ts.map

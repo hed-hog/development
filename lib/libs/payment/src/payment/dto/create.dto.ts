@@ -4,8 +4,9 @@ export class CreateDTO {
   @IsString()
   slug: string;
 
+  @IsOptional()
   @IsNumber()
-  person_id: number;
+  person_id?: number;
 
   @IsNumber()
   gateway_id: number;
@@ -16,8 +17,9 @@ export class CreateDTO {
   @IsNumber()
   status_id: number;
 
+  @IsOptional()
   @IsString()
-  document: string;
+  document?: string;
 
   @IsOptional()
   @IsString()
@@ -26,8 +28,9 @@ export class CreateDTO {
   @IsString()
   currency: string;
 
+  @IsOptional()
   @IsNumber()
-  method_id: number;
+  method_id?: number;
 
   @IsOptional()
   @IsNumber()
@@ -40,4 +43,12 @@ export class CreateDTO {
   @IsOptional()
   @IsNumber()
   delivered?: number;
+
+  @IsOptional()
+  @IsNumber()
+  coupon_id?: number;
+
+  @IsOptional()
+  @IsNumber()
+  discount?: number;
 }

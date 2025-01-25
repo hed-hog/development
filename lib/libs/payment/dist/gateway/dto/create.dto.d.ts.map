@@ -1,1 +1,1 @@
-{"version":3,"file":"create.dto.d.ts","sourceRoot":"","sources":["../../../src/gateway/dto/create.dto.ts"],"names":[],"mappings":"AAEA,qBAAa,SAAS;IAEpB,IAAI,EAAE,MAAM,CAAC;CACd"}
+{"version":3,"file":"create.dto.d.ts","sourceRoot":"","sources":["../../../src/gateway/dto/create.dto.ts"],"names":[],"mappings":"AAEA,qBAAa,SAAS;IAEpB,IAAI,EAAE,MAAM,CAAC;IAGb,IAAI,EAAE,MAAM,CAAC;CACd"}

@@ -28,7 +28,7 @@ data:
             description:
               en: The token to use with Mercado Pago
               pt: O token a utilizar com o Mercado Pago
-            value: ''
+            value: ""
           - slug: payment-mercado-pago-client-id
             type: string
             name:
@@ -37,7 +37,7 @@ data:
             description:
               en: The client ID to use with Mercado Pago
               pt: O ID do cliente a utilizar com o Mercado Pago
-            value: ''
+            value: ""
   gateway:
     - name: Stripe
       slug: stripe
@@ -270,6 +270,24 @@ data:
     - url: /item
       method: DELETE
       relations: *a7
+    - url: /payment-item
+      method: GET
+      relations: &a8
+        role:
+          - where:
+              slug: admin
+    - url: /payment-item
+      method: POST
+      relations: *a8
+    - url: /payment-item/:id
+      method: GET
+      relations: *a8
+    - url: /payment-item/:id
+      method: PATCH
+      relations: *a8
+    - url: /payment-item
+      method: DELETE
+      relations: *a8
   menu:
     - name:
         en: Gateway
@@ -320,6 +338,13 @@ data:
       url: /item
       slug: item
       relations: *a7
+    - name:
+        en: PaymentItem
+        pt: PaymentItem
+      icon: file
+      url: /payment-item
+      slug: payment-item
+      relations: *a8
   screen:
     - name:
         en: Gateway
@@ -376,6 +401,14 @@ data:
       description:
         en: Screen to manage item
         pt: Tela para gerenciar item
+      icon: file
+    - name:
+        en: PaymentItem
+        pt: PaymentItem
+      slug: payment-item
+      description:
+        en: Screen to manage payment_item
+        pt: Tela para gerenciar payment_item
       icon: file
 tables:
   gateway:

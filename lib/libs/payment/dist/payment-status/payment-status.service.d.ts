@@ -26,6 +26,6 @@ export declare class PaymentStatusService {
         id: number;
         data: UpdateDTO;
     }): Promise<any>;
-    delete({ ids }: DeleteDTO): Promise<any>;
+    delete({ ids }: DeleteDTO): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }
 //# sourceMappingURL=payment-status.service.d.ts.map

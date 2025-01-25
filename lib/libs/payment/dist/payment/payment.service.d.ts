@@ -16,12 +16,44 @@ export declare class PaymentService {
         next: number;
         data: any;
     }>;
-    get(id: number): Promise<any>;
-    create(data: CreateDTO): Promise<any>;
+    get(id: number): Promise<{
+        currency: string;
+        document: string;
+        delivered: number;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+        person_id: number;
+        gateway_id: number;
+        amount: import("@prisma/client/runtime/library").Decimal;
+        status_id: number;
+        payment_at: Date | null;
+        method_id: number;
+        brand_id: number | null;
+        installments: number;
+    }>;
+    create(data: CreateDTO): Promise<{}>;
     update({ id, data }: {
         id: number;
         data: UpdateDTO;
-    }): Promise<any>;
-    delete({ ids }: DeleteDTO): Promise<any>;
+    }): Promise<{
+        currency: string;
+        document: string;
+        delivered: number;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+        person_id: number;
+        gateway_id: number;
+        amount: import("@prisma/client/runtime/library").Decimal;
+        status_id: number;
+        payment_at: Date | null;
+        method_id: number;
+        brand_id: number | null;
+        installments: number;
+    }>;
+    delete({ ids }: DeleteDTO): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }
 //# sourceMappingURL=payment.service.d.ts.map

@@ -88,7 +88,7 @@ export class FileService {
     });
 
     if (!result) {
-      result = this.prismaService.file_mimetype.create({
+      result = await this.prismaService.file_mimetype.create({
         data: {
           name: mimetype,
         },

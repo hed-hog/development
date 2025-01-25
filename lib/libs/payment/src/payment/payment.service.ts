@@ -28,6 +28,7 @@ export class PaymentService {
       'currency',
       'installments',
       'delivered',
+      'discount',
     ];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -56,9 +57,12 @@ export class PaymentService {
   }
 
   async create(data: CreateDTO) {
+    /*
     return this.prismaService.payment.create({
-      data,
+      data
     });
+    */
+    return {};
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {

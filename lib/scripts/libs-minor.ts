@@ -12,42 +12,104 @@ type Lib = {
 
 type Libs = Record<string, Lib>;
 
-async function updateHedhogDeps(path: string) {
-  console.info(`Updating ${path}...`);
-  const packagePath = join(path, 'package.json');
-  console.info(`Reading ${packagePath}...`);
+async function updateHedhogDeps(path: string, tries = 0) {
+  try {
+    console.log('*'.repeat(32));
+    console.info(`\x1b[36mUpdating ${path} for ${tries} time...\x1b[0m`);
+    console.log('*'.repeat(32));
 
-  if (existsSync(packagePath)) {
-    const packageJson = require(packagePath);
+    console.log('Cleaning node_modules and package-lock.json...');
+    await run(
+      path,
+      'npx',
+      'rimraf',
+      'node_modules',
+      'package-lock.json',
+      'dist',
+    );
 
-    const { dependencies = {}, devDependencies = {} } = packageJson;
+    const packagePath = join(path, 'package.json');
+    console.info(`Reading ${packagePath}...`);
 
-    const devDeps = Object.keys(devDependencies)
-      .filter((dep) => dep.split('/')[0] === '@hedhog')
-      .map((dep) => `${dep}@latest`);
-    const deps = Object.keys(dependencies)
-      .filter((dep) => dep.split('/')[0] === '@hedhog')
-      .map((dep) => `${dep}@latest`);
+    if (existsSync(packagePath)) {
+      const packageJson = require(packagePath);
 
-    if (devDeps.length) {
-      console.info(`Installing devDependencies: ${devDeps}`);
+      const { dependencies = {}, devDependencies = {} } = packageJson;
 
-      await run(path, 'npm', 'i', '-D', ...devDeps, '--legacy-peer-deps');
+      const devDeps = Object.keys(devDependencies).filter(
+        (dep) => dep.split('/')[0] === '@hedhog',
+      );
+
+      for (let i = 0; i < devDeps.length; i++) {
+        devDeps[i] =
+          devDeps[i] +
+          '@' +
+          (await getVersionFromNpmRegistry(devDeps[i])).join('.');
+      }
+
+      const deps = Object.keys(dependencies).filter(
+        (dep) => dep.split('/')[0] === '@hedhog',
+      );
+
+      for (let i = 0; i < deps.length; i++) {
+        deps[i] =
+          deps[i] + '@' + (await getVersionFromNpmRegistry(deps[i])).join('.');
+      }
+
+      console.log('Cleaning cache...');
+      await run(path, 'npm', 'cache', 'clean', '--force');
+
+      if (devDeps.length) {
+        console.info(`Installing devDependencies: ${devDeps}`);
+
+        for (const dep of devDeps) {
+          console.info(`Installing ${dep}...`);
+          await run(
+            path,
+            'npm',
+            'i',
+            '-D',
+            dep,
+            '--legacy-peer-deps',
+            '--ignore-scripts',
+          );
+        }
+      }
+
+      if (deps.length) {
+        console.info(`Installing deps: ${deps}`);
+
+        for (const dep of deps) {
+          console.info(`Installing ${dep}...`);
+          await run(
+            path,
+            'npm',
+            'i',
+            dep,
+            '--legacy-peer-deps',
+            '--ignore-scripts',
+          );
+        }
+      }
+
+      console.info(`Checking for updates...`);
+
+      await run(path, 'npm', 'i', '--legacy-peer-deps', '--ignore-scripts');
+
+      console.info(`Updated!`);
+    } else {
+      console.warn(chalk.yellow(`File ${packagePath} not found`));
     }
-
-    if (deps.length) {
-      console.info(`Installing deps: ${deps}`);
-
-      await run(path, 'npm', 'i', ...deps, '--legacy-peer-deps');
-    }
-
-    console.info(`Checking for updates...`);
-
-    await run(path, 'npm', 'i');
-
-    console.info(`Updated!`);
-  } else {
-    console.warn(chalk.yellow(`File ${packagePath} not found`));
+  } catch (error) {
+    console.error(`\x1b[31mError updating ${path}\x1b[0m`);
+    console.error(error);
+    /*
+    if (tries < 6) {
+      console.info(`Retrying...`);
+      setTimeout(async () => {
+        await updateHedhogDeps(path, tries + 1);
+      }, 10000);
+    }*/
   }
 }
 
@@ -187,6 +249,7 @@ async function updateLibs(
   updatedLibs: Record<string, number[]>,
   toVersion: string,
   countUpdated = 0,
+  tries = 0,
 ) {
   if (Object.keys(libs).length > countUpdated) {
     const result = await getNextLibToUpdate(libs, updatedLibs);
@@ -195,15 +258,36 @@ async function updateLibs(
       const [name, version] = result;
 
       if (name) {
-        console.log('Update lib', name, version, '->', toVersion);
+        try {
+          console.log('*'.repeat(32));
+          console.info(`\x1b[33m[${name}]\x1b[0m`);
+          console.log('*'.repeat(32));
+          console.log('Update lib', name, version, '->', toVersion);
 
-        const path = join(__dirname, '..', 'libs', name);
+          const path = join(__dirname, '..', 'libs', name);
 
-        await updateHedhogDeps(path);
-        await updateVersionLib(path, toVersion);
-        await deployLib(path);
+          await updateHedhogDeps(path);
+          await updateVersionLib(path, toVersion);
+          await deployLib(path);
 
-        updatedLibs[name] = version;
+          updatedLibs[name] = version;
+        } catch (error) {
+          console.error(`\x1b[31mError updating lib ${name}\x1b[0m`);
+          console.error(error);
+          /*
+          if (tries < 6) {
+            console.info(`Retrying...`);
+            setTimeout(async () => {
+              await updateLibs(
+                libs,
+                updatedLibs,
+                toVersion,
+                countUpdated,
+                tries + 1,
+              );
+            }, 10000);
+          }*/
+        }
       }
     }
 
@@ -220,6 +304,8 @@ async function main() {
     core: await getVersionFromNpmRegistry('@hedhog/core'),
     utils: await getVersionFromNpmRegistry('@hedhog/utils'),
   };
+
+  console.log({ initialDeps });
 
   await updateLibs(libs, initialDeps, `${major}.${minor + 1}.0`);
 }

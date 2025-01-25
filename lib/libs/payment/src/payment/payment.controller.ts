@@ -1,5 +1,5 @@
-import { DeleteDTO, Role } from '@hedhog/core';
 import { Pagination } from '@hedhog/pagination';
+import { Locale } from '@hedhog/locale';
 import {
   Body,
   Controller,
@@ -10,18 +10,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef,
+  forwardRef
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { PaymentService } from './payment.service';
+import { Role, DeleteDTO } from '@hedhog/core';
 
 @Role()
 @Controller('payment')
 export class PaymentController {
   constructor(
     @Inject(forwardRef(() => PaymentService))
-    private readonly paymentService: PaymentService,
+    private readonly paymentService: PaymentService
   ) {}
 
   @Get()
@@ -43,7 +44,7 @@ export class PaymentController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.paymentService.update({
       id,
-      data,
+      data
     });
   }
 
