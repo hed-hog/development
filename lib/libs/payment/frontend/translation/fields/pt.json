@@ -1,8 +1,8 @@
 {
-  "gateway.name": "Nome do Gateway",
+  "payment_gateway.name": "Nome do Gateway",
   "payment_status.name": "Nome do Status",
   "payment_status_locale.name": "Nome do Status",
   "payment_method.name": "Nome do Método",
-  "card_brand.name": "Nome da bandeira",
+  "payment_card_brand.name": "Nome da bandeira",
   "discount_type.name": "Tipo de desconto"
 }

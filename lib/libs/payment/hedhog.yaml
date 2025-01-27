@@ -38,7 +38,7 @@ data:
               en: The client ID to use with Mercado Pago
               pt: O ID do cliente a utilizar com o Mercado Pago
             value: ""
-  gateway:
+  payment_gateway:
     - name: Stripe
       slug: stripe
     - name: Mercado Pago
@@ -93,7 +93,7 @@ data:
       slug: PIX
     - name: Dinheiro
       slug: CASH
-  card_brand:
+  payment_card_brand:
     - name: Mastercard
       slug: MASTERCARD
     - name: Visa
@@ -144,22 +144,22 @@ data:
           slug: PROMOTIONAL_PRICE
       value: 1248
   route:
-    - url: /gateway
+    - url: /payment_gateway
       method: GET
       relations: &a1
         role:
           - where:
               slug: admin
-    - url: /gateway
+    - url: /payment_gateway
       method: POST
       relations: *a1
-    - url: /gateway/:id
+    - url: /payment_gateway/:id
       method: GET
       relations: *a1
-    - url: /gateway/:id
+    - url: /payment_gateway/:id
       method: PATCH
       relations: *a1
-    - url: /gateway
+    - url: /payment_gateway
       method: DELETE
       relations: *a1
     - url: /payment-status
@@ -288,63 +288,385 @@ data:
     - url: /payment-item
       method: DELETE
       relations: *a8
+    - url: /payment-method-item
+      method: GET
+      relations: &a9
+        role:
+          - where:
+              slug: admin
+    - url: /payment-method-item
+      method: POST
+      relations: *a9
+    - url: /payment-method-item/:id
+      method: GET
+      relations: *a9
+    - url: /payment-method-item/:id
+      method: PATCH
+      relations: *a9
+    - url: /payment-method-item
+      method: DELETE
+      relations: *a9
+    - url: /payment-gateway
+      method: GET
+      relations: &a10
+        role:
+          - where:
+              slug: admin
+    - url: /payment-gateway
+      method: POST
+      relations: *a10
+    - url: /payment-gateway/:id
+      method: GET
+      relations: *a10
+    - url: /payment-gateway/:id
+      method: PATCH
+      relations: *a10
+    - url: /payment-gateway
+      method: DELETE
+      relations: *a10
+    - url: /payment-card-brand
+      method: GET
+      relations: &a11
+        role:
+          - where:
+              slug: admin
+    - url: /payment-card-brand
+      method: POST
+      relations: *a11
+    - url: /payment-card-brand/:id
+      method: GET
+      relations: *a11
+    - url: /payment-card-brand/:id
+      method: PATCH
+      relations: *a11
+    - url: /payment-card-brand
+      method: DELETE
+      relations: *a11
+    - url: /payment-value
+      method: GET
+      relations: &a12
+        role:
+          - where:
+              slug: admin
+    - url: /payment-value
+      method: POST
+      relations: *a12
+    - url: /payment-value/:id
+      method: GET
+      relations: *a12
+    - url: /payment-value/:id
+      method: PATCH
+      relations: *a12
+    - url: /payment-value
+      method: DELETE
+      relations: *a12
+    - url: /payment-coupon
+      method: GET
+      relations: &a13
+        role:
+          - where:
+              slug: admin
+    - url: /payment-coupon
+      method: POST
+      relations: *a13
+    - url: /payment-coupon/:id
+      method: GET
+      relations: *a13
+    - url: /payment-coupon/:id
+      method: PATCH
+      relations: *a13
+    - url: /payment-coupon
+      method: DELETE
+      relations: *a13
+    - url: /payment-coupon-item
+      method: GET
+      relations: &a14
+        role:
+          - where:
+              slug: admin
+    - url: /payment-coupon-item
+      method: POST
+      relations: *a14
+    - url: /payment-coupon-item/:coupon_id
+      method: GET
+      relations: *a14
+    - url: /payment-coupon-item/:coupon_id
+      method: PATCH
+      relations: *a14
+    - url: /payment-coupon-item
+      method: DELETE
+      relations: *a14
+    - url: /payment/:paymentId/payment-item
+      method: GET
+      relations: &a15
+        role:
+          - where:
+              slug: admin
+    - url: /payment/:paymentId/payment-item/:id
+      method: GET
+      relations: *a15
+    - url: /payment/:paymentId/payment-item
+      method: POST
+      relations: *a15
+    - url: /payment/:paymentId/payment-item/:id
+      method: PATCH
+      relations: *a15
+    - url: /payment/:paymentId/payment-item
+      method: DELETE
+      relations: *a15
+    - url: /payment/:paymentId/payment-value
+      method: GET
+      relations: &a16
+        role:
+          - where:
+              slug: admin
+    - url: /payment/:paymentId/payment-value/:id
+      method: GET
+      relations: *a16
+    - url: /payment/:paymentId/payment-value
+      method: POST
+      relations: *a16
+    - url: /payment/:paymentId/payment-value/:id
+      method: PATCH
+      relations: *a16
+    - url: /payment/:paymentId/payment-value
+      method: DELETE
+      relations: *a16
+    - url: /payment-coupon/:paymentCouponId/payment-coupon-item
+      method: GET
+      relations: &a17
+        role:
+          - where:
+              slug: admin
+    - url: /payment-coupon/:paymentCouponId/payment-coupon-item/:coupon_id
+      method: GET
+      relations: *a17
+    - url: /payment-coupon/:paymentCouponId/payment-coupon-item
+      method: POST
+      relations: *a17
+    - url: /payment-coupon/:paymentCouponId/payment-coupon-item/:coupon_id
+      method: PATCH
+      relations: *a17
+    - url: /payment-coupon/:paymentCouponId/payment-coupon-item
+      method: DELETE
+      relations: *a17
+    - url: /payment-coupon/:paymentCouponId/payment-coupon-item/:id
+      method: GET
+      relations: &a18
+        role:
+          - where:
+              slug: admin
+    - url: /payment-coupon/:paymentCouponId/payment-coupon-item/:id
+      method: PATCH
+      relations: *a18
+    - url: /payment-notification
+      method: GET
+      relations: &a19
+        role:
+          - where:
+              slug: admin
+    - url: /payment-notification
+      method: POST
+      relations: *a19
+    - url: /payment-notification/:id
+      method: GET
+      relations: *a19
+    - url: /payment-notification/:id
+      method: PATCH
+      relations: *a19
+    - url: /payment-notification
+      method: DELETE
+      relations: *a19
   menu:
+    - icon: user-check
+      name:
+        en: Payment
+        pt: Pagamento
+      slug: /payment
+      relations:
+        role:
+          - where:
+              slug: admin
+    - menu_id:
+        where:
+          slug: /payment
+      icon: user-check
+      name:
+        en: Payment
+        pt: Pagamento
+      slug: /management/payment
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Gateway
         pt: Gateway
+      menu_id:
+        where:
+          slug: /management/payment
       icon: file
-      url: /gateway
-      slug: gateway
+      url: /management/payment/payment-gateway
+      slug: /management/payment/payment-gateway
       relations: *a1
+    - name:
+        en: Payment Status
+        pt: Status de Pagamento
+      icon: file
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/payment-status
+      slug: /management/payment/payment-status
+      relations: *a2
+    - name:
+        en: Payment Method
+        pt: Método de Pagamento
+      icon: file
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/payment-method
+      slug: /management/payment/payment-method
+      relations: *a3
+    - name:
+        en: Card Brand
+        pt: Bandeira do Cartão
+      icon: file
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/card-brand
+      slug: /management/payment/card-brand
+      relations: *a4
+    - name:
+        en: Discount Type
+        pt: Tipo de Desconto
+      icon: file
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/discount-type
+      slug: /management/payment/discount-type
+      relations: *a5
+    - name:
+        en: PaymentGateway
+        pt: PaymentGateway
+      icon: file
+      url: /payment-gateway
+      slug: payment-gateway
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: PaymentStatus
         pt: PaymentStatus
       icon: file
       url: /payment-status
       slug: payment-status
-      relations: *a2
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: PaymentMethod
         pt: PaymentMethod
       icon: file
       url: /payment-method
       slug: payment-method
-      relations: *a3
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
-        en: CardBrand
-        pt: CardBrand
+        en: PaymentCardBrand
+        pt: PaymentCardBrand
       icon: file
-      url: /card-brand
-      slug: card-brand
-      relations: *a4
+      url: /payment-card-brand
+      slug: payment-card-brand
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: DiscountType
         pt: DiscountType
       icon: file
       url: /discount-type
       slug: discount-type
-      relations: *a5
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Payment
         pt: Payment
       icon: file
       url: /payment
       slug: payment
-      relations: *a6
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Item
         pt: Item
       icon: file
       url: /item
       slug: item
-      relations: *a7
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: PaymentItem
         pt: PaymentItem
       icon: file
       url: /payment-item
       slug: payment-item
-      relations: *a8
+      relations: *a15
+    - name:
+        en: PaymentMethodItem
+        pt: PaymentMethodItem
+      icon: file
+      url: /payment-method-item
+      slug: payment-method-item
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PaymentValue
+        pt: PaymentValue
+      icon: file
+      url: /payment-value
+      slug: payment-value
+      relations: *a16
+    - name:
+        en: PaymentCoupon
+        pt: PaymentCoupon
+      icon: file
+      url: /payment-coupon
+      slug: payment-coupon
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: PaymentCouponItem
+        pt: PaymentCouponItem
+      icon: file
+      url: /payment-coupon-item
+      slug: payment-coupon-item
+      relations: *a17
+    - name:
+        en: PaymentNotification
+        pt: PaymentNotification
+      icon: file
+      url: /payment-notification
+      slug: payment-notification
+      relations: *a19
   screen:
     - name:
         en: Gateway
@@ -375,8 +697,8 @@ data:
         pt: CardBrand
       slug: card-brand
       description:
-        en: Screen to manage card_brand
-        pt: Tela para gerenciar card_brand
+        en: Screen to manage payment_card_brand
+        pt: Tela para gerenciar payment_card_brand
       icon: file
     - name:
         en: DiscountType
@@ -410,8 +732,64 @@ data:
         en: Screen to manage payment_item
         pt: Tela para gerenciar payment_item
       icon: file
+    - name:
+        en: PaymentMethodItem
+        pt: PaymentMethodItem
+      slug: payment-method-item
+      description:
+        en: Screen to manage payment_method_item
+        pt: Tela para gerenciar payment_method_item
+      icon: file
+    - name:
+        en: PaymentGateway
+        pt: PaymentGateway
+      slug: payment-gateway
+      description:
+        en: Screen to manage payment_gateway
+        pt: Tela para gerenciar payment_gateway
+      icon: file
+    - name:
+        en: PaymentCardBrand
+        pt: PaymentCardBrand
+      slug: payment-card-brand
+      description:
+        en: Screen to manage payment_card_brand
+        pt: Tela para gerenciar payment_card_brand
+      icon: file
+    - name:
+        en: PaymentValue
+        pt: PaymentValue
+      slug: payment-value
+      description:
+        en: Screen to manage payment_value
+        pt: Tela para gerenciar payment_value
+      icon: file
+    - name:
+        en: PaymentCoupon
+        pt: PaymentCoupon
+      slug: payment-coupon
+      description:
+        en: Screen to manage payment_coupon
+        pt: Tela para gerenciar payment_coupon
+      icon: file
+    - name:
+        en: PaymentCouponItem
+        pt: PaymentCouponItem
+      slug: payment-coupon-item
+      description:
+        en: Screen to manage payment_coupon_item
+        pt: Tela para gerenciar payment_coupon_item
+      icon: file
+    - name:
+        en: PaymentNotification
+        pt: PaymentNotification
+      slug: payment-notification
+      description:
+        en: Screen to manage payment_notification
+        pt: Tela para gerenciar payment_notification
+      icon: file
 tables:
-  gateway:
+  payment_gateway:
     columns:
       - type: pk
       - type: slug
@@ -466,7 +844,7 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  card_brand:
+  payment_card_brand:
     columns:
       - type: pk
       - type: slug
@@ -504,7 +882,7 @@ tables:
       - type: fk
         name: gateway_id
         references:
-          table: gateway
+          table: payment_gateway
           column: id
           onDelete: RESTRICT
       - name: amount
@@ -536,7 +914,7 @@ tables:
         isNullable: true
         name: brand_id
         references:
-          table: card_brand
+          table: payment_card_brand
           column: id
           onDelete: CASCADE
       - name: installments
@@ -549,7 +927,7 @@ tables:
         name: coupon_id
         isNullable: true
         references:
-          table: coupon
+          table: payment_coupon
           column: id
           onDelete: RESTRICT
       - type: decimal
@@ -635,7 +1013,7 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  coupon:
+  payment_coupon:
     columns:
       - type: pk
       - name: discount_type_id
@@ -664,22 +1042,21 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
-  coupon_item:
+  payment_coupon_item:
     columns:
+      - type: pk
       - name: coupon_id
         type: fk
         references:
-          table: coupon
+          table: payment_coupon
           column: id
           onDelete: RESTRICT
-        isPrimary: true
       - name: item_id
         type: fk
         references:
           table: item
           column: id
           onDelete: RESTRICT
-        isPrimary: true
       - type: created_at
       - type: updated_at
   payment_notification:
@@ -688,9 +1065,186 @@ tables:
       - name: gateway_id
         type: fk
         references:
-          table: gateway
+          table: payment_gateway
           column: id
           onDelete: RESTRICT
       - name: log
       - type: created_at
       - type: updated_at
+screens:
+  payment_gateway:
+    title:
+      en: Gateway
+      pt: Gateway
+    menu:
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/payment-gateway
+      icon: user-check
+      name:
+        en: Gateway
+        pt: Gateway
+      slug: /management/payment/payment-gateway
+      relations:
+        role:
+          - where:
+              slug: admin
+  payment_status:
+    title:
+      en: Payment Status
+      pt: Status de Pagamento
+    menu:
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/payment-status
+      icon: user-check
+      name:
+        en: Payment Status
+        pt: Status de Pagamento
+      slug: /management/payment/payment-status
+      relations:
+        role:
+          - where:
+              slug: admin
+  payment_method:
+    title:
+      en: Payment Method
+      pt: Método de Pagamento
+    menu:
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/payment-method
+      icon: user-check
+      name:
+        en: Payment Method
+        pt: Método de Pagamento
+      slug: /management/payment/payment-method
+      relations:
+        role:
+          - where:
+              slug: admin
+  payment_card_brand:
+    title:
+      en: Card Brand
+      pt: Bandeira do Cartão
+    menu:
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/card-brand
+      icon: user-check
+      name:
+        en: Card Brand
+        pt: Bandeira do Cartão
+      slug: /management/payment/card-brand
+      relations:
+        role:
+          - where:
+              slug: admin
+  discount_type:
+    title:
+      en: Discount Type
+      pt: Tipo de Desconto
+    menu:
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/discount-type
+      icon: user-check
+      name:
+        en: Discount Type
+        pt: Tipo de Desconto
+      slug: /management/payment/discount-type
+      relations:
+        role:
+          - where:
+              slug: admin
+  payment:
+    title:
+      en: Payment
+      pt: Pagamento
+    menu:
+      menu_id:
+        where:
+          slug: /payment
+      url: /payment/payment
+      icon: user-check
+      name:
+        en: Payment
+        pt: Pagamento
+      slug: /payment/payment
+      relations:
+        role:
+          - where:
+              slug: admin
+    relations:
+      payment_item:
+        title:
+          en: Items
+          pt: Itens
+      payment_value:
+        title:
+          en: Data
+          pt: Dados
+  item:
+    title:
+      en: Item
+      pt: Item
+    menu:
+      menu_id:
+        where:
+          slug: /payment
+      url: /payment/item
+      icon: user-check
+      name:
+        en: Item
+        pt: Item
+      slug: /payment/item
+      relations:
+        role:
+          - where:
+              slug: admin
+  payment_coupon:
+    title:
+      en: Coupon
+      pt: Cupom
+    menu:
+      menu_id:
+        where:
+          slug: /payment
+      url: /payment/coupon
+      icon: user-check
+      name:
+        en: Coupon
+        pt: Cupom
+      slug: /payment/coupon
+      relations:
+        role:
+          - where:
+              slug: admin
+    relations:
+      payment_coupon_item:
+        title:
+          en: Items
+          pt: Itens
+  payment_notification:
+    title:
+      en: Notification
+      pt: Notificação
+    menu:
+      menu_id:
+        where:
+          slug: /management/payment
+      url: /management/payment/notification
+      icon: user-check
+      name:
+        en: Notification
+        pt: Notificação
+      slug: /management/payment/notification
+      relations:
+        role:
+          - where:
+              slug: admin
