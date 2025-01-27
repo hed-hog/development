@@ -1,6 +1,10 @@
 {
   "name": "@hedhog/cbc",
+<<<<<<< HEAD
+  "version": "0.12.98",
+=======
   "version": "0.46.2",
+>>>>>>> 293d99a28f9b5c881213a4eb066bdbcf4dbb4b55
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -33,6 +37,12 @@
     "@hedhog/subscription": "latest"
   },
   "devDependencies": {
+<<<<<<< HEAD
+    "@hedhog/admin": "^0.12.6",
+    "@hedhog/locale": "^0.17.3",
+    "@hedhog/pagination": "^0.17.1",
+    "@hedhog/prisma": "^0.17.1",
+=======
     "@hedhog/admin": "^0.36.1",
     "@hedhog/contact": "^0.7.56",
     "@hedhog/country": "^0.36.1",
@@ -42,6 +52,7 @@
     "@hedhog/payment": "^0.0.7",
     "@hedhog/prisma": "^0.36.1",
     "@hedhog/subscription": "^0.46.1",
+>>>>>>> 293d99a28f9b5c881213a4eb066bdbcf4dbb4b55
     "@nestjs/mapped-types": "^2.0.6"
   }
 }
