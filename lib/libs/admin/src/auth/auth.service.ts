@@ -1,21 +1,22 @@
 import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
 import {
+  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
+import { User } from 'hcode-core';
+import { getBody } from './consts/body';
+import { SUBJECT_RECOVERY } from './consts/subject';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
+import { SignupDTO } from './dto/signup.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
-import { User } from 'hcode-core';
-import { SUBJECT_RECOVERY } from './consts/subject';
-import { getBody } from './consts/body';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
-  ) { }
+  ) {}
 
   async verifyToken(token: string) {
     return this.jwt.verifyAsync(token, {
@@ -52,7 +53,7 @@ export class AuthService {
   }
 
   async loginWithEmailAndPassword(email: string, password: string) {
-    const user = await (this.prisma as any).user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         email,
       },
@@ -73,7 +74,7 @@ export class AuthService {
       if (user.multifactor_id === MultifactorType.EMAIL) {
         const code = this.generateRandomNumber();
 
-        await (this.prisma as any).user.update({
+        await this.prisma.user.update({
           where: {
             id: user.id,
           },
@@ -117,7 +118,7 @@ export class AuthService {
     subject?: string;
     body?: string;
   }) {
-    const user = await (this.prisma as any).user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         email,
       },
@@ -136,7 +137,7 @@ export class AuthService {
 
     const code = this.jwt.sign(payload);
 
-    await (this.prisma as any).user.update({
+    await this.prisma.user.update({
       where: {
         id: user.id,
       },
@@ -171,7 +172,7 @@ export class AuthService {
 
     const { id } = this.jwt.decode(code) as User;
 
-    const user = await (this.prisma as any).user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         id,
         code,
@@ -182,7 +183,7 @@ export class AuthService {
       const salt = await genSalt();
       const password = await hash(confirmNewPassword, salt);
 
-      await (this.prisma as any).user.update({
+      await this.prisma.user.update({
         where: {
           id: user.id,
         },
@@ -201,7 +202,7 @@ export class AuthService {
   async otp({ token, code }: OtpDTO) {
     const data = this.jwt.decode(token);
 
-    const user = await (this.prisma as any).user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         id: data['id'],
         code: String(code),
@@ -212,7 +213,7 @@ export class AuthService {
       throw new NotFoundException('Invalid code');
     }
 
-    await (this.prisma as any).user.update({
+    await this.prisma.user.update({
       where: {
         id: user.id,
       },
@@ -229,6 +230,30 @@ export class AuthService {
   }
 
   verify(id: number) {
-    return (this.prisma as any).user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({ where: { id } });
+  }
+
+  async signup({ fullName, cpf, email, password }: SignupDTO) {
+    const existingUser = await this.prisma.user.findFirst({
+      where: {
+        OR: [{ email }],
+      },
+    });
+
+    if (existingUser) {
+      throw new BadRequestException('User already exists.');
+    }
+
+    const salt = await genSalt();
+    const hashedPassword = await hash(password, salt);
+
+    const user = await this.prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+      },
+    });
+
+    return this.getToken(user);
   }
 }
