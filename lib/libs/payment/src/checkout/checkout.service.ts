@@ -1,5 +1,6 @@
 import { PrismaService } from '@hedhog/prisma';
 import { SettingService } from '@hedhog/setting';
+import { HttpService } from '@nestjs/axios';
 import {
   BadRequestException,
   Inject,
@@ -24,6 +25,7 @@ export class CheckoutService {
     private readonly settingService: SettingService,
     @Inject(forwardRef(() => PaymentService))
     private readonly paymentService: PaymentService,
+    private readonly httpService: HttpService,
   ) {}
 
   async getProvider(): Promise<AbstractProvider> {
@@ -42,6 +44,7 @@ export class CheckoutService {
     const provider = ProviderFactory.create(
       providerName as EnumProvider,
       this.setting,
+      this.httpService,
     );
 
     const providerData = await this.prismaService.gateway.findFirst({
