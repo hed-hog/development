@@ -1,0 +1,14 @@
+{
+  "payment_gateway": "Gateway",
+  "payment_status": "Payment Status",
+  "payment_method": "Payment Method",
+  "payment_card_brand": "Card Brand",
+  "discount_type": "Discount Type",
+  "payment": "Payment",
+  "payment_item": "Items",
+  "payment_value": "Data",
+  "item": "Item",
+  "payment_coupon": "Coupon",
+  "payment_coupon_item": "Items",
+  "payment_notification": "Notification"
+}

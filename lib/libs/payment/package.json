@@ -1,0 +1,46 @@
+{
+  "name": "@hedhog/payment",
+  "version": "0.46.1",
+  "private": false,
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "prebuild": "npm run clean",
+    "build": "tsc --project tsconfig.production.json && npm version patch",
+    "prod": "npm run build && npm publish --access public"
+  },
+  "files": [
+    "dist/**/*",
+    "frontend/**/*",
+    "src/entities/**/*.ts",
+    "src/migrations/**/*.ts",
+    "src/**/*.ejs",
+    "hedhog.yaml"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "peerDependencies": {
+    "@hedhog/admin": "latest",
+    "@hedhog/contact": "latest",
+    "@hedhog/locale": "latest",
+    "@hedhog/pagination": "latest",
+    "@hedhog/prisma": "latest",
+    "@hedhog/setting": "latest"
+  },
+  "devDependencies": {
+    "@hedhog/admin": "^0.36.2",
+    "@hedhog/contact": "^0.7.56",
+    "@hedhog/core": "^1.0.6",
+    "@hedhog/locale": "^0.36.1",
+    "@hedhog/pagination": "^0.36.1",
+    "@hedhog/prisma": "^0.36.1",
+    "@hedhog/setting": "^0.36.1",
+    "@nestjs/mapped-types": "^2.0.6"
+  },
+  "dependencies": {
+    "@nestjs/axios": "^4.0.0",
+    "axios": "^1.7.9"
+  }
+}

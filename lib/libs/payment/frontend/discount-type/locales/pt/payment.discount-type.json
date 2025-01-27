@@ -1,0 +1,11 @@
+{
+  "create": "Criar tipo de desconto",
+  "createText": "Preencha as informações do tipo de desconto.",
+  "createTooltip": "Criar novo tipo de desconto",
+  "delete": "Excluir tipo de desconto",
+  "deleteText": "Você tem certeza de que deseja excluir esses tipos de desconto?",
+  "deleteTooltip": "Excluir o tipo de desconto selecionado",
+  "edit": "Editar tipo de desconto",
+  "editText": "Ver e editar informações do tipo de desconto.",
+  "editTooltip": "Editar o tipo de desconto selecionado"
+}

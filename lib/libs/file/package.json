@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/file",
-  "version": "0.7.3",
+  "version": "0.46.1",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -12,16 +12,13 @@
   "license": "MIT",
   "description": "",
   "peerDependencies": {
+    "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
     "@hedhog/setting": "latest",
     "@hedhog/utils": "latest",
     "@nestjs/jwt": "^10.2.0",
-    "@nestjs/mapped-types": "^2.0.5",
-    "@prisma/client": "^5.17.0",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1",
-    "typeorm": "^0.3.20"
+    "@nestjs/mapped-types": "^2.0.5"
   },
   "file": [
     "dist/**/*",
@@ -31,9 +28,10 @@
     "hedhog.yaml"
   ],
   "devDependencies": {
-    "@hedhog/pagination": "^0.12.1",
-    "@hedhog/prisma": "^0.12.1",
-    "@hedhog/setting": "^0.12.1",
+    "@hedhog/locale": "^0.36.1",
+    "@hedhog/pagination": "^0.36.1",
+    "@hedhog/prisma": "^0.36.1",
+    "@hedhog/setting": "^0.36.1",
     "@hedhog/utils": "^0.0.28",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "^2.0.5",

@@ -32,10 +32,11 @@
     "prisma:update": "npm run prisma:pull && npm run prisma:generate && npm run create:types",
     "puppeteer": "ts-node ./src/puppeteer/main.ts",
     "create:types": "ts-node scripts/create-types.ts",
-    "libs:minor": "ts-node scripts/libs-minor.ts"
+    "libs:minor": "ts-node scripts/libs-minor.ts",
+    "install:libs": "ts-node scripts/npm-install-libs.ts"
   },
   "dependencies": {
-    "@hedhog/core": "^1.0.5",
+    "@hedhog/core": "^1.0.6",
     "@nestjs/axios": "^3.1.1",
     "@nestjs/common": "^10.4.7",
     "@nestjs/config": "^3.3.0",
@@ -125,7 +126,9 @@
       "^@hedhog/contact(|/.*)$": "<rootDir>/libs/contact/src/$1",
       "^@hedhog/cbc(|/.*)$": "<rootDir>/libs/cbc/src/$1",
       "^@hedhog/appearance(|/.*)$": "<rootDir>/libs/appearance/src/$1",
-      "^@hedhog/faq(|/.*)$": "<rootDir>/libs/faq/src/$1"
+      "^@hedhog/faq(|/.*)$": "<rootDir>/libs/faq/src/$1",
+      "^@hedhog/subscription(|/.*)$": "<rootDir>/libs/subscription/src/$1",
+      "^@hedhog/page(|/.*)$": "<rootDir>/libs/page/src/$1"
     }
   }
 }

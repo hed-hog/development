@@ -8,6 +8,7 @@ import { FileModule } from '@hedhog/file';
 import { LocaleModule } from '@hedhog/locale';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
+import { PaymentModule } from '@hedhog/payment';
 import { PrismaModule } from '@hedhog/prisma';
 import { SettingModule } from '@hedhog/setting';
 import { Module } from '@nestjs/common';
@@ -40,6 +41,7 @@ import { AppService } from './app.service';
     FileModule,
     CbcModule,
     FaqModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

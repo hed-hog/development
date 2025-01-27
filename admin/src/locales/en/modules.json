@@ -1,16 +1,4 @@
 {
-  "user": "Users",
-  "menu": "Menus",
-  "screens": "Screens",
-  "role": "Roles",
-  "route": "Routes",
-  "faq": "FAQ",
-  "coin": "Coins",
-  "stock_exchange": "Stock Exchanges",
-  "quotation": "Quotations",
-  "banking": "Banking",
-  "operation": "Operation",
-  "strategy": "Strategy",
   "person": "Contact",
   "person_value": "Value",
   "person_address": "Address",
@@ -21,5 +9,11 @@
   "person_address_type": "Address Type",
   "person_contact_type": "Contact Type",
   "person_custom_type": "Custom Type",
-  "person_document_type": "Document Type"
+  "person_document_type": "Document Type",
+  "coin": "Coins",
+  "stock_exchange": "Stock Exchanges",
+  "quotation": "Quotations",
+  "banking": "Banking",
+  "operation": "Operation",
+  "strategy": "Strategy"
 }

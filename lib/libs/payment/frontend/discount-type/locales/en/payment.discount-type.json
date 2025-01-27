@@ -1,0 +1,11 @@
+{
+  "create": "Create discount type",
+  "createText": "Fill the discount type informations.",
+  "createTooltip": "Create new discount type",
+  "delete": "Delete discount type",
+  "deleteText": "Are you sure to delete these discount type?",
+  "deleteTooltip": "Delete the selected discount type",
+  "edit": "Edit discount type",
+  "editText": "View and edit discount type information.",
+  "editTooltip": "Edit the selected discount type"
+}

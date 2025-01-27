@@ -1,0 +1,8 @@
+{
+  "payment_gateway.name": "Gateway Name",
+  "payment_status.name": "Status Name",
+  "payment_status_locale.name": "Status Name",
+  "payment_method.name": "Method Name",
+  "payment_card_brand.name": "Brand name",
+  "discount_type.name": "Discount Type"
+}

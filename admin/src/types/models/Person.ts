@@ -1,10 +1,12 @@
 import { File } from './File';
 import { PersonType } from './PersonType';
+import { PersonUser } from './PersonUser';
 import { PersonValue } from './PersonValue';
 import { PersonDocument } from './PersonDocument';
 import { PersonContact } from './PersonContact';
 import { PersonAddress } from './PersonAddress';
 import { PersonCustom } from './PersonCustom';
+import { Payment } from './Payment';
 
 export type Person = {
   id?: number;
@@ -16,9 +18,11 @@ export type Person = {
   updated_at?: string;
   file?: File;
   person_type?: PersonType;
+  person_user?: PersonUser[];
   person_value?: PersonValue[];
   person_document?: PersonDocument[];
   person_contact?: PersonContact[];
   person_address?: PersonAddress[];
   person_custom?: PersonCustom[];
+  payment?: Payment[];
 }

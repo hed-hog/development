@@ -1,0 +1,11 @@
+{
+  "create": "Create payment status locale",
+  "createText": "Fill the payment status locale informations.",
+  "createTooltip": "Create new payment status locale",
+  "delete": "Delete payment status locale",
+  "deleteText": "Are you sure to delete these payment status locale?",
+  "deleteTooltip": "Delete the selected payment status locale",
+  "edit": "Edit payment status locale",
+  "editText": "View and edit payment status locale information.",
+  "editTooltip": "Edit the selected payment status locale"
+}

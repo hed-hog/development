@@ -1,14 +1,5 @@
-import { MailService } from '@hedhog/mail';
 import { Public } from '@hedhog/core';
-import {
-  Controller,
-  Get,
-  Post,
-  UploadedFiles,
-  UseInterceptors,
-} from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Public()
@@ -16,15 +7,15 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private mailService: MailService,
-    private readonly httpAdapterHost: HttpAdapterHost,
+    //private mailService: MailService,
+    //private readonly httpAdapterHost: HttpAdapterHost,
   ) {}
 
   @Get()
   getHello(): string {
     return this.appService.getHello();
   }
-
+  /*
   @Post('send')
   @UseInterceptors(FilesInterceptor('file'))
   async testMail(@UploadedFiles() file: Express.Multer.File[]) {
@@ -42,7 +33,8 @@ export class AppController {
       }),
     });
   }
-
+*/
+  /*
   @Get('endpoints')
   getEndpoints() {
     const httpServer = this.httpAdapterHost.httpAdapter.getInstance();
@@ -84,5 +76,5 @@ export class AppController {
     });
 
     return endpoints;
-  }
+  }*/
 }

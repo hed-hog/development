@@ -1,25 +1,23 @@
-import { Module } from '@nestjs/common';
-import { ContactModule } from '@hedhog/contact';
-import { FileModule } from '@hedhog/file';
-import { CountryModule } from '@hedhog/country';
-import { CbcModule } from '@hedhog/cbc';
-import { FaqModule } from '@hedhog/faq';
 import { AdminModule } from '@hedhog/admin';
-import { SettingModule } from '@hedhog/setting';
-import { MailModule } from '@hedhog/mail';
+import { CbcModule } from '@hedhog/cbc';
+import { ContactModule } from '@hedhog/contact';
+import { CountryModule } from '@hedhog/country';
+import { FileModule } from '@hedhog/file';
 import { LocaleModule } from '@hedhog/locale';
+import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
+import { PaymentModule } from '@hedhog/payment';
+import { PrismaModule } from '@hedhog/prisma';
+import { SettingModule } from '@hedhog/setting';
+import { SubscriptionModule } from '@hedhog/subscription';
+import { Module } from '@nestjs/common';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ThrottlerModule } from '@nestjs/throttler';
-import { PrismaModule } from '@hedhog/prisma';
-
 @Module({
   imports: [
     PrismaModule,
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
-    PaginationModule,
-    LocaleModule,
     MailModule.forRoot({
       global: true,
       type: 'GMAIL',
@@ -28,13 +26,16 @@ import { PrismaModule } from '@hedhog/prisma';
       refreshToken: String(process.env.REFRESH_TOKEN),
       from: String(process.env.MAIL_FROM),
     }),
-    SettingModule,
+    PaginationModule,
+    LocaleModule,
     AdminModule,
-    FaqModule,
-    CbcModule,
     CountryModule,
+    SettingModule,
     FileModule,
     ContactModule,
+    PaymentModule,
+    SubscriptionModule,
+    CbcModule,
   ],
   controllers: [AppController],
   providers: [AppService],
