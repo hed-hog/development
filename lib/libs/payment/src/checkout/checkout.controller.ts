@@ -21,6 +21,10 @@ export class CheckoutController {
 
   @Get()
   async init(@Query('slug') slug: string, @User() user) {
+    return {
+      user,
+      slug,
+    };
     let personId = user ? user.id : null;
 
     return this.checkoutService.init(slug);

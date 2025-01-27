@@ -30,8 +30,9 @@
     "@hedhog/setting": "latest"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.36.1",
+    "@hedhog/admin": "^0.36.2",
     "@hedhog/contact": "^0.7.56",
+    "@hedhog/core": "^1.0.6",
     "@hedhog/locale": "^0.36.1",
     "@hedhog/pagination": "^0.36.1",
     "@hedhog/prisma": "^0.36.1",
