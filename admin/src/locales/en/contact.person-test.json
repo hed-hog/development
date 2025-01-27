@@ -1,0 +1,11 @@
+{
+  "create": "Create person test",
+  "createText": "Fill the person test informations.",
+  "createTooltip": "Create new person test",
+  "delete": "Delete person test",
+  "deleteText": "Are you sure to delete these person test?",
+  "deleteTooltip": "Delete the selected person test",
+  "edit": "Edit person test",
+  "editText": "View and edit person test information.",
+  "editTooltip": "Edit the selected person test"
+}
