@@ -3,7 +3,7 @@ import { CreateDTO } from './dto/create.dto';
 export declare class CheckoutController {
     private readonly checkoutService;
     constructor(checkoutService: CheckoutService);
-    init(slug: string, user: any): Promise<{
+    init(slug: string, user: any): Promise<({
         card_brand: {
             name: string;
             id: number;
@@ -37,6 +37,7 @@ export declare class CheckoutController {
             item_id: number;
             payment_id: number;
             unit_price: import("@prisma/client/runtime/library").Decimal;
+            quantity: number;
         })[];
         payment_method: {
             name: string;
@@ -53,22 +54,27 @@ export declare class CheckoutController {
         };
     } & {
         currency: string;
-        document: string;
+        document: string | null;
         delivered: number;
         id: number;
         created_at: Date;
         updated_at: Date;
         slug: string;
-        person_id: number;
+        coupon_id: number | null;
+        person_id: number | null;
         gateway_id: number;
         amount: import("@prisma/client/runtime/library").Decimal;
         status_id: number;
         payment_at: Date | null;
-        method_id: number;
+        method_id: number | null;
         brand_id: number | null;
         installments: number;
+        discount: import("@prisma/client/runtime/library").Decimal;
+    }) | {
+        user: any;
+        slug: string;
     }>;
-    create({ amount, currency }: CreateDTO): Promise<any>;
-    createSubscription({ priceId, customerId }: any): Promise<any>;
+    payment(data: CreateDTO): Promise<any>;
+    subscription({ priceId, customerId }: any): Promise<any>;
 }
 //# sourceMappingURL=checkout.controller.d.ts.map

@@ -1,19 +1,20 @@
-import { AdminModule } from '@hedhog/admin';
-import { CbcModule } from '@hedhog/cbc';
-import { ContactModule } from '@hedhog/contact';
-import { CountryModule } from '@hedhog/country';
-import { FileModule } from '@hedhog/file';
-import { LocaleModule } from '@hedhog/locale';
-import { MailModule } from '@hedhog/mail';
-import { PaginationModule } from '@hedhog/pagination';
-import { PaymentModule } from '@hedhog/payment';
-import { PrismaModule } from '@hedhog/prisma';
-import { SettingModule } from '@hedhog/setting';
-import { SubscriptionModule } from '@hedhog/subscription';
 import { Module } from '@nestjs/common';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { CbcModule } from '@hedhog/cbc';
+import { SubscriptionModule } from '@hedhog/subscription';
+import { PaymentModule } from '@hedhog/payment';
+import { ContactModule } from '@hedhog/contact';
+import { FileModule } from '@hedhog/file';
+import { SettingModule } from '@hedhog/setting';
+import { CountryModule } from '@hedhog/country';
+import { AdminModule } from '@hedhog/admin';
+import { LocaleModule } from '@hedhog/locale';
+import { PaginationModule } from '@hedhog/pagination';
+import { MailModule } from '@hedhog/mail';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { PrismaModule } from '@hedhog/prisma';
+
 @Module({
   imports: [
     PrismaModule,

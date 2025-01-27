@@ -24,7 +24,7 @@
     "typeorm": "ts-node --transpile-only ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
-    "@hedhog/admin": "^0.46.1",
+    "@hedhog/admin": "^0.46.4",
     "@hedhog/cbc": "^0.46.2",
     "@hedhog/contact": "^0.46.1",
     "@hedhog/core": "^1.0.5",
@@ -33,7 +33,7 @@
     "@hedhog/locale": "^0.46.1",
     "@hedhog/mail": "^0.46.1",
     "@hedhog/pagination": "^0.46.1",
-    "@hedhog/payment": "^0.46.1",
+    "@hedhog/payment": "^0.46.4",
     "@hedhog/prisma": "^0.7.3",
     "@hedhog/setting": "^0.46.1",
     "@hedhog/subscription": "^0.46.1",

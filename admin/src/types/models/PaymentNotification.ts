@@ -1,10 +1,13 @@
-import { Gateway } from './Gateway';
+import { PaymentGateway } from './PaymentGateway';
+import { Payment } from './Payment';
 
 export type PaymentNotification = {
   id?: number;
   gateway_id: number;
+  payment_id?: number;
   log: string;
   created_at?: string;
   updated_at?: string;
-  gateway?: Gateway;
+  payment_gateway?: PaymentGateway;
+  payment?: Payment;
 }

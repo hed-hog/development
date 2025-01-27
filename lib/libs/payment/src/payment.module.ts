@@ -11,7 +11,6 @@ import { PaymentCouponModule } from './payment-coupon/payment-coupon.module';
 import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
 import { PaymentMethodItemModule } from './payment-method-item/payment-method-item.module';
 import { PaymentMethodModule } from './payment-method/payment-method.module';
-import { PaymentNotificationModule } from './payment-notification/payment-notification.module';
 import { PaymentStatusModule } from './payment-status/payment-status.module';
 import { PaymentModule as PaymentModule2 } from './payment/payment.module';
 
@@ -27,7 +26,6 @@ import { PaymentModule as PaymentModule2 } from './payment/payment.module';
     forwardRef(() => DiscountTypeModule),
     forwardRef(() => PaymentModule2),
     forwardRef(() => ItemModule),
-    forwardRef(() => PaymentNotificationModule),
     forwardRef(() => PaymentMethodItemModule),
     forwardRef(() => PaymentGatewayModule),
     forwardRef(() => PaymentCardBrandModule),

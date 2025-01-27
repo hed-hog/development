@@ -477,6 +477,24 @@ data:
     - url: /payment-notification
       method: DELETE
       relations: *a19
+    - url: /payment/:paymentId/payment-notification
+      method: GET
+      relations: &a20
+        role:
+          - where:
+              slug: admin
+    - url: /payment/:paymentId/payment-notification/:id
+      method: GET
+      relations: *a20
+    - url: /payment/:paymentId/payment-notification
+      method: POST
+      relations: *a20
+    - url: /payment/:paymentId/payment-notification/:id
+      method: PATCH
+      relations: *a20
+    - url: /payment/:paymentId/payment-notification
+      method: DELETE
+      relations: *a20
   menu:
     - icon: user-check
       name:
@@ -1068,6 +1086,13 @@ tables:
           table: payment_gateway
           column: id
           onDelete: RESTRICT
+      - name: payment_id
+        isNullable: true
+        type: fk
+        references:
+          table: payment
+          column: id
+          onDelete: RESTRICT
       - name: log
       - type: created_at
       - type: updated_at
@@ -1189,6 +1214,10 @@ screens:
         title:
           en: Data
           pt: Dados
+      payment_notification:
+        title:
+          en: Notifications
+          pt: Notificações
   item:
     title:
       en: Item
@@ -1248,3 +1277,33 @@ screens:
         role:
           - where:
               slug: admin
+routes:
+  - path: payment
+    children:
+      - path: payment-gateway
+        lazy:
+          component: ./pages/payment/payment-gateway/index.tsx
+      - path: payment-status
+        lazy:
+          component: ./pages/payment/payment-status/index.tsx
+      - path: payment-method
+        lazy:
+          component: ./pages/payment/payment-method/index.tsx
+      - path: payment-card-brand
+        lazy:
+          component: ./pages/payment/payment-card-brand/index.tsx
+      - path: discount-type
+        lazy:
+          component: ./pages/payment/discount-type/index.tsx
+      - path: payment
+        lazy:
+          component: ./pages/payment/payment/index.tsx
+      - path: item
+        lazy:
+          component: ./pages/payment/item/index.tsx
+      - path: payment-coupon
+        lazy:
+          component: ./pages/payment/payment-coupon/index.tsx
+      - path: payment-notification
+        lazy:
+          component: ./pages/payment/payment-notification/index.tsx

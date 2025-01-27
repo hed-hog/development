@@ -41,15 +41,6 @@ model bot {
   quotation   quotation[]
 }
 
-model card_brand {
-  id         Int       @id(map: "PK_0a369e0c97a8d3f23e31ff0f195") @default(autoincrement())
-  slug       String    @unique(map: "UQ_e8bcfb5ff7d3106c75d9d918220") @db.VarChar(255)
-  name       String    @db.VarChar(63)
-  created_at DateTime  @default(now()) @db.Timestamp(6)
-  updated_at DateTime  @default(now()) @db.Timestamp(6)
-  payment    payment[]
-}
-
 model coin {
   id           Int            @id(map: "PK_650993fc71b789e4793b62fbcac") @default(autoincrement())
   name         String         @db.VarChar
@@ -95,42 +86,13 @@ model country_locale {
   @@id([country_id, locale_id], map: "PK_df7141e9042d27d998b49a9b325")
 }
 
-model coupon {
-  id               Int           @id(map: "PK_fcbe9d72b60eed35f46dc35a682") @default(autoincrement())
-  discount_type_id Int
-  code             String        @db.VarChar
-  description      String        @db.VarChar
-  value            String        @db.VarChar
-  is_active        Int           @default(0)
-  uses_limit       Int           @default(0)
-  uses_qtd         Int           @default(0)
-  starts_at        DateTime      @db.Timestamp(6)
-  ends_at          DateTime?     @db.Timestamp(6)
-  created_at       DateTime      @default(now()) @db.Timestamp(6)
-  updated_at       DateTime      @default(now()) @db.Timestamp(6)
-  discount_type    discount_type @relation(fields: [discount_type_id], references: [id], onUpdate: NoAction, map: "FK_b0b7a7cb62bfeecabf5c62d9f6b")
-  coupon_item      coupon_item[]
-  payment          payment[]
-}
-
-model coupon_item {
-  coupon_id  Int
-  item_id    Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  coupon     coupon   @relation(fields: [coupon_id], references: [id], onUpdate: NoAction, map: "FK_92ff11ded1ab958a520ae12336e")
-  item       item     @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_a429563725c62dbf44cca4e3b04")
-
-  @@id([coupon_id, item_id], map: "PK_8fef03ad0f2265f3cc63dda0770")
-}
-
 model discount_type {
   id                  Int                   @id(map: "PK_9faf22bda466ac1ca2c126b5a0a") @default(autoincrement())
   slug                String                @unique(map: "UQ_f3ebb1afc775eed2f67d1dad4af") @db.VarChar(255)
   name                String                @db.VarChar(63)
   created_at          DateTime              @default(now()) @db.Timestamp(6)
   updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  coupon              coupon[]
+  payment_coupon      payment_coupon[]
   payment_method_item payment_method_item[]
 }
 
@@ -247,16 +209,6 @@ model gainer_loser {
   coin                coin                @relation(fields: [coin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_da2aef2760ce772803ec96f8a37")
 }
 
-model gateway {
-  id                   Int                    @id(map: "PK_22c5b7ecdd6313de143815f9991") @default(autoincrement())
-  slug                 String                 @unique(map: "UQ_064d40119c336e448d153d4376b") @db.VarChar(255)
-  name                 String                 @db.VarChar(63)
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  payment              payment[]
-  payment_notification payment_notification[]
-}
-
 model global_metric {
   id                                           Int      @id(map: "PK_c304506ed05019b3309a89dd789") @default(autoincrement())
   btc_dominance                                Decimal  @db.Decimal(36, 18)
@@ -296,7 +248,7 @@ model item {
   price               Decimal               @db.Decimal
   created_at          DateTime              @default(now()) @db.Timestamp(6)
   updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  coupon_item         coupon_item[]
+  payment_coupon_item payment_coupon_item[]
   payment_item        payment_item[]
   payment_method_item payment_method_item[]
 }
@@ -446,31 +398,32 @@ model operation {
 }
 
 model payment {
-  id             Int             @id(map: "PK_fcaec7df5adf9cac408c686b2ab") @default(autoincrement())
-  slug           String          @unique(map: "UQ_865d8996a94ef2df5e9eb829bf4") @db.VarChar(255)
-  person_id      Int?
-  gateway_id     Int
-  amount         Decimal         @db.Decimal(10, 2)
-  status_id      Int
-  document       String?         @db.VarChar(14)
-  payment_at     DateTime?       @db.Timestamp(6)
-  currency       String          @db.VarChar(3)
-  method_id      Int?
-  brand_id       Int?
-  installments   Int             @default(1)
-  delivered      Int             @default(0)
-  coupon_id      Int?
-  discount       Decimal         @default(0) @db.Decimal
-  created_at     DateTime        @default(now()) @db.Timestamp(6)
-  updated_at     DateTime        @default(now()) @db.Timestamp(6)
-  person         person?         @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1a62106f2848bb67d1e816a3458")
-  coupon         coupon?         @relation(fields: [coupon_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_3aeb69bdbcf05f4cf0e2249c64b")
-  card_brand     card_brand?     @relation(fields: [brand_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4c81f8da826394b0b4cd30374cd")
-  payment_method payment_method? @relation(fields: [method_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_7744c2b2dd932c9cf42f2b9bc3a")
-  gateway        gateway         @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_8cd60dcc29059b7a42ea42b0eda")
-  payment_status payment_status  @relation(fields: [status_id], references: [id], onUpdate: NoAction, map: "FK_b59e2e874b077ea7acf724e4711")
-  payment_item   payment_item[]
-  payment_value  payment_value[]
+  id                   Int                    @id(map: "PK_fcaec7df5adf9cac408c686b2ab") @default(autoincrement())
+  slug                 String                 @unique(map: "UQ_865d8996a94ef2df5e9eb829bf4") @db.VarChar(255)
+  person_id            Int?
+  gateway_id           Int
+  amount               Decimal                @db.Decimal(10, 2)
+  status_id            Int
+  document             String?                @db.VarChar(14)
+  payment_at           DateTime?              @db.Timestamp(6)
+  currency             String                 @db.VarChar(3)
+  method_id            Int?
+  brand_id             Int?
+  installments         Int                    @default(1)
+  delivered            Int                    @default(0)
+  coupon_id            Int?
+  discount             Decimal                @default(0) @db.Decimal
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  person               person?                @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1a62106f2848bb67d1e816a3458")
+  coupon               payment_coupon?        @relation(fields: [coupon_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_3aeb69bdbcf05f4cf0e2249c64b")
+  card_brand           payment_card_brand?    @relation(fields: [brand_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4c81f8da826394b0b4cd30374cd")
+  payment_method       payment_method?        @relation(fields: [method_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_7744c2b2dd932c9cf42f2b9bc3a")
+  gateway              payment_gateway        @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_8cd60dcc29059b7a42ea42b0eda")
+  payment_status       payment_status         @relation(fields: [status_id], references: [id], onUpdate: NoAction, map: "FK_b59e2e874b077ea7acf724e4711")
+  payment_item         payment_item[]
+  payment_notification payment_notification[]
+  payment_value        payment_value[]
 }
 
 model payment_item {
@@ -510,12 +463,14 @@ model payment_method_item {
 }
 
 model payment_notification {
-  id         Int      @id(map: "PK_ae851104ce3761a083209783d81") @default(autoincrement())
+  id         Int             @id(map: "PK_ae851104ce3761a083209783d81") @default(autoincrement())
   gateway_id Int
-  log        String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  gateway    gateway  @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_6392f2cbf81b291977ddc5c36ce")
+  payment_id Int?
+  log        String          @db.VarChar
+  created_at DateTime        @default(now()) @db.Timestamp(6)
+  updated_at DateTime        @default(now()) @db.Timestamp(6)
+  gateway    payment_gateway @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_6392f2cbf81b291977ddc5c36ce")
+  payment    payment?        @relation(fields: [payment_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_be4df3133dfcfbfd712d09a5fed")
 }
 
 model payment_status {
@@ -1286,6 +1241,53 @@ model subscription_plan {
   duration   subscription_plan_duration_enum
   created_at DateTime                        @default(now()) @db.Timestamp(6)
   updated_at DateTime                        @default(now()) @db.Timestamp(6)
+}
+
+model payment_card_brand {
+  id         Int       @id(map: "PK_a6ea58ffbbb38da4bbddebaf3f8") @default(autoincrement())
+  slug       String    @unique(map: "UQ_7274a61eee5e76dc7e8455bca89") @db.VarChar(255)
+  name       String    @db.VarChar(63)
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
+  payment    payment[]
+}
+
+model payment_coupon {
+  id                  Int                   @id(map: "PK_3aeb69bdbcf05f4cf0e2249c64b") @default(autoincrement())
+  discount_type_id    Int
+  code                String                @db.VarChar
+  description         String                @db.VarChar
+  value               String                @db.VarChar
+  is_active           Int                   @default(0)
+  uses_limit          Int                   @default(0)
+  uses_qtd            Int                   @default(0)
+  starts_at           DateTime              @db.Timestamp(6)
+  ends_at             DateTime?             @db.Timestamp(6)
+  created_at          DateTime              @default(now()) @db.Timestamp(6)
+  updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  payment             payment[]
+  discount_type       discount_type         @relation(fields: [discount_type_id], references: [id], onUpdate: NoAction, map: "FK_fde4af52e64ecd3aa511d9451a3")
+  payment_coupon_item payment_coupon_item[]
+}
+
+model payment_coupon_item {
+  id             Int            @id(map: "PK_88af454778b65a1b203438a8fff") @default(autoincrement())
+  coupon_id      Int
+  item_id        Int
+  created_at     DateTime       @default(now()) @db.Timestamp(6)
+  updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  payment_coupon payment_coupon @relation(fields: [coupon_id], references: [id], onUpdate: NoAction, map: "FK_052a6599acb785bcbf91e5f052e")
+  item           item           @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_b3ce7e16e10ae5463a54723d5df")
+}
+
+model payment_gateway {
+  id                   Int                    @id(map: "PK_8cd60dcc29059b7a42ea42b0eda") @default(autoincrement())
+  slug                 String                 @unique(map: "UQ_915a5db40fb02aed4fdec587771") @db.VarChar(255)
+  name                 String                 @db.VarChar(63)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  payment              payment[]
+  payment_notification payment_notification[]
 }
 
 enum route_method_enum {
