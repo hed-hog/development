@@ -1,3 +1,4 @@
+import { IS_PUBLIC_KEY } from '@hedhog/core';
 import {
   CanActivate,
   ExecutionContext,
@@ -7,7 +8,6 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { AuthService } from '../auth.service';
-import { IS_PUBLIC_KEY } from '@hedhog/core';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -22,22 +22,26 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (isPublic) {
-      return true;
-    }
-
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException();
+      if (isPublic) {
+        return true;
+      } else {
+        throw new UnauthorizedException();
+      }
     }
     try {
       const payload = await this.auth.verifyToken(token);
 
       request['auth'] = payload;
     } catch (error) {
-      throw new UnauthorizedException(error);
+      if (isPublic) {
+        return true;
+      } else {
+        throw new UnauthorizedException(error);
+      }
     }
     return true;
   }
