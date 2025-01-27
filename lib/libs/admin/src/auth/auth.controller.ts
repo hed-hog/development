@@ -1,3 +1,4 @@
+import { Public, Role, User } from '@hedhog/core';
 import {
   Body,
   Controller,
@@ -6,12 +7,12 @@ import {
   Inject,
   Post,
 } from '@nestjs/common';
-import { Role, Public, User } from '@hedhog/core';
 import { AuthService } from './auth.service';
 import { ForgetDTO } from './dto/forget.dto';
-import { ResetDTO } from './dto/reset.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
+import { ResetDTO } from './dto/reset.dto';
+import { SignupDTO } from './dto/signup.dto';
 import { User as UserType } from './types/user.type';
 
 @Controller('auth')
@@ -19,7 +20,7 @@ export class AuthController {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly service: AuthService,
-  ) { }
+  ) {}
 
   @Role()
   @Get('verify')
@@ -41,14 +42,17 @@ export class AuthController {
 
   @Public()
   @Post('forget')
-  async forget(@Body() {
-    email,
-    subject,
-    body,
-  }: ForgetDTO & {
-    subject: string;
-    body: string;
-  }) {
+  async forget(
+    @Body()
+    {
+      email,
+      subject,
+      body,
+    }: ForgetDTO & {
+      subject: string;
+      body: string;
+    },
+  ) {
     return this.service.forget({
       email,
       subject,
@@ -58,15 +62,17 @@ export class AuthController {
 
   @Public()
   @Post('reset')
-  async reset(@Body() {
-    newPassword,
-    confirmNewPassword,
-    code,
-  }: ResetDTO) {
+  async reset(@Body() { newPassword, confirmNewPassword, code }: ResetDTO) {
     return this.service.resetPassword({
       newPassword,
       confirmNewPassword,
       code,
     });
+  }
+
+  @Public()
+  @Post('signup')
+  async signup(@Body() { fullName, cpf, email, password }: SignupDTO) {
+    return this.service.signup({ fullName, cpf, email, password });
   }
 }
