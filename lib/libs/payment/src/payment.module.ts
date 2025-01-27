@@ -10,6 +10,7 @@ import { GatewayModule } from './gateway/gateway.module';
 import { ItemModule } from './item/item.module';
 import { PaymentItemModule } from './payment-item/payment-item.module';
 import { PaymentMethodModule } from './payment-method/payment-method.module';
+import { PaymentNotificationModule } from './payment-notification/paymentnotification.module';
 import { PaymentStatusModule } from './payment-status/payment-status.module';
 import { PaymentModule as PaymentModule2 } from './payment/payment.module';
 
@@ -28,6 +29,7 @@ import { PaymentModule as PaymentModule2 } from './payment/payment.module';
     forwardRef(() => PaymentModule2),
     forwardRef(() => ItemModule),
     forwardRef(() => PaymentItemModule),
+    forwardRef(() => PaymentNotificationModule),
   ],
   controllers: [],
   providers: [],
