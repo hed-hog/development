@@ -7,8 +7,8 @@
   "payment": "Payment",
   "payment_item": "Items",
   "payment_value": "Data",
+  "payment_notification": "Notification",
   "item": "Item",
   "payment_coupon": "Coupon",
-  "payment_coupon_item": "Items",
-  "payment_notification": "Notification"
+  "payment_coupon_item": "Items"
 }

@@ -18,8 +18,7 @@ data:
             description:
               en: The payment provider to use
               pt: O provedor de pagamento a utilizar
-            value: en
-            user_override: true
+            value: mercado-pago
           - slug: payment-mercado-pago-token
             type: string
             name:
@@ -28,8 +27,8 @@ data:
             description:
               en: The token to use with Mercado Pago
               pt: O token a utilizar com o Mercado Pago
-            value: ""
-          - slug: payment-mercado-pago-client-id
+            value: ''
+          - slug: payment-mercado-pago-public-key
             type: string
             name:
               en: Mercado Pago Client ID
@@ -37,7 +36,16 @@ data:
             description:
               en: The client ID to use with Mercado Pago
               pt: O ID do cliente a utilizar com o Mercado Pago
-            value: ""
+            value: ''
+          - slug: payment-currency
+            type: string
+            name:
+              en: Currency
+              pt: Moeda
+            description:
+              en: The currency to use
+              pt: A moeda a utilizar
+            value: BRL
   payment_gateway:
     - name: Stripe
       slug: stripe
@@ -384,16 +392,16 @@ data:
         role:
           - where:
               slug: admin
-    - url: /payment-coupon-item
+    - url: /payment-coupon/:couponId/payment-coupon-item
       method: POST
       relations: *a14
-    - url: /payment-coupon-item/:coupon_id
+    - url: /payment-coupon/:couponId/payment-coupon-item/:coupon_id
       method: GET
       relations: *a14
-    - url: /payment-coupon-item/:coupon_id
+    - url: /payment-coupon/:couponId/payment-coupon-item/:coupon_id
       method: PATCH
       relations: *a14
-    - url: /payment-coupon-item
+    - url: /payment-coupon/:couponId/payment-coupon-item
       method: DELETE
       relations: *a14
     - url: /payment/:paymentId/payment-item
@@ -477,6 +485,24 @@ data:
     - url: /payment-notification
       method: DELETE
       relations: *a19
+    - url: /payment/:paymentId/payment-notification
+      method: GET
+      relations: &a20
+        role:
+          - where:
+              slug: admin
+    - url: /payment/:paymentId/payment-notification/:id
+      method: GET
+      relations: *a20
+    - url: /payment/:paymentId/payment-notification
+      method: POST
+      relations: *a20
+    - url: /payment/:paymentId/payment-notification/:id
+      method: PATCH
+      relations: *a20
+    - url: /payment/:paymentId/payment-notification
+      method: DELETE
+      relations: *a20
   menu:
     - icon: user-check
       name:
@@ -1023,16 +1049,20 @@ tables:
           column: id
           onDelete: RESTRICT
       - name: code
+        isUnique: true
       - name: description
+        isNullable: true
       - name: value
-      - name: is_active
-        type: int
-        default: 0
+      - name: active
+        type: boolean
+        default: true
       - name: uses_limit
         type: int
-        default: 0
+        isNullable: true
+        unsigned: true
       - name: uses_qtd
         type: int
+        unsigned: true
         default: 0
       - type: timestamp
         name: starts_at
@@ -1066,6 +1096,13 @@ tables:
         type: fk
         references:
           table: payment_gateway
+          column: id
+          onDelete: RESTRICT
+      - name: payment_id
+        isNullable: true
+        type: fk
+        references:
+          table: payment
           column: id
           onDelete: RESTRICT
       - name: log
@@ -1189,6 +1226,10 @@ screens:
         title:
           en: Data
           pt: Dados
+      payment_notification:
+        title:
+          en: Notifications
+          pt: Notificações
   item:
     title:
       en: Item
@@ -1248,3 +1289,33 @@ screens:
         role:
           - where:
               slug: admin
+routes:
+  - path: payment
+    children:
+      - path: payment-gateway
+        lazy:
+          component: ./pages/payment/payment-gateway/index.tsx
+      - path: payment-status
+        lazy:
+          component: ./pages/payment/payment-status/index.tsx
+      - path: payment-method
+        lazy:
+          component: ./pages/payment/payment-method/index.tsx
+      - path: payment-card-brand
+        lazy:
+          component: ./pages/payment/payment-card-brand/index.tsx
+      - path: discount-type
+        lazy:
+          component: ./pages/payment/discount-type/index.tsx
+      - path: payment
+        lazy:
+          component: ./pages/payment/payment/index.tsx
+      - path: item
+        lazy:
+          component: ./pages/payment/item/index.tsx
+      - path: payment-coupon
+        lazy:
+          component: ./pages/payment/payment-coupon/index.tsx
+      - path: payment-notification
+        lazy:
+          component: ./pages/payment/payment-notification/index.tsx

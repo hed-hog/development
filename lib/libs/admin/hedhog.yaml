@@ -86,26 +86,6 @@ data:
       method: PATCH
     - url: /screen
       method: DELETE
-    - url: /setting
-      method: GET
-    - url: /setting/group/:slug
-      method: GET
-    - url: /setting/group
-      method: GET
-    - url: /setting/:settingId
-      method: GET
-    - url: /setting
-      method: POST
-    - url: /setting
-      method: PUT
-    - url: /setting/:slug
-      method: PUT
-    - url: /setting/user/:slug
-      method: PUT
-    - url: /setting/:settingId
-      method: PATCH
-    - url: /setting
-      method: DELETE
     - url: /user
       method: GET
     - url: /user/:userId/role
@@ -301,47 +281,6 @@ data:
         en: Route
         pt: Rotas
       slug: /management/route
-    - url: /management/setting
-      icon: settings
-      name:
-        en: Setting
-        pt: Configurações
-      slug: /management/setting
-    - menu_id:
-        where:
-          slug: /management
-      slug: /settings
-      icon: settings
-      name:
-        en: Settings
-        pt: Configurações
-    - menu_id:
-        where:
-          slug: /settings
-      name:
-        en: Setting Group
-        pt: Grupo de Configuração
-      icon: settings
-      url: /settings/setting-group
-      slug: /settings/setting-group
-    - menu_id:
-        where:
-          slug: /settings
-      name:
-        en: Setting User
-        pt: Configuração de Usuário
-      icon: user-cog
-      url: /settings/setting-user
-      slug: /settings/setting-user
-    - menu_id:
-        where:
-          slug: /settings
-      name:
-        en: Locale
-        pt: Locale
-      icon: world
-      url: /settings/locale
-      slug: /settings/locale
   screen:
     - slug: /management/user
       icon: user
@@ -408,48 +347,6 @@ data:
           - where:
               url:
                 like: /route%
-    - slug: /management/setting
-      icon: settings
-      name:
-        en: Setting
-        pt: Configurações
-      description:
-        en: Manage system setting and configurations.
-        pt: Gerenciar configurações e definições do sistema.
-      relations:
-        route:
-          - where:
-              url:
-                like: /setting%
-    - name:
-        en: Setting Group
-        pt: Grupo de Configuração
-      slug: /settings/setting-group
-      description:
-        en: Screen to manage a group of settings
-        pt: Tela para gerenciar grupo de configurações
-      icon: settings
-    - name:
-        en: Setting User
-        pt: Configuração de Usuário
-      slug: /settings/setting-user
-      description:
-        en: Screen to manage user settings
-        pt: Tela para gerenciar configurações de usuário
-      icon: user-cog
-    - name:
-        en: Locale
-        pt: Locale
-      slug: /settings/locale
-      description:
-        en: Screen to manage locale
-        pt: Tela para gerenciar localização/tradução
-      icon: world
-      relations:
-        route:
-          - where:
-              url:
-                like: /locale%
   multifactor:
     - name:
         en: Email
@@ -880,28 +777,6 @@ tables:
           table: route
           column: id
           onDelete: CASCADE
-      - type: created_at
-      - type: updated_at
-    ifNotExists: true
-  setting_user:
-    columns:
-      - name: user_id
-        type: fk
-        isPrimary: true
-        references:
-          table: user
-          column: id
-          onDelete: CASCADE
-      - name: setting_id
-        type: fk
-        isPrimary: true
-        references:
-          table: setting
-          column: id
-          onDelete: CASCADE
-      - name: value
-        length: 1023
-        isNullable: true
       - type: created_at
       - type: updated_at
     ifNotExists: true

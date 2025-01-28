@@ -1,7 +1,7 @@
-import { DeleteDTO } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 export declare class PaymentService {
     private readonly prismaService;
@@ -18,41 +18,63 @@ export declare class PaymentService {
     }>;
     get(id: number): Promise<{
         currency: string;
-        document: string;
+        document: string | null;
         delivered: number;
         id: number;
         created_at: Date;
         updated_at: Date;
         slug: string;
-        person_id: number;
+        person_id: number | null;
         gateway_id: number;
         amount: import("@prisma/client/runtime/library").Decimal;
         status_id: number;
         payment_at: Date | null;
-        method_id: number;
+        method_id: number | null;
         brand_id: number | null;
         installments: number;
+        coupon_id: number | null;
+        discount: import("@prisma/client/runtime/library").Decimal;
     }>;
-    create(data: CreateDTO): Promise<{}>;
+    create(data: CreateDTO): Promise<{
+        currency: string;
+        document: string | null;
+        delivered: number;
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        slug: string;
+        person_id: number | null;
+        gateway_id: number;
+        amount: import("@prisma/client/runtime/library").Decimal;
+        status_id: number;
+        payment_at: Date | null;
+        method_id: number | null;
+        brand_id: number | null;
+        installments: number;
+        coupon_id: number | null;
+        discount: import("@prisma/client/runtime/library").Decimal;
+    }>;
     update({ id, data }: {
         id: number;
         data: UpdateDTO;
     }): Promise<{
         currency: string;
-        document: string;
+        document: string | null;
         delivered: number;
         id: number;
         created_at: Date;
         updated_at: Date;
         slug: string;
-        person_id: number;
+        person_id: number | null;
         gateway_id: number;
         amount: import("@prisma/client/runtime/library").Decimal;
         status_id: number;
         payment_at: Date | null;
-        method_id: number;
+        method_id: number | null;
         brand_id: number | null;
         installments: number;
+        coupon_id: number | null;
+        discount: import("@prisma/client/runtime/library").Decimal;
     }>;
     delete({ ids }: DeleteDTO): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }

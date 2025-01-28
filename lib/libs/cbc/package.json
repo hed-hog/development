@@ -33,7 +33,11 @@
     "@hedhog/subscription": "latest"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@hedhog/admin": "^0.46.6",
+=======
+    "@hedhog/admin": "^0.36.1",
+>>>>>>> 8d7545cf68dbf82d55dae0aaa44593ea89db6933
     "@hedhog/contact": "^0.7.56",
     "@hedhog/country": "^0.36.1",
     "@hedhog/file": "^0.28.1",

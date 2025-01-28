@@ -1,81 +1,65 @@
-import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { SettingService } from '@hedhog/setting';
-import { AbstractProvider } from './provider/abstract,provider';
-export declare class CheckoutService {
+import { HttpService } from '@nestjs/axios';
+import { OnModuleInit } from '@nestjs/common';
+import { PaymentService } from '../payment/payment.service';
+import { CreateDTO } from './dto/create.dto';
+import { AbstractProvider } from './provider/abstract.provider';
+export declare class CheckoutService implements OnModuleInit {
+    private readonly httpService;
     private readonly prismaService;
-    private readonly paginationService;
     private readonly settingService;
+    private readonly paymentService;
+    private providerLoadedAt;
+    private provider;
     private providerId;
     private setting;
-    constructor(prismaService: PrismaService, paginationService: PaginationService, settingService: SettingService);
+    constructor(httpService: HttpService, prismaService: PrismaService, settingService: SettingService, paymentService: PaymentService);
+    onModuleInit(): Promise<void>;
+    init({ items, slug, userId, couponId, }: {
+        items: number[];
+        slug?: string;
+        userId?: number;
+        couponId?: number;
+    }): Promise<any>;
+    private createPayment;
+    private getPaymentItems;
+    private updatePaymentItems;
+    getPaymentSettings(): Promise<{
+        publicKey: string;
+    } | {
+        publicKey?: undefined;
+    }>;
     getProvider(): Promise<AbstractProvider>;
-    createPaymentIntent(amount: number, currency: string): Promise<any>;
+    private getProviderData;
+    createPaymentIntent({ token, paymentMethodId, issuerId, installments, identificationNumber, orderId, cardFirstSixDigits, cardLastFourDigits, name, email, phone, couponId, }: CreateDTO): Promise<any>;
     createSubscription(priceId: string, customerId: string): Promise<any>;
-    init(slug?: string, person_id?: number): Promise<{
-        card_brand: {
-            name: string;
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            slug: string;
-        };
-        person: {
-            name: string;
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            type_id: number;
-            photo_id: number | null;
-            birth_at: Date | null;
-        };
-        payment_item: ({
-            item: {
-                name: string;
-                id: number;
-                created_at: Date;
-                updated_at: Date;
-                slug: string;
-                price: import("@prisma/client/runtime/library").Decimal;
-            };
-        } & {
-            delivered: number;
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            item_id: number;
-            payment_id: number;
-            unit_price: import("@prisma/client/runtime/library").Decimal;
-        })[];
-        payment_method: {
-            name: string;
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            slug: string;
-        };
-        payment_status: {
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            slug: string;
-        };
-    } & {
+    getNewSlug(): any;
+    private getPersonId;
+    private getPaymentBySlug;
+    private getPaymentDetails;
+    setCoupon(couponCode: string, paymentSlug: string): Promise<{
         currency: string;
-        document: string;
+        document: string | null;
         delivered: number;
         id: number;
         created_at: Date;
         updated_at: Date;
         slug: string;
-        person_id: number;
+        person_id: number | null;
         gateway_id: number;
         amount: import("@prisma/client/runtime/library").Decimal;
         status_id: number;
         payment_at: Date | null;
-        method_id: number;
+        method_id: number | null;
         brand_id: number | null;
         installments: number;
+        coupon_id: number | null;
+        discount: import("@prisma/client/runtime/library").Decimal;
     }>;
+    private getPaymentWithItems;
+    private getCouponWithItems;
+    private getItemsFromPaymentAndCoupon;
+    private applyCouponDiscount;
 }
 //# sourceMappingURL=checkout.service.d.ts.map
