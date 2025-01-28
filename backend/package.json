@@ -76,5 +76,9 @@
     "tsconfig-paths": "^4.2.0",
     "typeorm": "^0.3.20",
     "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "@hedhog/cbc": "^0.46.2",
+    "@hedhog/locale": "^0.46.2"
   }
 }
