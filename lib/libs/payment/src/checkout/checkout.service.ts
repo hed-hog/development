@@ -35,7 +35,11 @@ export class CheckoutService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.getProvider();
+    try {
+      await this.getProvider();
+    } catch (error) {
+      console.error('CheckoutService', 'ERROR', error);
+    }
   }
 
   async init({
@@ -56,14 +60,23 @@ export class CheckoutService implements OnModuleInit {
     }
 
     await this.getProvider();
+
+    console.log('provider loaded', this.providerId);
+
     const personId = await this.getPersonId(userId);
+
+    console.log('personId', personId);
 
     let payment = await this.getPaymentBySlug(slug, personId);
 
+    console.log('payment 1', payment);
+
     if (!payment) {
       payment = await this.createPayment(items, slug, personId);
+      console.log('payment 2', payment);
     } else {
-      await this.updatePaymentItems(payment.id, items);
+      payment = await this.updatePaymentItems(payment.id, items);
+      console.log('payment 3', payment);
     }
 
     return this.getPaymentDetails(payment.id);
@@ -115,7 +128,7 @@ export class CheckoutService implements OnModuleInit {
 
     const item = await this.getPaymentItems(items);
 
-    await this.prismaService.payment.update({
+    const payment = await this.prismaService.payment.update({
       where: { id: paymentId },
       data: {
         amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
@@ -129,6 +142,8 @@ export class CheckoutService implements OnModuleInit {
         unit_price: i.price,
       })),
     });
+
+    return payment;
   }
 
   async getPaymentSettings() {
@@ -275,6 +290,7 @@ export class CheckoutService implements OnModuleInit {
   }
 
   private async getPaymentDetails(paymentId: number): Promise<any> {
+    console.log('getPaymentDetails', paymentId);
     return this.prismaService.payment.findUnique({
       where: { id: paymentId },
       include: {
@@ -283,6 +299,7 @@ export class CheckoutService implements OnModuleInit {
         payment_card_brand: true,
         payment_status: true,
         person: true,
+        payment_coupon: true,
       },
     });
   }
