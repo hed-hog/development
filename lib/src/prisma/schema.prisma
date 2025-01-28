@@ -252,10 +252,10 @@ model user {
 }
 
 model altcoin_season {
-  id           Int      @id(map: "PK_ed7c6e81ce1ec7bba7751017331") @default(autoincrement())
-  altcoinIndex Int
-  created_at   DateTime @default(now()) @db.Timestamp(6)
-  updated_at   DateTime @default(now()) @db.Timestamp(6)
+  id            Int      @id(map: "PK_ed7c6e81ce1ec7bba7751017331") @default(autoincrement())
+  altcoin_index Int
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+  updated_at    DateTime @default(now()) @db.Timestamp(6)
 }
 
 model banking {
