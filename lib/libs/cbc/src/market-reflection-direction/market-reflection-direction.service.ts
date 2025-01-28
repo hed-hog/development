@@ -11,7 +11,7 @@ import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
-export class AltcoinSeasonService {
+export class MarketReflectionDirectionService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -20,7 +20,7 @@ export class AltcoinSeasonService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['altcoin_index'];
+    const fields = ['direction'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams
@@ -31,7 +31,7 @@ export class AltcoinSeasonService {
     }
 
     return this.paginationService.paginate(
-      this.prismaService.altcoin_season,
+      this.prismaService.market_reflection_direction,
       paginationParams,
       {
         where: {
@@ -42,19 +42,19 @@ export class AltcoinSeasonService {
   }
 
   async get(id: number) {
-    return this.prismaService.altcoin_season.findUnique({
+    return this.prismaService.market_reflection_direction.findUnique({
       where: { id: id }
     });
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.altcoin_season.create({
+    return this.prismaService.market_reflection_direction.create({
       data
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.altcoin_season.update({
+    return this.prismaService.market_reflection_direction.update({
       where: { id: id },
       data
     });
@@ -67,7 +67,7 @@ export class AltcoinSeasonService {
       );
     }
 
-    return this.prismaService.altcoin_season.deleteMany({
+    return this.prismaService.market_reflection_direction.deleteMany({
       where: {
         id: {
           in: ids

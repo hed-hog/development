@@ -1,3 +1,4 @@
+import { MarketReflectionDirectionModule } from './market-reflection-direction/market-reflection-direction.module';
 import { AdminModule } from '@hedhog/admin';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
@@ -65,6 +66,7 @@ import { TradeSignalTypeModule } from './trade-signal-type/trade-signal-type.mod
     forwardRef(() => EventTypeModule),
     forwardRef(() => EventModule),
     forwardRef(() => EventOccurrenceModule),
+    forwardRef(() => MarketReflectionDirectionModule),
   ],
   controllers: [],
   providers: [BankingService],

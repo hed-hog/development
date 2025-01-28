@@ -1,4 +1,5 @@
 {
+  "market_reflection_direction.direction": "Direction",
   "indice_type.slug": "type",
   "indice.bot_id": "Bot",
   "indice.type_id": "Type",
