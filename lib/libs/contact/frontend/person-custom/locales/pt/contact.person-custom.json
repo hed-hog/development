@@ -1,11 +1,11 @@
 {
-  "create": "Criar pessoa custom",
-  "createText": "Preencha as informações da pessoa custom.",
-  "createTooltip": "Criar nova pessoa custom",
-  "delete": "Deletar pessoa custom",
-  "deleteText": "Tem certeza de que deseja deletar estas pessoas custom?",
-  "deleteTooltip": "Deletar a pessoa custom selecionada",
-  "edit": "Editar pessoa custom",
-  "editText": "Visualizar e editar informações da pessoa custom.",
-  "editTooltip": "Editar a pessoa custom selecionada"
+  "create": "Criar person custom",
+  "createText": "Preencha as informações de person custom.",
+  "createTooltip": "Criar novo person custom",
+  "delete": "Deletar person custom",
+  "deleteText": "Você tem certeza de que deseja deletar esses person custom?",
+  "deleteTooltip": "Deletar o person custom selecionado",
+  "edit": "Editar person custom",
+  "editText": "Visualizar e editar informações de person custom.",
+  "editTooltip": "Editar o person custom selecionado"
 }
