@@ -12,6 +12,8 @@ import { PersonDocumentController } from "./person-document/person-document.cont
 import { PersonDocumentService } from "./person-document/person-document.service";
 import { PersonCustomController } from "./person-custom/person-custom.controller";
 import { PersonCustomService } from "./person-custom/person-custom.service";
+import { PersonUserController } from "./person-user/person-user.controller";
+import { PersonUserService } from "./person-user/person-user.service";
 import { PersonController } from "./person.controller";
 import { PersonService } from "./person.service";
 @Module({
@@ -26,6 +28,7 @@ import { PersonService } from "./person.service";
     PersonContactController,
     PersonDocumentController,
     PersonCustomController,
+    PersonUserController,
     PersonController,
   ],
   providers: [
@@ -34,6 +37,7 @@ import { PersonService } from "./person.service";
     PersonContactService,
     PersonDocumentService,
     PersonCustomService,
+    PersonUserService,
     PersonService,
   ],
   exports: [forwardRef(() => PersonService)],
