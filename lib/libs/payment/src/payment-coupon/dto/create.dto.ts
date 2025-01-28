@@ -1,4 +1,10 @@
-import { IsNumber, IsString, IsOptional } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
@@ -7,15 +13,16 @@ export class CreateDTO {
   @IsString()
   code: string;
 
+  @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @IsString()
   value: string;
 
   @IsOptional()
-  @IsNumber()
-  is_active?: number;
+  @IsBoolean()
+  active?: boolean;
 
   @IsOptional()
   @IsNumber()
@@ -25,10 +32,10 @@ export class CreateDTO {
   @IsNumber()
   uses_qtd?: number;
 
-  @IsString()
+  @IsDateString()
   starts_at: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   ends_at?: string;
 }

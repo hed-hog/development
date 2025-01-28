@@ -2,17 +2,19 @@ import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
-import { PaymentCouponService } from './payment-coupon.service';
+import { PaymentCouponItemController } from './payment-coupon-item/payment-coupon-item.controller';
+import { PaymentCouponItemService } from './payment-coupon-item/payment-coupon-item.service';
 import { PaymentCouponController } from './payment-coupon.controller';
+import { PaymentCouponService } from './payment-coupon.service';
 
 @Module({
   imports: [
     forwardRef(() => AdminModule),
     forwardRef(() => PrismaModule),
-    forwardRef(() => PaginationModule)
+    forwardRef(() => PaginationModule),
   ],
-  controllers: [PaymentCouponController],
-  providers: [PaymentCouponService],
-  exports: [PaymentCouponService]
+  controllers: [PaymentCouponController, PaymentCouponItemController],
+  providers: [PaymentCouponService, PaymentCouponItemService],
+  exports: [PaymentCouponService],
 })
 export class PaymentCouponModule {}

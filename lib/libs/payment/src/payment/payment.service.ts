@@ -4,7 +4,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '@hedhog/core';
@@ -16,7 +16,7 @@ export class PaymentService {
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   async list(paginationParams: PaginationDTO) {
@@ -28,11 +28,11 @@ export class PaymentService {
       'currency',
       'installments',
       'delivered',
-      'discount'
+      'discount',
     ];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams
+      paginationParams,
     );
 
     if (paginationParams.search && !isNaN(+paginationParams.search)) {
@@ -44,44 +44,46 @@ export class PaymentService {
       paginationParams,
       {
         where: {
-          OR
-        }
-      }
+          OR,
+        },
+      },
     );
   }
 
   async get(id: number) {
     return this.prismaService.payment.findUnique({
-      where: { id: id }
+      where: { id: id },
     });
   }
 
   async create(data: CreateDTO) {
     return this.prismaService.payment.create({
-      data
+      data,
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
+    console.log('update', { id, data });
+
     return this.prismaService.payment.update({
       where: { id: id },
-      data
+      data,
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
     return this.prismaService.payment.deleteMany({
       where: {
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }

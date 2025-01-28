@@ -600,7 +600,7 @@ model payment_coupon {
   code                String                @db.VarChar
   description         String                @db.VarChar
   value               String                @db.VarChar
-  is_active           Int                   @default(0)
+  active           Int                   @default(1)
   uses_limit          Int                   @default(0)
   uses_qtd            Int                   @default(0)
   starts_at           DateTime              @db.Timestamp(6)

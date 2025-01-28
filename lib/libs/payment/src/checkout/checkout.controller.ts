@@ -6,10 +6,11 @@ import {
   Get,
   Inject,
   Post,
-  Query,
 } from '@nestjs/common';
 import { CheckoutService } from './checkout.service';
 import { CreateDTO } from './dto/create.dto';
+import { InitDTO } from './dto/init.dto';
+import { SetCouponDTO } from './dto/set-coupon.dto';
 
 @Public()
 @Controller('checkout')
@@ -19,23 +20,32 @@ export class CheckoutController {
     private readonly checkoutService: CheckoutService,
   ) {}
 
-  @Get()
-  async init(@Query('slug') slug: string, @User() user) {
-    return {
-      user,
-      slug,
-    };
-    let personId = user ? user.id : null;
-
-    return this.checkoutService.init(slug);
+  @Get('payment-settings')
+  async paymentSettings() {
+    return this.checkoutService.getPaymentSettings();
   }
 
-  @Post()
+  @Post('payment')
   async payment(
     @Body()
     data: CreateDTO,
   ) {
     return this.checkoutService.createPaymentIntent(data);
+  }
+
+  @Post('init')
+  async init(@Body() { items, slug, couponId }: InitDTO, @User() user) {
+    return this.checkoutService.init({
+      items,
+      couponId,
+      slug,
+      userId: user ? user.id : null,
+    });
+  }
+
+  @Post('coupon')
+  async coupon(@Body() { code, slug }: SetCouponDTO) {
+    return this.checkoutService.setCoupon(code, slug);
   }
 
   @Post('subscription')

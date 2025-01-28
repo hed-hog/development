@@ -1,16 +1,17 @@
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
-import { AbstractProvider } from './abstract,provider';
+import { AbstractProvider } from './abstract.provider';
 
 export class MercadoPagoProvider extends AbstractProvider {
   private baseUrl = 'https://api.mercadopago.com';
 
   constructor(
-    private setting: Record<string, string>,
+    id: number,
+    private readonly setting: Record<string, string>,
     private readonly httpService: HttpService,
   ) {
-    super();
+    super(id);
   }
 
   async createPaymentIntent(): Promise<any> {
