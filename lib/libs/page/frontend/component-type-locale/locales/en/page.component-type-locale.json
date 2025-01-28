@@ -1,11 +1,11 @@
 {
-  "create": "Create component type locale",
+  "create": "Create Component type locale",
   "createText": "Fill the component type locale informations.",
   "createTooltip": "Create new component type locale",
-  "delete": "Delete component type locale",
-  "deleteText": "Are you sure to delete these component type locale?",
-  "deleteTooltip": "Delete the selected component type locale",
-  "edit": "Edit component type locale",
+  "delete": "Delete Component type locale",
+  "deleteText": "Are you sure to delete these component type locales?",
+  "deleteTooltip": "Delete the selected component type locales",
+  "edit": "Edit Component type locale",
   "editText": "View and edit component type locale information.",
-  "editTooltip": "Edit the selected component type locale"
+  "editTooltip": "Edit the selected component type locales"
 }

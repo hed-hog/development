@@ -1,4 +1,15 @@
 tables:
+  market_reflection_direction:
+    columns:
+      - type: pk
+      - name: direction
+        type: varchar
+        isNullable: false
+        locale:
+          en: Direction
+          pt: Direção
+      - type: created_at
+      - type: updated_at
   altcoin_season:
     columns:
       - type: pk
@@ -2883,6 +2894,24 @@ data:
     - url: /event-occurrence
       method: DELETE
       relations: *a32
+    - url: /market-reflection-direction
+      method: GET
+      relations: &a33
+        role:
+          - where:
+              slug: admin
+    - url: /market-reflection-direction
+      method: POST
+      relations: *a33
+    - url: /market-reflection-direction/:id
+      method: GET
+      relations: *a33
+    - url: /market-reflection-direction/:id
+      method: PATCH
+      relations: *a33
+    - url: /market-reflection-direction
+      method: DELETE
+      relations: *a33
   menu:
     - url: /cbc
       icon: coin
@@ -3253,6 +3282,13 @@ data:
       url: /event-occurrence
       slug: event-occurrence
       relations: *a32
+    - name:
+        en: MarketReflectionDirection
+        pt: MarketReflectionDirection
+      icon: file
+      url: /market-reflection-direction
+      slug: market-reflection-direction
+      relations: *a33
   screen:
     - name:
         en: Coin
@@ -3549,6 +3585,14 @@ data:
       description:
         en: Screen to manage event_occurrence
         pt: Tela para gerenciar event_occurrence
+      icon: file
+    - name:
+        en: MarketReflectionDirection
+        pt: MarketReflectionDirection
+      slug: market-reflection-direction
+      description:
+        en: Screen to manage market_reflection_direction
+        pt: Tela para gerenciar market_reflection_direction
       icon: file
   stock_exchange:
     - slug: BYBIT

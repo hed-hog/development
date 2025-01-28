@@ -54,23 +54,9 @@ export class GlobalMetricService {
     });
   }
 
-  async create({
-    btc_dominance,
-    btc_dominance_24h_percentage_change,
-    btc_future,
-    btc_future_change,
-    total_market_cap,
-    total_market_cap_yesterday_percentage_change,
-  }: CreateDTO) {
+  async create(data: CreateDTO) {
     return this.prismaService.global_metric.create({
-      data: {
-        btc_dominance,
-        btc_dominance_24h_percentage_change,
-        btc_future,
-        btc_future_change,
-        total_market_cap,
-        total_market_cap_yesterday_percentage_change,
-      },
+      data,
     });
   }
 

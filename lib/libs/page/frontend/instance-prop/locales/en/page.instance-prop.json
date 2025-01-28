@@ -1,0 +1,11 @@
+{
+  "create": "Create Instance prop",
+  "createText": "Fill the instance prop informations.",
+  "createTooltip": "Create new instance prop",
+  "delete": "Delete Instance prop",
+  "deleteText": "Are you sure to delete these instance props?",
+  "deleteTooltip": "Delete the selected instance props",
+  "edit": "Edit Instance prop",
+  "editText": "View and edit instance prop information.",
+  "editTooltip": "Edit the selected instance props"
+}

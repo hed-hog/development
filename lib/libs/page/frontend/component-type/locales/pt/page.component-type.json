@@ -1,11 +1,11 @@
 {
-  "create": "Criar tipo de componente",
-  "createText": "Preencha as informações do tipo de componente.",
-  "createTooltip": "Criar novo tipo de componente",
-  "delete": "Excluir tipo de componente",
-  "deleteText": "Você tem certeza de que deseja excluir esses tipos de componente?",
-  "deleteTooltip": "Excluir o tipo de componente selecionado",
-  "edit": "Editar tipo de componente",
-  "editText": "Ver e editar informações do tipo de componente.",
-  "editTooltip": "Editar o tipo de componente selecionado"
+  "create": "Create Component type",
+  "createText": "Fill the component type informations.",
+  "createTooltip": "Create new component type",
+  "delete": "Delete Component type",
+  "deleteText": "Are you sure to delete these component types?",
+  "deleteTooltip": "Delete the selected component types",
+  "edit": "Edit Component type",
+  "editText": "View and edit component type information.",
+  "editTooltip": "Edit the selected component types"
 }
