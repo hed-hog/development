@@ -35,6 +35,10 @@ screens:
         title:
           en: Custom
           pt: Personalizado
+      person_user:
+        title:
+          en: Users
+          pt: Usuários
   person_type:
     title:
       en: Person Type
@@ -423,6 +427,16 @@ data:
         role:
           - where:
               slug: admin
+    - name:
+        en: PersonUser
+        pt: PersonUser
+      icon: file
+      url: /person-user
+      slug: person-user
+      relations: &a12
+        role:
+          - where:
+              slug: admin
   route:
     - url: /person/:personId/person-value
       method: GET
@@ -622,6 +636,21 @@ data:
     - url: /person-custom-type
       method: DELETE
       relations: *a11
+    - url: /person/:personId/person-user
+      method: GET
+      relations: *a12
+    - url: /person/:personId/person-user/:id
+      method: GET
+      relations: *a12
+    - url: /person/:personId/person-user
+      method: POST
+      relations: *a12
+    - url: /person/:personId/person-user/:id
+      method: PATCH
+      relations: *a12
+    - url: /person/:personId/person-user
+      method: DELETE
+      relations: *a12
   screen:
     - name:
         en: PersonValue
@@ -710,6 +739,14 @@ data:
       description:
         en: Screen to manage person_custom
         pt: Tela para gerenciar person_custom
+      icon: file
+    - name:
+        en: PersonUser
+        pt: PersonUser
+      slug: person-user
+      description:
+        en: Screen to manage person_user
+        pt: Tela para gerenciar person_user
       icon: file
 tables:
   person_user:

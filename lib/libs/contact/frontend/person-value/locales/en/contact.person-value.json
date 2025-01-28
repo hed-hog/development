@@ -1,11 +1,11 @@
 {
-  "create": "Create person value",
-  "createText": "Fill the person value informations.",
-  "createTooltip": "Create new person value",
-  "delete": "Delete person value",
-  "deleteText": "Are you sure to delete these person value?",
-  "deleteTooltip": "Delete the selected person value",
-  "edit": "Edit person value",
-  "editText": "View and edit person value information.",
-  "editTooltip": "Edit the selected person value"
+  "create": "Create person",
+  "createText": "Fill the person informations.",
+  "createTooltip": "Create new person",
+  "delete": "Delete person",
+  "deleteText": "Are you sure to delete these person?",
+  "deleteTooltip": "Delete the selected person",
+  "edit": "Edit person",
+  "editText": "View and edit person information.",
+  "editTooltip": "Edit the selected person"
 }
