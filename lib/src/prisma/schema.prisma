@@ -597,11 +597,11 @@ model payment_card_brand {
 model payment_coupon {
   id                  Int                   @id(map: "PK_3aeb69bdbcf05f4cf0e2249c64b") @default(autoincrement())
   discount_type_id    Int
-  code                String                @db.VarChar
-  description         String                @db.VarChar
+  code                String                @unique(map: "UQ_668178aba2ee336b898a8f7fc7d") @db.VarChar
+  description         String?               @db.VarChar
   value               String                @db.VarChar
-  active           Int                   @default(1)
-  uses_limit          Int                   @default(0)
+  active              Boolean               @default(true)
+  uses_limit          Int?
   uses_qtd            Int                   @default(0)
   starts_at           DateTime              @db.Timestamp(6)
   ends_at             DateTime?             @db.Timestamp(6)

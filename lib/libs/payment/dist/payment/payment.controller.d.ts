@@ -22,7 +22,6 @@ export declare class PaymentController {
         created_at: Date;
         updated_at: Date;
         slug: string;
-        coupon_id: number | null;
         person_id: number | null;
         gateway_id: number;
         amount: import("@prisma/client/runtime/library").Decimal;
@@ -31,6 +30,7 @@ export declare class PaymentController {
         method_id: number | null;
         brand_id: number | null;
         installments: number;
+        coupon_id: number | null;
         discount: import("@prisma/client/runtime/library").Decimal;
     }>;
     create(data: CreateDTO): Promise<{
@@ -41,7 +41,6 @@ export declare class PaymentController {
         created_at: Date;
         updated_at: Date;
         slug: string;
-        coupon_id: number | null;
         person_id: number | null;
         gateway_id: number;
         amount: import("@prisma/client/runtime/library").Decimal;
@@ -50,6 +49,7 @@ export declare class PaymentController {
         method_id: number | null;
         brand_id: number | null;
         installments: number;
+        coupon_id: number | null;
         discount: import("@prisma/client/runtime/library").Decimal;
     }>;
     update(id: number, data: UpdateDTO): Promise<{
@@ -60,7 +60,6 @@ export declare class PaymentController {
         created_at: Date;
         updated_at: Date;
         slug: string;
-        coupon_id: number | null;
         person_id: number | null;
         gateway_id: number;
         amount: import("@prisma/client/runtime/library").Decimal;
@@ -69,6 +68,7 @@ export declare class PaymentController {
         method_id: number | null;
         brand_id: number | null;
         installments: number;
+        coupon_id: number | null;
         discount: import("@prisma/client/runtime/library").Decimal;
     }>;
     delete(data: DeleteDTO): Promise<import(".prisma/client").Prisma.BatchPayload>;

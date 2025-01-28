@@ -1,58 +1,18 @@
 import { CheckoutService } from './checkout.service';
 import { CreateDTO } from './dto/create.dto';
+import { InitDTO } from './dto/init.dto';
+import { SetCouponDTO } from './dto/set-coupon.dto';
 export declare class CheckoutController {
     private readonly checkoutService;
     constructor(checkoutService: CheckoutService);
-    init(slug: string, user: any): Promise<({
-        card_brand: {
-            name: string;
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            slug: string;
-        };
-        person: {
-            name: string;
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            type_id: number;
-            photo_id: number | null;
-            birth_at: Date | null;
-        };
-        payment_item: ({
-            item: {
-                name: string;
-                id: number;
-                created_at: Date;
-                updated_at: Date;
-                slug: string;
-                price: import("@prisma/client/runtime/library").Decimal;
-            };
-        } & {
-            delivered: number;
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            item_id: number;
-            payment_id: number;
-            unit_price: import("@prisma/client/runtime/library").Decimal;
-            quantity: number;
-        })[];
-        payment_method: {
-            name: string;
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            slug: string;
-        };
-        payment_status: {
-            id: number;
-            created_at: Date;
-            updated_at: Date;
-            slug: string;
-        };
-    } & {
+    paymentSettings(): Promise<{
+        publicKey: string;
+    } | {
+        publicKey?: undefined;
+    }>;
+    payment(data: CreateDTO): Promise<any>;
+    init({ items, slug, couponId }: InitDTO, user: any): Promise<any>;
+    coupon({ code, slug }: SetCouponDTO): Promise<{
         currency: string;
         document: string | null;
         delivered: number;
@@ -60,7 +20,6 @@ export declare class CheckoutController {
         created_at: Date;
         updated_at: Date;
         slug: string;
-        coupon_id: number | null;
         person_id: number | null;
         gateway_id: number;
         amount: import("@prisma/client/runtime/library").Decimal;
@@ -69,12 +28,9 @@ export declare class CheckoutController {
         method_id: number | null;
         brand_id: number | null;
         installments: number;
+        coupon_id: number | null;
         discount: import("@prisma/client/runtime/library").Decimal;
-    }) | {
-        user: any;
-        slug: string;
     }>;
-    payment(data: CreateDTO): Promise<any>;
     subscription({ priceId, customerId }: any): Promise<any>;
 }
 //# sourceMappingURL=checkout.controller.d.ts.map

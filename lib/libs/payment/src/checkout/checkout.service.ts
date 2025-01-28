@@ -331,7 +331,7 @@ export class CheckoutService implements OnModuleInit {
     return this.prismaService.payment_coupon.findFirst({
       where: {
         code,
-        active: 1,
+        active: true,
         starts_at: { lte: new Date() },
         OR: [{ ends_at: { gte: new Date() } }, { ends_at: null }],
       },
