@@ -221,6 +221,81 @@ const routes = [
           },
         ],
       },
+      {
+        path: "payment",
+        children: [
+          {
+            path: "discount-type",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/discount-type/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "item",
+            lazy: async () => ({
+              Component: (await import("./pages/payment/item/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "payment",
+            lazy: async () => ({
+              Component: (await import("./pages/payment/payment/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "payment-card-brand",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-card-brand/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-coupon",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-coupon/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-gateway",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-gateway/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-method",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-method/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-notification",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-notification/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-status",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-status/index.tsx")
+              ).default,
+            }),
+          },
+        ],
+      },
     ],
   },
 

@@ -1,9 +1,9 @@
 import { Notification } from './Notification';
 import { Quotation } from './Quotation';
 import { Simulation } from './Simulation';
-import { TopCoin } from './TopCoin';
 import { Operation } from './Operation';
 import { GainerLoser } from './GainerLoser';
+import { TopCoin } from './TopCoin';
 
 export type Coin = {
   id?: number;
@@ -14,7 +14,7 @@ export type Coin = {
   notification?: Notification[];
   quotation?: Quotation[];
   simulation?: Simulation[];
-  top_coin?: TopCoin[];
   operation?: Operation[];
   gainer_loser?: GainerLoser[];
+  top_coin?: TopCoin[];
 }

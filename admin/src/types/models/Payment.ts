@@ -1,11 +1,12 @@
 import { Person } from './Person';
-import { Gateway } from './Gateway';
+import { PaymentGateway } from './PaymentGateway';
 import { PaymentStatus } from './PaymentStatus';
 import { PaymentMethod } from './PaymentMethod';
-import { CardBrand } from './CardBrand';
-import { Coupon } from './Coupon';
+import { PaymentCardBrand } from './PaymentCardBrand';
+import { PaymentCoupon } from './PaymentCoupon';
 import { PaymentItem } from './PaymentItem';
 import { PaymentValue } from './PaymentValue';
+import { PaymentNotification } from './PaymentNotification';
 
 export type Payment = {
   id?: number;
@@ -26,11 +27,12 @@ export type Payment = {
   created_at?: string;
   updated_at?: string;
   person?: Person;
-  gateway?: Gateway;
+  payment_gateway?: PaymentGateway;
   payment_status?: PaymentStatus;
   payment_method?: PaymentMethod;
-  card_brand?: CardBrand;
-  coupon?: Coupon;
+  payment_card_brand?: PaymentCardBrand;
+  payment_coupon?: PaymentCoupon;
   payment_item?: PaymentItem[];
   payment_value?: PaymentValue[];
+  payment_notification?: PaymentNotification[];
 }

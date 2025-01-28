@@ -1,6 +1,6 @@
 import { PaymentItem } from './PaymentItem';
 import { PaymentMethodItem } from './PaymentMethodItem';
-import { CouponItem } from './CouponItem';
+import { PaymentCouponItem } from './PaymentCouponItem';
 
 export type Item = {
   id?: number;
@@ -11,5 +11,5 @@ export type Item = {
   updated_at?: string;
   payment_item?: PaymentItem[];
   payment_method_item?: PaymentMethodItem[];
-  coupon_item?: CouponItem[];
+  payment_coupon_item?: PaymentCouponItem[];
 }
