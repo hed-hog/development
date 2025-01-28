@@ -80,6 +80,60 @@ data:
     - url: /component-prop-type
       method: DELETE
       relations: *a3
+    - url: /component-prop
+      method: GET
+      relations: &a4
+        role:
+          - where:
+              slug: admin
+    - url: /component-prop
+      method: POST
+      relations: *a4
+    - url: /component-prop/:id
+      method: GET
+      relations: *a4
+    - url: /component-prop/:id
+      method: PATCH
+      relations: *a4
+    - url: /component-prop
+      method: DELETE
+      relations: *a4
+    - url: /instance
+      method: GET
+      relations: &a5
+        role:
+          - where:
+              slug: admin
+    - url: /instance
+      method: POST
+      relations: *a5
+    - url: /instance/:id
+      method: GET
+      relations: *a5
+    - url: /instance/:id
+      method: PATCH
+      relations: *a5
+    - url: /instance
+      method: DELETE
+      relations: *a5
+    - url: /instance-prop
+      method: GET
+      relations: &a6
+        role:
+          - where:
+              slug: admin
+    - url: /instance-prop
+      method: POST
+      relations: *a6
+    - url: /instance-prop/:prop_id
+      method: GET
+      relations: *a6
+    - url: /instance-prop/:prop_id
+      method: PATCH
+      relations: *a6
+    - url: /instance-prop
+      method: DELETE
+      relations: *a6
   menu:
     - name:
         en: ComponentType
@@ -102,6 +156,27 @@ data:
       url: /component-prop-type
       slug: component-prop-type
       relations: *a3
+    - name:
+        en: ComponentProp
+        pt: ComponentProp
+      icon: file
+      url: /component-prop
+      slug: component-prop
+      relations: *a4
+    - name:
+        en: Instance
+        pt: Instance
+      icon: file
+      url: /instance
+      slug: instance
+      relations: *a5
+    - name:
+        en: InstanceProp
+        pt: InstanceProp
+      icon: file
+      url: /instance-prop
+      slug: instance-prop
+      relations: *a6
   screen:
     - name:
         en: ComponentType
@@ -126,6 +201,30 @@ data:
       description:
         en: Screen to manage component_prop_type
         pt: Tela para gerenciar component_prop_type
+      icon: file
+    - name:
+        en: ComponentProp
+        pt: ComponentProp
+      slug: component-prop
+      description:
+        en: Screen to manage component_prop
+        pt: Tela para gerenciar component_prop
+      icon: file
+    - name:
+        en: Instance
+        pt: Instance
+      slug: instance
+      description:
+        en: Screen to manage instance
+        pt: Tela para gerenciar instance
+      icon: file
+    - name:
+        en: InstanceProp
+        pt: InstanceProp
+      slug: instance-prop
+      description:
+        en: Screen to manage instance_prop
+        pt: Tela para gerenciar instance_prop
       icon: file
 tables:
   component_type:

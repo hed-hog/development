@@ -1,11 +1,11 @@
 {
-  "create": "Criar tipo de componente",
-  "createText": "Preencha as informações do tipo de componente.",
-  "createTooltip": "Criar novo tipo de componente",
-  "delete": "Deletar tipo de componente",
-  "deleteText": "Tem certeza de que deseja deletar estes tipos de componente?",
-  "deleteTooltip": "Deletar o tipo de componente selecionado",
-  "edit": "Editar tipo de componente",
-  "editText": "Visualizar e editar informações do tipo de componente.",
-  "editTooltip": "Editar o tipo de componente selecionado"
+  "create": "Create Component type locale",
+  "createText": "Fill the component type locale informations.",
+  "createTooltip": "Create new component type locale",
+  "delete": "Delete Component type locale",
+  "deleteText": "Are you sure to delete these component type locales?",
+  "deleteTooltip": "Delete the selected component type locales",
+  "edit": "Edit Component type locale",
+  "editText": "View and edit component type locale information.",
+  "editTooltip": "Edit the selected component type locales"
 }
