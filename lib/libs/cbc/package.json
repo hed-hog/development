@@ -37,7 +37,7 @@
     "@hedhog/contact": "^0.7.56",
     "@hedhog/country": "^0.36.1",
     "@hedhog/file": "^0.28.1",
-    "@hedhog/locale": "^0.46.1",
+    "@hedhog/locale": "^0.46.2",
     "@hedhog/pagination": "^0.36.1",
     "@hedhog/payment": "^0.0.7",
     "@hedhog/prisma": "^0.36.1",
