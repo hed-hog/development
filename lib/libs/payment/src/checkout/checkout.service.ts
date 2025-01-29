@@ -306,11 +306,31 @@ export class CheckoutService implements OnModuleInit {
 
   async setCoupon(couponCode: string, paymentSlug: string) {
     const payment = await this.getPaymentWithItems(paymentSlug);
-    const coupon = await this.getCouponWithItems(couponCode);
 
     if (!payment || payment.status_id !== EnumPaymentStatus.PENDING) {
       throw new BadRequestException('Payment not found or not pending.');
     }
+
+    if (!couponCode) {
+      if (payment.coupon_id > 0) {
+        const coupon = await this.prismaService.payment_coupon.findUnique({
+          where: { id: payment.coupon_id },
+          select: { uses_qtd: true },
+        });
+
+        await this.prismaService.payment_coupon.update({
+          where: { id: payment.coupon_id },
+          data: { uses_qtd: coupon.uses_qtd - 1 },
+        });
+      }
+
+      return this.paymentService.update({
+        id: payment.id,
+        data: { coupon_id: null, discount: 0 },
+      });
+    }
+
+    const coupon = await this.getCouponWithItems(couponCode);
 
     if (
       coupon.uses_limit > 0 &&
