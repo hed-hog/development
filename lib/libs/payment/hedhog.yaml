@@ -1039,6 +1039,11 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
+    indices:
+      - columns:
+          - payment_id
+          - name
+        isUnique: true
   payment_coupon:
     columns:
       - type: pk

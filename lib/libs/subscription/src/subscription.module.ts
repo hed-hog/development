@@ -1,9 +1,9 @@
+import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscription.module';
+import { SubscriptionPlanModule } from './subscription-plan/subscription-plan.module';
 import { AdminModule } from '@hedhog/admin';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
-import { SubscriptionPlanModule } from './subscription-plan/subscription-plan.module';
-import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscription.module';
 
 @Module({
   imports: [

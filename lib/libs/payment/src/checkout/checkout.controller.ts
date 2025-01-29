@@ -35,12 +35,15 @@ export class CheckoutController {
 
   @Post('init')
   async init(@Body() { items, slug, couponId }: InitDTO, @User() user) {
-    return this.checkoutService.init({
-      items,
-      couponId,
-      slug,
-      userId: user ? user.id : null,
-    });
+    return {
+      payment: await this.checkoutService.init({
+        items,
+        couponId,
+        slug,
+        userId: user ? user.id : null,
+      }),
+      settings: await this.checkoutService.getPaymentSettings(),
+    };
   }
 
   @Post('coupon')

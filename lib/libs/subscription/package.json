@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/subscription",
-  "version": "0.46.1",
+  "version": "0.46.2",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -31,10 +31,10 @@
   },
   "devDependencies": {
     "@hedhog/admin": "^0.36.2",
-    "@hedhog/contact": "^0.7.56",
-    "@hedhog/locale": "^0.36.1",
+    "@hedhog/contact": "^0.46.4",
+    "@hedhog/locale": "^0.46.2",
     "@hedhog/pagination": "^0.36.1",
-    "@hedhog/payment": "^0.0.7",
+    "@hedhog/payment": "^0.46.10",
     "@hedhog/prisma": "^0.36.1",
     "@nestjs/mapped-types": "^2.0.6"
   }

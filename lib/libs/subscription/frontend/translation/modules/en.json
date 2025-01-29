@@ -1,1 +1,8 @@
-{}
+{
+  "subscription_plan": "Subscription Plans",
+  "subscription_plan_gateway": "Gateways",
+  "subscription": "Subscriptions",
+  "subscription_value": "Values",
+  "subscription_person": "People",
+  "subscription_payment": "Payments"
+}
