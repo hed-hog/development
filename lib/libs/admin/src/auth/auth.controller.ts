@@ -72,7 +72,34 @@ export class AuthController {
 
   @Public()
   @Post('signup')
-  async signup(@Body() { fullName, cpf, email, password }: SignupDTO) {
-    return this.service.signup({ fullName, cpf, email, password });
+  async signup(
+    @Body()
+    {
+      fullName,
+      cpf,
+      email,
+      password,
+      city,
+      district,
+      postal_code,
+      state,
+      street,
+      telephone,
+      number,
+    }: SignupDTO,
+  ) {
+    return this.service.signup({
+      fullName,
+      cpf,
+      email,
+      password,
+      city,
+      district,
+      postal_code,
+      state,
+      street,
+      telephone,
+      number,
+    });
   }
 }

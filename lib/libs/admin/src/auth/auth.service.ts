@@ -233,7 +233,19 @@ export class AuthService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  async signup({ fullName, cpf, email, password }: SignupDTO) {
+  async signup({
+    fullName,
+    cpf,
+    telephone,
+    city,
+    district,
+    postal_code,
+    state,
+    street,
+    number,
+    email,
+    password,
+  }: SignupDTO) {
     const existingUser = await this.prisma.user.findFirst({
       where: {
         OR: [{ email }],
@@ -254,6 +266,114 @@ export class AuthService {
         name: fullName,
       },
     });
+
+    const personType = await this.prisma.person_type.findFirst({
+      where: {
+        slug: 'physical',
+      },
+    });
+
+    const person = await this.prisma.person.create({
+      data: {
+        name: fullName,
+        photo_id: null,
+        birth_at: null,
+        type_id: personType.id,
+      },
+    });
+
+    const country = await this.prisma.country.findFirst({
+      where: {
+        code: 'BRA',
+      },
+    });
+
+    if (street) {
+      const addressType = await this.prisma.person_address_type.findFirst({
+        where: {
+          slug: 'residential',
+        },
+      });
+
+      await this.prisma.person_address.create({
+        data: {
+          street,
+          number,
+          district,
+          city,
+          state,
+          postal_code,
+          person_address_type: {
+            connect: {
+              id: addressType.id,
+            },
+          },
+          country: {
+            connect: {
+              id: country.id,
+            },
+          },
+          person: {
+            connect: {
+              id: person.id,
+            },
+          },
+        },
+      });
+    }
+
+    if (telephone) {
+      const contactType = await this.prisma.person_contact_type.findFirst({
+        where: {
+          slug: 'phone',
+        },
+      });
+
+      await this.prisma.person_contact.create({
+        data: {
+          value: String(telephone),
+          person: {
+            connect: {
+              id: person.id,
+            },
+          },
+          person_contact_type: {
+            connect: {
+              id: contactType.id,
+            },
+          },
+        },
+      });
+    }
+
+    if (cpf) {
+      const documentType = await this.prisma.person_document_type.findFirst({
+        where: {
+          slug: 'cpf',
+        },
+      });
+
+      await this.prisma.person_document.create({
+        data: {
+          value: String(cpf),
+          person: {
+            connect: {
+              id: person.id,
+            },
+          },
+          person_document_type: {
+            connect: {
+              id: documentType.id,
+            },
+          },
+          country: {
+            connect: {
+              id: country.id,
+            },
+          },
+        },
+      });
+    }
 
     return this.getToken(user);
   }
