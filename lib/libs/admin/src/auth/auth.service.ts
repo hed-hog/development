@@ -300,7 +300,7 @@ export class AuthService {
       }
 
       const existingContact = await this.prisma.person_contact.findFirst({
-        where: { person_id: personId, person_contact_type_id: contactType.id },
+        where: { person_id: personId, type_id: contactType.id },
       });
 
       if (existingContact) {
@@ -313,7 +313,7 @@ export class AuthService {
           data: {
             value: telephone,
             person_id: personId,
-            person_contact_type_id: contactType.id,
+            type_id: contactType.id,
           },
         });
       }
@@ -329,7 +329,7 @@ export class AuthService {
       }
 
       const existingAddress = await this.prisma.person_address.findFirst({
-        where: { person_id: personId, person_address_type_id: addressType.id },
+        where: { person_id: personId, type_id: addressType.id },
       });
 
       if (existingAddress) {
@@ -342,7 +342,7 @@ export class AuthService {
           data: {
             ...address,
             person_id: personId,
-            person_address_type_id: addressType.id,
+            type_id: addressType.id,
           },
         });
       }
