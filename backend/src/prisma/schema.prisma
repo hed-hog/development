@@ -30,16 +30,6 @@ model country_locale {
   @@id([country_id, locale_id], map: "PK_df7141e9042d27d998b49a9b325")
 }
 
-model discount_type {
-  id                  Int                   @id(map: "PK_9faf22bda466ac1ca2c126b5a0a") @default(autoincrement())
-  slug                String                @unique(map: "UQ_f3ebb1afc775eed2f67d1dad4af") @db.VarChar(255)
-  name                String                @db.VarChar(63)
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  payment_coupon      payment_coupon[]
-  payment_method_item payment_method_item[]
-}
-
 model file {
   id            Int           @id(map: "PK_36b46d232307066b3a2c9ea3a1d") @default(autoincrement())
   filename      String        @db.VarChar
@@ -84,18 +74,6 @@ model file_provider_locale {
   @@id([provider_id, locale_id], map: "PK_c108e943a38100608cfae509b3a")
 }
 
-model item {
-  id                  Int                   @id(map: "PK_d3c0c71f23e7adcf952a1d13423") @default(autoincrement())
-  slug                String                @unique(map: "UQ_0f77842c93ceb8c6624a58f538a") @db.VarChar(255)
-  name                String                @db.VarChar
-  price               Decimal               @db.Decimal
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  payment_coupon_item payment_coupon_item[]
-  payment_item        payment_item[]
-  payment_method_item payment_method_item[]
-}
-
 model locale {
   id                          Int                           @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
   code                        String                        @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
@@ -107,7 +85,6 @@ model locale {
   file_provider_locale        file_provider_locale[]
   menu_locale                 menu_locale[]
   multifactor_locale          multifactor_locale[]
-  payment_status_locale       payment_status_locale[]
   person_address_type_locale  person_address_type_locale[]
   person_contact_type_locale  person_contact_type_locale[]
   person_custom_locale        person_custom_locale[]
@@ -180,160 +157,6 @@ model multifactor_locale {
   @@id([multifactor_id, locale_id], map: "PK_1cc26c48643e0908951b8528fd9")
 }
 
-model payment {
-  id                   Int                    @id(map: "PK_fcaec7df5adf9cac408c686b2ab") @default(autoincrement())
-  slug                 String                 @unique(map: "UQ_865d8996a94ef2df5e9eb829bf4") @db.VarChar(255)
-  person_id            Int?
-  gateway_id           Int
-  amount               Decimal                @db.Decimal(10, 2)
-  status_id            Int
-  document             String?                @db.VarChar(14)
-  payment_at           DateTime?              @db.Timestamp(6)
-  currency             String                 @db.VarChar(3)
-  method_id            Int?
-  brand_id             Int?
-  installments         Int                    @default(1)
-  delivered            Int                    @default(0)
-  coupon_id            Int?
-  discount             Decimal                @default(0) @db.Decimal
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  person               person?                @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1a62106f2848bb67d1e816a3458")
-  payment_coupon       payment_coupon?        @relation(fields: [coupon_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_3aeb69bdbcf05f4cf0e2249c64b")
-  payment_card_brand   payment_card_brand?    @relation(fields: [brand_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4c81f8da826394b0b4cd30374cd")
-  payment_method       payment_method?        @relation(fields: [method_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_7744c2b2dd932c9cf42f2b9bc3a")
-  payment_gateway      payment_gateway        @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_8cd60dcc29059b7a42ea42b0eda")
-  payment_status       payment_status         @relation(fields: [status_id], references: [id], onUpdate: NoAction, map: "FK_b59e2e874b077ea7acf724e4711")
-  payment_item         payment_item[]
-  payment_notification payment_notification[]
-  payment_value        payment_value[]
-}
-
-model payment_card_brand {
-  id         Int       @id(map: "PK_a6ea58ffbbb38da4bbddebaf3f8") @default(autoincrement())
-  slug       String    @unique(map: "UQ_7274a61eee5e76dc7e8455bca89") @db.VarChar(255)
-  name       String    @db.VarChar(63)
-  created_at DateTime  @default(now()) @db.Timestamp(6)
-  updated_at DateTime  @default(now()) @db.Timestamp(6)
-  payment    payment[]
-}
-
-model payment_coupon {
-  id                  Int                   @id(map: "PK_3aeb69bdbcf05f4cf0e2249c64b") @default(autoincrement())
-  discount_type_id    Int
-  code                String                @unique(map: "UQ_668178aba2ee336b898a8f7fc7d") @db.VarChar
-  description         String?               @db.VarChar
-  value               String                @db.VarChar
-  active              Boolean               @default(true)
-  uses_limit          Int?
-  uses_qtd            Int                   @default(0)
-  starts_at           DateTime              @db.Timestamp(6)
-  ends_at             DateTime?             @db.Timestamp(6)
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  payment             payment[]
-  discount_type       discount_type         @relation(fields: [discount_type_id], references: [id], onUpdate: NoAction, map: "FK_fde4af52e64ecd3aa511d9451a3")
-  payment_coupon_item payment_coupon_item[]
-}
-
-model payment_coupon_item {
-  id             Int            @id(map: "PK_88af454778b65a1b203438a8fff") @default(autoincrement())
-  coupon_id      Int
-  item_id        Int
-  created_at     DateTime       @default(now()) @db.Timestamp(6)
-  updated_at     DateTime       @default(now()) @db.Timestamp(6)
-  payment_coupon payment_coupon @relation(fields: [coupon_id], references: [id], onUpdate: NoAction, map: "FK_052a6599acb785bcbf91e5f052e")
-  item           item           @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_b3ce7e16e10ae5463a54723d5df")
-}
-
-model payment_gateway {
-  id                   Int                    @id(map: "PK_8cd60dcc29059b7a42ea42b0eda") @default(autoincrement())
-  slug                 String                 @unique(map: "UQ_915a5db40fb02aed4fdec587771") @db.VarChar(255)
-  name                 String                 @db.VarChar(63)
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  payment              payment[]
-  payment_notification payment_notification[]
-}
-
-model payment_item {
-  id         Int      @id(map: "PK_2d84c71b8a237456c611ba49362") @default(autoincrement())
-  payment_id Int
-  item_id    Int
-  unit_price Decimal  @default(0) @db.Decimal
-  delivered  Int      @default(0)
-  quantity   Int      @default(1)
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  item       item     @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_2a4f9d8439c5d17bff4d8407fe1")
-  payment    payment  @relation(fields: [payment_id], references: [id], onUpdate: NoAction, map: "FK_4a68ebebc1fa3a668585bd8c724")
-}
-
-model payment_method {
-  id                  Int                   @id(map: "PK_7744c2b2dd932c9cf42f2b9bc3a") @default(autoincrement())
-  slug                String                @unique(map: "UQ_d245144e0dcd3e72b4959aa505d") @db.VarChar(255)
-  name                String                @db.VarChar(63)
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  payment             payment[]
-  payment_method_item payment_method_item[]
-}
-
-model payment_method_item {
-  id                Int            @id(map: "PK_80d25d79c428250c5642cf4de57") @default(autoincrement())
-  payment_method_id Int
-  item_id           Int
-  discount_type_id  Int
-  value             Decimal        @default(0) @db.Decimal
-  created_at        DateTime       @default(now()) @db.Timestamp(6)
-  updated_at        DateTime       @default(now()) @db.Timestamp(6)
-  payment_method    payment_method @relation(fields: [payment_method_id], references: [id], onUpdate: NoAction, map: "FK_1dab5dbdfb4b6589f6236d9596a")
-  item              item           @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_39fe85071be37ea7561e1fc619a")
-  discount_type     discount_type  @relation(fields: [discount_type_id], references: [id], onUpdate: NoAction, map: "FK_fbd1e4b0ab001099b1ae141d5bb")
-}
-
-model payment_notification {
-  id              Int             @id(map: "PK_ae851104ce3761a083209783d81") @default(autoincrement())
-  gateway_id      Int
-  payment_id      Int?
-  log             String          @db.VarChar
-  created_at      DateTime        @default(now()) @db.Timestamp(6)
-  updated_at      DateTime        @default(now()) @db.Timestamp(6)
-  payment_gateway payment_gateway @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_6392f2cbf81b291977ddc5c36ce")
-  payment         payment?        @relation(fields: [payment_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_be4df3133dfcfbfd712d09a5fed")
-}
-
-model payment_status {
-  id                    Int                     @id(map: "PK_b59e2e874b077ea7acf724e4711") @default(autoincrement())
-  slug                  String                  @unique(map: "UQ_a754a6fa331a52327f38f71d05a") @db.VarChar(255)
-  created_at            DateTime                @default(now()) @db.Timestamp(6)
-  updated_at            DateTime                @default(now()) @db.Timestamp(6)
-  payment               payment[]
-  payment_status_locale payment_status_locale[]
-}
-
-model payment_status_locale {
-  payment_status_id Int
-  locale_id         Int
-  name              String         @db.VarChar(63)
-  created_at        DateTime       @default(now()) @db.Timestamp(6)
-  updated_at        DateTime       @default(now()) @db.Timestamp(6)
-  payment_status    payment_status @relation(fields: [payment_status_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_654df991c730efd8cc0956593b3")
-  locale            locale         @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_dbf81598026d1523bb6461ce2ea")
-
-  @@id([payment_status_id, locale_id], map: "PK_17f715ac6bb694c99c8ee632542")
-}
-
-model payment_value {
-  id         Int      @id(map: "PK_9506ccc5cd57d212908e0595381") @default(autoincrement())
-  payment_id Int
-  name       String   @db.VarChar
-  value      String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  payment    payment  @relation(fields: [payment_id], references: [id], onUpdate: NoAction, map: "FK_fce8c21d9e0b3fa9c1c44e87833")
-}
-
 model person {
   id              Int               @id(map: "PK_5fdaf670315c4b7e70cce85daa3") @default(autoincrement())
   name            String            @db.VarChar(255)
@@ -342,7 +165,6 @@ model person {
   birth_at        DateTime?         @db.Date
   created_at      DateTime          @default(now()) @db.Timestamp(6)
   updated_at      DateTime          @default(now()) @db.Timestamp(6)
-  payment         payment[]
   file            file?             @relation(fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_0e7be389f108147763fc682c3c4")
   person_type     person_type       @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f900a8c313411c7da8fcbba7975")
   person_address  person_address[]

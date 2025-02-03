@@ -78,9 +78,8 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
-    "@hedhog/admin": "^0.46.7",
-    "@hedhog/cbc": "^0.46.2",
-    "@hedhog/contact": "^0.46.4",
+    "@hedhog/admin": "^0.46.8",
+    "@hedhog/contact": "^0.46.6",
     "@hedhog/core": "^1.0.6",
     "@hedhog/country": "^0.46.1",
     "@hedhog/file": "^0.46.3",

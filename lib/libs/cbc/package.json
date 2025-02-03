@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/cbc",
-  "version": "0.46.4",
+  "version": "0.46.7",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -25,23 +25,27 @@
     "@hedhog/admin": "latest",
     "@hedhog/contact": "latest",
     "@hedhog/country": "latest",
+    "@hedhog/faq": "latest",
     "@hedhog/file": "latest",
     "@hedhog/locale": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/payment": "latest",
     "@hedhog/prisma": "latest",
+    "@hedhog/rabbitmq": "latest",
     "@hedhog/subscription": "latest"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.46.7",
-    "@hedhog/contact": "^0.46.4",
-    "@hedhog/country": "^0.36.1",
+    "@hedhog/admin": "^0.46.8",
+    "@hedhog/contact": "^0.46.10",
+    "@hedhog/country": "^0.46.1",
+    "@hedhog/faq": "^0.46.2",
     "@hedhog/file": "^0.46.3",
     "@hedhog/locale": "^0.46.2",
-    "@hedhog/pagination": "^0.36.1",
-    "@hedhog/payment": "^0.46.9",
-    "@hedhog/prisma": "^0.36.1",
-    "@hedhog/subscription": "^0.46.1",
+    "@hedhog/pagination": "^0.46.1",
+    "@hedhog/payment": "^0.46.18",
+    "@hedhog/prisma": "^0.46.1",
+    "@hedhog/rabbitmq": "^0.0.1",
+    "@hedhog/subscription": "^0.46.2",
     "@nestjs/mapped-types": "^2.0.6"
   }
 }

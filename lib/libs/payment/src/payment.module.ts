@@ -1,4 +1,5 @@
 import { AdminModule } from '@hedhog/admin';
+import { ContactModule } from '@hedhog/contact';
 import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
@@ -30,6 +31,7 @@ import { PaymentModule as PaymentModule2 } from './payment/payment.module';
     forwardRef(() => PaymentGatewayModule),
     forwardRef(() => PaymentCardBrandModule),
     forwardRef(() => PaymentCouponModule),
+    forwardRef(() => ContactModule),
   ],
   controllers: [],
   providers: [],

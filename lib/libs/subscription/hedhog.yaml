@@ -67,6 +67,13 @@ tables:
           - monthly
           - yearly
           - quarterly
+      - type: fk
+        name: item_id
+        isNullable: true
+        references:
+          table: item
+          column: id
+          onDelete: CASCADE
       - type: created_at
       - type: updated_at
   subscription_plan_gateway:
@@ -355,6 +362,24 @@ data:
     - url: /subscription/:subscriptionId/subscription-person/:subscription_id
       method: PATCH
       relations: *a8
+    - url: /subscription-plan-item
+      method: GET
+      relations: &a9
+        role:
+          - where:
+              slug: admin
+    - url: /subscription-plan-item
+      method: POST
+      relations: *a9
+    - url: /subscription-plan-item/:id
+      method: GET
+      relations: *a9
+    - url: /subscription-plan-item/:id
+      method: PATCH
+      relations: *a9
+    - url: /subscription-plan-item
+      method: DELETE
+      relations: *a9
   menu:
     - name:
         en: SubscriptionPlan
@@ -398,6 +423,13 @@ data:
       url: /subscription-payment
       slug: subscription-payment
       relations: *a6
+    - name:
+        en: SubscriptionPlanItem
+        pt: SubscriptionPlanItem
+      icon: file
+      url: /subscription-plan-item
+      slug: subscription-plan-item
+      relations: *a9
   screen:
     - name:
         en: SubscriptionPlan
@@ -446,6 +478,14 @@ data:
       description:
         en: Screen to manage subscription_payment
         pt: Tela para gerenciar subscription_payment
+      icon: file
+    - name:
+        en: SubscriptionPlanItem
+        pt: SubscriptionPlanItem
+      slug: subscription-plan-item
+      description:
+        en: Screen to manage subscription_plan_item
+        pt: Tela para gerenciar subscription_plan_item
       icon: file
 routes:
   - path: subscription

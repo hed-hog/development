@@ -1,15 +1,15 @@
-import { PersonTestModule } from './person-test/person-test.module';
-import { PersonCustomTypeModule } from './person-custom-type/person-custom-type.module';
-import { PersonAddressTypeModule } from './person-address-type/person-address-type.module';
-import { PersonContactTypeModule } from './person-contact-type/person-contact-type.module';
-import { PersonDocumentTypeModule } from './person-document-type/person-document-type.module';
-import { PersonModule } from './person/person.module';
-import { PersonTypeModule } from './person-type/person-type.module';
 import { AdminModule } from '@hedhog/admin';
+import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
-import { LocaleModule } from '@hedhog/locale';
+import { ContactService } from './contact.service';
+import { PersonAddressTypeModule } from './person-address-type/person-address-type.module';
+import { PersonContactTypeModule } from './person-contact-type/person-contact-type.module';
+import { PersonCustomTypeModule } from './person-custom-type/person-custom-type.module';
+import { PersonDocumentTypeModule } from './person-document-type/person-document-type.module';
+import { PersonTypeModule } from './person-type/person-type.module';
+import { PersonModule } from './person/person.module';
 @Module({
   imports: [
     forwardRef(() => AdminModule),
@@ -22,10 +22,9 @@ import { LocaleModule } from '@hedhog/locale';
     forwardRef(() => PersonContactTypeModule),
     forwardRef(() => PersonAddressTypeModule),
     forwardRef(() => PersonCustomTypeModule),
-    forwardRef(() => PersonTestModule),
   ],
   controllers: [],
-  providers: [],
-  exports: [],
+  providers: [ContactService],
+  exports: [ContactService],
 })
 export class ContactModule {}

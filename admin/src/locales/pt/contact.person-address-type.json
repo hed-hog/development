@@ -3,9 +3,9 @@
   "createText": "Preencha as informações do tipo de endereço de pessoa.",
   "createTooltip": "Criar novo tipo de endereço de pessoa",
   "delete": "Excluir tipo de endereço de pessoa",
-  "deleteText": "Você tem certeza de que deseja excluir esses tipos de endereço de pessoa?",
+  "deleteText": "Tem certeza de que deseja excluir estes tipos de endereço de pessoa?",
   "deleteTooltip": "Excluir o tipo de endereço de pessoa selecionado",
   "edit": "Editar tipo de endereço de pessoa",
-  "editText": "Visualizar e editar as informações do tipo de endereço de pessoa.",
+  "editText": "Ver e editar informações do tipo de endereço de pessoa.",
   "editTooltip": "Editar o tipo de endereço de pessoa selecionado"
 }

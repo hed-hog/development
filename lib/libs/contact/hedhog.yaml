@@ -134,48 +134,48 @@ data:
     - name:
         en: Physical
         pt: Física
-      slug: physical
+      slug: PHYSICAL
     - name:
         en: Legal
         pt: Jurídica
-      slug: legal
+      slug: LEGAL
     - name:
         en: International
         pt: Internacional
-      slug: international
+      slug: INTERNATIONAL
   person_document_type:
     - name:
         en: ID
         pt: RG
-      slug: rg
+      slug: RG
       country_id:
         where:
           code: BRA
     - name:
         en: SSN
         pt: CPF
-      slug: cpf
+      slug: CPF
       country_id:
         where:
           code: BRA
     - name:
         en: EIN
         pt: CNPJ
-      slug: cnpj
+      slug: CNPJ
       country_id:
         where:
           code: BRA
     - name:
         en: Passport
         pt: Passaporte
-      slug: passaporte
+      slug: PASSPORT
       country_id:
         where:
           code: BRA
     - name:
         en: Driver License
         pt: CNH
-      slug: cnh
+      slug: CNH
       country_id:
         where:
           code: BRA
@@ -183,52 +183,52 @@ data:
     - name:
         en: Phone
         pt: Telefone
-      slug: phone
+      slug: PHONE
     - name:
         en: Email
         pt: E-mail
-      slug: email
+      slug: EMAIL
     - name:
         en: Fax
         pt: Fax
-      slug: fax
+      slug: FAX
     - name:
         en: WhatsApp
         pt: WhatsApp
-      slug: whatsapp
+      slug: WHATSAPP
     - name:
         en: Telegram
         pt: Telegram
-      slug: telegram
+      slug: TELEGRAM
   person_address_type:
     - name:
         en: Residential
         pt: Residencial
-      slug: residential
+      slug: RESIDENTIAL
     - name:
         en: Commercial
         pt: Comercial
-      slug: commercial
+      slug: COMMERCIAL
     - name:
         en: Correspondence
         pt: Correspondência
-      slug: correspondence
+      slug: CORRESPONDENCE
     - name:
         en: Alternative
         pt: Alternativo
-      slug: alternative
+      slug: ALTERNATIVE
     - name:
         en: Work
         pt: Trabalho
-      slug: work
+      slug: WORK
     - name:
         en: Billing
         pt: Cobrança
-      slug: billing
+      slug: BILLING
     - name:
         en: Shipping
         pt: Entrega
-      slug: shipping
+      slug: SHIPPING
   menu:
     - url: /contact/person
       icon: user-check
@@ -1266,3 +1266,19 @@ routes:
       - path: person-document-type
         lazy:
           component: ./pages/contact/person-document-type/index.tsx
+enums:
+  person-address-type:
+    key: slug
+    value: id
+  person-contact-type:
+    key: slug
+    value: id
+  person-custom-type:
+    key: slug
+    value: id
+  person-document-type:
+    key: slug
+    value: id
+  person-type:
+    key: slug
+    value: id

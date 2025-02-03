@@ -28,6 +28,9 @@ import { PaymentService } from './payment.service';
     PaymentNotificationService,
     PaymentService,
   ],
-  exports: [forwardRef(() => PaymentService)],
+  exports: [
+    forwardRef(() => PaymentService),
+    forwardRef(() => PaymentNotificationService),
+  ],
 })
 export class PaymentModule {}

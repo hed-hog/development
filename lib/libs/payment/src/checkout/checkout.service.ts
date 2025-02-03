@@ -1,3 +1,9 @@
+import { UserService } from '@hedhog/admin';
+import {
+  ContactService,
+  PersonContactTypeEnum,
+  PersonDocumentTypeEnum,
+} from '@hedhog/contact';
 import { PrismaService } from '@hedhog/prisma';
 import { SettingService } from '@hedhog/setting';
 import { HttpService } from '@nestjs/axios';
@@ -8,11 +14,18 @@ import {
   OnModuleInit,
   forwardRef,
 } from '@nestjs/common';
+import {
+  EventEmitter2,
+  EventEmitterReadinessWatcher,
+} from '@nestjs/event-emitter';
 import { v4 as uuidv4 } from 'uuid';
 import { EnumDiscountType } from '../disccount-type.enum';
+import { EnumPaymentMethod } from '../payment-method.enum';
 import { EnumPaymentStatus } from '../payment-status.enum';
 import { PaymentService } from '../payment/payment.service';
-import { CreateDTO } from './dto/create.dto';
+import { CreditCardDTO } from './dto/credit-card.dto';
+import { PixDTO } from './dto/pix.dto';
+import { ResetDTO } from './dto/reset.dto';
 import { AbstractProvider } from './provider/abstract.provider';
 import { EnumProvider } from './provider/provider.enum';
 import { ProviderFactory } from './provider/provider.factory';
@@ -25,6 +38,8 @@ export class CheckoutService implements OnModuleInit {
   private setting: Record<string, string>;
 
   constructor(
+    private eventEmitter: EventEmitter2,
+    private eventEmitterReadinessWatcher: EventEmitterReadinessWatcher,
     private readonly httpService: HttpService,
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -32,6 +47,10 @@ export class CheckoutService implements OnModuleInit {
     private readonly settingService: SettingService,
     @Inject(forwardRef(() => PaymentService))
     private readonly paymentService: PaymentService,
+    @Inject(forwardRef(() => ContactService))
+    private readonly contactService: ContactService,
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService,
   ) {}
 
   async onModuleInit() {
@@ -161,14 +180,20 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async getProvider(): Promise<AbstractProvider> {
+    console.log('');
+
     if (
       this.providerId > 0 &&
       this.providerLoadedAt < new Date().getTime() - 60000
     ) {
+      console.log(
+        `Loaded at ${this.providerLoadedAt} the provider ${this.providerId} is still valid.`,
+      );
       return this.provider;
     }
 
     this.setting = await this.settingService.getSettingValues([
+      'url',
       'payment-provider',
       'payment-currency',
       'payment-mercado-pago-token',
@@ -176,6 +201,7 @@ export class CheckoutService implements OnModuleInit {
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
+      console.log(`Provider ${this.providerId} is still valid.`);
       return this.provider;
     }
 
@@ -188,7 +214,7 @@ export class CheckoutService implements OnModuleInit {
     const providerName = this.setting['payment-provider'];
     const providerData = await this.getProviderData(providerName);
 
-    const provider = ProviderFactory.create(
+    this.provider = ProviderFactory.create(
       providerName as EnumProvider,
       providerData.id,
       this.setting,
@@ -198,7 +224,7 @@ export class CheckoutService implements OnModuleInit {
     this.providerId = providerData.id;
     this.providerLoadedAt = new Date().getTime();
 
-    return provider;
+    return this.provider;
   }
 
   private async getProviderData(providerName: string) {
@@ -214,37 +240,296 @@ export class CheckoutService implements OnModuleInit {
     return providerData;
   }
 
-  async createPaymentIntent({
+  async createPaymentPix({
+    email,
+    identificationNumber,
+    identificationType,
+    name,
+    paymentSlug,
+    phone,
+  }: PixDTO) {
+    try {
+      const provider = await this.getProvider();
+
+      const person = await this.contactService.getPersonOrCreateIfNotExists(
+        PersonContactTypeEnum.Email,
+        name,
+        email,
+      );
+
+      await this.contactService.addDocumentIfNotExists(
+        person.id,
+        identificationNumber,
+        identificationType === 'CPF'
+          ? PersonDocumentTypeEnum.CPF
+          : PersonDocumentTypeEnum.CNPJ,
+      );
+
+      await this.contactService.addContactIfNotExists(
+        person.id,
+        phone,
+        PersonContactTypeEnum.Phone,
+      );
+
+      const payment = await this.prismaService.payment.update({
+        where: { slug: paymentSlug },
+        data: {
+          installments: 1,
+          method_id: EnumPaymentMethod.PIX,
+          person_id: person.id,
+          document: identificationNumber,
+        },
+        include: { payment_item: { include: { item: true } } },
+      });
+
+      const items = payment.payment_item.map((pi) => ({
+        id: pi.item_id,
+        title: pi.item.name,
+        description: pi.item.name,
+        quantity: pi.quantity,
+        unit_price: pi.unit_price,
+      }));
+
+      const { firstName, lastName } = await this.getFirstAndLastName(name);
+
+      const paymentPix = await provider.createPaymentPix({
+        transactionAmount: Number(payment.amount) - Number(payment.discount),
+        description: '',
+        externalReference: payment.slug,
+        firstName,
+        lastName,
+        payerEmail: email,
+        payerIdentificationNumber: identificationNumber,
+        payerIdentificationType: identificationType,
+        items,
+      });
+
+      await this.saveQRCode(payment.id, paymentPix);
+
+      return this.getPaymentDetails(payment.id);
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async saveQRCode(paymentId: number, paymentPix: any) {
+    console.log('saveQRCode', { paymentId, paymentPix });
+
+    if (this.setting['payment-provider'] === EnumProvider.MERCADO_PAGO) {
+      const transactionData =
+        paymentPix?.point_of_interaction?.transaction_data;
+      await this.setPaymentValue(
+        paymentId,
+        'qr_code',
+        transactionData?.qr_code,
+      );
+      await this.setPaymentValue(
+        paymentId,
+        'qr_code_img',
+        transactionData?.qr_code_base64,
+      );
+      await this.setPaymentValue(
+        paymentId,
+        'date_of_expiration',
+        paymentPix?.date_of_expiration,
+      );
+    }
+  }
+
+  async setPaymentValue(paymentId: number, name: string, value: string) {
+    await this.prismaService.payment_value.deleteMany({
+      where: { payment_id: paymentId, name },
+    });
+
+    return this.prismaService.payment_value.create({
+      data: {
+        payment_id: paymentId,
+        name,
+        value,
+      },
+    });
+  }
+
+  private async getFirstAndLastName(name: string) {
+    const names = name.split(' ');
+    const firstName = names.shift();
+    const lastName = names.join(' ');
+    return { firstName, lastName };
+  }
+
+  async createPaymentCreditCard({
     token,
     paymentMethodId,
     issuerId,
     installments,
     identificationNumber,
-    orderId,
+    paymentSlug,
+    cardholderEmail,
+    identificationType,
     cardFirstSixDigits,
     cardLastFourDigits,
     name,
     email,
     phone,
-    couponId,
-  }: CreateDTO): Promise<any> {
-    console.log('createPaymentIntent', {
-      token,
-      paymentMethodId,
-      issuerId,
-      installments,
-      identificationNumber,
-      orderId,
-      cardFirstSixDigits,
-      cardLastFourDigits,
-      name,
-      email,
-      phone,
-      couponId,
+  }: CreditCardDTO): Promise<any> {
+    try {
+      console.log('createPaymentIntent', {
+        token,
+        paymentMethodId,
+        issuerId,
+        installments,
+        paymentSlug,
+        cardholderEmail,
+        identificationNumber,
+        identificationType,
+        cardFirstSixDigits,
+        cardLastFourDigits,
+        name,
+        email,
+        phone,
+      });
+
+      const provider = await this.getProvider();
+
+      const person = await this.contactService.getPersonOrCreateIfNotExists(
+        PersonContactTypeEnum.Email,
+        name,
+        email,
+      );
+
+      await this.contactService.addDocumentIfNotExists(
+        person.id,
+        identificationNumber,
+        identificationType === 'CPF'
+          ? PersonDocumentTypeEnum.CPF
+          : PersonDocumentTypeEnum.CNPJ,
+      );
+
+      await this.contactService.addContactIfNotExists(
+        person.id,
+        phone,
+        PersonContactTypeEnum.Phone,
+      );
+
+      const payment = await this.prismaService.payment.update({
+        where: { slug: paymentSlug },
+        data: {
+          installments,
+          method_id: EnumPaymentMethod.CREDIT_CARD,
+          person_id: person.id,
+          document: identificationNumber,
+        },
+        include: { payment_item: { include: { item: true } } },
+      });
+
+      const items = payment.payment_item.map((pi) => ({
+        id: pi.item_id,
+        title: pi.item.name,
+        description: pi.item.name,
+        quantity: pi.quantity,
+        unit_price: pi.unit_price,
+      }));
+
+      const { firstName, lastName } = await this.getFirstAndLastName(name);
+
+      const paymentCreditCard = await provider.createPaymentCreditCard({
+        token,
+        installments,
+        transactionAmount: Number(payment.amount) - Number(payment.discount),
+        description: '',
+        paymentMethodId,
+        issuerId,
+        externalReference: payment.slug,
+        items,
+        firstName,
+        lastName,
+        payerEmail: email,
+        payerIdentificationNumber: identificationNumber,
+        payerIdentificationType: identificationType,
+      });
+
+      console.log('paymentCreditCard', paymentCreditCard);
+
+      await this.saveCreditCard(payment.id, paymentCreditCard);
+
+      return this.getPaymentDetails(payment.id);
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async paymentReset({ slug }: ResetDTO) {
+    return this.prismaService.payment.update({
+      where: { slug },
+      data: { status_id: EnumPaymentStatus.PENDING },
     });
+  }
+
+  async saveCreditCard(paymentId: number, data: any) {
+    console.log('saveCreditCard', { paymentId, data });
 
     const provider = await this.getProvider();
-    return provider.createPaymentIntent(0, this.setting['payment-currency']);
+
+    if (this.setting['payment-provider'] === EnumProvider.MERCADO_PAGO) {
+      const statusId = provider.getStatusId(data.status);
+
+      await this.paymentService.update({
+        id: paymentId,
+        data: {
+          brand_id: provider.getBrandId(data.payment_method_id),
+          status_id: statusId,
+          payment_at:
+            statusId === EnumPaymentStatus.PAID
+              ? new Date().toISOString()
+              : null,
+        },
+      });
+
+      await this.eventEmitterReadinessWatcher.waitUntilReady();
+
+      switch (statusId) {
+        case EnumPaymentStatus.PENDING:
+          console.log('EMIT', 'payment.pending', paymentId);
+          this.eventEmitter.emit('payment.pending', paymentId);
+          break;
+        case EnumPaymentStatus.PAID:
+          console.log('EMIT', 'payment.paid', paymentId);
+          this.eventEmitter.emit('payment.paid', paymentId);
+          break;
+        case EnumPaymentStatus.REJECTED:
+          console.log('EMIT', 'payment.rejected', paymentId);
+          this.eventEmitter.emit('payment.rejected', paymentId);
+          break;
+        case EnumPaymentStatus.CANCELED:
+          console.log('EMIT', 'payment.canceled', paymentId);
+          this.eventEmitter.emit('payment.canceled', paymentId);
+          break;
+        case EnumPaymentStatus.EXPIRED:
+          console.log('EMIT', 'payment.expired', paymentId);
+          this.eventEmitter.emit('payment.expired', paymentId);
+          break;
+        case EnumPaymentStatus.REFUNDED:
+          console.log('EMIT', 'payment.refunded', paymentId);
+          this.eventEmitter.emit('payment.refunded', paymentId);
+          break;
+      }
+
+      if (data?.card?.first_six_digits) {
+        await this.setPaymentValue(
+          paymentId,
+          'first_six_digits',
+          data.card.first_six_digits,
+        );
+      }
+
+      if (data?.card?.last_four_digits) {
+        await this.setPaymentValue(
+          paymentId,
+          'last_four_digits',
+          data.card.last_four_digits,
+        );
+      }
+    }
   }
 
   async createSubscription(priceId: string, customerId: string): Promise<any> {
@@ -300,6 +585,7 @@ export class CheckoutService implements OnModuleInit {
         payment_status: true,
         person: true,
         payment_coupon: true,
+        payment_value: true,
       },
     });
   }
@@ -324,10 +610,12 @@ export class CheckoutService implements OnModuleInit {
         });
       }
 
-      return this.paymentService.update({
+      await this.paymentService.update({
         id: payment.id,
         data: { coupon_id: null, discount: 0 },
       });
+
+      return this.getPaymentDetails(payment.id);
     }
 
     const coupon = await this.getCouponWithItems(couponCode);
@@ -345,11 +633,13 @@ export class CheckoutService implements OnModuleInit {
     );
 
     if (itemsFromPaymentAndCoupon?.length) {
-      return this.applyCouponDiscount(
+      await this.applyCouponDiscount(
         payment.id,
         coupon,
         Number(payment.amount),
       );
+
+      return this.getPaymentDetails(payment.id);
     } else {
       throw new BadRequestException('Coupon not is valid.');
     }

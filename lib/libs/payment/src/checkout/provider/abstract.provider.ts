@@ -1,6 +1,32 @@
 interface IProvider {
   id: number;
-  createPaymentIntent(amount: number, currency: string): Promise<any>;
+  createPaymentPix(args: {
+    transactionAmount: number;
+    description: string;
+    externalReference: string;
+    firstName: string;
+    lastName: string;
+    payerEmail: string;
+    payerIdentificationNumber: string;
+    payerIdentificationType: string;
+    items: any[];
+  }): Promise<any>;
+  createPaymentCreditCard(args: {
+    token: string;
+    installments: number;
+    transactionAmount: number;
+    description: string;
+    paymentMethodId: string;
+    issuerId: number;
+    externalReference: string;
+    items: any[];
+    firstName: string;
+    lastName: string;
+    payerEmail: string;
+    payerIdentificationNumber: string;
+    payerIdentificationType: string;
+    notificationUrl: string;
+  }): Promise<any>;
   createSubscription(
     cardToken: string,
     planId: number,
@@ -9,6 +35,8 @@ interface IProvider {
     reference: string,
     reason: string,
   ): Promise<any>;
+  getStatusId(status: string): number;
+  getBrandId(brand: string): number;
 }
 
 export abstract class AbstractProvider implements IProvider {
@@ -16,7 +44,36 @@ export abstract class AbstractProvider implements IProvider {
   constructor(id: number) {
     this.id = id;
   }
-  abstract createPaymentIntent(amount: number, cuency: string): Promise<any>;
+  abstract getBrandId(brand: string): number;
+  abstract getStatusId(status: string): number;
+  abstract createPaymentPix(args: {
+    transactionAmount: number;
+    description: string;
+    externalReference: string;
+    firstName: string;
+    lastName: string;
+    payerEmail: string;
+    payerIdentificationNumber: string;
+    payerIdentificationType: string;
+    items: any[];
+  }): Promise<any>;
+
+  abstract createPaymentCreditCard(args: {
+    token: string;
+    installments: number;
+    transactionAmount: number;
+    description: string;
+    paymentMethodId: string;
+    issuerId: number;
+    externalReference: string;
+    items: any[];
+    firstName: string;
+    lastName: string;
+    payerEmail: string;
+    payerIdentificationNumber: string;
+    payerIdentificationType: string;
+  }): Promise<any>;
+
   abstract createSubscription(
     cardToken: string,
     planId: number,

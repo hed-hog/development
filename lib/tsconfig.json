@@ -114,6 +114,12 @@
       ],
       "@hedhog/page/*": [
         "libs/page/src/*"
+      ],
+      "@hedhog/rabbitmq": [
+        "libs/rabbitmq/src"
+      ],
+      "@hedhog/rabbitmq/*": [
+        "libs/rabbitmq/src/*"
       ]
     }
   },

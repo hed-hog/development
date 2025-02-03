@@ -1,3 +1,4 @@
+import { SubscriptionPlanItemModule } from './subscription-plan-item/subscription-plan-item.module';
 import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscription.module';
 import { SubscriptionPlanModule } from './subscription-plan/subscription-plan.module';
 import { AdminModule } from '@hedhog/admin';
@@ -12,6 +13,7 @@ import { forwardRef, Module } from '@nestjs/common';
     forwardRef(() => PaginationModule),
     forwardRef(() => SubscriptionPlanModule),
     forwardRef(() => SubscriptionModule2),
+    forwardRef(() => SubscriptionPlanItemModule),
   ],
   controllers: [],
   providers: [],

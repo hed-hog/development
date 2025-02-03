@@ -18,7 +18,7 @@ data:
             description:
               en: The payment provider to use
               pt: O provedor de pagamento a utilizar
-            value: mercado-pago
+            value: MERCADO_PAGO
           - slug: payment-mercado-pago-token
             type: string
             name:
@@ -48,9 +48,9 @@ data:
             value: BRL
   payment_gateway:
     - name: Stripe
-      slug: stripe
+      slug: STRIPE
     - name: Mercado Pago
-      slug: mercado-pago
+      slug: MERCADO_PAGO
   payment_status:
     - name:
         en: Pending
@@ -60,6 +60,10 @@ data:
         en: Paid
         pt: Pago
       slug: PAID
+    - name:
+        en: Rejected
+        pt: Negado
+      slug: REJECTED
     - name:
         en: Canceled
         pt: Cancelado
@@ -110,6 +114,18 @@ data:
       slug: ELO
     - name: American Express
       slug: AMERICAN_EXPRESS
+    - name: Diners Club
+      slug: DINERS_CLUB
+    - name: Discover
+      slug: DISCOVER
+    - name: JCB
+      slug: JCB
+    - name: HIPERCARD
+      slug: HIPERCARD
+    - name: AURA
+      slug: AURA
+    - name: MAESTRO
+      slug: MAESTRO
   payment_method_item:
     - item_id:
         where:
@@ -1324,3 +1340,19 @@ routes:
       - path: payment-notification
         lazy:
           component: ./pages/payment/payment-notification/index.tsx
+enums:
+  payment_status:
+    key: slug
+    value: id
+  discount_type:
+    key: slug
+    value: id
+  payment_card_brand:
+    key: slug
+    value: id
+  payment_gateway:
+    key: slug
+    value: id
+  payment_method:
+    key: slug
+    value: id
