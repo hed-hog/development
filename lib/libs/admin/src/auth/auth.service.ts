@@ -273,7 +273,7 @@ export class AuthService {
     return { message: 'Account successfully deleted' };
   }
 
-  async updateUserData({ email, telephone, address }: UpdateUserDataDTO) {
+  async updateUserData({ email, name, telephone, address }: UpdateUserDataDTO) {
     const user = await this.prisma.user.findUnique({
       where: { email },
       include: { person_user: { include: { person: true } } },
@@ -289,6 +289,13 @@ export class AuthService {
     }
 
     const personId = personUser.person.id;
+
+    if (name) {
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { name },
+      });
+    }
 
     if (telephone) {
       const contactType = await this.prisma.person_contact_type.findFirst({

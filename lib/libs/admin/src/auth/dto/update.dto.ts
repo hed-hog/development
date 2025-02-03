@@ -22,6 +22,9 @@ export class AddressDTO {
 }
 
 export class UpdateUserDataDTO {
+  @IsString()
+  name: string;
+
   @IsEmail({}, { message: 'Invalid email format' })
   email: string;
 

@@ -129,10 +129,11 @@ export class AuthController {
   @Public()
   @Post('update')
   async updateUserData(
-    @Body() { email, telephone, address }: UpdateUserDataDTO,
+    @Body() { email, name, telephone, address }: UpdateUserDataDTO,
   ) {
     return this.service.updateUserData({
       email,
+      name,
       telephone,
       address,
     });
