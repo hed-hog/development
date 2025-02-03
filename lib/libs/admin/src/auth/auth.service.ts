@@ -91,6 +91,8 @@ export class AuthService {
       }
 
       return {
+        name: user.name,
+        email: user.email,
         token: this.jwt.sign({
           id: user.id,
           mfa: user.multifactor_id,
@@ -106,6 +108,8 @@ export class AuthService {
     const payload = { user };
 
     return {
+      name: user.name,
+      email: user.email,
       token: this.jwt.sign(payload),
     };
   }
