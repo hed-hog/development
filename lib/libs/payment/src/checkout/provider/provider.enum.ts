@@ -1,4 +1,4 @@
 export enum EnumProvider {
-  MERCADO_PAGO = 'mercado-pago',
-  STRIPE = 'stripe',
+  MERCADO_PAGO = 'MERCADO_PAGO',
+  STRIPE = 'STRIPE',
 }
