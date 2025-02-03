@@ -484,6 +484,13 @@ export class AuthService {
       },
     });
 
+    await this.prisma.person_user.create({
+      data: {
+        person_id: person.id,
+        user_id: user.id,
+      },
+    });
+
     const country = await this.prisma.country.findFirst({
       where: {
         code: 'BRA',
