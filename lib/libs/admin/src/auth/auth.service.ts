@@ -113,26 +113,30 @@ export class AuthService {
     const userData: any = await this.prisma.user.findUnique({
       where: { id: user.id },
       include: {
-        person: {
+        person_user: {
           include: {
-            person_address: {
+            person: {
               include: {
-                country: true,
-                person_address_type: true,
+                person_address: {
+                  include: {
+                    country: true,
+                    person_address_type: true,
+                  },
+                },
+                person_contact: {
+                  include: {
+                    person_contact_type: true,
+                  },
+                },
+                person_document: {
+                  include: {
+                    person_document_type: true,
+                    country: true,
+                  },
+                },
+                person_type: true,
               },
             },
-            person_contact: {
-              include: {
-                person_contact_type: true,
-              },
-            },
-            person_document: {
-              include: {
-                person_document_type: true,
-                country: true,
-              },
-            },
-            type: true,
           },
         },
       },
@@ -142,6 +146,8 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
+    const person = userData.person_user?.[0]?.person;
+
     const payload = { user: userData };
 
     return {
@@ -149,15 +155,15 @@ export class AuthService {
       name: userData.name,
       email: userData.email,
       cpf:
-        userData.person?.person_document?.find(
+        person?.person_document?.find(
           (doc) => doc.person_document_type.slug === 'cpf',
         )?.value || null,
       telephone:
-        userData.person?.person_contact?.find(
+        person?.person_contact?.find(
           (contact) => contact.person_contact_type.slug === 'phone',
         )?.value || null,
       address:
-        userData.person?.person_address?.map((address) => ({
+        person?.person_address?.map((address) => ({
           street: address.street,
           number: address.number,
           district: address.district,
