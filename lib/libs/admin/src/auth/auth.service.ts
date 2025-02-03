@@ -7,6 +7,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
@@ -224,21 +225,70 @@ export class AuthService {
     return true;
   }
 
-  async updateUserData({ email, telephone, address }: UpdateUserDataDTO) {
+  async closeAccount({ email, password }: LoginDTO) {
     const user = await this.prisma.user.findUnique({
       where: { email },
-      include: { person: true },
+      include: { person_user: { include: { person: true } } },
     });
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    const personId = (user.person as any).id;
+    const isPasswordValid = await compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Incorrect password');
+    }
 
-    if (!personId) {
+    const personUser = user.person_user?.[0];
+    if (!personUser || !personUser.person) {
       throw new NotFoundException('Person data not found for this user');
     }
+
+    const personId = personUser.person.id;
+    await this.prisma.person_contact.deleteMany({
+      where: { person_id: personId },
+    });
+
+    await this.prisma.person_address.deleteMany({
+      where: { person_id: personId },
+    });
+
+    await this.prisma.person_document.deleteMany({
+      where: { person_id: personId },
+    });
+
+    await this.prisma.person_user.deleteMany({
+      where: { user_id: user.id },
+    });
+
+    await this.prisma.person.delete({
+      where: { id: personId },
+    });
+
+    await this.prisma.user.delete({
+      where: { id: user.id },
+    });
+
+    return { message: 'Account successfully deleted' };
+  }
+
+  async updateUserData({ email, telephone, address }: UpdateUserDataDTO) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      include: { person_user: { include: { person: true } } },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const personUser = user.person_user?.[0];
+    if (!personUser || !personUser.person) {
+      throw new NotFoundException('Person data not found for this user');
+    }
+
+    const personId = personUser.person.id;
 
     if (telephone) {
       const contactType = await this.prisma.person_contact_type.findFirst({

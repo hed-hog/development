@@ -137,4 +137,10 @@ export class AuthController {
       address,
     });
   }
+
+  @Public()
+  @Post('close-account')
+  async closeAccount(@Body() { email, password }: LoginDTO) {
+    return this.service.closeAccount({ email, password });
+  }
 }
