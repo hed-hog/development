@@ -541,6 +541,7 @@ tables:
           onDelete: SET NULL
       - name: name
       - name: email
+        isUnique: true
       - name: password
       - name: code
         isNullable: true
