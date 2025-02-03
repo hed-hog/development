@@ -8,11 +8,14 @@ import {
   Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { ChangeDTO } from './dto/change.dto';
+import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { SignupDTO } from './dto/signup.dto';
+import { UpdateUserDataDTO } from './dto/update.dto';
 import { User as UserType } from './types/user.type';
 
 @Controller('auth')
@@ -100,6 +103,38 @@ export class AuthController {
       street,
       telephone,
       number,
+    });
+  }
+
+  @Public()
+  @Post('change-password')
+  async changePassword(
+    @Body()
+    { email, currentPassword, newPassword, confirmNewPassword }: ChangeDTO,
+  ) {
+    return this.service.changePassword({
+      email,
+      currentPassword,
+      newPassword,
+      confirmNewPassword,
+    });
+  }
+
+  @Public()
+  @Post('change-email')
+  async changeEmail(@Body() { currentEmail, password, newEmail }: EmailDTO) {
+    return this.service.changeEmail({ currentEmail, password, newEmail });
+  }
+
+  @Public()
+  @Post('update')
+  async updateUserData(
+    @Body() { email, telephone, address }: UpdateUserDataDTO,
+  ) {
+    return this.service.updateUserData({
+      email,
+      telephone,
+      address,
     });
   }
 }
