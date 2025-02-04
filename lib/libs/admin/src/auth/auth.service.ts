@@ -506,9 +506,7 @@ export class AuthService {
     password,
   }: SignupDTO) {
     const existingUser = await this.prisma.user.findFirst({
-      where: {
-        OR: [{ email }],
-      },
+      where: { email },
     });
 
     if (existingUser) {
