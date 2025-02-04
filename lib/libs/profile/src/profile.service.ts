@@ -78,11 +78,12 @@ export class ProfileService {
       email: userData.email,
       cpf:
         person?.person_document?.find(
-          (doc) => doc.person_document_type.slug === 'cpf',
+          (doc) => doc.person_document_type.id === PersonDocumentTypeEnum.CPF,
         )?.value || null,
       telephone:
         person?.person_contact?.find(
-          (contact) => contact.person_contact_type.slug === 'phone',
+          (contact) =>
+            contact.person_contact_type.id === PersonContactTypeEnum.PHONE,
         )?.value || null,
       address:
         person?.person_address?.map((address) => ({
@@ -172,16 +173,8 @@ export class ProfileService {
     }
 
     if (telephone) {
-      const contactType = await this.prisma.person_contact_type.findFirst({
-        where: { slug: 'phone' },
-      });
-
-      if (!contactType) {
-        throw new BadRequestException('Phone contact type not found');
-      }
-
       const existingContact = await this.prisma.person_contact.findFirst({
-        where: { person_id: personId, type_id: contactType.id },
+        where: { person_id: personId, type_id: PersonContactTypeEnum.PHONE },
       });
 
       if (existingContact) {
@@ -194,23 +187,18 @@ export class ProfileService {
           data: {
             value: telephone,
             person_id: personId,
-            type_id: contactType.id,
+            type_id: PersonContactTypeEnum.PHONE,
           },
         });
       }
     }
 
     if (address) {
-      const addressType = await this.prisma.person_address_type.findFirst({
-        where: { slug: 'residential' },
-      });
-
-      if (!addressType) {
-        throw new BadRequestException('Residential address type not found');
-      }
-
       const existingAddress = await this.prisma.person_address.findFirst({
-        where: { person_id: personId, type_id: addressType.id },
+        where: {
+          person_id: personId,
+          type_id: PersonAddressTypeEnum.RESIDENTIAL,
+        },
       });
 
       if (existingAddress) {
@@ -232,7 +220,7 @@ export class ProfileService {
             primary: address.primary,
             reference: address.reference,
             person_id: personId,
-            type_id: addressType.id,
+            type_id: PersonAddressTypeEnum.RESIDENTIAL,
           },
         });
       }

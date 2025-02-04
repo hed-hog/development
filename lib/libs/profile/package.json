@@ -1,10 +1,6 @@
 {
   "name": "@hedhog/profile",
-<<<<<<< HEAD
-  "version": "0.0.2",
-=======
-  "version": "0.0.3",
->>>>>>> 3b742095776c241daed91589c1efdcc5e1de706d
+  "version": "0.0.5",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -33,7 +29,7 @@
   },
   "devDependencies": {
     "@hedhog/admin": "^0.46.17",
-    "@hedhog/contact": "^0.46.12",
+    "@hedhog/contact": "^0.46.13",
     "@hedhog/pagination": "^0.46.1",
     "@hedhog/prisma": "^0.46.1",
     "@nestjs/mapped-types": "^2.1.0"
