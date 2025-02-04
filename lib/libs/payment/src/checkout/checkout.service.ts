@@ -19,6 +19,7 @@ import {
 } from '@nestjs/event-emitter';
 import { v4 as uuidv4 } from 'uuid';
 import { DiscountTypeEnum } from '../discount-type/discount-type.enum';
+import { PaymentGatewayEnum } from '../payment-gateway/payment-gateway.enum';
 import { PaymentMethodEnum } from '../payment-method/payment-method.enum';
 import { PaymentStatusEnum } from '../payment-status/payment-status.enum';
 import { PaymentService } from '../payment/payment.service';
@@ -58,6 +59,11 @@ export class CheckoutService implements OnModuleInit {
     }
   }
 
+  async getProviderPayment(id: string): Promise<any> {
+    const provider = await this.getProvider();
+    return provider.getPayment(id);
+  }
+
   async init({
     items,
     slug = '',
@@ -69,30 +75,20 @@ export class CheckoutService implements OnModuleInit {
     userId?: number;
     couponId?: number;
   }) {
-    console.log('init', { items, slug, userId, couponId });
-
     if (!items || !items.length) {
       throw new BadRequestException('Items not found.');
     }
 
     await this.getProvider();
 
-    console.log('provider loaded', this.providerId);
-
     const personId = await this.getPersonId(userId);
-
-    console.log('personId', personId);
 
     let payment = await this.getPaymentBySlug(slug, personId);
 
-    console.log('payment 1', payment);
-
     if (!payment) {
       payment = await this.createPayment(items, slug, personId);
-      console.log('payment 2', payment);
     } else {
       payment = await this.updatePaymentItems(payment.id, items);
-      console.log('payment 3', payment);
     }
 
     return this.getPaymentDetails(payment.id);
@@ -177,15 +173,10 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async getProvider(): Promise<AbstractProvider> {
-    console.log('');
-
     if (
       this.providerId > 0 &&
       this.providerLoadedAt < new Date().getTime() - 60000
     ) {
-      console.log(
-        `Loaded at ${this.providerLoadedAt} the provider ${this.providerId} is still valid.`,
-      );
       return this.provider;
     }
 
@@ -198,7 +189,6 @@ export class CheckoutService implements OnModuleInit {
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
-      console.log(`Provider ${this.providerId} is still valid.`);
       return this.provider;
     }
 
@@ -310,8 +300,6 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async saveQRCode(paymentId: number, paymentPix: any) {
-    console.log('saveQRCode', { paymentId, paymentPix });
-
     if (this.setting['payment-provider'] === EnumProvider.MERCADO_PAGO) {
       const transactionData =
         paymentPix?.point_of_interaction?.transaction_data;
@@ -370,22 +358,6 @@ export class CheckoutService implements OnModuleInit {
     phone,
   }: CreditCardDTO): Promise<any> {
     try {
-      console.log('createPaymentIntent', {
-        token,
-        paymentMethodId,
-        issuerId,
-        installments,
-        paymentSlug,
-        cardholderEmail,
-        identificationNumber,
-        identificationType,
-        cardFirstSixDigits,
-        cardLastFourDigits,
-        name,
-        email,
-        phone,
-      });
-
       const provider = await this.getProvider();
 
       const person = await this.contactService.getPersonOrCreateIfNotExists(
@@ -445,8 +417,6 @@ export class CheckoutService implements OnModuleInit {
         payerIdentificationType: identificationType,
       });
 
-      console.log('paymentCreditCard', paymentCreditCard);
-
       await this.saveCreditCard(payment.id, paymentCreditCard);
 
       return this.getPaymentDetails(payment.id);
@@ -463,8 +433,6 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async saveCreditCard(paymentId: number, data: any) {
-    console.log('saveCreditCard', { paymentId, data });
-
     const provider = await this.getProvider();
 
     if (this.setting['payment-provider'] === EnumProvider.MERCADO_PAGO) {
@@ -486,27 +454,21 @@ export class CheckoutService implements OnModuleInit {
 
       switch (statusId) {
         case PaymentStatusEnum.PENDING:
-          console.log('EMIT', 'payment.pending', paymentId);
           this.eventEmitter.emit('payment.pending', paymentId);
           break;
         case PaymentStatusEnum.PAID:
-          console.log('EMIT', 'payment.paid', paymentId);
           this.eventEmitter.emit('payment.paid', paymentId);
           break;
         case PaymentStatusEnum.REJECTED:
-          console.log('EMIT', 'payment.rejected', paymentId);
           this.eventEmitter.emit('payment.rejected', paymentId);
           break;
         case PaymentStatusEnum.CANCELED:
-          console.log('EMIT', 'payment.canceled', paymentId);
           this.eventEmitter.emit('payment.canceled', paymentId);
           break;
         case PaymentStatusEnum.EXPIRED:
-          console.log('EMIT', 'payment.expired', paymentId);
           this.eventEmitter.emit('payment.expired', paymentId);
           break;
         case PaymentStatusEnum.REFUNDED:
-          console.log('EMIT', 'payment.refunded', paymentId);
           this.eventEmitter.emit('payment.refunded', paymentId);
           break;
       }
@@ -530,8 +492,7 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async createSubscription(priceId: string, customerId: string): Promise<any> {
-    const provider = await this.getProvider();
-    // return provider.createSubscription(priceId, customerId);
+    //TO DO
   }
 
   async getNewSlug() {
@@ -572,7 +533,6 @@ export class CheckoutService implements OnModuleInit {
   }
 
   private async getPaymentDetails(paymentId: number): Promise<any> {
-    console.log('getPaymentDetails', paymentId);
     return this.prismaService.payment.findUnique({
       where: { id: paymentId },
       include: {
@@ -666,11 +626,6 @@ export class CheckoutService implements OnModuleInit {
   }
 
   private getItemsFromPaymentAndCoupon(payment: any, coupon: any) {
-    console.log('getItemsFromPaymentAndCoupon', {
-      payment_item: payment.payment_item,
-      coupon_payment_coupon_item: coupon.payment_coupon_item,
-    });
-
     return payment.payment_item?.filter((item) =>
       (coupon.payment_coupon_item ?? [])
         .map((ci) => ci.item_id)
@@ -686,11 +641,6 @@ export class CheckoutService implements OnModuleInit {
     switch (coupon.discount_type_id) {
       case DiscountTypeEnum.DISCOUNT_FIXED_VALUE:
       case DiscountTypeEnum.PROMOTIONAL_PRICE:
-        console.log('applyCouponDiscount', {
-          paymentId,
-          couponId: coupon.id,
-          discount: Number(coupon.value),
-        });
         return this.paymentService.update({
           id: paymentId,
           data: { coupon_id: coupon.id, discount: Number(coupon.value) },
@@ -700,16 +650,129 @@ export class CheckoutService implements OnModuleInit {
         const valueToReduce =
           (Number(paymentAmount) * Number(coupon.value)) / 100;
 
-        console.log('applyCouponDiscount', {
-          paymentId,
-          couponId: coupon.id,
-          discount: Number(valueToReduce),
-        });
-
         return this.paymentService.update({
           id: paymentId,
           data: { coupon_id: coupon.id, discount: Number(valueToReduce) },
         });
+    }
+  }
+
+  async notification(gatewayId: number, data: any) {
+    console.log('**************************************************');
+    console.log('**                 NOTIFICATION                 **');
+    console.log('**************************************************');
+    try {
+      if (
+        gatewayId === PaymentGatewayEnum.MERCADO_PAGO &&
+        data.type === 'payment'
+      ) {
+        const paymentData = await this.getProviderPayment(data.data.id);
+
+        console.log('paymentData', paymentData);
+
+        if (!paymentData.external_reference) {
+          throw new Error('external_reference not found');
+        }
+
+        const payment = await this.prismaService.payment.findFirst({
+          where: { slug: paymentData.external_reference },
+          select: { id: true },
+        });
+
+        console.log('payment', payment);
+
+        if (!payment) {
+          throw new Error('payment not found');
+        }
+
+        await this.prismaService.payment_notification.create({
+          data: {
+            log: JSON.stringify(data),
+            gateway_id: gatewayId,
+            payment_id: payment.id,
+          },
+        });
+
+        await this.setPaymentValue(payment.id, 'mercado_pago_id', data.data.id);
+
+        switch (paymentData.status) {
+          case 'approved':
+          case 'authorized':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: {
+                status_id: PaymentStatusEnum.PAID,
+                payment_at: new Date(),
+              },
+            });
+            break;
+          case 'pending':
+          case 'in_process':
+          case 'in_mediation':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.PENDING },
+            });
+            break;
+          case 'rejected':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.REJECTED },
+            });
+            await this.setPaymentValue(
+              payment.id,
+              'rejected',
+              new Date().toISOString(),
+            );
+            break;
+          case 'cancelled':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.CANCELED },
+            });
+            await this.setPaymentValue(
+              payment.id,
+              'cancelled',
+              new Date().toISOString(),
+            );
+            break;
+          case 'refunded':
+          case 'charged_back':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.REFUNDED },
+            });
+            await this.setPaymentValue(
+              payment.id,
+              'refunded',
+              new Date().toISOString(),
+            );
+            break;
+          default:
+            break;
+        }
+      } else {
+        await this.prismaService.payment_notification.create({
+          data: {
+            log: JSON.stringify({ data }),
+            gateway_id: gatewayId,
+          },
+        });
+      }
+      console.log('**************************************************');
+      return { success: true };
+    } catch (error: any) {
+      console.error('error', error);
+
+      await this.prismaService.payment_notification.create({
+        data: {
+          log: JSON.stringify({ error: error?.message ?? String(error), data }),
+          gateway_id: gatewayId,
+        },
+      });
+
+      console.log('**************************************************');
+      return { success: false, error: error?.message ?? String(error) };
     }
   }
 }

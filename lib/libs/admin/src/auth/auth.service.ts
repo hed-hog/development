@@ -256,7 +256,7 @@ export class AuthService {
   }
 
   async changeEmail({ currentEmail, password, newEmail }: EmailDTO) {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findFirst({
       where: { email: currentEmail },
     });
 
@@ -268,7 +268,7 @@ export class AuthService {
       throw new BadRequestException('Invalid password');
     }
 
-    const existingUser = await this.prisma.user.findUnique({
+    const existingUser = await this.prisma.user.findFirst({
       where: { email: newEmail },
     });
 
@@ -276,7 +276,7 @@ export class AuthService {
       throw new ConflictException('Email is already in use');
     }
 
-    const newUser = await this.prisma.user.update({
+    const newUser = await this.prisma.user.updateMany({
       where: { email: currentEmail },
       data: { email: newEmail },
     });

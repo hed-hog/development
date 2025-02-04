@@ -37,6 +37,7 @@ interface IProvider {
   ): Promise<any>;
   getStatusId(status: string): number;
   getBrandId(brand: string): number;
+  getPayment(id: string): Promise<any>;
 }
 
 export abstract class AbstractProvider implements IProvider {
@@ -44,6 +45,7 @@ export abstract class AbstractProvider implements IProvider {
   constructor(id: number) {
     this.id = id;
   }
+  abstract getPayment(id: string): Promise<any>;
   abstract getBrandId(brand: string): number;
   abstract getStatusId(status: string): number;
   abstract createPaymentPix(args: {

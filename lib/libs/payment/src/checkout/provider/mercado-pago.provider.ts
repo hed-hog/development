@@ -30,6 +30,7 @@ export class MercadoPagoProvider extends AbstractProvider {
     data?: any,
   ): Promise<T> {
     try {
+      console.log('==================================');
       console.log('REQUEST', {
         url,
         method,
@@ -40,6 +41,7 @@ export class MercadoPagoProvider extends AbstractProvider {
       });
 
       console.log('DATA', JSON.stringify(data));
+      console.log('==================================');
 
       const response = await lastValueFrom(
         this.httpService.request({
@@ -57,6 +59,10 @@ export class MercadoPagoProvider extends AbstractProvider {
         error?.response ? error?.response?.data?.message : error?.message,
       );
     }
+  }
+
+  async getPayment(id: string) {
+    return this.makeRequest(`${this.baseUrl}/v1/payments/${id}`, 'GET');
   }
 
   async createPaymentPix({
@@ -115,12 +121,6 @@ export class MercadoPagoProvider extends AbstractProvider {
     firstName,
     lastName,
   }) {
-    console.log('==================================');
-    console.log('createPaymentCreditCard');
-    console.log(
-      'notificationUrl',
-      `${this.setting['url']}/checkout/notification/${this.gatewayId}`,
-    );
     const data = {
       token,
       installments,
@@ -146,16 +146,11 @@ export class MercadoPagoProvider extends AbstractProvider {
       notification_url: `${this.setting['url']}/checkout/notification/${this.gatewayId}`,
     };
 
-    console.log('data', data);
-
     const response = await this.makeRequest(
       `${this.baseUrl}/v1/payments`,
       'POST',
       data,
     );
-
-    console.log('response', response);
-    console.log('==================================');
 
     return response;
   }
