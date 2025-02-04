@@ -12,6 +12,7 @@ import { compare, genSalt, hash } from 'bcrypt';
 import { LoginDTO } from './dto/login.dto';
 import { SignupDTO } from './dto/signup.dto';
 import { UpdateUserDataDTO } from './dto/update.dto';
+import { isValidCPF } from './validations/cpf';
 
 @Injectable()
 export class ProfileService {
@@ -248,6 +249,10 @@ export class ProfileService {
 
     if (existingUser) {
       throw new BadRequestException('User already exists.');
+    }
+
+    if (!isValidCPF(String(cpf))) {
+      throw new BadRequestException('Invalid CPF');
     }
 
     const salt = await genSalt();
