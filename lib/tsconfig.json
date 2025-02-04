@@ -120,6 +120,12 @@
       ],
       "@hedhog/rabbitmq/*": [
         "libs/rabbitmq/src/*"
+      ],
+      "@hedhog/profile": [
+        "libs/profile/src"
+      ],
+      "@hedhog/profile/*": [
+        "libs/profile/src/*"
       ]
     }
   },
