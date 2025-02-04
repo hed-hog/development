@@ -4,7 +4,13 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SubscriptionListenerService } from './subscriptionlistener.service';
 
 @Module({
-  imports: [forwardRef(() => PrismaModule), EventEmitterModule.forRoot()],
+  imports: [
+    forwardRef(() => PrismaModule),
+    EventEmitterModule.forRoot({
+      wildcard: true,
+      global: true,
+    }),
+  ],
   controllers: [],
   providers: [SubscriptionListenerService],
 })
