@@ -14,8 +14,6 @@ import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { ResetDTO } from './dto/reset.dto';
-import { SignupDTO } from './dto/signup.dto';
-import { UpdateUserDataDTO } from './dto/update.dto';
 import { User as UserType } from './types/user.type';
 
 @Controller('auth')
@@ -74,39 +72,6 @@ export class AuthController {
   }
 
   @Public()
-  @Post('signup')
-  async signup(
-    @Body()
-    {
-      fullName,
-      cpf,
-      email,
-      password,
-      city,
-      district,
-      postal_code,
-      state,
-      street,
-      telephone,
-      number,
-    }: SignupDTO,
-  ) {
-    return this.service.signup({
-      fullName,
-      cpf,
-      email,
-      password,
-      city,
-      district,
-      postal_code,
-      state,
-      street,
-      telephone,
-      number,
-    });
-  }
-
-  @Public()
   @Post('change-password')
   async changePassword(
     @Body()
@@ -124,24 +89,5 @@ export class AuthController {
   @Post('change-email')
   async changeEmail(@Body() { currentEmail, password, newEmail }: EmailDTO) {
     return this.service.changeEmail({ currentEmail, password, newEmail });
-  }
-
-  @Public()
-  @Post('update')
-  async updateUserData(
-    @Body() { email, name, telephone, address }: UpdateUserDataDTO,
-  ) {
-    return this.service.updateUserData({
-      email,
-      name,
-      telephone,
-      address,
-    });
-  }
-
-  @Public()
-  @Post('close-account')
-  async closeAccount(@Body() { email, password }: LoginDTO) {
-    return this.service.closeAccount({ email, password });
   }
 }
