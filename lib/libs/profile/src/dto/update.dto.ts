@@ -1,4 +1,11 @@
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsInt,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class AddressDTO {
   @IsString()
@@ -19,6 +26,22 @@ export class AddressDTO {
   @IsString()
   @Length(8, 9, { message: 'Postal code must be between 8 and 9 characters' })
   postal_code: string;
+
+  @IsString()
+  @IsOptional()
+  complement?: string;
+
+  @IsInt()
+  @IsOptional()
+  country_id?: number;
+
+  @IsString()
+  @IsOptional()
+  reference?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  primary?: boolean;
 }
 
 export class UpdateUserDataDTO {

@@ -1,7 +1,11 @@
 export enum PersonContactTypeEnum {
-  Phone = 1,
-  Email = 2,
-  Fax = 3,
-  WhatsApp = 4,
-  Telegram = 5,
+  PHONE = 1,
+
+  EMAIL = 2,
+
+  FAX = 3,
+
+  WHATSAPP = 4,
+
+  TELEGRAM = 5,
 }

@@ -27,7 +27,7 @@ data:
             description:
               en: The token to use with Mercado Pago
               pt: O token a utilizar com o Mercado Pago
-            value: ''
+            value: ""
           - slug: payment-mercado-pago-public-key
             type: string
             name:
@@ -36,7 +36,7 @@ data:
             description:
               en: The client ID to use with Mercado Pago
               pt: O ID do cliente a utilizar com o Mercado Pago
-            value: ''
+            value: ""
           - slug: payment-currency
             type: string
             name:

@@ -34,7 +34,7 @@ export class ContactService {
         person_contact: {
           some: {
             value: email,
-            type_id: PersonContactTypeEnum.Email,
+            type_id: PersonContactTypeEnum.EMAIL,
           },
         },
       },
@@ -53,7 +53,7 @@ export class ContactService {
         person_contact: {
           create: {
             value: email,
-            type_id: PersonContactTypeEnum.Email,
+            type_id: PersonContactTypeEnum.EMAIL,
           },
         },
         person_type: {

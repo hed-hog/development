@@ -1,7 +1,11 @@
 export enum PersonDocumentTypeEnum {
   RG = 1,
+
   CPF = 2,
+
   CNPJ = 3,
-  PASSAPORTE = 4,
+
+  PASSPORT = 4,
+
   CNH = 5,
 }

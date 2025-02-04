@@ -1,3 +1,9 @@
+import {
+  PersonAddressTypeEnum,
+  PersonContactTypeEnum,
+  PersonDocumentTypeEnum,
+  PersonTypeEnum,
+} from '@hedhog/contact';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
@@ -93,7 +99,7 @@ export class ProfileService {
   }
 
   async closeAccount({ email, password }: LoginDTO) {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findFirst({
       where: { email },
       include: { person_user: { include: { person: true } } },
     });
@@ -107,7 +113,7 @@ export class ProfileService {
       throw new UnauthorizedException('Incorrect password');
     }
 
-    const personUser = user.person_user?.[0];
+    const personUser = (user.person_user ?? []).shift();
     if (!personUser || !personUser.person) {
       throw new NotFoundException('Person data not found for this user');
     }
@@ -141,7 +147,7 @@ export class ProfileService {
   }
 
   async updateUserData({ email, name, telephone, address }: UpdateUserDataDTO) {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findFirst({
       where: { email },
       include: { person_user: { include: { person: true } } },
     });
@@ -150,12 +156,12 @@ export class ProfileService {
       throw new NotFoundException('User not found');
     }
 
-    const personUser = user.person_user?.[0];
+    const personUser = (user.person_user ?? []).shift();
     if (!personUser || !personUser.person) {
       throw new NotFoundException('Person data not found for this user');
     }
 
-    const personId = personUser.person.id;
+    const personId: number = Number(personUser.person.id);
 
     if (name) {
       await this.prisma.user.update({
@@ -214,7 +220,16 @@ export class ProfileService {
       } else {
         await this.prisma.person_address.create({
           data: {
-            ...address,
+            city: address.city,
+            district: address.district,
+            postal_code: address.postal_code,
+            state: address.state,
+            street: address.street,
+            complement: address.complement,
+            country_id: address.country_id,
+            number: address.number,
+            primary: address.primary,
+            reference: address.reference,
             person_id: personId,
             type_id: addressType.id,
           },
@@ -222,7 +237,7 @@ export class ProfileService {
       }
     }
 
-    const newUser = await this.prisma.user.findUnique({
+    const newUser = await this.prisma.user.findFirst({
       where: { email },
     });
 
@@ -261,120 +276,56 @@ export class ProfileService {
       },
     });
 
-    const personType = await this.prisma.person_type.findFirst({
-      where: {
-        slug: 'physical',
-      },
+    const country = await this.prisma.country.findFirst({
+      where: { code: 'BRA' },
     });
 
-    const person = await this.prisma.person.create({
+    await this.prisma.person.create({
       data: {
         name: fullName,
         photo_id: null,
         birth_at: null,
-        type_id: personType.id,
+        type_id: PersonTypeEnum.PHYSICAL,
+        person_user: {
+          create: {
+            user_id: user.id,
+          },
+        },
+        person_address: {
+          create: {
+            street,
+            number,
+            district,
+            city,
+            state,
+            postal_code,
+            country_id: country.id,
+            type_id: PersonAddressTypeEnum.RESIDENTIAL,
+          },
+        },
+        person_contact: {
+          createMany: {
+            data: [
+              {
+                value: email,
+                type_id: PersonContactTypeEnum.EMAIL,
+              },
+              {
+                value: String(telephone),
+                type_id: PersonContactTypeEnum.PHONE,
+              },
+            ],
+          },
+        },
+        person_document: {
+          create: {
+            value: String(cpf),
+            type_id: PersonDocumentTypeEnum.CPF,
+            country_id: country.id,
+          },
+        },
       },
     });
-
-    await this.prisma.person_user.create({
-      data: {
-        person_id: person.id,
-        user_id: user.id,
-      },
-    });
-
-    const country = await this.prisma.country.findFirst({
-      where: {
-        code: 'BRA',
-      },
-    });
-
-    if (street) {
-      const addressType = await this.prisma.person_address_type.findFirst({
-        where: {
-          slug: 'residential',
-        },
-      });
-
-      await this.prisma.person_address.create({
-        data: {
-          street,
-          number,
-          district,
-          city,
-          state,
-          postal_code,
-          person_address_type: {
-            connect: {
-              id: addressType.id,
-            },
-          },
-          country: {
-            connect: {
-              id: country.id,
-            },
-          },
-          person: {
-            connect: {
-              id: person.id,
-            },
-          },
-        },
-      });
-    }
-
-    if (telephone) {
-      const contactType = await this.prisma.person_contact_type.findFirst({
-        where: {
-          slug: 'phone',
-        },
-      });
-
-      await this.prisma.person_contact.create({
-        data: {
-          value: String(telephone),
-          person: {
-            connect: {
-              id: person.id,
-            },
-          },
-          person_contact_type: {
-            connect: {
-              id: contactType.id,
-            },
-          },
-        },
-      });
-    }
-
-    if (cpf) {
-      const documentType = await this.prisma.person_document_type.findFirst({
-        where: {
-          slug: 'cpf',
-        },
-      });
-
-      await this.prisma.person_document.create({
-        data: {
-          value: String(cpf),
-          person: {
-            connect: {
-              id: person.id,
-            },
-          },
-          person_document_type: {
-            connect: {
-              id: documentType.id,
-            },
-          },
-          country: {
-            connect: {
-              id: country.id,
-            },
-          },
-        },
-      });
-    }
 
     return this.getToken(user);
   }

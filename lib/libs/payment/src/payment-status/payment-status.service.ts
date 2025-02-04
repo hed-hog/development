@@ -14,7 +14,7 @@ import { LocaleService } from '@hedhog/locale';
 @Injectable()
 export class PaymentStatusService {
   private readonly modelName = 'payment_status';
-  private readonly foreignKey = '';
+  private readonly foreignKey = 'payment_status_id';
 
   constructor(
     @Inject(forwardRef(() => PrismaService))

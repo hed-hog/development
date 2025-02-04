@@ -1,4 +1,3 @@
-import { UserService } from '@hedhog/admin';
 import {
   ContactService,
   PersonContactTypeEnum,
@@ -19,9 +18,9 @@ import {
   EventEmitterReadinessWatcher,
 } from '@nestjs/event-emitter';
 import { v4 as uuidv4 } from 'uuid';
-import { EnumDiscountType } from '../disccount-type.enum';
-import { EnumPaymentMethod } from '../payment-method.enum';
-import { EnumPaymentStatus } from '../payment-status.enum';
+import { DiscountTypeEnum } from '../discount-type/discount-type.enum';
+import { PaymentMethodEnum } from '../payment-method/payment-method.enum';
+import { PaymentStatusEnum } from '../payment-status/payment-status.enum';
 import { PaymentService } from '../payment/payment.service';
 import { CreditCardDTO } from './dto/credit-card.dto';
 import { PixDTO } from './dto/pix.dto';
@@ -49,8 +48,6 @@ export class CheckoutService implements OnModuleInit {
     private readonly paymentService: PaymentService,
     @Inject(forwardRef(() => ContactService))
     private readonly contactService: ContactService,
-    @Inject(forwardRef(() => UserService))
-    private readonly userService: UserService,
   ) {}
 
   async onModuleInit() {
@@ -115,7 +112,7 @@ export class CheckoutService implements OnModuleInit {
     const payment = await this.paymentService.create({
       gateway_id: this.providerId,
       person_id: personId ?? undefined,
-      status_id: EnumPaymentStatus.PENDING,
+      status_id: PaymentStatusEnum.PENDING,
       currency: 'brl',
       document: '00000000000',
       slug,
@@ -252,7 +249,7 @@ export class CheckoutService implements OnModuleInit {
       const provider = await this.getProvider();
 
       const person = await this.contactService.getPersonOrCreateIfNotExists(
-        PersonContactTypeEnum.Email,
+        PersonContactTypeEnum.EMAIL,
         name,
         email,
       );
@@ -268,14 +265,14 @@ export class CheckoutService implements OnModuleInit {
       await this.contactService.addContactIfNotExists(
         person.id,
         phone,
-        PersonContactTypeEnum.Phone,
+        PersonContactTypeEnum.PHONE,
       );
 
       const payment = await this.prismaService.payment.update({
         where: { slug: paymentSlug },
         data: {
           installments: 1,
-          method_id: EnumPaymentMethod.PIX,
+          method_id: PaymentMethodEnum.PIX,
           person_id: person.id,
           document: identificationNumber,
         },
@@ -392,7 +389,7 @@ export class CheckoutService implements OnModuleInit {
       const provider = await this.getProvider();
 
       const person = await this.contactService.getPersonOrCreateIfNotExists(
-        PersonContactTypeEnum.Email,
+        PersonContactTypeEnum.EMAIL,
         name,
         email,
       );
@@ -408,14 +405,14 @@ export class CheckoutService implements OnModuleInit {
       await this.contactService.addContactIfNotExists(
         person.id,
         phone,
-        PersonContactTypeEnum.Phone,
+        PersonContactTypeEnum.PHONE,
       );
 
       const payment = await this.prismaService.payment.update({
         where: { slug: paymentSlug },
         data: {
           installments,
-          method_id: EnumPaymentMethod.CREDIT_CARD,
+          method_id: PaymentMethodEnum.CREDIT_CARD,
           person_id: person.id,
           document: identificationNumber,
         },
@@ -461,7 +458,7 @@ export class CheckoutService implements OnModuleInit {
   async paymentReset({ slug }: ResetDTO) {
     return this.prismaService.payment.update({
       where: { slug },
-      data: { status_id: EnumPaymentStatus.PENDING },
+      data: { status_id: PaymentStatusEnum.PENDING },
     });
   }
 
@@ -479,7 +476,7 @@ export class CheckoutService implements OnModuleInit {
           brand_id: provider.getBrandId(data.payment_method_id),
           status_id: statusId,
           payment_at:
-            statusId === EnumPaymentStatus.PAID
+            statusId === PaymentStatusEnum.PAID
               ? new Date().toISOString()
               : null,
         },
@@ -488,27 +485,27 @@ export class CheckoutService implements OnModuleInit {
       await this.eventEmitterReadinessWatcher.waitUntilReady();
 
       switch (statusId) {
-        case EnumPaymentStatus.PENDING:
+        case PaymentStatusEnum.PENDING:
           console.log('EMIT', 'payment.pending', paymentId);
           this.eventEmitter.emit('payment.pending', paymentId);
           break;
-        case EnumPaymentStatus.PAID:
+        case PaymentStatusEnum.PAID:
           console.log('EMIT', 'payment.paid', paymentId);
           this.eventEmitter.emit('payment.paid', paymentId);
           break;
-        case EnumPaymentStatus.REJECTED:
+        case PaymentStatusEnum.REJECTED:
           console.log('EMIT', 'payment.rejected', paymentId);
           this.eventEmitter.emit('payment.rejected', paymentId);
           break;
-        case EnumPaymentStatus.CANCELED:
+        case PaymentStatusEnum.CANCELED:
           console.log('EMIT', 'payment.canceled', paymentId);
           this.eventEmitter.emit('payment.canceled', paymentId);
           break;
-        case EnumPaymentStatus.EXPIRED:
+        case PaymentStatusEnum.EXPIRED:
           console.log('EMIT', 'payment.expired', paymentId);
           this.eventEmitter.emit('payment.expired', paymentId);
           break;
-        case EnumPaymentStatus.REFUNDED:
+        case PaymentStatusEnum.REFUNDED:
           console.log('EMIT', 'payment.refunded', paymentId);
           this.eventEmitter.emit('payment.refunded', paymentId);
           break;
@@ -561,7 +558,7 @@ export class CheckoutService implements OnModuleInit {
     if (!slug) return null;
 
     const payment = await this.prismaService.payment.findFirst({
-      where: { slug, status_id: EnumPaymentStatus.PENDING },
+      where: { slug, status_id: PaymentStatusEnum.PENDING },
     });
 
     if (payment && !payment.person_id && personId) {
@@ -593,7 +590,7 @@ export class CheckoutService implements OnModuleInit {
   async setCoupon(couponCode: string, paymentSlug: string) {
     const payment = await this.getPaymentWithItems(paymentSlug);
 
-    if (!payment || payment.status_id !== EnumPaymentStatus.PENDING) {
+    if (!payment || payment.status_id !== PaymentStatusEnum.PENDING) {
       throw new BadRequestException('Payment not found or not pending.');
     }
 
@@ -687,8 +684,8 @@ export class CheckoutService implements OnModuleInit {
     paymentAmount: number,
   ) {
     switch (coupon.discount_type_id) {
-      case EnumDiscountType.DISCOUNT_FIXED_VALUE:
-      case EnumDiscountType.PROMOTIONAL_PRICE:
+      case DiscountTypeEnum.DISCOUNT_FIXED_VALUE:
+      case DiscountTypeEnum.PROMOTIONAL_PRICE:
         console.log('applyCouponDiscount', {
           paymentId,
           couponId: coupon.id,
@@ -699,7 +696,7 @@ export class CheckoutService implements OnModuleInit {
           data: { coupon_id: coupon.id, discount: Number(coupon.value) },
         });
 
-      case EnumDiscountType.DISCOUNT_PERCENTAGE_VALUE:
+      case DiscountTypeEnum.DISCOUNT_PERCENTAGE_VALUE:
         const valueToReduce =
           (Number(paymentAmount) * Number(coupon.value)) / 100;
 

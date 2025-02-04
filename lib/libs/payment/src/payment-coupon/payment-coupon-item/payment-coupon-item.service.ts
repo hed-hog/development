@@ -1,30 +1,27 @@
-import { DeleteDTO } from '@hedhog/core';
-import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import { PaginationService, PaginationDTO } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
-  BadRequestException,
-  Inject,
   Injectable,
-  forwardRef,
+  NotFoundException,
+  BadRequestException
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
+import { DeleteDTO } from '@hedhog/core';
 
 @Injectable()
 export class PaymentCouponItemService {
   constructor(
-    @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
-    @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService,
+    private readonly paginationService: PaginationService
   ) {}
 
   async create(couponId: number, data: CreateDTO) {
     return this.prismaService.payment_coupon_item.create({
       data: {
         coupon_id: couponId,
-        ...data,
-      },
+        ...data
+      }
     });
   }
 
@@ -32,8 +29,8 @@ export class PaymentCouponItemService {
     return this.prismaService.payment_coupon_item.findFirst({
       where: {
         coupon_id: couponId,
-        id: id,
-      },
+        id: id
+      }
     });
   }
 
@@ -45,11 +42,11 @@ export class PaymentCouponItemService {
       this.prismaService.payment_coupon_item,
       {
         fields: '',
-        ...paginationParams,
+        ...paginationParams
       },
       {
-        where,
-      },
+        where
+      }
     );
   }
 
@@ -57,16 +54,16 @@ export class PaymentCouponItemService {
     return this.prismaService.payment_coupon_item.updateMany({
       where: {
         coupon_id: couponId,
-        id: id,
+        id: id
       },
-      data,
+      data
     });
   }
 
   async delete(couponId: number, { ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.',
+        'You must select at least one item to delete.'
       );
     }
 
@@ -74,9 +71,9 @@ export class PaymentCouponItemService {
       where: {
         coupon_id: couponId,
         id: {
-          in: ids,
-        },
-      },
+          in: ids
+        }
+      }
     });
   }
 }

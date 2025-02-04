@@ -39,6 +39,8 @@ export class MercadoPagoProvider extends AbstractProvider {
         data,
       });
 
+      console.log('DATA', JSON.stringify(data));
+
       const response = await lastValueFrom(
         this.httpService.request({
           url,

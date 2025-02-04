@@ -9,7 +9,6 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { PaymentNotificationService } from '../payment/payment-notification/payment-notification.service';
 import { CheckoutService } from './checkout.service';
 import { CreditCardDTO } from './dto/credit-card.dto';
 import { InitDTO } from './dto/init.dto';
@@ -23,8 +22,6 @@ export class CheckoutController {
   constructor(
     @Inject(forwardRef(() => CheckoutService))
     private readonly checkoutService: CheckoutService,
-    @Inject(forwardRef(() => PaymentNotificationService))
-    private readonly paymentNotificationService: PaymentNotificationService,
   ) {}
 
   @Post('notification/:gatewayId')

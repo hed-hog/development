@@ -1,5 +1,7 @@
-export enum EnumDiscountType {
+export enum DiscountTypeEnum {
   DISCOUNT_FIXED_VALUE = 1,
+
   DISCOUNT_PERCENTAGE_VALUE = 2,
+
   PROMOTIONAL_PRICE = 3,
 }
