@@ -588,32 +588,33 @@ export class CheckoutService implements OnModuleInit {
       });
 
       return this.getPaymentDetails(payment.id);
-    }
+    } else {
+      const coupon = await this.getCouponWithItems(couponCode);
 
-    const coupon = await this.getCouponWithItems(couponCode);
+      if (
+        coupon &&
+        Number(coupon.uses_limit) > 0 &&
+        (Number(coupon.uses_qtd) ?? 0) >= (Number(coupon.uses_limit) ?? 0)
+      ) {
+        throw new BadRequestException('Consumption coupon or usage limit.');
+      }
 
-    if (
-      coupon.uses_limit > 0 &&
-      (coupon.uses_qtd ?? 0) >= (coupon.uses_limit ?? 0)
-    ) {
-      throw new BadRequestException('Consumption coupon or usage limit.');
-    }
-
-    const itemsFromPaymentAndCoupon = this.getItemsFromPaymentAndCoupon(
-      payment,
-      coupon,
-    );
-
-    if (itemsFromPaymentAndCoupon?.length) {
-      await this.applyCouponDiscount(
-        payment.id,
+      const itemsFromPaymentAndCoupon = this.getItemsFromPaymentAndCoupon(
+        payment,
         coupon,
-        Number(payment.amount),
       );
 
-      return this.getPaymentDetails(payment.id);
-    } else {
-      throw new BadRequestException('Coupon not is valid.');
+      if (itemsFromPaymentAndCoupon?.length) {
+        await this.applyCouponDiscount(
+          payment.id,
+          coupon,
+          Number(payment.amount),
+        );
+
+        return this.getPaymentDetails(payment.id);
+      } else {
+        throw new BadRequestException('Coupon not is valid.');
+      }
     }
   }
 
