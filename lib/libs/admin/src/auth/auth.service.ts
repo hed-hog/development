@@ -205,7 +205,9 @@ export class AuthService {
     await this.mail.send({
       to: email,
       subject: `Recuperação de Senha`,
-      body: getBody(`${process.env.APP_URL}/password-recovery/${code}`),
+      body: getBody(
+        `${process.env.APP_URL}/login?mode=reset-password&code=${code}`,
+      ),
     });
 
     return true;
