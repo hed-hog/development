@@ -13,6 +13,11 @@ import { PersonContactTypeLocale } from './PersonContactTypeLocale';
 import { PersonAddressTypeLocale } from './PersonAddressTypeLocale';
 import { PersonCustomTypeLocale } from './PersonCustomTypeLocale';
 import { PersonCustomLocale } from './PersonCustomLocale';
+import { FaqLocale } from './FaqLocale';
+import { PaymentStatusLocale } from './PaymentStatusLocale';
+import { SubscriptionLocale } from './SubscriptionLocale';
+import { SubscriptionPlanLocale } from './SubscriptionPlanLocale';
+import { EventLocale } from './EventLocale';
 
 export type Locale = {
   id?: number;
@@ -36,4 +41,9 @@ export type Locale = {
   person_address_type_locale?: PersonAddressTypeLocale[];
   person_custom_type_locale?: PersonCustomTypeLocale[];
   person_custom_locale?: PersonCustomLocale[];
+  faq_locale?: FaqLocale[];
+  payment_status_locale?: PaymentStatusLocale[];
+  subscription_locale?: SubscriptionLocale[];
+  subscription_plan_locale?: SubscriptionPlanLocale[];
+  event_locale?: EventLocale[];
 }

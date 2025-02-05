@@ -6,6 +6,8 @@ import { PersonDocument } from './PersonDocument';
 import { PersonContact } from './PersonContact';
 import { PersonAddress } from './PersonAddress';
 import { PersonCustom } from './PersonCustom';
+import { Payment } from './Payment';
+import { SubscriptionPerson } from './SubscriptionPerson';
 
 export type Person = {
   id?: number;
@@ -23,4 +25,6 @@ export type Person = {
   person_contact?: PersonContact[];
   person_address?: PersonAddress[];
   person_custom?: PersonCustom[];
+  payment?: Payment[];
+  subscription_person?: SubscriptionPerson[];
 }

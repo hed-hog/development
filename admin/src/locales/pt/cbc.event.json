@@ -1,0 +1,11 @@
+{
+  "create": "Create Event",
+  "createText": "Fill the event informations.",
+  "createTooltip": "Create new event",
+  "delete": "Delete Event",
+  "deleteText": "Are you sure to delete these events?",
+  "deleteTooltip": "Delete the selected events",
+  "edit": "Edit Event",
+  "editText": "View and edit event information.",
+  "editTooltip": "Edit the selected events"
+}

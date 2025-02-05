@@ -1,40 +1,43 @@
+import { PrismaService } from '@hedhog/prisma';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
 @Injectable()
 export class SubscriptionListenerService {
-  constructor() {}
-
-  @OnEvent('**')
-  async handleAllEvent(payload: any) {
-    console.log('SubscriptionListenerService', 'OnEvent', '**', payload);
-  }
+  constructor(private readonly prismaService: PrismaService) {}
 
   @OnEvent('payment.paid')
-  async handlePaymentPaidEvent(payload: any) {
+  async handlePaymentPaidEvent(paymentId: number) {
     console.log(
       'SubscriptionListenerService',
       'OnEvent',
       'payment.paid',
-      payload,
+      paymentId,
     );
+
+    const payment = await this.prismaService.payment.findUnique({
+      where: {
+        id: paymentId,
+      },
+      include: {},
+    });
   }
   @OnEvent('payment.refunded')
-  async handlePaymentRefoundedEvent(payload: any) {
+  async handlePaymentRefoundedEvent(paymentId: number) {
     console.log(
       'SubscriptionListenerService',
       'OnEvent',
       'payment.refunded',
-      payload,
+      paymentId,
     );
   }
   @OnEvent('payment.canceled')
-  async handlePaymentCanceledEvent(payload: any) {
+  async handlePaymentCanceledEvent(paymentId: number) {
     console.log(
       'SubscriptionListenerService',
       'OnEvent',
       'payment.canceled',
-      payload,
+      paymentId,
     );
   }
 }

@@ -1,0 +1,21 @@
+routes:
+  - path: cbc
+    children:
+      - path: coin
+        lazy:
+          component: ./pages/cbc/coin/index.tsx
+      - path: stock-exchange
+        lazy:
+          component: ./pages/cbc/stock-exchange/index.tsx
+      - path: quotation
+        lazy:
+          component: ./pages/cbc/quotation/index.tsx
+      - path: banking
+        lazy:
+          component: ./pages/cbc/banking/index.tsx
+      - path: operation
+        lazy:
+          component: ./pages/cbc/operation/index.tsx
+      - path: strategy
+        lazy:
+          component: ./pages/cbc/strategy/index.tsx

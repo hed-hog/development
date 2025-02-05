@@ -1,0 +1,6 @@
+routes:
+  - path: faq
+    children:
+      - path: faq
+        lazy:
+          component: ./pages/faq/index.tsx

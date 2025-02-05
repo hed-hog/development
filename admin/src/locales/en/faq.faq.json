@@ -1,0 +1,11 @@
+{
+  "create": "Create faq",
+  "createText": "Fill the faq informations.",
+  "createTooltip": "Create new faq",
+  "delete": "Delete faq",
+  "deleteText": "Are you sure to delete these faq?",
+  "deleteTooltip": "Delete the selected faq",
+  "edit": "Edit faq",
+  "editText": "View and edit faq information.",
+  "editTooltip": "Edit the selected faq"
+}

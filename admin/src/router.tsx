@@ -58,6 +58,52 @@ const routes = [
         }),
       },
       {
+        path: "cbc",
+        children: [
+          {
+            path: "banking",
+            lazy: async () => ({
+              Component: (await import("./pages/cbc/banking/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "coin",
+            lazy: async () => ({
+              Component: (await import("./pages/cbc/coin/index.tsx")).default,
+            }),
+          },
+          {
+            path: "operation",
+            lazy: async () => ({
+              Component: (await import("./pages/cbc/operation/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "quotation",
+            lazy: async () => ({
+              Component: (await import("./pages/cbc/quotation/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "stock-exchange",
+            lazy: async () => ({
+              Component: (await import("./pages/cbc/stock-exchange/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "strategy",
+            lazy: async () => ({
+              Component: (await import("./pages/cbc/strategy/index.tsx"))
+                .default,
+            }),
+          },
+        ],
+      },
+      {
         path: "contact",
         children: [
           {
@@ -104,6 +150,17 @@ const routes = [
             lazy: async () => ({
               Component: (await import("./pages/contact/person-type/index.tsx"))
                 .default,
+            }),
+          },
+        ],
+      },
+      {
+        path: "faq",
+        children: [
+          {
+            path: "faq",
+            lazy: async () => ({
+              Component: (await import("./pages/faq/index.tsx")).default,
             }),
           },
         ],
@@ -171,6 +228,102 @@ const routes = [
             lazy: async () => ({
               Component: (await import("./pages/management/user/index.tsx"))
                 .default,
+            }),
+          },
+        ],
+      },
+      {
+        path: "payment",
+        children: [
+          {
+            path: "discount-type",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/discount-type/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "item",
+            lazy: async () => ({
+              Component: (await import("./pages/payment/item/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "payment",
+            lazy: async () => ({
+              Component: (await import("./pages/payment/payment/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "payment-card-brand",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-card-brand/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-coupon",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-coupon/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-gateway",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-gateway/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-method",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-method/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-notification",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-notification/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "payment-status",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/payment/payment-status/index.tsx")
+              ).default,
+            }),
+          },
+        ],
+      },
+      {
+        path: "subscription",
+        children: [
+          {
+            path: "subscription",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/subscription/subscription/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "subscription-plan",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/subscription/subscription-plan/index.tsx")
+              ).default,
             }),
           },
         ],
