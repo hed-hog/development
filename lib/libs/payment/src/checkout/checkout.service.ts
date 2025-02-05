@@ -687,7 +687,7 @@ export class CheckoutService implements OnModuleInit {
 
         let payment = await this.prismaService.payment.findFirst({
           where: { slug: paymentData.external_reference },
-          select: { id: true },
+          select: { id: true, status_id: true },
         });
 
         if (!payment) {

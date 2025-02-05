@@ -9,3 +9,6 @@ export * from './payment-card-brand/payment-card-brand.enum';
 export * from './payment-gateway/payment-gateway.enum';
 
 export * from './payment-method/payment-method.enum';
+
+export * from './checkout/checkout.module';
+export * from './checkout/checkout.service';

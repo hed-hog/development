@@ -1,33 +1,4 @@
 tables:
-  subscription_locale:
-    columns:
-      - type: fk
-        name: subscription_id
-        isPrimary: true
-        references:
-          table: subscription
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: locale_id
-        isPrimary: true
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - name: name
-        length: 63
-        locale:
-          en: Subscription Name
-          pt: Nome da Assinatura
-      - name: description
-        length: 255
-        locale:
-          en: Subscription Description
-          pt: Descrição da Assinatura
-      - type: created_at
-      - type: updated_at
-    ifNotExists: true
   subscription_plan_locale:
     columns:
       - type: fk
@@ -67,6 +38,7 @@ tables:
           - monthly
           - yearly
           - quarterly
+          - semianually
       - type: fk
         name: item_id
         isNullable: true
@@ -74,6 +46,9 @@ tables:
           table: item
           column: id
           onDelete: CASCADE
+      - type: int
+        name: limit
+        default: 1
       - type: created_at
       - type: updated_at
   subscription_plan_gateway:
@@ -111,7 +86,7 @@ tables:
           - canceled
       - type: int
         name: limit
-        default: 0
+        default: 1
       - type: created_at
       - type: updated_at
   subscription_value:
@@ -174,9 +149,9 @@ tables:
           table: payment
           column: id
           onDelete: CASCADE
-      - type: datetime
+      - type: timestamp
         name: start_at
-      - type: datetime
+      - type: timestamp
         name: end_at
       - type: created_at
       - type: updated_at

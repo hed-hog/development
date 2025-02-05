@@ -1,3 +1,3 @@
 export enum SubscriptionPlanDurationEnum {
-  monthly = 'monthly',  yearly = 'yearly',  quarterly = 'quarterly'
+  monthly = 'monthly',  yearly = 'yearly',  quarterly = 'quarterly',  semianually = 'semianually'
 }

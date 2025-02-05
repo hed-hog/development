@@ -1,9 +1,9 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
   person_id: number;
 
-  @IsString()
+  @IsEnum(['admin', 'user'])
   role: string;
 }

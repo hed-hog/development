@@ -2,7 +2,6 @@ import { useApp } from "@/hooks/use-app";
 import { Delete, PaginationParams, PaginationResult } from "@/types";
 import { Subscription } from "@/types/models";
 import { HttpMethod } from "@/types/http-method";
-import { formatDataWithLocale } from "@hedhog/utils";
 
 export function requests() {
   const { request } = useApp();
@@ -25,7 +24,7 @@ export function requests() {
     return request<Subscription>({
       url: "/subscription",
       method: HttpMethod.POST,
-      data: formatDataWithLocale(data),
+      data: data,
     }).then((res) => res.data);
   };
 
@@ -45,7 +44,7 @@ export function requests() {
     return request<Subscription>({
       url: `/subscription/${id}`,
       method: HttpMethod.PATCH,
-      data: formatDataWithLocale(data),
+      data: data,
     }).then((res) => res.data);
   };
 

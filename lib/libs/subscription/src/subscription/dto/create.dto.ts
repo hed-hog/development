@@ -1,11 +1,10 @@
-import { IsNumber, IsString, IsOptional } from 'class-validator';
-import { WithLocaleDTO } from '@hedhog/locale';
+import { IsEnum, IsNumber, IsOptional } from 'class-validator';
 
-export class CreateDTO extends WithLocaleDTO {
+export class CreateDTO {
   @IsNumber()
   plan_id: number;
 
-  @IsString()
+  @IsEnum(['active', 'expired', 'canceled'])
   status: string;
 
   @IsOptional()

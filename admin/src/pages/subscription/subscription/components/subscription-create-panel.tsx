@@ -1,7 +1,4 @@
-import FormPanel, {
-  FormPanelRef,
-  getFieldsLocale,
-} from "@/components/panels/form-panel";
+import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
 
 import { useSubscriptionCreate } from "@/features/subscription/subscription";
 import { Subscription } from "@/types/models";
@@ -35,7 +32,7 @@ const SubscriptionCreatePanel = forwardRef(
     return (
       <FormPanel
         ref={formRef}
-        fields={[...getFieldsLocale([{ name: "name" }])]}
+        fields={[]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
           const createdData = await createSubscription({

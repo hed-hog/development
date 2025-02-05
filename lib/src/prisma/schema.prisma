@@ -31,7 +31,6 @@ model locale {
   screen_locale               screen_locale[]
   setting_group_locale        setting_group_locale[]
   setting_locale              setting_locale[]
-  subscription_locale         subscription_locale[]
   subscription_plan_locale    subscription_plan_locale[]
   translation                 translation[]
 }
@@ -905,6 +904,7 @@ model payment {
   payment_item         payment_item[]
   payment_notification payment_notification[]
   payment_value        payment_value[]
+  subscription_payment subscription_payment[]
 }
 
 model payment_card_brand {
@@ -1298,29 +1298,16 @@ model strategy {
 }
 
 model subscription {
-  id                  Int                      @id(map: "PK_8c3e00ebd02103caa1174cd5d9d") @default(autoincrement())
-  plan_id             Int
-  status              subscription_status_enum
-  limit               Int                      @default(0)
-  created_at          DateTime                 @default(now()) @db.Timestamp(6)
-  updated_at          DateTime                 @default(now()) @db.Timestamp(6)
-  subscription_plan   subscription_plan        @relation(fields: [plan_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5fde988e5d9b9a522d70ebec27c")
-  subscription_locale subscription_locale[]
-  subscription_person subscription_person[]
-  subscription_value  subscription_value[]
-}
-
-model subscription_locale {
-  subscription_id Int
-  locale_id       Int
-  name            String       @db.VarChar(63)
-  description     String       @db.VarChar(255)
-  created_at      DateTime     @default(now()) @db.Timestamp(6)
-  updated_at      DateTime     @default(now()) @db.Timestamp(6)
-  subscription    subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_80b942a1c4a313fc6e5204b6085")
-  locale          locale       @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f3050446ea06130f27163417750")
-
-  @@id([subscription_id, locale_id], map: "PK_a1b2cdd1f5a6c7bed4ccc9c40f6")
+  id                   Int                      @id(map: "PK_8c3e00ebd02103caa1174cd5d9d") @default(autoincrement())
+  plan_id              Int
+  status               subscription_status_enum
+  limit                Int                      @default(1)
+  created_at           DateTime                 @default(now()) @db.Timestamp(6)
+  updated_at           DateTime                 @default(now()) @db.Timestamp(6)
+  subscription_plan    subscription_plan        @relation(fields: [plan_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5fde988e5d9b9a522d70ebec27c")
+  subscription_payment subscription_payment[]
+  subscription_person  subscription_person[]
+  subscription_value   subscription_value[]
 }
 
 model subscription_person {
@@ -1341,6 +1328,7 @@ model subscription_plan {
   slug                      String                          @unique(map: "UQ_a8b506b29b6676308f7c0fc6613") @db.VarChar(255)
   duration                  subscription_plan_duration_enum
   item_id                   Int?
+  limit                     Int                             @default(1)
   created_at                DateTime                        @default(now()) @db.Timestamp(6)
   updated_at                DateTime                        @default(now()) @db.Timestamp(6)
   subscription              subscription[]
@@ -1421,6 +1409,20 @@ model trade_signal_type {
   simulation simulation[]
 }
 
+model subscription_payment {
+  id              Int          @id(map: "PK_25f8afce4159ee83cf8c6da622d") @default(autoincrement())
+  subscription_id Int
+  payment_id      Int
+  start_at        DateTime     @db.Timestamp(6)
+  end_at          DateTime     @db.Timestamp(6)
+  created_at      DateTime     @default(now()) @db.Timestamp(6)
+  updated_at      DateTime     @default(now()) @db.Timestamp(6)
+  payment         payment      @relation(fields: [payment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_072314f31171588e2410127b50f")
+  subscription    subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ad0ebe8b66ad9e06c8324a76591")
+
+  @@unique([subscription_id, payment_id], map: "IDX_c43fb80a6dae770c1bc9307cba")
+}
+
 enum route_method_enum {
   GET
   POST
@@ -1448,6 +1450,7 @@ enum subscription_plan_duration_enum {
   monthly
   yearly
   quarterly
+  semianually
 }
 
 enum subscription_status_enum {

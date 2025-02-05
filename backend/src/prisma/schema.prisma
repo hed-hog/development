@@ -114,6 +114,7 @@ model item {
   payment_coupon_item payment_coupon_item[]
   payment_item        payment_item[]
   payment_method_item payment_method_item[]
+  subscription_plan   subscription_plan[]
 }
 
 model locale {
@@ -139,6 +140,7 @@ model locale {
   screen_locale               screen_locale[]
   setting_group_locale        setting_group_locale[]
   setting_locale              setting_locale[]
+  subscription_plan_locale    subscription_plan_locale[]
   translation                 translation[]
 }
 
@@ -228,6 +230,7 @@ model payment {
   payment_item         payment_item[]
   payment_notification payment_notification[]
   payment_value        payment_value[]
+  subscription_payment subscription_payment[]
 }
 
 model payment_card_brand {
@@ -268,13 +271,14 @@ model payment_coupon_item {
 }
 
 model payment_gateway {
-  id                   Int                    @id(map: "PK_8cd60dcc29059b7a42ea42b0eda") @default(autoincrement())
-  slug                 String                 @unique(map: "UQ_915a5db40fb02aed4fdec587771") @db.VarChar(255)
-  name                 String                 @db.VarChar(63)
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  payment              payment[]
-  payment_notification payment_notification[]
+  id                        Int                         @id(map: "PK_8cd60dcc29059b7a42ea42b0eda") @default(autoincrement())
+  slug                      String                      @unique(map: "UQ_915a5db40fb02aed4fdec587771") @db.VarChar(255)
+  name                      String                      @db.VarChar(63)
+  created_at                DateTime                    @default(now()) @db.Timestamp(6)
+  updated_at                DateTime                    @default(now()) @db.Timestamp(6)
+  payment                   payment[]
+  payment_notification      payment_notification[]
+  subscription_plan_gateway subscription_plan_gateway[]
 }
 
 model payment_item {
@@ -358,22 +362,23 @@ model payment_value {
 }
 
 model person {
-  id              Int               @id(map: "PK_5fdaf670315c4b7e70cce85daa3") @default(autoincrement())
-  name            String            @db.VarChar(255)
-  photo_id        Int?
-  type_id         Int
-  birth_at        DateTime?         @db.Date
-  created_at      DateTime          @default(now()) @db.Timestamp(6)
-  updated_at      DateTime          @default(now()) @db.Timestamp(6)
-  payment         payment[]
-  file            file?             @relation(fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_0e7be389f108147763fc682c3c4")
-  person_type     person_type       @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f900a8c313411c7da8fcbba7975")
-  person_address  person_address[]
-  person_contact  person_contact[]
-  person_custom   person_custom[]
-  person_document person_document[]
-  person_user     person_user[]
-  person_value    person_value[]
+  id                  Int                   @id(map: "PK_5fdaf670315c4b7e70cce85daa3") @default(autoincrement())
+  name                String                @db.VarChar(255)
+  photo_id            Int?
+  type_id             Int
+  birth_at            DateTime?             @db.Date
+  created_at          DateTime              @default(now()) @db.Timestamp(6)
+  updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  payment             payment[]
+  file                file?                 @relation(fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_0e7be389f108147763fc682c3c4")
+  person_type         person_type           @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f900a8c313411c7da8fcbba7975")
+  person_address      person_address[]
+  person_contact      person_contact[]
+  person_custom       person_custom[]
+  person_document     person_document[]
+  person_user         person_user[]
+  person_value        person_value[]
+  subscription_person subscription_person[]
 }
 
 model person_address {
@@ -763,6 +768,96 @@ model setting_user {
   @@id([user_id, setting_id], map: "PK_9b9f9a08cecc632f2da8f12f4da")
 }
 
+model subscription {
+  id                   Int                      @id(map: "PK_8c3e00ebd02103caa1174cd5d9d") @default(autoincrement())
+  plan_id              Int
+  status               subscription_status_enum
+  limit                Int                      @default(1)
+  created_at           DateTime                 @default(now()) @db.Timestamp(6)
+  updated_at           DateTime                 @default(now()) @db.Timestamp(6)
+  subscription_plan    subscription_plan        @relation(fields: [plan_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5fde988e5d9b9a522d70ebec27c")
+  subscription_payment subscription_payment[]
+  subscription_person  subscription_person[]
+  subscription_value   subscription_value[]
+}
+
+model subscription_payment {
+  id              Int          @id(map: "PK_25f8afce4159ee83cf8c6da622d") @default(autoincrement())
+  subscription_id Int
+  payment_id      Int
+  start_at        DateTime     @db.Timestamp(6)
+  end_at          DateTime     @db.Timestamp(6)
+  created_at      DateTime     @default(now()) @db.Timestamp(6)
+  updated_at      DateTime     @default(now()) @db.Timestamp(6)
+  payment         payment      @relation(fields: [payment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_072314f31171588e2410127b50f")
+  subscription    subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ad0ebe8b66ad9e06c8324a76591")
+
+  @@unique([subscription_id, payment_id], map: "IDX_c43fb80a6dae770c1bc9307cba")
+}
+
+model subscription_person {
+  id              Int                           @id(map: "PK_3bd1a4efea4d53be30499e87c35") @default(autoincrement())
+  subscription_id Int
+  person_id       Int
+  role            subscription_person_role_enum
+  created_at      DateTime                      @default(now()) @db.Timestamp(6)
+  updated_at      DateTime                      @default(now()) @db.Timestamp(6)
+  subscription    subscription                  @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cba48b6195fcda08573ca312405")
+  person          person                        @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_df4623396047e162596af878239")
+
+  @@unique([subscription_id, person_id], map: "IDX_305396c7f6cb429f28ee5e9a7f")
+}
+
+model subscription_plan {
+  id                        Int                             @id(map: "PK_5fde988e5d9b9a522d70ebec27c") @default(autoincrement())
+  slug                      String                          @unique(map: "UQ_a8b506b29b6676308f7c0fc6613") @db.VarChar(255)
+  duration                  subscription_plan_duration_enum
+  item_id                   Int?
+  limit                     Int                             @default(1)
+  created_at                DateTime                        @default(now()) @db.Timestamp(6)
+  updated_at                DateTime                        @default(now()) @db.Timestamp(6)
+  subscription              subscription[]
+  item                      item?                           @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_b4a309e265627437dd349e9baf0")
+  subscription_plan_gateway subscription_plan_gateway[]
+  subscription_plan_locale  subscription_plan_locale[]
+}
+
+model subscription_plan_gateway {
+  id                Int               @id(map: "PK_33b4394e9e974604edc8b352030") @default(autoincrement())
+  plan_id           Int
+  gateway_id        Int
+  gateway_plan_id   String            @db.VarChar
+  created_at        DateTime          @default(now()) @db.Timestamp(6)
+  updated_at        DateTime          @default(now()) @db.Timestamp(6)
+  payment_gateway   payment_gateway   @relation(fields: [gateway_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7a3bbc2a439d7b5d2a81c9d9534")
+  subscription_plan subscription_plan @relation(fields: [plan_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9ec216dafbdaa9c342701ea02be")
+}
+
+model subscription_plan_locale {
+  plan_id           Int
+  locale_id         Int
+  name              String            @db.VarChar(63)
+  description       String            @db.VarChar(255)
+  created_at        DateTime          @default(now()) @db.Timestamp(6)
+  updated_at        DateTime          @default(now()) @db.Timestamp(6)
+  subscription_plan subscription_plan @relation(fields: [plan_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_40f7714bd2e1b0c43ea98acf606")
+  locale            locale            @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_89ec8f615dea2c8228031091674")
+
+  @@id([plan_id, locale_id], map: "PK_ecfce02062c255ed5ba6dcf6ab9")
+}
+
+model subscription_value {
+  id              Int          @id(map: "PK_f5e733abb3a71f73fd0851852c4") @default(autoincrement())
+  subscription_id Int
+  name            String       @db.VarChar
+  value           String       @db.VarChar
+  created_at      DateTime     @default(now()) @db.Timestamp(6)
+  updated_at      DateTime     @default(now()) @db.Timestamp(6)
+  subscription    subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7ae981dc75a2a49c632dd666387")
+
+  @@unique([subscription_id, name], map: "IDX_216bbd68ec714c08512b9e40fe")
+}
+
 model translation {
   id                    Int                   @id(map: "PK_7aef875e43ab80d34a0cdd39c70") @default(autoincrement())
   locale_id             Int
@@ -816,4 +911,22 @@ enum setting_type_enum {
   number
   boolean
   json
+}
+
+enum subscription_person_role_enum {
+  admin
+  user
+}
+
+enum subscription_plan_duration_enum {
+  monthly
+  yearly
+  quarterly
+  semianually
+}
+
+enum subscription_status_enum {
+  active
+  expired
+  canceled
 }

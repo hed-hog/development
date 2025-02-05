@@ -79,12 +79,6 @@ export default function Page() {
             key: 'limit',
             header: t('subscription.limit', { ns: 'fields' }),
             isLocale: false
-          },
-
-          {
-            key: 'name',
-            header: t('subscription.name', { ns: 'fields' }),
-            isLocale: true
           }
         ]}
         selected={selectedItems as Subscription[]}

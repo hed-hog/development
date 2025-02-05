@@ -279,9 +279,11 @@ export class AuthService {
     }
 
     try {
-      const {
-        user: { id },
-      } = this.jwt.decode(code);
+      const decodedCode = this.jwt.decode(code);
+
+      console.log({ decodedCode });
+
+      const { id } = decodedCode;
 
       const user = await this.prisma.user.findFirst({
         where: {

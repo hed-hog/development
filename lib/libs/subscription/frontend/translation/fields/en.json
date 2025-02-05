@@ -1,10 +1,6 @@
 {
-  "subscription_locale.name": "Subscription Name",
-  "subscription_locale.description": "Subscription Description",
   "subscription_plan_locale.name": "Plan Name",
   "subscription_plan_locale.description": "Plan Description",
   "subscription_plan.name": "Plan Name",
-  "subscription_plan.description": "Plan Description",
-  "subscription.name": "Subscription Name",
-  "subscription.description": "Subscription Description"
+  "subscription_plan.description": "Plan Description"
 }

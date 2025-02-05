@@ -26,8 +26,8 @@ export class SubscriptionController {
   ) {}
 
   @Get()
-  async list(@Locale() locale, @Pagination() paginationParams) {
-    return this.subscriptionService.list(locale, paginationParams);
+  async list(@Pagination() paginationParams) {
+    return this.subscriptionService.list(paginationParams);
   }
 
   @Get(':id')

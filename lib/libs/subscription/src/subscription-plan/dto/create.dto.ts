@@ -11,4 +11,8 @@ export class CreateDTO extends WithLocaleDTO {
   @IsOptional()
   @IsNumber()
   item_id?: number;
+
+  @IsOptional()
+  @IsNumber()
+  limit?: number;
 }
