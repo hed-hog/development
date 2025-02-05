@@ -81,7 +81,6 @@ export class AuthController {
     });
   }
 
-  @Public()
   @Post('change-email')
   async changeEmail(@Body() { currentEmail, password, newEmail }: EmailDTO) {
     return this.service.changeEmail({ currentEmail, password, newEmail });

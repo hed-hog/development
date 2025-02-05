@@ -108,69 +108,9 @@ export class AuthService {
   async getToken(user) {
     delete user.password;
 
-    const userData: any = await this.prisma.user.findUnique({
-      where: { id: user.id },
-      include: {
-        person_user: {
-          include: {
-            person: {
-              include: {
-                person_address: {
-                  include: {
-                    country: true,
-                    person_address_type: true,
-                  },
-                },
-                person_contact: {
-                  include: {
-                    person_contact_type: true,
-                  },
-                },
-                person_document: {
-                  include: {
-                    person_document_type: true,
-                    country: true,
-                  },
-                },
-                person_type: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!userData) {
-      throw new NotFoundException('User not found');
-    }
-
-    const person = userData.person_user?.[0]?.person;
-
-    const payload = { user: userData };
+    const payload = { user };
 
     return {
-      id: userData.id,
-      name: userData.name,
-      email: userData.email,
-      cpf:
-        person?.person_document?.find(
-          (doc) => doc.person_document_type.slug === 'cpf',
-        )?.value || null,
-      telephone:
-        person?.person_contact?.find(
-          (contact) => contact.person_contact_type.slug === 'phone',
-        )?.value || null,
-      address:
-        person?.person_address?.map((address) => ({
-          street: address.street,
-          number: address.number,
-          district: address.district,
-          city: address.city,
-          state: address.state,
-          postal_code: address.postal_code,
-          country: address.country?.code || null,
-          type: address.person_address_type?.slug || null,
-        })) || [],
       token: this.jwt.sign(payload),
     };
   }
@@ -348,11 +288,13 @@ export class AuthService {
     return this.getToken(user);
   }
 
-  login({ email, password }: LoginDTO) {
+  async login({ email, password }: LoginDTO) {
     return this.loginWithEmailAndPassword(email, password);
   }
 
-  verify(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+  async verify(id: number) {
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
   }
 }

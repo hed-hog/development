@@ -26,20 +26,6 @@ export class CheckoutController {
     private readonly prismaService: PrismaService,
   ) {}
 
-  /*
-   data: {
-    action: 'payment.updated',
-    api_version: 'v1',
-    data: { id: '100911831253' },
-    date_created: '2025-02-04T16:57:34Z',
-    id: 118949908320,
-    live_mode: true,
-    type: 'payment',
-    user_id: '2048170479'
-  },
-  gatewayId: 2
-  */
-
   @Post('notification/:gatewayId')
   async notification(
     @Body() data: any,
