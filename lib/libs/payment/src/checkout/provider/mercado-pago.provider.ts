@@ -1,6 +1,5 @@
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException } from '@nestjs/common';
-import console from 'console';
 import { lastValueFrom } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { PaymentCardBrandEnum, PaymentStatusEnum } from '../../index';
@@ -30,19 +29,6 @@ export class MercadoPagoProvider extends AbstractProvider {
     data?: any,
   ): Promise<T> {
     try {
-      console.log('==================================');
-      console.log('REQUEST', {
-        url,
-        method,
-        headers: Object.assign({}, this.headers, {
-          'X-Idempotency-Key': uuidv4(),
-        }),
-        data,
-      });
-
-      console.log('DATA', JSON.stringify(data));
-      console.log('==================================');
-
       const response = await lastValueFrom(
         this.httpService.request({
           url,

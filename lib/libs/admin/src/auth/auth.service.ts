@@ -10,9 +10,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
-import { User } from 'hcode-core';
 import { getBody } from './consts/body';
-import { SUBJECT_RECOVERY } from './consts/subject';
 import { ChangeDTO } from './dto/change.dto';
 import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
@@ -175,14 +173,7 @@ export class AuthService {
     };
   }
 
-  async forget({
-    email,
-    subject,
-    body,
-  }: ForgetDTO & {
-    subject?: string;
-    body?: string;
-  }) {
+  async forget({ email }: ForgetDTO) {
     const user = await this.prisma.user.findFirst({
       where: {
         email,
@@ -213,10 +204,8 @@ export class AuthService {
 
     await this.mail.send({
       to: email,
-      subject: subject ?? SUBJECT_RECOVERY,
-      body:
-        body ??
-        getBody(`${process.env.FRONTEND_URL}/password-recovery/${code}`),
+      subject: `Recuperação de Senha`,
+      body: getBody(`${process.env.APP_URL}/password-recovery/${code}`),
     });
 
     return true;
@@ -289,33 +278,41 @@ export class AuthService {
       throw new BadRequestException("Passwords don't match");
     }
 
-    const { id } = this.jwt.decode(code) as User;
+    try {
+      const {
+        user: { id },
+      } = this.jwt.decode(code);
 
-    const user = await this.prisma.user.findFirst({
-      where: {
-        id,
-        code,
-      },
-    });
-
-    if (user) {
-      const salt = await genSalt();
-      const password = await hash(confirmNewPassword, salt);
-
-      await this.prisma.user.update({
+      const user = await this.prisma.user.findFirst({
         where: {
-          id: user.id,
-        },
-        data: {
-          password,
-          code: null,
+          id,
+          code,
         },
       });
 
-      return this.getToken(user);
-    }
+      if (user) {
+        const salt = await genSalt();
+        const password = await hash(confirmNewPassword, salt);
 
-    return false;
+        await this.prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password,
+            code: null,
+          },
+        });
+
+        return this.getToken(user);
+      }
+
+      return false;
+    } catch (error: any) {
+      throw new BadRequestException(
+        `Invalid code. ${error?.message ?? String(error)}`,
+      );
+    }
   }
 
   async otp({ token, code }: OtpDTO) {

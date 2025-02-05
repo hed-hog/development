@@ -5,6 +5,11 @@ import { OnEvent } from '@nestjs/event-emitter';
 export class SubscriptionListenerService {
   constructor() {}
 
+  @OnEvent('**')
+  async handleAllEvent(payload: any) {
+    console.log('SubscriptionListenerService', 'OnEvent', '**', payload);
+  }
+
   @OnEvent('payment.paid')
   async handlePaymentPaidEvent(payload: any) {
     console.log(

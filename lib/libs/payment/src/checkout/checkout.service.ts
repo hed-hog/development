@@ -68,12 +68,12 @@ export class CheckoutService implements OnModuleInit {
     items,
     slug = '',
     userId = null,
-    couponId = null,
+    coupon = null,
   }: {
     items: number[];
     slug?: string;
     userId?: number;
-    couponId?: number;
+    coupon?: string;
   }) {
     if (!items || !items.length) {
       throw new BadRequestException('Items not found.');
@@ -89,6 +89,14 @@ export class CheckoutService implements OnModuleInit {
       payment = await this.createPayment(items, slug, personId);
     } else {
       payment = await this.updatePaymentItems(payment.id, items);
+    }
+
+    try {
+      if (coupon) {
+        await this.setCoupon(coupon, payment.slug);
+      }
+    } catch (error: any) {
+      console.error('Error Payment Init', error);
     }
 
     return this.getPaymentDetails(payment.id);
@@ -110,7 +118,6 @@ export class CheckoutService implements OnModuleInit {
       person_id: personId ?? undefined,
       status_id: PaymentStatusEnum.PENDING,
       currency: 'brl',
-      document: '00000000000',
       slug,
       amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
     });
@@ -452,26 +459,7 @@ export class CheckoutService implements OnModuleInit {
 
       await this.eventEmitterReadinessWatcher.waitUntilReady();
 
-      switch (statusId) {
-        case PaymentStatusEnum.PENDING:
-          this.eventEmitter.emit('payment.pending', paymentId);
-          break;
-        case PaymentStatusEnum.PAID:
-          this.eventEmitter.emit('payment.paid', paymentId);
-          break;
-        case PaymentStatusEnum.REJECTED:
-          this.eventEmitter.emit('payment.rejected', paymentId);
-          break;
-        case PaymentStatusEnum.CANCELED:
-          this.eventEmitter.emit('payment.canceled', paymentId);
-          break;
-        case PaymentStatusEnum.EXPIRED:
-          this.eventEmitter.emit('payment.expired', paymentId);
-          break;
-        case PaymentStatusEnum.REFUNDED:
-          this.eventEmitter.emit('payment.refunded', paymentId);
-          break;
-      }
+      await this.eventEmmitterPayment(statusId, paymentId);
 
       if (data?.card?.first_six_digits) {
         await this.setPaymentValue(
@@ -488,6 +476,33 @@ export class CheckoutService implements OnModuleInit {
           data.card.last_four_digits,
         );
       }
+    }
+  }
+
+  async eventEmmitterPayment(statusId: number, paymentId: number) {
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    console.log('eventEmmitterPayment', { statusId, paymentId });
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+
+    switch (statusId) {
+      case PaymentStatusEnum.PENDING:
+        this.eventEmitter.emit('payment.pending', paymentId);
+        break;
+      case PaymentStatusEnum.PAID:
+        this.eventEmitter.emit('payment.paid', paymentId);
+        break;
+      case PaymentStatusEnum.REJECTED:
+        this.eventEmitter.emit('payment.rejected', paymentId);
+        break;
+      case PaymentStatusEnum.CANCELED:
+        this.eventEmitter.emit('payment.canceled', paymentId);
+        break;
+      case PaymentStatusEnum.EXPIRED:
+        this.eventEmitter.emit('payment.expired', paymentId);
+        break;
+      case PaymentStatusEnum.REFUNDED:
+        this.eventEmitter.emit('payment.refunded', paymentId);
+        break;
     }
   }
 
@@ -658,9 +673,6 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async notification(gatewayId: number, data: any) {
-    console.log('**************************************************');
-    console.log('**                 NOTIFICATION                 **');
-    console.log('**************************************************');
     try {
       if (
         gatewayId === PaymentGatewayEnum.MERCADO_PAGO &&
@@ -668,18 +680,14 @@ export class CheckoutService implements OnModuleInit {
       ) {
         const paymentData = await this.getProviderPayment(data.data.id);
 
-        console.log('paymentData', paymentData);
-
         if (!paymentData.external_reference) {
           throw new Error('external_reference not found');
         }
 
-        const payment = await this.prismaService.payment.findFirst({
+        let payment = await this.prismaService.payment.findFirst({
           where: { slug: paymentData.external_reference },
           select: { id: true },
         });
-
-        console.log('payment', payment);
 
         if (!payment) {
           throw new Error('payment not found');
@@ -694,6 +702,11 @@ export class CheckoutService implements OnModuleInit {
         });
 
         await this.setPaymentValue(payment.id, 'mercado_pago_id', data.data.id);
+
+        console.log('**********************');
+        console.log('**   NOTIFICATION   **');
+        console.log('**********************');
+        console.log('paymentData.status', paymentData.status);
 
         switch (paymentData.status) {
           case 'approved':
@@ -751,6 +764,16 @@ export class CheckoutService implements OnModuleInit {
           default:
             break;
         }
+
+        payment = await this.prismaService.payment.findFirst({
+          where: { id: payment.id },
+          select: {
+            id: true,
+            status_id: true,
+          },
+        });
+
+        await this.eventEmmitterPayment(payment.status_id, payment.id);
       } else {
         await this.prismaService.payment_notification.create({
           data: {
@@ -759,7 +782,7 @@ export class CheckoutService implements OnModuleInit {
           },
         });
       }
-      console.log('**************************************************');
+
       return { success: true };
     } catch (error: any) {
       console.error('error', error);
@@ -771,7 +794,6 @@ export class CheckoutService implements OnModuleInit {
         },
       });
 
-      console.log('**************************************************');
       return { success: false, error: error?.message ?? String(error) };
     }
   }

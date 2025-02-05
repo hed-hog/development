@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import * as mimemessage from 'mimemessage';
 import { firstValueFrom } from 'rxjs';
 import { MailConfigurationTypeEnum } from './enums/mail-configuration-type.enum';
@@ -7,15 +7,30 @@ import { MailModuleOptions } from './interfaces/mail-module-options.interface';
 import { Mail, MAIL_MODULE_OPTIONS } from './mail.consts';
 
 @Injectable()
-export class MailService {
+export class MailService implements OnModuleInit {
+  private debug = false;
+
   constructor(
     @Inject(MAIL_MODULE_OPTIONS)
     private readonly mailConfig: MailModuleOptions,
     @Inject(forwardRef(() => HttpService))
     private readonly httpService: HttpService,
-  ) { }
+  ) {}
+
+  async onModuleInit() {
+    if (this.mailConfig.debug) {
+      this.debug = true;
+    }
+  }
+
+  private log(...args: any[]) {
+    if (this.debug) {
+      console.log(...args);
+    }
+  }
 
   async send(mail: Mail) {
+    this.log('Sending mail:', mail);
     switch (this.mailConfig.type) {
       case MailConfigurationTypeEnum.AWS:
         return this.sendWithSES(mail);
@@ -81,7 +96,6 @@ export class MailService {
 
       return encodedMessage;
     } else {
-
       const encodedSubject = `=?utf-8?B?${Buffer.from(mail.subject).toString('base64')}?=`;
 
       const messageParts = [
@@ -115,9 +129,19 @@ export class MailService {
       host,
       port,
       secure = false,
+      rejectUnauthorized = true,
     } = this.mailConfig;
 
     const nodemailer = await import('nodemailer');
+
+    this.log(`Sending mail with SMTP`, {
+      host,
+      port,
+      secure,
+      user,
+      pass,
+      rejectUnauthorized,
+    });
 
     const transporter = nodemailer.createTransport({
       host,
@@ -127,9 +151,12 @@ export class MailService {
         user,
         pass,
       },
+      tls: {
+        rejectUnauthorized,
+      },
     });
 
-    return transporter.sendMail({
+    const result = await transporter.sendMail({
       from: mail.from || process.env.SMTP_FROM || process.env.SMTP_USER,
       to: mail.to,
       subject: mail.subject,
@@ -139,6 +166,10 @@ export class MailService {
       replyTo: mail.replyTo,
       priority: mail.priority,
     });
+
+    this.log('Email sent:', result);
+
+    return result;
   }
 
   async sendWithGmail(mail: Mail) {
@@ -147,6 +178,13 @@ export class MailService {
     }
     const { clientId, clientSecret, from, refreshToken } = this.mailConfig;
     const redirectURI = 'https://developers.google.com/oauthplayground';
+
+    this.log(`Sending mail with Gmail`, {
+      clientId,
+      clientSecret,
+      from,
+      refreshToken,
+    });
 
     const { auth } = await import('googleapis/build/src/apis/oauth2');
 
@@ -176,7 +214,11 @@ export class MailService {
 
     const response = this.httpService.post(url, requestBody, { headers });
 
-    return firstValueFrom(response);
+    const result = await firstValueFrom(response);
+
+    this.log('Email sent:', result);
+
+    return result;
   }
 
   async sendWithSES(mail: Mail) {
@@ -184,6 +226,13 @@ export class MailService {
       throw new Error('Invalid mail configuration type');
     }
     const { region, from, accessKeyId, secretAccessKey } = this.mailConfig;
+
+    this.log(`Sending mail with AWS SES`, {
+      region,
+      from,
+      accessKeyId,
+      secretAccessKey,
+    });
 
     const { SES } = await import('aws-sdk');
 
@@ -297,7 +346,11 @@ export class MailService {
         Source: from,
       };
 
-      return ses.sendEmail(params).promise();
+      const result = await ses.sendEmail(params).promise();
+
+      this.log('Email sent:', result);
+
+      return result;
     }
   }
 }

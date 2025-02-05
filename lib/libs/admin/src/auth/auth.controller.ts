@@ -47,8 +47,6 @@ export class AuthController {
     @Body()
     {
       email,
-      subject,
-      body,
     }: ForgetDTO & {
       subject: string;
       body: string;
@@ -56,8 +54,6 @@ export class AuthController {
   ) {
     return this.service.forget({
       email,
-      subject,
-      body,
     });
   }
 

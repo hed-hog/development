@@ -3,6 +3,7 @@ import { ModuleMetadata } from '@nestjs/common';
 export type MailModuleOptions =
   | {
       global?: boolean;
+      debug?: boolean;
       type: 'AWS';
       region: string;
       accessKeyId: string;
@@ -11,15 +12,18 @@ export type MailModuleOptions =
     }
   | {
       global?: boolean;
+      debug?: boolean;
       type: 'SMTP';
       host: string;
       port: number;
       secure?: boolean;
       username: string;
       password: string;
+      rejectUnauthorized?: boolean;
     }
   | {
       global?: boolean;
+      debug?: boolean;
       type: 'GMAIL';
       clientId: string;
       clientSecret: string;
