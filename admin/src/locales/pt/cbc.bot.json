@@ -1,0 +1,11 @@
+{
+  "create": "Create Bot",
+  "createText": "Fill the bot informations.",
+  "createTooltip": "Create new bot",
+  "delete": "Delete Bot",
+  "deleteText": "Are you sure to delete these bots?",
+  "deleteTooltip": "Delete the selected bots",
+  "edit": "Edit Bot",
+  "editText": "View and edit bot information.",
+  "editTooltip": "Edit the selected bots"
+}

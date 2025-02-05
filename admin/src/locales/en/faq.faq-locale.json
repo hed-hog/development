@@ -1,0 +1,11 @@
+{
+  "create": "Create faq locale",
+  "createText": "Fill the faq locale informations.",
+  "createTooltip": "Create new faq locale",
+  "delete": "Delete faq locale",
+  "deleteText": "Are you sure to delete these faq locale?",
+  "deleteTooltip": "Delete the selected faq locale",
+  "edit": "Edit faq locale",
+  "editText": "View and edit faq locale information.",
+  "editTooltip": "Edit the selected faq locale"
+}

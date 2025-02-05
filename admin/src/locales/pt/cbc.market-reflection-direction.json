@@ -1,0 +1,11 @@
+{
+  "create": "Create Market reflection direction",
+  "createText": "Fill the market reflection direction informations.",
+  "createTooltip": "Create new market reflection direction",
+  "delete": "Delete Market reflection direction",
+  "deleteText": "Are you sure to delete these market reflection directions?",
+  "deleteTooltip": "Delete the selected market reflection directions",
+  "edit": "Edit Market reflection direction",
+  "editText": "View and edit market reflection direction information.",
+  "editTooltip": "Edit the selected market reflection directions"
+}
