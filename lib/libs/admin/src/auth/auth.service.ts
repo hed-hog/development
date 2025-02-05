@@ -8,6 +8,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
 import { getBody } from './consts/body';
@@ -22,6 +23,7 @@ import { MultifactorType } from './enums/multifactor-type.enum';
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly configService: ConfigService,
     @Inject(forwardRef(() => PrismaService))
     private readonly prisma: PrismaService,
     @Inject(forwardRef(() => JwtService))
@@ -174,6 +176,9 @@ export class AuthService {
   }
 
   async forget({ email }: ForgetDTO) {
+    const appUrl =
+      process.env.APP_URL ?? this.configService.get<string>('APP_URL');
+
     const user = await this.prisma.user.findFirst({
       where: {
         email,
@@ -205,7 +210,7 @@ export class AuthService {
     await this.mail.send({
       to: email,
       subject: `Recuperação de Senha`,
-      body: getBody(`${process.env.APP_URL}/password-recovery/${code}`),
+      body: getBody(`${appUrl}/login?mode=reset-password&code=${code}`),
     });
 
     return true;
