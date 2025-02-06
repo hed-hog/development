@@ -1,12 +1,16 @@
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class SubscriptionProfileService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async getSubscriptions(userId: number) {
-    return this.prismaService.subscription.findMany({
+    const subscription = await this.prismaService.subscription.findMany({
       where: {
         subscription_person: {
           some: {
@@ -31,9 +35,23 @@ export class SubscriptionProfileService {
         },
         status: 'active',
       },
-      include: {
-        subscription_plan: true,
+      select: {
+        id: true,
+        status: true,
+        subscription_person: {
+          select: {
+            person_id: true,
+          },
+        },
+        subscription_plan: {
+          select: {
+            id: true,
+            item_id: true,
+            slug: true,
+          },
+        },
       },
     });
+    return this.jwtService.sign(subscription);
   }
 }
