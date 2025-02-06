@@ -71,8 +71,8 @@ export class ProfileController {
     return this.service.closeAccount({ email, password });
   }
 
-  @Get('user')
-  async user(@User() { id }) {
+  @Get()
+  async index(@User() { id }) {
     return this.prismaService.person.findFirst({
       where: {
         person_user: {
@@ -85,6 +85,11 @@ export class ProfileController {
         person_contact: true,
         person_document: true,
         person_address: true,
+        person_user: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
   }
