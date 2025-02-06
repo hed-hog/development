@@ -9,7 +9,7 @@ export class SubscriptionProfileService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async getSubscriptions(userId: number) {
+  async getSubscriptionsTokens(userId: number) {
     const subscriptions = await this.prismaService.subscription.findMany({
       where: {
         status: 'active',
@@ -49,5 +49,66 @@ export class SubscriptionProfileService {
     return {
       data: this.jwtService.sign({ subscriptions, userId }),
     };
+  }
+
+  async getSubscriptions(userId: number) {
+    return this.prismaService.subscription.findMany({
+      where: {
+        status: 'active',
+        subscription_person: {
+          some: {
+            person: {
+              person_user: {
+                some: {
+                  user_id: userId,
+                },
+              },
+            },
+          },
+        },
+        subscription_payment: {
+          some: {
+            start_at: {
+              lte: new Date(),
+            },
+            end_at: {
+              gte: new Date(),
+            },
+          },
+        },
+      },
+      include: {
+        subscription_plan: {
+          include: {
+            item: true,
+          },
+        },
+        subscription_payment: {
+          include: {
+            payment: {
+              include: {
+                payment_method: {
+                  select: {
+                    name: true,
+                  },
+                },
+                payment_value: {
+                  select: {
+                    name: true,
+                    value: true,
+                  },
+                },
+                payment_card_brand: {
+                  select: {
+                    name: true,
+                    slug: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }

@@ -193,14 +193,10 @@ export class SubscriptionListenerService {
         payment.person_id,
       );
 
-      console.log({ subscription });
-
       const endAt = this.calculateEndAt(
         subscription.subscription_plan.duration,
         payment.payment_at,
       );
-
-      console.log({ startAt: payment.payment_at, endAt });
 
       await this.prismaService.subscription_payment.create({
         data: {
