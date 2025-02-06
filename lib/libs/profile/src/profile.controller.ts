@@ -57,8 +57,9 @@ export class ProfileController {
   @Post('update')
   async updateUserData(
     @Body() { email, name, telephone, address }: UpdateUserDataDTO,
+    @User() { id },
   ) {
-    return this.service.updateUserData({
+    return this.service.updateUserData(id, {
       email,
       name,
       telephone,

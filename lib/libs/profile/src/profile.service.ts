@@ -148,9 +148,12 @@ export class ProfileService {
     return { message: 'Account successfully deleted' };
   }
 
-  async updateUserData({ email, name, telephone, address }: UpdateUserDataDTO) {
-    const user = await this.prisma.user.findFirst({
-      where: { email },
+  async updateUserData(
+    id: number,
+    { email, name, telephone, address }: UpdateUserDataDTO,
+  ) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
       include: { person_user: { include: { person: true } } },
     });
 
@@ -167,7 +170,7 @@ export class ProfileService {
 
     if (name) {
       await this.prisma.user.update({
-        where: { id: user.id },
+        where: { id },
         data: { name },
       });
     }
