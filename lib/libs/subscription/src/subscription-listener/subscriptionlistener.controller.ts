@@ -9,6 +9,13 @@ export class SubscriptionListenerController {
     private readonly subscriptionListenerService: SubscriptionListenerService,
   ) {}
 
+  @Get('show/:paymentId')
+  async showPayment(@Param('paymentId', ParseIntPipe) paymentId: number) {
+    return this.subscriptionListenerService.getSubscriptionsByPaymentId(
+      paymentId,
+    );
+  }
+
   @Get('paid/:paymentId')
   async testPaid(@Param('paymentId', ParseIntPipe) paymentId: number) {
     return this.subscriptionListenerService.handlePaymentPaidEvent(paymentId);

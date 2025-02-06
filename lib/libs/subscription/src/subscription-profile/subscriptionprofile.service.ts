@@ -10,8 +10,9 @@ export class SubscriptionProfileService {
   ) {}
 
   async getSubscriptions(userId: number) {
-    const subscription = await this.prismaService.subscription.findMany({
+    const subscriptions = await this.prismaService.subscription.findMany({
       where: {
+        status: 'active',
         subscription_person: {
           some: {
             person: {
@@ -33,25 +34,20 @@ export class SubscriptionProfileService {
             },
           },
         },
-        status: 'active',
       },
       select: {
         id: true,
-        status: true,
-        subscription_person: {
-          select: {
-            person_id: true,
-          },
-        },
         subscription_plan: {
           select: {
-            id: true,
             item_id: true,
             slug: true,
           },
         },
       },
     });
-    return this.jwtService.sign(subscription);
+
+    return {
+      data: this.jwtService.sign({ subscriptions, userId }),
+    };
   }
 }

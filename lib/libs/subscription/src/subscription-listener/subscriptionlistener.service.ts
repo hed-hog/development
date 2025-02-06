@@ -254,7 +254,7 @@ export class SubscriptionListenerService {
     );
   }
 
-  private async getSubscriptionsByPaymentId(paymentId: number) {
+  async getSubscriptionsByPaymentId(paymentId: number) {
     return this.prismaService.subscription.findMany({
       where: {
         subscription_payment: {
