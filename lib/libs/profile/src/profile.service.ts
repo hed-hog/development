@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
-import { LoginDTO } from './dto/login.dto';
+import { CloseAccountDTO } from './dto/close-account.dto';
 import { SignupDTO } from './dto/signup.dto';
 import { UpdateUserDataDTO } from './dto/update.dto';
 import { isValidCPF } from './validations/cpf';
@@ -100,7 +100,7 @@ export class ProfileService {
     };
   }
 
-  async closeAccount(id: number, { email, password }: LoginDTO) {
+  async closeAccount(id: number, { password }: CloseAccountDTO) {
     const user = await this.prisma.user.findUnique({
       where: { id },
       include: { person_user: { include: { person: true } } },

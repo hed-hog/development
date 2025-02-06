@@ -8,7 +8,7 @@ import {
   Inject,
   Post,
 } from '@nestjs/common';
-import { LoginDTO } from './dto/login.dto';
+import { CloseAccountDTO } from './dto/close-account.dto';
 import { SignupDTO } from './dto/signup.dto';
 import { UpdateUserDataDTO } from './dto/update.dto';
 import { ProfileService } from './profile.service';
@@ -68,8 +68,8 @@ export class ProfileController {
   }
 
   @Post('close-account')
-  async closeAccount(@Body() { email, password }: LoginDTO, @User() { id }) {
-    return this.service.closeAccount(id, { email, password });
+  async closeAccount(@Body() { password }: CloseAccountDTO, @User() { id }) {
+    return this.service.closeAccount(id, { password });
   }
 
   @Get()
