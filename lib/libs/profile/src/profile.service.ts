@@ -100,9 +100,9 @@ export class ProfileService {
     };
   }
 
-  async closeAccount({ email, password }: LoginDTO) {
-    const user = await this.prisma.user.findFirst({
-      where: { email },
+  async closeAccount(id: number, { email, password }: LoginDTO) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
       include: { person_user: { include: { person: true } } },
     });
 

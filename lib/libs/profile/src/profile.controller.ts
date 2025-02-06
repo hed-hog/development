@@ -68,8 +68,8 @@ export class ProfileController {
   }
 
   @Post('close-account')
-  async closeAccount(@Body() { email, password }: LoginDTO) {
-    return this.service.closeAccount({ email, password });
+  async closeAccount(@Body() { email, password }: LoginDTO, @User() { id }) {
+    return this.service.closeAccount(id, { email, password });
   }
 
   @Get()
