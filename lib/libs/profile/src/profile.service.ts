@@ -173,6 +173,18 @@ export class ProfileService {
         where: { id },
         data: { name },
       });
+
+      const personUser = await this.prisma.person_user.findUnique({
+        where: { user_id: id },
+        select: { person_id: true },
+      });
+
+      if (personUser?.person_id) {
+        await this.prisma.person.update({
+          where: { id: personUser.person_id },
+          data: { name },
+        });
+      }
     }
 
     if (telephone) {
