@@ -5,8 +5,8 @@ export class SignupDTO extends LoginDTO {
   @IsString()
   fullName: string;
 
-  @IsNumber()
-  cpf: number;
+  @IsString()
+  cpf: string;
 
   @IsString()
   street: string;
