@@ -215,6 +215,28 @@ export class AuthService {
       data: { email: newEmail },
     });
 
+    const personUser = await this.prisma.person_user.findFirst({
+      where: { user_id: user.id },
+      select: { person_id: true },
+    });
+
+    if (!personUser) {
+      throw new NotFoundException('Person association not found');
+    }
+
+    const { id: emailContactTypeId } =
+      await this.prisma.person_contact_type.findFirst({
+        where: { slug: 'EMAIL' },
+      });
+
+    await this.prisma.person_contact.updateMany({
+      where: {
+        person_id: personUser.person_id,
+        type_id: emailContactTypeId,
+      },
+      data: { value: newEmail },
+    });
+
     return this.getToken(newUser);
   }
 
