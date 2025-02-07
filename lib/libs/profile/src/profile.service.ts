@@ -264,6 +264,29 @@ export class ProfileService {
     const salt = await genSalt();
     const hashedPassword = await hash(password, salt);
 
+    const nameParts = fullName.trim().split(/\s+/);
+    if (nameParts.length < 2) {
+      throw new BadRequestException(
+        'Full name must include at least first and last name.',
+      );
+    }
+
+    const formattedName = nameParts
+      .map((part, index) => {
+        if (
+          index > 0 &&
+          ['de', 'da', 'do', 'dos', 'das', 'e'].includes(part.toLowerCase())
+        ) {
+          return part.toLowerCase();
+        }
+        return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+      })
+      .join(' ');
+
+    fullName = formattedName;
+
+    console.log('Nome formatado:', fullName);
+
     const user = await this.prisma.user.create({
       data: {
         email,

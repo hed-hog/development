@@ -29,6 +29,10 @@ export class ContactService {
     name: string,
     email: string,
   ) {
+    console.log('getPersonOrCreateIfNotExists', { type_id, name, email });
+
+    console.log('Find by email', { email });
+
     const findByEmail = await this.prismaService.person.findFirst({
       where: {
         person_contact: {
@@ -43,9 +47,14 @@ export class ContactService {
       },
     });
 
+    console.log('Result findByEmail', { findByEmail });
+
     if (findByEmail) {
+      console.log('Person exists', { findByEmail });
       return this.getPerson(findByEmail.id);
     }
+
+    console.log('Person not exists', { findByEmail });
 
     const person = await this.prismaService.person.create({
       data: {
@@ -66,6 +75,8 @@ export class ContactService {
         id: true,
       },
     });
+
+    console.log('Person created', { person });
 
     return this.getPerson(person.id);
   }

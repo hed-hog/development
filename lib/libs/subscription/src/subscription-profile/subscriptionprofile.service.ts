@@ -10,6 +10,7 @@ export class SubscriptionProfileService {
   ) {}
 
   async getSubscriptionsTokens(userId: number) {
+    console.log('getSubscriptionsTokens', { userId });
     const subscriptions = await this.prismaService.subscription.findMany({
       where: {
         status: 'active',
@@ -52,6 +53,7 @@ export class SubscriptionProfileService {
   }
 
   async getSubscriptions(userId: number) {
+    console.log('getSubscriptions', { userId });
     return this.prismaService.subscription.findMany({
       where: {
         status: 'active',
