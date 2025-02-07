@@ -174,7 +174,7 @@ export class ProfileService {
         data: { name },
       });
 
-      const personUser = await this.prisma.person_user.findUnique({
+      const personUser = await this.prisma.person_user.findFirst({
         where: { user_id: id },
         select: { person_id: true },
       });
