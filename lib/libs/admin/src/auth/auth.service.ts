@@ -65,7 +65,7 @@ export class AuthService {
     const isPasswordValid = await compare(password, user.password);
 
     if (!user || !isPasswordValid) {
-      throw new NotFoundException('Acesso negado');
+      throw new BadRequestException('Acesso negado');
     }
 
     if (!user.multifactor_id) {
