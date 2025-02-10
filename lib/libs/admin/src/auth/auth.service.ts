@@ -61,14 +61,11 @@ export class AuthService {
         email,
       },
     });
-    if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
-    }
 
     const isPasswordValid = await compare(password, user.password);
 
-    if (!isPasswordValid) {
-      throw new NotFoundException('Senha inválida');
+    if (!user || !isPasswordValid) {
+      throw new NotFoundException('Acesso negado');
     }
 
     if (!user.multifactor_id) {
@@ -128,32 +125,33 @@ export class AuthService {
       },
     });
 
-    if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+    if (user) {
+      const payload = {
+        ...user,
+      };
+
+      const code = this.jwt.sign(payload);
+
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          code,
+        },
+      });
+
+      await this.mail.send({
+        to: email,
+        subject: `Recuperação de Senha`,
+        body: getBody(`${appUrl}/login?mode=reset-password&code=${code}`),
+      });
     }
 
-    const payload = {
-      ...user,
+    return {
+      message:
+        'Se este e-mail estiver cadastrado, você receberá instruções para redefinir sua senha.',
     };
-
-    const code = this.jwt.sign(payload);
-
-    await this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        code,
-      },
-    });
-
-    await this.mail.send({
-      to: email,
-      subject: `Recuperação de Senha`,
-      body: getBody(`${appUrl}/login?mode=reset-password&code=${code}`),
-    });
-
-    return true;
   }
 
   async changePassword({
@@ -171,7 +169,7 @@ export class AuthService {
     });
 
     if (!(await compare(currentPassword, user.password))) {
-      throw new NotFoundException('Senha inválida');
+      throw new NotFoundException('Não foi possível alterar a senha.');
     }
 
     const salt = await genSalt();
@@ -194,12 +192,8 @@ export class AuthService {
       where: { email: currentEmail },
     });
 
-    if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
-    }
-
-    if (!(await compare(password, user.password))) {
-      throw new BadRequestException('Senha inválida');
+    if (!user || !(await compare(password, user.password))) {
+      throw new BadRequestException('Não foi possível atualizar o e-mail.');
     }
 
     const existingUser = await this.prisma.user.findFirst({
@@ -207,7 +201,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Email já está em uso');
+      throw new ConflictException('Não foi possível atualizar o e-mail.');
     }
 
     const newUser = await this.prisma.user.updateMany({
@@ -221,7 +215,7 @@ export class AuthService {
     });
 
     if (!personUser) {
-      throw new NotFoundException('Pessoa não encontrada');
+      throw new NotFoundException('Erro ao atualizar os dados do usuário.');
     }
 
     const { id: emailContactTypeId } =
