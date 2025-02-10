@@ -62,13 +62,13 @@ export class AuthService {
       },
     });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Usuário não encontrado');
     }
 
     const isPasswordValid = await compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new NotFoundException('Invalid password');
+      throw new NotFoundException('Senha inválida');
     }
 
     if (!user.multifactor_id) {
@@ -88,8 +88,8 @@ export class AuthService {
 
         await this.mail.send({
           to: user.email,
-          subject: 'Login code',
-          body: `Your login code is ${code}`,
+          subject: 'Código de Login',
+          body: `Seu código de login é ${code}`,
         });
       }
 
@@ -129,7 +129,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Usuário não encontrado');
     }
 
     const payload = {
@@ -163,7 +163,7 @@ export class AuthService {
     confirmNewPassword,
   }: ChangeDTO) {
     if (newPassword !== confirmNewPassword) {
-      throw new BadRequestException("Passwords don't match");
+      throw new BadRequestException('Senhas não conferem');
     }
 
     const user = await this.prisma.user.findFirst({
@@ -171,7 +171,7 @@ export class AuthService {
     });
 
     if (!(await compare(currentPassword, user.password))) {
-      throw new NotFoundException('Invalid password');
+      throw new NotFoundException('Senha inválida');
     }
 
     const salt = await genSalt();
@@ -195,11 +195,11 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Usuário não encontrado');
     }
 
     if (!(await compare(password, user.password))) {
-      throw new BadRequestException('Invalid password');
+      throw new BadRequestException('Senha inválida');
     }
 
     const existingUser = await this.prisma.user.findFirst({
@@ -207,7 +207,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Email is already in use');
+      throw new ConflictException('Email já está em uso');
     }
 
     const newUser = await this.prisma.user.updateMany({
@@ -221,7 +221,7 @@ export class AuthService {
     });
 
     if (!personUser) {
-      throw new NotFoundException('Person association not found');
+      throw new NotFoundException('Pessoa não encontrada');
     }
 
     const { id: emailContactTypeId } =
@@ -242,7 +242,7 @@ export class AuthService {
 
   async resetPassword({ code, newPassword, confirmNewPassword }: ResetDTO) {
     if (newPassword !== confirmNewPassword) {
-      throw new BadRequestException("Passwords don't match");
+      throw new BadRequestException('Senhas não conferem');
     }
 
     try {
@@ -295,7 +295,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new NotFoundException('Invalid code');
+      throw new NotFoundException('Código inválido');
     }
 
     await this.prisma.user.update({
