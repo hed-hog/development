@@ -105,8 +105,12 @@ export class ProfileService {
       include: { person_user: { include: { person: true } } },
     });
 
+    if (!user) {
+      throw new BadRequestException('Não foi possível encerrar a conta.');
+    }
+
     const isPasswordValid = await compare(password, user.password);
-    if (!user || !isPasswordValid) {
+    if (!isPasswordValid) {
       throw new BadRequestException('Não foi possível encerrar a conta.');
     }
 

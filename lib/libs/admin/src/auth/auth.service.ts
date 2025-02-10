@@ -62,9 +62,12 @@ export class AuthService {
       },
     });
 
-    const isPasswordValid = await compare(password, user.password);
+    if (!user) {
+      throw new BadRequestException('Acesso negado');
+    }
 
-    if (!user || !isPasswordValid) {
+    const isPasswordValid = await compare(password, user.password);
+    if (!isPasswordValid) {
       throw new BadRequestException('Acesso negado');
     }
 
@@ -192,7 +195,11 @@ export class AuthService {
       where: { email: currentEmail },
     });
 
-    if (!user || !(await compare(password, user.password))) {
+    if (!user) {
+      throw new BadRequestException('Não foi possível atualizar o e-mail.');
+    }
+
+    if (!(await compare(password, user.password))) {
       throw new BadRequestException('Não foi possível atualizar o e-mail.');
     }
 
