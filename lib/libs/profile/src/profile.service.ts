@@ -11,7 +11,6 @@ import {
   Inject,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
@@ -65,7 +64,7 @@ export class ProfileService {
     });
 
     if (!userData) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Não foi possível obter dados de usuário.');
     }
 
     const person = userData.person_user?.[0]?.person;
@@ -106,18 +105,16 @@ export class ProfileService {
       include: { person_user: { include: { person: true } } },
     });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
     const isPasswordValid = await compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Incorrect password');
+    if (!user || !isPasswordValid) {
+      throw new BadRequestException('Não foi possível encerrar a conta.');
     }
 
     const personUser = (user.person_user ?? []).shift();
     if (!personUser || !personUser.person) {
-      throw new NotFoundException('Person data not found for this user');
+      throw new NotFoundException(
+        'Dados pessoais não foram encontrados para esse usuário.',
+      );
     }
 
     const personId = personUser.person.id;
@@ -145,7 +142,7 @@ export class ProfileService {
       where: { id: user.id },
     });
 
-    return { message: 'Account successfully deleted' };
+    return { message: 'Conta excluída com sucesso' };
   }
 
   async updateUserData(
@@ -158,12 +155,16 @@ export class ProfileService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(
+        'Não foi possível atualizar os dados do usuário.',
+      );
     }
 
     const personUser = (user.person_user ?? []).shift();
     if (!personUser || !personUser.person) {
-      throw new NotFoundException('Person data not found for this user');
+      throw new NotFoundException(
+        'Dados pessoais não foram encontrados para esse usuário.',
+      );
     }
 
     const personId: number = Number(personUser.person.id);
@@ -266,11 +267,11 @@ export class ProfileService {
     });
 
     if (existingUser) {
-      throw new BadRequestException('User already exists.');
+      throw new BadRequestException('Não foi possível realizar o cadastro.');
     }
 
     if (!isValidCPF(String(cpf))) {
-      throw new BadRequestException('Invalid CPF');
+      throw new BadRequestException('CPF inválido.');
     }
 
     const salt = await genSalt();
@@ -279,7 +280,7 @@ export class ProfileService {
     const nameParts = fullName.trim().split(/\s+/);
     if (nameParts.length < 2) {
       throw new BadRequestException(
-        'Full name must include at least first and last name.',
+        'O nome completo deve incluir pelo menos o primeiro e o último nome.',
       );
     }
 
