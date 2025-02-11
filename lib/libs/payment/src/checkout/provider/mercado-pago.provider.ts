@@ -98,6 +98,7 @@ export class MercadoPagoProvider extends AbstractProvider {
     transactionAmount,
     description,
     paymentMethodId,
+    paymentMethodType,
     issuerId,
     externalReference,
     items,
@@ -113,6 +114,8 @@ export class MercadoPagoProvider extends AbstractProvider {
       transaction_amount: transactionAmount,
       description,
       payment_method_id: paymentMethodId,
+      payment_type_id:
+        paymentMethodType === 'credit' ? 'credit_card' : 'debit_card',
       issuer_id: issuerId,
       external_reference: externalReference,
       additional_info: {

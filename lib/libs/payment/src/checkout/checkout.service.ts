@@ -488,14 +488,12 @@ export class CheckoutService implements OnModuleInit {
   async createPaymentCreditCard({
     token,
     paymentMethodId,
+    paymentMethodType,
     issuerId,
     installments,
     identificationNumber,
     paymentSlug,
-    cardholderEmail,
     identificationType,
-    cardFirstSixDigits,
-    cardLastFourDigits,
     name,
     email,
     phone,
@@ -527,7 +525,10 @@ export class CheckoutService implements OnModuleInit {
         where: { slug: paymentSlug },
         data: {
           installments,
-          method_id: PaymentMethodEnum.CREDIT_CARD,
+          method_id:
+            paymentMethodType === 'credit'
+              ? PaymentMethodEnum.CREDIT_CARD
+              : PaymentMethodEnum.DEBIT_CARD,
           person_id: person.id,
           document: identificationNumber,
         },
@@ -550,6 +551,7 @@ export class CheckoutService implements OnModuleInit {
         transactionAmount: Number(payment.amount) - Number(payment.discount),
         description: '',
         paymentMethodId,
+        paymentMethodType,
         issuerId,
         externalReference: payment.slug,
         items,

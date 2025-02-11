@@ -17,6 +17,7 @@ interface IProvider {
     transactionAmount: number;
     description: string;
     paymentMethodId: string;
+    paymentMethodType: 'credit' | 'debit';
     issuerId: number;
     externalReference: string;
     items: any[];
@@ -66,6 +67,7 @@ export abstract class AbstractProvider implements IProvider {
     transactionAmount: number;
     description: string;
     paymentMethodId: string;
+    paymentMethodType: 'credit' | 'debit';
     issuerId: number;
     externalReference: string;
     items: any[];
