@@ -19,7 +19,7 @@ import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
-import { getChangeEmailEmail, getChangePasswordEmail, getForgetPasswordEmail, getResetPasswordEmail, getUserLoginEmail } from 'libs/admin/emails';
+import { getChangeEmailEmail, getChangePasswordEmail, getForgetPasswordEmail, getResetPasswordEmail, getUserLoginEmail } from '../emails';
 
 @Injectable()
 export class AuthService {
