@@ -160,6 +160,62 @@ tables:
           - subscription_id
           - payment_id
         isUnique: true
+  subscription_cancel_reason:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  subscription_cancel_reason_locale:
+    columns:
+      - type: fk
+        name: cancel_reason_id
+        isPrimary: true
+        references:
+          table: subscription_cancel_reason
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        length: 255
+        locale:
+          en: Cancel Reason Name
+          pt: Nome do Motivo de Cancelamento
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  subscription_cancel:
+    columns:
+      - type: pk
+      - type: fk
+        name: subscription_id
+        references:
+          table: subscription
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: person_id
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - type: text
+        name: comment
+        field: textarea
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns:
+          - subscription_id
+          - person_id
+        isUnique: true
 screens:
   subscription_plan:
     title:
@@ -462,6 +518,24 @@ data:
         en: Screen to manage subscription_plan_item
         pt: Tela para gerenciar subscription_plan_item
       icon: file
+  subscription_cancel_reason:
+    - slug: high_price
+    - slug: not_using_enough
+    - slug: found_better_alternative
+    - slug: technical_issues
+  subscription_cancel_reason_locale:
+    - name:
+        en: High Price
+        pt: Preço Alto
+    - name:
+        en: Not Using Enough
+        pt: Não Usando o Suficiente
+    - name:
+        en: Found a Better Alternative
+        pt: Encontrou uma Alternativa Melhor
+    - name:
+        en: Technical Issues
+        pt: Problemas Técnicos
 routes:
   - path: subscription
     children:
