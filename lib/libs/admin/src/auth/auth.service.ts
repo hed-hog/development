@@ -19,6 +19,7 @@ import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
+import { getChangeEmailEmail, getChangePasswordEmail, getForgetPasswordEmail, getResetPasswordEmail, getUserLoginEmail } from 'libs/admin/emails';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
-  ) {}
+  ) { }
 
   async verifyToken(token: string) {
     return this.jwt.verifyAsync(token, {
@@ -147,7 +148,7 @@ export class AuthService {
       await this.mail.send({
         to: email,
         subject: `Recuperação de Senha`,
-        body: getBody(`${appUrl}/login?mode=reset-password&code=${code}`),
+        body: getForgetPasswordEmail(`${appUrl}/login?mode=reset-password&code=${code}`),
       });
     }
 
@@ -185,6 +186,12 @@ export class AuthService {
       data: {
         password,
       },
+    });
+
+    await this.mail.send({
+      to: email,
+      subject: `Senha alterada`,
+      body: getChangePasswordEmail(),
     });
 
     return this.getToken(newUser);
@@ -238,6 +245,12 @@ export class AuthService {
       data: { value: newEmail },
     });
 
+    await this.mail.send({
+      to: newEmail,
+      subject: `Email alterado`,
+      body: getChangeEmailEmail(),
+    });
+
     return this.getToken(newUser);
   }
 
@@ -272,6 +285,12 @@ export class AuthService {
             password,
             code: null,
           },
+        });
+
+        await this.mail.send({
+          to: user.email,
+          subject: `Senha recuperada`,
+          body: getResetPasswordEmail(),
         });
 
         return this.getToken(user);
@@ -312,6 +331,13 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDTO) {
+
+    await this.mail.send({
+      to: email,
+      subject: `Novo login no CoinBitClub`,
+      body: getUserLoginEmail(),
+    });
+
     return this.loginWithEmailAndPassword(email, password);
   }
 

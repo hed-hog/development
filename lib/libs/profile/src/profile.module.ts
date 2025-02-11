@@ -5,6 +5,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './profile.service';
+import { MailModule } from '@hedhog/mail';
 
 @Module({
   imports: [
@@ -12,9 +13,10 @@ import { ProfileService } from './profile.service';
     forwardRef(() => ContactModule),
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
+    forwardRef(() => MailModule),
   ],
   controllers: [ProfileController],
   providers: [ProfileService],
   exports: [ProfileService],
 })
-export class ProfileModule {}
+export class ProfileModule { }
