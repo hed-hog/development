@@ -542,7 +542,7 @@ export class CheckoutService implements OnModuleInit {
       const payment = await this.prismaService.payment.update({
         where: { slug: paymentSlug },
         data: {
-          installments,
+          installments: paymentMethodType === 'credit' ? installments : 1,
           method_id:
             paymentMethodType === 'credit'
               ? PaymentMethodEnum.CREDIT_CARD

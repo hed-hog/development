@@ -113,9 +113,8 @@ export class MercadoPagoProvider extends AbstractProvider {
       installments,
       transaction_amount: transactionAmount,
       description,
-      payment_method_id: paymentMethodId,
-      payment_type_id:
-        paymentMethodType === 'credit' ? 'credit_card' : 'debit_card',
+      payment_method_id:
+        paymentMethodType === 'credit' ? paymentMethodId : 'debit_card',
       issuer_id: issuerId,
       external_reference: externalReference,
       additional_info: {
@@ -134,6 +133,8 @@ export class MercadoPagoProvider extends AbstractProvider {
       },
       notification_url: `${this.setting['url']}/checkout/notification/${this.gatewayId}`,
     };
+
+    console.log('payment', data);
 
     const response = await this.makeRequest(
       `${this.baseUrl}/v1/payments`,
