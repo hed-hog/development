@@ -135,6 +135,7 @@ export class MercadoPagoProvider extends AbstractProvider {
     };
 
     console.log('payment', data);
+    console.log('paymentJSON', data);
 
     const response = await this.makeRequest(
       `${this.baseUrl}/v1/payments`,
