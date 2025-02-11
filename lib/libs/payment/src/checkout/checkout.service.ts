@@ -17,6 +17,7 @@ import {
   EventEmitter2,
   EventEmitterReadinessWatcher,
 } from '@nestjs/event-emitter';
+import { Prisma } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import { DiscountTypeEnum } from '../discount-type/discount-type.enum';
 import { PaymentGatewayEnum } from '../payment-gateway/payment-gateway.enum';
@@ -102,6 +103,137 @@ export class CheckoutService implements OnModuleInit {
     return this.getPaymentDetails(payment.id);
   }
 
+  private async hasMethodDiscount(paymentId: number) {
+    const payment = await this.prismaService.payment.findUnique({
+      where: { id: paymentId },
+      select: {
+        method_id: true,
+        payment_item: {
+          include: { item: { include: { payment_method_item: true } } },
+        },
+      },
+    });
+
+    return (
+      payment.payment_item.filter((pi) =>
+        pi.item.payment_method_item.some(
+          (pmi) => pmi.payment_method_id === payment.method_id,
+        ),
+      ).length > 0
+    );
+  }
+
+  async putMethod(paymentId: number, methodId: number) {
+    await this.prismaService.payment.update({
+      where: {
+        id: paymentId,
+      },
+      data: {
+        method_id: methodId,
+      },
+    });
+
+    await this.checkApplyMethodDiscount(paymentId);
+
+    return this.getPaymentDetails(paymentId);
+  }
+
+  private async checkApplyMethodDiscount(paymentId: number) {
+    const discountCumulative =
+      this.setting['payment-discount-cumulative'] === 'true';
+
+    const payment = await this.prismaService.payment.findUnique({
+      where: { id: paymentId },
+      include: {
+        payment_item: {
+          include: { item: { include: { payment_method_item: true } } },
+        },
+        payment_coupon: true,
+      },
+    });
+
+    const paymentMethodId = payment.method_id;
+    let hasMethodDiscount = false;
+    for (let i = 0; i < payment.payment_item.length; i++) {
+      const paymentMethodItem = payment.payment_item[
+        i
+      ].item.payment_method_item.find(
+        (pmi) => pmi.payment_method_id === paymentMethodId,
+      );
+
+      if (!paymentMethodItem) {
+        payment.payment_item[i].unit_price = payment.payment_item[i].item.price;
+      } else {
+        hasMethodDiscount = true;
+
+        const discountValue = paymentMethodItem.value;
+        const discountTyepId = paymentMethodItem.discount_type_id;
+
+        switch (discountTyepId) {
+          case DiscountTypeEnum.DISCOUNT_FIXED_VALUE:
+            payment.payment_item[i].unit_price = new Prisma.Decimal(
+              payment.payment_item[i].item.price,
+            ).minus(new Prisma.Decimal(discountValue));
+            break;
+          case DiscountTypeEnum.DISCOUNT_PERCENTAGE_VALUE:
+            payment.payment_item[i].unit_price = new Prisma.Decimal(
+              payment.payment_item[i].item.price,
+            ).minus(
+              new Prisma.Decimal(payment.payment_item[i].item.price)
+                .times(discountValue)
+                .div(100),
+            );
+            break;
+          case DiscountTypeEnum.PROMOTIONAL_PRICE:
+            payment.payment_item[i].unit_price = new Prisma.Decimal(
+              discountValue,
+            );
+            break;
+          default:
+            payment.payment_item[i].unit_price =
+              payment.payment_item[i].item.price;
+        }
+      }
+    }
+
+    if (hasMethodDiscount && !discountCumulative && payment.coupon_id) {
+      await this.setCoupon('', payment.slug);
+    }
+
+    const queries = [];
+
+    for (let i = 0; i < payment.payment_item.length; i++) {
+      queries.push(
+        this.prismaService.payment_item.update({
+          where: { id: payment.payment_item[i].id },
+          data: {
+            unit_price: payment.payment_item[i].unit_price,
+          },
+        }),
+      );
+    }
+
+    await this.prismaService.$transaction(queries);
+
+    await this.prismaService.payment.update({
+      where: {
+        id: paymentId,
+      },
+      data: {
+        amount: Number(
+          payment.payment_item.reduce(
+            (acc, i) => acc + Number(i.unit_price) * i.quantity,
+            0,
+          ),
+        ),
+      },
+    });
+
+    if (payment.coupon_id) {
+      await this.setCoupon(payment.payment_coupon.code, payment.slug);
+    }
+  }
+
   private async createPayment(
     items: number[],
     slug: string,
@@ -118,6 +250,7 @@ export class CheckoutService implements OnModuleInit {
       person_id: personId ?? undefined,
       status_id: PaymentStatusEnum.PENDING,
       currency: 'brl',
+      method_id: PaymentMethodEnum.PIX,
       slug,
       amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
     });
@@ -129,6 +262,8 @@ export class CheckoutService implements OnModuleInit {
         unit_price: i.price,
       })),
     });
+
+    await this.checkApplyMethodDiscount(payment.id);
 
     return payment;
   }
@@ -193,6 +328,7 @@ export class CheckoutService implements OnModuleInit {
       'payment-currency',
       'payment-mercado-pago-token',
       'payment-mercado-pago-public-key',
+      'payment-discount-cumulative',
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
@@ -480,10 +616,6 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async eventEmmitterPayment(statusId: number, paymentId: number) {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    console.log('eventEmmitterPayment', { statusId, paymentId });
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
     switch (statusId) {
       case PaymentStatusEnum.PENDING:
         this.eventEmitter.emit('payment.pending', paymentId);
@@ -519,8 +651,14 @@ export class CheckoutService implements OnModuleInit {
   private async getPersonId(userId?: number): Promise<number | null> {
     if (!userId) return null;
 
-    const person = await this.prismaService.person.findUnique({
-      where: { id: userId },
+    const person = await this.prismaService.person.findFirst({
+      where: {
+        person_user: {
+          some: {
+            user_id: userId,
+          },
+        },
+      },
       select: { id: true },
     });
 
@@ -551,11 +689,39 @@ export class CheckoutService implements OnModuleInit {
     return this.prismaService.payment.findUnique({
       where: { id: paymentId },
       include: {
-        payment_item: { include: { item: true } },
+        payment_item: {
+          include: {
+            item: {
+              include: {
+                payment_method_item: true,
+              },
+            },
+          },
+        },
         payment_method: true,
         payment_card_brand: true,
         payment_status: true,
-        person: true,
+        person: {
+          include: {
+            person_contact: {
+              where: {
+                type_id: {
+                  in: [
+                    PersonContactTypeEnum.EMAIL,
+                    PersonContactTypeEnum.PHONE,
+                  ],
+                },
+              },
+            },
+            person_document: {
+              where: {
+                type_id: {
+                  in: [PersonDocumentTypeEnum.CPF, PersonDocumentTypeEnum.CNPJ],
+                },
+              },
+            },
+          },
+        },
         payment_coupon: true,
         payment_value: true,
       },
@@ -564,6 +730,13 @@ export class CheckoutService implements OnModuleInit {
 
   async setCoupon(couponCode: string, paymentSlug: string) {
     const payment = await this.getPaymentWithItems(paymentSlug);
+    const hasMethodDiscount = await this.hasMethodDiscount(payment.id);
+    const discountCumulative =
+      this.setting['payment-discount-cumulative'] === 'true';
+
+    if (hasMethodDiscount && !discountCumulative) {
+      throw new BadRequestException('Method discount not cumulative.');
+    }
 
     if (!payment || payment.status_id !== PaymentStatusEnum.PENDING) {
       throw new BadRequestException('Payment not found or not pending.');
@@ -643,7 +816,7 @@ export class CheckoutService implements OnModuleInit {
 
   private getItemsFromPaymentAndCoupon(payment: any, coupon: any) {
     return payment.payment_item?.filter((item) =>
-      (coupon.payment_coupon_item ?? [])
+      (coupon?.payment_coupon_item ?? [])
         .map((ci) => ci.item_id)
         .includes(item.item_id),
     );
@@ -703,11 +876,6 @@ export class CheckoutService implements OnModuleInit {
         });
 
         await this.setPaymentValue(payment.id, 'mercado_pago_id', data.data.id);
-
-        console.log('**********************');
-        console.log('**   NOTIFICATION   **');
-        console.log('**********************');
-        console.log('paymentData.status', paymentData.status);
 
         switch (paymentData.status) {
           case 'approved':

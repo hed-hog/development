@@ -9,11 +9,13 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CheckoutService } from './checkout.service';
 import { CreditCardDTO } from './dto/credit-card.dto';
 import { InitDTO } from './dto/init.dto';
 import { PixDTO } from './dto/pix.dto';
+import { PutMethodDTO } from './dto/put-method.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { SetCouponDTO } from './dto/set-coupon.dto';
 
@@ -74,6 +76,14 @@ export class CheckoutController {
       }),
       settings: await this.checkoutService.getPaymentSettings(),
     };
+  }
+
+  @Put('method/:paymentId')
+  async putMethod(
+    @Param('paymentId', ParseIntPipe) paymentId: number,
+    @Body() { methodId }: PutMethodDTO,
+  ) {
+    return this.checkoutService.putMethod(paymentId, methodId);
   }
 
   @Post('coupon')
