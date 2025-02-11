@@ -108,13 +108,44 @@ export class MercadoPagoProvider extends AbstractProvider {
     firstName,
     lastName,
   }) {
+    const avaliables = await this.getMethodsAvailable();
+
+    if (avaliables instanceof Array) {
+      const isAvaliable = avaliables.find(
+        (method) => method.id === paymentMethodId,
+      );
+
+      if (!isAvaliable) {
+        throw new BadRequestException(
+          `The payment method is not available for this transaction.`,
+        );
+      }
+
+      if (isAvaliable.min_allowed_amount < transactionAmount) {
+        throw new BadRequestException(
+          `The minimum amount for this payment method is ${isAvaliable.min_allowed_amount}.`,
+        );
+      }
+
+      if (isAvaliable.max_allowed_amount > transactionAmount) {
+        throw new BadRequestException(
+          `The maximum amount for this payment method is ${isAvaliable.max_allowed_amount}.`,
+        );
+      }
+
+      console.log('isAvaliable', {
+        isAvaliable,
+        paymentMethodId,
+        paymentMethodType,
+      });
+    }
+
     const data = {
       token,
       installments,
       transaction_amount: transactionAmount,
       description,
-      payment_method_id:
-        paymentMethodType === 'credit' ? paymentMethodId : 'debit_card',
+      payment_method_id: paymentMethodId,
       issuer_id: issuerId,
       external_reference: externalReference,
       additional_info: {
@@ -134,7 +165,6 @@ export class MercadoPagoProvider extends AbstractProvider {
       notification_url: `${this.setting['url']}/checkout/notification/${this.gatewayId}`,
     };
 
-    console.log('payment', data);
     console.log('paymentJSON', data);
 
     const response = await this.makeRequest(
@@ -179,6 +209,10 @@ export class MercadoPagoProvider extends AbstractProvider {
       setting: this.setting,
       response,
     };
+  }
+
+  async getMethodsAvailable() {
+    return this.makeRequest(`${this.baseUrl}/v1/payment_methods`, 'GET');
   }
 
   async getPaymentMethods() {
