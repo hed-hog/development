@@ -355,6 +355,8 @@ export class CheckoutService implements OnModuleInit {
       'payment-method-pix-enabled',
     ]);
 
+    console.log('setting', this.setting);
+
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
       return this.provider;
     }
