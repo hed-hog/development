@@ -215,17 +215,23 @@ export class CheckoutService implements OnModuleInit {
 
     await this.prismaService.$transaction(queries);
 
+    let amount = Number(
+      payment.payment_item.reduce(
+        (acc, i) => acc + Number(i.unit_price) * i.quantity,
+        0,
+      ),
+    );
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
     await this.prismaService.payment.update({
       where: {
         id: paymentId,
       },
       data: {
-        amount: Number(
-          payment.payment_item.reduce(
-            (acc, i) => acc + Number(i.unit_price) * i.quantity,
-            0,
-          ),
-        ),
+        amount,
       },
     });
 
@@ -245,6 +251,12 @@ export class CheckoutService implements OnModuleInit {
 
     const item = await this.getPaymentItems(items);
 
+    let amount = Number(item.reduce((acc, i) => acc + Number(i.price), 0));
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
     const payment = await this.paymentService.create({
       gateway_id: this.providerId,
       person_id: personId ?? undefined,
@@ -252,7 +264,7 @@ export class CheckoutService implements OnModuleInit {
       currency: 'brl',
       method_id: PaymentMethodEnum.PIX,
       slug,
-      amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
+      amount,
     });
 
     await this.prismaService.payment_item.createMany({
@@ -282,10 +294,16 @@ export class CheckoutService implements OnModuleInit {
 
     const item = await this.getPaymentItems(items);
 
+    let amount = Number(item.reduce((acc, i) => acc + Number(i.price), 0));
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
     const payment = await this.prismaService.payment.update({
       where: { id: paymentId },
       data: {
-        amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
+        amount,
       },
     });
 
