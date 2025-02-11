@@ -27,7 +27,7 @@ data:
             description:
               en: The token to use with Mercado Pago
               pt: O token a utilizar com o Mercado Pago
-            value: ""
+            value: ''
           - slug: payment-mercado-pago-public-key
             type: string
             name:
@@ -36,7 +36,7 @@ data:
             description:
               en: The client ID to use with Mercado Pago
               pt: O ID do cliente a utilizar com o Mercado Pago
-            value: ""
+            value: ''
           - slug: payment-currency
             type: string
             name:
@@ -46,6 +46,15 @@ data:
               en: The currency to use
               pt: A moeda a utilizar
             value: BRL
+          - slug: payment-discount-cumulative
+            type: boolean
+            name:
+              en: Cumulative Discount
+              pt: Desconto Cumulativo
+            description:
+              en: If the discount is cumulative
+              pt: Se o desconto é cumulativo do pagamento á vista / PIX com o desconto do cupom
+            value: false
   payment_gateway:
     - name: Stripe
       slug: STRIPE
