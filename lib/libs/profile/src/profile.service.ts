@@ -18,6 +18,8 @@ import { CloseAccountDTO } from './dto/close-account.dto';
 import { SignupDTO } from './dto/signup.dto';
 import { UpdateUserDataDTO } from './dto/update.dto';
 import { isValidCPF } from './validations/cpf';
+import { MailService } from '@hedhog/mail';
+import { getCloseAccountEmail, getCreateUserEmail, getUpdateUserEmail } from '../emails';
 
 @Injectable()
 export class ProfileService {
@@ -26,7 +28,9 @@ export class ProfileService {
     private readonly prisma: PrismaService,
     @Inject(forwardRef(() => JwtService))
     private readonly jwt: JwtService,
-  ) {}
+    @Inject(forwardRef(() => MailService))
+    private readonly mail: MailService,
+  ) { }
 
   async getToken(user) {
     delete user.password;
@@ -146,6 +150,12 @@ export class ProfileService {
       where: { id: user.id },
     });
 
+    await this.mail.send({
+      to: user.email,
+      subject: `Conta excluída`,
+      body: getCloseAccountEmail(),
+    });
+
     return { message: 'Conta excluída com sucesso' };
   }
 
@@ -248,6 +258,12 @@ export class ProfileService {
 
     const newUser = await this.prisma.user.findFirst({
       where: { email },
+    });
+
+    this.mail.send({
+      to: email,
+      subject: `Atualizações no seu perfil`,
+      body: getUpdateUserEmail(),
     });
 
     return this.getToken(newUser);
@@ -361,6 +377,12 @@ export class ProfileService {
           },
         },
       },
+    });
+
+    await this.mail.send({
+      to: email,
+      subject: `Bem-vindo ao CoinBitClub!`,
+      body: getCreateUserEmail(user.name),
     });
 
     return this.getToken(user);
