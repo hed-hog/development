@@ -197,7 +197,7 @@ export class CheckoutService implements OnModuleInit {
     }
 
     if (hasMethodDiscount && !discountCumulative && payment.coupon_id) {
-      await this.setCoupon('', payment.slug);
+      await this.removeCoupon(paymentId, payment.coupon_id);
     }
 
     const queries = [];
@@ -730,6 +730,25 @@ export class CheckoutService implements OnModuleInit {
     });
   }
 
+  async removeCoupon(paymentId: number, couponId: number) {
+    if (couponId > 0) {
+      const coupon = await this.prismaService.payment_coupon.findUnique({
+        where: { id: couponId },
+        select: { uses_qtd: true },
+      });
+
+      await this.prismaService.payment_coupon.update({
+        where: { id: couponId },
+        data: { uses_qtd: coupon.uses_qtd - 1 },
+      });
+    }
+
+    return this.paymentService.update({
+      id: paymentId,
+      data: { coupon_id: null, discount: 0 },
+    });
+  }
+
   async setCoupon(couponCode: string, paymentSlug: string) {
     const payment = await this.getPaymentWithItems(paymentSlug);
     const hasMethodDiscount = await this.hasMethodDiscount(payment.id);
@@ -745,22 +764,7 @@ export class CheckoutService implements OnModuleInit {
     }
 
     if (!couponCode) {
-      if (payment.coupon_id > 0) {
-        const coupon = await this.prismaService.payment_coupon.findUnique({
-          where: { id: payment.coupon_id },
-          select: { uses_qtd: true },
-        });
-
-        await this.prismaService.payment_coupon.update({
-          where: { id: payment.coupon_id },
-          data: { uses_qtd: coupon.uses_qtd - 1 },
-        });
-      }
-
-      await this.paymentService.update({
-        id: payment.id,
-        data: { coupon_id: null, discount: 0 },
-      });
+      await this.removeCoupon(payment.id, payment.coupon_id);
 
       return this.getPaymentDetails(payment.id);
     } else {
