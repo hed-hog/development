@@ -325,6 +325,9 @@ export class CheckoutService implements OnModuleInit {
       case EnumProvider.MERCADO_PAGO:
         return {
           publicKey: this.setting['payment-mercado-pago-public-key'],
+          creditEnabled: this.setting['payment-method-credit-enabled'],
+          debitEnabled: this.setting['payment-method-debit-enabled'],
+          pixEnabled: this.setting['payment-method-pix-enabled'],
         };
 
       default:
@@ -347,6 +350,9 @@ export class CheckoutService implements OnModuleInit {
       'payment-mercado-pago-token',
       'payment-mercado-pago-public-key',
       'payment-discount-cumulative',
+      'payment-method-credit-enabled',
+      'payment-method-debit-enabled',
+      'payment-method-pix-enabled',
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
@@ -398,6 +404,10 @@ export class CheckoutService implements OnModuleInit {
   }: PixDTO) {
     try {
       const provider = await this.getProvider();
+
+      if (!this.setting['payment-method-pix-enabled']) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
 
       const person = await this.contactService.getPersonOrCreateIfNotExists(
         PersonContactTypeEnum.EMAIL,
@@ -518,6 +528,20 @@ export class CheckoutService implements OnModuleInit {
   }: CreditCardDTO): Promise<any> {
     try {
       const provider = await this.getProvider();
+
+      if (
+        paymentMethodType === 'credit' &&
+        !this.setting['payment-method-credit-enabled']
+      ) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
+
+      if (
+        paymentMethodType === 'debit' &&
+        !this.setting['payment-method-debit-enabled']
+      ) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
 
       const person = await this.contactService.getPersonOrCreateIfNotExists(
         PersonContactTypeEnum.EMAIL,
