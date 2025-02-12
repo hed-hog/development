@@ -17,41 +17,70 @@ export const defaults = {
   `
 }
 
-export type PaymentApprovedType = {
+export type PaymentItemType = {
+  quantity: number;
   name: string;
   price: number;
+  unitPrice: number;
   method: 'pix' | 'credit-card';
-  brand?: string;
 }
+
+export type PaymentApprovedType = {
+  items: PaymentItemType[];
+  total: number;
+  discount: number;
+};
 
 export const bodies = {
   payment_approved: (data: PaymentApprovedType) => {
-    const priceFormatter = new Intl.NumberFormat('pt-BR', {
+    const formatCurrency = (value: number) => value.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     });
-    const methodFormatter = data.method === 'pix' ? 'Pix' : 'Cartão de crédito'
-    return `
-    <div style="line-height: 1.8; font-size: 16px; color: #555; text-align: justify;">
-      <p>Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:</p>
 
-      <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-        <tr style="background-color: #f8f9fa;">
-          <th style="border: 1px solid #dcdfe6; padding: 10px; text-align: left;">Produto</th>
-          <th style="border: 1px solid #dcdfe6; padding: 10px; text-align: left;">Valor Cobrado</th>
-          <th style="border: 1px solid #dcdfe6; padding: 10px; text-align: left;">Método de Pagamento</th>
-          ${data.method !== 'pix' ? `<th style="border: 1px solid #dcdfe6; padding: 10px; text-align: left;">Bandeira</th>` : ''}
+    return `
+      <p style="margin-bottom: 30px;">Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:</p>
+
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Qtd</th>
+          <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Descrição
+          </th>
+          <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Método
+          </th>
+          <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Preço
+            Unitário</th>
+          <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Preço</th>
+        </tr>
+        ${data.items.map((item) => {
+      const itemMethod = item.method === 'pix' ? 'Pix' : 'Crédito'
+      return `
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${itemMethod}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(item.unitPrice)}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(item.price)}</td>
+            </tr>
+          `
+    }).join("")}
+        <tr>
+          <td style="padding: 8px;"></td>
+          <td style="padding: 8px;"></td>
+          <td style="padding: 8px;"></td>
+          <td style="padding: 8px; text-align: right; font-weight: bold;">Desconto</td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(data.discount)}</td>
         </tr>
         <tr>
-          <td style="border: 1px solid #dcdfe6; padding: 10px;">${data.name}</td>
-          <td style="border: 1px solid #dcdfe6; padding: 10px;">${priceFormatter.format(data.price)}</td>
-          <td style="border: 1px solid #dcdfe6; padding: 10px;">${methodFormatter}</td>
-          ${data.method !== 'pix' ? `<td style="border: 1px solid #dcdfe6; padding: 10px;">${data.brand}</td>` : ''}
+          <td style="padding: 8px;"></td>
+          <td style="padding: 8px;"></td>
+          <td style="padding: 8px;"></td>
+          <td style="padding: 8px; text-align: right; font-weight: bold;">Total</td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">${formatCurrency(data.total)}</td>
         </tr>
       </table>
 
-      <p>Se você tiver qualquer dúvida, entre em contato conosco.</p>
-    </div>
+      <p>Se você não reconhece essa ação, entre em contato conosco imediatamente para garantir a segurança de sua conta.</p>
   `
   },
 }
