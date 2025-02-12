@@ -19,7 +19,7 @@ import { SignupDTO } from './dto/signup.dto';
 import { UpdateUserDataDTO } from './dto/update.dto';
 import { isValidCPF } from './validations/cpf';
 import { MailService } from '@hedhog/mail';
-import { getCloseAccountEmail, getCreateUserEmail, getUpdateUserEmail } from '../emails';
+import { getCreateUserEmail, getCloseAccountEmail, getUpdateUserEmail } from './emails';
 
 @Injectable()
 export class ProfileService {
