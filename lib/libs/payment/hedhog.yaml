@@ -82,6 +82,15 @@ data:
               en: If the PIX payment method is enabled
               pt: Se o método de pagamento com PIX está habilitado
             value: true
+          - slug: payment-max-installments
+            type: number
+            name:
+              en: Max Installments
+              pt: Máximo de Parcelas
+            description:
+              en: The maximum number of installments allowed in the system. This setting will override the item installment setting.
+              pt: O número máximo de parcelas permitido no sistema. Esta configuração sobreporá a configuração de parcelamento por item.
+            value: 12
   payment_gateway:
     - name: Stripe
       slug: STRIPE
