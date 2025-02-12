@@ -808,6 +808,7 @@ export class CheckoutService implements OnModuleInit {
             item: {
               include: {
                 payment_method_item: true,
+                payment_installment_item: true,
               },
             },
           },

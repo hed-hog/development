@@ -799,16 +799,17 @@ model indice_type {
 }
 
 model item {
-  id                  Int                   @id(map: "PK_d3c0c71f23e7adcf952a1d13423") @default(autoincrement())
-  slug                String                @unique(map: "UQ_0f77842c93ceb8c6624a58f538a") @db.VarChar(255)
-  name                String                @db.VarChar
-  price               Decimal               @db.Decimal
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  payment_coupon_item payment_coupon_item[]
-  payment_item        payment_item[]
-  payment_method_item payment_method_item[]
-  subscription_plan   subscription_plan[]
+  id                       Int                       @id(map: "PK_d3c0c71f23e7adcf952a1d13423") @default(autoincrement())
+  slug                     String                    @unique(map: "UQ_0f77842c93ceb8c6624a58f538a") @db.VarChar(255)
+  name                     String                    @db.VarChar
+  price                    Decimal                   @db.Decimal
+  created_at               DateTime                  @default(now()) @db.Timestamp(6)
+  updated_at               DateTime                  @default(now()) @db.Timestamp(6)
+  payment_coupon_item      payment_coupon_item[]
+  payment_installment_item payment_installment_item?
+  payment_item             payment_item[]
+  payment_method_item      payment_method_item[]
+  subscription_plan        subscription_plan[]
 }
 
 model market_reflection_direction {
@@ -1421,6 +1422,15 @@ model subscription_payment {
   subscription    subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ad0ebe8b66ad9e06c8324a76591")
 
   @@unique([subscription_id, payment_id], map: "IDX_c43fb80a6dae770c1bc9307cba")
+}
+
+model payment_installment_item {
+  id               Int      @id @default(autoincrement())
+  item_id          Int      @unique
+  max_installments Int      @default(1)
+  created_at       DateTime @default(now()) @db.Timestamp(6)
+  updated_at       DateTime @default(now()) @db.Timestamp(6)
+  item             item     @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "fk_payment_installment_item_item")
 }
 
 enum route_method_enum {

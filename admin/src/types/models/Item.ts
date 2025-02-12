@@ -2,6 +2,7 @@ import { PaymentItem } from './PaymentItem';
 import { PaymentMethodItem } from './PaymentMethodItem';
 import { PaymentCouponItem } from './PaymentCouponItem';
 import { SubscriptionPlan } from './SubscriptionPlan';
+import { PaymentInstallmentItem } from './PaymentInstallmentItem';
 
 export type Item = {
   id?: number;
@@ -14,4 +15,5 @@ export type Item = {
   payment_method_item?: PaymentMethodItem[];
   payment_coupon_item?: PaymentCouponItem[];
   subscription_plan?: SubscriptionPlan[];
+  payment_installment_item?: PaymentInstallmentItem[];
 }

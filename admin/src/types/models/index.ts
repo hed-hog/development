@@ -97,3 +97,4 @@ export * from './EventType';
 export * from './Event';
 export * from './EventLocale';
 export * from './EventOccurrence';
+export * from './PaymentInstallmentItem';
