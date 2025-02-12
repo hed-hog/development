@@ -7,6 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
+import console from 'console';
 import { addMonths, addYears } from 'date-fns';
 
 @Injectable()
@@ -19,6 +20,8 @@ export class SubscriptionListenerService {
 
   @OnEvent('payment.paid')
   async handlePaymentPaidEvent(paymentId: number) {
+    console.log('handlePaymentPaidEvent', { paymentId });
+
     const payment = await this.getPaymentForProcessing(paymentId);
 
     if (!payment) {
@@ -36,6 +39,8 @@ export class SubscriptionListenerService {
 
   @OnEvent('payment.refunded')
   async handlePaymentRefoundedEvent(paymentId: number) {
+    console.log('handlePaymentRefoundedEvent', { paymentId });
+
     const payment = await this.getPaymentActive(paymentId);
 
     if (!payment) {
@@ -47,6 +52,8 @@ export class SubscriptionListenerService {
 
   @OnEvent('payment.canceled')
   async handlePaymentCanceledEvent(paymentId: number) {
+    console.log('handlePaymentCanceledEvent', { paymentId });
+
     const payment = await this.getPaymentActive(paymentId);
 
     if (!payment) {
@@ -246,6 +253,7 @@ export class SubscriptionListenerService {
   }
 
   private async markPaymentAsDelivered(paymentId: number) {
+    console.log('markPaymentAsDelivered', { paymentId });
     await this.prismaService.payment.update({
       where: {
         id: paymentId,
