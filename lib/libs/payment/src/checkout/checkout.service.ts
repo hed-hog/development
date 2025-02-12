@@ -468,6 +468,28 @@ export class CheckoutService implements OnModuleInit {
 
       await this.saveQRCode(payment.id, paymentPix);
 
+      await this.mailService.send({
+        to: email,
+        subject: 'Detalhes do Pedido',
+        body: getPaymentEmail({
+          message:
+            'Seu pedido foi gerado com sucesso. Confira os detalhes abaixo:',
+          title: 'Detalhes do Pedido',
+          discount: Number(payment.discount),
+          total: Number(payment.amount) - Number(payment.discount),
+          method:
+            payment.method_id === PaymentMethodEnum.CREDIT_CARD
+              ? 'credit-card'
+              : 'pix',
+          items: payment.payment_item.map((pi) => ({
+            quantity: pi.quantity,
+            name: pi.item.name,
+            price: Number(pi.unit_price) * pi.quantity,
+            unitPrice: Number(pi.unit_price),
+          })),
+        }),
+      });
+
       return this.getPaymentDetails(payment.id);
     } catch (error: any) {
       throw new BadRequestException(error.message);
@@ -669,8 +691,8 @@ export class CheckoutService implements OnModuleInit {
             message:
               'Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:',
             title: 'Pagamento Aprovado',
-            discount: payment.discount,
-            total: payment.amount - payment.discount,
+            discount: Number(payment.discount),
+            total: Number(payment.amount) - Number(payment.discount),
             method:
               payment.method_id === PaymentMethodEnum.CREDIT_CARD
                 ? 'credit-card'
@@ -678,8 +700,8 @@ export class CheckoutService implements OnModuleInit {
             items: payment.payment_item.map((pi) => ({
               quantity: pi.quantity,
               name: pi.item.name,
-              price: pi.unit_price * pi.quantity,
-              unitPrice: pi.unit_price,
+              price: Number(pi.unit_price) * pi.quantity,
+              unitPrice: Number(pi.unit_price),
             })),
           }),
         });

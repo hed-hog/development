@@ -1077,6 +1077,21 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
+  payment_installment_item:
+    columns:
+      - type: pk
+      - name: item_id
+        isUnique: true
+        type: fk
+        references:
+          table: item
+          column: id
+          onDelete: RESTRICT
+      - name: max_installments
+        type: int
+        default: 1
+      - type: created_at
+      - type: updated_at
   payment_value:
     columns:
       - type: pk
