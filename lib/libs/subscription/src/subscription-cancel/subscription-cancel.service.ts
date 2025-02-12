@@ -25,15 +25,29 @@ export class SubscriptionCancelService {
 
   async addSubscriptionCancel(
     subscriptionId: number,
+    reasonIds: number[],
     personId: number,
     comment: string,
   ) {
-    return this.prismaService.subscription_cancel.create({
+    const { id } = await this.prismaService.subscription_cancel.create({
       data: {
         subscription_id: subscriptionId,
         person_id: personId,
         comment,
       },
     });
+
+    await Promise.all(
+      reasonIds.map((reasonId) =>
+        this.prismaService.subscription_cancel_reason_choose.create({
+          data: {
+            cancel_id: id,
+            reason_id: reasonId,
+          },
+        }),
+      ),
+    );
+
+    return id;
   }
 }
