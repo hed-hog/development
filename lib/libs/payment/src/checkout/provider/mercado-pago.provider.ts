@@ -128,13 +128,13 @@ export class MercadoPagoProvider extends AbstractProvider {
         );
       }
 
-      if (isAvaliable.min_allowed_amount < Number(transactionAmount)) {
+      if (isAvaliable.min_allowed_amount > Number(transactionAmount)) {
         throw new BadRequestException(
           `The minimum amount for this payment method is ${isAvaliable.min_allowed_amount}.`,
         );
       }
 
-      if (isAvaliable.max_allowed_amount > Number(transactionAmount)) {
+      if (isAvaliable.max_allowed_amount < Number(transactionAmount)) {
         throw new BadRequestException(
           `The maximum amount for this payment method is ${isAvaliable.max_allowed_amount}.`,
         );
