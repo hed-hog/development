@@ -216,6 +216,28 @@ tables:
           - subscription_id
           - person_id
         isUnique: true
+  subscription_cancel_reason_choose:
+    columns:
+      - type: pk
+      - type: fk
+        name: cancel_id
+        references:
+          table: subscription_cancel
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: reason_id
+        references:
+          table: subscription_cancel_reason
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns:
+          - cancel_id
+          - reason_id
+        isUnique: true
 screens:
   subscription_plan:
     title:

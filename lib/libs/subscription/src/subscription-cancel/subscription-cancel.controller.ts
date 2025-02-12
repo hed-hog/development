@@ -1,4 +1,3 @@
-import { Role } from '@hedhog/core';
 import { Locale } from '@hedhog/locale';
 import { Pagination } from '@hedhog/pagination';
 import {
@@ -9,9 +8,9 @@ import {
   Inject,
   Post,
 } from '@nestjs/common';
+import { AddSubscriptionCancelDTO } from './dto/add-subscription-cancel.dto';
 import { SubscriptionCancelService } from './subscription-cancel.service';
 
-@Role()
 @Controller('subscription-cancel')
 export class SubscriptionCancelController {
   constructor(
@@ -26,12 +25,13 @@ export class SubscriptionCancelController {
 
   @Post()
   async addSubscriptionCancel(
-    @Body('subscriptionId') subscriptionId: number,
-    @Body('personId') personId: number,
-    @Body('comment') comment: string,
+    @Body() addSubscriptionCancelDto: AddSubscriptionCancelDTO,
   ) {
+    const { subscriptionId, reasonIds, personId, comment } =
+      addSubscriptionCancelDto;
     return this.subscriptionCancelService.addSubscriptionCancel(
       subscriptionId,
+      reasonIds,
       personId,
       comment,
     );
