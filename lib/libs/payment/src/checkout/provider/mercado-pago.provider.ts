@@ -115,26 +115,19 @@ export class MercadoPagoProvider extends AbstractProvider {
         (method) => method.id === paymentMethodId,
       );
 
-      console.log('isAvaliable', {
-        isAvaliable,
-        paymentMethodId,
-        paymentMethodType,
-        transactionAmount,
-      });
-
       if (!isAvaliable) {
         throw new BadRequestException(
           `The payment method is not available for this transaction.`,
         );
       }
 
-      if (isAvaliable.min_allowed_amount < Number(transactionAmount)) {
+      if (isAvaliable.min_allowed_amount > Number(transactionAmount)) {
         throw new BadRequestException(
           `The minimum amount for this payment method is ${isAvaliable.min_allowed_amount}.`,
         );
       }
 
-      if (isAvaliable.max_allowed_amount > Number(transactionAmount)) {
+      if (isAvaliable.max_allowed_amount < Number(transactionAmount)) {
         throw new BadRequestException(
           `The maximum amount for this payment method is ${isAvaliable.max_allowed_amount}.`,
         );
@@ -166,7 +159,7 @@ export class MercadoPagoProvider extends AbstractProvider {
       notification_url: `${this.setting['url']}/checkout/notification/${this.gatewayId}`,
     };
 
-    console.log('paymentJSON', data);
+    console.log('paymentJSON', JSON.stringify(data));
 
     const response = await this.makeRequest(
       `${this.baseUrl}/v1/payments`,

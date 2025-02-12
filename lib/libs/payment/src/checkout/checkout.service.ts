@@ -355,8 +355,6 @@ export class CheckoutService implements OnModuleInit {
       'payment-method-pix-enabled',
     ]);
 
-    console.log('setting', this.setting);
-
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
       return this.provider;
     }
@@ -495,6 +493,7 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async setPaymentValue(paymentId: number, name: string, value: string) {
+    console.log('setPaymentValue', { paymentId, name, value });
     await this.prismaService.payment_value.deleteMany({
       where: { payment_id: paymentId, name },
     });

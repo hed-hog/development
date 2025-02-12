@@ -7,6 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
+import console from 'console';
 import { addMonths, addYears } from 'date-fns';
 
 @Injectable()
@@ -19,6 +20,8 @@ export class SubscriptionListenerService {
 
   @OnEvent('payment.paid')
   async handlePaymentPaidEvent(paymentId: number) {
+    console.log('handlePaymentPaidEvent', { paymentId });
+
     const payment = await this.getPaymentForProcessing(paymentId);
 
     if (!payment) {
@@ -36,6 +39,8 @@ export class SubscriptionListenerService {
 
   @OnEvent('payment.refunded')
   async handlePaymentRefoundedEvent(paymentId: number) {
+    console.log('handlePaymentRefoundedEvent', { paymentId });
+
     const payment = await this.getPaymentActive(paymentId);
 
     if (!payment) {
@@ -47,6 +52,8 @@ export class SubscriptionListenerService {
 
   @OnEvent('payment.canceled')
   async handlePaymentCanceledEvent(paymentId: number) {
+    console.log('handlePaymentCanceledEvent', { paymentId });
+
     const payment = await this.getPaymentActive(paymentId);
 
     if (!payment) {
@@ -57,6 +64,7 @@ export class SubscriptionListenerService {
   }
 
   async finishSubscriptions(paymentId: number) {
+    console.log('finishSubscriptions', { paymentId });
     const subscriptions = await this.getSubscriptionsByPaymentId(paymentId);
 
     for (const subscription of subscriptions) {
@@ -73,6 +81,7 @@ export class SubscriptionListenerService {
   }
 
   async getSubscription(planId: number, personId: number) {
+    console.log('getSubscription', { planId, personId });
     let subscription = await this.prismaService.subscription.findFirst({
       where: {
         plan_id: planId,
@@ -121,6 +130,7 @@ export class SubscriptionListenerService {
   }
 
   private async getPaymentActive(paymentId: number) {
+    console.log('getPaymentActive', { paymentId });
     return this.prismaService.payment.findFirst({
       where: {
         id: paymentId,
@@ -148,17 +158,7 @@ export class SubscriptionListenerService {
   }
 
   private async getPaymentForProcessing(paymentId: number) {
-    console.log('getPaymentForProcessing', paymentId, {
-      id: paymentId,
-      delivered: 0,
-      status_id: PaymentStatusEnum.PAID,
-      payment_at: {
-        not: null,
-      },
-      person_id: {
-        not: null,
-      },
-    });
+    console.log('getPaymentForProcessing', { paymentId });
     return this.prismaService.payment.findFirst({
       where: {
         id: paymentId,
@@ -186,6 +186,7 @@ export class SubscriptionListenerService {
   }
 
   private async processPaymentItems(payment: any) {
+    console.log('processPaymentItems', { payment });
     const subscriptions = [];
     const payment_items = (payment.payment_item || []).filter(
       (pi) => pi?.item?.subscription_plan,
@@ -225,6 +226,7 @@ export class SubscriptionListenerService {
   }
 
   private calculateEndAt(duration: string, startAt: Date) {
+    console.log('calculateEndAt', { duration, startAt });
     let endAt = new Date(startAt);
 
     switch (duration) {
@@ -246,6 +248,7 @@ export class SubscriptionListenerService {
   }
 
   private async markPaymentAsDelivered(paymentId: number) {
+    console.log('markPaymentAsDelivered', { paymentId });
     await this.prismaService.payment.update({
       where: {
         id: paymentId,
@@ -262,6 +265,7 @@ export class SubscriptionListenerService {
   }
 
   async getSubscriptionsByPaymentId(paymentId: number) {
+    console.log('getSubscriptionsByPaymentId', { paymentId });
     return this.prismaService.subscription.findMany({
       where: {
         subscription_payment: {
