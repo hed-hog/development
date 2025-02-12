@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsEnum,
   IsInt,
   IsNumberString,
   IsString,
@@ -14,6 +15,9 @@ export class CreditCardDTO {
   @IsString()
   paymentMethodId: string;
 
+  @IsEnum(['credit', 'debit'])
+  paymentMethodType: 'credit' | 'debit';
+
   @IsInt()
   installments: number;
 
@@ -24,15 +28,6 @@ export class CreditCardDTO {
   @MinLength(11)
   @MaxLength(14)
   identificationNumber: string;
-
-  @IsString()
-  cardholderEmail: string;
-
-  @IsString()
-  cardFirstSixDigits: string;
-
-  @IsString()
-  cardLastFourDigits: string;
 
   @IsString()
   paymentSlug: string;

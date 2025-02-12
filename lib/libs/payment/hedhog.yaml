@@ -55,6 +55,33 @@ data:
               en: If the discount is cumulative
               pt: Se o desconto é cumulativo do pagamento á vista / PIX com o desconto do cupom
             value: false
+          - slug: payment-method-credit-enabled
+            type: boolean
+            name:
+              en: Credit Card Enabled
+              pt: Cartão de Crédito Habilitado
+            description:
+              en: If the credit card payment method is enabled
+              pt: Se o método de pagamento com cartão de crédito está habilitado
+            value: true
+          - slug: payment-method-debit-enabled
+            type: boolean
+            name:
+              en: Debit Card Enabled
+              pt: Cartão de Débito Habilitado
+            description:
+              en: If the debit card payment method is enabled
+              pt: Se o método de pagamento com cartão de débito está habilitado
+            value: true
+          - slug: payment-method-pix-enabled
+            type: boolean
+            name:
+              en: PIX Enabled
+              pt: PIX Habilitado
+            description:
+              en: If the PIX payment method is enabled
+              pt: Se o método de pagamento com PIX está habilitado
+            value: true
   payment_gateway:
     - name: Stripe
       slug: STRIPE

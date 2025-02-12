@@ -148,6 +148,17 @@ export class SubscriptionListenerService {
   }
 
   private async getPaymentForProcessing(paymentId: number) {
+    console.log('getPaymentForProcessing', paymentId, {
+      id: paymentId,
+      delivered: 0,
+      status_id: PaymentStatusEnum.PAID,
+      payment_at: {
+        not: null,
+      },
+      person_id: {
+        not: null,
+      },
+    });
     return this.prismaService.payment.findFirst({
       where: {
         id: paymentId,

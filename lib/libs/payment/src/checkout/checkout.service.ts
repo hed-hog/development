@@ -197,7 +197,7 @@ export class CheckoutService implements OnModuleInit {
     }
 
     if (hasMethodDiscount && !discountCumulative && payment.coupon_id) {
-      await this.setCoupon('', payment.slug);
+      await this.removeCoupon(paymentId, payment.coupon_id);
     }
 
     const queries = [];
@@ -215,17 +215,23 @@ export class CheckoutService implements OnModuleInit {
 
     await this.prismaService.$transaction(queries);
 
+    let amount = Number(
+      payment.payment_item.reduce(
+        (acc, i) => acc + Number(i.unit_price) * i.quantity,
+        0,
+      ),
+    );
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
     await this.prismaService.payment.update({
       where: {
         id: paymentId,
       },
       data: {
-        amount: Number(
-          payment.payment_item.reduce(
-            (acc, i) => acc + Number(i.unit_price) * i.quantity,
-            0,
-          ),
-        ),
+        amount,
       },
     });
 
@@ -245,6 +251,12 @@ export class CheckoutService implements OnModuleInit {
 
     const item = await this.getPaymentItems(items);
 
+    let amount = Number(item.reduce((acc, i) => acc + Number(i.price), 0));
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
     const payment = await this.paymentService.create({
       gateway_id: this.providerId,
       person_id: personId ?? undefined,
@@ -252,7 +264,7 @@ export class CheckoutService implements OnModuleInit {
       currency: 'brl',
       method_id: PaymentMethodEnum.PIX,
       slug,
-      amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
+      amount,
     });
 
     await this.prismaService.payment_item.createMany({
@@ -282,10 +294,16 @@ export class CheckoutService implements OnModuleInit {
 
     const item = await this.getPaymentItems(items);
 
+    let amount = Number(item.reduce((acc, i) => acc + Number(i.price), 0));
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
     const payment = await this.prismaService.payment.update({
       where: { id: paymentId },
       data: {
-        amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
+        amount,
       },
     });
 
@@ -307,6 +325,9 @@ export class CheckoutService implements OnModuleInit {
       case EnumProvider.MERCADO_PAGO:
         return {
           publicKey: this.setting['payment-mercado-pago-public-key'],
+          creditEnabled: this.setting['payment-method-credit-enabled'],
+          debitEnabled: this.setting['payment-method-debit-enabled'],
+          pixEnabled: this.setting['payment-method-pix-enabled'],
         };
 
       default:
@@ -329,7 +350,12 @@ export class CheckoutService implements OnModuleInit {
       'payment-mercado-pago-token',
       'payment-mercado-pago-public-key',
       'payment-discount-cumulative',
+      'payment-method-credit-enabled',
+      'payment-method-debit-enabled',
+      'payment-method-pix-enabled',
     ]);
+
+    console.log('setting', this.setting);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
       return this.provider;
@@ -380,6 +406,10 @@ export class CheckoutService implements OnModuleInit {
   }: PixDTO) {
     try {
       const provider = await this.getProvider();
+
+      if (!this.setting['payment-method-pix-enabled']) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
 
       const person = await this.contactService.getPersonOrCreateIfNotExists(
         PersonContactTypeEnum.EMAIL,
@@ -488,20 +518,32 @@ export class CheckoutService implements OnModuleInit {
   async createPaymentCreditCard({
     token,
     paymentMethodId,
+    paymentMethodType,
     issuerId,
     installments,
     identificationNumber,
     paymentSlug,
-    cardholderEmail,
     identificationType,
-    cardFirstSixDigits,
-    cardLastFourDigits,
     name,
     email,
     phone,
   }: CreditCardDTO): Promise<any> {
     try {
       const provider = await this.getProvider();
+
+      if (
+        paymentMethodType === 'credit' &&
+        !this.setting['payment-method-credit-enabled']
+      ) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
+
+      if (
+        paymentMethodType === 'debit' &&
+        !this.setting['payment-method-debit-enabled']
+      ) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
 
       const person = await this.contactService.getPersonOrCreateIfNotExists(
         PersonContactTypeEnum.EMAIL,
@@ -526,8 +568,11 @@ export class CheckoutService implements OnModuleInit {
       const payment = await this.prismaService.payment.update({
         where: { slug: paymentSlug },
         data: {
-          installments,
-          method_id: PaymentMethodEnum.CREDIT_CARD,
+          installments: paymentMethodType === 'credit' ? installments : 1,
+          method_id:
+            paymentMethodType === 'credit'
+              ? PaymentMethodEnum.CREDIT_CARD
+              : PaymentMethodEnum.DEBIT_CARD,
           person_id: person.id,
           document: identificationNumber,
         },
@@ -550,6 +595,7 @@ export class CheckoutService implements OnModuleInit {
         transactionAmount: Number(payment.amount) - Number(payment.discount),
         description: '',
         paymentMethodId,
+        paymentMethodType,
         issuerId,
         externalReference: payment.slug,
         items,
@@ -728,6 +774,25 @@ export class CheckoutService implements OnModuleInit {
     });
   }
 
+  async removeCoupon(paymentId: number, couponId: number) {
+    if (couponId > 0) {
+      const coupon = await this.prismaService.payment_coupon.findUnique({
+        where: { id: couponId },
+        select: { uses_qtd: true },
+      });
+
+      await this.prismaService.payment_coupon.update({
+        where: { id: couponId },
+        data: { uses_qtd: coupon.uses_qtd - 1 },
+      });
+    }
+
+    return this.paymentService.update({
+      id: paymentId,
+      data: { coupon_id: null, discount: 0 },
+    });
+  }
+
   async setCoupon(couponCode: string, paymentSlug: string) {
     const payment = await this.getPaymentWithItems(paymentSlug);
     const hasMethodDiscount = await this.hasMethodDiscount(payment.id);
@@ -743,22 +808,7 @@ export class CheckoutService implements OnModuleInit {
     }
 
     if (!couponCode) {
-      if (payment.coupon_id > 0) {
-        const coupon = await this.prismaService.payment_coupon.findUnique({
-          where: { id: payment.coupon_id },
-          select: { uses_qtd: true },
-        });
-
-        await this.prismaService.payment_coupon.update({
-          where: { id: payment.coupon_id },
-          data: { uses_qtd: coupon.uses_qtd - 1 },
-        });
-      }
-
-      await this.paymentService.update({
-        id: payment.id,
-        data: { coupon_id: null, discount: 0 },
-      });
+      await this.removeCoupon(payment.id, payment.coupon_id);
 
       return this.getPaymentDetails(payment.id);
     } else {
