@@ -24,17 +24,19 @@ export type PaymentItemType = {
   name: string;
   price: number;
   unitPrice: number;
-  method: 'pix' | 'credit-card';
 };
 
 export type PaymentApprovedType = {
   items: PaymentItemType[];
   total: number;
   discount: number;
+  message: string;
+  title: string;
+  method: 'pix' | 'credit-card';
 };
 
 export const bodies = {
-  payment_approved: (data: PaymentApprovedType) => {
+  payment: (data: PaymentApprovedType) => {
     const formatCurrency = (value: number) =>
       value.toLocaleString('pt-BR', {
         style: 'currency',
@@ -42,14 +44,14 @@ export const bodies = {
       });
 
     return `
-      <p style="margin-bottom: 30px;">Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:</p>
+      <p style="margin-bottom: 30px;">${data.message}</p>
+
+      <p>Detalhes do pagamento com ${data.method === 'pix' ? 'Pix' : 'Cartão de Crédito'}.</p>
 
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
           <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Qtd</th>
           <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Descrição
-          </th>
-          <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Método
           </th>
           <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Preço
             Unitário</th>
@@ -57,12 +59,10 @@ export const bodies = {
         </tr>
         ${data.items
           .map((item) => {
-            const itemMethod = item.method === 'pix' ? 'Pix' : 'Crédito';
             return `
             <tr>
-              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity}x</td>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
-              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${itemMethod}</td>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(item.unitPrice)}</td>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(item.price)}</td>
             </tr>

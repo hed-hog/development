@@ -21,6 +21,7 @@ import {
 import { Prisma } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import { DiscountTypeEnum } from '../discount-type/discount-type.enum';
+import { getPaymentEmail } from '../emails';
 import { PaymentGatewayEnum } from '../payment-gateway/payment-gateway.enum';
 import { PaymentMethodEnum } from '../payment-method/payment-method.enum';
 import { PaymentStatusEnum } from '../payment-status/payment-status.enum';
@@ -641,7 +642,47 @@ export class CheckoutService implements OnModuleInit {
         },
       });
 
-      if (statusId === PaymentStatusEnum.PAID) {
+      const payment = await this.getPaymentDetails(paymentId);
+      const email = await this.contactService.getPersonContact(
+        payment.person_id,
+        PersonContactTypeEnum.EMAIL,
+      );
+
+      const mailPaidSended = await this.prismaService.payment_value.count({
+        where: {
+          payment_id: paymentId,
+          name: 'mail_paid',
+          value: '1',
+        },
+      });
+
+      if (
+        mailPaidSended === 0 &&
+        email &&
+        statusId === PaymentStatusEnum.PAID
+      ) {
+        await this.setPaymentValue(paymentId, 'mail_paid', '1');
+        await this.mailService.send({
+          to: email.value,
+          subject: 'Pagamento Aprovado',
+          body: getPaymentEmail({
+            message:
+              'Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:',
+            title: 'Pagamento Aprovado',
+            discount: payment.discount,
+            total: payment.amount - payment.discount,
+            method:
+              payment.method_id === PaymentMethodEnum.CREDIT_CARD
+                ? 'credit-card'
+                : 'pix',
+            items: payment.payment_item.map((pi) => ({
+              quantity: pi.quantity,
+              name: pi.item.name,
+              price: pi.unit_price * pi.quantity,
+              unitPrice: pi.unit_price,
+            })),
+          }),
+        });
       }
 
       await this.eventEmitterReadinessWatcher.waitUntilReady();
@@ -915,7 +956,19 @@ export class CheckoutService implements OnModuleInit {
 
         let payment = await this.prismaService.payment.findFirst({
           where: { slug: paymentData.external_reference },
-          select: { id: true, status_id: true },
+          select: {
+            id: true,
+            status_id: true,
+            person_id: true,
+            discount: true,
+            amount: true,
+            method_id: true,
+            payment_item: {
+              include: {
+                item: true,
+              },
+            },
+          },
         });
 
         if (!payment) {
@@ -942,6 +995,50 @@ export class CheckoutService implements OnModuleInit {
                 payment_at: new Date(),
               },
             });
+
+            const email = await this.contactService.getPersonContact(
+              payment.person_id,
+              PersonContactTypeEnum.EMAIL,
+            );
+
+            const mailPaidSended = await this.prismaService.payment_value.count(
+              {
+                where: {
+                  payment_id: payment.id,
+                  name: 'mail_paid',
+                  value: '1',
+                },
+              },
+            );
+
+            if (
+              mailPaidSended === 0 &&
+              email &&
+              payment.status_id === PaymentStatusEnum.PAID
+            ) {
+              await this.setPaymentValue(payment.id, 'mail_paid', '1');
+              await this.mailService.send({
+                to: email.value,
+                subject: 'Pagamento Aprovado',
+                body: getPaymentEmail({
+                  message:
+                    'Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:',
+                  title: 'Pagamento Aprovado',
+                  discount: Number(payment.discount),
+                  total: Number(payment.amount) - Number(payment.discount),
+                  method:
+                    payment.method_id === PaymentMethodEnum.CREDIT_CARD
+                      ? 'credit-card'
+                      : 'pix',
+                  items: payment.payment_item.map((pi) => ({
+                    quantity: pi.quantity,
+                    name: pi.item.name,
+                    price: Number(pi.unit_price) * pi.quantity,
+                    unitPrice: Number(pi.unit_price),
+                  })),
+                }),
+              });
+            }
             break;
           case 'pending':
           case 'in_process':
@@ -994,6 +1091,15 @@ export class CheckoutService implements OnModuleInit {
           select: {
             id: true,
             status_id: true,
+            person_id: true,
+            discount: true,
+            amount: true,
+            method_id: true,
+            payment_item: {
+              include: {
+                item: true,
+              },
+            },
           },
         });
 
