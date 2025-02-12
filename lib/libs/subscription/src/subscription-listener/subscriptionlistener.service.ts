@@ -20,21 +20,27 @@ export class SubscriptionListenerService {
 
   @OnEvent('payment.paid')
   async handlePaymentPaidEvent(paymentId: number) {
-    console.log('handlePaymentPaidEvent', { paymentId });
+    console.log('handlePaymentPaidEvent', 'Start', { paymentId });
 
     const payment = await this.getPaymentForProcessing(paymentId);
 
-    if (!payment) {
-      throw new NotFoundException(`Payment ${paymentId} not found`);
+    if (payment) {
+      let subscriptions = await this.processPaymentItems(payment);
+
+      if (subscriptions.length === payment.payment_item.length) {
+        await this.markPaymentAsDelivered(paymentId);
+      }
+
+      subscriptions = await this.getSubscriptionsByPaymentId(paymentId);
+
+      console.log('handlePaymentPaidEvent', 'Complete', { subscriptions });
+    } else {
+      console.log(
+        'handlePaymentPaidEvent',
+        'Payment not found or already processed',
+        { paymentId },
+      );
     }
-
-    const subscriptions = await this.processPaymentItems(payment);
-
-    if (subscriptions.length === payment.payment_item.length) {
-      await this.markPaymentAsDelivered(paymentId);
-    }
-
-    return this.getSubscriptionsByPaymentId(paymentId);
   }
 
   @OnEvent('payment.refunded')
@@ -43,11 +49,17 @@ export class SubscriptionListenerService {
 
     const payment = await this.getPaymentActive(paymentId);
 
-    if (!payment) {
-      throw new NotFoundException(`Payment ${paymentId} not found`);
-    }
+    if (payment) {
+      await this.finishSubscriptions(paymentId);
 
-    await this.finishSubscriptions(paymentId);
+      console.log('handlePaymentRefoundedEvent', 'Complete', { paymentId });
+    } else {
+      console.log(
+        'handlePaymentRefoundedEvent',
+        'Payment not found or already processed',
+        { paymentId },
+      );
+    }
   }
 
   @OnEvent('payment.canceled')
@@ -56,11 +68,17 @@ export class SubscriptionListenerService {
 
     const payment = await this.getPaymentActive(paymentId);
 
-    if (!payment) {
-      throw new NotFoundException(`Payment ${paymentId} not found`);
-    }
+    if (payment) {
+      await this.finishSubscriptions(paymentId);
 
-    await this.finishSubscriptions(paymentId);
+      console.log('handlePaymentCanceledEvent', 'Complete', { paymentId });
+    } else {
+      console.log(
+        'handlePaymentCanceledEvent',
+        'Payment not found or already processed',
+        { paymentId },
+      );
+    }
   }
 
   async finishSubscriptions(paymentId: number) {
