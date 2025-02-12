@@ -53,10 +53,8 @@ export class SubscriptionProfileService {
   }
 
   async getSubscriptions(userId: number) {
-    console.log('getSubscriptions', { userId });
     return this.prismaService.subscription.findMany({
       where: {
-        status: 'active',
         subscription_person: {
           some: {
             person: {

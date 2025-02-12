@@ -48,6 +48,15 @@ export class SubscriptionCancelService {
       ),
     );
 
+    await this.prismaService.subscription.update({
+      where: {
+        id: subscriptionId,
+      },
+      data: {
+        status: 'canceled',
+      },
+    });
+
     return id;
   }
 }
