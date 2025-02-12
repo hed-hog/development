@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/subscription",
-  "version": "0.46.37",
+  "version": "0.46.45",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -28,13 +28,14 @@
     "@hedhog/pagination": "latest",
     "@hedhog/payment": "latest",
     "@hedhog/prisma": "latest",
-    "@nestjs/jwt": "^10.2.0",
-    "@nestjs/event-emitter": "^3.0.0"
+    "@nestjs/event-emitter": "^3.0.0",
+    "@nestjs/jwt": "^10.2.0"
   },
   "devDependencies": {
     "@hedhog/admin": "^0.36.2",
-    "@hedhog/contact": "^0.46.13",
+    "@hedhog/contact": "^0.46.15",
     "@hedhog/locale": "^0.46.2",
+    "@hedhog/mail": "^0.46.3",
     "@hedhog/pagination": "^0.36.1",
     "@hedhog/payment": "^0.46.62",
     "@hedhog/prisma": "^0.36.1",
@@ -43,7 +44,7 @@
     "@nestjs/mapped-types": "^2.0.6"
   },
   "dependencies": {
-    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/jwt": "^10.2.0",
     "date-fns": "^4.1.0"
   }
 }

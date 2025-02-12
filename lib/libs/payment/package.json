@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/payment",
-  "version": "0.46.85",
+  "version": "0.46.86",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@hedhog/admin": "^0.46.7",
-    "@hedhog/contact": "^0.46.12",
+    "@hedhog/contact": "^0.46.15",
     "@hedhog/core": "^1.0.6",
     "@hedhog/locale": "^0.46.2",
     "@hedhog/mail": "^0.46.1",

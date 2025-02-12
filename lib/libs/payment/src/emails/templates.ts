@@ -5,17 +5,19 @@ export const defaults = {
       <h1 style="color: #2c3e50; font-size: 26px; margin: 0;">${title}</h1>
     </div>
   `,
-  default_body: (content: string[]) => `<body style="font-family: Arial, sans-serif; background-color: #eef2f7; color: #333; margin: 0; padding: 0;">
+  default_body: (
+    content: string[],
+  ) => `<body style="font-family: Arial, sans-serif; background-color: #eef2f7; color: #333; margin: 0; padding: 1px;">
       <div style="max-width: 600px; margin: 40px auto; background-color: #ffffff; border: 1px solid #dcdfe6; border-radius: 10px; padding: 40px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
-        ${content.join("")}
+        ${content.join('')}
       </div>
     </body>`,
   footer: () => `
     <div style="text-align: center; font-size: 13px; color: #95a5a6; margin-top: 40px; border-top: 1px solid #ecf0f1; padding-top: 20px;">
       <p>Este email foi enviado automaticamente. Por favor, não responda.</p>
     </div>
-  `
-}
+  `,
+};
 
 export type PaymentItemType = {
   quantity: number;
@@ -23,7 +25,7 @@ export type PaymentItemType = {
   price: number;
   unitPrice: number;
   method: 'pix' | 'credit-card';
-}
+};
 
 export type PaymentApprovedType = {
   items: PaymentItemType[];
@@ -33,10 +35,11 @@ export type PaymentApprovedType = {
 
 export const bodies = {
   payment_approved: (data: PaymentApprovedType) => {
-    const formatCurrency = (value: number) => value.toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    });
+    const formatCurrency = (value: number) =>
+      value.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      });
 
     return `
       <p style="margin-bottom: 30px;">Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:</p>
@@ -52,9 +55,10 @@ export const bodies = {
             Unitário</th>
           <th style="background-color: #f2f2f2; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Preço</th>
         </tr>
-        ${data.items.map((item) => {
-      const itemMethod = item.method === 'pix' ? 'Pix' : 'Crédito'
-      return `
+        ${data.items
+          .map((item) => {
+            const itemMethod = item.method === 'pix' ? 'Pix' : 'Crédito';
+            return `
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity}</td>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
@@ -62,8 +66,9 @@ export const bodies = {
               <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(item.unitPrice)}</td>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(item.price)}</td>
             </tr>
-          `
-    }).join("")}
+          `;
+          })
+          .join('')}
         <tr>
           <td style="padding: 8px;"></td>
           <td style="padding: 8px;"></td>
@@ -81,6 +86,6 @@ export const bodies = {
       </table>
 
       <p>Se você não reconhece essa ação, entre em contato conosco imediatamente para garantir a segurança de sua conta.</p>
-  `
+  `;
   },
-}
+};

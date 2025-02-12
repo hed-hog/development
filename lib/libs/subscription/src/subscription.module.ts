@@ -1,4 +1,6 @@
 import { AdminModule } from '@hedhog/admin';
+import { ContactModule } from '@hedhog/contact';
+import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
@@ -20,6 +22,8 @@ import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscr
     forwardRef(() => SubscriptionPlanItemModule),
     forwardRef(() => SubscriptionListenerModule),
     forwardRef(() => SubscriptionProfileModule),
+    forwardRef(() => ContactModule),
+    forwardRef(() => MailModule),
   ],
   controllers: [],
   providers: [],

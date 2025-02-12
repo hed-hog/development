@@ -1,3 +1,4 @@
+import { ContactModule } from '@hedhog/contact';
 import { CheckoutModule, PaymentModule } from '@hedhog/payment';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
@@ -10,6 +11,7 @@ import { SubscriptionListenerService } from './subscriptionlistener.service';
     forwardRef(() => CheckoutModule),
     forwardRef(() => PaymentModule),
     forwardRef(() => PrismaModule),
+    forwardRef(() => ContactModule),
     EventEmitterModule.forRoot({
       wildcard: true,
       global: true,

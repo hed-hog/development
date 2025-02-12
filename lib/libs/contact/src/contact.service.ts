@@ -1,6 +1,7 @@
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable } from '@nestjs/common';
 import { PersonContactTypeEnum } from './person-contact-type/person-contact-type.enum';
+import { PersonDocumentTypeEnum } from './person-document-type/person-document-type.enum';
 
 @Injectable()
 export class ContactService {
@@ -127,6 +128,24 @@ export class ContactService {
         type_id: typeId,
         person_id: personId,
         country_id: countryId,
+      },
+    });
+  }
+
+  async getPersonContact(personId: number, typeId: PersonContactTypeEnum) {
+    return this.prismaService.person_contact.findFirst({
+      where: {
+        person_id: personId,
+        type_id: typeId,
+      },
+    });
+  }
+
+  async getPersonDocument(personId: number, typeId: PersonDocumentTypeEnum) {
+    return this.prismaService.person_document.findFirst({
+      where: {
+        person_id: personId,
+        type_id: typeId,
       },
     });
   }

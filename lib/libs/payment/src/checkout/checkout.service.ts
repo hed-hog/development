@@ -3,6 +3,7 @@ import {
   PersonContactTypeEnum,
   PersonDocumentTypeEnum,
 } from '@hedhog/contact';
+import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
 import { SettingService } from '@hedhog/setting';
 import { HttpService } from '@nestjs/axios';
@@ -50,6 +51,8 @@ export class CheckoutService implements OnModuleInit {
     private readonly paymentService: PaymentService,
     @Inject(forwardRef(() => ContactService))
     private readonly contactService: ContactService,
+    @Inject(forwardRef(() => MailService))
+    private readonly mailService: MailService,
   ) {}
 
   async onModuleInit() {
@@ -637,6 +640,9 @@ export class CheckoutService implements OnModuleInit {
               : null,
         },
       });
+
+      if (statusId === PaymentStatusEnum.PAID) {
+      }
 
       await this.eventEmitterReadinessWatcher.waitUntilReady();
 

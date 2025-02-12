@@ -1,3 +1,5 @@
+import { ContactService, PersonContactTypeEnum } from '@hedhog/contact';
+import { MailService } from '@hedhog/mail';
 import { CheckoutService, PaymentStatusEnum } from '@hedhog/payment';
 import { PrismaService } from '@hedhog/prisma';
 import {
@@ -7,8 +9,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import console from 'console';
 import { addMonths, addYears } from 'date-fns';
+import {
+  getSubscriptionCanceledEmail,
+  getSubscriptionCreatedEmail,
+} from '../emails';
 
 @Injectable()
 export class SubscriptionListenerService {
@@ -16,6 +21,10 @@ export class SubscriptionListenerService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => CheckoutService))
     private readonly checkoutService: CheckoutService,
+    @Inject(forwardRef(() => MailService))
+    private readonly mailService: MailService,
+    @Inject(forwardRef(() => ContactService))
+    private readonly contactService: ContactService,
   ) {}
 
   @OnEvent('payment.paid')
@@ -32,6 +41,29 @@ export class SubscriptionListenerService {
       }
 
       subscriptions = await this.getSubscriptionsByPaymentId(paymentId);
+
+      const email = await this.contactService.getPersonContact(
+        payment.person_id,
+        PersonContactTypeEnum.EMAIL,
+      );
+
+      console.log('Email found', { email });
+
+      if (email) {
+        for (const subscription of subscriptions) {
+          await this.mailService.send({
+            to: email.value,
+            subject: 'Assinatura Criada',
+            body: getSubscriptionCreatedEmail({
+              linkMySubscriptions: `${String(process.env.APP_URL)}/my-account?tab=subscriptions`,
+              planName:
+                subscription?.subscription_plan?.subscription_plan_locale.find(
+                  (spl) => spl.locale_id === 2,
+                )?.name,
+            }),
+          });
+        }
+      }
 
       console.log('handlePaymentPaidEvent', 'Complete', { subscriptions });
     } else {
@@ -50,7 +82,7 @@ export class SubscriptionListenerService {
     const payment = await this.getPaymentActive(paymentId);
 
     if (payment) {
-      await this.finishSubscriptions(paymentId);
+      const subscriptions = await this.finishSubscriptions(paymentId);
 
       console.log('handlePaymentRefoundedEvent', 'Complete', { paymentId });
     } else {
@@ -69,7 +101,30 @@ export class SubscriptionListenerService {
     const payment = await this.getPaymentActive(paymentId);
 
     if (payment) {
-      await this.finishSubscriptions(paymentId);
+      const subscriptions = await this.finishSubscriptions(paymentId);
+
+      const email = await this.contactService.getPersonContact(
+        payment.person_id,
+        PersonContactTypeEnum.EMAIL,
+      );
+
+      console.log('Email found', { email });
+
+      if (email) {
+        for (const subscription of subscriptions) {
+          await this.mailService.send({
+            to: email.value,
+            subject: 'Assinatura Cancelada',
+            body: getSubscriptionCanceledEmail({
+              linkMySubscriptions: `${String(process.env.APP_URL)}/my-account?tab=subscriptions`,
+              planName:
+                subscription?.subscription_plan?.subscription_plan_locale.find(
+                  (spl) => spl.locale_id === 2,
+                )?.name,
+            }),
+          });
+        }
+      }
 
       console.log('handlePaymentCanceledEvent', 'Complete', { paymentId });
     } else {
@@ -96,6 +151,8 @@ export class SubscriptionListenerService {
         },
       });
     }
+
+    return subscriptions;
   }
 
   async getSubscription(planId: number, personId: number) {
@@ -116,6 +173,12 @@ export class SubscriptionListenerService {
     });
 
     if (!subscription) {
+      console.log(
+        'getSubscription',
+        'Subscription not found',
+        'Create new subscription',
+        { planId, personId },
+      );
       const plan = await this.prismaService.subscription_plan.findUnique({
         where: {
           id: planId,
@@ -137,6 +200,20 @@ export class SubscriptionListenerService {
               role: 'admin',
             },
           },
+        },
+        include: {
+          subscription_plan: true,
+        },
+      });
+      console.log('getSubscription', 'Subscription created', { subscription });
+    } else {
+      console.log('getSubscription', 'Subscription found', { subscription });
+      subscription = await this.prismaService.subscription.update({
+        where: {
+          id: subscription.id,
+        },
+        data: {
+          status: 'active',
         },
         include: {
           subscription_plan: true,
@@ -223,16 +300,27 @@ export class SubscriptionListenerService {
         payment.person_id,
       );
 
+      const startAt = new Date(payment.payment_at);
+
+      startAt.setHours(0, 0, 0, 0);
+
       const endAt = this.calculateEndAt(
         subscription.subscription_plan.duration,
         payment.payment_at,
       );
 
+      endAt.setHours(23, 59, 59, 999);
+
+      console.log('Subscription created', {
+        startAt,
+        endAt,
+      });
+
       await this.prismaService.subscription_payment.create({
         data: {
           payment_id: payment.id,
           subscription_id: subscription.id,
-          start_at: payment.payment_at,
+          start_at: startAt,
           end_at: endAt,
         },
       });
@@ -293,7 +381,11 @@ export class SubscriptionListenerService {
         },
       },
       include: {
-        subscription_plan: true,
+        subscription_plan: {
+          include: {
+            subscription_plan_locale: true,
+          },
+        },
         subscription_person: true,
       },
     });

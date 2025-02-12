@@ -5,17 +5,19 @@ export const defaults = {
       <h1 style="color: #2c3e50; font-size: 26px; margin: 0;">${title}</h1>
     </div>
   `,
-  default_body: (content: string[]) => `<body style="font-family: Arial, sans-serif; background-color: #eef2f7; color: #333; margin: 0; padding: 0;">
+  default_body: (
+    content: string[],
+  ) => `<body style="font-family: Arial, sans-serif; background-color: #eef2f7; color: #333; margin: 0; padding: 1px;">
       <div style="max-width: 600px; margin: 40px auto; background-color: #ffffff; border: 1px solid #dcdfe6; border-radius: 10px; padding: 40px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
-        ${content.join("")}
+        ${content.join('')}
       </div>
     </body>`,
   footer: () => `
     <div style="text-align: center; font-size: 13px; color: #95a5a6; margin-top: 40px; border-top: 1px solid #ecf0f1; padding-top: 20px;">
       <p>Este email foi enviado automaticamente. Por favor, não responda.</p>
     </div>
-  `
-}
+  `,
+};
 
 export const bodies = {
   user_forget_password: (url: string) => `
@@ -57,4 +59,4 @@ export const bodies = {
       <p>Se você não fez essa solicitação, entre em contato conosco imediatamente para garantir a segurança de sua conta.</p>
     </div>
   `,
-}
+};

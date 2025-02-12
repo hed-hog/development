@@ -11,7 +11,12 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
-import { getBody } from './consts/body';
+import {
+  getChangeEmailEmail,
+  getChangePasswordEmail,
+  getForgetPasswordEmail,
+  getResetPasswordEmail,
+} from '../emails';
 import { ChangeDTO } from './dto/change.dto';
 import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
@@ -19,7 +24,6 @@ import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
-import { getChangeEmailEmail, getChangePasswordEmail, getForgetPasswordEmail, getResetPasswordEmail, getUserLoginEmail } from '../emails';
 
 @Injectable()
 export class AuthService {
@@ -31,7 +35,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
-  ) { }
+  ) {}
 
   async verifyToken(token: string) {
     return this.jwt.verifyAsync(token, {
@@ -148,7 +152,9 @@ export class AuthService {
       await this.mail.send({
         to: email,
         subject: `Recuperação de Senha`,
-        body: getForgetPasswordEmail(`${appUrl}/login?mode=reset-password&code=${code}`),
+        body: getForgetPasswordEmail(
+          `${appUrl}/login?mode=reset-password&code=${code}`,
+        ),
       });
     }
 
@@ -331,13 +337,13 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDTO) {
-
+    /*
     await this.mail.send({
       to: email,
       subject: `Novo login no CoinBitClub`,
       body: getUserLoginEmail(),
     });
-
+    */
     return this.loginWithEmailAndPassword(email, password);
   }
 

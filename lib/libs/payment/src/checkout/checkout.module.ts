@@ -1,5 +1,6 @@
 import { AdminModule } from '@hedhog/admin';
 import { ContactModule } from '@hedhog/contact';
+import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { SettingModule } from '@hedhog/setting';
@@ -24,6 +25,7 @@ import { CheckoutService } from './checkout.service';
     forwardRef(() => PaymentCouponModule),
     forwardRef(() => SettingModule),
     forwardRef(() => ContactModule),
+    forwardRef(() => MailModule),
   ],
   controllers: [CheckoutController],
   providers: [CheckoutService],
