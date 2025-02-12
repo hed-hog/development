@@ -332,6 +332,7 @@ export class CheckoutService implements OnModuleInit {
           creditEnabled: this.setting['payment-method-credit-enabled'],
           debitEnabled: this.setting['payment-method-debit-enabled'],
           pixEnabled: this.setting['payment-method-pix-enabled'],
+          maxInstallments: this.setting['payment-max-installments'],
         };
 
       default:
@@ -357,6 +358,7 @@ export class CheckoutService implements OnModuleInit {
       'payment-method-credit-enabled',
       'payment-method-debit-enabled',
       'payment-method-pix-enabled',
+      'payment-max-installments',
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
@@ -556,6 +558,10 @@ export class CheckoutService implements OnModuleInit {
     try {
       const provider = await this.getProvider();
 
+      if (installments > Number(this.setting['payment-max-installments'])) {
+        throw new BadRequestException('Installments greater than allowed.');
+      }
+
       if (
         paymentMethodType === 'credit' &&
         !this.setting['payment-method-credit-enabled']
@@ -590,7 +596,40 @@ export class CheckoutService implements OnModuleInit {
         PersonContactTypeEnum.PHONE,
       );
 
-      const payment = await this.prismaService.payment.update({
+      let payment = await this.prismaService.payment.findFirst({
+        where: {
+          slug: paymentSlug,
+        },
+        include: {
+          payment_item: {
+            include: {
+              item: {
+                include: {
+                  payment_installment_item: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!payment) {
+        throw new BadRequestException('Payment not found.');
+      }
+
+      for (let i = 0; i < payment.payment_item.length; i++) {
+        if (
+          payment.payment_item[i].item.payment_installment_item &&
+          payment.payment_item[i].item.payment_installment_item
+            .max_installments < installments
+        ) {
+          throw new BadRequestException(
+            `Installments greater than allowed on ${payment.payment_item[i].item.name}.`,
+          );
+        }
+      }
+
+      payment = await this.prismaService.payment.update({
         where: { slug: paymentSlug },
         data: {
           installments: paymentMethodType === 'credit' ? installments : 1,
@@ -601,7 +640,17 @@ export class CheckoutService implements OnModuleInit {
           person_id: person.id,
           document: identificationNumber,
         },
-        include: { payment_item: { include: { item: true } } },
+        include: {
+          payment_item: {
+            include: {
+              item: {
+                include: {
+                  payment_installment_item: true,
+                },
+              },
+            },
+          },
+        },
       });
 
       const items = payment.payment_item.map((pi) => ({
