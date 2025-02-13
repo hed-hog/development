@@ -28,8 +28,8 @@
     "@hedhog/prisma": "latest"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.46.17",
-    "@hedhog/contact": "^0.46.13",
+    "@hedhog/admin": "^0.46.42",
+    "@hedhog/contact": "^0.46.17",
     "@hedhog/pagination": "^0.46.1",
     "@hedhog/prisma": "^0.46.1",
     "@nestjs/mapped-types": "^2.1.0"
