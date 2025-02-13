@@ -7,11 +7,11 @@ import {
 } from 'class-validator';
 
 export class UpdateDTO {
-  @IsString({ message: 'The name must be a string' })
+  @IsString({ message: 'O nome deve ser uma string' })
   @IsOptional()
   name?: string;
 
-  @IsEmail({}, { message: 'The email must be a valid email' })
+  @IsEmail({}, { message: 'O email deve ser um email válido' })
   @IsOptional()
   email?: string;
 
@@ -26,16 +26,16 @@ export class UpdateDTO {
     },
     {
       message:
-        'The password must be at least 6 characters long and contain at least one lowercase',
+        'A senha deve ter pelo menos 6 caracteres e conter pelo menos 1 letra minúscula',
     },
   )
   password?: string;
 
   @IsOptional()
-  @IsInt({ message: 'The multifactor_id must be an integer' })
+  @IsInt({ message: 'O ID do multifator deve ser um número' })
   multifactor_id?: number;
 
   @IsOptional()
-  @IsString({ message: 'The code must be a string' })
+  @IsString({ message: 'O código deve ser uma string' })
   code?: string;
 }

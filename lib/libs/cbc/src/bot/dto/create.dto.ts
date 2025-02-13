@@ -1,14 +1,14 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateDTO {
-  @IsString()
+  @IsString({ message: 'O nome do bot é obrigatório.' })
   name: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'A descrição deve ser uma string.' })
   description?: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'Os cookies devem ser uma string.' })
   cookies?: string;
 }

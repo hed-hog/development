@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
 export class ResetDTO {
-  @IsString()
+  @IsString({ message: 'O slug deve ser um texto.' })
   slug: string;
 }

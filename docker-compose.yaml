@@ -7,7 +7,6 @@ services:
       POSTGRES_PASSWORD: changeme
       POSTGRES_DB: hedhog
     volumes:
-      - hedhog-development-postgresql:/var/lic/postgresql/data
       - hedhog-development-postgresql:/var/lib/postgresql/data
     ports:
       - 5432:5432

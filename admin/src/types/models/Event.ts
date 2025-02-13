@@ -1,6 +1,6 @@
 import { EventType } from './EventType';
-import { EventLocale } from './EventLocale';
 import { EventOccurrence } from './EventOccurrence';
+import { EventLocale } from './EventLocale';
 
 export type Event = {
   id?: number;
@@ -9,7 +9,7 @@ export type Event = {
   created_at?: string;
   updated_at?: string;
   event_type?: EventType;
-  event_locale?: EventLocale[];
   event_occurrence?: EventOccurrence[];
+  event_locale?: EventLocale[];
   name?: string;
 }

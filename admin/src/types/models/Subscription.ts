@@ -3,6 +3,7 @@ import { SubscriptionPlan } from './SubscriptionPlan';
 import { SubscriptionValue } from './SubscriptionValue';
 import { SubscriptionPerson } from './SubscriptionPerson';
 import { SubscriptionPayment } from './SubscriptionPayment';
+import { SubscriptionCancel } from './SubscriptionCancel';
 
 export type Subscription = {
   id?: number;
@@ -15,4 +16,5 @@ export type Subscription = {
   subscription_value?: SubscriptionValue[];
   subscription_person?: SubscriptionPerson[];
   subscription_payment?: SubscriptionPayment[];
+  subscription_cancel?: SubscriptionCancel[];
 }

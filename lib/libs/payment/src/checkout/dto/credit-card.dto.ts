@@ -9,39 +9,55 @@ import {
 } from 'class-validator';
 
 export class CreditCardDTO {
-  @IsString()
+  @IsString({ message: 'O token deve ser uma string' })
   token: string;
 
-  @IsString()
+  @IsString({ message: 'O ID do método de pagamento deve ser uma string' })
   paymentMethodId: string;
 
-  @IsEnum(['credit', 'debit'])
+  @IsEnum(['credit', 'debit'], {
+    message: 'O tipo de método de pagamento deve ser "credit" ou "debit"',
+  })
   paymentMethodType: 'credit' | 'debit';
 
-  @IsInt()
+  @IsInt({ message: 'O número de parcelas deve ser um número inteiro' })
   installments: number;
 
-  @IsString()
+  @IsString({
+    message: 'O tipo de documento de identificação deve ser uma string',
+  })
   identificationType: string;
 
-  @IsNumberString()
-  @MinLength(11)
-  @MaxLength(14)
+  @IsNumberString(
+    {},
+    {
+      message:
+        'O número de documento de identificação deve ser um número com 11 a 14 caracteres',
+    },
+  )
+  @MinLength(11, {
+    message:
+      'O número de documento de identificação deve ter ao menos 11 caracteres',
+  })
+  @MaxLength(14, {
+    message:
+      'O número de documento de identificação deve ter no máximo 14 caracteres',
+  })
   identificationNumber: string;
 
-  @IsString()
+  @IsString({ message: 'O slug do pagamento deve ser uma string' })
   paymentSlug: string;
 
-  @IsInt()
+  @IsInt({ message: 'O ID do emissor deve ser um número inteiro' })
   issuerId: number;
 
-  @IsString()
+  @IsString({ message: 'O nome do titular deve ser uma string' })
   name: string;
 
-  @IsString()
-  @IsEmail()
+  @IsString({ message: 'O e-mail do titular deve ser uma string' })
+  @IsEmail({}, { message: 'O e-mail do titular deve ser um e-mail válido' })
   email: string;
 
-  @IsString()
+  @IsString({ message: 'O telefone do titular deve ser uma string' })
   phone: string;
 }

@@ -4,6 +4,7 @@ import {
   PersonDocumentTypeEnum,
   PersonTypeEnum,
 } from '@hedhog/contact';
+import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
@@ -17,9 +18,12 @@ import { compare, genSalt, hash } from 'bcrypt';
 import { CloseAccountDTO } from './dto/close-account.dto';
 import { SignupDTO } from './dto/signup.dto';
 import { UpdateUserDataDTO } from './dto/update.dto';
-import { isValidCPF } from './validations/cpf';
-import { MailService } from '@hedhog/mail';
-import { getCreateUserEmail, getCloseAccountEmail, getUpdateUserEmail } from './emails';
+import {
+  getCloseAccountEmail,
+  getCreateUserEmail,
+  getUpdateUserEmail,
+} from './emails';
+import { cleanCPF, isValidCPF } from './validations/cpf';
 
 @Injectable()
 export class ProfileService {
@@ -30,7 +34,7 @@ export class ProfileService {
     private readonly jwt: JwtService,
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
-  ) { }
+  ) {}
 
   async getToken(user) {
     delete user.password;
@@ -110,12 +114,12 @@ export class ProfileService {
     });
 
     if (!user) {
-      throw new BadRequestException('Não foi possível encerrar a conta.');
+      throw new BadRequestException('Usuário não encontrado.');
     }
 
     const isPasswordValid = await compare(password, user.password);
     if (!isPasswordValid) {
-      throw new BadRequestException('Não foi possível encerrar a conta.');
+      throw new BadRequestException('Senha inválida.');
     }
 
     const personUser = (user.person_user ?? []).shift();
@@ -169,9 +173,7 @@ export class ProfileService {
     });
 
     if (!user) {
-      throw new NotFoundException(
-        'Não foi possível atualizar os dados do usuário.',
-      );
+      throw new NotFoundException('Usuário não encontrado.');
     }
 
     const personUser = (user.person_user ?? []).shift();
@@ -286,11 +288,21 @@ export class ProfileService {
       where: { email },
     });
 
+    const cpfCleaned = cleanCPF(String(cpf));
+
+    const existingCpf = await this.prisma.person_document.findFirst({
+      where: { value: cpfCleaned },
+    });
+
     if (existingUser) {
-      throw new BadRequestException('Não foi possível realizar o cadastro.');
+      throw new BadRequestException('Já existe um usuário com esse e-mail.');
     }
 
-    if (!isValidCPF(String(cpf))) {
+    if (existingCpf) {
+      throw new BadRequestException('Já existe um usuário com esse CPF.');
+    }
+
+    if (!isValidCPF(cpfCleaned)) {
       throw new BadRequestException('CPF inválido.');
     }
 
@@ -371,7 +383,7 @@ export class ProfileService {
         },
         person_document: {
           create: {
-            value: String(cpf),
+            value: cpfCleaned,
             type_id: PersonDocumentTypeEnum.CPF,
             country_id: country.id,
           },

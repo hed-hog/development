@@ -1,6 +1,7 @@
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class ForgetDTO {
-  @IsEmail()
+  @IsEmail({}, { message: 'O e-mail informado não é válido.' })
+  @IsNotEmpty({ message: 'O e-mail é obrigatório.' })
   email: string;
 }
