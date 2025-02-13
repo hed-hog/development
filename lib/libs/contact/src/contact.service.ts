@@ -1,11 +1,18 @@
+import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { getCreatePersonUserlessEmail } from './emails';
 import { PersonContactTypeEnum } from './person-contact-type/person-contact-type.enum';
 import { PersonDocumentTypeEnum } from './person-document-type/person-document-type.enum';
 
 @Injectable()
 export class ContactService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly mailService: MailService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async getPerson(personId: number) {
     return this.prismaService.person.findUnique({
@@ -81,10 +88,16 @@ export class ContactService {
 
     if (findPerson) {
       console.log('Person exists', { findPerson });
-      return this.getPerson(findPerson.id);
+      return { person: await this.getPerson(findPerson.id), created: false };
     }
 
     console.log('Person not exists', { findPerson });
+
+    const payload = {
+      email,
+    };
+
+    const code = this.jwtService.sign(payload);
 
     const person = await this.prismaService.person.create({
       data: {
@@ -92,6 +105,18 @@ export class ContactService {
         person_type: {
           connect: {
             id: type_id,
+          },
+        },
+        person_user: {
+          create: {
+            user: {
+              create: {
+                email,
+                name,
+                password: '',
+                code,
+              },
+            },
           },
         },
       },
@@ -150,7 +175,20 @@ export class ContactService {
 
     console.log('Person created', { person });
 
-    return this.getPerson(person.id);
+    await this.mailService.send({
+      to: email,
+      subject: 'Crie sua conta',
+      body: getCreatePersonUserlessEmail({
+        name,
+        url: `${String(process.env.FRONTEND_URL)}/create-user?code=${code}`,
+      }),
+    });
+
+    return {
+      person: await this.getPerson(person.id),
+      created: true,
+      code,
+    };
   }
 
   async addContactIfNotExists(personId: number, value: string, typeId: number) {

@@ -6,9 +6,11 @@ import {
   Get,
   Inject,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ChangeDTO } from './dto/change.dto';
+import { CreateUserDTO } from './dto/create-user.dto';
 import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
@@ -22,6 +24,18 @@ export class AuthController {
     @Inject(forwardRef(() => AuthService))
     private readonly service: AuthService,
   ) {}
+
+  @Public()
+  @Get('create-user')
+  async createUserCheck(@Query('code') code: string) {
+    return this.service.createUserCheck(code);
+  }
+
+  @Public()
+  @Post('create-user')
+  async createUser(@Body() data: CreateUserDTO) {
+    return this.service.createUser(data);
+  }
 
   @Role()
   @Get('verify')

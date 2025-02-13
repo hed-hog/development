@@ -19,7 +19,18 @@ export const defaults = {
   `,
 };
 
+export type UserCreateEmailType = {
+  name: string;
+};
+
 export const bodies = {
+  user_create: ({ name }: UserCreateEmailType) => `
+    <div style="line-height: 1.8; font-size: 16px; color: #555; text-align: justify;">
+    <p>Olá ${name},</p>
+      <p>Obrigado por se cadastrar em nosso sistema!</p>
+      <p>Se você não fez essa solicitação, entre em contato conosco imediatamente para garantir a segurança de sua conta.</p>
+    </div>
+  `,
   user_forget_password: (url: string) => `
     <div style="line-height: 1.8; font-size: 16px; color: #555; text-align: justify;">
       <p>Olá,</p>

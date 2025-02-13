@@ -14,10 +14,12 @@ import { compare, genSalt, hash } from 'bcrypt';
 import {
   getChangeEmailEmail,
   getChangePasswordEmail,
+  getCreateUserEmail,
   getForgetPasswordEmail,
   getResetPasswordEmail,
 } from '../emails';
 import { ChangeDTO } from './dto/change.dto';
+import { CreateUserDTO } from './dto/create-user.dto';
 import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
@@ -36,6 +38,55 @@ export class AuthService {
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
   ) {}
+
+  async createUserCheck(code: string) {
+    await this.verifyToken(code);
+
+    const user = await this.prisma.user.findFirst({
+      where: {
+        code,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Invalid code');
+    }
+
+    return user;
+  }
+
+  async createUser({ code, password }: CreateUserDTO) {
+    const user = await this.createUserCheck(code);
+
+    const salt = await genSalt();
+
+    password = await hash(password, salt);
+
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password,
+        code: null,
+      },
+    });
+
+    await this.mail.send({
+      to: user.email,
+      subject: 'Conta criada',
+      body: getCreateUserEmail({
+        name: user.name,
+      }),
+    });
+
+    return this.getToken(user);
+  }
 
   async verifyToken(token: string) {
     return this.jwt.verifyAsync(token, {
@@ -67,6 +118,8 @@ export class AuthService {
       },
     });
 
+    console.log('user found', user);
+
     if (!user) {
       throw new BadRequestException('Acesso negado');
     }
@@ -75,6 +128,8 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new BadRequestException('Acesso negado');
     }
+
+    console.log('Password is valid');
 
     if (!user.multifactor_id) {
       return this.getToken(user);

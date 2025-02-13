@@ -2,6 +2,7 @@ import {
   ContactService,
   PersonContactTypeEnum,
   PersonDocumentTypeEnum,
+  PersonTypeEnum,
 } from '@hedhog/contact';
 import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
@@ -415,8 +416,10 @@ export class CheckoutService implements OnModuleInit {
         throw new BadRequestException('Payment method not enabled.');
       }
 
-      const person = await this.contactService.getPersonOrCreateIfNotExists(
-        PersonContactTypeEnum.EMAIL,
+      const { person } = await this.contactService.getPersonOrCreateIfNotExists(
+        identificationType === 'CPF'
+          ? PersonTypeEnum.PHYSICAL
+          : PersonTypeEnum.LEGAL,
         name,
         email,
         phone,
@@ -579,8 +582,10 @@ export class CheckoutService implements OnModuleInit {
         throw new BadRequestException('Payment method not enabled.');
       }
 
-      const person = await this.contactService.getPersonOrCreateIfNotExists(
-        PersonContactTypeEnum.EMAIL,
+      const { person } = await this.contactService.getPersonOrCreateIfNotExists(
+        identificationType === 'CPF'
+          ? PersonTypeEnum.PHYSICAL
+          : PersonTypeEnum.LEGAL,
         name,
         email,
         phone,
