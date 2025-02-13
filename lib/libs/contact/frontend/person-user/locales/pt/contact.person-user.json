@@ -2,10 +2,10 @@
   "create": "Criar usuário",
   "createText": "Preencha as informações do usuário.",
   "createTooltip": "Criar novo usuário",
-  "delete": "Deletar usuário",
-  "deleteText": "Você tem certeza de que deseja deletar este usuário?",
-  "deleteTooltip": "Deletar o usuário selecionado",
+  "delete": "Excluir usuário",
+  "deleteText": "Você tem certeza de que deseja excluir estes usuários?",
+  "deleteTooltip": "Excluir o usuário selecionado",
   "edit": "Editar usuário",
-  "editText": "Visualizar e editar as informações do usuário.",
+  "editText": "Ver e editar informações do usuário.",
   "editTooltip": "Editar o usuário selecionado"
 }

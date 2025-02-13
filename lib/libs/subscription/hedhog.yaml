@@ -1,33 +1,4 @@
 tables:
-  subscription_locale:
-    columns:
-      - type: fk
-        name: subscription_id
-        isPrimary: true
-        references:
-          table: subscription
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: locale_id
-        isPrimary: true
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - name: name
-        length: 63
-        locale:
-          en: Subscription Name
-          pt: Nome da Assinatura
-      - name: description
-        length: 255
-        locale:
-          en: Subscription Description
-          pt: Descrição da Assinatura
-      - type: created_at
-      - type: updated_at
-    ifNotExists: true
   subscription_plan_locale:
     columns:
       - type: fk
@@ -67,6 +38,35 @@ tables:
           - monthly
           - yearly
           - quarterly
+          - semianually
+      - type: fk
+        name: item_id
+        isNullable: true
+        references:
+          table: item
+          column: id
+          onDelete: CASCADE
+      - type: int
+        name: limit
+        default: 1
+      - type: created_at
+      - type: updated_at
+  subscription_plan_gateway:
+    columns:
+      - type: pk
+      - type: fk
+        name: plan_id
+        references:
+          table: subscription_plan
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: gateway_id
+        references:
+          table: payment_gateway
+          column: id
+          onDelete: CASCADE
+      - name: gateway_plan_id
       - type: created_at
       - type: updated_at
   subscription:
@@ -78,10 +78,69 @@ tables:
           table: subscription_plan
           column: id
           onDelete: CASCADE
+      - type: enum
+        name: status
+        enum:
+          - active
+          - expired
+          - canceled
+      - type: int
+        name: limit
+        default: 1
+      - type: created_at
+      - type: updated_at
+  subscription_value:
+    columns:
+      - type: pk
+      - type: fk
+        name: subscription_id
+        references:
+          table: subscription
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - name: value
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns:
+          - subscription_id
+          - name
+        isUnique: true
+  subscription_person:
+    columns:
+      - type: pk
+      - type: fk
+        name: subscription_id
+        references:
+          table: subscription
+          column: id
+          onDelete: CASCADE
       - type: fk
         name: person_id
         references:
           table: person
+          column: id
+          onDelete: CASCADE
+      - type: enum
+        name: role
+        enum:
+          - admin
+          - user
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns:
+          - subscription_id
+          - person_id
+        isUnique: true
+  subscription_payment:
+    columns:
+      - type: pk
+      - type: fk
+        name: subscription_id
+        references:
+          table: subscription
           column: id
           onDelete: CASCADE
       - type: fk
@@ -90,18 +149,144 @@ tables:
           table: payment
           column: id
           onDelete: CASCADE
-      - type: datetime
+      - type: timestamp
         name: start_at
-      - type: datetime
+      - type: timestamp
         name: end_at
-      - type: enum
-        name: status
-        enum:
-          - active
-          - expired
-          - canceled
       - type: created_at
       - type: updated_at
+    indices:
+      - columns:
+          - subscription_id
+          - payment_id
+        isUnique: true
+  subscription_cancel_reason:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  subscription_cancel_reason_locale:
+    columns:
+      - type: fk
+        name: cancel_reason_id
+        isPrimary: true
+        references:
+          table: subscription_cancel_reason
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        length: 255
+        locale:
+          en: Cancel Reason Name
+          pt: Nome do Motivo de Cancelamento
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  subscription_cancel:
+    columns:
+      - type: pk
+      - type: fk
+        name: subscription_id
+        references:
+          table: subscription
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: person_id
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - type: text
+        name: comment
+        field: textarea
+        isNullable: true
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns:
+          - subscription_id
+          - person_id
+        isUnique: true
+  subscription_cancel_reason_choose:
+    columns:
+      - type: pk
+      - type: fk
+        name: cancel_id
+        references:
+          table: subscription_cancel
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: reason_id
+        references:
+          table: subscription_cancel_reason
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+    indices:
+      - columns:
+          - cancel_id
+          - reason_id
+        isUnique: true
+screens:
+  subscription_plan:
+    title:
+      en: Subscription Plans
+      pt: Planos de Assinatura
+    menu:
+      url: /subscription-plan
+      icon: user-check
+      name:
+        en: Subscription Plans
+        pt: Planos de Assinatura
+      slug: /subscription-plan
+      relations:
+        role:
+          - where:
+              slug: admin
+    relations:
+      subscription_plan_gateway:
+        title:
+          en: Gateways
+          pt: Provedores
+  subscription:
+    title:
+      en: Subscriptions
+      pt: Assinaturas
+    menu:
+      url: /subscription
+      icon: user-check
+      name:
+        en: Subscriptions
+        pt: Assinaturas
+      slug: /subscription
+      relations:
+        role:
+          - where:
+              slug: admin
+    relations:
+      subscription_value:
+        title:
+          en: Values
+          pt: Valores
+      subscription_person:
+        title:
+          en: People
+          pt: Pessoas
+      subscription_payment:
+        title:
+          en: Payments
+          pt: Pagamentos
 data:
   route:
     - url: /subscription-plan
@@ -122,24 +307,132 @@ data:
     - url: /subscription-plan
       method: DELETE
       relations: *a1
-    - url: /subscription
+    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway
       method: GET
       relations: &a2
         role:
           - where:
               slug: admin
-    - url: /subscription
-      method: POST
-      relations: *a2
-    - url: /subscription/:id
+    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway/:id
       method: GET
       relations: *a2
-    - url: /subscription/:id
+    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway
+      method: POST
+      relations: *a2
+    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway/:id
       method: PATCH
       relations: *a2
-    - url: /subscription
+    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway
       method: DELETE
       relations: *a2
+    - url: /subscription
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /subscription
+      method: POST
+      relations: *a3
+    - url: /subscription/:id
+      method: GET
+      relations: *a3
+    - url: /subscription/:id
+      method: PATCH
+      relations: *a3
+    - url: /subscription
+      method: DELETE
+      relations: *a3
+    - url: /subscription/:subscriptionId/subscription-value
+      method: GET
+      relations: &a4
+        role:
+          - where:
+              slug: admin
+    - url: /subscription/:subscriptionId/subscription-value/:id
+      method: GET
+      relations: *a4
+    - url: /subscription/:subscriptionId/subscription-value
+      method: POST
+      relations: *a4
+    - url: /subscription/:subscriptionId/subscription-value/:id
+      method: PATCH
+      relations: *a4
+    - url: /subscription/:subscriptionId/subscription-value
+      method: DELETE
+      relations: *a4
+    - url: /subscription/:subscriptionId/subscription-person
+      method: GET
+      relations: &a5
+        role:
+          - where:
+              slug: admin
+    - url: /subscription/:subscriptionId/subscription-person/:id
+      method: GET
+      relations: *a5
+    - url: /subscription/:subscriptionId/subscription-person
+      method: POST
+      relations: *a5
+    - url: /subscription/:subscriptionId/subscription-person/:id
+      method: PATCH
+      relations: *a5
+    - url: /subscription/:subscriptionId/subscription-person
+      method: DELETE
+      relations: *a5
+    - url: /subscription/:subscriptionId/subscription-payment
+      method: GET
+      relations: &a6
+        role:
+          - where:
+              slug: admin
+    - url: /subscription/:subscriptionId/subscription-payment/:id
+      method: GET
+      relations: *a6
+    - url: /subscription/:subscriptionId/subscription-payment
+      method: POST
+      relations: *a6
+    - url: /subscription/:subscriptionId/subscription-payment/:id
+      method: PATCH
+      relations: *a6
+    - url: /subscription/:subscriptionId/subscription-payment
+      method: DELETE
+      relations: *a6
+    - url: /subscription/:subscriptionId/subscription-value/:subscription_id
+      method: GET
+      relations: &a7
+        role:
+          - where:
+              slug: admin
+    - url: /subscription/:subscriptionId/subscription-value/:subscription_id
+      method: PATCH
+      relations: *a7
+    - url: /subscription/:subscriptionId/subscription-person/:subscription_id
+      method: GET
+      relations: &a8
+        role:
+          - where:
+              slug: admin
+    - url: /subscription/:subscriptionId/subscription-person/:subscription_id
+      method: PATCH
+      relations: *a8
+    - url: /subscription-plan-item
+      method: GET
+      relations: &a9
+        role:
+          - where:
+              slug: admin
+    - url: /subscription-plan-item
+      method: POST
+      relations: *a9
+    - url: /subscription-plan-item/:id
+      method: GET
+      relations: *a9
+    - url: /subscription-plan-item/:id
+      method: PATCH
+      relations: *a9
+    - url: /subscription-plan-item
+      method: DELETE
+      relations: *a9
   menu:
     - name:
         en: SubscriptionPlan
@@ -149,12 +442,47 @@ data:
       slug: subscription-plan
       relations: *a1
     - name:
+        en: SubscriptionPlanGateway
+        pt: SubscriptionPlanGateway
+      icon: file
+      url: /subscription-plan-gateway
+      slug: subscription-plan-gateway
+      relations: *a2
+    - name:
         en: Subscription
         pt: Subscription
       icon: file
       url: /subscription
       slug: subscription
-      relations: *a2
+      relations: *a3
+    - name:
+        en: SubscriptionValue
+        pt: SubscriptionValue
+      icon: file
+      url: /subscription-value
+      slug: subscription-value
+      relations: *a4
+    - name:
+        en: SubscriptionPerson
+        pt: SubscriptionPerson
+      icon: file
+      url: /subscription-person
+      slug: subscription-person
+      relations: *a5
+    - name:
+        en: SubscriptionPayment
+        pt: SubscriptionPayment
+      icon: file
+      url: /subscription-payment
+      slug: subscription-payment
+      relations: *a6
+    - name:
+        en: SubscriptionPlanItem
+        pt: SubscriptionPlanItem
+      icon: file
+      url: /subscription-plan-item
+      slug: subscription-plan-item
+      relations: *a9
   screen:
     - name:
         en: SubscriptionPlan
@@ -165,6 +493,14 @@ data:
         pt: Tela para gerenciar subscription_plan
       icon: file
     - name:
+        en: SubscriptionPlanGateway
+        pt: SubscriptionPlanGateway
+      slug: subscription-plan-gateway
+      description:
+        en: Screen to manage subscription_plan_gateway
+        pt: Tela para gerenciar subscription_plan_gateway
+      icon: file
+    - name:
         en: Subscription
         pt: Subscription
       slug: subscription
@@ -172,3 +508,62 @@ data:
         en: Screen to manage subscription
         pt: Tela para gerenciar subscription
       icon: file
+    - name:
+        en: SubscriptionValue
+        pt: SubscriptionValue
+      slug: subscription-value
+      description:
+        en: Screen to manage subscription_value
+        pt: Tela para gerenciar subscription_value
+      icon: file
+    - name:
+        en: SubscriptionPerson
+        pt: SubscriptionPerson
+      slug: subscription-person
+      description:
+        en: Screen to manage subscription_person
+        pt: Tela para gerenciar subscription_person
+      icon: file
+    - name:
+        en: SubscriptionPayment
+        pt: SubscriptionPayment
+      slug: subscription-payment
+      description:
+        en: Screen to manage subscription_payment
+        pt: Tela para gerenciar subscription_payment
+      icon: file
+    - name:
+        en: SubscriptionPlanItem
+        pt: SubscriptionPlanItem
+      slug: subscription-plan-item
+      description:
+        en: Screen to manage subscription_plan_item
+        pt: Tela para gerenciar subscription_plan_item
+      icon: file
+  subscription_cancel_reason:
+    - slug: high_price
+    - slug: not_using_enough
+    - slug: found_better_alternative
+    - slug: technical_issues
+  subscription_cancel_reason_locale:
+    - name:
+        en: High Price
+        pt: Preço Alto
+    - name:
+        en: Not Using Enough
+        pt: Não Usando o Suficiente
+    - name:
+        en: Found a Better Alternative
+        pt: Encontrou uma Alternativa Melhor
+    - name:
+        en: Technical Issues
+        pt: Problemas Técnicos
+routes:
+  - path: subscription
+    children:
+      - path: subscription-plan
+        lazy:
+          component: ./pages/subscription/subscription-plan/index.tsx
+      - path: subscription
+        lazy:
+          component: ./pages/subscription/subscription/index.tsx

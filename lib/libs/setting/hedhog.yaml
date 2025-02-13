@@ -42,6 +42,26 @@ data:
       url: /settings/locale
       slug: /settings/locale
   setting_group:
+    - slug: general
+      icon: settings
+      name:
+        en: General
+        pt: Geral
+      description:
+        en: General settings and configurations.
+        pt: Configurações e definições gerais.
+      relations:
+        setting:
+          - slug: url
+            type: string
+            name:
+              en: Base URL
+              pt: URL Base
+            description:
+              en: The base URL of the system
+              pt: A URL base do sistema
+            value: http://localhost:3200
+            user_override: false
     - slug: localization
       icon: world
       name:

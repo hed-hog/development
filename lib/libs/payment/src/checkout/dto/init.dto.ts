@@ -18,6 +18,6 @@ export class InitDTO {
   items: number[];
 
   @IsOptional()
-  @IsInt()
-  couponId?: number;
+  @IsString()
+  coupon?: string;
 }

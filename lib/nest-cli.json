@@ -150,6 +150,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/page/tsconfig.lib.json"
       }
+    },
+    "rabbitmq": {
+      "type": "library",
+      "root": "libs/rabbitmq",
+      "entryFile": "index",
+      "sourceRoot": "libs/rabbitmq/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/rabbitmq/tsconfig.lib.json"
+      }
+    },
+    "profile": {
+      "type": "library",
+      "root": "libs/profile",
+      "entryFile": "index",
+      "sourceRoot": "libs/profile/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/profile/tsconfig.lib.json"
+      }
     }
   }
 }

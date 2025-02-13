@@ -1,3 +1,9 @@
+import {
+  ContactService,
+  PersonContactTypeEnum,
+  PersonDocumentTypeEnum,
+} from '@hedhog/contact';
+import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
 import { SettingService } from '@hedhog/setting';
 import { HttpService } from '@nestjs/axios';
@@ -8,11 +14,21 @@ import {
   OnModuleInit,
   forwardRef,
 } from '@nestjs/common';
+import {
+  EventEmitter2,
+  EventEmitterReadinessWatcher,
+} from '@nestjs/event-emitter';
+import { Prisma } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
-import { EnumDiscountType } from '../disccount-type.enum';
-import { EnumPaymentStatus } from '../payment-status.enum';
+import { DiscountTypeEnum } from '../discount-type/discount-type.enum';
+import { getPaymentEmail } from '../emails';
+import { PaymentGatewayEnum } from '../payment-gateway/payment-gateway.enum';
+import { PaymentMethodEnum } from '../payment-method/payment-method.enum';
+import { PaymentStatusEnum } from '../payment-status/payment-status.enum';
 import { PaymentService } from '../payment/payment.service';
-import { CreateDTO } from './dto/create.dto';
+import { CreditCardDTO } from './dto/credit-card.dto';
+import { PixDTO } from './dto/pix.dto';
+import { ResetDTO } from './dto/reset.dto';
 import { AbstractProvider } from './provider/abstract.provider';
 import { EnumProvider } from './provider/provider.enum';
 import { ProviderFactory } from './provider/provider.factory';
@@ -25,6 +41,8 @@ export class CheckoutService implements OnModuleInit {
   private setting: Record<string, string>;
 
   constructor(
+    private eventEmitter: EventEmitter2,
+    private eventEmitterReadinessWatcher: EventEmitterReadinessWatcher,
     private readonly httpService: HttpService,
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -32,6 +50,10 @@ export class CheckoutService implements OnModuleInit {
     private readonly settingService: SettingService,
     @Inject(forwardRef(() => PaymentService))
     private readonly paymentService: PaymentService,
+    @Inject(forwardRef(() => ContactService))
+    private readonly contactService: ContactService,
+    @Inject(forwardRef(() => MailService))
+    private readonly mailService: MailService,
   ) {}
 
   async onModuleInit() {
@@ -42,44 +64,184 @@ export class CheckoutService implements OnModuleInit {
     }
   }
 
+  async getProviderPayment(id: string): Promise<any> {
+    const provider = await this.getProvider();
+    return provider.getPayment(id);
+  }
+
   async init({
     items,
     slug = '',
     userId = null,
-    couponId = null,
+    coupon = null,
   }: {
     items: number[];
     slug?: string;
     userId?: number;
-    couponId?: number;
+    coupon?: string;
   }) {
-    console.log('init', { items, slug, userId, couponId });
-
     if (!items || !items.length) {
       throw new BadRequestException('Items not found.');
     }
 
     await this.getProvider();
 
-    console.log('provider loaded', this.providerId);
-
     const personId = await this.getPersonId(userId);
-
-    console.log('personId', personId);
 
     let payment = await this.getPaymentBySlug(slug, personId);
 
-    console.log('payment 1', payment);
-
     if (!payment) {
       payment = await this.createPayment(items, slug, personId);
-      console.log('payment 2', payment);
     } else {
       payment = await this.updatePaymentItems(payment.id, items);
-      console.log('payment 3', payment);
+    }
+
+    try {
+      if (coupon) {
+        await this.setCoupon(coupon, payment.slug);
+      }
+    } catch (error: any) {
+      console.error('Error Payment Init', error);
     }
 
     return this.getPaymentDetails(payment.id);
+  }
+
+  private async hasMethodDiscount(paymentId: number) {
+    const payment = await this.prismaService.payment.findUnique({
+      where: { id: paymentId },
+      select: {
+        method_id: true,
+        payment_item: {
+          include: { item: { include: { payment_method_item: true } } },
+        },
+      },
+    });
+
+    return (
+      payment.payment_item.filter((pi) =>
+        pi.item.payment_method_item.some(
+          (pmi) => pmi.payment_method_id === payment.method_id,
+        ),
+      ).length > 0
+    );
+  }
+
+  async putMethod(paymentId: number, methodId: number) {
+    await this.prismaService.payment.update({
+      where: {
+        id: paymentId,
+      },
+      data: {
+        method_id: methodId,
+      },
+    });
+
+    await this.checkApplyMethodDiscount(paymentId);
+
+    return this.getPaymentDetails(paymentId);
+  }
+
+  private async checkApplyMethodDiscount(paymentId: number) {
+    const discountCumulative =
+      this.setting['payment-discount-cumulative'] === 'true';
+
+    const payment = await this.prismaService.payment.findUnique({
+      where: { id: paymentId },
+      include: {
+        payment_item: {
+          include: { item: { include: { payment_method_item: true } } },
+        },
+        payment_coupon: true,
+      },
+    });
+
+    const paymentMethodId = payment.method_id;
+    let hasMethodDiscount = false;
+    for (let i = 0; i < payment.payment_item.length; i++) {
+      const paymentMethodItem = payment.payment_item[
+        i
+      ].item.payment_method_item.find(
+        (pmi) => pmi.payment_method_id === paymentMethodId,
+      );
+
+      if (!paymentMethodItem) {
+        payment.payment_item[i].unit_price = payment.payment_item[i].item.price;
+      } else {
+        hasMethodDiscount = true;
+
+        const discountValue = paymentMethodItem.value;
+        const discountTyepId = paymentMethodItem.discount_type_id;
+
+        switch (discountTyepId) {
+          case DiscountTypeEnum.DISCOUNT_FIXED_VALUE:
+            payment.payment_item[i].unit_price = new Prisma.Decimal(
+              payment.payment_item[i].item.price,
+            ).minus(new Prisma.Decimal(discountValue));
+            break;
+          case DiscountTypeEnum.DISCOUNT_PERCENTAGE_VALUE:
+            payment.payment_item[i].unit_price = new Prisma.Decimal(
+              payment.payment_item[i].item.price,
+            ).minus(
+              new Prisma.Decimal(payment.payment_item[i].item.price)
+                .times(discountValue)
+                .div(100),
+            );
+            break;
+          case DiscountTypeEnum.PROMOTIONAL_PRICE:
+            payment.payment_item[i].unit_price = new Prisma.Decimal(
+              discountValue,
+            );
+            break;
+          default:
+            payment.payment_item[i].unit_price =
+              payment.payment_item[i].item.price;
+        }
+      }
+    }
+
+    if (hasMethodDiscount && !discountCumulative && payment.coupon_id) {
+      await this.removeCoupon(paymentId, payment.coupon_id);
+    }
+
+    const queries = [];
+
+    for (let i = 0; i < payment.payment_item.length; i++) {
+      queries.push(
+        this.prismaService.payment_item.update({
+          where: { id: payment.payment_item[i].id },
+          data: {
+            unit_price: payment.payment_item[i].unit_price,
+          },
+        }),
+      );
+    }
+
+    await this.prismaService.$transaction(queries);
+
+    let amount = Number(
+      payment.payment_item.reduce(
+        (acc, i) => acc + Number(i.unit_price) * i.quantity,
+        0,
+      ),
+    );
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
+    await this.prismaService.payment.update({
+      where: {
+        id: paymentId,
+      },
+      data: {
+        amount,
+      },
+    });
+
+    if (payment.coupon_id) {
+      await this.setCoupon(payment.payment_coupon.code, payment.slug);
+    }
   }
 
   private async createPayment(
@@ -93,14 +255,20 @@ export class CheckoutService implements OnModuleInit {
 
     const item = await this.getPaymentItems(items);
 
+    let amount = Number(item.reduce((acc, i) => acc + Number(i.price), 0));
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
     const payment = await this.paymentService.create({
       gateway_id: this.providerId,
       person_id: personId ?? undefined,
-      status_id: EnumPaymentStatus.PENDING,
+      status_id: PaymentStatusEnum.PENDING,
       currency: 'brl',
-      document: '00000000000',
+      method_id: PaymentMethodEnum.PIX,
       slug,
-      amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
+      amount,
     });
 
     await this.prismaService.payment_item.createMany({
@@ -110,6 +278,8 @@ export class CheckoutService implements OnModuleInit {
         unit_price: i.price,
       })),
     });
+
+    await this.checkApplyMethodDiscount(payment.id);
 
     return payment;
   }
@@ -128,10 +298,16 @@ export class CheckoutService implements OnModuleInit {
 
     const item = await this.getPaymentItems(items);
 
+    let amount = Number(item.reduce((acc, i) => acc + Number(i.price), 0));
+
+    if (amount < 0) {
+      amount = 0;
+    }
+
     const payment = await this.prismaService.payment.update({
       where: { id: paymentId },
       data: {
-        amount: Number(item.reduce((acc, i) => acc + Number(i.price), 0)),
+        amount,
       },
     });
 
@@ -153,6 +329,10 @@ export class CheckoutService implements OnModuleInit {
       case EnumProvider.MERCADO_PAGO:
         return {
           publicKey: this.setting['payment-mercado-pago-public-key'],
+          creditEnabled: this.setting['payment-method-credit-enabled'],
+          debitEnabled: this.setting['payment-method-debit-enabled'],
+          pixEnabled: this.setting['payment-method-pix-enabled'],
+          maxInstallments: this.setting['payment-max-installments'],
         };
 
       default:
@@ -169,10 +349,16 @@ export class CheckoutService implements OnModuleInit {
     }
 
     this.setting = await this.settingService.getSettingValues([
+      'url',
       'payment-provider',
       'payment-currency',
       'payment-mercado-pago-token',
       'payment-mercado-pago-public-key',
+      'payment-discount-cumulative',
+      'payment-method-credit-enabled',
+      'payment-method-debit-enabled',
+      'payment-method-pix-enabled',
+      'payment-max-installments',
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
@@ -188,7 +374,7 @@ export class CheckoutService implements OnModuleInit {
     const providerName = this.setting['payment-provider'];
     const providerData = await this.getProviderData(providerName);
 
-    const provider = ProviderFactory.create(
+    this.provider = ProviderFactory.create(
       providerName as EnumProvider,
       providerData.id,
       this.setting,
@@ -198,7 +384,7 @@ export class CheckoutService implements OnModuleInit {
     this.providerId = providerData.id;
     this.providerLoadedAt = new Date().getTime();
 
-    return provider;
+    return this.provider;
   }
 
   private async getProviderData(providerName: string) {
@@ -214,42 +400,415 @@ export class CheckoutService implements OnModuleInit {
     return providerData;
   }
 
-  async createPaymentIntent({
+  async createPaymentPix({
+    email,
+    identificationNumber,
+    identificationType,
+    name,
+    paymentSlug,
+    phone,
+  }: PixDTO) {
+    try {
+      const provider = await this.getProvider();
+
+      if (!this.setting['payment-method-pix-enabled']) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
+
+      const person = await this.contactService.getPersonOrCreateIfNotExists(
+        PersonContactTypeEnum.EMAIL,
+        name,
+        email,
+        phone,
+        identificationType === 'CPF' ? identificationNumber : '',
+        identificationType === 'CNPJ' ? identificationNumber : '',
+      );
+
+      await this.contactService.addDocumentIfNotExists(
+        person.id,
+        identificationNumber,
+        identificationType === 'CPF'
+          ? PersonDocumentTypeEnum.CPF
+          : PersonDocumentTypeEnum.CNPJ,
+      );
+
+      await this.contactService.addContactIfNotExists(
+        person.id,
+        phone,
+        PersonContactTypeEnum.PHONE,
+      );
+
+      const payment = await this.prismaService.payment.update({
+        where: { slug: paymentSlug },
+        data: {
+          installments: 1,
+          method_id: PaymentMethodEnum.PIX,
+          person_id: person.id,
+          document: identificationNumber,
+        },
+        include: { payment_item: { include: { item: true } } },
+      });
+
+      const items = payment.payment_item.map((pi) => ({
+        id: pi.item_id,
+        title: pi.item.name,
+        description: pi.item.name,
+        quantity: pi.quantity,
+        unit_price: pi.unit_price,
+      }));
+
+      const { firstName, lastName } = await this.getFirstAndLastName(name);
+
+      const paymentPix = await provider.createPaymentPix({
+        transactionAmount: Number(payment.amount) - Number(payment.discount),
+        description: '',
+        externalReference: payment.slug,
+        firstName,
+        lastName,
+        payerEmail: email,
+        payerIdentificationNumber: identificationNumber,
+        payerIdentificationType: identificationType,
+        items,
+      });
+
+      await this.saveQRCode(payment.id, paymentPix);
+
+      await this.mailService.send({
+        to: email,
+        subject: 'Detalhes do Pedido',
+        body: getPaymentEmail({
+          message:
+            'Seu pedido foi gerado com sucesso. Confira os detalhes abaixo:',
+          title: 'Detalhes do Pedido',
+          discount: Number(payment.discount),
+          total: Number(payment.amount) - Number(payment.discount),
+          method:
+            payment.method_id === PaymentMethodEnum.CREDIT_CARD
+              ? 'credit-card'
+              : 'pix',
+          items: payment.payment_item.map((pi) => ({
+            quantity: pi.quantity,
+            name: pi.item.name,
+            price: Number(pi.unit_price) * pi.quantity,
+            unitPrice: Number(pi.unit_price),
+          })),
+        }),
+      });
+
+      return this.getPaymentDetails(payment.id);
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async saveQRCode(paymentId: number, paymentPix: any) {
+    if (this.setting['payment-provider'] === EnumProvider.MERCADO_PAGO) {
+      const transactionData =
+        paymentPix?.point_of_interaction?.transaction_data;
+      await this.setPaymentValue(
+        paymentId,
+        'qr_code',
+        transactionData?.qr_code,
+      );
+      await this.setPaymentValue(
+        paymentId,
+        'qr_code_img',
+        transactionData?.qr_code_base64,
+      );
+      await this.setPaymentValue(
+        paymentId,
+        'date_of_expiration',
+        paymentPix?.date_of_expiration,
+      );
+    }
+  }
+
+  async setPaymentValue(paymentId: number, name: string, value: string) {
+    console.log('setPaymentValue', { paymentId, name, value });
+    await this.prismaService.payment_value.deleteMany({
+      where: { payment_id: paymentId, name },
+    });
+
+    return this.prismaService.payment_value.create({
+      data: {
+        payment_id: paymentId,
+        name,
+        value,
+      },
+    });
+  }
+
+  private async getFirstAndLastName(name: string) {
+    const names = name.split(' ');
+    const firstName = names.shift();
+    const lastName = names.join(' ');
+    return { firstName, lastName };
+  }
+
+  async createPaymentCreditCard({
     token,
     paymentMethodId,
+    paymentMethodType,
     issuerId,
     installments,
     identificationNumber,
-    orderId,
-    cardFirstSixDigits,
-    cardLastFourDigits,
+    paymentSlug,
+    identificationType,
     name,
     email,
     phone,
-    couponId,
-  }: CreateDTO): Promise<any> {
-    console.log('createPaymentIntent', {
-      token,
-      paymentMethodId,
-      issuerId,
-      installments,
-      identificationNumber,
-      orderId,
-      cardFirstSixDigits,
-      cardLastFourDigits,
-      name,
-      email,
-      phone,
-      couponId,
-    });
+  }: CreditCardDTO): Promise<any> {
+    try {
+      const provider = await this.getProvider();
 
+      if (installments > Number(this.setting['payment-max-installments'])) {
+        throw new BadRequestException('Installments greater than allowed.');
+      }
+
+      if (
+        paymentMethodType === 'credit' &&
+        !this.setting['payment-method-credit-enabled']
+      ) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
+
+      if (
+        paymentMethodType === 'debit' &&
+        !this.setting['payment-method-debit-enabled']
+      ) {
+        throw new BadRequestException('Payment method not enabled.');
+      }
+
+      const person = await this.contactService.getPersonOrCreateIfNotExists(
+        PersonContactTypeEnum.EMAIL,
+        name,
+        email,
+        phone,
+        identificationType === 'CPF' ? identificationNumber : '',
+        identificationType === 'CNPJ' ? identificationNumber : '',
+      );
+
+      await this.contactService.addDocumentIfNotExists(
+        person.id,
+        identificationNumber,
+        identificationType === 'CPF'
+          ? PersonDocumentTypeEnum.CPF
+          : PersonDocumentTypeEnum.CNPJ,
+      );
+
+      await this.contactService.addContactIfNotExists(
+        person.id,
+        phone,
+        PersonContactTypeEnum.PHONE,
+      );
+
+      let payment = await this.prismaService.payment.findFirst({
+        where: {
+          slug: paymentSlug,
+        },
+        include: {
+          payment_item: {
+            include: {
+              item: {
+                include: {
+                  payment_installment_item: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!payment) {
+        throw new BadRequestException('Payment not found.');
+      }
+
+      for (let i = 0; i < payment.payment_item.length; i++) {
+        if (
+          payment.payment_item[i].item.payment_installment_item &&
+          payment.payment_item[i].item.payment_installment_item
+            .max_installments < installments
+        ) {
+          throw new BadRequestException(
+            `Installments greater than allowed on ${payment.payment_item[i].item.name}.`,
+          );
+        }
+      }
+
+      payment = await this.prismaService.payment.update({
+        where: { slug: paymentSlug },
+        data: {
+          installments: paymentMethodType === 'credit' ? installments : 1,
+          method_id:
+            paymentMethodType === 'credit'
+              ? PaymentMethodEnum.CREDIT_CARD
+              : PaymentMethodEnum.DEBIT_CARD,
+          person_id: person.id,
+          document: identificationNumber,
+        },
+        include: {
+          payment_item: {
+            include: {
+              item: {
+                include: {
+                  payment_installment_item: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const items = payment.payment_item.map((pi) => ({
+        id: pi.item_id,
+        title: pi.item.name,
+        description: pi.item.name,
+        quantity: pi.quantity,
+        unit_price: pi.unit_price,
+      }));
+
+      const { firstName, lastName } = await this.getFirstAndLastName(name);
+
+      const paymentCreditCard = await provider.createPaymentCreditCard({
+        token,
+        installments,
+        transactionAmount: Number(payment.amount) - Number(payment.discount),
+        description: '',
+        paymentMethodId,
+        paymentMethodType,
+        issuerId,
+        externalReference: payment.slug,
+        items,
+        firstName,
+        lastName,
+        payerEmail: email,
+        payerIdentificationNumber: identificationNumber,
+        payerIdentificationType: identificationType,
+      });
+
+      await this.saveCreditCard(payment.id, paymentCreditCard);
+
+      return this.getPaymentDetails(payment.id);
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async paymentReset({ slug }: ResetDTO) {
+    return this.prismaService.payment.update({
+      where: { slug },
+      data: { status_id: PaymentStatusEnum.PENDING },
+    });
+  }
+
+  async saveCreditCard(paymentId: number, data: any) {
     const provider = await this.getProvider();
-    return provider.createPaymentIntent(0, this.setting['payment-currency']);
+
+    if (this.setting['payment-provider'] === EnumProvider.MERCADO_PAGO) {
+      const statusId = provider.getStatusId(data.status);
+
+      await this.paymentService.update({
+        id: paymentId,
+        data: {
+          brand_id: provider.getBrandId(data.payment_method_id),
+          status_id: statusId,
+          payment_at:
+            statusId === PaymentStatusEnum.PAID
+              ? new Date().toISOString()
+              : null,
+        },
+      });
+
+      const payment = await this.getPaymentDetails(paymentId);
+      const email = await this.contactService.getPersonContact(
+        payment.person_id,
+        PersonContactTypeEnum.EMAIL,
+      );
+
+      const mailPaidSended = await this.prismaService.payment_value.count({
+        where: {
+          payment_id: paymentId,
+          name: 'mail_paid',
+          value: '1',
+        },
+      });
+
+      if (
+        mailPaidSended === 0 &&
+        email &&
+        statusId === PaymentStatusEnum.PAID
+      ) {
+        await this.setPaymentValue(paymentId, 'mail_paid', '1');
+        await this.mailService.send({
+          to: email.value,
+          subject: 'Pagamento Aprovado',
+          body: getPaymentEmail({
+            message:
+              'Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:',
+            title: 'Pagamento Aprovado',
+            discount: Number(payment.discount),
+            total: Number(payment.amount) - Number(payment.discount),
+            method:
+              payment.method_id === PaymentMethodEnum.CREDIT_CARD
+                ? 'credit-card'
+                : 'pix',
+            items: payment.payment_item.map((pi) => ({
+              quantity: pi.quantity,
+              name: pi.item.name,
+              price: Number(pi.unit_price) * pi.quantity,
+              unitPrice: Number(pi.unit_price),
+            })),
+          }),
+        });
+      }
+
+      await this.eventEmitterReadinessWatcher.waitUntilReady();
+
+      await this.eventEmmitterPayment(statusId, paymentId);
+
+      if (data?.card?.first_six_digits) {
+        await this.setPaymentValue(
+          paymentId,
+          'first_six_digits',
+          data.card.first_six_digits,
+        );
+      }
+
+      if (data?.card?.last_four_digits) {
+        await this.setPaymentValue(
+          paymentId,
+          'last_four_digits',
+          data.card.last_four_digits,
+        );
+      }
+    }
+  }
+
+  async eventEmmitterPayment(statusId: number, paymentId: number) {
+    switch (statusId) {
+      case PaymentStatusEnum.PENDING:
+        this.eventEmitter.emit('payment.pending', paymentId);
+        break;
+      case PaymentStatusEnum.PAID:
+        this.eventEmitter.emit('payment.paid', paymentId);
+        break;
+      case PaymentStatusEnum.REJECTED:
+        this.eventEmitter.emit('payment.rejected', paymentId);
+        break;
+      case PaymentStatusEnum.CANCELED:
+        this.eventEmitter.emit('payment.canceled', paymentId);
+        break;
+      case PaymentStatusEnum.EXPIRED:
+        this.eventEmitter.emit('payment.expired', paymentId);
+        break;
+      case PaymentStatusEnum.REFUNDED:
+        this.eventEmitter.emit('payment.refunded', paymentId);
+        break;
+    }
   }
 
   async createSubscription(priceId: string, customerId: string): Promise<any> {
-    const provider = await this.getProvider();
-    // return provider.createSubscription(priceId, customerId);
+    //TO DO
   }
 
   async getNewSlug() {
@@ -261,8 +820,14 @@ export class CheckoutService implements OnModuleInit {
   private async getPersonId(userId?: number): Promise<number | null> {
     if (!userId) return null;
 
-    const person = await this.prismaService.person.findUnique({
-      where: { id: userId },
+    const person = await this.prismaService.person.findFirst({
+      where: {
+        person_user: {
+          some: {
+            user_id: userId,
+          },
+        },
+      },
       select: { id: true },
     });
 
@@ -276,7 +841,7 @@ export class CheckoutService implements OnModuleInit {
     if (!slug) return null;
 
     const payment = await this.prismaService.payment.findFirst({
-      where: { slug, status_id: EnumPaymentStatus.PENDING },
+      where: { slug, status_id: PaymentStatusEnum.PENDING },
     });
 
     if (payment && !payment.person_id && personId) {
@@ -290,48 +855,113 @@ export class CheckoutService implements OnModuleInit {
   }
 
   private async getPaymentDetails(paymentId: number): Promise<any> {
-    console.log('getPaymentDetails', paymentId);
     return this.prismaService.payment.findUnique({
       where: { id: paymentId },
       include: {
-        payment_item: { include: { item: true } },
+        payment_item: {
+          include: {
+            item: {
+              include: {
+                payment_method_item: true,
+                payment_installment_item: true,
+              },
+            },
+          },
+        },
         payment_method: true,
         payment_card_brand: true,
         payment_status: true,
-        person: true,
+        person: {
+          include: {
+            person_contact: {
+              where: {
+                type_id: {
+                  in: [
+                    PersonContactTypeEnum.EMAIL,
+                    PersonContactTypeEnum.PHONE,
+                  ],
+                },
+              },
+            },
+            person_document: {
+              where: {
+                type_id: {
+                  in: [PersonDocumentTypeEnum.CPF, PersonDocumentTypeEnum.CNPJ],
+                },
+              },
+            },
+          },
+        },
         payment_coupon: true,
+        payment_value: true,
       },
+    });
+  }
+
+  async removeCoupon(paymentId: number, couponId: number) {
+    if (couponId > 0) {
+      const coupon = await this.prismaService.payment_coupon.findUnique({
+        where: { id: couponId },
+        select: { uses_qtd: true },
+      });
+
+      await this.prismaService.payment_coupon.update({
+        where: { id: couponId },
+        data: { uses_qtd: coupon.uses_qtd - 1 },
+      });
+    }
+
+    return this.paymentService.update({
+      id: paymentId,
+      data: { coupon_id: null, discount: 0 },
     });
   }
 
   async setCoupon(couponCode: string, paymentSlug: string) {
     const payment = await this.getPaymentWithItems(paymentSlug);
-    const coupon = await this.getCouponWithItems(couponCode);
+    const hasMethodDiscount = await this.hasMethodDiscount(payment.id);
+    const discountCumulative =
+      this.setting['payment-discount-cumulative'] === 'true';
 
-    if (!payment || payment.status_id !== EnumPaymentStatus.PENDING) {
+    if (hasMethodDiscount && !discountCumulative) {
+      throw new BadRequestException('Method discount not cumulative.');
+    }
+
+    if (!payment || payment.status_id !== PaymentStatusEnum.PENDING) {
       throw new BadRequestException('Payment not found or not pending.');
     }
 
-    if (
-      coupon.uses_limit > 0 &&
-      (coupon.uses_qtd ?? 0) >= (coupon.uses_limit ?? 0)
-    ) {
-      throw new BadRequestException('Consumption coupon or usage limit.');
-    }
+    if (!couponCode) {
+      await this.removeCoupon(payment.id, payment.coupon_id);
 
-    const itemsFromPaymentAndCoupon = this.getItemsFromPaymentAndCoupon(
-      payment,
-      coupon,
-    );
-
-    if (itemsFromPaymentAndCoupon?.length) {
-      return this.applyCouponDiscount(
-        payment.id,
-        coupon,
-        Number(payment.amount),
-      );
+      return this.getPaymentDetails(payment.id);
     } else {
-      throw new BadRequestException('Coupon not is valid.');
+      const coupon = await this.getCouponWithItems(couponCode);
+
+      if (
+        coupon &&
+        Number(coupon.uses_limit) > 0 &&
+        (Number(coupon.uses_qtd) ?? 0) >= (Number(coupon.uses_limit) ?? 0)
+      ) {
+        throw new BadRequestException('Consumption coupon or usage limit.');
+      }
+
+      const itemsFromPaymentAndCoupon = this.getItemsFromPaymentAndCoupon(
+        payment,
+        coupon,
+      );
+
+      if (itemsFromPaymentAndCoupon?.length) {
+        await this.applyCouponDiscount(
+          payment.id,
+          coupon,
+          Number(payment.amount),
+        );
+
+        return this.getPaymentDetails(payment.id);
+      } else {
+        throw new BadRequestException('Coupon not is valid.');
+      }
     }
   }
 
@@ -359,13 +989,8 @@ export class CheckoutService implements OnModuleInit {
   }
 
   private getItemsFromPaymentAndCoupon(payment: any, coupon: any) {
-    console.log('getItemsFromPaymentAndCoupon', {
-      payment_item: payment.payment_item,
-      coupon_payment_coupon_item: coupon.payment_coupon_item,
-    });
-
     return payment.payment_item?.filter((item) =>
-      (coupon.payment_coupon_item ?? [])
+      (coupon?.payment_coupon_item ?? [])
         .map((ci) => ci.item_id)
         .includes(item.item_id),
     );
@@ -377,32 +1002,207 @@ export class CheckoutService implements OnModuleInit {
     paymentAmount: number,
   ) {
     switch (coupon.discount_type_id) {
-      case EnumDiscountType.DISCOUNT_FIXED_VALUE:
-      case EnumDiscountType.PROMOTIONAL_PRICE:
-        console.log('applyCouponDiscount', {
-          paymentId,
-          couponId: coupon.id,
-          discount: Number(coupon.value),
-        });
+      case DiscountTypeEnum.DISCOUNT_FIXED_VALUE:
+      case DiscountTypeEnum.PROMOTIONAL_PRICE:
         return this.paymentService.update({
           id: paymentId,
           data: { coupon_id: coupon.id, discount: Number(coupon.value) },
         });
 
-      case EnumDiscountType.DISCOUNT_PERCENTAGE_VALUE:
+      case DiscountTypeEnum.DISCOUNT_PERCENTAGE_VALUE:
         const valueToReduce =
           (Number(paymentAmount) * Number(coupon.value)) / 100;
-
-        console.log('applyCouponDiscount', {
-          paymentId,
-          couponId: coupon.id,
-          discount: Number(valueToReduce),
-        });
 
         return this.paymentService.update({
           id: paymentId,
           data: { coupon_id: coupon.id, discount: Number(valueToReduce) },
         });
+    }
+  }
+
+  async notification(gatewayId: number, data: any) {
+    try {
+      if (
+        gatewayId === PaymentGatewayEnum.MERCADO_PAGO &&
+        data.type === 'payment'
+      ) {
+        const paymentData = await this.getProviderPayment(data.data.id);
+
+        if (!paymentData.external_reference) {
+          throw new Error('external_reference not found');
+        }
+
+        let payment = await this.prismaService.payment.findFirst({
+          where: { slug: paymentData.external_reference },
+          select: {
+            id: true,
+            status_id: true,
+            person_id: true,
+            discount: true,
+            amount: true,
+            method_id: true,
+            payment_item: {
+              include: {
+                item: true,
+              },
+            },
+          },
+        });
+
+        if (!payment) {
+          throw new Error('payment not found');
+        }
+
+        await this.prismaService.payment_notification.create({
+          data: {
+            log: JSON.stringify(data),
+            gateway_id: gatewayId,
+            payment_id: payment.id,
+          },
+        });
+
+        await this.setPaymentValue(payment.id, 'mercado_pago_id', data.data.id);
+
+        switch (paymentData.status) {
+          case 'approved':
+          case 'authorized':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: {
+                status_id: PaymentStatusEnum.PAID,
+                payment_at: new Date(),
+              },
+            });
+
+            const email = await this.contactService.getPersonContact(
+              payment.person_id,
+              PersonContactTypeEnum.EMAIL,
+            );
+
+            const mailPaidSended = await this.prismaService.payment_value.count(
+              {
+                where: {
+                  payment_id: payment.id,
+                  name: 'mail_paid',
+                  value: '1',
+                },
+              },
+            );
+
+            if (
+              mailPaidSended === 0 &&
+              email &&
+              payment.status_id === PaymentStatusEnum.PAID
+            ) {
+              await this.setPaymentValue(payment.id, 'mail_paid', '1');
+              await this.mailService.send({
+                to: email.value,
+                subject: 'Pagamento Aprovado',
+                body: getPaymentEmail({
+                  message:
+                    'Seu pagamento foi aprovado com sucesso. Confira os detalhes abaixo:',
+                  title: 'Pagamento Aprovado',
+                  discount: Number(payment.discount),
+                  total: Number(payment.amount) - Number(payment.discount),
+                  method:
+                    payment.method_id === PaymentMethodEnum.CREDIT_CARD
+                      ? 'credit-card'
+                      : 'pix',
+                  items: payment.payment_item.map((pi) => ({
+                    quantity: pi.quantity,
+                    name: pi.item.name,
+                    price: Number(pi.unit_price) * pi.quantity,
+                    unitPrice: Number(pi.unit_price),
+                  })),
+                }),
+              });
+            }
+            break;
+          case 'pending':
+          case 'in_process':
+          case 'in_mediation':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.PENDING },
+            });
+            break;
+          case 'rejected':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.REJECTED },
+            });
+            await this.setPaymentValue(
+              payment.id,
+              'rejected',
+              new Date().toISOString(),
+            );
+            break;
+          case 'cancelled':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.CANCELED },
+            });
+            await this.setPaymentValue(
+              payment.id,
+              'cancelled',
+              new Date().toISOString(),
+            );
+            break;
+          case 'refunded':
+          case 'charged_back':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.REFUNDED },
+            });
+            await this.setPaymentValue(
+              payment.id,
+              'refunded',
+              new Date().toISOString(),
+            );
+            break;
+          default:
+            break;
+        }
+
+        payment = await this.prismaService.payment.findFirst({
+          where: { id: payment.id },
+          select: {
+            id: true,
+            status_id: true,
+            person_id: true,
+            discount: true,
+            amount: true,
+            method_id: true,
+            payment_item: {
+              include: {
+                item: true,
+              },
+            },
+          },
+        });
+
+        await this.eventEmmitterPayment(payment.status_id, payment.id);
+      } else {
+        await this.prismaService.payment_notification.create({
+          data: {
+            log: JSON.stringify({ data }),
+            gateway_id: gatewayId,
+          },
+        });
+      }
+
+      return { success: true };
+    } catch (error: any) {
+      console.error('error', error);
+
+      await this.prismaService.payment_notification.create({
+        data: {
+          log: JSON.stringify({ error: error?.message ?? String(error), data }),
+          gateway_id: gatewayId,
+        },
+      });
+
+      return { success: false, error: error?.message ?? String(error) };
     }
   }
 }

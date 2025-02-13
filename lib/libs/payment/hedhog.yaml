@@ -18,7 +18,7 @@ data:
             description:
               en: The payment provider to use
               pt: O provedor de pagamento a utilizar
-            value: mercado-pago
+            value: MERCADO_PAGO
           - slug: payment-mercado-pago-token
             type: string
             name:
@@ -46,11 +46,56 @@ data:
               en: The currency to use
               pt: A moeda a utilizar
             value: BRL
+          - slug: payment-discount-cumulative
+            type: boolean
+            name:
+              en: Cumulative Discount
+              pt: Desconto Cumulativo
+            description:
+              en: If the discount is cumulative
+              pt: Se o desconto é cumulativo do pagamento á vista / PIX com o desconto do cupom
+            value: false
+          - slug: payment-method-credit-enabled
+            type: boolean
+            name:
+              en: Credit Card Enabled
+              pt: Cartão de Crédito Habilitado
+            description:
+              en: If the credit card payment method is enabled
+              pt: Se o método de pagamento com cartão de crédito está habilitado
+            value: true
+          - slug: payment-method-debit-enabled
+            type: boolean
+            name:
+              en: Debit Card Enabled
+              pt: Cartão de Débito Habilitado
+            description:
+              en: If the debit card payment method is enabled
+              pt: Se o método de pagamento com cartão de débito está habilitado
+            value: true
+          - slug: payment-method-pix-enabled
+            type: boolean
+            name:
+              en: PIX Enabled
+              pt: PIX Habilitado
+            description:
+              en: If the PIX payment method is enabled
+              pt: Se o método de pagamento com PIX está habilitado
+            value: true
+          - slug: payment-max-installments
+            type: number
+            name:
+              en: Max Installments
+              pt: Máximo de Parcelas
+            description:
+              en: The maximum number of installments allowed in the system. This setting will override the item installment setting.
+              pt: O número máximo de parcelas permitido no sistema. Esta configuração sobreporá a configuração de parcelamento por item.
+            value: 12
   payment_gateway:
     - name: Stripe
-      slug: stripe
+      slug: STRIPE
     - name: Mercado Pago
-      slug: mercado-pago
+      slug: MERCADO_PAGO
   payment_status:
     - name:
         en: Pending
@@ -60,6 +105,10 @@ data:
         en: Paid
         pt: Pago
       slug: PAID
+    - name:
+        en: Rejected
+        pt: Negado
+      slug: REJECTED
     - name:
         en: Canceled
         pt: Cancelado
@@ -110,6 +159,18 @@ data:
       slug: ELO
     - name: American Express
       slug: AMERICAN_EXPRESS
+    - name: Diners Club
+      slug: DINERS_CLUB
+    - name: Discover
+      slug: DISCOVER
+    - name: JCB
+      slug: JCB
+    - name: HIPERCARD
+      slug: HIPERCARD
+    - name: AURA
+      slug: AURA
+    - name: MAESTRO
+      slug: MAESTRO
   payment_method_item:
     - item_id:
         where:
@@ -1025,6 +1086,21 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
+  payment_installment_item:
+    columns:
+      - type: pk
+      - name: item_id
+        isUnique: true
+        type: fk
+        references:
+          table: item
+          column: id
+          onDelete: RESTRICT
+      - name: max_installments
+        type: int
+        default: 1
+      - type: created_at
+      - type: updated_at
   payment_value:
     columns:
       - type: pk
@@ -1039,6 +1115,11 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
+    indices:
+      - columns:
+          - payment_id
+          - name
+        isUnique: true
   payment_coupon:
     columns:
       - type: pk
@@ -1319,3 +1400,19 @@ routes:
       - path: payment-notification
         lazy:
           component: ./pages/payment/payment-notification/index.tsx
+enums:
+  payment_status:
+    key: slug
+    value: id
+  discount_type:
+    key: slug
+    value: id
+  payment_card_brand:
+    key: slug
+    value: id
+  payment_gateway:
+    key: slug
+    value: id
+  payment_method:
+    key: slug
+    value: id

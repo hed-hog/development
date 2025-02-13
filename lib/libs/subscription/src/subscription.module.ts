@@ -1,8 +1,14 @@
 import { AdminModule } from '@hedhog/admin';
+import { ContactModule } from '@hedhog/contact';
+import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
+import { SubscriptionCancelModule } from './subscription-cancel/subscription-cancel.module';
+import { SubscriptionListenerModule } from './subscription-listener/subscriptionlistener.module';
+import { SubscriptionPlanItemModule } from './subscription-plan-item/subscription-plan-item.module';
 import { SubscriptionPlanModule } from './subscription-plan/subscription-plan.module';
+import { SubscriptionProfileModule } from './subscription-profile/subscriptionprofile.module';
 import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscription.module';
 
 @Module({
@@ -11,7 +17,13 @@ import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscr
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
     forwardRef(() => SubscriptionPlanModule),
+    forwardRef(() => SubscriptionCancelModule),
     forwardRef(() => SubscriptionModule2),
+    forwardRef(() => SubscriptionPlanItemModule),
+    forwardRef(() => SubscriptionListenerModule),
+    forwardRef(() => SubscriptionProfileModule),
+    forwardRef(() => ContactModule),
+    forwardRef(() => MailModule),
   ],
   controllers: [],
   providers: [],

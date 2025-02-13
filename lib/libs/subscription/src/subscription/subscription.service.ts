@@ -1,72 +1,87 @@
+import { DeleteDTO } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
+import { subscription_status_enum } from '@prisma/client';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
-import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
 export class SubscriptionService {
-  private readonly modelName = 'subscription';
-  private readonly foreignKey = 'subscription_id';
-
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-    @Inject(forwardRef(() => LocaleService))
-    private readonly localeService: LocaleService
   ) {}
 
-  async list(locale: string, paginationParams: PaginationDTO) {
-    return this.localeService.listModelWithLocale(
-      locale,
-      this.modelName,
-      paginationParams
+  async list(paginationParams: PaginationDTO) {
+    const fields = ['status', 'limit'];
+    const OR: any[] = this.prismaService.createInsensitiveSearch(
+      fields,
+      paginationParams,
+    );
+
+    if (paginationParams.search && !isNaN(+paginationParams.search)) {
+      OR.push({ id: { equals: +paginationParams.search } });
+    }
+
+    return this.paginationService.paginate(
+      this.prismaService.subscription,
+      paginationParams,
+      {
+        where: {
+          OR,
+        },
+      },
     );
   }
 
   async get(id: number) {
-    return this.localeService.getModelWithLocale(this.modelName, id);
+    return this.prismaService.subscription.findUnique({
+      where: { id: id },
+    });
   }
 
   async create(data: CreateDTO) {
-    return this.localeService.createModelWithLocale(
-      this.modelName,
-      this.foreignKey,
-      data
-    );
+    return this.prismaService.subscription.create({
+      data: {
+        status: data.status as subscription_status_enum,
+        plan_id: data.plan_id,
+        limit: data.limit || 1,
+      },
+    });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.localeService.updateModelWithLocale(
-      this.modelName,
-      this.foreignKey,
-      id,
-      data
-    );
+    return this.prismaService.subscription.update({
+      where: { id: id },
+      data: {
+        status: data.status as subscription_status_enum,
+        plan_id: data.plan_id,
+        limit: data.limit || 1,
+      },
+    });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
     return this.prismaService.subscription.deleteMany({
       where: {
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }

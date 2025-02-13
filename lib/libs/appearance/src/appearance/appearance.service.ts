@@ -1,11 +1,11 @@
+import { itemTranslations } from '@hedhog/core';
 import { PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
-import { itemTranslations } from '@hedhog/core';
-import { UpdateDTO } from './dto/update.dto';
-const path = require('path');
 import { existsSync } from 'fs';
 import { mkdir, readFile, writeFile } from 'fs/promises';
+import { UpdateDTO } from './dto/update.dto';
+const path = require('path');
 
 @Injectable()
 export class AppearanceService {
@@ -232,7 +232,6 @@ export class AppearanceService {
           cssContent,
           'utf8',
         );
-        console.log('CSS variables written to src/index.css');
       } catch (error) {
         console.error('Failed to write CSS variables:', error);
         throw new Error('Could not write CSS variables to file.');

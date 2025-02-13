@@ -10,7 +10,9 @@ import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PaymentModule } from '@hedhog/payment';
 import { PrismaModule } from '@hedhog/prisma';
+import { ProfileModule } from '@hedhog/profile';
 import { SettingModule } from '@hedhog/setting';
+import { SubscriptionModule } from '@hedhog/subscription';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -42,6 +44,8 @@ import { AppService } from './app.service';
     CbcModule,
     FaqModule,
     PaymentModule,
+    ProfileModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

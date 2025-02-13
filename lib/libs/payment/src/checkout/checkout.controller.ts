@@ -1,15 +1,22 @@
 import { Public, User } from '@hedhog/core';
+import { PrismaService } from '@hedhog/prisma';
 import {
   Body,
   Controller,
   forwardRef,
   Get,
   Inject,
+  Param,
+  ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CheckoutService } from './checkout.service';
-import { CreateDTO } from './dto/create.dto';
+import { CreditCardDTO } from './dto/credit-card.dto';
 import { InitDTO } from './dto/init.dto';
+import { PixDTO } from './dto/pix.dto';
+import { PutMethodDTO } from './dto/put-method.dto';
+import { ResetDTO } from './dto/reset.dto';
 import { SetCouponDTO } from './dto/set-coupon.dto';
 
 @Public()
@@ -18,29 +25,65 @@ export class CheckoutController {
   constructor(
     @Inject(forwardRef(() => CheckoutService))
     private readonly checkoutService: CheckoutService,
+    private readonly prismaService: PrismaService,
   ) {}
+
+  @Post('notification/:gatewayId')
+  async notification(
+    @Body() data: any,
+    @Param('gatewayId', ParseIntPipe) gatewayId: number,
+  ) {
+    return this.checkoutService.notification(gatewayId, data);
+  }
 
   @Get('payment-settings')
   async paymentSettings() {
     return this.checkoutService.getPaymentSettings();
   }
 
-  @Post('payment')
+  @Post('payment-reset')
+  async reset(
+    @Body()
+    data: ResetDTO,
+  ) {
+    return this.checkoutService.paymentReset(data);
+  }
+
+  @Post('credit-card')
   async payment(
     @Body()
-    data: CreateDTO,
+    data: CreditCardDTO,
   ) {
-    return this.checkoutService.createPaymentIntent(data);
+    return this.checkoutService.createPaymentCreditCard(data);
+  }
+
+  @Post('pix')
+  async pix(
+    @Body()
+    data: PixDTO,
+  ) {
+    return this.checkoutService.createPaymentPix(data);
   }
 
   @Post('init')
-  async init(@Body() { items, slug, couponId }: InitDTO, @User() user) {
-    return this.checkoutService.init({
-      items,
-      couponId,
-      slug,
-      userId: user ? user.id : null,
-    });
+  async init(@Body() { items, slug, coupon }: InitDTO, @User() user) {
+    return {
+      payment: await this.checkoutService.init({
+        items,
+        coupon,
+        slug,
+        userId: user ? user.id : null,
+      }),
+      settings: await this.checkoutService.getPaymentSettings(),
+    };
+  }
+
+  @Put('method/:paymentId')
+  async putMethod(
+    @Param('paymentId', ParseIntPipe) paymentId: number,
+    @Body() { methodId }: PutMethodDTO,
+  ) {
+    return this.checkoutService.putMethod(paymentId, methodId);
   }
 
   @Post('coupon')

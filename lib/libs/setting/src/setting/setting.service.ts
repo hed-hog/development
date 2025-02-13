@@ -1,15 +1,15 @@
 import path = require('path');
+import { itemTranslations } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
-import { itemTranslations } from '@hedhog/core';
 import {
   BadRequestException,
   Inject,
   Injectable,
   forwardRef,
 } from '@nestjs/common';
-import { DeleteDTO } from './dto/delete.dto';
 import { CreateDTO } from './dto/create.dto';
+import { DeleteDTO } from './dto/delete.dto';
 import { SettingDTO } from './dto/setting.dto';
 import { UpdateDTO } from './dto/update.dto';
 
@@ -359,7 +359,20 @@ export class SettingService {
     const data: Record<string, any> = {};
 
     setting.forEach((setting) => {
-      data[setting.slug] = setting.value;
+      switch (setting.type) {
+        case 'boolean':
+          data[setting.slug] = setting.value === 'true';
+          break;
+        case 'number':
+          data[setting.slug] = Number(setting.value);
+          break;
+        case 'array':
+        case 'json':
+          data[setting.slug] = JSON.parse(setting.value);
+          break;
+        default:
+          data[setting.slug] = setting.value;
+      }
     });
 
     settingUser.forEach((setting) => {

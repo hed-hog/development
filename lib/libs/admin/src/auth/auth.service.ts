@@ -2,25 +2,33 @@ import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
+  ConflictException,
   forwardRef,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
-import { User } from 'hcode-core';
-import { getBody } from './consts/body';
-import { SUBJECT_RECOVERY } from './consts/subject';
+import {
+  getChangeEmailEmail,
+  getChangePasswordEmail,
+  getForgetPasswordEmail,
+  getResetPasswordEmail,
+} from '../emails';
+import { ChangeDTO } from './dto/change.dto';
+import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
-import { SignupDTO } from './dto/signup.dto';
+import { ResetDTO } from './dto/reset.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly configService: ConfigService,
     @Inject(forwardRef(() => PrismaService))
     private readonly prisma: PrismaService,
     @Inject(forwardRef(() => JwtService))
@@ -58,14 +66,14 @@ export class AuthService {
         email,
       },
     });
+
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new BadRequestException('Acesso negado');
     }
 
     const isPasswordValid = await compare(password, user.password);
-
     if (!isPasswordValid) {
-      throw new NotFoundException('Invalid password');
+      throw new BadRequestException('Acesso negado');
     }
 
     if (!user.multifactor_id) {
@@ -85,12 +93,14 @@ export class AuthService {
 
         await this.mail.send({
           to: user.email,
-          subject: 'Login code',
-          body: `Your login code is ${code}`,
+          subject: 'Código de Login',
+          body: `Seu código de login é ${code}`,
         });
       }
 
       return {
+        name: user.name,
+        email: user.email,
         token: this.jwt.sign({
           id: user.id,
           mfa: user.multifactor_id,
@@ -110,14 +120,10 @@ export class AuthService {
     };
   }
 
-  async forget({
-    email,
-    subject,
-    body,
-  }: ForgetDTO & {
-    subject?: string;
-    body?: string;
-  }) {
+  async forget({ email }: ForgetDTO) {
+    const appUrl =
+      process.env.APP_URL ?? this.configService.get<string>('APP_URL');
+
     const user = await this.prisma.user.findFirst({
       where: {
         email,
@@ -127,76 +133,181 @@ export class AuthService {
       },
     });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    const payload = {
-      ...user,
-    };
-
-    const code = this.jwt.sign(payload);
-
-    await this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        code,
-      },
-    });
-
-    await this.mail.send({
-      to: email,
-      subject: subject ?? SUBJECT_RECOVERY,
-      body:
-        body ??
-        getBody(`${process.env.FRONTEND_URL}/password-recovery/${code}`),
-    });
-
-    return true;
-  }
-
-  async resetPassword({
-    code,
-    newPassword,
-    confirmNewPassword,
-  }: {
-    code: string;
-    newPassword: string;
-    confirmNewPassword: string;
-  }) {
-    if (newPassword !== confirmNewPassword) {
-      throw new BadRequestException("Passwords don't match");
-    }
-
-    const { id } = this.jwt.decode(code) as User;
-
-    const user = await this.prisma.user.findFirst({
-      where: {
-        id,
-        code,
-      },
-    });
-
     if (user) {
-      const salt = await genSalt();
-      const password = await hash(confirmNewPassword, salt);
+      const payload = {
+        ...user,
+      };
+
+      const code = this.jwt.sign(payload);
 
       await this.prisma.user.update({
         where: {
           id: user.id,
         },
         data: {
-          password,
-          code: null,
+          code,
         },
       });
 
-      return this.getToken(user);
+      await this.mail.send({
+        to: email,
+        subject: `Recuperação de Senha`,
+        body: getForgetPasswordEmail(
+          `${appUrl}/login?mode=reset-password&code=${code}`,
+        ),
+      });
     }
 
-    return false;
+    return {
+      message:
+        'Se este e-mail estiver cadastrado, você receberá instruções para redefinir sua senha.',
+    };
+  }
+
+  async changePassword({
+    email,
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
+  }: ChangeDTO) {
+    if (newPassword !== confirmNewPassword) {
+      throw new BadRequestException('Senhas não conferem');
+    }
+
+    const user = await this.prisma.user.findFirst({
+      where: { email },
+    });
+
+    if (!(await compare(currentPassword, user.password))) {
+      throw new NotFoundException('Não foi possível alterar a senha.');
+    }
+
+    const salt = await genSalt();
+    const password = await hash(newPassword, salt);
+
+    const newUser = await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password,
+      },
+    });
+
+    await this.mail.send({
+      to: email,
+      subject: `Senha alterada`,
+      body: getChangePasswordEmail(),
+    });
+
+    return this.getToken(newUser);
+  }
+
+  async changeEmail({ currentEmail, password, newEmail }: EmailDTO) {
+    const user = await this.prisma.user.findFirst({
+      where: { email: currentEmail },
+    });
+
+    if (!user) {
+      throw new BadRequestException('Não foi possível atualizar o e-mail.');
+    }
+
+    if (!(await compare(password, user.password))) {
+      throw new BadRequestException('Não foi possível atualizar o e-mail.');
+    }
+
+    const existingUser = await this.prisma.user.findFirst({
+      where: { email: newEmail },
+    });
+
+    if (existingUser) {
+      throw new ConflictException('Não foi possível atualizar o e-mail.');
+    }
+
+    const newUser = await this.prisma.user.updateMany({
+      where: { email: currentEmail },
+      data: { email: newEmail },
+    });
+
+    const personUser = await this.prisma.person_user.findFirst({
+      where: { user_id: user.id },
+      select: { person_id: true },
+    });
+
+    if (!personUser) {
+      throw new NotFoundException('Erro ao atualizar os dados do usuário.');
+    }
+
+    const { id: emailContactTypeId } =
+      await this.prisma.person_contact_type.findFirst({
+        where: { slug: 'EMAIL' },
+      });
+
+    await this.prisma.person_contact.updateMany({
+      where: {
+        person_id: personUser.person_id,
+        type_id: emailContactTypeId,
+      },
+      data: { value: newEmail },
+    });
+
+    await this.mail.send({
+      to: newEmail,
+      subject: `Email alterado`,
+      body: getChangeEmailEmail(),
+    });
+
+    return this.getToken(newUser);
+  }
+
+  async resetPassword({ code, newPassword, confirmNewPassword }: ResetDTO) {
+    if (newPassword !== confirmNewPassword) {
+      throw new BadRequestException('Senhas não conferem');
+    }
+
+    try {
+      const decodedCode = this.jwt.decode(code);
+
+      console.log({ decodedCode });
+
+      const { id } = decodedCode;
+
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id,
+          code,
+        },
+      });
+
+      if (user) {
+        const salt = await genSalt();
+        const password = await hash(confirmNewPassword, salt);
+
+        await this.prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password,
+            code: null,
+          },
+        });
+
+        await this.mail.send({
+          to: user.email,
+          subject: `Senha recuperada`,
+          body: getResetPasswordEmail(),
+        });
+
+        return this.getToken(user);
+      }
+
+      return false;
+    } catch (error: any) {
+      throw new BadRequestException(
+        `Invalid code. ${error?.message ?? String(error)}`,
+      );
+    }
   }
 
   async otp({ token, code }: OtpDTO) {
@@ -210,7 +321,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new NotFoundException('Invalid code');
+      throw new NotFoundException('Código inválido');
     }
 
     await this.prisma.user.update({
@@ -225,36 +336,20 @@ export class AuthService {
     return this.getToken(user);
   }
 
-  login({ email, password }: LoginDTO) {
+  async login({ email, password }: LoginDTO) {
+    /*
+    await this.mail.send({
+      to: email,
+      subject: `Novo login no CoinBitClub`,
+      body: getUserLoginEmail(),
+    });
+    */
     return this.loginWithEmailAndPassword(email, password);
   }
 
-  verify(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
-  }
-
-  async signup({ fullName, cpf, email, password }: SignupDTO) {
-    const existingUser = await this.prisma.user.findFirst({
-      where: {
-        OR: [{ email }],
-      },
+  async verify(id: number) {
+    return this.prisma.user.findUnique({
+      where: { id },
     });
-
-    if (existingUser) {
-      throw new BadRequestException('User already exists.');
-    }
-
-    const salt = await genSalt();
-    const hashedPassword = await hash(password, salt);
-
-    const user = await this.prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name: fullName,
-      },
-    });
-
-    return this.getToken(user);
   }
 }

@@ -128,7 +128,9 @@
       "^@hedhog/appearance(|/.*)$": "<rootDir>/libs/appearance/src/$1",
       "^@hedhog/faq(|/.*)$": "<rootDir>/libs/faq/src/$1",
       "^@hedhog/subscription(|/.*)$": "<rootDir>/libs/subscription/src/$1",
-      "^@hedhog/page(|/.*)$": "<rootDir>/libs/page/src/$1"
+      "^@hedhog/page(|/.*)$": "<rootDir>/libs/page/src/$1",
+      "^@hedhog/rabbitmq(|/.*)$": "<rootDir>/libs/rabbitmq/src/$1",
+      "^@hedhog/profile(|/.*)$": "<rootDir>/libs/profile/src/$1"
     }
   }
 }

@@ -362,8 +362,6 @@ export class PaginationService {
     if (query.take >= 0 && query.skip >= 0)
       sql.push(db.getLimit(query.take, query.skip));
 
-    console.log('sql', sql.join(' '));
-
     const result = await db.query(sql.join(' '));
 
     return result;
