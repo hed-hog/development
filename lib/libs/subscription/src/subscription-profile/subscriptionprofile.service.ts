@@ -59,6 +59,12 @@ export class SubscriptionProfileService {
   }
 
   async getSubscriptions(userId: number) {
+    const now = new Date();
+
+    console.log('getSubscriptions', {
+      userId,
+      dateNow: now.toISOString(),
+    });
     return this.prismaService.subscription.findMany({
       where: {
         subscription_person: {
@@ -75,10 +81,10 @@ export class SubscriptionProfileService {
         subscription_payment: {
           some: {
             start_at: {
-              lte: new Date(),
+              lte: now,
             },
             end_at: {
-              gte: new Date(),
+              gte: now,
             },
           },
         },

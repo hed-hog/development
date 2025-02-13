@@ -419,6 +419,9 @@ export class CheckoutService implements OnModuleInit {
         PersonContactTypeEnum.EMAIL,
         name,
         email,
+        phone,
+        identificationType === 'CPF' ? identificationNumber : '',
+        identificationType === 'CNPJ' ? identificationNumber : '',
       );
 
       await this.contactService.addDocumentIfNotExists(
@@ -580,6 +583,9 @@ export class CheckoutService implements OnModuleInit {
         PersonContactTypeEnum.EMAIL,
         name,
         email,
+        phone,
+        identificationType === 'CPF' ? identificationNumber : '',
+        identificationType === 'CNPJ' ? identificationNumber : '',
       );
 
       await this.contactService.addDocumentIfNotExists(

@@ -29,43 +29,66 @@ export class ContactService {
     type_id: number,
     name: string,
     email: string,
+    phone: string,
+    cpf: string,
+    cnpj: string,
   ) {
     console.log('getPersonOrCreateIfNotExists', { type_id, name, email });
 
     console.log('Find by email', { email });
 
-    const findByEmail = await this.prismaService.person.findFirst({
+    const findPerson = await this.prismaService.person.findFirst({
       where: {
-        person_contact: {
-          some: {
-            value: email,
-            type_id: PersonContactTypeEnum.EMAIL,
+        OR: [
+          {
+            person_contact: {
+              some: {
+                OR: [
+                  {
+                    value: email,
+                    type_id: PersonContactTypeEnum.EMAIL,
+                  },
+                  {
+                    value: phone,
+                    type_id: PersonContactTypeEnum.PHONE,
+                  },
+                ],
+              },
+            },
+            person_document: {
+              some: {
+                OR: [
+                  {
+                    value: cpf,
+                    type_id: PersonDocumentTypeEnum.CPF,
+                  },
+                  {
+                    value: cnpj,
+                    type_id: PersonDocumentTypeEnum.CNPJ,
+                  },
+                ],
+              },
+            },
           },
-        },
+        ],
       },
       select: {
         id: true,
       },
     });
 
-    console.log('Result findByEmail', { findByEmail });
+    console.log('Result findPerson', { findPerson });
 
-    if (findByEmail) {
-      console.log('Person exists', { findByEmail });
-      return this.getPerson(findByEmail.id);
+    if (findPerson) {
+      console.log('Person exists', { findPerson });
+      return this.getPerson(findPerson.id);
     }
 
-    console.log('Person not exists', { findByEmail });
+    console.log('Person not exists', { findPerson });
 
     const person = await this.prismaService.person.create({
       data: {
         name,
-        person_contact: {
-          create: {
-            value: email,
-            type_id: PersonContactTypeEnum.EMAIL,
-          },
-        },
         person_type: {
           connect: {
             id: type_id,
@@ -76,6 +99,54 @@ export class ContactService {
         id: true,
       },
     });
+
+    if (person) {
+      if (email) {
+        console.log('Add email', { email });
+        await this.prismaService.person_contact.create({
+          data: {
+            value: email,
+            type_id: PersonContactTypeEnum.EMAIL,
+            person_id: person.id,
+          },
+        });
+      }
+
+      if (phone) {
+        console.log('Add phone', { phone });
+        await this.prismaService.person_contact.create({
+          data: {
+            value: phone,
+            type_id: PersonContactTypeEnum.PHONE,
+            person_id: person.id,
+          },
+        });
+      }
+
+      if (cpf) {
+        console.log('Add cpf', { cpf });
+        await this.prismaService.person_document.create({
+          data: {
+            value: cpf,
+            type_id: PersonDocumentTypeEnum.CPF,
+            person_id: person.id,
+            country_id: 1,
+          },
+        });
+      }
+
+      if (cnpj) {
+        console.log('Add cnpj', { cnpj });
+        await this.prismaService.person_document.create({
+          data: {
+            value: cnpj,
+            type_id: PersonDocumentTypeEnum.CNPJ,
+            person_id: person.id,
+            country_id: 1,
+          },
+        });
+      }
+    }
 
     console.log('Person created', { person });
 
