@@ -78,12 +78,7 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
-    "@hedhog/admin": "^0.46.42",
-    "@hedhog/cbc": "^0.46.8",
     "@hedhog/core": "^1.0.6",
-    "@hedhog/locale": "^0.46.2",
-    "@hedhog/mail": "^0.46.3",
-    "@hedhog/pagination": "^0.46.1",
     "@hedhog/prisma": "^0.46.1",
     "@nestjs/throttler": "^6.4.0",
     "@prisma/client": "^5.22.0",

@@ -1,5 +1,5 @@
-import { PersonDocumentType } from './PersonDocumentType';
 import { CountryLocale } from './CountryLocale';
+import { PersonDocumentType } from './PersonDocumentType';
 import { PersonDocument } from './PersonDocument';
 import { PersonAddress } from './PersonAddress';
 
@@ -8,8 +8,8 @@ export type Country = {
   code: string;
   created_at?: string;
   updated_at?: string;
-  person_document_type?: PersonDocumentType[];
   country_locale?: CountryLocale[];
+  person_document_type?: PersonDocumentType[];
   person_document?: PersonDocument[];
   person_address?: PersonAddress[];
   name?: string;

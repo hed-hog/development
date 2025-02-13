@@ -8,31 +8,32 @@ datasource db {
 }
 
 model locale {
-  id                          Int                           @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
-  code                        String                        @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
-  region                      String                        @db.Char(2)
-  enabled                     Boolean                       @default(true)
-  created_at                  DateTime                      @default(now()) @db.Timestamp(6)
-  updated_at                  DateTime                      @default(now()) @db.Timestamp(6)
-  country_locale              country_locale[]
-  event_locale                event_locale[]
-  faq_locale                  faq_locale[]
-  file_provider_locale        file_provider_locale[]
-  menu_locale                 menu_locale[]
-  multifactor_locale          multifactor_locale[]
-  payment_status_locale       payment_status_locale[]
-  person_address_type_locale  person_address_type_locale[]
-  person_contact_type_locale  person_contact_type_locale[]
-  person_custom_locale        person_custom_locale[]
-  person_custom_type_locale   person_custom_type_locale[]
-  person_document_type_locale person_document_type_locale[]
-  person_type_locale          person_type_locale[]
-  role_locale                 role_locale[]
-  screen_locale               screen_locale[]
-  setting_group_locale        setting_group_locale[]
-  setting_locale              setting_locale[]
-  subscription_plan_locale    subscription_plan_locale[]
-  translation                 translation[]
+  id                                Int                                 @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
+  code                              String                              @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
+  region                            String                              @db.Char(2)
+  enabled                           Boolean                             @default(true)
+  created_at                        DateTime                            @default(now()) @db.Timestamp(6)
+  updated_at                        DateTime                            @default(now()) @db.Timestamp(6)
+  country_locale                    country_locale[]
+  event_locale                      event_locale[]
+  faq_locale                        faq_locale[]
+  file_provider_locale              file_provider_locale[]
+  menu_locale                       menu_locale[]
+  multifactor_locale                multifactor_locale[]
+  payment_status_locale             payment_status_locale[]
+  person_address_type_locale        person_address_type_locale[]
+  person_contact_type_locale        person_contact_type_locale[]
+  person_custom_locale              person_custom_locale[]
+  person_custom_type_locale         person_custom_type_locale[]
+  person_document_type_locale       person_document_type_locale[]
+  person_type_locale                person_type_locale[]
+  role_locale                       role_locale[]
+  screen_locale                     screen_locale[]
+  setting_group_locale              setting_group_locale[]
+  setting_locale                    setting_locale[]
+  subscription_cancel_reason_locale subscription_cancel_reason_locale[]
+  subscription_plan_locale          subscription_plan_locale[]
+  translation                       translation[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -337,6 +338,7 @@ model person {
   person_document     person_document[]
   person_user         person_user[]
   person_value        person_value[]
+  subscription_cancel subscription_cancel[]
   subscription_person subscription_person[]
 }
 
@@ -1306,6 +1308,7 @@ model subscription {
   created_at           DateTime                 @default(now()) @db.Timestamp(6)
   updated_at           DateTime                 @default(now()) @db.Timestamp(6)
   subscription_plan    subscription_plan        @relation(fields: [plan_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5fde988e5d9b9a522d70ebec27c")
+  subscription_cancel  subscription_cancel[]
   subscription_payment subscription_payment[]
   subscription_person  subscription_person[]
   subscription_value   subscription_value[]
@@ -1425,12 +1428,59 @@ model subscription_payment {
 }
 
 model payment_installment_item {
-  id               Int      @id @default(autoincrement())
-  item_id          Int      @unique
+  id               Int      @id(map: "PK_9447479ab8ddf55a12c3c2a1403") @default(autoincrement())
+  item_id          Int      @unique(map: "UQ_51f87847674726e4684b9b6c913")
   max_installments Int      @default(1)
   created_at       DateTime @default(now()) @db.Timestamp(6)
   updated_at       DateTime @default(now()) @db.Timestamp(6)
   item             item     @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "fk_payment_installment_item_item")
+}
+
+model subscription_cancel {
+  id                                Int                                 @id(map: "PK_cd154e1c877cb83c972941509a0") @default(autoincrement())
+  subscription_id                   Int
+  person_id                         Int
+  comment                           String?
+  created_at                        DateTime                            @default(now()) @db.Timestamp(6)
+  updated_at                        DateTime                            @default(now()) @db.Timestamp(6)
+  subscription                      subscription                        @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_76a72b76359d857e690e1e43517")
+  person                            person                              @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e56ced3c31df4331d271299f46c")
+  subscription_cancel_reason_choose subscription_cancel_reason_choose[]
+
+  @@unique([subscription_id, person_id], map: "IDX_6e9458383cf002c147d28d6483")
+}
+
+model subscription_cancel_reason {
+  id                                Int                                 @id(map: "PK_17b23fd0d5d7739c46ae7dd559d") @default(autoincrement())
+  slug                              String                              @unique(map: "UQ_7489066408e48e01f0f9b6f3bfe") @db.VarChar(255)
+  created_at                        DateTime                            @default(now()) @db.Timestamp(6)
+  updated_at                        DateTime                            @default(now()) @db.Timestamp(6)
+  subscription_cancel_reason_choose subscription_cancel_reason_choose[]
+  subscription_cancel_reason_locale subscription_cancel_reason_locale[]
+}
+
+model subscription_cancel_reason_choose {
+  id                         Int                        @id(map: "PK_4fbfb29ff0d6526d15c7be141ed") @default(autoincrement())
+  cancel_id                  Int
+  reason_id                  Int
+  created_at                 DateTime                   @default(now()) @db.Timestamp(6)
+  updated_at                 DateTime                   @default(now()) @db.Timestamp(6)
+  subscription_cancel_reason subscription_cancel_reason @relation(fields: [reason_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7b9ba4435cc1725d6ff6450977b")
+  subscription_cancel        subscription_cancel        @relation(fields: [cancel_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_b9d7519f4e4de0a67ed635072a7")
+
+  @@unique([cancel_id, reason_id], map: "IDX_207d14fc857328281dc1d16626")
+}
+
+model subscription_cancel_reason_locale {
+  cancel_reason_id           Int
+  locale_id                  Int
+  name                       String                     @db.VarChar(255)
+  created_at                 DateTime                   @default(now()) @db.Timestamp(6)
+  updated_at                 DateTime                   @default(now()) @db.Timestamp(6)
+  locale                     locale                     @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9ef7da7b0e332654009f22e87f2")
+  subscription_cancel_reason subscription_cancel_reason @relation(fields: [cancel_reason_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e8eff1168f25ed1201f357e9c5d")
+
+  @@id([cancel_reason_id, locale_id], map: "PK_cd2221386e94f870fcbc48b8de2")
 }
 
 enum route_method_enum {
