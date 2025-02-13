@@ -1,7 +1,7 @@
-import { IsString } from 'class-validator';
 import { WithLocaleDTO } from '@hedhog/locale';
+import { IsString } from 'class-validator';
 
 export class CreateDTO extends WithLocaleDTO {
-  @IsString()
+  @IsString({ message: 'O slug deve ser um texto' })
   slug: string;
 }

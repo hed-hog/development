@@ -1,12 +1,12 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreateDTO {
-  @IsString()
+  @IsString({ message: 'O slug deve ser um texto' })
   slug: string;
 
-  @IsString()
+  @IsString({ message: 'O nome deve ser um texto' })
   name: string;
 
-  @IsNumber()
+  @IsNumber({}, { message: 'O preço deve ser um número' })
   price: number;
 }
