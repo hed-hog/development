@@ -40,7 +40,15 @@ export class AuthService {
   ) {}
 
   async createUserCheck(code: string) {
-    await this.verifyToken(code);
+    console.log('createUserCheck', { code });
+    //TO DO: test this function
+
+    try {
+      const decoded = await this.verifyToken(code);
+      console.log({ decoded });
+    } catch (error: any) {
+      throw new BadRequestException(`Invalid code: ${error?.message}`);
+    }
 
     const user = await this.prisma.user.findFirst({
       where: {
@@ -53,14 +61,17 @@ export class AuthService {
       },
     });
 
+    console.log({ user });
+
     if (!user) {
-      throw new NotFoundException('Invalid code');
+      throw new NotFoundException('Invalid code or user not found');
     }
 
     return user;
   }
 
   async createUser({ code, password }: CreateUserDTO) {
+    console.log('createUser', { code, password });
     const user = await this.createUserCheck(code);
 
     const salt = await genSalt();

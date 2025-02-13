@@ -97,7 +97,9 @@ export class ContactService {
       email,
     };
 
-    const code = this.jwtService.sign(payload);
+    const code = this.jwtService.sign(payload, {
+      expiresIn: '1d',
+    });
 
     const person = await this.prismaService.person.create({
       data: {
