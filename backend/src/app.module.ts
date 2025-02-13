@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
 import { AdminModule } from '@hedhog/admin';
 import { LocaleModule } from '@hedhog/locale';
-import { PaginationModule } from '@hedhog/pagination';
 import { MailModule } from '@hedhog/mail';
+import { PaginationModule } from '@hedhog/pagination';
+import { PrismaModule } from '@hedhog/prisma';
+import { Module } from '@nestjs/common';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ThrottlerModule } from '@nestjs/throttler';
-import { PrismaModule } from '@hedhog/prisma';
 
 @Module({
   imports: [
