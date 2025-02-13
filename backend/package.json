@@ -80,9 +80,12 @@
   "dependencies": {
     "@hedhog/core": "^1.0.6",
     "@hedhog/prisma": "^0.46.1",
+    "@nestjs/core": "^10.4.15",
+    "@nestjs/platform-express": "^10.4.15",
     "@nestjs/throttler": "^6.4.0",
     "@prisma/client": "^5.22.0",
     "@types/compression": "^1.7.5",
+    "class-transformer": "^0.5.1",
     "compression": "^1.8.0"
   }
 }
