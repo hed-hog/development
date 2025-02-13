@@ -1,3 +1,14 @@
+/**
+ * Checks if the given CPF is valid.
+ *
+ * @param {string} cpf the CPF number to check
+ * @returns {boolean} true if the CPF is valid, false otherwise
+ * @example
+ * isValidCPF('123.456.789-00'); // true
+ *
+ * @example
+ * isValidCPF('123.456.789-01'); // false
+ */
 export const isValidCPF = (cpf: string): boolean => {
   cpf = cpf.replace(/\D/g, '');
   if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
