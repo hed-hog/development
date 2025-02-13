@@ -72,12 +72,10 @@ export const bodies = {
         <tr>
           <td style="padding: 8px;"></td>
           <td style="padding: 8px;"></td>
-          <td style="padding: 8px;"></td>
           <td style="padding: 8px; text-align: right; font-weight: bold;">Desconto</td>
           <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(data.discount)}</td>
         </tr>
         <tr>
-          <td style="padding: 8px;"></td>
           <td style="padding: 8px;"></td>
           <td style="padding: 8px;"></td>
           <td style="padding: 8px; text-align: right; font-weight: bold;">Total</td>
