@@ -23,7 +23,7 @@ import {
   getCreateUserEmail,
   getUpdateUserEmail,
 } from './emails';
-import { isValidCPF } from './validations/cpf';
+import { cleanCPF, isValidCPF } from './validations/cpf';
 
 @Injectable()
 export class ProfileService {
@@ -288,8 +288,10 @@ export class ProfileService {
       where: { email },
     });
 
+    const cpfCleaned = cleanCPF(String(cpf));
+
     const existingCpf = await this.prisma.person_document.findFirst({
-      where: { value: String(cpf) },
+      where: { value: cpfCleaned },
     });
 
     if (existingUser) {
@@ -300,7 +302,7 @@ export class ProfileService {
       throw new BadRequestException('Já existe um usuário com esse CPF.');
     }
 
-    if (!isValidCPF(String(cpf))) {
+    if (!isValidCPF(cpfCleaned)) {
       throw new BadRequestException('CPF inválido.');
     }
 
@@ -381,7 +383,7 @@ export class ProfileService {
         },
         person_document: {
           create: {
-            value: String(cpf),
+            value: cpfCleaned,
             type_id: PersonDocumentTypeEnum.CPF,
             country_id: country.id,
           },

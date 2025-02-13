@@ -27,3 +27,7 @@ export const isValidCPF = (cpf: string): boolean => {
 
   return firstDigit === Number(cpf[9]) && secondDigit === Number(cpf[10]);
 };
+
+export const cleanCPF = (cpf: string) => {
+  return cpf.replace(/\D/g, '');
+};
