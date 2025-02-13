@@ -8,52 +8,52 @@ import {
 } from 'class-validator';
 
 export class AddressDTO {
-  @IsString()
+  @IsString({ message: 'Informe o logradouro' })
   street: string;
 
-  @IsString()
+  @IsString({ message: 'Informe o número' })
   number: string;
 
-  @IsString()
+  @IsString({ message: 'Informe o bairro' })
   district: string;
 
-  @IsString()
+  @IsString({ message: 'Informe a cidade' })
   city: string;
 
-  @IsString()
+  @IsString({ message: 'Informe o estado' })
   state: string;
 
-  @IsString()
-  @Length(8, 9, { message: 'Postal code must be between 8 and 9 characters' })
+  @IsString({ message: 'Informe o CEP com 8 ou 9 caracteres' })
+  @Length(8, 9, { message: 'Informe o CEP com 8 ou 9 caracteres' })
   postal_code: string;
 
-  @IsString()
+  @IsString({ message: 'Informe o complemento' })
   @IsOptional()
   complement?: string;
 
-  @IsInt()
+  @IsInt({ message: 'Informe o país' })
   @IsOptional()
   country_id?: number;
 
-  @IsString()
+  @IsString({ message: 'Informe a referência' })
   @IsOptional()
   reference?: string;
 
-  @IsBoolean()
+  @IsBoolean({ message: 'Informe se o endereço é principal' })
   @IsOptional()
   primary?: boolean;
 }
 
 export class UpdateUserDataDTO {
-  @IsString()
+  @IsString({ message: 'Informe seu nome completo' })
   name: string;
 
-  @IsEmail({}, { message: 'Invalid email format' })
+  @IsEmail({}, { message: 'Informe um e-mail válido' })
   email: string;
 
   @IsOptional()
-  @IsString()
-  @Length(10, 15, { message: 'Telephone must be between 10 and 15 characters' })
+  @IsString({ message: 'Informe o telefone com 10 ou 15 caracteres' })
+  @Length(10, 15, { message: 'Informe o telefone com 10 ou 15 caracteres' })
   telephone?: string;
 
   @IsOptional()

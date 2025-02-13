@@ -2,35 +2,35 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { LoginDTO } from './login.dto';
 
 export class SignupDTO extends LoginDTO {
-  @IsString()
+  @IsString({ message: 'O nome completo deve ser informado.' })
   fullName: string;
 
-  @IsString()
+  @IsString({ message: 'O CPF deve ser informado.' })
   cpf: string;
 
-  @IsString()
+  @IsString({ message: 'O endereço deve ser informado.' })
   street: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'O número deve ser informado.' })
   number?: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'O complemento deve ser informado.' })
   complement?: string;
 
-  @IsString()
+  @IsString({ message: 'O bairro deve ser informado.' })
   district: string;
 
-  @IsString()
+  @IsString({ message: 'A cidade deve ser informada.' })
   city: string;
 
-  @IsString()
+  @IsString({ message: 'O estado deve ser informado.' })
   state: string;
 
-  @IsString()
+  @IsString({ message: 'O CEP deve ser informado.' })
   postal_code: string;
 
-  @IsNumber()
+  @IsNumber({}, { message: 'O telefone deve ser informado.' })
   telephone: number;
 }
