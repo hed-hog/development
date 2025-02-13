@@ -209,11 +209,11 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new BadRequestException('Não foi possível atualizar o e-mail.');
+      throw new BadRequestException('Usuário não encontrado.');
     }
 
     if (!(await compare(password, user.password))) {
-      throw new BadRequestException('Não foi possível atualizar o e-mail.');
+      throw new BadRequestException('Senha inválida.');
     }
 
     const existingUser = await this.prisma.user.findFirst({
@@ -221,7 +221,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Não foi possível atualizar o e-mail.');
+      throw new ConflictException('Já existe um usuário com esse e-mail.');
     }
 
     const newUser = await this.prisma.user.updateMany({
