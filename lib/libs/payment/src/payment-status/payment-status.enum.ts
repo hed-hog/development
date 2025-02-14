@@ -10,4 +10,6 @@ export enum PaymentStatusEnum {
   EXPIRED = 5,
 
   REFUNDED = 6,
+
+  PROCESSING = 7,
 }

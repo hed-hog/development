@@ -1129,11 +1129,16 @@ export class CheckoutService implements OnModuleInit {
             }
             break;
           case 'pending':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.PENDING },
+            });
+            break;
           case 'in_process':
           case 'in_mediation':
             await this.prismaService.payment.update({
               where: { id: payment.id },
-              data: { status_id: PaymentStatusEnum.PENDING },
+              data: { status_id: PaymentStatusEnum.PROCESSING },
             });
             break;
           case 'rejected':

@@ -250,8 +250,9 @@ export class MercadoPagoProvider extends AbstractProvider {
       case 'authorized':
         return PaymentStatusEnum.PAID;
       case 'pending':
-      case 'in_process':
         return PaymentStatusEnum.PENDING;
+      case 'in_process':
+        return PaymentStatusEnum.PROCESSING;
       case 'rejected':
         return PaymentStatusEnum.REJECTED;
       case 'cancelled':
