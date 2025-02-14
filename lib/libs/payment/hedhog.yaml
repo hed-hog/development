@@ -121,6 +121,10 @@ data:
         en: Refunded
         pt: Reembolsado
       slug: REFUNDED
+    - name:
+        en: Processing
+        pt: Processando
+      slug: PROCESSING
   discount_type:
     - name: Desconto com valor fixo
       slug: DISCOUNT_FIXED_VALUE
