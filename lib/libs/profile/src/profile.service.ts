@@ -108,59 +108,85 @@ export class ProfileService {
   }
 
   async closeAccount(id: number, { password }: CloseAccountDTO) {
-    const user = await this.prisma.user.findUnique({
-      where: { id },
-      include: { person_user: { include: { person: true } } },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+        include: { person_user: { include: { person: true } } },
+      });
 
-    if (!user) {
-      throw new BadRequestException('Usuário não encontrado.');
+      if (!user) {
+        throw new BadRequestException('Usuário não encontrado.');
+      }
+
+      const isPasswordValid = await compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new BadRequestException('Senha inválida.');
+      }
+
+      const personUser = (user.person_user ?? []).shift();
+      if (!personUser || !personUser.person) {
+        throw new NotFoundException(
+          'Dados pessoais não foram encontrados para esse usuário.',
+        );
+      }
+
+      const personId = personUser.person.id;
+
+      await this.prisma.payment.updateMany({
+        where: {
+          person_id: personId,
+        },
+        data: {
+          person_id: null,
+        },
+      });
+
+      await this.prisma.subscription_person.deleteMany({
+        where: {
+          person_id: personId,
+        },
+      });
+
+      await this.prisma.subscription_cancel.deleteMany({
+        where: {
+          person_id: personId,
+        },
+      });
+
+      await this.prisma.person_contact.deleteMany({
+        where: { person_id: personId },
+      });
+
+      await this.prisma.person_address.deleteMany({
+        where: { person_id: personId },
+      });
+
+      await this.prisma.person_document.deleteMany({
+        where: { person_id: personId },
+      });
+
+      await this.prisma.person_user.deleteMany({
+        where: { user_id: user.id },
+      });
+
+      await this.prisma.person.delete({
+        where: { id: personId },
+      });
+
+      await this.prisma.user.delete({
+        where: { id: user.id },
+      });
+
+      await this.mail.send({
+        to: user.email,
+        subject: `Conta excluída`,
+        body: getCloseAccountEmail(),
+      });
+
+      return { message: 'Conta excluída com sucesso' };
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
-
-    const isPasswordValid = await compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new BadRequestException('Senha inválida.');
-    }
-
-    const personUser = (user.person_user ?? []).shift();
-    if (!personUser || !personUser.person) {
-      throw new NotFoundException(
-        'Dados pessoais não foram encontrados para esse usuário.',
-      );
-    }
-
-    const personId = personUser.person.id;
-    await this.prisma.person_contact.deleteMany({
-      where: { person_id: personId },
-    });
-
-    await this.prisma.person_address.deleteMany({
-      where: { person_id: personId },
-    });
-
-    await this.prisma.person_document.deleteMany({
-      where: { person_id: personId },
-    });
-
-    await this.prisma.person_user.deleteMany({
-      where: { user_id: user.id },
-    });
-
-    await this.prisma.person.delete({
-      where: { id: personId },
-    });
-
-    await this.prisma.user.delete({
-      where: { id: user.id },
-    });
-
-    await this.mail.send({
-      to: user.email,
-      subject: `Conta excluída`,
-      body: getCloseAccountEmail(),
-    });
-
-    return { message: 'Conta excluída com sucesso' };
   }
 
   async updateUserData(
