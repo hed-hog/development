@@ -102,7 +102,7 @@ export class CheckoutService implements OnModuleInit {
     let payment = await this.getPaymentBySlug(slug, personId);
 
     if (!payment) {
-      payment = await this.createPayment(items, slug, personId);
+      payment = await this.createPayment(items, personId);
     } else {
       payment = await this.updatePaymentItems(payment.id, items);
     }
@@ -255,15 +255,8 @@ export class CheckoutService implements OnModuleInit {
     }
   }
 
-  private async createPayment(
-    items: number[],
-    slug: string,
-    personId?: number,
-  ) {
-    if (!slug) {
-      slug = await this.getNewSlug();
-    }
-
+  private async createPayment(items: number[], personId?: number) {
+    const slug = await this.getNewSlug();
     const item = await this.getPaymentItems(items);
 
     let amount = Number(item.reduce((acc, i) => acc + Number(i.price), 0));
