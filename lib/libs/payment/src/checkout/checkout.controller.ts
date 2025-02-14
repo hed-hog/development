@@ -68,6 +68,7 @@ export class CheckoutController {
     return {
       payment: await this.checkoutService.getPaymentDetails(paymentId),
       settings: await this.checkoutService.getPaymentSettings(),
+      hasAccount: await this.checkoutService.hasAccount(paymentId),
     };
   }
 

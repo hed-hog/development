@@ -1245,4 +1245,30 @@ export class CheckoutService implements OnModuleInit {
       return { success: false, error: error?.message ?? String(error) };
     }
   }
+
+  async hasAccount(paymentId: number) {
+    let hasAccount = false;
+
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        person_user: {
+          some: {
+            person: {
+              payment: {
+                some: {
+                  id: paymentId,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (user && user.password) {
+      hasAccount = true;
+    }
+
+    return hasAccount;
+  }
 }
