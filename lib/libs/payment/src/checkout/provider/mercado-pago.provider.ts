@@ -39,6 +39,21 @@ export class MercadoPagoProvider extends AbstractProvider {
           data,
         }),
       );
+
+      console.log('*************************');
+      console.log('** MERCADOPAGO REQUEST **');
+      console.log('*************************');
+      console.log({
+        url,
+        method,
+        headers: Object.assign({}, this.headers, {
+          'X-Idempotency-Key': uuidv4(),
+        }),
+        data: JSON.stringify(data),
+        response: response.data,
+      });
+      console.log('*************************');
+
       return response.data;
     } catch (error: any) {
       throw new BadRequestException(

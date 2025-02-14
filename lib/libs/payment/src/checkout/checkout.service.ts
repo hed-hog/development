@@ -795,9 +795,13 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async eventEmmitterPayment(statusId: number, paymentId: number) {
+    console.log('eventEmmitterPayment', { statusId, paymentId });
     switch (statusId) {
       case PaymentStatusEnum.PENDING:
         this.eventEmitter.emit('payment.pending', paymentId);
+        break;
+      case PaymentStatusEnum.PROCESSING:
+        this.eventEmitter.emit('payment.processing', paymentId);
         break;
       case PaymentStatusEnum.PAID:
         this.eventEmitter.emit('payment.paid', paymentId);
@@ -1031,6 +1035,7 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async notification(gatewayId: number, data: any) {
+    console.log('notification', { gatewayId });
     try {
       if (
         gatewayId === PaymentGatewayEnum.MERCADO_PAGO &&
