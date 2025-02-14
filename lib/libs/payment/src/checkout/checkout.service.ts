@@ -923,18 +923,6 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async removeCoupon(paymentId: number, couponId: number) {
-    if (couponId > 0) {
-      const coupon = await this.prismaService.payment_coupon.findUnique({
-        where: { id: couponId },
-        select: { uses_qtd: true },
-      });
-
-      await this.prismaService.payment_coupon.update({
-        where: { id: couponId },
-        data: { uses_qtd: coupon.uses_qtd - 1 },
-      });
-    }
-
     return this.paymentService.update({
       id: paymentId,
       data: { coupon_id: null, discount: 0 },
@@ -1061,6 +1049,7 @@ export class CheckoutService implements OnModuleInit {
           where: { slug: paymentData.external_reference },
           select: {
             id: true,
+            coupon_id: true,
             status_id: true,
             person_id: true,
             discount: true,
@@ -1103,6 +1092,26 @@ export class CheckoutService implements OnModuleInit {
               payment.person_id,
               PersonContactTypeEnum.EMAIL,
             );
+
+            if (payment.coupon_id) {
+              const couponUsedCheck =
+                await this.prismaService.payment_value.count({
+                  where: {
+                    payment_id: payment.id,
+                    name: 'coupon_used',
+                    value: '1',
+                  },
+                });
+
+              if (!couponUsedCheck) {
+                await this.setPaymentValue(payment.id, 'coupon_used', '1');
+
+                await this.prismaService.payment_coupon.update({
+                  where: { id: payment.coupon_id },
+                  data: { uses_qtd: { increment: 1 } },
+                });
+              }
+            }
 
             const mailPaidSended = await this.prismaService.payment_value.count(
               {
@@ -1203,6 +1212,7 @@ export class CheckoutService implements OnModuleInit {
           where: { id: payment.id },
           select: {
             id: true,
+            coupon_id: true,
             status_id: true,
             person_id: true,
             discount: true,
