@@ -82,6 +82,7 @@ export class MercadoPagoProvider extends AbstractProvider {
           last_name: lastName,
         },
       },
+      notification_url: `${this.setting['url']}/checkout/notification/${this.gatewayId}`,
     };
 
     const response = await this.makeRequest(
