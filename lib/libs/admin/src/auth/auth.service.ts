@@ -70,12 +70,31 @@ export class AuthService {
     return user;
   }
 
-  async createUser({ code, password }: CreateUserDTO) {
-    console.log('createUser', { code, password });
+  async createUser({
+    code,
+    password,
+    street,
+    number,
+    complement,
+    district,
+    city,
+    state,
+    postal_code,
+  }: CreateUserDTO) {
+    console.log('createUser', {
+      code,
+      password,
+      street,
+      number,
+      complement,
+      district,
+      city,
+      state,
+      postal_code,
+    });
+
     const user = await this.createUserCheck(code);
-
     const salt = await genSalt();
-
     password = await hash(password, salt);
 
     await this.prisma.user.update({
@@ -85,6 +104,33 @@ export class AuthService {
       data: {
         password,
         code: null,
+      },
+    });
+
+    const { person_id } = await this.prisma.person_user.findFirst({
+      where: {
+        user_id: user.id,
+      },
+    });
+
+    const country = await this.prisma.country.findFirst({
+      where: { code: 'BRA' },
+    });
+
+    await this.prisma.person_address.update({
+      where: {
+        id: person_id,
+      },
+      data: {
+        street,
+        number,
+        complement,
+        district,
+        city,
+        state,
+        postal_code,
+        country_id: country.id,
+        type_id: 1, // residential,
       },
     });
 
