@@ -582,16 +582,17 @@ export class CheckoutService implements OnModuleInit {
         throw new BadRequestException('Payment method not enabled.');
       }
 
-      const { person } = await this.contactService.getPersonOrCreateIfNotExists(
-        identificationType === 'CPF'
-          ? PersonTypeEnum.PHYSICAL
-          : PersonTypeEnum.LEGAL,
-        name,
-        email,
-        phone,
-        identificationType === 'CPF' ? identificationNumber : '',
-        identificationType === 'CNPJ' ? identificationNumber : '',
-      );
+      const { person, created, code } =
+        await this.contactService.getPersonOrCreateIfNotExists(
+          identificationType === 'CPF'
+            ? PersonTypeEnum.PHYSICAL
+            : PersonTypeEnum.LEGAL,
+          name,
+          email,
+          phone,
+          identificationType === 'CPF' ? identificationNumber : '',
+          identificationType === 'CNPJ' ? identificationNumber : '',
+        );
 
       await this.contactService.addDocumentIfNotExists(
         person.id,
@@ -693,7 +694,11 @@ export class CheckoutService implements OnModuleInit {
 
       await this.saveCreditCard(payment.id, paymentCreditCard);
 
-      return this.getPaymentDetails(payment.id);
+      return {
+        payment: await this.getPaymentDetails(payment.id),
+        created,
+        code,
+      };
     } catch (error: any) {
       throw new BadRequestException(error.message);
     }

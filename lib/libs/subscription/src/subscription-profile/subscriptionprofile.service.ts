@@ -12,7 +12,7 @@ export class SubscriptionProfileService {
   async getSubscriptionsTokens(userId: number) {
     const now = new Date();
 
-    console.log('getSubscriptionsTokens', {
+    console.log('getSubscriptions', {
       userId,
       dateNow: now.toISOString(),
     });
@@ -53,6 +53,8 @@ export class SubscriptionProfileService {
       },
     });
 
+    console.log('subscriptions', subscriptions);
+
     return {
       data: this.jwtService.sign({ subscriptions, userId }),
     };
@@ -65,7 +67,7 @@ export class SubscriptionProfileService {
       userId,
       dateNow: now.toISOString(),
     });
-    return this.prismaService.subscription.findMany({
+    const subscriptions = await this.prismaService.subscription.findMany({
       where: {
         subscription_person: {
           some: {
@@ -122,5 +124,9 @@ export class SubscriptionProfileService {
         },
       },
     });
+
+    console.log('subscriptions', subscriptions);
+
+    return subscriptions;
   }
 }
