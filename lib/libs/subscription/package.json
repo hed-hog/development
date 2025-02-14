@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/subscription",
-  "version": "0.46.47",
+  "version": "0.46.48",
   "private": false,
   "main": "dist/index.js",
   "scripts": {

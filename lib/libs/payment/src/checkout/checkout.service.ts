@@ -1025,7 +1025,7 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async notification(gatewayId: number, data: any) {
-    console.log('notification', { gatewayId });
+    console.log('notification', { gatewayId, type: data.type });
     try {
       if (
         gatewayId === PaymentGatewayEnum.MERCADO_PAGO &&
@@ -1058,6 +1058,8 @@ export class CheckoutService implements OnModuleInit {
         if (!payment) {
           throw new Error('payment not found');
         }
+
+        console.log(payment);
 
         await this.prismaService.payment_notification.create({
           data: {
@@ -1197,6 +1199,7 @@ export class CheckoutService implements OnModuleInit {
             );
             break;
           default:
+            console.log('status not detected in notification', paymentData);
             break;
         }
 
