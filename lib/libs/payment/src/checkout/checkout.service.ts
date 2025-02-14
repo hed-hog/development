@@ -875,7 +875,7 @@ export class CheckoutService implements OnModuleInit {
     if (!slug) return null;
 
     const payment = await this.prismaService.payment.findFirst({
-      where: { slug, status_id: PaymentStatusEnum.PENDING },
+      where: { slug },
     });
 
     if (payment && !payment.person_id && personId) {
