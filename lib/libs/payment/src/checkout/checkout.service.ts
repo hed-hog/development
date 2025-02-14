@@ -1140,6 +1140,11 @@ export class CheckoutService implements OnModuleInit {
             });
             break;
           case 'in_process':
+            await this.prismaService.payment.update({
+              where: { id: payment.id },
+              data: { status_id: PaymentStatusEnum.PROCESSING },
+            });
+            break;
           case 'in_mediation':
             await this.prismaService.payment.update({
               where: { id: payment.id },
