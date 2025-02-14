@@ -65,10 +65,14 @@ export class CheckoutController {
 
   @Get('payment/:paymentId')
   async slug(@Param('paymentId', ParseIntPipe) paymentId: number) {
+    const { code, hasAccount } =
+      await this.checkoutService.hasAccount(paymentId);
+
     return {
       payment: await this.checkoutService.getPaymentDetails(paymentId),
       settings: await this.checkoutService.getPaymentSettings(),
-      hasAccount: await this.checkoutService.hasAccount(paymentId),
+      code,
+      hasAccount,
     };
   }
 

@@ -1263,12 +1263,17 @@ export class CheckoutService implements OnModuleInit {
           },
         },
       },
+      select: {
+        id: true,
+        password: true,
+        code: true,
+      },
     });
 
     if (user && user.password) {
       hasAccount = true;
     }
 
-    return hasAccount;
+    return { hasAccount, code: user.code };
   }
 }
