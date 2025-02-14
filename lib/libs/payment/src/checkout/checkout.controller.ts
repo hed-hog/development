@@ -71,7 +71,7 @@ export class CheckoutController {
     return {
       payment: await this.checkoutService.getPaymentDetails(paymentId),
       settings: await this.checkoutService.getPaymentSettings(),
-      code,
+      code: hasAccount ? null : code,
       hasAccount,
     };
   }
