@@ -71,7 +71,7 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async init({
-    items,
+    items = [],
     slug = '',
     userId = null,
     coupon = null,
@@ -82,7 +82,17 @@ export class CheckoutService implements OnModuleInit {
     coupon?: string;
   }) {
     if (!items || !items.length) {
-      throw new BadRequestException('Items not found.');
+      const item = await this.prismaService.item.findFirst({
+        select: {
+          id: true,
+        },
+      });
+
+      if (!item) {
+        throw new BadRequestException('Item not found.');
+      }
+
+      items = [item.id];
     }
 
     await this.getProvider();
