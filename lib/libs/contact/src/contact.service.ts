@@ -1,6 +1,7 @@
 import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { getCreatePersonUserlessEmail } from './emails';
 import { PersonContactTypeEnum } from './person-contact-type/person-contact-type.enum';
@@ -9,6 +10,7 @@ import { PersonDocumentTypeEnum } from './person-document-type/person-document-t
 @Injectable()
 export class ContactService {
   constructor(
+    private readonly configService: ConfigService,
     private readonly prismaService: PrismaService,
     private readonly mailService: MailService,
     private readonly jwtService: JwtService,
@@ -176,13 +178,15 @@ export class ContactService {
     }
 
     console.log('Person created', { person });
+    const appURL =
+      process.env.APP_URL ?? this.configService.get<string>('APP_URL');
 
     await this.mailService.send({
       to: email,
       subject: 'Crie sua conta',
       body: getCreatePersonUserlessEmail({
         name,
-        url: `${String(process.env.FRONTEND_URL)}/create-user?code=${code}`,
+        url: `${appURL}/create-user?code=${code}`,
       }),
     });
 

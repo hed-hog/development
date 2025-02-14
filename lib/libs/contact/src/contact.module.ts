@@ -4,6 +4,7 @@ import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { ContactService } from './contact.service';
 import { PersonAddressTypeModule } from './person-address-type/person-address-type.module';
@@ -40,6 +41,7 @@ import { PersonModule } from './person/person.module';
     forwardRef(() => PersonAddressTypeModule),
     forwardRef(() => PersonCustomTypeModule),
     forwardRef(() => MailModule),
+    ConfigModule.forRoot(),
   ],
   controllers: [],
   providers: [ContactService],
