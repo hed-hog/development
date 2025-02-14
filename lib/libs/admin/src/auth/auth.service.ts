@@ -41,7 +41,7 @@ export class AuthService {
 
   async createUserCheck(code: string) {
     try {
-      const decoded = await this.verifyToken(code);
+      await this.verifyToken(code);
     } catch (error: any) {
       throw new BadRequestException(`Invalid code: ${error?.message}`);
     }
@@ -75,56 +75,82 @@ export class AuthService {
     state,
     postal_code,
   }: CreateUserDTO) {
-    const user = await this.createUserCheck(code);
-    const salt = await genSalt();
-    password = await hash(password, salt);
+    try {
+      const user = await this.createUserCheck(code);
+      const salt = await genSalt();
+      password = await hash(password, salt);
 
-    await this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        password,
-        code: null,
-      },
-    });
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          password,
+          code: null,
+        },
+      });
 
-    const { person_id } = await this.prisma.person_user.findFirst({
-      where: {
-        user_id: user.id,
-      },
-    });
+      const { person_id } = await this.prisma.person_user.findFirst({
+        where: {
+          user_id: user.id,
+        },
+      });
 
-    const country = await this.prisma.country.findFirst({
-      where: { code: 'BRA' },
-    });
+      const country = await this.prisma.country.findFirst({
+        where: { code: 'BRA' },
+      });
 
-    await this.prisma.person_address.update({
-      where: {
-        id: person_id,
-      },
-      data: {
-        street,
-        number,
-        complement,
-        district,
-        city,
-        state,
-        postal_code,
-        country_id: country.id,
-        type_id: 1, // residential,
-      },
-    });
+      const address = await this.prisma.person_address.findFirst({
+        where: {
+          person_id,
+        },
+      });
 
-    await this.mail.send({
-      to: user.email,
-      subject: 'Conta criada',
-      body: getCreateUserEmail({
-        name: user.name,
-      }),
-    });
+      if (!address) {
+        await this.prisma.person_address.create({
+          data: {
+            street,
+            number,
+            complement,
+            district,
+            city,
+            state,
+            postal_code,
+            country_id: country.id,
+            type_id: 1,
+            person_id: person_id,
+          },
+        });
+      } else {
+        await this.prisma.person_address.update({
+          where: {
+            id: address.id,
+          },
+          data: {
+            street,
+            number,
+            complement,
+            district,
+            city,
+            state,
+            postal_code,
+            country_id: country.id,
+          },
+        });
+      }
 
-    return this.getToken(user);
+      await this.mail.send({
+        to: user.email,
+        subject: 'Conta criada',
+        body: getCreateUserEmail({
+          name: user.name,
+        }),
+      });
+
+      return this.getToken(user);
+    } catch (error: any) {
+      throw new BadRequestException(error?.message);
+    }
   }
 
   async verifyToken(token: string) {
