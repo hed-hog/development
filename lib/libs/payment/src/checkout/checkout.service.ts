@@ -868,7 +868,7 @@ export class CheckoutService implements OnModuleInit {
     return payment;
   }
 
-  private async getPaymentDetails(paymentId: number): Promise<any> {
+  async getPaymentDetails(paymentId: number): Promise<any> {
     return this.prismaService.payment.findUnique({
       where: { id: paymentId },
       include: {

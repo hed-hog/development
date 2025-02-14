@@ -1,5 +1,4 @@
 import { Public, User } from '@hedhog/core';
-import { PrismaService } from '@hedhog/prisma';
 import {
   Body,
   Controller,
@@ -25,7 +24,6 @@ export class CheckoutController {
   constructor(
     @Inject(forwardRef(() => CheckoutService))
     private readonly checkoutService: CheckoutService,
-    private readonly prismaService: PrismaService,
   ) {}
 
   @Post('notification/:gatewayId')
@@ -63,6 +61,14 @@ export class CheckoutController {
     data: PixDTO,
   ) {
     return this.checkoutService.createPaymentPix(data);
+  }
+
+  @Get('payment/:paymentId')
+  async slug(@Param('paymentId', ParseIntPipe) paymentId: number) {
+    return {
+      payment: await this.checkoutService.getPaymentDetails(paymentId),
+      settings: await this.checkoutService.getPaymentSettings(),
+    };
   }
 
   @Post('init')
