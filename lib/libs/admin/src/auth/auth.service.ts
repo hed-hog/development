@@ -40,12 +40,8 @@ export class AuthService {
   ) {}
 
   async createUserCheck(code: string) {
-    console.log('createUserCheck', { code });
-    //TO DO: test this function
-
     try {
       const decoded = await this.verifyToken(code);
-      console.log({ decoded });
     } catch (error: any) {
       throw new BadRequestException(`Invalid code: ${error?.message}`);
     }
@@ -60,8 +56,6 @@ export class AuthService {
         email: true,
       },
     });
-
-    console.log({ user });
 
     if (!user) {
       throw new NotFoundException('Invalid code or user not found');
@@ -81,18 +75,6 @@ export class AuthService {
     state,
     postal_code,
   }: CreateUserDTO) {
-    console.log('createUser', {
-      code,
-      password,
-      street,
-      number,
-      complement,
-      district,
-      city,
-      state,
-      postal_code,
-    });
-
     const user = await this.createUserCheck(code);
     const salt = await genSalt();
     password = await hash(password, salt);
@@ -175,8 +157,6 @@ export class AuthService {
       },
     });
 
-    console.log('user found', user);
-
     if (!user) {
       throw new BadRequestException('Acesso negado');
     }
@@ -185,8 +165,6 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new BadRequestException('Acesso negado');
     }
-
-    console.log('Password is valid');
 
     if (!user.multifactor_id) {
       return this.getToken(user);
@@ -379,8 +357,6 @@ export class AuthService {
 
     try {
       const decodedCode = this.jwt.decode(code);
-
-      console.log({ decodedCode });
 
       const { id } = decodedCode;
 

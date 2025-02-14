@@ -42,10 +42,6 @@ export class ContactService {
     cpf: string,
     cnpj: string,
   ) {
-    console.log('getPersonOrCreateIfNotExists', { type_id, name, email });
-
-    console.log('Find by email', { email });
-
     const findPerson = await this.prismaService.person.findFirst({
       where: {
         OR: [
@@ -86,14 +82,9 @@ export class ContactService {
       },
     });
 
-    console.log('Result findPerson', { findPerson });
-
     if (findPerson) {
-      console.log('Person exists', { findPerson });
       return { person: await this.getPerson(findPerson.id), created: false };
     }
-
-    console.log('Person not exists', { findPerson });
 
     const payload = {
       email,
@@ -131,7 +122,6 @@ export class ContactService {
 
     if (person) {
       if (email) {
-        console.log('Add email', { email });
         await this.prismaService.person_contact.create({
           data: {
             value: email,
@@ -142,7 +132,6 @@ export class ContactService {
       }
 
       if (phone) {
-        console.log('Add phone', { phone });
         await this.prismaService.person_contact.create({
           data: {
             value: phone,
@@ -153,7 +142,6 @@ export class ContactService {
       }
 
       if (cpf) {
-        console.log('Add cpf', { cpf });
         await this.prismaService.person_document.create({
           data: {
             value: cpf,
@@ -165,7 +153,6 @@ export class ContactService {
       }
 
       if (cnpj) {
-        console.log('Add cnpj', { cnpj });
         await this.prismaService.person_document.create({
           data: {
             value: cnpj,
@@ -177,7 +164,6 @@ export class ContactService {
       }
     }
 
-    console.log('Person created', { person });
     const appURL =
       process.env.APP_URL ?? this.configService.get<string>('APP_URL');
 

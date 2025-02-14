@@ -356,8 +356,6 @@ export class ProfileService {
 
     fullName = formattedName;
 
-    console.log('Nome formatado:', fullName);
-
     const user = await this.prisma.user.create({
       data: {
         email,

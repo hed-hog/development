@@ -265,16 +265,6 @@ export class CheckoutService implements OnModuleInit {
       amount = 0;
     }
 
-    console.log('createPayment', {
-      gateway_id: this.providerId,
-      person_id: personId ?? undefined,
-      status_id: PaymentStatusEnum.PENDING,
-      currency: 'brl',
-      method_id: PaymentMethodEnum.PIX,
-      slug,
-      amount,
-    });
-
     const payment = await this.paymentService.create({
       gateway_id: this.providerId,
       person_id: personId ?? undefined,
@@ -540,7 +530,6 @@ export class CheckoutService implements OnModuleInit {
   }
 
   async setPaymentValue(paymentId: number, name: string, value: string) {
-    console.log('setPaymentValue', { paymentId, name, value });
     await this.prismaService.payment_value.deleteMany({
       where: { payment_id: paymentId, name },
     });

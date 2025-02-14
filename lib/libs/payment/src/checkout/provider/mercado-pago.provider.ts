@@ -40,20 +40,6 @@ export class MercadoPagoProvider extends AbstractProvider {
         }),
       );
 
-      console.log('*************************');
-      console.log('** MERCADOPAGO REQUEST **');
-      console.log('*************************');
-      console.log({
-        url,
-        method,
-        headers: Object.assign({}, this.headers, {
-          'X-Idempotency-Key': uuidv4(),
-        }),
-        data: JSON.stringify(data),
-        response: response.data,
-      });
-      console.log('*************************');
-
       return response.data;
     } catch (error: any) {
       throw new BadRequestException(
@@ -173,8 +159,6 @@ export class MercadoPagoProvider extends AbstractProvider {
       },
       notification_url: `${this.setting['url']}/checkout/notification/${this.gatewayId}`,
     };
-
-    console.log('paymentJSON', JSON.stringify(data));
 
     const response = await this.makeRequest(
       `${this.baseUrl}/v1/payments`,

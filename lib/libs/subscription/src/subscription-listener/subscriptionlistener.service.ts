@@ -29,8 +29,6 @@ export class SubscriptionListenerService {
 
   @OnEvent('payment.paid')
   async handlePaymentPaidEvent(paymentId: number) {
-    console.log('handlePaymentPaidEvent', 'Start', { paymentId });
-
     const payment = await this.getPaymentForProcessing(paymentId);
 
     if (payment) {
@@ -47,8 +45,6 @@ export class SubscriptionListenerService {
         PersonContactTypeEnum.EMAIL,
       );
 
-      console.log('Email found', { email });
-
       if (email) {
         for (const subscription of subscriptions) {
           await this.mailService.send({
@@ -64,33 +60,15 @@ export class SubscriptionListenerService {
           });
         }
       }
-
-      console.log('handlePaymentPaidEvent', 'Complete', { subscriptions });
-    } else {
-      console.log(
-        'handlePaymentPaidEvent',
-        'Payment not found or already processed',
-        { paymentId },
-      );
     }
   }
 
   @OnEvent('payment.refunded')
   async handlePaymentRefoundedEvent(paymentId: number) {
-    console.log('handlePaymentRefoundedEvent', { paymentId });
-
     const payment = await this.getPaymentActive(paymentId);
 
     if (payment) {
-      const subscriptions = await this.finishSubscriptions(paymentId);
-
-      console.log('handlePaymentRefoundedEvent', 'Complete', { paymentId });
-    } else {
-      console.log(
-        'handlePaymentRefoundedEvent',
-        'Payment not found or already processed',
-        { paymentId },
-      );
+      await this.finishSubscriptions(paymentId);
     }
   }
 
@@ -108,8 +86,6 @@ export class SubscriptionListenerService {
         PersonContactTypeEnum.EMAIL,
       );
 
-      console.log('Email found', { email });
-
       if (email) {
         for (const subscription of subscriptions) {
           await this.mailService.send({
@@ -125,19 +101,10 @@ export class SubscriptionListenerService {
           });
         }
       }
-
-      console.log('handlePaymentCanceledEvent', 'Complete', { paymentId });
-    } else {
-      console.log(
-        'handlePaymentCanceledEvent',
-        'Payment not found or already processed',
-        { paymentId },
-      );
     }
   }
 
   async finishSubscriptions(paymentId: number) {
-    console.log('finishSubscriptions', { paymentId });
     const subscriptions = await this.getSubscriptionsByPaymentId(paymentId);
 
     for (const subscription of subscriptions) {
@@ -156,7 +123,6 @@ export class SubscriptionListenerService {
   }
 
   async getSubscription(planId: number, personId: number) {
-    console.log('getSubscription', { planId, personId });
     let subscription = await this.prismaService.subscription.findFirst({
       where: {
         plan_id: planId,
@@ -173,12 +139,6 @@ export class SubscriptionListenerService {
     });
 
     if (!subscription) {
-      console.log(
-        'getSubscription',
-        'Subscription not found',
-        'Create new subscription',
-        { planId, personId },
-      );
       const plan = await this.prismaService.subscription_plan.findUnique({
         where: {
           id: planId,
@@ -205,9 +165,7 @@ export class SubscriptionListenerService {
           subscription_plan: true,
         },
       });
-      console.log('getSubscription', 'Subscription created', { subscription });
     } else {
-      console.log('getSubscription', 'Subscription found', { subscription });
       subscription = await this.prismaService.subscription.update({
         where: {
           id: subscription.id,
@@ -225,7 +183,6 @@ export class SubscriptionListenerService {
   }
 
   private async getPaymentActive(paymentId: number) {
-    console.log('getPaymentActive', { paymentId });
     return this.prismaService.payment.findFirst({
       where: {
         id: paymentId,
@@ -253,7 +210,6 @@ export class SubscriptionListenerService {
   }
 
   private async getPaymentForProcessing(paymentId: number) {
-    console.log('getPaymentForProcessing', { paymentId });
     return this.prismaService.payment.findFirst({
       where: {
         id: paymentId,
@@ -281,7 +237,6 @@ export class SubscriptionListenerService {
   }
 
   private async processPaymentItems(payment: any) {
-    console.log('processPaymentItems', { payment });
     const subscriptions = [];
     const payment_items = (payment.payment_item || []).filter(
       (pi) => pi?.item?.subscription_plan,
@@ -311,11 +266,6 @@ export class SubscriptionListenerService {
 
       endAt.setHours(23, 59, 59, 999);
 
-      console.log('Subscription created', {
-        startAt,
-        endAt,
-      });
-
       await this.prismaService.subscription_payment.create({
         data: {
           payment_id: payment.id,
@@ -332,7 +282,6 @@ export class SubscriptionListenerService {
   }
 
   private calculateEndAt(duration: string, startAt: Date) {
-    console.log('calculateEndAt', { duration, startAt });
     let endAt = new Date(startAt);
 
     switch (duration) {
@@ -354,7 +303,6 @@ export class SubscriptionListenerService {
   }
 
   private async markPaymentAsDelivered(paymentId: number) {
-    console.log('markPaymentAsDelivered', { paymentId });
     await this.prismaService.payment.update({
       where: {
         id: paymentId,
@@ -371,7 +319,6 @@ export class SubscriptionListenerService {
   }
 
   async getSubscriptionsByPaymentId(paymentId: number) {
-    console.log('getSubscriptionsByPaymentId', { paymentId });
     return this.prismaService.subscription.findMany({
       where: {
         subscription_payment: {
