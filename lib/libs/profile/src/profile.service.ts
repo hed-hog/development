@@ -184,8 +184,8 @@ export class ProfileService {
       });
 
       return { message: 'Conta excluída com sucesso' };
-    } catch (error) {
-      throw new BadRequestException(error.message);
+    } catch (error: any) {
+      throw new BadRequestException(error?.message ?? 'Erro ao excluir conta.');
     }
   }
 
