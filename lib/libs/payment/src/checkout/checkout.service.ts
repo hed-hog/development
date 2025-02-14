@@ -272,6 +272,16 @@ export class CheckoutService implements OnModuleInit {
       amount = 0;
     }
 
+    console.log({
+      gateway_id: this.providerId,
+      person_id: personId ?? undefined,
+      status_id: PaymentStatusEnum.PENDING,
+      currency: 'brl',
+      method_id: PaymentMethodEnum.PIX,
+      slug,
+      amount,
+    });
+
     const payment = await this.paymentService.create({
       gateway_id: this.providerId,
       person_id: personId ?? undefined,
