@@ -1270,10 +1270,10 @@ export class CheckoutService implements OnModuleInit {
       },
     });
 
-    if (user && user.password) {
+    if (user && user?.password) {
       hasAccount = true;
     }
 
-    return { hasAccount, code: user.code };
+    return { hasAccount, code: user?.code ?? null };
   }
 }
