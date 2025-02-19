@@ -61,27 +61,6 @@ export class ContactService {
       };
     }
 
-    const findPersonByDocument = await this.prismaService.person.findFirst({
-      where: {
-        person_document: {
-          some: {
-            OR: [
-              { value: cpf, type_id: PersonDocumentTypeEnum.CPF },
-              { value: cnpj, type_id: PersonDocumentTypeEnum.CNPJ },
-            ],
-          },
-        },
-      },
-      select: { id: true },
-    });
-
-    if (findPersonByDocument) {
-      return {
-        person: await this.getPerson(findPersonByDocument.id),
-        created: false,
-      };
-    }
-
     const payload = {
       email,
     };
