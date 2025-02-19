@@ -42,48 +42,44 @@ export class ContactService {
     cpf: string,
     cnpj: string,
   ) {
-    const findPerson = await this.prismaService.person.findFirst({
+    const findPersonByEmail = await this.prismaService.person.findFirst({
       where: {
-        OR: [
-          {
-            person_contact: {
-              some: {
-                OR: [
-                  {
-                    value: email,
-                    type_id: PersonContactTypeEnum.EMAIL,
-                  },
-                  {
-                    value: phone,
-                    type_id: PersonContactTypeEnum.PHONE,
-                  },
-                ],
-              },
-            },
-            person_document: {
-              some: {
-                OR: [
-                  {
-                    value: cpf,
-                    type_id: PersonDocumentTypeEnum.CPF,
-                  },
-                  {
-                    value: cnpj,
-                    type_id: PersonDocumentTypeEnum.CNPJ,
-                  },
-                ],
-              },
-            },
+        person_contact: {
+          some: {
+            value: email,
+            type_id: PersonContactTypeEnum.EMAIL,
           },
-        ],
+        },
       },
-      select: {
-        id: true,
-      },
+      select: { id: true },
     });
 
-    if (findPerson) {
-      return { person: await this.getPerson(findPerson.id), created: false };
+    if (findPersonByEmail) {
+      return {
+        person: await this.getPerson(findPersonByEmail.id),
+        created: false,
+      };
+    }
+
+    const findPersonByDocument = await this.prismaService.person.findFirst({
+      where: {
+        person_document: {
+          some: {
+            OR: [
+              { value: cpf, type_id: PersonDocumentTypeEnum.CPF },
+              { value: cnpj, type_id: PersonDocumentTypeEnum.CNPJ },
+            ],
+          },
+        },
+      },
+      select: { id: true },
+    });
+
+    if (findPersonByDocument) {
+      return {
+        person: await this.getPerson(findPersonByDocument.id),
+        created: false,
+      };
     }
 
     const payload = {
