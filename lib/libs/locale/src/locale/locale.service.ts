@@ -297,6 +297,10 @@ export class LocaleService {
     foreignKeyName: string,
     data: T,
   ) {
+    console.log('====================');
+    console.log({ modelName, foreignKeyName, data });
+    console.log('====================');
+
     try {
       const model = await this.prismaService[modelName].create({
         data: this.prismaService.getValidData(modelName, data),
@@ -345,7 +349,7 @@ export class LocaleService {
         },
       });
     } catch (error: any) {
-      console.log(error);
+      console.log(error.message);
       if (error.message.includes('Unique constraint failed')) {
         throw new BadRequestException('Data already exists.');
       } else {
