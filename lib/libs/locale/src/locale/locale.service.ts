@@ -345,6 +345,7 @@ export class LocaleService {
         },
       });
     } catch (error: any) {
+      console.log(error);
       if (error.message.includes('Unique constraint failed')) {
         throw new BadRequestException('Data already exists.');
       } else {
