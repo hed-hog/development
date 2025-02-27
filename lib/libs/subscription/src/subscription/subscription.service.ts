@@ -31,15 +31,75 @@ export class SubscriptionService {
       OR.push({ id: { equals: +paginationParams.search } });
     }
 
-    return this.paginationService.paginate(
+    const subscriptions = await this.paginationService.paginate(
       this.prismaService.subscription,
       paginationParams,
       {
         where: {
           OR,
         },
+        include: {
+          subscription_plan: {
+            include: {
+              item: true,
+            },
+          },
+        },
       },
     );
+
+    const subscriptionPayments =
+      await this.prismaService.subscription_payment.findMany({
+        where: {
+          subscription_id: { in: subscriptions.data.map((s) => s.id) },
+        },
+      });
+
+    const subscriptionPersons =
+      await this.prismaService.subscription_person.findMany({
+        where: {
+          subscription_id: { in: subscriptions.data.map((s) => s.id) },
+        },
+      });
+
+    const personIds = subscriptionPersons.map((sp) => sp.person_id);
+    const persons = await this.prismaService.person.findMany({
+      where: {
+        id: { in: personIds },
+      },
+      select: { id: true, name: true },
+    });
+
+    const paymentMap = new Map<number, any>();
+    subscriptionPayments.forEach((payment) => {
+      if (payment.subscription_id) {
+        paymentMap.set(payment.subscription_id, payment);
+      }
+    });
+
+    const personMap = new Map<number, any>();
+    persons.forEach((person) => {
+      personMap.set(person.id, person.name);
+    });
+
+    const subscriptionPersonMap = new Map<number, any[]>();
+    subscriptionPersons.forEach((sp) => {
+      if (!subscriptionPersonMap.has(sp.subscription_id)) {
+        subscriptionPersonMap.set(sp.subscription_id, []);
+      }
+      subscriptionPersonMap.get(sp.subscription_id)?.push({
+        ...sp,
+        person_name: personMap.get(sp.person_id) || 'Desconhecido',
+      });
+    });
+
+    subscriptions.data = subscriptions.data.map((subscription) => ({
+      ...subscription,
+      subscription_payment: paymentMap.get(subscription.id) || null,
+      subscription_person: subscriptionPersonMap.get(subscription.id) || [],
+    }));
+
+    return subscriptions;
   }
 
   async get(id: number) {

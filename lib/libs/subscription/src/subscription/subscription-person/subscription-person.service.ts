@@ -44,6 +44,9 @@ export class SubscriptionPersonService {
       },
       {
         where,
+        include: {
+          person: true,
+        },
       },
     );
   }
