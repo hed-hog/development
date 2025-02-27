@@ -48,7 +48,7 @@ export class SettingsController {
     return this.settingService.listSettingGroups(locale, paginationParams);
   }
 
-  @Get()
+  @Get('/user')
   async getUserSettings(@User() { id }) {
     return this.settingService.getUserSettings(id);
   }
