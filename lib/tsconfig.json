@@ -126,6 +126,12 @@
       ],
       "@hedhog/profile/*": [
         "libs/profile/src/*"
+      ],
+      "@hedhog/content": [
+        "libs/content/src"
+      ],
+      "@hedhog/content/*": [
+        "libs/content/src/*"
       ]
     }
   },

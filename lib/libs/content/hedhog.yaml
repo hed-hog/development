@@ -1,0 +1,62 @@
+tables:
+  content:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  content_locale:
+    columns:
+      - type: pk
+      - type: fk
+        name: content_id
+        references:
+          table: content
+          column: id
+      - type: fk
+        name: locale_id
+        references:
+          table: locale
+          column: id
+      - name: title
+      - type: text
+        name: body
+      - type: created_at
+      - type: updated_at
+data:
+  route:
+    - url: /content
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /content
+      method: POST
+      relations: *a1
+    - url: /content/:id
+      method: GET
+      relations: *a1
+    - url: /content/:id
+      method: PATCH
+      relations: *a1
+    - url: /content
+      method: DELETE
+      relations: *a1
+  menu:
+    - name:
+        en: Content
+        pt: Content
+      icon: file
+      url: /content
+      slug: content
+      relations: *a1
+  screen:
+    - name:
+        en: Content
+        pt: Content
+      slug: content
+      description:
+        en: Screen to manage content
+        pt: Tela para gerenciar content
+      icon: file
