@@ -382,4 +382,19 @@ export class SettingService {
 
     return data;
   }
+
+  async getUserSettings(user_id: number) {
+    return this.prismaService.setting_user.findMany({
+      where: {
+        user_id,
+      },
+      include: {
+        setting: {
+          select: {
+            slug: true,
+          },
+        },
+      },
+    });
+  }
 }

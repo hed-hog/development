@@ -13,7 +13,6 @@ import {
   Patch,
   Post,
   Put,
-  Res,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from './dto/delete.dto';
@@ -47,6 +46,11 @@ export class SettingsController {
   @Get('group')
   async listSettingGroups(@Pagination() paginationParams, @Locale() locale) {
     return this.settingService.listSettingGroups(locale, paginationParams);
+  }
+
+  @Get()
+  async getUserSettings(@User() { id }) {
+    return this.settingService.getUserSettings(id);
   }
 
   @Get()
