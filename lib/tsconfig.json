@@ -132,6 +132,12 @@
       ],
       "@hedhog/content/*": [
         "libs/content/src/*"
+      ],
+      "@hedhog/chat": [
+        "libs/chat/src"
+      ],
+      "@hedhog/chat/*": [
+        "libs/chat/src/*"
       ]
     }
   },
