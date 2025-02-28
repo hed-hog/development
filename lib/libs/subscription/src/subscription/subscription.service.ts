@@ -82,6 +82,13 @@ export class SubscriptionService {
         where: {
           subscription_id: { in: subscriptions.data.map((s) => s.id) },
         },
+        include: {
+          payment: {
+            include: {
+              payment_method: true,
+            },
+          },
+        },
       });
 
     const subscriptionPersons =
@@ -100,9 +107,14 @@ export class SubscriptionService {
     });
 
     const paymentMap = new Map<number, any>();
-    subscriptionPayments.forEach((payment) => {
-      if (payment.subscription_id) {
-        paymentMap.set(payment.subscription_id, payment);
+    subscriptionPayments.forEach((subscriptionPayment) => {
+      const payment = subscriptionPayment.payment;
+      if (payment) {
+        paymentMap.set(subscriptionPayment.subscription_id, {
+          ...subscriptionPayment,
+          amount: payment.amount,
+          method_name: payment.payment_method?.name || 'Desconhecido',
+        });
       }
     });
 
@@ -124,7 +136,10 @@ export class SubscriptionService {
 
     subscriptions.data = subscriptions.data.map((subscription) => ({
       ...subscription,
-      subscription_payment: paymentMap.get(subscription.id) || null,
+      subscription_payment: paymentMap.get(subscription.id) || {
+        amount: 0,
+        method_name: 'Desconhecido',
+      },
       subscription_person: subscriptionPersonMap.get(subscription.id) || [],
     }));
 
