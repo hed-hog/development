@@ -21,7 +21,7 @@ export class SubscriptionService {
   ) {}
 
   async list(paginationParams: PaginationDTO) {
-    const fields = ['status', 'limit'];
+    const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
       paginationParams,
@@ -29,6 +29,35 @@ export class SubscriptionService {
 
     if (paginationParams.search && !isNaN(+paginationParams.search)) {
       OR.push({ id: { equals: +paginationParams.search } });
+    }
+
+    let subscriptionIdsByPerson: number[] = [];
+
+    if (paginationParams.search) {
+      const matchingSubscriptionPersons =
+        await this.prismaService.subscription_person.findMany({
+          where: {
+            person: {
+              name: {
+                contains: paginationParams.search,
+                mode: 'insensitive',
+              },
+            },
+          },
+          select: {
+            subscription_id: true,
+          },
+        });
+
+      subscriptionIdsByPerson = matchingSubscriptionPersons.map(
+        (sp) => sp.subscription_id,
+      );
+
+      if (subscriptionIdsByPerson.length > 0) {
+        OR.push({
+          id: { in: subscriptionIdsByPerson },
+        });
+      }
     }
 
     const subscriptions = await this.paginationService.paginate(

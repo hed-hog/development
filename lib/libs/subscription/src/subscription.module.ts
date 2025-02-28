@@ -5,6 +5,7 @@ import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { SubscriptionCancelModule } from './subscription-cancel/subscription-cancel.module';
+import { SubscriptionCreateModule } from './subscription-create/subscription-create.module';
 import { SubscriptionListenerModule } from './subscription-listener/subscriptionlistener.module';
 import { SubscriptionPlanItemModule } from './subscription-plan-item/subscription-plan-item.module';
 import { SubscriptionPlanModule } from './subscription-plan/subscription-plan.module';
@@ -18,6 +19,7 @@ import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscr
     forwardRef(() => PaginationModule),
     forwardRef(() => SubscriptionPlanModule),
     forwardRef(() => SubscriptionCancelModule),
+    forwardRef(() => SubscriptionCreateModule),
     forwardRef(() => SubscriptionModule2),
     forwardRef(() => SubscriptionPlanItemModule),
     forwardRef(() => SubscriptionListenerModule),
