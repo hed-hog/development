@@ -54,9 +54,13 @@ export class PaymentService {
           person: {
             select: { name: true },
           },
-          payment_status_locale: {
-            where: { locale_id: 2 },
-            select: { name: true },
+          payment_status: {
+            include: {
+              payment_status_locale: {
+                where: { locale_id: 2 },
+                select: { name: true },
+              },
+            },
           },
           payment_method: {
             select: { name: true },
