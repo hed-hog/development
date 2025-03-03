@@ -48,23 +48,23 @@ export class PaymentService {
           OR,
         },
         include: {
-          gateway: {
+          payment_gateway: {
             select: { name: true },
           },
           person: {
             select: { name: true },
           },
-          status: {
+          payment_status_locale: {
             where: { locale_id: 2 },
             select: { name: true },
           },
-          method: {
+          payment_method: {
             select: { name: true },
           },
-          brand: {
+          payment_card_brand: {
             select: { name: true },
           },
-          coupon: {
+          payment_coupon: {
             select: { code: true },
           },
         },
