@@ -1,3 +1,8 @@
+import { SkeletonCard } from '@/components/cards/skeleton-card'
+import MenuItem from '@/components/custom/menu-item'
+import { SelectedItems } from '@/components/custom/select-items'
+import { SearchField } from '@/components/fields/search-field'
+import { Button, ButtonProps } from '@/components/ui/button'
 import {
   Drawer,
   DrawerContent,
@@ -12,6 +17,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import GridView from '@/components/views/grid-view'
+import ListView from '@/components/views/list-view'
+import { PaginationView } from '@/components/views/pagination-view'
+import TableView from '@/components/views/table-view'
 import { useApp } from '@/hooks/use-app'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { usePagination } from '@/hooks/use-pagination'
@@ -35,11 +44,6 @@ import React, {
 } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import { v4 as uuidv4 } from 'uuid'
-import { SkeletonCard } from '@/components/cards/skeleton-card'
-import { SearchField } from '@/components/fields/search-field'
-import MenuItem from '@/components/custom/menu-item'
-import { SelectedItems } from '@/components/custom/select-items'
-import { Button, ButtonProps } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,10 +51,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
-import GridView from '@/components/views/grid-view'
-import ListView from '@/components/views/list-view'
-import { PaginationView } from '@/components/views/pagination-view'
-import TableView from '@/components/views/table-view'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
@@ -159,7 +159,7 @@ export type DataPanelRef<T> = {
 
 const DataPanelInner = <T extends any>(
   {
-    layout = 'grid',
+    layout = 'list',
     extractKey = (item: T) => {
       try {
         return 'id' in (item as any) ? String((item as any).id) : ''
@@ -171,7 +171,7 @@ const DataPanelInner = <T extends any>(
     id,
     hasSearch = false,
     selectable = false,
-    multiple = false,
+    multiple = true,
     selected = [],
     paginationOptions = {
       pageSizeOptions: [10, 20, 30, 40],
@@ -230,7 +230,7 @@ const DataPanelInner = <T extends any>(
   const { openDialog, closeDialog } = useApp()
 
   const getSelectedItems = useCallback(() => {
-    return selectedItemsArr.map((item) => JSON.parse(item))
+    return selectedItemsArr.map((item) => JSON.parse(item)) as T[]
   }, [selectedItemsArr])
 
   const handleSelect = useCallback(
@@ -285,9 +285,7 @@ const DataPanelInner = <T extends any>(
         }
       case 'list':
         return {
-          itemClassName,
           data: getSelectedItems(),
-          styleOptions,
           render,
           selectable,
           multiple,
@@ -375,17 +373,17 @@ const DataPanelInner = <T extends any>(
     [getSelectedItems]
   )
 
-  const setSelectedItemsInner = useCallback(() => {
-    if (refInner.current) {
-      refInner.current.setSelectedItems(
-        selectedItemsArr.map((item) => extractKey(JSON.parse(item)))
-      )
-    }
-  }, [refInner.current, selectedItemsArr])
+  // const setSelectedItemsInner = useCallback(() => {
+  //   if (refInner.current) {
+  //     refInner.current.setSelectedItems(
+  //       selectedItemsArr.map((item) => extractKey(JSON.parse(item)))
+  //     )
+  //   }
+  // }, [refInner.current, selectedItemsArr])
 
-  useEffect(() => {
-    setSelectedItemsInner()
-  }, [selectedItemsArr])
+  // useEffect(() => {
+  //   //  setSelectedItemsInner()
+  // }, [selectedItemsArr])
 
   useEffectAfterFirstUpdate(() => {
     if (typeof onSelectionChange === 'function') {
@@ -416,6 +414,7 @@ const DataPanelInner = <T extends any>(
     <>
       {Boolean(hasSearch || menuActions.length) && (
         <div
+          data-component='DataPanel'
           className={`my-4 flex w-full flex-row justify-${hasSearch ? 'between' : 'end'}`}
         >
           {hasSearch && (
@@ -618,38 +617,25 @@ const DataPanelInner = <T extends any>(
         </>
       )}
       {layout === 'list' && (
-        <>
-          {isLoading ? (
-            <ListView<T>
-              itemClassName={itemClassName}
-              data={[]}
-              styleOptions={{
-                gap: styleOptions.gap,
-                padding: styleOptions.padding,
-              }}
-              render={() => <SkeletonCard key={Math.random()} />}
-              {...(props as any)}
-            />
-          ) : (
-            <ListView<T>
-              ref={refInner}
-              itemClassName={itemClassName}
-              selectable={selectable}
-              multiple={multiple}
-              data={items}
-              styleOptions={{
-                gap: styleOptions.gap,
-                padding: styleOptions.padding,
-              }}
-              render={render}
-              onSelect={handleSelect}
-              onItemDoubleClick={onItemDoubleClick}
-              onUnselect={handleUnselect}
-              selectedIds={getSelectedItems().map((item) => extractKey(item))}
-              {...(props as any)}
-            />
-          )}
-        </>
+        <ListView<T>
+          loading={isLoading}
+          ref={refInner}
+          selectable={selectable}
+          multiple={multiple}
+          data={items}
+          render={render}
+          onSelectionChange={(selectedItems) => {
+            setSelectedItemsArr(
+              selectedItems.map((item) => JSON.stringify(item))
+            )
+
+            if (typeof onSelectionChange === 'function') {
+              onSelectionChange(selectedItems)
+            }
+          }}
+          onItemDoubleClick={onItemDoubleClick}
+          {...(props as any)}
+        />
       )}
       {layout === 'grid' && (
         <>

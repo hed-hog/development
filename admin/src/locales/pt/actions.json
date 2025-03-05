@@ -1,6 +1,6 @@
 {
-  "delete": "Deletar",
-  "remove": "Excluir",
+  "delete": "Excluir",
+  "remove": "Remover",
   "edit": "Editar",
   "create": "Criar",
   "apply": "Aplicar",
@@ -10,5 +10,10 @@
   "ok": "Ok",
   "item": "item",
   "items": "itens",
-  "selected": "selecionado"
+  "selected": "selecionado",
+  "selecting": "Selecionando",
+  "select": "Selecionar",
+  "add": "Adicionar",
+  "emptyList": "Lista vazia",
+  "loading": "Carregando"
 }

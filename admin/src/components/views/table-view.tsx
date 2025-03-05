@@ -372,7 +372,7 @@ const TableViewInner = <T extends any>(
   )
 
   return (
-    <Table>
+    <Table data-component='TableView'>
       {caption && <TableCaption className='mt-10'>{caption}</TableCaption>}
       <TableHeader>
         <TableHeadRow>
@@ -391,7 +391,9 @@ const TableViewInner = <T extends any>(
             <TableHead
               key={'key' in col ? col.key : 'actions'}
               onClick={() =>
-                'key' in col && sortable && handleSort(col.key, col.isLocale)
+                'key' in col &&
+                sortable &&
+                handleSort(col.key, Boolean(col.isLocale))
               }
               onMouseEnter={() => 'key' in col && setHoveredColumn(col.key)}
               onMouseLeave={() => setHoveredColumn(null)}
@@ -429,7 +431,7 @@ const TableViewInner = <T extends any>(
                     <DropdownMenuContent>
                       <DropdownMenuItem
                         onClick={() =>
-                          onSortChange(col.key, 'asc', col.isLocale)
+                          onSortChange(col.key, 'asc', Boolean(col.isLocale))
                         }
                       >
                         <IconSortAscending className='mr-2' />
@@ -437,7 +439,7 @@ const TableViewInner = <T extends any>(
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() =>
-                          onSortChange(col.key, 'desc', col.isLocale)
+                          onSortChange(col.key, 'desc', Boolean(col.isLocale))
                         }
                       >
                         <IconSortDescending className='mr-2' />

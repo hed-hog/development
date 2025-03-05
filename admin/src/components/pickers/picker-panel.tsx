@@ -11,7 +11,7 @@ import { IPaginationOption } from '@/types/pagination-options'
 import { IResponsiveColumn } from '@/types/responsive-columns'
 import { IStyleOption } from '@/types/style-options'
 import { ITableColumn } from '@/types/table-column'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DataPanel } from '@/components/panels/data-panel'
 
 interface IPickerPanelProps<T> {
@@ -27,6 +27,7 @@ interface IPickerPanelProps<T> {
   styleOptions?: IStyleOption
   columns?: ITableColumn<T>[]
   buttons?: (ButtonProps & { text: string })[]
+  onSelectionChange?: (selectedItems: (string | Record<string, any>)[]) => void
 }
 
 export default function PickerPanel<T extends {}>({
@@ -53,6 +54,7 @@ export default function PickerPanel<T extends {}>({
   sortable,
   buttons = [],
   render,
+  onSelectionChange,
 }: IPickerPanelProps<T>) {
   const id = `${url}-picker-panel`
   const [selectedIds, setSelectedIds] = useState<
@@ -60,6 +62,12 @@ export default function PickerPanel<T extends {}>({
   >([])
   const [isAllSelected, setIsAllSelected] = useState(false)
   const [filteredData, setFilteredData] = useState<any[]>([])
+
+  useEffect(() => {
+    if (typeof onSelectionChange === 'function') {
+      onSelectionChange(selectedIds)
+    }
+  }, [selectedIds])
 
   const handleCheckboxChange = (row: any, id: string) => {
     setSelectedIds((prevSelectedIds) => {
@@ -76,42 +84,53 @@ export default function PickerPanel<T extends {}>({
           : [...prevFilteredData, row]
       })
 
+      if (typeof onSelectionChange === 'function') {
+        onSelectionChange(updatedSelectedIds)
+      }
+
       return updatedSelectedIds
     })
   }
 
   const handleSelectAll = (data: any[]) => {
+    let newSelectedIds
+    let newFilteredData
+
     if (isAllSelected) {
-      setSelectedIds((prevIds) =>
-        prevIds.filter((id) => !data.some((d) => d.id === id))
+      newSelectedIds = selectedIds.filter(
+        (id) => !data.some((d) => d.id === id)
       )
-      setFilteredData((prevData) =>
-        prevData.filter((item) => !data.some((d) => d.id === item.id))
+      newFilteredData = filteredData.filter(
+        (item) => !data.some((d) => d.id === item.id)
       )
     } else {
       const newIds = new Set(data.map((item) => item.id))
-
-      setFilteredData((prevData) => [
-        ...prevData.filter((item) => !newIds.has(item.id)),
-        ...data,
-      ])
-
-      setSelectedIds((prevIds) => [
-        ...prevIds.filter((id) => !newIds.has(id)),
+      newSelectedIds = [
+        ...selectedIds.filter((id) => !newIds.has(id)),
         ...data.map((item) => item.id),
-      ])
+      ]
+      newFilteredData = [
+        ...filteredData.filter((item) => !newIds.has(item.id)),
+        ...data,
+      ]
     }
 
+    setSelectedIds(newSelectedIds)
+    setFilteredData(newFilteredData)
     setIsAllSelected(!isAllSelected)
+    onSelectionChange?.(newSelectedIds)
   }
 
   return (
     <Card className='mx-auto max-w-[95%]'>
       <CardContent className='w-full overflow-auto'>
-        <CardHeader className='px-4'>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{subtitle}</CardDescription>
-        </CardHeader>
+        {(title || subtitle) && (
+          <CardHeader className='px-4'>
+            {title && <CardTitle>{title}</CardTitle>}
+            {subtitle && <CardDescription>{subtitle}</CardDescription>}
+          </CardHeader>
+        )}
+
         {type === 'table' && columns && Boolean(columns?.length) ? (
           <DataPanel
             layout='table'
@@ -122,9 +141,10 @@ export default function PickerPanel<T extends {}>({
             sortable={sortable}
             selectable={true}
             multiple={true}
+            hasSearch={true}
             render={render}
             onSelectionChange={(selectedItems) => {
-              setSelectedIds((prevIds) => [...prevIds, ...selectedItems])
+              setSelectedIds(selectedItems)
             }}
             onItemClick={(row: any) => handleCheckboxChange(row, row.id)}
             paginationOptions={{
@@ -142,6 +162,7 @@ export default function PickerPanel<T extends {}>({
             layout='grid'
             selectable={true}
             multiple={true}
+            hasSearch={true}
             id={id}
             render={render}
             paginationOptions={{
@@ -167,9 +188,13 @@ export default function PickerPanel<T extends {}>({
             url={url}
             selectable={true}
             multiple={true}
+            hasSearch={true}
             render={render}
             paginationOptions={{
               pageSizeOptions: paginationOptions?.pageSizeOptions,
+            }}
+            onSelectionChange={(selectedItems) => {
+              setSelectedIds(() => [...selectedItems])
             }}
             styleOptions={{
               gap: styleOptions.gap,
@@ -191,9 +216,6 @@ export default function PickerPanel<T extends {}>({
               </Button>
             ))}
           </div>
-          <Button type='submit' onClick={() => console.log(selectedIds)}>
-            Save changes
-          </Button>
         </CardFooter>
       </CardContent>
     </Card>

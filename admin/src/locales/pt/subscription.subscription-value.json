@@ -1,0 +1,11 @@
+{
+  "create": "Criar valor de assinatura",
+  "createText": "Preencha as informações do valor de assinatura.",
+  "createTooltip": "Criar novo valor de assinatura",
+  "delete": "Excluir valor de assinatura",
+  "deleteText": "Você tem certeza de que deseja excluir este valor de assinatura?",
+  "deleteTooltip": "Excluir o valor de assinatura selecionado",
+  "edit": "Editar valor de assinatura",
+  "editText": "Ver e editar informações do valor de assinatura.",
+  "editTooltip": "Editar o valor de assinatura selecionado"
+}

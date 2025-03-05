@@ -451,13 +451,6 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDTO) {
-    /*
-    await this.mail.send({
-      to: email,
-      subject: `Novo login no CoinBitClub`,
-      body: getUserLoginEmail(),
-    });
-    */
     return this.loginWithEmailAndPassword(email, password);
   }
 

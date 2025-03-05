@@ -77,7 +77,7 @@ function Calendar({
           <SelectTrigger className='text-sm font-medium'>
             <SelectValue placeholder='Select month' />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent style={{ zIndex: 3000 }}>
             {months.map((month, index) => (
               <SelectItem key={index} value={String(index)}>
                 {month}
@@ -99,7 +99,7 @@ function Calendar({
           <SelectTrigger className='text-sm font-medium'>
             <SelectValue placeholder='Select year' />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent style={{ zIndex: 3000 }}>
             {years.map((year) => (
               <SelectItem key={year} value={String(year)}>
                 {year}

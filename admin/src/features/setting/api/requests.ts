@@ -1,10 +1,10 @@
 import { useApp } from '@/hooks/use-app'
-import { SettingType } from '@/types/setting'
+import { Setting } from '@/types/models/Setting'
 
 export function requests() {
   const { request } = useApp()
 
-  const createSetting = async (data: SettingType) => {
+  const createSetting = async (data: Setting) => {
     return request({
       url: '/setting',
       data,
@@ -14,7 +14,7 @@ export function requests() {
 
   const editSetting = async (params: {
     id: string
-    data: Partial<SettingType>
+    data: Partial<Setting>
   }) => {
     const { id, data } = params
     return request({
@@ -26,7 +26,7 @@ export function requests() {
 
   const editSettingSlug = async (params: {
     slug: string
-    data: Partial<SettingType>
+    data: Partial<Setting>
   }) => {
     const { slug, data } = params
     return request({

@@ -1,5 +1,5 @@
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { CSSProperties } from 'react'
+import { CSSProperties, Dispatch, SetStateAction } from 'react'
 import { FieldValues, UseFormReturn } from 'react-hook-form'
 
 export interface IFormFieldOption {
@@ -46,7 +46,7 @@ export type FieldType =
 
 export interface IFormFieldPropsBase {
   name: string
-  type: FieldType
+  type: FieldType | EnumFieldType
   defaultValue?: any
   value?: any
   onChange?: (value: any) => void
@@ -59,6 +59,11 @@ export interface IFormFieldPropsBase {
   url?: string
   displayName?: string
   valueName?: string
+  selectedIds?: (string | Record<string, any>)[]
+  setSelectedIds?: Dispatch<SetStateAction<(string | Record<string, any>)[]>>
+  title?: string
+  subtitle?: string
+  columnName?: string
 }
 
 export interface ISliderProps extends IFormFieldPropsBase {

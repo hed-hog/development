@@ -88,6 +88,11 @@ export default function Nav({
 
 interface NavLinkProps extends SideLink {
   subLink?: boolean
+  title: string
+  icon: React.ReactNode
+  label: string
+  href: string
+  sub?: any
   closeNav: () => void
 }
 
@@ -126,9 +131,6 @@ function NavLink({
 }
 
 function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
-  const { checkActiveNav } = useCheckActiveNav()
-  const isChildActive = !!sub?.find((s) => checkActiveNav(s.href))
-
   return (
     <Collapsible defaultOpen={true}>
       <CollapsibleTrigger
@@ -154,7 +156,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
       </CollapsibleTrigger>
       <CollapsibleContent className='collapsibleDropdown' asChild>
         <ul>
-          {sub!.map((sublink) => (
+          {sub!.map((sublink: any) => (
             <li key={sublink.title} className='my-1 ml-8'>
               {renderLink(sublink, false, closeNav)}
             </li>
@@ -196,7 +198,7 @@ function NavLinkIcon({ title, icon, label, href }: NavLinkProps) {
 
 function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav()
-  const isChildActive = !!sub?.find((s) => checkActiveNav(s.href))
+  const isChildActive = !!sub?.find((s: any) => checkActiveNav(s.href))
 
   return (
     <DropdownMenu>
@@ -228,7 +230,7 @@ function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
           {title} {label ? `(${label})` : ''}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {sub!.map(({ title, icon, label, href, sub: subSub }) => (
+        {sub!.map(({ title, icon, label, href, sub: subSub }: any) => (
           <DropdownMenu key={`${title}-${href}`}>
             <DropdownMenuItem asChild>
               {subSub ? (
@@ -264,7 +266,7 @@ function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
             </DropdownMenuItem>
             {subSub && (
               <DropdownMenuContent side='right' align='start' sideOffset={4}>
-                {subSub.map((subSublink) => (
+                {subSub.map((subSublink: any) => (
                   <DropdownMenuItem
                     key={`${subSublink.title}-${subSublink.href}`}
                     asChild

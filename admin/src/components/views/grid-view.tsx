@@ -214,6 +214,7 @@ const GridViewInner = <T extends any>(
   // Renderizar os itens da grid com o Checkbox, se `multipleSelect` for boolean
   const gridItems = data.map((item, index) => (
     <div
+      data-component='GridView'
       key={extractKey(item)}
       id={`grid-item`}
       style={{ marginBottom: `${styleOptions.gap / 4}rem` }}

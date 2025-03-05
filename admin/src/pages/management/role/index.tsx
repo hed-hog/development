@@ -6,7 +6,6 @@ import RoleCreatePanel from '@/pages/management/role/components/role-create-pane
 import { RoleEditPanel } from '@/pages/management/role/components/role-edit-panel'
 import { Menu, Role, Route, Screen } from '@/types/models'
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
-import { url } from 'inspector'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

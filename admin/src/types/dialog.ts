@@ -1,5 +1,5 @@
 import { ButtonProps } from '@/components/ui/button'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, ReactNode } from 'react'
 
 export type DialogType = {
   id: string
@@ -10,7 +10,7 @@ export type DialogType = {
 export type OpenDialogType = {
   title?: string
   description?: string
-  children?: FunctionComponent<any>
+  children?: FunctionComponent<any> | ReactNode
   buttons?: (ButtonProps & { text: string })[]
   props?: any
 }

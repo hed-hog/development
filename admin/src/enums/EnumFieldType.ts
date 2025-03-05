@@ -15,4 +15,7 @@ export enum EnumFieldType {
   SHEETPICKER = 'sheetpicker',
   SWITCH = 'switch',
   SWITCH_LIST = 'switchlist',
+  NUMBER = 'number',
+  PICKER = 'picker',
+  HTML = 'html',
 }

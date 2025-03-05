@@ -1,0 +1,12 @@
+{
+  "create": "Create subscription",
+  "createText": "Fill the subscription informations.",
+  "createTooltip": "Create new subscription",
+  "delete": "Delete subscription",
+  "deleteText": "Are you sure to delete these subscription?",
+  "deleteTooltip": "Delete the selected subscription",
+  "edit": "Edit subscription",
+  "editText": "View and edit subscription information.",
+  "editTooltip": "Edit the selected subscription",
+  "name": "Name"
+}

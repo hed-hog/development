@@ -1,0 +1,11 @@
+{
+  "create": "Criar status de pagamento",
+  "createText": "Preencha as informações do status de pagamento.",
+  "createTooltip": "Criar novo status de pagamento",
+  "delete": "Excluir status de pagamento",
+  "deleteText": "Tem certeza de que deseja excluir esses status de pagamento?",
+  "deleteTooltip": "Excluir o status de pagamento selecionado",
+  "edit": "Editar status de pagamento",
+  "editText": "Ver e editar as informações do status de pagamento.",
+  "editTooltip": "Editar o status de pagamento selecionado"
+}

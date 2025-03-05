@@ -1,0 +1,11 @@
+{
+  "create": "Criar método de pagamento",
+  "createText": "Preencha as informações do método de pagamento.",
+  "createTooltip": "Criar novo método de pagamento",
+  "delete": "Excluir método de pagamento",
+  "deleteText": "Você tem certeza de que deseja excluir estes métodos de pagamento?",
+  "deleteTooltip": "Excluir o método de pagamento selecionado",
+  "edit": "Editar método de pagamento",
+  "editText": "Visualizar e editar informações do método de pagamento.",
+  "editTooltip": "Editar o método de pagamento selecionado"
+}

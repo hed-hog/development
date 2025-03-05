@@ -5,6 +5,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from '@/components/ui/command'
 import { FormControl } from '@/components/ui/form'
 import {
@@ -48,10 +49,27 @@ export function Combobox(props: ComboboxPrps) {
   useEffect(() => {
     if (data) {
       setOptions(
-        (data?.data as any).data.map((item: any) => ({
-          [valueName]: item[String(valueName)],
-          [displayName]: item[String(displayName)] || item.locale.en.name,
-        }))
+        (data?.data as any).data.map((item: any) => {
+          if (item.locale) {
+            return {
+              [valueName]: item[String(valueName)],
+              [displayName]:
+                item[String(displayName)] ??
+                item.locale.pt.name ??
+                item.locale.en.name,
+            }
+          } else {
+            return {
+              [valueName]: item[String(valueName)],
+              [displayName]:
+                item[String(displayName)] ??
+                item.name ??
+                item.slug ??
+                item.code ??
+                item.id,
+            }
+          }
+        })
       )
     }
   }, [data, displayName, valueName])
@@ -106,27 +124,29 @@ export function Combobox(props: ComboboxPrps) {
         <Command>
           <CommandInput placeholder='Search...' />
           <CommandEmpty>No framework found.</CommandEmpty>
-          <CommandGroup>
-            {options.map((option) => (
-              <CommandItem
-                key={option[valueName]}
-                onSelect={() => {
-                  setValue(option)
-                  setOpen(false)
-                }}
-              >
-                <Check
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    option[valueName] === value[valueName]
-                      ? 'opacity-100'
-                      : 'opacity-0'
-                  )}
-                />
-                {option[displayName]}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandList>
+            <CommandGroup>
+              {options.map((option) => (
+                <CommandItem
+                  key={option[valueName]}
+                  onSelect={() => {
+                    setValue(option)
+                    setOpen(false)
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      option[valueName] === value[valueName]
+                        ? 'opacity-100'
+                        : 'opacity-0'
+                    )}
+                  />
+                  {option[displayName]}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>

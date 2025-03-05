@@ -90,6 +90,7 @@ export const TabPanel = ({
 
   return (
     <Tabs
+      data-component='TabPanel'
       defaultValue='account'
       className='tabs-flex w-full flex-1 flex-col'
       value={`tab-${activeTab}`}

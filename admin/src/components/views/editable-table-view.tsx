@@ -59,7 +59,7 @@ const EditableTableView: React.FC<IEditableTableViewProps> = ({
   ) => {
     return (
       <Field
-        type={type}
+        type={type as any}
         value={item[name]}
         onChange={(value: any) => handleFieldChange(index, name, value)}
         options={options}

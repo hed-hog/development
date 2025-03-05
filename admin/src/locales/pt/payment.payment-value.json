@@ -1,0 +1,11 @@
+{
+  "create": "Criar valor do pagamento",
+  "createText": "Preencha as informações do valor do pagamento.",
+  "createTooltip": "Criar novo valor do pagamento",
+  "delete": "Excluir valor do pagamento",
+  "deleteText": "Você tem certeza de que deseja excluir esses valores do pagamento?",
+  "deleteTooltip": "Excluir o valor do pagamento selecionado",
+  "edit": "Editar valor do pagamento",
+  "editText": "Visualizar e editar informações do valor do pagamento.",
+  "editTooltip": "Editar o valor do pagamento selecionado"
+}

@@ -1,0 +1,11 @@
+{
+  "create": "Criar assinatura de pessoa",
+  "createText": "Preencha as informações da assinatura de pessoa.",
+  "createTooltip": "Criar nova assinatura de pessoa",
+  "delete": "Excluir assinatura de pessoa",
+  "deleteText": "Você tem certeza que deseja excluir essas assinaturas de pessoa?",
+  "deleteTooltip": "Excluir a assinatura de pessoa selecionada",
+  "edit": "Editar assinatura de pessoa",
+  "editText": "Visualizar e editar informações da assinatura de pessoa.",
+  "editTooltip": "Editar a assinatura de pessoa selecionada"
+}

@@ -1,0 +1,12 @@
+{
+  "create": "Criar assinatura",
+  "createText": "Preencha as informações da assinatura.",
+  "createTooltip": "Criar nova assinatura",
+  "delete": "Excluir assinatura",
+  "deleteText": "Você tem certeza de que deseja excluir estas assinaturas?",
+  "deleteTooltip": "Excluir a assinatura selecionada",
+  "edit": "Editar assinatura",
+  "editText": "Visualizar e editar informações da assinatura.",
+  "editTooltip": "Editar a assinatura selecionada",
+  "name": "Nome"
+}

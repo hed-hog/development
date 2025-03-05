@@ -1,31 +1,35 @@
-import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import { objectToString } from '@/lib/utils'
-import { IStyleOption } from '@/types/style-options'
-import React, {
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react'
-import { useTranslation } from 'react-i18next'
-import { v4 as uuidv4 } from 'uuid'
-import { SelectAll } from '@/components/custom/select-items'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from '@tanstack/react-table'
+import { ArrowUp } from 'lucide-react'
+import React, { useEffect, useImperativeHandle, useState } from 'react'
+import { Button } from '../ui/button'
+import { Checkbox } from '../ui/checkbox'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
-  isLoading?: boolean
+  loading?: boolean
   data: T[]
   render?: (item: T, index: number) => JSX.Element
-  styleOptions?: IStyleOption
   selectable?: boolean
   multiple?: boolean
   onSelectionChange?: (selectedItems: T[]) => void
-  itemClassName?: string
-  extractKey?: (item: T) => string
   onSelect?: (row: T, index: number) => void
   onUnselect?: (row: T, index: number) => void
-  selectedIds?: string[]
   onItemDoubleClick?: (
     row: T,
     index: number,
@@ -36,208 +40,289 @@ type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
     index: number,
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => void
+  textLoading?: string
+  textEmpty?: string
+  columnName?: string
 }
 
 const ListViewInner = <T extends any>(
   {
-    styleOptions = {
-      gap: 6,
-      padding: 4,
-    },
+    loading = false,
     data = [],
     render,
     selectable = false,
     multiple = true,
     onSelectionChange,
     className,
-    itemClassName,
     onSelect,
     onUnselect,
-    isLoading = false,
-    extractKey = (item: T) => {
-      try {
-        return 'id' in (item as any) ? String((item as any).id) : ''
-      } catch (error) {
-        return uuidv4()
-      }
-    },
-    selectedIds = [],
     onItemDoubleClick,
     onItemClick,
+    textLoading = 'Loading...',
+    textEmpty = 'Empty list',
+    columnName = 'Name',
     ...props
   }: ListViewProps<T>,
   ref: React.Ref<any>
 ) => {
-  const listViewId = uuidv4()
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
-  const { t } = useTranslation('select', {
-    useSuspense: false,
-  })
-
-  useEffect(() => {
-    if (onSelectionChange) {
-      onSelectionChange(
-        data.filter((item) => selectedItems.includes(extractKey(item)))
-      )
-    }
-  }, [selectedItems, data, extractKey, onSelectionChange])
-
-  const toggleSelectItem = useCallback(
-    (item: T) => {
-      const id = extractKey(item)
-      const isSelected = selectedItems.includes(id)
-
-      if (!isSelected && typeof onSelect === 'function') {
-        onSelect(
-          item,
-          data.findIndex((item) => extractKey(item) === id)
-        )
-      } else if (isSelected && typeof onUnselect === 'function') {
-        onUnselect(
-          item,
-          data.findIndex((item) => extractKey(item) === id)
-        )
-      }
-
-      if (selectable) {
-        setSelectedItems((prevSelected) =>
-          isSelected
-            ? prevSelected.filter((itemId) => itemId !== id)
-            : [...prevSelected, id]
-        )
-      }
-    },
-    [selectedItems, selectable, extractKey, onSelect, onUnselect, data]
-  )
-
-  const selectAllItems = useCallback(() => {
-    setSelectedItems((prevSelectedItems) => {
-      const newSelection = new Set<string>(prevSelectedItems)
-
-      if (newSelection.size === data.length) {
-        if (typeof onUnselect === 'function') {
-          for (const id of newSelection) {
-            const item = data.find((i) => extractKey(i) === id)
-            if (item) {
-              onUnselect(
-                item,
-                data.findIndex((i) => extractKey(i) === id)
-              )
-            }
-          }
-        }
-        return []
-      } else {
-        if (typeof onSelect === 'function') {
-          for (const item of data) {
-            const id = extractKey(item)
-            if (!newSelection.has(id)) {
-              onSelect(
-                item,
-                data.findIndex((i) => extractKey(i) === id)
-              )
-            }
-            newSelection.add(id)
-          }
-        }
-        return Array.from(newSelection)
-      }
-    })
-  }, [data, extractKey, onSelect, onUnselect])
-
-  const isAllSelected = React.useMemo(() => {
-    return (
-      data.length > 0 &&
-      data.every((item) => selectedItems.includes(extractKey(item)))
-    )
-  }, [selectedItems, data, extractKey])
-
-  useEffectAfterFirstUpdate(() => {
-    if (multiple) {
-      setSelectedItems(selectedIds)
-    }
-  }, [selectedIds])
-
   useImperativeHandle(
     ref,
     () => ({
-      selectAllItems() {
-        selectAllItems()
-      },
       toggleSelectItem(item: T) {
-        toggleSelectItem(item)
+        const row = table
+          .getRowModel()
+          .rows.find((row) => row.original === item)
+        if (row) {
+          row.toggleSelected(!row.getIsSelected())
+        }
+      },
+      selectAllItems() {
+        table.toggleAllRowsSelected(true)
       },
       setSelectedItems(ids: string[]) {
-        setSelectedItems(ids)
+        const rows = table.getRowModel().rows
+        rows.forEach((row) => {
+          if (ids.includes(row.id)) {
+            row.toggleSelected(true)
+          } else {
+            row.toggleSelected(false)
+          }
+        })
       },
       getSelectedItems() {
-        return data.filter((item) => selectedItems.includes(extractKey(item)))
+        return table.getSelectedRowModel().rows.map((row) => row.original)
+      },
+      setData(_data: T[]) {
+        table.toggleAllRowsSelected(false)
+        _setData([..._data])
       },
     }),
-    [selectAllItems, toggleSelectItem]
+    []
   )
 
-  if (!render) {
-    render = (item: T) => <div>{objectToString(item)}</div>
+  if (typeof render !== 'function') {
+    render = (item: T) => {
+      if (typeof item === 'string') {
+        return <div className='px-2'>{item}</div>
+      }
+      return <div className='px-2'>{JSON.stringify(item)}</div>
+    }
   }
 
-  return (
-    <div {...props} className={`p-${styleOptions.padding} ${className}`}>
-      <div className='border-b'>
-        {selectable && multiple && (
-          <SelectAll
-            checked={isAllSelected}
-            onChange={selectAllItems}
-            label={t('selectAll')}
+  const columns = React.useMemo<ColumnDef<T>[]>(
+    () => [
+      {
+        id: 'select',
+        header: ({ table }) =>
+          multiple && (
+            <Checkbox
+              checked={
+                table.getIsAllPageRowsSelected() ||
+                (table.getIsSomePageRowsSelected() && 'indeterminate')
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+              aria-label='Select all'
+            />
+          ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => {
+              if (!multiple) {
+                table.toggleAllRowsSelected(false)
+              }
+              row.toggleSelected(!!value)
+            }}
+            aria-label='Select row'
           />
-        )}
-      </div>
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: 'name',
+        header: ({ column }) => {
+          return (
+            <Button
+              variant='ghost'
+              className='min-w-0 p-0 px-2'
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === 'asc')
+              }
+            >
+              {columnName}
+              {column.getIsSorted() === 'asc' ? (
+                <ArrowUp size={16} />
+              ) : column.getIsSorted() === 'desc' ? (
+                <ArrowUp size={16} style={{ transform: 'scaleY(-1)' }} />
+              ) : null}
+            </Button>
+          )
+        },
+        cell: ({ row }) => render(row.original, row.index),
+      },
+    ],
+    []
+  )
 
-      {data.map((item, index) => {
-        const itemKey = extractKey(item)
-        const isChecked = selectedItems.includes(itemKey)
-        return (
-          <div
-            key={`${listViewId}-${itemKey}`}
-            className={[
-              itemClassName ?? 'border-b',
-              'flex flex-row items-center truncate py-2 hover:bg-muted/50',
-              isChecked ? 'bg-muted/30' : '',
-              selectable ? 'cursor-pointer' : '',
-            ].join(' ')}
-            onClick={(event) => {
-              if (selectable) {
-                toggleSelectItem(item)
-              }
-              if (typeof onItemClick === 'function') {
-                onItemClick(item, index, event)
-              }
-            }}
-            onDoubleClick={(event) => {
-              if (typeof onItemDoubleClick === 'function') {
-                onItemDoubleClick(item, index, event)
-              }
-            }}
-            style={{ marginBottom: `${styleOptions.gap / 6}rem` }}
-          >
-            {selectable && (
-              <Checkbox
-                id={`list-item`}
-                checked={isChecked}
-                onCheckedChange={() => toggleSelectItem(item)}
-                className='mx-2'
-              />
-            )}
-            {isLoading
-              ? Array.from({ length: 10 }).map((_, index) => (
-                  <div key={`${listViewId}-loading-${index}`}>
-                    <Skeleton className='h-8 w-full' />
-                  </div>
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [_data, _setData] = useState(() => [...data])
+  const [columnFilters, setColumnFilters] = useState<any>([])
+  const [columnVisibility, setColumnVisibility] = useState<any>({
+    select: selectable,
+    name: true,
+  })
+  const [rowSelection, setRowSelection] = useState<any>({})
+  const [selection, setSelection] = useState<any>({})
+
+  const table = useReactTable({
+    data: _data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  })
+
+  useEffect(() => {
+    const selectedItems = Object.keys(rowSelection).filter(
+      (key) => rowSelection[key]
+    )
+    const previousSelectedItems = Object.keys(selection).filter(
+      (key) => selection[key]
+    )
+
+    const addedItems = selectedItems.filter(
+      (item) => !previousSelectedItems.includes(item)
+    )
+    const removedItems = previousSelectedItems.filter(
+      (item) => !selectedItems.includes(item)
+    )
+
+    addedItems.forEach((id) => {
+      if (typeof onSelect === 'function') {
+        const data = table.getRowModel().rows.find((r) => r.id === id)?.original
+        if (data) {
+          onSelect(
+            data,
+            table.getRowModel().rows.findIndex((r) => r.id === id)
+          )
+        }
+      }
+    })
+
+    removedItems.forEach((id) => {
+      if (typeof onUnselect === 'function') {
+        const data = table.getRowModel().rows.find((r) => r.id === id)?.original
+        if (data) {
+          onUnselect(
+            data,
+            table.getRowModel().rows.findIndex((r) => r.id === id)
+          )
+        }
+      }
+    })
+
+    setSelection(rowSelection)
+
+    if (typeof onSelectionChange === 'function') {
+      onSelectionChange(
+        table.getSelectedRowModel().rows.map((row) => row.original)
+      )
+    }
+  }, [rowSelection])
+
+  useEffect(() => {
+    table.toggleAllRowsSelected(false)
+    _setData([...data])
+  }, [data])
+
+  return (
+    <div {...props} className={`${className}`} data-component='ListView'>
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead
+                    key={header.id}
+                    style={{ width: header.id === 'select' ? 24 : 'auto' }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                )
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {loading ? (
+            <TableRow>
+              <TableCell colSpan={columns.length} className='h-24 text-center'>
+                {textLoading || 'Carregando...'}
+              </TableCell>
+            </TableRow>
+          ) : (
+            <>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    onClick={(event) => {
+                      row.toggleSelected(!!row.getIsSelected())
+                      if (typeof onItemClick === 'function') {
+                        onItemClick(row.original, row.index, event)
+                      }
+                    }}
+                    onDoubleClick={(event) => {
+                      if (typeof onItemDoubleClick === 'function') {
+                        onItemDoubleClick(row.original, row.index, event)
+                      }
+                    }}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
                 ))
-              : render(item, index)}
-          </div>
-        )
-      })}
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className='h-24 text-center'
+                  >
+                    {textEmpty || 'Empty list'}
+                  </TableCell>
+                </TableRow>
+              )}
+            </>
+          )}
+        </TableBody>
+      </Table>
     </div>
   )
 }

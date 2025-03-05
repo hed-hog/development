@@ -41,8 +41,8 @@ import { useMediaQuery } from 'usehooks-ts'
 import { v4 as uuidv4 } from 'uuid'
 import { decodeToken } from './decode-token'
 import { getBaseURL } from './get-base-url'
-import { QueryClientProvider } from './query-provider'
 import { getValue } from './get-property-value'
+import { QueryClientProvider } from './query-provider'
 
 export const BASE_URL = getBaseURL()
 
@@ -251,6 +251,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         config.showErrors = true
       }
 
+      ;(config as any).cors = true
+
       const instance = axios.create({ baseURL: BASE_URL })
 
       instance.interceptors.request.use(
@@ -442,6 +444,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         }}
       >
         <QueryClientProvider>
+          {children}
           <Fragment key='dialogs'>
             {modals
               .filter((m) => m.type === 'dialog')
@@ -460,15 +463,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                       {isDesktop ? (
                         <Dialog
                           open={open}
-                          onOpenChange={(value) => {
-                            if (!value) {
-                              const otherModalOpen = modals.some(
-                                (modal) => modal.open && modal.id !== id
-                              )
-                              if (otherModalOpen) {
-                                closeDialog(id)
-                              }
-                            }
+                          onOpenChange={() => {
+                            closeDialog(id)
                           }}
                           modal={false}
                         >
@@ -488,10 +484,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                                 key={`${id}-body`}
                                 className='mt-8 flex flex-1 overflow-y-auto'
                               >
-                                {React.createElement(children, {
-                                  ...props,
-                                  block: children,
-                                })}
+                                {typeof children === 'function'
+                                  ? React.createElement(children, {
+                                      ...props,
+                                      block: children,
+                                    })
+                                  : children}
                               </div>
                             )}
                             {!children && (
@@ -539,10 +537,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                             )}
                             {children && (
                               <div key={`${id}-body`} className='px-4'>
-                                {React.createElement(children, {
-                                  ...props,
-                                  block: children,
-                                })}
+                                {typeof children === 'function'
+                                  ? React.createElement(children, {
+                                      ...props,
+                                      block: children,
+                                    })
+                                  : children}
                               </div>
                             )}
                             {!children && (
@@ -602,10 +602,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                             key={`${id}-body`}
                             className='mt-8 flex flex-1 overflow-y-auto'
                           >
-                            {React.createElement(children, {
-                              ...props,
-                              block: children,
-                            })}
+                            {typeof children === 'function'
+                              ? React.createElement(children, {
+                                  ...props,
+                                  block: children,
+                                })
+                              : children}
                           </div>
                         )}
                         {!children && (
@@ -622,7 +624,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                 )
               )}
           </Fragment>
-          {children}
         </QueryClientProvider>
         <Toaster richColors />
       </AppContext.Provider>

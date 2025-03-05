@@ -27,15 +27,21 @@ import { FieldProps as FieldPropsForm } from '@/types/form-panel'
 import { CheckedState } from '@radix-ui/react-checkbox'
 import {
   ChangeEventHandler,
+  Dispatch,
   FormEventHandler,
   forwardRef,
+  SetStateAction,
   useEffect,
   useState,
 } from 'react'
 import FileUploader from './upload-field'
 import { useApp } from '@/hooks/use-app'
+import { PickerField } from './picker-field'
+import { useTranslation } from 'react-i18next'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
-export type FieldProps = (
+export type FieldProps<T extends any> = (
   | {
       type:
         | EnumFieldType.RICHTEXT
@@ -43,6 +49,7 @@ export type FieldProps = (
         | EnumFieldType.SELECT
         | EnumFieldType.COMBOBOX
         | EnumFieldType.TEXTAREA
+        | EnumFieldType.HTML
       value: string
       onChange: (value: string) => void
     }
@@ -64,6 +71,12 @@ export type FieldProps = (
       onChange: FormEventHandler<HTMLDivElement>
     }
   | {
+      type: EnumFieldType.NUMBER
+      name: string
+      value: number
+      onChange: ChangeEventHandler<HTMLInputElement>
+    }
+  | {
       type:
         | EnumFieldType.CHECKBOX
         | EnumFieldType.SHEETPICKER
@@ -82,13 +95,30 @@ export type FieldProps = (
       value: string
       onChange: (value: Date) => void
     }
+  | {
+      type: EnumFieldType.PICKER
+      selectedIds: (string | Record<string, any>)[]
+      setSelectedIds: Dispatch<SetStateAction<(string | Record<string, any>)[]>>
+      url: string
+      columnName: string
+      value: T[]
+      onChange: (value: T[]) => void
+      textAddButton?: string
+      textEmpty?: string
+      textLoading?: string
+      textRemoveButton?: string
+      textSelectingButton?: string
+      textTitle?: string
+      render?: (item: T) => JSX.Element
+    }
 ) &
   FieldPropsForm
 
-const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
+const Field = forwardRef<HTMLDivElement, FieldProps<any>>((props, _ref) => {
   const { request } = useApp()
   const [value, setValue] = useState<string | string[]>(props.value)
   const [options, setOptions] = useState(props.options)
+  const { t } = useTranslation(['actions'])
 
   useEffect(() => {
     setValue(props.value)
@@ -122,6 +152,27 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
   }, [props.options])
 
   switch (props.type) {
+    case EnumFieldType.PICKER:
+      return (
+        <PickerField
+          url={props.url}
+          value={value as string[]}
+          onChange={props.onChange}
+          textAddButton={props.textAddButton ?? t('add', { ns: 'actions' })}
+          textEmpty={props.textEmpty ?? t('emptyList', { ns: 'actions' })}
+          textLoading={props.textLoading ?? t('loading', { ns: 'actions' })}
+          textRemoveButton={
+            props.textRemoveButton ?? t('remove', { ns: 'actions' })
+          }
+          textSelectingButton={
+            props.textSelectingButton ?? t('select', { ns: 'actions' })
+          }
+          textTitle={props.textTitle ?? t('selecting', { ns: 'actions' })}
+          render={props.render}
+          columnName={props.columnName}
+        />
+      )
+
     case EnumFieldType.COMBOBOX:
       return (
         <Combobox
@@ -156,6 +207,18 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
             required={props.required}
           />
         </FormControl>
+      )
+
+    case EnumFieldType.HTML:
+      return (
+        <ReactQuill
+          value={value as string}
+          onChange={(newValue) => {
+            setValue(newValue)
+            props.onChange(newValue)
+          }}
+          theme='snow'
+        />
       )
     case EnumFieldType.TEXT:
       return (
@@ -268,6 +331,23 @@ const Field = forwardRef<HTMLDivElement, FieldProps>((props, _ref) => {
           />
           <Label>{value || props.sliderOptions?.defaultValue || [50]}</Label>
         </div>
+      )
+
+    case EnumFieldType.NUMBER:
+      return (
+        <FormControl>
+          <Input
+            name={props.name}
+            required={props.required}
+            type='number'
+            value={value || ''}
+            onChange={(event) => {
+              const newValue = event.target.value
+              setValue(newValue)
+              props.onChange(newValue)
+            }}
+          />
+        </FormControl>
       )
 
     case EnumFieldType.SELECT:

@@ -1,5 +1,10 @@
 import { PersonContact } from '@/types/models/PersonContact'
-import { IconAddressBook, IconPencil, IconTrash } from '@tabler/icons-react'
+import {
+  IconAddressBook,
+  IconPencil,
+  IconPhone,
+  IconTrash,
+} from '@tabler/icons-react'
 
 type Props = {
   contact: PersonContact
@@ -21,9 +26,14 @@ export default function ContactCard({
       className={`flex cursor-pointer flex-row items-center justify-between ${className}`}
     >
       <div className='my-2 flex items-center'>
-        <IconAddressBook className='text-white-500 mr-3 h-5 w-5' />
+        {isNaN(+contact.value) ? (
+          <IconAddressBook className='text-white-500 mr-3 h-5 w-5' />
+        ) : (
+          <IconPhone className='text-white-500 mr-3 h-5 w-5' />
+        )}
+
         <span className='text-white-800 text-sm font-normal'>
-          {contact.value} ({contact.person_contact_type?.name})
+          {contact.value}
         </span>
       </div>
       {manageable && (

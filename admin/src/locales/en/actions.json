@@ -10,5 +10,10 @@
   "ok": "Ok",
   "item": "item",
   "items": "items",
-  "selected": "selected"
+  "selected": "selected",
+  "selecting": "Selecting",
+  "select": "Select",
+  "add": "Add",
+  "emptyList": "Empty list",
+  "loading": "Loading"
 }

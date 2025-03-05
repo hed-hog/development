@@ -1,10 +1,10 @@
 import { useApp } from '@/hooks/use-app'
-import { ScreenType } from '@/types/screen'
+import { Screen } from '@/types/models/Screen'
 
 export function requests() {
   const { request } = useApp()
 
-  const createScreen = async (data: ScreenType) => {
+  const createScreen = async (data: Screen) => {
     return request({
       url: '/screen',
       data,
@@ -20,7 +20,7 @@ export function requests() {
     }).then((res) => res.data)
   }
 
-  const editScreen = async (params: { id: string; data: ScreenType }) => {
+  const editScreen = async (params: { id: string; data: Screen }) => {
     const { id, data } = params
     return request({
       url: `/screen/${id}`,
