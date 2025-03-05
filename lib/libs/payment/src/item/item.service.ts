@@ -39,7 +39,7 @@ export class ItemService {
           payment_coupon_item: {
             include: {
               payment_coupon: {
-                select: { code: true },
+                select: { code: true, value: true, discount_type: true },
               },
             },
           },

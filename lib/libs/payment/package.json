@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/payment",
-  "version": "0.46.120",
+  "version": "0.46.121",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
