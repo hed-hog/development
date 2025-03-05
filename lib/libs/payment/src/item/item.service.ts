@@ -65,15 +65,33 @@ export class ItemService {
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.item.create({
+    const { id } = await this.prismaService.item.create({
       data,
+    });
+
+    data.coupon_ids.map(async (couponId) => {
+      await this.prismaService.payment_coupon_item.create({
+        data: {
+          item_id: id,
+          coupon_id: couponId,
+        },
+      });
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.item.update({
+    const { id: productId } = await this.prismaService.item.update({
       where: { id: id },
       data,
+    });
+
+    data.coupon_ids.map(async (couponId) => {
+      await this.prismaService.payment_coupon_item.create({
+        data: {
+          coupon_id: couponId,
+          item_id: productId,
+        },
+      });
     });
   }
 

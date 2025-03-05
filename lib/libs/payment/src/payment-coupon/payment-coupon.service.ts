@@ -67,15 +67,33 @@ export class PaymentCouponService {
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.payment_coupon.create({
+    const { id } = await this.prismaService.payment_coupon.create({
       data,
+    });
+
+    data.product_ids.map(async (productId) => {
+      await this.prismaService.payment_coupon_item.create({
+        data: {
+          coupon_id: id,
+          item_id: productId,
+        },
+      });
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.payment_coupon.update({
+    const { id: couponId } = await this.prismaService.payment_coupon.update({
       where: { id: id },
       data,
+    });
+
+    data.product_ids.map(async (productId) => {
+      await this.prismaService.payment_coupon_item.create({
+        data: {
+          coupon_id: couponId,
+          item_id: productId,
+        },
+      });
     });
   }
 
