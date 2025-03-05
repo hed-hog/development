@@ -68,33 +68,61 @@ export class PaymentCouponService {
 
   async create(data: CreateDTO) {
     const { id } = await this.prismaService.payment_coupon.create({
-      data,
+      data: {
+        code: data.code,
+        discount_type_id: data.discount_type_id,
+        description: data.description,
+        value: data.value,
+        active: data.active,
+        uses_limit: data.uses_limit,
+        uses_qtd: data.uses_qtd,
+        starts_at: data.starts_at,
+        ends_at: data.ends_at,
+      },
     });
 
-    data.product_ids.map(async (productId) => {
-      await this.prismaService.payment_coupon_item.create({
-        data: {
-          coupon_id: id,
-          item_id: productId,
-        },
-      });
-    });
+    await Promise.all(
+      data.product_ids.map(async (productId) => {
+        await this.prismaService.payment_coupon_item.create({
+          data: {
+            coupon_id: id,
+            item_id: productId,
+          },
+        });
+      }),
+    );
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    const { id: couponId } = await this.prismaService.payment_coupon.update({
-      where: { id: id },
-      data,
+    await this.prismaService.payment_coupon.update({
+      where: { id },
+      data: {
+        code: data.code,
+        discount_type_id: data.discount_type_id,
+        description: data.description,
+        value: data.value,
+        active: data.active,
+        uses_limit: data.uses_limit,
+        uses_qtd: data.uses_qtd,
+        starts_at: data.starts_at,
+        ends_at: data.ends_at,
+      },
     });
 
-    data.product_ids.map(async (productId) => {
-      await this.prismaService.payment_coupon_item.create({
-        data: {
-          coupon_id: couponId,
-          item_id: productId,
-        },
-      });
+    await this.prismaService.payment_coupon_item.deleteMany({
+      where: { coupon_id: id },
     });
+
+    await Promise.all(
+      data.product_ids.map(async (productId) => {
+        await this.prismaService.payment_coupon_item.create({
+          data: {
+            coupon_id: id,
+            item_id: productId,
+          },
+        });
+      }),
+    );
   }
 
   async delete({ ids }: DeleteDTO) {
@@ -103,6 +131,12 @@ export class PaymentCouponService {
         'You must select at least one item to delete.',
       );
     }
+
+    await this.prismaService.payment_coupon_item.deleteMany({
+      where: {
+        coupon_id: { in: ids },
+      },
+    });
 
     return this.prismaService.payment_coupon.deleteMany({
       where: {

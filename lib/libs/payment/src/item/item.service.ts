@@ -66,7 +66,11 @@ export class ItemService {
 
   async create(data: CreateDTO) {
     const { id } = await this.prismaService.item.create({
-      data,
+      data: {
+        slug: data.slug,
+        name: data.name,
+        price: data.price,
+      },
     });
 
     data.coupon_ids.map(async (couponId) => {
@@ -82,17 +86,27 @@ export class ItemService {
   async update({ id, data }: { id: number; data: UpdateDTO }) {
     const { id: productId } = await this.prismaService.item.update({
       where: { id: id },
-      data,
+      data: {
+        name: data.name,
+        slug: data.slug,
+        price: data.price,
+      },
     });
 
-    data.coupon_ids.map(async (couponId) => {
-      await this.prismaService.payment_coupon_item.create({
-        data: {
-          coupon_id: couponId,
-          item_id: productId,
-        },
-      });
+    await this.prismaService.payment_coupon_item.deleteMany({
+      where: { item_id: id },
     });
+
+    await Promise.all(
+      data.coupon_ids.map(async (couponId) => {
+        await this.prismaService.payment_coupon_item.create({
+          data: {
+            coupon_id: couponId,
+            item_id: productId,
+          },
+        });
+      }),
+    );
   }
 
   async delete({ ids }: DeleteDTO) {
@@ -101,6 +115,12 @@ export class ItemService {
         'You must select at least one item to delete.',
       );
     }
+
+    await this.prismaService.payment_coupon_item.deleteMany({
+      where: {
+        item_id: { in: ids },
+      },
+    });
 
     return this.prismaService.item.deleteMany({
       where: {
