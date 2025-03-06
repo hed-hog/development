@@ -79,3 +79,28 @@ tables:
       - type: created_at
       - type: updated_at
     ifNotExists: true
+screens:
+  dashboard:
+    title:
+      en: Dashboard
+      pt: Dashboard
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      url: /management/dashboard
+      icon: adjustments
+      name:
+        en: Dashboard
+        pt: Dashboard
+      slug: /management/dashboard
+      relations:
+        role:
+          - where:
+              slug: admin
+routes:
+  - path: management
+    children:
+      - path: dashboard
+        lazy:
+          component: ./pages/management/dashboard/index.tsx
