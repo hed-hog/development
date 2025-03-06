@@ -1,5 +1,5 @@
 import { WithLocaleDTO } from '@hedhog/locale';
-import { IsString, IsNotEmpty, IsJSON } from 'class-validator';
+import { IsJSON, IsNotEmpty, IsString, ValidateIf } from 'class-validator';
 
 export class CreateDTO extends WithLocaleDTO {
   @IsString()
@@ -10,6 +10,7 @@ export class CreateDTO extends WithLocaleDTO {
   @IsNotEmpty()
   path: string;
 
+  @ValidateIf((o) => typeof o.defaultConfig === 'string')
   @IsJSON()
   defaultConfig: object;
 }
