@@ -1,0 +1,81 @@
+data:
+  route:
+    - url: /dashboard
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard
+      method: POST
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard/:id
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard/:id
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard
+      method: DELETE
+      relations:
+        role:
+          - where:
+              slug: admin
+tables:
+  dashboard:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: Slug
+          pt: Slug
+      - name: path
+        type: varchar
+        length: 255
+        locale:
+          en: Path
+          pt: Caminho
+      - name: default_config
+        locale:
+          en: Default Config
+          pt: Configurações Padrão
+        type: object
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+
+  dashboard_locale:
+    columns:
+      - type: pk
+      - name: dashboard_id
+        type: fk
+        isPrimary: true
+        references:
+          table: dashboard
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        type: varchar
+        length: 255
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
