@@ -9,7 +9,6 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
-import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
 export class DashboardItemService {
@@ -21,8 +20,6 @@ export class DashboardItemService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-    @Inject(forwardRef(() => LocaleService))
-    private readonly localeService: LocaleService,
   ) {}
 
   async list(paginationParams: PaginationDTO) {
