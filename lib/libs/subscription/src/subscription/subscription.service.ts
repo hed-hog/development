@@ -20,7 +20,7 @@ export class SubscriptionService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async list(paginationParams: PaginationDTO) {
+  async list(paginationParams: PaginationDTO, isActive: boolean) {
     const fields = [];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
@@ -66,6 +66,7 @@ export class SubscriptionService {
       {
         where: {
           OR,
+          ...(isActive ? { status: 'active' } : {}),
         },
         include: {
           subscription_plan: {
