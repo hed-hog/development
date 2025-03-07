@@ -1,7 +1,7 @@
 {
   "dashboard.slug": "Slug",
-  "dashboard.path": "Path",
-  "dashboard.default_config": "Default Config",
-  "dashboard.name": "Name",
-  "dashboard_locale.name": "Name"
+  "dashboard_component.slug": "Slug",
+  "dashboard_component.path": "Path",
+  "dashboard_component.name": "Name",
+  "dashboard_component_locale.name": "Name"
 }
