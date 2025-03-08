@@ -124,19 +124,39 @@ data:
     - name:
         en: Dashboard
         pt: Dashboard
-      icon: file
-      url: /dashboard
-      slug: dashboard
+      icon: dashboard
+      url: /management/dashboard
+      slug: /management/dashboard
       relations:
         role:
           - where:
               slug: admin
     - name:
-        en: DashboardComponent
-        pt: DashboardComponent
-      icon: file
-      url: /dashboard-component
-      slug: dashboard-component
+        en: Dashboard Component
+        pt: Componente do Dashboard
+      icon: dashboard
+      url: /management/dashboard-component
+      slug: /management/dashboard-component
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Dashboard Item
+        pt: Item do Dashboard
+      icon: dashboard
+      url: /management/dashboard-item
+      slug: /management/dashboard-item
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Dashboard User
+        pt: Usuário do Dashboard
+      icon: dashboard
+      url: /management/dashboard-user
+      slug: /management/dashboard-user
       relations:
         role:
           - where:
@@ -304,13 +324,13 @@ routes:
     children:
       - path: dashboard
         lazy:
-          component: ./pages/management/dashboard/index.tsx
+          component: ./pages/management/dashboard/dashboard/index.tsx
       - path: dashboard-component
         lazy:
-          component: ./pages/management/dashboard-component/index.tsx
+          component: ./pages/management/dashboard/dashboard-component/index.tsx
       - path: dashboard-item
         lazy:
-          component: ./pages/management/dashboard-item/index.tsx
+          component: ./pages/management/dashboard/dashboard-item/index.tsx
       - path: dashboard-user
         lazy:
-          component: ./pages/management/dashboard-user/index.tsx
+          component: ./pages/management/dashboard/dashboard-user/index.tsx
