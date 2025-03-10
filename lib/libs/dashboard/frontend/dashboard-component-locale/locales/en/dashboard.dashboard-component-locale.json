@@ -1,0 +1,11 @@
+{
+  "create": "Create dashboard component locale",
+  "createText": "Fill the dashboard component locale informations.",
+  "createTooltip": "Create new dashboard component locale",
+  "delete": "Delete dashboard component locale",
+  "deleteText": "Are you sure to delete these dashboard component locale?",
+  "deleteTooltip": "Delete the selected dashboard component locale",
+  "edit": "Edit dashboard component locale",
+  "editText": "View and edit dashboard component locale information.",
+  "editTooltip": "Edit the selected dashboard component locale"
+}

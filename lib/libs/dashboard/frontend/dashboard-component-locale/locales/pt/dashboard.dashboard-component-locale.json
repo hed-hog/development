@@ -1,0 +1,11 @@
+{
+  "create": "Criar componente do dashboard",
+  "createText": "Preencha as informações do componente do dashboard.",
+  "createTooltip": "Criar novo componente do dashboard",
+  "delete": "Deletar componente do dashboard",
+  "deleteText": "Você tem certeza de que deseja deletar estes componentes do dashboard?",
+  "deleteTooltip": "Deletar o componente do dashboard selecionado",
+  "edit": "Editar componente do dashboard",
+  "editText": "Visualizar e editar informações do componente do dashboard.",
+  "editTooltip": "Editar o componente do dashboard selecionado"
+}
