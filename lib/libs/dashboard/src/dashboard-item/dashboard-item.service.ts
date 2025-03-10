@@ -39,7 +39,7 @@ export class DashboardItemService {
         },
         include: {
           dashboard_component: true,
-          dashboard_user: true,
+          dashboard: true,
         },
       },
     );
