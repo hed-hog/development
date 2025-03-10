@@ -1,3 +1,4 @@
+import { DeleteDTO } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
@@ -7,14 +8,10 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
 export class DashboardItemService {
-  private readonly modelName = 'dashboard_item';
-  private readonly foreignKey = 'item_id';
-
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
@@ -39,6 +36,10 @@ export class DashboardItemService {
       {
         where: {
           OR,
+        },
+        include: {
+          dashboard_component: true,
+          dashboard_user: true,
         },
       },
     );

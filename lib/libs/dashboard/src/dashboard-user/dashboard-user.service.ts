@@ -1,3 +1,4 @@
+import { DeleteDTO } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
@@ -7,7 +8,6 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
@@ -39,6 +39,10 @@ export class DashboardUserService {
       {
         where: {
           OR,
+        },
+        include: {
+          dashboard_item: true,
+          user: true,
         },
       },
     );
