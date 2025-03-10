@@ -41,7 +41,12 @@ export class DashboardUserService {
           OR,
         },
         include: {
-          dashboard_item: true,
+          dashboard_item: {
+            include: {
+              dashboard_component: true,
+              dashboard: true,
+            },
+          },
           user: true,
         },
       },
