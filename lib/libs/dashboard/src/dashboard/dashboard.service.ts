@@ -1,3 +1,4 @@
+import { DeleteDTO } from '@hedhog/core';
 import { LocaleService } from '@hedhog/locale';
 import { PaginationDTO } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
@@ -5,7 +6,6 @@ import { Injectable } from '@nestjs/common';
 import { BadRequestException } from '@nestjs/common/exceptions';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { DeleteDTO } from '@hedhog/core';
 
 @Injectable()
 export class DashboardService {
@@ -21,6 +21,14 @@ export class DashboardService {
       locale,
       'dashboard',
       paginationParams,
+      {},
+      {
+        dashboard_item: {
+          include: {
+            dashboard_component: true,
+          },
+        },
+      },
     );
   }
 
