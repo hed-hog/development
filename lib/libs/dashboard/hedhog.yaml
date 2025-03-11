@@ -169,15 +169,31 @@ data:
       description:
         en: Screen to manage dashboard
         pt: Tela para gerenciar dashboard
-      icon: file
+      icon: dashboard
     - name:
-        en: DashboardComponent
-        pt: DashboardComponent
+        en: Dashboard Component
+        pt: Componente de Dashboard
       slug: dashboard-component
       description:
-        en: Screen to manage dashboard_component
-        pt: Tela para gerenciar dashboard_component
-      icon: file
+        en: Screen to manage dashboard component
+        pt: Tela para gerenciar componentes de dashboard
+      icon: dashboard
+    - name:
+        en: Dashboard User
+        pt: Componente de Dashboard
+      slug: dashboard-user
+      description:
+        en: Screen to manage dashboard user
+        pt: Tela para gerenciar usuários de dashboard
+      icon: dashboard
+    - name:
+        en: Dashboard Item
+        pt: Item de Dashboard
+      slug: dashboard-item
+      description:
+        en: Screen to manage dashboard item
+        pt: Tela para gerenciar itens de dashboard
+      icon: dashboard
 tables:
   dashboard:
     columns:
@@ -315,6 +331,60 @@ screens:
         en: Dashboard
         pt: Dashboard
       slug: /management/dashboard
+      relations:
+        role:
+          - where:
+              slug: admin
+  dashboard_component:
+    title:
+      en: Dashboard Component
+      pt: Componente do Dashboard
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      url: /management/dashboard-component
+      icon: adjustments
+      name:
+        en: Dashboard Component
+        pt: Componente do Dashboard
+      slug: /management/dashboard-component
+      relations:
+        role:
+          - where:
+              slug: admin
+  dashboard_user:
+    title:
+      en: Dashboard User
+      pt: Usuário de Dashboard
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      url: /management/dashboard-user
+      icon: adjustments
+      name:
+        en: Dashboard User
+        pt: Usuário de Dashboard
+      slug: /management/dashboard-user
+      relations:
+        role:
+          - where:
+              slug: admin
+  dashboard_item:
+    title:
+      en: Dashboard Item
+      pt: Item de Dashboard
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      url: /management/dashboard-item
+      icon: adjustments
+      name:
+        en: Dashboard Item
+        pt: Item de Dashboard
+      slug: /management/dashboard-item
       relations:
         role:
           - where:
