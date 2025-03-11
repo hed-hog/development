@@ -640,124 +640,6 @@ data:
       url: /management/payment/discount-type
       slug: /management/payment/discount-type
       relations: *a5
-    - name:
-        en: PaymentGateway
-        pt: PaymentGateway
-      icon: file
-      url: /payment-gateway
-      slug: payment-gateway
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentStatus
-        pt: PaymentStatus
-      icon: file
-      url: /payment-status
-      slug: payment-status
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentMethod
-        pt: PaymentMethod
-      icon: file
-      url: /payment-method
-      slug: payment-method
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentCardBrand
-        pt: PaymentCardBrand
-      icon: file
-      url: /payment-card-brand
-      slug: payment-card-brand
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: DiscountType
-        pt: DiscountType
-      icon: file
-      url: /discount-type
-      slug: discount-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Payment
-        pt: Payment
-      icon: file
-      url: /payment
-      slug: payment
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Item
-        pt: Item
-      icon: file
-      url: /item
-      slug: item
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentItem
-        pt: PaymentItem
-      icon: file
-      url: /payment-item
-      slug: payment-item
-      relations: *a15
-    - name:
-        en: PaymentMethodItem
-        pt: PaymentMethodItem
-      icon: file
-      url: /payment-method-item
-      slug: payment-method-item
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentValue
-        pt: PaymentValue
-      icon: file
-      url: /payment-value
-      slug: payment-value
-      relations: *a16
-    - name:
-        en: PaymentCoupon
-        pt: PaymentCoupon
-      icon: file
-      url: /payment-coupon
-      slug: payment-coupon
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentCouponItem
-        pt: PaymentCouponItem
-      icon: file
-      url: /payment-coupon-item
-      slug: payment-coupon-item
-      relations: *a17
-    - name:
-        en: PaymentNotification
-        pt: PaymentNotification
-      icon: file
-      url: /payment-notification
-      slug: payment-notification
-      relations: *a19
   screen:
     - name:
         en: Gateway
@@ -1375,35 +1257,39 @@ screens:
           - where:
               slug: admin
 routes:
-  - path: payment
+  - path: management
     children:
       - path: payment-gateway
         lazy:
-          component: ./pages/payment/payment-gateway/index.tsx
+          component: ./pages/management/payment/payment-gateway/index.tsx
       - path: payment-status
         lazy:
-          component: ./pages/payment/payment-status/index.tsx
+          component: ./pages/management/payment/payment-status/index.tsx
       - path: payment-method
         lazy:
-          component: ./pages/payment/payment-method/index.tsx
+          component: ./pages/management/payment/payment-method/index.tsx
       - path: payment-card-brand
         lazy:
-          component: ./pages/payment/payment-card-brand/index.tsx
+          component: ./pages/management/payment/payment-card-brand/index.tsx
       - path: discount-type
         lazy:
-          component: ./pages/payment/discount-type/index.tsx
-      - path: payment
-        lazy:
-          component: ./pages/payment/payment/index.tsx
+          component: ./pages/management/payment/discount-type/index.tsx
       - path: item
         lazy:
-          component: ./pages/payment/item/index.tsx
-      - path: payment-coupon
-        lazy:
-          component: ./pages/payment/payment-coupon/index.tsx
+          component: ./pages/management/payment/item/index.tsx
       - path: payment-notification
         lazy:
-          component: ./pages/payment/payment-notification/index.tsx
+          component: ./pages/management/payment/payment-notification/index.tsx
+  - path: payment
+    children:
+      - path: null
+        lazy:
+          component: ./pages/payment/index.tsx
+  - path: payment-coupon
+    children:
+      - path: null
+        lazy:
+          component: ./pages/payment-coupon/index.tsx
 enums:
   payment_status:
     key: slug
