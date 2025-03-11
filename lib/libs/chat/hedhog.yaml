@@ -1,0 +1,103 @@
+data:
+  route:
+    - url: /chat-message
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /chat-message
+      method: POST
+      relations: *a1
+    - url: /chat-message/:id
+      method: GET
+      relations: *a1
+    - url: /chat-message/:id
+      method: PATCH
+      relations: *a1
+    - url: /chat-message
+      method: DELETE
+      relations: *a1
+    - url: /chat-room
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /chat-room
+      method: POST
+      relations: *a2
+    - url: /chat-room/:id
+      method: GET
+      relations: *a2
+    - url: /chat-room/:id
+      method: PATCH
+      relations: *a2
+    - url: /chat-room
+      method: DELETE
+      relations: *a2
+    - url: /chat-room-person
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /chat-room-person
+      method: POST
+      relations: *a3
+    - url: /chat-room-person/:id
+      method: GET
+      relations: *a3
+    - url: /chat-room-person/:id
+      method: PATCH
+      relations: *a3
+    - url: /chat-room-person
+      method: DELETE
+      relations: *a3
+  menu:
+    - name:
+        en: ChatMessage
+        pt: ChatMessage
+      icon: file
+      url: /chat-message
+      slug: chat-message
+      relations: *a1
+    - name:
+        en: ChatRoom
+        pt: ChatRoom
+      icon: file
+      url: /chat-room
+      slug: chat-room
+      relations: *a2
+    - name:
+        en: ChatRoomPerson
+        pt: ChatRoomPerson
+      icon: file
+      url: /chat-room-person
+      slug: chat-room-person
+      relations: *a3
+  screen:
+    - name:
+        en: ChatMessage
+        pt: ChatMessage
+      slug: chat-message
+      description:
+        en: Screen to manage chat_message
+        pt: Tela para gerenciar chat_message
+      icon: file
+    - name:
+        en: ChatRoom
+        pt: ChatRoom
+      slug: chat-room
+      description:
+        en: Screen to manage chat_room
+        pt: Tela para gerenciar chat_room
+      icon: file
+    - name:
+        en: ChatRoomPerson
+        pt: ChatRoomPerson
+      slug: chat-room-person
+      description:
+        en: Screen to manage chat_room_person
+        pt: Tela para gerenciar chat_room_person
+      icon: file

@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@hedhog/admin": "^0.46.52",
-    "@hedhog/contact": "^0.46.23",
+    "@hedhog/contact": "^0.46.30",
     "@hedhog/pagination": "^0.46.1",
     "@hedhog/prisma": "^0.46.1",
     "@nestjs/mapped-types": "^2.1.0",

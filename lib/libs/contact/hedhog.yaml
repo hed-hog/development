@@ -518,19 +518,19 @@ data:
       relations: *a11
     - url: /person/:personId/person-user
       method: GET
-      relations: *a12
+      relations: *a11
     - url: /person/:personId/person-user/:id
       method: GET
-      relations: *a12
+      relations: *a11
     - url: /person/:personId/person-user
       method: POST
-      relations: *a12
+      relations: *a11
     - url: /person/:personId/person-user/:id
       method: PATCH
-      relations: *a12
+      relations: *a11
     - url: /person/:personId/person-user
       method: DELETE
-      relations: *a12
+      relations: *a11
   screen:
     - name:
         en: PersonValue
