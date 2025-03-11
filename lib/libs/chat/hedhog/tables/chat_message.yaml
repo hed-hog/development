@@ -1,0 +1,31 @@
+columns:
+  - type: pk
+  - type: fk
+    name: chat_id
+    references:
+      table: chat_room
+      column: id
+  - type: fk
+    name: person_id
+    references:
+      table: person
+      column: id
+  - type: enum
+    name: type
+    enum:
+      - text
+      - image
+      - video
+      - audio
+      - file
+  - type: varchar
+    name: content
+    length: 2047
+  - type: datetime
+    name: read_at
+    isNullable: true
+  - type: datetime
+    name: received_at
+    isNullable: true
+  - type: created_at
+  - type: updated_at
