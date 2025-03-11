@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/contact",
-  "version": "0.46.26",
+  "version": "0.46.27",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -36,6 +36,7 @@
     "@hedhog/locale": "^0.46.2",
     "@hedhog/pagination": "^0.46.1",
     "@hedhog/prisma": "^0.46.1",
-    "@nestjs/mapped-types": "^2.1.0"
+    "@nestjs/mapped-types": "^2.1.0",
+    "@nestjs/config": "^4.0.1"
   }
 }
