@@ -1,0 +1,12 @@
+columns:
+  - type: pk
+  - type: fk
+    name: mail_id
+    references:
+      table: mail
+      column: id
+      onDelete: cascade
+      onUpdate: cascade
+  - name: name
+  - type: created_at
+  - type: updated_at

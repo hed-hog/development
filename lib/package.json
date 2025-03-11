@@ -132,7 +132,8 @@
       "^@hedhog/rabbitmq(|/.*)$": "<rootDir>/libs/rabbitmq/src/$1",
       "^@hedhog/profile(|/.*)$": "<rootDir>/libs/profile/src/$1",
       "^@hedhog/content(|/.*)$": "<rootDir>/libs/content/src/$1",
-      "^@hedhog/chat(|/.*)$": "<rootDir>/libs/chat/src/$1"
+      "^@hedhog/chat(|/.*)$": "<rootDir>/libs/chat/src/$1",
+      "^@hedhog/mail-manager(|/.*)$": "<rootDir>/libs/mail-manager/src/$1"
     }
   }
 }

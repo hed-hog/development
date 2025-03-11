@@ -1,0 +1,20 @@
+columns:
+  - type: pk
+  - type: fk
+    name: mail_id
+    references:
+      table: mail
+      column: id
+      onDelete: cascade
+      onUpdate: cascade
+  - name: subject
+  - name: from
+  - name: to
+    isNullable: true
+  - name: cc
+    isNullable: true
+  - name: bcc
+    isNullable: true
+  - name: body
+  - type: created_at
+  - type: updated_at

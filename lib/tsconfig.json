@@ -138,6 +138,12 @@
       ],
       "@hedhog/chat/*": [
         "libs/chat/src/*"
+      ],
+      "@hedhog/mail-manager": [
+        "libs/mail-manager/src"
+      ],
+      "@hedhog/mail-manager/*": [
+        "libs/mail-manager/src/*"
       ]
     }
   },

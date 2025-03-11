@@ -186,6 +186,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/chat/tsconfig.lib.json"
       }
+    },
+    "mail-manager": {
+      "type": "library",
+      "root": "libs/mail-manager",
+      "entryFile": "index",
+      "sourceRoot": "libs/mail-manager/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/mail-manager/tsconfig.lib.json"
+      }
     }
   }
 }
