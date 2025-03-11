@@ -1,0 +1,11 @@
+{
+  "create": "Criar usuário de dashboard",
+  "createText": "Preencha as informações do usuário de dashboard.",
+  "createTooltip": "Criar novo usuário de dashboard",
+  "delete": "Deletar usuário de dashboard",
+  "deleteText": "Você tem certeza que deseja deletar esses usuário de dashboard?",
+  "deleteTooltip": "Deletar o usuário de dashboard selecionado",
+  "edit": "Editar usuário de dashboard",
+  "editText": "Visualizar e editar informações do usuário de dashboard.",
+  "editTooltip": "Editar o usuário de dashboard selecionado"
+}

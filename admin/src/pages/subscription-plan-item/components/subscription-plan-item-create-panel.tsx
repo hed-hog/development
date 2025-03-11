@@ -3,7 +3,7 @@ import { EnumFieldType } from '@/enums/EnumFieldType'
 
 import { useSubscriptionPlanItemCreate } from '@/features/subscription/subscription-plan-item'
 import { SubscriptionPlan } from '@/types/models'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export type SubscriptionPlanItemCreatePanelRef = {
@@ -20,6 +20,7 @@ const SubscriptionPlanItemCreatePanel = forwardRef(
     const { t } = useTranslation(['actions', 'fields', 'translations'])
     const { mutateAsync: createSubscriptionPlanItem } =
       useSubscriptionPlanItemCreate()
+    const [selectedIds, setSelectedIds] = useState<Record<string, any>[]>([])
 
     useImperativeHandle(
       ref,
@@ -59,6 +60,18 @@ const SubscriptionPlanItemCreatePanel = forwardRef(
             required: true,
             type: EnumFieldType.NUMBER,
           },
+          {
+            name: 'coupons',
+            type: EnumFieldType.PICKER,
+            label: {
+              text: t('payment.coupon_id', { ns: 'fields' }),
+            },
+            required: true,
+            url: '/payment-coupon',
+            value: selectedIds,
+            onChange: setSelectedIds,
+            columnName: t('payment.coupon_id', { ns: 'fields' }),
+          },
         ]}
         button={{ text: t('create', { ns: 'actions' }) }}
         onSubmit={async (data) => {
@@ -66,6 +79,7 @@ const SubscriptionPlanItemCreatePanel = forwardRef(
             data: {
               ...data,
               price: Number(data.price),
+              coupon_ids: data.coupons.map((coupon: any) => coupon.id),
             },
           })
           if (typeof onCreated === 'function') {

@@ -3,7 +3,7 @@ import { EnumFieldType } from '@/enums/EnumFieldType'
 
 import { usePaymentCouponCreate } from '@/features/payment/payment-coupon'
 import { PaymentCoupon } from '@/types/models'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export type PaymentCouponCreatePanelRef = {
@@ -19,6 +19,7 @@ const PaymentCouponCreatePanel = forwardRef(
     const formRef = useRef<FormPanelRef>(null)
     const { t } = useTranslation(['actions', 'fields', 'translations'])
     const { mutateAsync: createPaymentCoupon } = usePaymentCouponCreate()
+    const [selectedIds, setSelectedIds] = useState<Record<string, any>[]>([])
 
     useImperativeHandle(
       ref,
@@ -109,6 +110,18 @@ const PaymentCouponCreatePanel = forwardRef(
             type: EnumFieldType.DATEPICKER,
             required: true,
           },
+          {
+            name: 'products',
+            type: EnumFieldType.PICKER,
+            label: {
+              text: t('subscription-plan.item-id', { ns: 'fields' }),
+            },
+            required: true,
+            url: '/item',
+            value: selectedIds,
+            onChange: setSelectedIds,
+            columnName: t('subscription-plan.item-id', { ns: 'fields' }),
+          },
         ]}
         button={{ text: t('create', { ns: 'actions' }) }}
         onSubmit={async (data) => {
@@ -117,6 +130,7 @@ const PaymentCouponCreatePanel = forwardRef(
               ...data,
               uses_qtd: parseInt(data.uses_qtd as string),
               uses_limit: parseInt(data.uses_limit as string),
+              product_ids: data.products.map((item: any) => item.id),
             },
           })
           if (typeof onCreated === 'function') {

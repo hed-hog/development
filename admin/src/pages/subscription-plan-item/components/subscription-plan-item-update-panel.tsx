@@ -7,7 +7,7 @@ import {
 } from '@/features/subscription/subscription-plan-item'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { Item } from '@/types/models'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 
@@ -25,6 +25,7 @@ const SubscriptionPlanItemUpdatePanel = forwardRef(
     const { mutate: subscriptionPlanItemUpdate } =
       useSubscriptionPlanItemUpdate()
     const formRef = useRef<FormPanelRef>(null)
+    const [selectedIds, setSelectedIds] = useState<Record<string, any>[]>([])
 
     useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
@@ -75,6 +76,18 @@ const SubscriptionPlanItemUpdatePanel = forwardRef(
                       required: true,
                       type: EnumFieldType.NUMBER,
                     },
+                    {
+                      name: 'coupons',
+                      type: EnumFieldType.PICKER,
+                      label: {
+                        text: t('payment.coupon_id', { ns: 'fields' }),
+                      },
+                      required: true,
+                      url: '/payment-coupon',
+                      value: selectedIds,
+                      onChange: setSelectedIds,
+                      columnName: t('payment.coupon_id', { ns: 'fields' }),
+                    },
                   ]}
                   button={{ text: t('save', { ns: 'actions' }) }}
                   onSubmit={(data) => {
@@ -83,6 +96,9 @@ const SubscriptionPlanItemUpdatePanel = forwardRef(
                       data: {
                         ...data,
                         price: Number(data.price),
+                        coupon_ids: data.coupons.map(
+                          (coupon: any) => coupon.id
+                        ),
                       },
                     })
                     if (typeof onUpdated === 'function') {

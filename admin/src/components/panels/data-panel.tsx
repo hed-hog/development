@@ -1,8 +1,3 @@
-import { SkeletonCard } from '@/components/cards/skeleton-card'
-import MenuItem from '@/components/custom/menu-item'
-import { SelectedItems } from '@/components/custom/select-items'
-import { SearchField } from '@/components/fields/search-field'
-import { Button, ButtonProps } from '@/components/ui/button'
 import {
   Drawer,
   DrawerContent,
@@ -17,10 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import GridView from '@/components/views/grid-view'
-import ListView from '@/components/views/list-view'
-import { PaginationView } from '@/components/views/pagination-view'
-import TableView from '@/components/views/table-view'
 import { useApp } from '@/hooks/use-app'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { usePagination } from '@/hooks/use-pagination'
@@ -44,6 +35,11 @@ import React, {
 } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import { v4 as uuidv4 } from 'uuid'
+import { SkeletonCard } from '@/components/cards/skeleton-card'
+import { SearchField } from '@/components/fields/search-field'
+import MenuItem from '@/components/custom/menu-item'
+import { SelectedItems } from '@/components/custom/select-items'
+import { Button, ButtonProps } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,6 +47,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
+import GridView from '@/components/views/grid-view'
+import ListView from '@/components/views/list-view'
+import { PaginationView } from '@/components/views/pagination-view'
+import TableView from '@/components/views/table-view'
 
 type IMenuItemAction<T> = ButtonProps & {
   show?: 'once' | 'some' | 'none' | 'any'
