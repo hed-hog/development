@@ -580,7 +580,7 @@ data:
               slug: admin
     - menu_id:
         where:
-          slug: /payment
+          slug: /management
       icon: user-check
       name:
         en: Payment
@@ -1259,27 +1259,29 @@ screens:
 routes:
   - path: management
     children:
-      - path: payment-gateway
-        lazy:
-          component: ./pages/management/payment/payment-gateway/index.tsx
-      - path: payment-status
-        lazy:
-          component: ./pages/management/payment/payment-status/index.tsx
-      - path: payment-method
-        lazy:
-          component: ./pages/management/payment/payment-method/index.tsx
-      - path: payment-card-brand
-        lazy:
-          component: ./pages/management/payment/payment-card-brand/index.tsx
-      - path: discount-type
-        lazy:
-          component: ./pages/management/payment/discount-type/index.tsx
-      - path: item
-        lazy:
-          component: ./pages/management/payment/item/index.tsx
-      - path: payment-notification
-        lazy:
-          component: ./pages/management/payment/payment-notification/index.tsx
+      - path: payment
+        children:
+          - path: payment-gateway
+            lazy:
+              component: ./pages/management/payment/payment-gateway/index.tsx
+          - path: payment-status
+            lazy:
+              component: ./pages/management/payment/payment-status/index.tsx
+          - path: payment-method
+            lazy:
+              component: ./pages/management/payment/payment-method/index.tsx
+          - path: payment-card-brand
+            lazy:
+              component: ./pages/management/payment/payment-card-brand/index.tsx
+          - path: discount-type
+            lazy:
+              component: ./pages/management/payment/discount-type/index.tsx
+          - path: item
+            lazy:
+              component: ./pages/management/payment/item/index.tsx
+          - path: payment-notification
+            lazy:
+              component: ./pages/management/payment/payment-notification/index.tsx
   - path: payment
     children:
       - path: null
