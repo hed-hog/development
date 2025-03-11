@@ -3,16 +3,12 @@ screens:
     title:
       en: FAQ
       pt: Perguntas Frequentes
-    menu:
-      menu_id:
-        where:
-          slug: /management
       name:
         en: FAQ
         pt: Perguntas Frequentes
       icon: zoom-question
-      url: /management/faq
-      slug: /management/faq
+      url: /faq
+      slug: /faq
       relations:
         role:
           - where:
@@ -89,6 +85,6 @@ data:
 routes:
   - path: faq
     children:
-      - path: faq
+      - path: null
         lazy:
           component: ./pages/faq/index.tsx
