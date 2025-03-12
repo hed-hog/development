@@ -175,47 +175,6 @@ data:
       slug: AURA
     - name: MAESTRO
       slug: MAESTRO
-  payment_method_item:
-    - item_id:
-        where:
-          slug: EAGLE_METHOD_COURSE
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 850
-    - item_id:
-        where:
-          slug: PLATFORM_QUARTERLY
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 408
-    - item_id:
-        where:
-          slug: PLATFORM_SEMIANNUAL
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 720
-    - item_id:
-        where:
-          slug: PLATFORM_ANNUAL
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 1248
   route:
     - url: /payment_gateway
       method: GET
