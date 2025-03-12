@@ -80,12 +80,9 @@
   },
   "dependencies": {
     "@hedhog/admin": "^0.46.53",
-    "@hedhog/appearance": "^0.46.2",
     "@hedhog/contact": "^0.46.31",
     "@hedhog/core": "^1.0.6",
     "@hedhog/country": "^0.46.1",
-    "@hedhog/dashboard": "^0.0.16",
-    "@hedhog/faq": "^0.46.6",
     "@hedhog/file": "^0.46.3",
     "@hedhog/locale": "^0.46.8",
     "@hedhog/mail": "^0.46.3",

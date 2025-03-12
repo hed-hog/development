@@ -495,19 +495,6 @@ data:
     - slug: not_using_enough
     - slug: found_better_alternative
     - slug: technical_issues
-  subscription_cancel_reason_locale:
-    - name:
-        en: High Price
-        pt: Preço Alto
-    - name:
-        en: Not Using Enough
-        pt: Não Usando o Suficiente
-    - name:
-        en: Found a Better Alternative
-        pt: Encontrou uma Alternativa Melhor
-    - name:
-        en: Technical Issues
-        pt: Problemas Técnicos
 routes:
   - path: subscription-plan-item
     children:
