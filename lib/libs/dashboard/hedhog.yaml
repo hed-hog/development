@@ -127,6 +127,9 @@ data:
       icon: dashboard
       url: /management/dashboard
       slug: /management/dashboard
+      menu_id:
+        where:
+          slug: /management
       relations:
         role:
           - where:
@@ -137,6 +140,9 @@ data:
       icon: dashboard
       url: /management/dashboard-component
       slug: /management/dashboard-component
+      menu_id:
+        where:
+          slug: /management
       relations:
         role:
           - where:
@@ -147,6 +153,9 @@ data:
       icon: dashboard
       url: /management/dashboard-item
       slug: /management/dashboard-item
+      menu_id:
+        where:
+          slug: /management
       relations:
         role:
           - where:
@@ -157,6 +166,9 @@ data:
       icon: dashboard
       url: /management/dashboard-user
       slug: /management/dashboard-user
+      menu_id:
+        where:
+          slug: /management
       relations:
         role:
           - where:
@@ -247,6 +259,30 @@ tables:
         type: fk
         references:
           table: dashboard_component
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        type: varchar
+        length: 255
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  dashboard_locale:
+    columns:
+      - type: pk
+      - name: dashboard_id
+        type: fk
+        references:
+          table: dashboard
           column: id
           onDelete: CASCADE
       - name: locale_id

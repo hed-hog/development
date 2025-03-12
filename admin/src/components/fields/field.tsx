@@ -38,8 +38,8 @@ import FileUploader from './upload-field'
 import { useApp } from '@/hooks/use-app'
 import { PickerField } from './picker-field'
 import { useTranslation } from 'react-i18next'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import ReactQuill from 'react-quill-new'
+import 'react-quill-new/dist/quill.snow.css'
 
 export type FieldProps<T extends any> = (
   | {
