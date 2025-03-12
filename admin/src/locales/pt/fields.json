@@ -427,5 +427,9 @@
   "dashboard-component.height": "Altura",
   "dashboard-component.min_height": "Altura Mínima",
   "dashboard-component.max_height": "Altura Máxima",
-  "dashboard-component.is_resizable": "Redimensionável"
+  "dashboard-component.is_resizable": "Redimensionável",
+  "dashboard_component.slug": "Slug",
+  "dashboard_component.path": "Caminho",
+  "dashboard_component.name": "Nome",
+  "dashboard_component_locale.name": "Nome"
 }

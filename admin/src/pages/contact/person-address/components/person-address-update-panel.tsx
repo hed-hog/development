@@ -1,162 +1,166 @@
-import FormPanel, { FormPanelRef } from '@/components/panels/form-panel'
-import { Overlay } from '@/components/custom/overlay'
-import { TabPanel } from '@/components/panels/tab-panel'
+import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
+import { Overlay } from "@/components/custom/overlay";
+import { TabPanel } from "@/components/panels/tab-panel";
 import {
   usePersonAddressGet,
   usePersonAddressUpdate,
-} from '@/features/contact/person-address'
-import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
-import { PersonAddress } from '@/types/models'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import { EnumFieldType } from '@/enums/EnumFieldType'
+} from "@/features/contact/person-address";
+import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
+import { PersonAddress } from "@/types/models";
+import { useState, forwardRef, useImperativeHandle, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import { EnumFieldType } from "@/enums/EnumFieldType";
 
 export type PersonAddressUpdatePanelProps = {
-  id: number
-  data: PersonAddress
-  onUpdated?: (data: PersonAddress) => void
-}
+  id: number;
+  data: PersonAddress;
+  onUpdated?: (data: PersonAddress) => void;
+};
 
 const PersonAddressUpdatePanel = forwardRef(
   ({ id, data, onUpdated }: PersonAddressUpdatePanelProps, ref) => {
-    const { t } = useTranslation(['actions', 'fields', 'translations'])
-    const { data: item, isLoading } = usePersonAddressGet(id, data.id as number)
-    const { mutate: personAddressUpdate } = usePersonAddressUpdate()
-    const formRef = useRef<FormPanelRef>(null)
+    const { t } = useTranslation(["actions", "fields", "translations"]);
+    const { data: item, isLoading } = usePersonAddressGet(
+      id,
+      data.id as number,
+    );
+    const { mutate: personAddressUpdate } = usePersonAddressUpdate();
+    const formRef = useRef<FormPanelRef>(null);
 
     useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
-        formRef.current.setValuesFromItem(item)
+        formRef.current.setValuesFromItem(item);
       }
-    }, [item])
+    }, [item]);
 
-    useImperativeHandle(ref, () => ({}))
+    useImperativeHandle(ref, () => ({}));
 
     return (
       <TabPanel
         activeTabIndex={0}
         tabs={[
           {
-            title: t('details', { ns: 'actions' }),
+            title: t("details", { ns: "actions" }),
             children: (
               <Overlay loading={isLoading}>
                 <FormPanel
                   ref={formRef}
                   fields={[
                     {
-                      name: 'country_id',
+                      name: "country_id",
                       label: {
-                        text: t('person_address.country_id', { ns: 'fields' }),
+                        text: t("person_address.country_id", { ns: "fields" }),
                       },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
-                      url: '/country?pageSize=200',
-                      displayName: 'country',
-                      valueName: 'id',
+                      url: "/country",
+                      displayName: "country",
+                      valueName: "id",
                     },
 
                     {
-                      name: 'type_id',
+                      name: "type_id",
                       label: {
-                        text: t('person_address.type_id', { ns: 'fields' }),
+                        text: t("person_address.type_id", { ns: "fields" }),
                       },
                       type: EnumFieldType.COMBOBOX,
                       required: true,
-                      url: '/person-address-type',
-                      displayName: 'type',
-                      valueName: 'id',
+                      url: "/person-address-type",
+                      displayName: "type",
+                      valueName: "id",
                     },
 
                     {
-                      name: 'primary',
+                      name: "primary",
                       label: {
-                        text: t('person_address.primary', { ns: 'fields' }),
+                        text: t("person_address.primary", { ns: "fields" }),
                       },
                       type: EnumFieldType.SWITCH,
                       required: true,
                     },
 
                     {
-                      name: 'street',
+                      name: "street",
                       label: {
-                        text: t('person_address.street', { ns: 'fields' }),
+                        text: t("person_address.street", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
-                      name: 'number',
+                      name: "number",
                       label: {
-                        text: t('person_address.number', { ns: 'fields' }),
+                        text: t("person_address.number", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
-                      name: 'complement',
+                      name: "complement",
                       label: {
-                        text: t('person_address.complement', { ns: 'fields' }),
+                        text: t("person_address.complement", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
-                      name: 'district',
+                      name: "district",
                       label: {
-                        text: t('person_address.district', { ns: 'fields' }),
+                        text: t("person_address.district", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
-                      name: 'city',
+                      name: "city",
                       label: {
-                        text: t('person_address.city', { ns: 'fields' }),
+                        text: t("person_address.city", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
-                      name: 'state',
+                      name: "state",
                       label: {
-                        text: t('person_address.state', { ns: 'fields' }),
+                        text: t("person_address.state", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
-                      name: 'postal_code',
+                      name: "postal_code",
                       label: {
-                        text: t('person_address.postal_code', { ns: 'fields' }),
+                        text: t("person_address.postal_code", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
 
                     {
-                      name: 'reference',
+                      name: "reference",
                       label: {
-                        text: t('person_address.reference', { ns: 'fields' }),
+                        text: t("person_address.reference", { ns: "fields" }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
                   ]}
-                  button={{ text: t('save', { ns: 'actions' }) }}
+                  button={{ text: t("save", { ns: "actions" }) }}
                   onSubmit={(data) => {
                     personAddressUpdate({
                       personId: id,
                       id: data.id,
                       data,
-                    })
-                    if (typeof onUpdated === 'function') {
-                      onUpdated(data)
+                    });
+                    if (typeof onUpdated === "function") {
+                      onUpdated(data);
                     }
                   }}
                 />
@@ -165,10 +169,10 @@ const PersonAddressUpdatePanel = forwardRef(
           },
         ]}
       />
-    )
-  }
-)
+    );
+  },
+);
 
-PersonAddressUpdatePanel.displayName = 'PersonAddressUpdatePanel'
+PersonAddressUpdatePanel.displayName = "PersonAddressUpdatePanel";
 
-export default PersonAddressUpdatePanel
+export default PersonAddressUpdatePanel;

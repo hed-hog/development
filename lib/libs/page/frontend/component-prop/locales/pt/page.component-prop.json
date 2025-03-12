@@ -1,11 +1,11 @@
 {
-  "create": "Create Component prop",
-  "createText": "Fill the component prop informations.",
-  "createTooltip": "Create new component prop",
-  "delete": "Delete Component prop",
-  "deleteText": "Are you sure to delete these component props?",
-  "deleteTooltip": "Delete the selected component props",
-  "edit": "Edit Component prop",
-  "editText": "View and edit component prop information.",
-  "editTooltip": "Edit the selected component props"
+  "create": "Criar componente prop",
+  "createText": "Preencha as informações do componente prop.",
+  "createTooltip": "Criar novo componente prop",
+  "delete": "Excluir componente prop",
+  "deleteText": "Você tem certeza de que deseja excluir estes componente prop?",
+  "deleteTooltip": "Excluir o componente prop selecionado",
+  "edit": "Editar componente prop",
+  "editText": "Ver e editar informações do componente prop.",
+  "editTooltip": "Editar o componente prop selecionado"
 }

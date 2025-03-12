@@ -7,7 +7,6 @@ import { PaymentCoupon } from './PaymentCoupon';
 import { PaymentItem } from './PaymentItem';
 import { PaymentValue } from './PaymentValue';
 import { PaymentNotification } from './PaymentNotification';
-import { SubscriptionPayment } from './SubscriptionPayment';
 
 export type Payment = {
   id?: number;
@@ -36,5 +35,4 @@ export type Payment = {
   payment_item?: PaymentItem[];
   payment_value?: PaymentValue[];
   payment_notification?: PaymentNotification[];
-  subscription_payment?: SubscriptionPayment[];
 }

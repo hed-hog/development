@@ -1,11 +1,11 @@
 {
-  "create": "Create Instance prop",
-  "createText": "Fill the instance prop informations.",
-  "createTooltip": "Create new instance prop",
-  "delete": "Delete Instance prop",
-  "deleteText": "Are you sure to delete these instance props?",
-  "deleteTooltip": "Delete the selected instance props",
-  "edit": "Edit Instance prop",
-  "editText": "View and edit instance prop information.",
-  "editTooltip": "Edit the selected instance props"
+  "create": "Criar instance prop",
+  "createText": "Preencha as informações da instance prop.",
+  "createTooltip": "Criar nova instance prop",
+  "delete": "Deletar instance prop",
+  "deleteText": "Você tem certeza de que deseja deletar estas instance prop?",
+  "deleteTooltip": "Deletar a instance prop selecionada",
+  "edit": "Editar instance prop",
+  "editText": "Visualizar e editar informações da instance prop.",
+  "editTooltip": "Editar a instance prop selecionada"
 }

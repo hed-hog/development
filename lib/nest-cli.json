@@ -195,6 +195,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/mail-manager/tsconfig.lib.json"
       }
+    },
+    "dashboard": {
+      "type": "library",
+      "root": "libs/dashboard",
+      "entryFile": "index",
+      "sourceRoot": "libs/dashboard/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/dashboard/tsconfig.lib.json"
+      }
     }
   }
 }

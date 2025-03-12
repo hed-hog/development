@@ -1,11 +1,11 @@
 {
-  "create": "Create Instance",
+  "create": "Create instance",
   "createText": "Fill the instance informations.",
   "createTooltip": "Create new instance",
-  "delete": "Delete Instance",
-  "deleteText": "Are you sure to delete these instances?",
-  "deleteTooltip": "Delete the selected instances",
-  "edit": "Edit Instance",
+  "delete": "Delete instance",
+  "deleteText": "Are you sure to delete these instance?",
+  "deleteTooltip": "Delete the selected instance",
+  "edit": "Edit instance",
   "editText": "View and edit instance information.",
-  "editTooltip": "Edit the selected instances"
+  "editTooltip": "Edit the selected instance"
 }

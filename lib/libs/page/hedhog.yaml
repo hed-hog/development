@@ -1,3 +1,125 @@
+tables:
+  component_type:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  component_type_locale:
+    columns:
+      - type: fk
+        name: type_id
+        references:
+          table: component_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component:
+    columns:
+      - type: pk
+      - type: fk
+        name: type_id
+        references:
+          table: component_type
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component_prop_type:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  component_prop_type_locale:
+    columns:
+      - type: fk
+        name: type_id
+        references:
+          table: component_prop_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: locale_id
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: created_at
+      - type: updated_at
+  component_prop:
+    columns:
+      - type: pk
+      - type: fk
+        name: type_id
+        references:
+          table: component_prop_type
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: component_id
+        references:
+          table: component
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - name: default
+      - type: created_at
+      - type: updated_at
+  instance:
+    columns:
+      - type: pk
+      - type: fk
+        name: component_id
+        references:
+          table: component
+          column: id
+          onDelete: CASCADE
+      - name: name
+      - type: fk
+        name: parent_id
+        references:
+          table: instance
+          column: id
+          onDelete: CASCADE
+      - type: order
+      - type: enum
+        name: visibility
+        default: private
+        enum:
+          - public
+          - private
+          - unlisted
+      - type: created_at
+      - type: updated_at
+  instance_prop:
+    columns:
+      - type: pk
+      - type: fk
+        name: prop_id
+        references:
+          table: component_prop
+          column: id
+          onDelete: CASCADE
+      - type: fk
+        name: instance_id
+        references:
+          table: instance
+          column: id
+          onDelete: CASCADE
+      - name: value
+      - type: created_at
+      - type: updated_at
 data:
   component_type:
     - slug: layout
@@ -134,6 +256,15 @@ data:
     - url: /instance-prop
       method: DELETE
       relations: *a6
+    - url: /instance-prop/:id
+      method: GET
+      relations: &a7
+        role:
+          - where:
+              slug: admin
+    - url: /instance-prop/:id
+      method: PATCH
+      relations: *a7
   menu:
     - name:
         en: ComponentType
@@ -226,126 +357,3 @@ data:
         en: Screen to manage instance_prop
         pt: Tela para gerenciar instance_prop
       icon: file
-tables:
-  component_type:
-    columns:
-      - type: pk
-      - type: slug
-      - type: created_at
-      - type: updated_at
-  component_type_locale:
-    columns:
-      - type: fk
-        name: type_id
-        references:
-          table: component_type
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: locale_id
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: created_at
-      - type: updated_at
-  component:
-    columns:
-      - type: pk
-      - type: fk
-        name: type_id
-        references:
-          table: component_type
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: created_at
-      - type: updated_at
-  component_prop_type:
-    columns:
-      - type: pk
-      - type: slug
-      - type: created_at
-      - type: updated_at
-  component_prop_type_locale:
-    columns:
-      - type: fk
-        name: type_id
-        references:
-          table: component_prop_type
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: locale_id
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: created_at
-      - type: updated_at
-  component_prop:
-    columns:
-      - type: pk
-      - type: fk
-        name: type_id
-        references:
-          table: component_prop_type
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: component_id
-        references:
-          table: component
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - name: default
-      - type: created_at
-      - type: updated_at
-  instance:
-    columns:
-      - type: pk
-      - type: fk
-        name: component_id
-        references:
-          table: component
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: fk
-        name: parent_id
-        references:
-          table: instance
-          column: id
-          onDelete: CASCADE
-      - type: order
-      - type: enum
-        name: visibility
-        default: private
-        enum:
-          - public
-          - private
-          - unlisted
-      - type: created_at
-      - type: updated_at
-  instance_prop:
-    columns:
-      - type: fk
-        name: prop_id
-        isPrimary: true
-        references:
-          table: component_prop
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: instance_id
-        isPrimary: true
-        references:
-          table: instance
-          column: id
-          onDelete: CASCADE
-      - name: value
-      - type: created_at
-      - type: updated_at
