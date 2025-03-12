@@ -533,7 +533,6 @@ data:
         en: Payment
         pt: Pagamento
       slug: /payment
-      menu_id: null
       relations:
         role:
           - where:
@@ -543,7 +542,6 @@ data:
         en: Payment Coupon
         pt: Cupom
       slug: /payment-coupon
-      menu_id: null
       relations:
         role:
           - where:
