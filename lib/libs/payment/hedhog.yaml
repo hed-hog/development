@@ -175,47 +175,6 @@ data:
       slug: AURA
     - name: MAESTRO
       slug: MAESTRO
-  payment_method_item:
-    - item_id:
-        where:
-          slug: EAGLE_METHOD_COURSE
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 850
-    - item_id:
-        where:
-          slug: PLATFORM_QUARTERLY
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 408
-    - item_id:
-        where:
-          slug: PLATFORM_SEMIANNUAL
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 720
-    - item_id:
-        where:
-          slug: PLATFORM_ANNUAL
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 1248
   route:
     - url: /payment_gateway
       method: GET
@@ -574,7 +533,7 @@ data:
         en: Payment
         pt: Pagamento
       slug: /payment
-      menu_id: null
+      url: /payment
       relations:
         role:
           - where:
@@ -584,7 +543,7 @@ data:
         en: Payment Coupon
         pt: Cupom
       slug: /payment-coupon
-      menu_id: null
+      url: /payment-coupon
       relations:
         role:
           - where:
@@ -597,6 +556,7 @@ data:
         en: Payment
         pt: Pagamento
       slug: /management/payment
+      url: /management/payment
       relations:
         role:
           - where:
@@ -638,8 +598,8 @@ data:
       menu_id:
         where:
           slug: /management/payment
-      url: /management/payment/card-brand
-      slug: /management/payment/card-brand
+      url: /management/payment/payment-card-brand
+      slug: /management/payment/payment-card-brand
       relations: *a4
     - name:
         en: Discount Type
@@ -1297,7 +1257,7 @@ routes:
     children:
       - path: null
         lazy:
-          component: ./pages/payment/index.tsx
+          component: ./pages/payment/payment/index.tsx
   - path: payment-coupon
     children:
       - path: null

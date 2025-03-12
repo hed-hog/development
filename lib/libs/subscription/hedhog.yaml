@@ -445,11 +445,26 @@ data:
       relations: *a9
   menu:
     - name:
+        en: Subscription
+        pt: Assinatura
+      icon: calendar-event
+      slug: /management/subscription
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
         en: Subscription Plan
         pt: Planos de Assinatura
       icon: calendar-event
       url: /management/subscription/subscription-plan
       slug: /management/subscription/subscription-plan
+      menu_id:
+        where:
+          slug: /management/subscription
       relations: *a1
     - name:
         en: Subscription
@@ -495,19 +510,6 @@ data:
     - slug: not_using_enough
     - slug: found_better_alternative
     - slug: technical_issues
-  subscription_cancel_reason_locale:
-    - name:
-        en: High Price
-        pt: Preço Alto
-    - name:
-        en: Not Using Enough
-        pt: Não Usando o Suficiente
-    - name:
-        en: Found a Better Alternative
-        pt: Encontrou uma Alternativa Melhor
-    - name:
-        en: Technical Issues
-        pt: Problemas Técnicos
 routes:
   - path: subscription-plan-item
     children:
@@ -519,3 +521,10 @@ routes:
       - path: null
         lazy:
           component: ./pages/subscription/subscription/index.tsx
+  - path: management
+    children:
+      - path: subscription
+        children:
+          - path: subscription-plan
+            lazy:
+              component: ./pages/management/subscription/subscription-plan/index.tsx

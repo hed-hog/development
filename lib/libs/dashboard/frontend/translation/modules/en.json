@@ -1,3 +1,6 @@
 {
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "dashboard_item": "Dashboard Item",
+  "dashboard_user": "Dashboard User",
+  "dashboard_component": "Dashboard Component"
 }
