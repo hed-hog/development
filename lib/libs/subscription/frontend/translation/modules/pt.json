@@ -1,5 +1,6 @@
 {
   "subscription_plan": "Planos de Assinatura",
+  "subscription_plan_item": "Produtos",
   "subscription_plan_gateway": "Provedores",
   "subscription": "Assinaturas",
   "subscription_value": "Valores",

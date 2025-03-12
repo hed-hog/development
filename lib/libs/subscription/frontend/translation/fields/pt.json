@@ -1,6 +1,24 @@
 {
+  "subscription.plan_id": "Plano",
+  "subscription.value": "Valor da Assinatura",
+  "subscription.person_id": "Pessoa",
+  "subscription.payment_id": "Pagamento",
+  "subscription.start_at": "Data de Início",
+  "subscription.end_at": "Data de Término",
+  "subscription.role": "Cargo",
+  "subscription-plan-item.slug": "Slug",
+  "subscription-plan-item.name": "Nome",
+  "subscription-plan-item.price": "Preço",
+  "subscription-plan.slug": "Slug",
+  "subscription-plan.duration": "Duração",
+  "subscription-plan.item-id": "Produto",
+  "subscription_locale.name": "Nome da Assinatura",
+  "subscription_locale.description": "Descrição da Assinatura",
   "subscription_plan_locale.name": "Nome do Plano",
   "subscription_plan_locale.description": "Descrição do Plano",
   "subscription_plan.name": "Nome do Plano",
-  "subscription_plan.description": "Descrição do Plano"
+  "subscription_plan.description": "Descrição do Plano",
+  "subscription.name": "Nome da Assinatura",
+  "subscription.status": "Status",
+  "subscription.limit": "Limite"
 }

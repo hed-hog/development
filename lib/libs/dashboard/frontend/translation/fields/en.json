@@ -1,7 +1,23 @@
 {
   "dashboard.slug": "Slug",
-  "dashboard_component.slug": "Slug",
-  "dashboard_component.path": "Path",
-  "dashboard_component.name": "Name",
-  "dashboard_component_locale.name": "Name"
+  "dashboard.path": "Path",
+  "dashboard.name": "Name",
+  "dashboard_locale.name": "Name",
+  "dashboard-user.item_id": "Item",
+  "dashboard-user.user_id": "User",
+  "dashboard-user.width": "Width",
+  "dashboard-user.height": "Height",
+  "dashboard-user.x_axis": "X Axis",
+  "dashboard-user.y_axis": "Y Axis",
+  "dashboard-item.component_id": "Component",
+  "dashboard-item.dashboard_id": "Dashboard",
+  "dashboard-component.slug": "Slug",
+  "dashboard-component.path": "Path",
+  "dashboard-component.width": "Width",
+  "dashboard-component.min_width": "Min Width",
+  "dashboard-component.max_width": "Max Width",
+  "dashboard-component.height": "Height",
+  "dashboard-component.min_height": "Min Height",
+  "dashboard-component.max_height": "Max Height",
+  "dashboard-component.is_resizable": "Resizable"
 }
