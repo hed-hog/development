@@ -533,6 +533,7 @@ data:
         en: Payment
         pt: Pagamento
       slug: /payment
+      url: /payment
       relations:
         role:
           - where:
@@ -542,6 +543,7 @@ data:
         en: Payment Coupon
         pt: Cupom
       slug: /payment-coupon
+      url: /payment-coupon
       relations:
         role:
           - where:
@@ -554,6 +556,7 @@ data:
         en: Payment
         pt: Pagamento
       slug: /management/payment
+      url: /management/payment
       relations:
         role:
           - where:
@@ -595,8 +598,8 @@ data:
       menu_id:
         where:
           slug: /management/payment
-      url: /management/payment/card-brand
-      slug: /management/payment/card-brand
+      url: /management/payment/payment-card-brand
+      slug: /management/payment/payment-card-brand
       relations: *a4
     - name:
         en: Discount Type
@@ -1254,7 +1257,7 @@ routes:
     children:
       - path: null
         lazy:
-          component: ./pages/payment/index.tsx
+          component: ./pages/payment/payment/index.tsx
   - path: payment-coupon
     children:
       - path: null

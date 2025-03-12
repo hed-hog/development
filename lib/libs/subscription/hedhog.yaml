@@ -445,11 +445,26 @@ data:
       relations: *a9
   menu:
     - name:
+        en: Subscription
+        pt: Assinatura
+      icon: calendar-event
+      slug: /management/subscription
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
         en: Subscription Plan
         pt: Planos de Assinatura
       icon: calendar-event
       url: /management/subscription/subscription-plan
       slug: /management/subscription/subscription-plan
+      menu_id:
+        where:
+          slug: /management/subscription
       relations: *a1
     - name:
         en: Subscription
