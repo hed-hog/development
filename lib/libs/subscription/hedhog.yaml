@@ -506,3 +506,10 @@ routes:
       - path: null
         lazy:
           component: ./pages/subscription/subscription/index.tsx
+  - path: management
+    children:
+      - path: subscription
+        children:
+          - path: subscription-plan
+            lazy:
+              component: ./pages/management/subscription/subscription-plan/index.tsx
