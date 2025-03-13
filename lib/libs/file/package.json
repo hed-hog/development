@@ -25,6 +25,7 @@
     "src/entities/**/*.ts",
     "src/migrations/**/*.ts",
     "src/**/*.ejs",
+    "hedhog/**/*.yaml",
     "hedhog.yaml"
   ],
   "devDependencies": {

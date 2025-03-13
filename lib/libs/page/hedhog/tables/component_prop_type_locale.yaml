@@ -1,0 +1,16 @@
+columns:
+  - type: fk
+    name: type_id
+    references:
+      table: component_prop_type
+      column: id
+      onDelete: CASCADE
+  - type: fk
+    name: locale_id
+    references:
+      table: locale
+      column: id
+      onDelete: CASCADE
+  - name: name
+  - type: created_at
+  - type: updated_at

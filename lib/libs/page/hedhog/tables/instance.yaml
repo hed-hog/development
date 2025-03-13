@@ -1,0 +1,25 @@
+columns:
+  - type: pk
+  - type: fk
+    name: component_id
+    references:
+      table: component
+      column: id
+      onDelete: CASCADE
+  - name: name
+  - type: fk
+    name: parent_id
+    references:
+      table: instance
+      column: id
+      onDelete: CASCADE
+  - type: order
+  - type: enum
+    name: visibility
+    default: private
+    enum:
+      - public
+      - private
+      - unlisted
+  - type: created_at
+  - type: updated_at

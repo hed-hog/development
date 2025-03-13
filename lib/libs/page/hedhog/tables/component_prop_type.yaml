@@ -1,0 +1,5 @@
+columns:
+  - type: pk
+  - type: slug
+  - type: created_at
+  - type: updated_at

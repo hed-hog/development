@@ -13,7 +13,9 @@
   "file": [
     "dist/**/*",
     "src/migrations/**/*.ts",
-    "src/**/*.ejs"
+    "src/**/*.ejs",
+    "hedhog/**/*.yaml",
+    "hedhog.yaml"
   ],
   "dependencies": {
     "@nestjs/axios": "^3.0.3",

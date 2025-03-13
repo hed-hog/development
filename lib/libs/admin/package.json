@@ -17,6 +17,7 @@
     "frontend/**/*.ts",
     "emails/**/*.ts",
     "src/**/*.ejs",
+    "hedhog/**/*.yaml",
     "hedhog.yaml"
   ],
   "keywords": [],

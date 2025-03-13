@@ -1,75 +1,76 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
-import GeneralError from "./pages/errors/general-error.tsx";
-import MaintenanceError from "./pages/errors/maintenance-error.tsx";
-import NotFoundError from "./pages/errors/not-found-error.tsx";
-import UnauthorisedError from "./pages/errors/unauthorised-error.tsx";
+import { createBrowserRouter, RouteObject } from 'react-router-dom'
+import GeneralError from './pages/errors/general-error.tsx'
+import MaintenanceError from './pages/errors/maintenance-error.tsx'
+import NotFoundError from './pages/errors/not-found-error.tsx'
+import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 
 const routes = [
   {
-    path: "/login",
+    path: '/login',
     lazy: async () => ({
-      Component: (await import("./pages/auth/login.tsx")).default,
+      Component: (await import('./pages/auth/login.tsx')).default,
     }),
   },
   {
-    path: "/forgot-password",
+    path: '/forgot-password',
     lazy: async () => ({
-      Component: (await import("./pages/auth/forgot-password.tsx")).default,
+      Component: (await import('./pages/auth/forgot-password.tsx')).default,
     }),
   },
   {
-    path: "/email-sent",
+    path: '/email-sent',
     lazy: async () => ({
-      Component: (await import("./pages/auth/email-sent.tsx")).default,
+      Component: (await import('./pages/auth/email-sent.tsx')).default,
     }),
   },
   {
-    path: "/password-recovery/:code",
+    path: '/password-recovery/:code',
     lazy: async () => ({
-      Component: (await import("./pages/auth/password-recovery.tsx")).default,
+      Component: (await import('./pages/auth/password-recovery.tsx')).default,
     }),
   },
   {
-    path: "/otp",
+    path: '/otp',
     lazy: async () => ({
-      Component: (await import("./pages/auth/otp.tsx")).default,
+      Component: (await import('./pages/auth/otp.tsx')).default,
     }),
   },
   {
-    path: "/tests",
+    path: '/tests',
     lazy: async () => ({
-      Component: (await import("./components/custom/color-theme.tsx")).default,
+      Component: (await import('./components/custom/color-theme.tsx')).default,
     }),
   },
 
   // Main route
   {
-    path: "/",
+    path: '/',
     lazy: async () => {
-      const AppShell = await import("./components/app/app-shell.tsx");
-      return { Component: AppShell.default };
+      const AppShell = await import('./components/app/app-shell.tsx')
+      return { Component: AppShell.default }
     },
     errorElement: <GeneralError />,
     children: [
       {
         index: true,
         lazy: async () => ({
-          Component: (await import("./pages/dashboard/index.tsx")).default,
+          Component: (await import('./pages/dashboard/index.tsx')).default,
         }),
       },
+      
     ],
   },
 
   // Error route
-  { path: "/500", Component: GeneralError },
-  { path: "/404", Component: NotFoundError },
-  { path: "/503", Component: MaintenanceError },
-  { path: "/401", Component: UnauthorisedError },
+  { path: '/500', Component: GeneralError },
+  { path: '/404', Component: NotFoundError },
+  { path: '/503', Component: MaintenanceError },
+  { path: '/401', Component: UnauthorisedError },
 
   // Fallback 404 route
-  { path: "*", Component: NotFoundError },
-];
+  { path: '*', Component: NotFoundError },
+]
 
-const router = createBrowserRouter(routes as RouteObject[]);
+const router = createBrowserRouter(routes as RouteObject[])
 
-export default router;
+export default router
