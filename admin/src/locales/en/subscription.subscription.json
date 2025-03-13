@@ -7,6 +7,5 @@
   "deleteTooltip": "Delete the selected subscription",
   "edit": "Edit subscription",
   "editText": "View and edit subscription information.",
-  "editTooltip": "Edit the selected subscription",
-  "name": "Name"
+  "editTooltip": "Edit the selected subscription"
 }

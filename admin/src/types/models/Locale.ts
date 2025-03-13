@@ -16,6 +16,8 @@ import { PersonCustomLocale } from './PersonCustomLocale';
 import { PaymentStatusLocale } from './PaymentStatusLocale';
 import { DashboardComponentLocale } from './DashboardComponentLocale';
 import { DashboardLocale } from './DashboardLocale';
+import { SubscriptionPlanLocale } from './SubscriptionPlanLocale';
+import { SubscriptionCancelReasonLocale } from './SubscriptionCancelReasonLocale';
 
 export type Locale = {
   id?: number;
@@ -42,4 +44,6 @@ export type Locale = {
   payment_status_locale?: PaymentStatusLocale[];
   dashboard_component_locale?: DashboardComponentLocale[];
   dashboard_locale?: DashboardLocale[];
+  subscription_plan_locale?: SubscriptionPlanLocale[];
+  subscription_cancel_reason_locale?: SubscriptionCancelReasonLocale[];
 }

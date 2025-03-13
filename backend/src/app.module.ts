@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { SubscriptionModule } from '@hedhog/subscription';
 import { DashboardModule } from '@hedhog/dashboard';
 import { PaymentModule } from '@hedhog/payment';
 import { ContactModule } from '@hedhog/contact';
@@ -35,6 +36,7 @@ import { PrismaModule } from '@hedhog/prisma';
     ContactModule,
     PaymentModule,
     DashboardModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

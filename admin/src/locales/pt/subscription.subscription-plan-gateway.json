@@ -1,11 +1,11 @@
 {
-  "create": "Criar gateway de plano de assinatura",
-  "createText": "Preencha as informações do gateway de plano de assinatura.",
-  "createTooltip": "Criar novo gateway de plano de assinatura",
-  "delete": "Excluir gateway de plano de assinatura",
-  "deleteText": "Você tem certeza que deseja excluir esses gateways de planos de assinatura?",
-  "deleteTooltip": "Excluir o gateway de plano de assinatura selecionado",
-  "edit": "Editar gateway de plano de assinatura",
-  "editText": "Visualizar e editar as informações do gateway de plano de assinatura.",
-  "editTooltip": "Editar o gateway de plano de assinatura selecionado"
+  "create": "Criar plano de assinatura gateway",
+  "createText": "Preencha as informações do plano de assinatura gateway.",
+  "createTooltip": "Criar novo plano de assinatura gateway",
+  "delete": "Excluir plano de assinatura gateway",
+  "deleteText": "Você tem certeza que deseja excluir esses planos de assinatura gateway?",
+  "deleteTooltip": "Excluir o plano de assinatura gateway selecionado",
+  "edit": "Editar plano de assinatura gateway",
+  "editText": "Visualizar e editar as informações do plano de assinatura gateway.",
+  "editTooltip": "Editar o plano de assinatura gateway selecionado"
 }

@@ -1,11 +1,11 @@
 {
-  "create": "Criar valor de assinatura",
-  "createText": "Preencha as informações do valor de assinatura.",
-  "createTooltip": "Criar novo valor de assinatura",
-  "delete": "Excluir valor de assinatura",
-  "deleteText": "Você tem certeza de que deseja excluir este valor de assinatura?",
-  "deleteTooltip": "Excluir o valor de assinatura selecionado",
-  "edit": "Editar valor de assinatura",
-  "editText": "Ver e editar informações do valor de assinatura.",
-  "editTooltip": "Editar o valor de assinatura selecionado"
+  "create": "Criar subscription value",
+  "createText": "Preencha as informações da subscription value.",
+  "createTooltip": "Criar nova subscription value",
+  "delete": "Excluir subscription value",
+  "deleteText": "Você tem certeza de que deseja excluir estas subscription value?",
+  "deleteTooltip": "Excluir a subscription value selecionada",
+  "edit": "Editar subscription value",
+  "editText": "Ver e editar informações da subscription value.",
+  "editTooltip": "Editar a subscription value selecionada"
 }
