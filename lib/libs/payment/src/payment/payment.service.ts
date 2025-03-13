@@ -19,7 +19,7 @@ export class PaymentService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async list(paginationParams: PaginationDTO) {
+  async list(paginationParams: PaginationDTO, isPaid: boolean) {
     const fields = [
       'slug',
       'amount',
@@ -46,6 +46,7 @@ export class PaymentService {
       {
         where: {
           OR,
+          AND: isPaid ? [{ status_id: 2 }] : [],
         },
         include: {
           payment_gateway: {

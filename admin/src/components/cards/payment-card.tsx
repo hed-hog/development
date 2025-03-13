@@ -27,16 +27,10 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 import { IconId } from '@tabler/icons-react'
+import { formatCurrency } from '@/lib/format-currency'
 
 export default function PaymentCard({ item }: { item: Payment }) {
   const [expanded, setExpanded] = useState(false)
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(value)
-  }
 
   const getStatusConfig = (status: string) => {
     switch (status) {

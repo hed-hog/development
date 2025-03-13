@@ -474,6 +474,7 @@ export class LocaleService {
     modelName: string,
     paginationParams: PaginationDTO,
     where: any = {},
+    include: any = {},
   ) {
     try {
       const fields = this.prismaService.getFields(modelName);
@@ -504,6 +505,7 @@ export class LocaleService {
               where: { locale: { code: locale } },
               include: { locale: { select: { code: true } } },
             },
+            ...include,
           },
         },
         this.getTableNameTranslations(modelName),

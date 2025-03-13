@@ -1,0 +1,442 @@
+data:
+  route:
+    - url: /dashboard
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard
+      method: POST
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard/:id
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard/:id
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard
+      method: DELETE
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-component
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-component
+      method: POST
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-component/:id
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-component/:id
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-component
+      method: DELETE
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-item
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-item
+      method: POST
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-item/:id
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-item/:id
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-item
+      method: DELETE
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-user
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-user
+      method: POST
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-user/:id
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-user/:id
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /dashboard-user
+      method: DELETE
+      relations:
+        role:
+          - where:
+              slug: admin
+  menu:
+    - name:
+        en: Dashboard
+        pt: Dashboard
+      icon: dashboard
+      url: /management/dashboard
+      slug: /management/dashboard
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Dashboard Component
+        pt: Componente do Dashboard
+      icon: dashboard
+      url: /management/dashboard-component
+      slug: /management/dashboard-component
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Dashboard Item
+        pt: Item do Dashboard
+      icon: dashboard
+      url: /management/dashboard-item
+      slug: /management/dashboard-item
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Dashboard User
+        pt: Usuário do Dashboard
+      icon: dashboard
+      url: /management/dashboard-user
+      slug: /management/dashboard-user
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
+  screen:
+    - name:
+        en: Dashboard
+        pt: Dashboard
+      slug: dashboard
+      description:
+        en: Screen to manage dashboard
+        pt: Tela para gerenciar dashboard
+      icon: dashboard
+    - name:
+        en: Dashboard Component
+        pt: Componente de Dashboard
+      slug: dashboard-component
+      description:
+        en: Screen to manage dashboard component
+        pt: Tela para gerenciar componentes de dashboard
+      icon: dashboard
+    - name:
+        en: Dashboard User
+        pt: Componente de Dashboard
+      slug: dashboard-user
+      description:
+        en: Screen to manage dashboard user
+        pt: Tela para gerenciar usuários de dashboard
+      icon: dashboard
+    - name:
+        en: Dashboard Item
+        pt: Item de Dashboard
+      slug: dashboard-item
+      description:
+        en: Screen to manage dashboard item
+        pt: Tela para gerenciar itens de dashboard
+      icon: dashboard
+tables:
+  dashboard:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: Slug
+          pt: Slug
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  dashboard_component:
+    columns:
+      - type: pk
+      - type: slug
+        locale:
+          en: Slug
+          pt: Slug
+      - name: path
+        type: varchar
+        length: 500
+        locale:
+          en: Path
+          pt: Caminho
+      - name: min_width
+        type: int
+        default: 1
+      - name: max_width
+        type: int
+        isNullable: true
+      - name: min_height
+        type: int
+        default: 1
+      - name: max_height
+        type: int
+        isNullable: true
+      - name: width
+        type: int
+      - name: height
+        type: int
+      - name: is_resizable
+        type: boolean
+        default: true
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  dashboard_component_locale:
+    columns:
+      - type: pk
+      - name: component_id
+        type: fk
+        references:
+          table: dashboard_component
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        type: varchar
+        length: 255
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  dashboard_locale:
+    columns:
+      - type: pk
+      - name: dashboard_id
+        type: fk
+        references:
+          table: dashboard
+          column: id
+          onDelete: CASCADE
+      - name: locale_id
+        type: fk
+        references:
+          table: locale
+          column: id
+          onDelete: CASCADE
+      - name: name
+        type: varchar
+        length: 255
+        locale:
+          en: Name
+          pt: Nome
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  dashboard_item:
+    columns:
+      - type: pk
+      - name: component_id
+        type: fk
+        references:
+          table: dashboard_component
+          column: id
+          onDelete: CASCADE
+      - name: dashboard_id
+        type: fk
+        references:
+          table: dashboard
+          column: id
+          onDelete: CASCADE
+      - name: width
+        type: int
+      - name: height
+        type: int
+      - name: x_axis
+        type: int
+      - name: y_axis
+        type: int
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+  dashboard_user:
+    columns:
+      - type: pk
+      - name: item_id
+        type: fk
+        references:
+          table: dashboard_item
+          column: id
+          onDelete: CASCADE
+      - name: user_id
+        type: fk
+        references:
+          table: user
+          column: id
+          onDelete: CASCADE
+      - name: width
+        type: int
+      - name: height
+        type: int
+      - name: x_axis
+        type: int
+      - name: y_axis
+        type: int
+      - type: created_at
+      - type: updated_at
+    ifNotExists: true
+screens:
+  dashboard:
+    title:
+      en: Dashboard
+      pt: Dashboard
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      url: /management/dashboard
+      icon: adjustments
+      name:
+        en: Dashboard
+        pt: Dashboard
+      slug: /management/dashboard
+      relations:
+        role:
+          - where:
+              slug: admin
+  dashboard_component:
+    title:
+      en: Dashboard Component
+      pt: Componente do Dashboard
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      url: /management/dashboard-component
+      icon: adjustments
+      name:
+        en: Dashboard Component
+        pt: Componente do Dashboard
+      slug: /management/dashboard-component
+      relations:
+        role:
+          - where:
+              slug: admin
+  dashboard_user:
+    title:
+      en: Dashboard User
+      pt: Usuário de Dashboard
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      url: /management/dashboard-user
+      icon: adjustments
+      name:
+        en: Dashboard User
+        pt: Usuário de Dashboard
+      slug: /management/dashboard-user
+      relations:
+        role:
+          - where:
+              slug: admin
+  dashboard_item:
+    title:
+      en: Dashboard Item
+      pt: Item de Dashboard
+    menu:
+      menu_id:
+        where:
+          slug: /management
+      url: /management/dashboard-item
+      icon: adjustments
+      name:
+        en: Dashboard Item
+        pt: Item de Dashboard
+      slug: /management/dashboard-item
+      relations:
+        role:
+          - where:
+              slug: admin
+routes:
+  - path: management
+    children:
+      - path: dashboard
+        lazy:
+          component: ./pages/management/dashboard/dashboard/index.tsx
+      - path: dashboard-component
+        lazy:
+          component: ./pages/management/dashboard/dashboard-component/index.tsx
+      - path: dashboard-item
+        lazy:
+          component: ./pages/management/dashboard/dashboard-item/index.tsx
+      - path: dashboard-user
+        lazy:
+          component: ./pages/management/dashboard/dashboard-user/index.tsx

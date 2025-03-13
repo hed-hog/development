@@ -239,6 +239,21 @@ tables:
           - reason_id
         isUnique: true
 screens:
+  subscription_plan_item:
+    title:
+      en: Subscription Plan Items
+      pt: Produtos
+    menu:
+      url: /subscription-plan-item
+      icon: shopping-cart
+      name:
+        en: Subscription Plans
+        pt: Produtos
+      slug: /subscription-plan-item
+      relations:
+        role:
+          - where:
+              slug: admin
   subscription_plan:
     title:
       en: Subscription Plans
@@ -254,11 +269,6 @@ screens:
         role:
           - where:
               slug: admin
-    relations:
-      subscription_plan_gateway:
-        title:
-          en: Gateways
-          pt: Provedores
   subscription:
     title:
       en: Subscriptions
@@ -275,10 +285,6 @@ screens:
           - where:
               slug: admin
     relations:
-      subscription_value:
-        title:
-          en: Values
-          pt: Valores
       subscription_person:
         title:
           en: People
@@ -287,6 +293,10 @@ screens:
         title:
           en: Payments
           pt: Pagamentos
+      subscription_plan_gateway:
+        title:
+          en: Gateways
+          pt: Provedores
 data:
   route:
     - url: /subscription-plan
@@ -435,135 +445,86 @@ data:
       relations: *a9
   menu:
     - name:
-        en: SubscriptionPlan
-        pt: SubscriptionPlan
-      icon: file
-      url: /subscription-plan
-      slug: subscription-plan
+        en: Subscription
+        pt: Assinatura
+      icon: calendar-event
+      slug: /management/subscription
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: Subscription Plan
+        pt: Planos de Assinatura
+      icon: calendar-event
+      url: /management/subscription/subscription-plan
+      slug: /management/subscription/subscription-plan
+      menu_id:
+        where:
+          slug: /management/subscription
       relations: *a1
     - name:
-        en: SubscriptionPlanGateway
-        pt: SubscriptionPlanGateway
-      icon: file
-      url: /subscription-plan-gateway
-      slug: subscription-plan-gateway
-      relations: *a2
-    - name:
         en: Subscription
-        pt: Subscription
-      icon: file
+        pt: Assinatura
+      icon: paywall
       url: /subscription
-      slug: subscription
+      slug: /subscription
       relations: *a3
     - name:
-        en: SubscriptionValue
-        pt: SubscriptionValue
-      icon: file
-      url: /subscription-value
-      slug: subscription-value
-      relations: *a4
-    - name:
-        en: SubscriptionPerson
-        pt: SubscriptionPerson
-      icon: file
-      url: /subscription-person
-      slug: subscription-person
-      relations: *a5
-    - name:
-        en: SubscriptionPayment
-        pt: SubscriptionPayment
-      icon: file
-      url: /subscription-payment
-      slug: subscription-payment
-      relations: *a6
-    - name:
-        en: SubscriptionPlanItem
-        pt: SubscriptionPlanItem
-      icon: file
+        en: Subscription Plan Item
+        pt: Produtos
+      icon: shopping-cart
       url: /subscription-plan-item
-      slug: subscription-plan-item
+      slug: /subscription-plan-item
       relations: *a9
   screen:
     - name:
-        en: SubscriptionPlan
-        pt: SubscriptionPlan
-      slug: subscription-plan
+        en: Subscription Plan
+        pt: Plano de Assinatura
+      slug: /management/subscription/subscription-plan
       description:
-        en: Screen to manage subscription_plan
-        pt: Tela para gerenciar subscription_plan
-      icon: file
-    - name:
-        en: SubscriptionPlanGateway
-        pt: SubscriptionPlanGateway
-      slug: subscription-plan-gateway
-      description:
-        en: Screen to manage subscription_plan_gateway
-        pt: Tela para gerenciar subscription_plan_gateway
-      icon: file
+        en: Screen to manage subscription plan
+        pt: Tela para gerenciar planos de assinatura
+      icon: calendar-event
     - name:
         en: Subscription
-        pt: Subscription
-      slug: subscription
+        pt: Assinatura
+      slug: /subscription
       description:
         en: Screen to manage subscription
-        pt: Tela para gerenciar subscription
-      icon: file
+        pt: Tela para gerenciar assinatura
+      icon: paywall
     - name:
-        en: SubscriptionValue
-        pt: SubscriptionValue
-      slug: subscription-value
+        en: Subscription Plan Item
+        pt: Produtos
+      slug: /subscription-plan-item
       description:
-        en: Screen to manage subscription_value
-        pt: Tela para gerenciar subscription_value
-      icon: file
-    - name:
-        en: SubscriptionPerson
-        pt: SubscriptionPerson
-      slug: subscription-person
-      description:
-        en: Screen to manage subscription_person
-        pt: Tela para gerenciar subscription_person
-      icon: file
-    - name:
-        en: SubscriptionPayment
-        pt: SubscriptionPayment
-      slug: subscription-payment
-      description:
-        en: Screen to manage subscription_payment
-        pt: Tela para gerenciar subscription_payment
-      icon: file
-    - name:
-        en: SubscriptionPlanItem
-        pt: SubscriptionPlanItem
-      slug: subscription-plan-item
-      description:
-        en: Screen to manage subscription_plan_item
-        pt: Tela para gerenciar subscription_plan_item
-      icon: file
+        en: Screen to manage subscription plan item
+        pt: Tela para gerenciar produtos
+      icon: shopping-cart
   subscription_cancel_reason:
     - slug: high_price
     - slug: not_using_enough
     - slug: found_better_alternative
     - slug: technical_issues
-  subscription_cancel_reason_locale:
-    - name:
-        en: High Price
-        pt: Preço Alto
-    - name:
-        en: Not Using Enough
-        pt: Não Usando o Suficiente
-    - name:
-        en: Found a Better Alternative
-        pt: Encontrou uma Alternativa Melhor
-    - name:
-        en: Technical Issues
-        pt: Problemas Técnicos
 routes:
+  - path: subscription-plan-item
+    children:
+      - path: null
+        lazy:
+          component: ./pages/subscription-plan-item/index.tsx
   - path: subscription
     children:
-      - path: subscription-plan
-        lazy:
-          component: ./pages/subscription/subscription-plan/index.tsx
-      - path: subscription
+      - path: null
         lazy:
           component: ./pages/subscription/subscription/index.tsx
+  - path: management
+    children:
+      - path: subscription
+        children:
+          - path: subscription-plan
+            lazy:
+              component: ./pages/management/subscription/subscription-plan/index.tsx

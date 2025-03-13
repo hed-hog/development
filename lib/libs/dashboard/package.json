@@ -1,0 +1,39 @@
+{
+  "name": "@hedhog/dashboard",
+  "version": "0.0.18",
+  "private": false,
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "prebuild": "npm run clean",
+    "build": "tsc --project tsconfig.production.json && npm version patch",
+    "prod": "npm run build && npm publish --access public"
+  },
+  "files": [
+    "dist/**/*",
+    "frontend/**/*",
+    "src/entities/**/*.ts",
+    "src/migrations/**/*.ts",
+    "src/**/*.ejs",
+    "hedhog/**/*.yaml",
+    "hedhog.yaml"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "peerDependencies": {
+    "@hedhog/locale": "latest",
+    "@hedhog/pagination": "latest",
+    "@hedhog/prisma": "latest"
+  },
+  "devDependencies": {
+    "@hedhog/locale": "^0.46.7",
+    "@hedhog/pagination": "^0.46.1",
+    "@hedhog/prisma": "^0.46.1",
+    "@nestjs/mapped-types": "^2.1.0"
+  },
+  "dependencies": {
+    "@hedhog/core": "^1.0.6"
+  }
+}

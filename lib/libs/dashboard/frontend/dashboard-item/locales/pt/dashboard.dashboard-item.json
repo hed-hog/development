@@ -1,0 +1,11 @@
+{
+  "create": "Criar item do painel",
+  "createText": "Preencha as informações do item do painel.",
+  "createTooltip": "Criar novo item do painel",
+  "delete": "Excluir item do painel",
+  "deleteText": "Você tem certeza que deseja excluir esses itens do painel?",
+  "deleteTooltip": "Excluir o(s) item(ns) do painel selecionado(s)",
+  "edit": "Editar item do painel",
+  "editText": "Visualizar e editar informações do item do painel.",
+  "editTooltip": "Editar o item do painel selecionado"
+}

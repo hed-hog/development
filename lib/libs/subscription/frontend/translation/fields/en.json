@@ -1,6 +1,26 @@
 {
+  "subscription_locale.name": "Subscription Name",
+  "subscription_locale.description": "Subscription Description",
   "subscription_plan_locale.name": "Plan Name",
   "subscription_plan_locale.description": "Plan Description",
   "subscription_plan.name": "Plan Name",
-  "subscription_plan.description": "Plan Description"
+  "subscription_plan.description": "Plan Description",
+  "subscription.name": "Subscription Name",
+  "subscription.description": "Subscription Description",
+  "subscription.gateway_id": "Gateway",
+  "subscription-plan-item.slug": "Slug",
+  "subscription-plan-item.name": "Name",
+  "subscription-plan-item.price": "Price",
+  "subscription-plan.slug": "Slug",
+  "subscription-plan.duration": "Duration",
+  "subscription-plan.item-id": "Subscription Item",
+  "subscription.plan_id": "Plan",
+  "subscription.value": "Value",
+  "subscription.person_id": "Person",
+  "subscription.payment_id": "Payment",
+  "subscription.start_at": "Start Date",
+  "subscription.end_at": "End Date",
+  "subscription.role": "Role",
+  "subscription.status": "Status",
+  "subscription.limit": "Limit"
 }

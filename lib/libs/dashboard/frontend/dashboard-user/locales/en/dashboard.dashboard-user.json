@@ -1,0 +1,11 @@
+{
+  "create": "Create dashboard user",
+  "createText": "Fill the dashboard user informations.",
+  "createTooltip": "Create new dashboard user",
+  "delete": "Delete dashboard user",
+  "deleteText": "Are you sure to delete these dashboard user?",
+  "deleteTooltip": "Delete the selected dashboard user",
+  "edit": "Edit dashboard user",
+  "editText": "View and edit dashboard user information.",
+  "editTooltip": "Edit the selected dashboard user"
+}

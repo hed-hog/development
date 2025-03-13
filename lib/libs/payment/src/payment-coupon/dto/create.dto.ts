@@ -1,4 +1,10 @@
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateDTO {
   @IsNumber(
@@ -44,4 +50,7 @@ export class CreateDTO {
       'A data de término do cupom deve ser uma data no formato YYYY-MM-DD.',
   })
   ends_at?: string;
+
+  @IsInt({ each: true })
+  product_ids: number[];
 }

@@ -10,7 +10,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
@@ -22,12 +22,17 @@ import { Role, DeleteDTO } from '@hedhog/core';
 export class PaymentController {
   constructor(
     @Inject(forwardRef(() => PaymentService))
-    private readonly paymentService: PaymentService
+    private readonly paymentService: PaymentService,
   ) {}
 
   @Get()
   async list(@Pagination() paginationParams) {
-    return this.paymentService.list(paginationParams);
+    return this.paymentService.list(paginationParams, false);
+  }
+
+  @Get('active')
+  async listActive(@Pagination() paginationParams) {
+    return this.paymentService.list(paginationParams, true);
   }
 
   @Get(':id')
@@ -44,7 +49,7 @@ export class PaymentController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.paymentService.update({
       id,
-      data
+      data,
     });
   }
 

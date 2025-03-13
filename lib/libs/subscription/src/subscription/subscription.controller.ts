@@ -10,7 +10,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
@@ -22,12 +22,17 @@ import { Role, DeleteDTO } from '@hedhog/core';
 export class SubscriptionController {
   constructor(
     @Inject(forwardRef(() => SubscriptionService))
-    private readonly subscriptionService: SubscriptionService
+    private readonly subscriptionService: SubscriptionService,
   ) {}
 
   @Get()
   async list(@Pagination() paginationParams) {
-    return this.subscriptionService.list(paginationParams);
+    return this.subscriptionService.list(paginationParams, false);
+  }
+
+  @Get('active')
+  async listActive(@Pagination() paginationParams) {
+    return this.subscriptionService.list(paginationParams, true);
   }
 
   @Get(':id')
@@ -44,7 +49,7 @@ export class SubscriptionController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.subscriptionService.update({
       id,
-      data
+      data,
     });
   }
 

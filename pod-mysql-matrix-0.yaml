@@ -1,0 +1,318 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    checksum/configuration: 4c2131f61da2b3402b7874af477a6ff834574a6650ac43bd3d34ab4d52eae23c
+  creationTimestamp: '2025-02-16T01:06:23Z'
+  deletionGracePeriodSeconds: 30
+  deletionTimestamp: '2025-03-12T14:54:10Z'
+  generateName: mysql-matrix-
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: mysql-matrix
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mysql
+    app.kubernetes.io/part-of: mysql
+    app.kubernetes.io/version: 8.4.3
+    apps.kubernetes.io/pod-index: '0'
+    controller-revision-hash: mysql-matrix-799c64466c
+    helm.sh/chart: mysql-12.2.0
+    statefulset.kubernetes.io/pod-name: mysql-matrix-0
+  name: mysql-matrix-0
+  namespace: hcode
+  ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: mysql-matrix
+      uid: 0a5152c2-2cc1-499c-9fbc-a6643e85782d
+  resourceVersion: '17149062'
+  uid: bdf7a76f-c272-4f4b-9bf8-d7f075194e1e
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/instance: mysql-matrix
+                app.kubernetes.io/name: mysql
+            topologyKey: kubernetes.io/hostname
+          weight: 1
+  automountServiceAccountToken: false
+  containers:
+    - env:
+        - name: BITNAMI_DEBUG
+          value: 'false'
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: mysql-root-password
+              name: mysql-matrix
+        - name: MYSQL_ENABLE_SSL
+          value: 'no'
+        - name: MYSQL_USER
+          value: hcode
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: mysql-password
+              name: mysql-matrix
+        - name: MYSQL_PORT
+          value: '3306'
+        - name: MYSQL_DATABASE
+          value: matrix
+      image: docker.io/bitnami/mysql:8.4.3-debian-12-r4
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        exec:
+          command:
+            - /bin/bash
+            - -ec
+            - |
+              password_aux="${MYSQL_ROOT_PASSWORD:-}"
+              if [[ -f "${MYSQL_ROOT_PASSWORD_FILE:-}" ]]; then
+                  password_aux=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
+              fi
+              mysqladmin status -uroot -p"${password_aux}"
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: mysql
+      ports:
+        - containerPort: 3306
+          name: mysql
+          protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+            - /bin/bash
+            - -ec
+            - |
+              password_aux="${MYSQL_ROOT_PASSWORD:-}"
+              if [[ -f "${MYSQL_ROOT_PASSWORD_FILE:-}" ]]; then
+                  password_aux=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
+              fi
+              mysqladmin ping -uroot -p"${password_aux}" | grep "mysqld is alive"
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 1000m
+          ephemeral-storage: 2Gi
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          ephemeral-storage: 50Mi
+          memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsNonRoot: true
+        runAsUser: 1001
+        seLinuxOptions: {}
+        seccompProfile:
+          type: RuntimeDefault
+      startupProbe:
+        exec:
+          command:
+            - /bin/bash
+            - -ec
+            - |
+              password_aux="${MYSQL_ROOT_PASSWORD:-}"
+              if [[ -f "${MYSQL_ROOT_PASSWORD_FILE:-}" ]]; then
+                  password_aux=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
+              fi
+              mysqladmin ping -uroot -p"${password_aux}" | grep "mysqld is alive"
+        failureThreshold: 10
+        initialDelaySeconds: 15
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /bitnami/mysql
+          name: data
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
+        - mountPath: /opt/bitnami/mysql/conf
+          name: empty-dir
+          subPath: app-conf-dir
+        - mountPath: /opt/bitnami/mysql/tmp
+          name: empty-dir
+          subPath: app-tmp-dir
+        - mountPath: /opt/bitnami/mysql/logs
+          name: empty-dir
+          subPath: app-logs-dir
+        - mountPath: /opt/bitnami/mysql/conf/my.cnf
+          name: config
+          subPath: my.cnf
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  hostname: mysql-matrix-0
+  initContainers:
+    - args:
+        - -ec
+        - |
+          #!/bin/bash
+
+          . /opt/bitnami/scripts/libfs.sh
+          # We copy the logs folder because it has symlinks to stdout and stderr
+          if ! is_dir_empty /opt/bitnami/mysql/logs; then
+            cp -r /opt/bitnami/mysql/logs /emptydir/app-logs-dir
+          fi
+      command:
+        - /bin/bash
+      image: docker.io/bitnami/mysql:8.4.3-debian-12-r4
+      imagePullPolicy: IfNotPresent
+      name: preserve-logs-symlinks
+      resources:
+        limits:
+          cpu: 1000m
+          ephemeral-storage: 2Gi
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          ephemeral-storage: 50Mi
+          memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsNonRoot: true
+        runAsUser: 1001
+        seLinuxOptions: {}
+        seccompProfile:
+          type: RuntimeDefault
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /emptydir
+          name: empty-dir
+  nodeName: node-aghq0
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    fsGroup: 1001
+    fsGroupChangePolicy: Always
+  serviceAccount: mysql-matrix
+  serviceAccountName: mysql-matrix
+  subdomain: mysql-matrix-headless
+  terminationGracePeriodSeconds: 30
+  tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: data-mysql-matrix-0
+    - configMap:
+        defaultMode: 420
+        name: mysql-matrix
+      name: config
+    - emptyDir: {}
+      name: empty-dir
+status:
+  conditions:
+    - lastProbeTime: null
+      lastTransitionTime: '2025-02-16T01:09:23Z'
+      status: 'True'
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: '2025-02-16T01:09:23Z'
+      status: 'True'
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: '2025-03-11T20:30:57Z'
+      status: 'True'
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: '2025-03-11T20:30:57Z'
+      status: 'True'
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: '2025-02-16T01:08:49Z'
+      status: 'True'
+      type: PodScheduled
+  containerStatuses:
+    - containerID: containerd://bb0eefe828770f8267d9cc53512c2cce56be29adb847c9c72c77fb8ea738b504
+      image: docker.io/bitnami/mysql:8.4.3-debian-12-r4
+      imageID: docker.io/bitnami/mysql@sha256:848355242581210da87ade548c1ea096692a618e889ca1d602d9d5b4cfba6de0
+      lastState:
+        terminated:
+          containerID: containerd://bed2efa90542a518482b3be957c73eb5f9ac33572e561656419894c7ac265a5d
+          exitCode: 0
+          finishedAt: '2025-03-11T20:30:33Z'
+          reason: Completed
+          startedAt: '2025-03-11T17:01:28Z'
+      name: mysql
+      ready: true
+      restartCount: 50
+      started: true
+      state:
+        running:
+          startedAt: '2025-03-11T20:30:33Z'
+      volumeMounts:
+        - mountPath: /bitnami/mysql
+          name: data
+        - mountPath: /tmp
+          name: empty-dir
+        - mountPath: /opt/bitnami/mysql/conf
+          name: empty-dir
+        - mountPath: /opt/bitnami/mysql/tmp
+          name: empty-dir
+        - mountPath: /opt/bitnami/mysql/logs
+          name: empty-dir
+        - mountPath: /opt/bitnami/mysql/conf/my.cnf
+          name: config
+  hostIP: 10.108.0.10
+  hostIPs:
+    - ip: 10.108.0.10
+  initContainerStatuses:
+    - containerID: containerd://b9bfeabb336552dad689dd01a99d937ae147c9d6e6b01536871eb8542af475d1
+      image: docker.io/bitnami/mysql:8.4.3-debian-12-r4
+      imageID: docker.io/bitnami/mysql@sha256:848355242581210da87ade548c1ea096692a618e889ca1d602d9d5b4cfba6de0
+      lastState: {}
+      name: preserve-logs-symlinks
+      ready: true
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://b9bfeabb336552dad689dd01a99d937ae147c9d6e6b01536871eb8542af475d1
+          exitCode: 0
+          finishedAt: '2025-02-16T01:09:22Z'
+          reason: Completed
+          startedAt: '2025-02-16T01:09:22Z'
+      volumeMounts:
+        - mountPath: /emptydir
+          name: empty-dir
+  phase: Running
+  podIP: 10.244.2.45
+  podIPs:
+    - ip: 10.244.2.45
+  qosClass: Burstable
+  startTime: '2025-02-16T01:08:49Z'

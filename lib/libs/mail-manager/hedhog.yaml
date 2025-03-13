@@ -1,0 +1,103 @@
+data:
+  route:
+    - url: /mail
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /mail
+      method: POST
+      relations: *a1
+    - url: /mail/:id
+      method: GET
+      relations: *a1
+    - url: /mail/:id
+      method: PATCH
+      relations: *a1
+    - url: /mail
+      method: DELETE
+      relations: *a1
+    - url: /mail-sent
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /mail-sent
+      method: POST
+      relations: *a2
+    - url: /mail-sent/:id
+      method: GET
+      relations: *a2
+    - url: /mail-sent/:id
+      method: PATCH
+      relations: *a2
+    - url: /mail-sent
+      method: DELETE
+      relations: *a2
+    - url: /mail-var
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /mail-var
+      method: POST
+      relations: *a3
+    - url: /mail-var/:id
+      method: GET
+      relations: *a3
+    - url: /mail-var/:id
+      method: PATCH
+      relations: *a3
+    - url: /mail-var
+      method: DELETE
+      relations: *a3
+  menu:
+    - name:
+        en: Mail
+        pt: Mail
+      icon: file
+      url: /mail
+      slug: mail
+      relations: *a1
+    - name:
+        en: MailSent
+        pt: MailSent
+      icon: file
+      url: /mail-sent
+      slug: mail-sent
+      relations: *a2
+    - name:
+        en: MailVar
+        pt: MailVar
+      icon: file
+      url: /mail-var
+      slug: mail-var
+      relations: *a3
+  screen:
+    - name:
+        en: Mail
+        pt: Mail
+      slug: mail
+      description:
+        en: Screen to manage mail
+        pt: Tela para gerenciar mail
+      icon: file
+    - name:
+        en: MailSent
+        pt: MailSent
+      slug: mail-sent
+      description:
+        en: Screen to manage mail_sent
+        pt: Tela para gerenciar mail_sent
+      icon: file
+    - name:
+        en: MailVar
+        pt: MailVar
+      slug: mail-var
+      description:
+        en: Screen to manage mail_var
+        pt: Tela para gerenciar mail_var
+      icon: file

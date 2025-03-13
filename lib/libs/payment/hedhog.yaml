@@ -175,47 +175,6 @@ data:
       slug: AURA
     - name: MAESTRO
       slug: MAESTRO
-  payment_method_item:
-    - item_id:
-        where:
-          slug: EAGLE_METHOD_COURSE
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 850
-    - item_id:
-        where:
-          slug: PLATFORM_QUARTERLY
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 408
-    - item_id:
-        where:
-          slug: PLATFORM_SEMIANNUAL
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 720
-    - item_id:
-        where:
-          slug: PLATFORM_ANNUAL
-      payment_method_id:
-        where:
-          slug: PIX
-      discount_type_id:
-        where:
-          slug: PROMOTIONAL_PRICE
-      value: 1248
   route:
     - url: /payment_gateway
       method: GET
@@ -569,23 +528,35 @@ data:
       method: DELETE
       relations: *a20
   menu:
-    - icon: user-check
+    - icon: credit-card
       name:
         en: Payment
         pt: Pagamento
       slug: /payment
+      url: /payment
+      relations:
+        role:
+          - where:
+              slug: admin
+    - icon: ticket
+      name:
+        en: Payment Coupon
+        pt: Cupom
+      slug: /payment-coupon
+      url: /payment-coupon
       relations:
         role:
           - where:
               slug: admin
     - menu_id:
         where:
-          slug: /payment
-      icon: user-check
+          slug: /management
+      icon: credit-card
       name:
         en: Payment
         pt: Pagamento
       slug: /management/payment
+      url: /management/payment
       relations:
         role:
           - where:
@@ -596,14 +567,14 @@ data:
       menu_id:
         where:
           slug: /management/payment
-      icon: file
+      icon: cloud
       url: /management/payment/payment-gateway
       slug: /management/payment/payment-gateway
       relations: *a1
     - name:
         en: Payment Status
         pt: Status de Pagamento
-      icon: file
+      icon: check
       menu_id:
         where:
           slug: /management/payment
@@ -613,7 +584,7 @@ data:
     - name:
         en: Payment Method
         pt: Método de Pagamento
-      icon: file
+      icon: brand-mastercard
       menu_id:
         where:
           slug: /management/payment
@@ -623,141 +594,23 @@ data:
     - name:
         en: Card Brand
         pt: Bandeira do Cartão
-      icon: file
+      icon: brand-mastercard
       menu_id:
         where:
           slug: /management/payment
-      url: /management/payment/card-brand
-      slug: /management/payment/card-brand
+      url: /management/payment/payment-card-brand
+      slug: /management/payment/payment-card-brand
       relations: *a4
     - name:
         en: Discount Type
         pt: Tipo de Desconto
-      icon: file
+      icon: percentage
       menu_id:
         where:
           slug: /management/payment
       url: /management/payment/discount-type
       slug: /management/payment/discount-type
       relations: *a5
-    - name:
-        en: PaymentGateway
-        pt: PaymentGateway
-      icon: file
-      url: /payment-gateway
-      slug: payment-gateway
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentStatus
-        pt: PaymentStatus
-      icon: file
-      url: /payment-status
-      slug: payment-status
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentMethod
-        pt: PaymentMethod
-      icon: file
-      url: /payment-method
-      slug: payment-method
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentCardBrand
-        pt: PaymentCardBrand
-      icon: file
-      url: /payment-card-brand
-      slug: payment-card-brand
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: DiscountType
-        pt: DiscountType
-      icon: file
-      url: /discount-type
-      slug: discount-type
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Payment
-        pt: Payment
-      icon: file
-      url: /payment
-      slug: payment
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Item
-        pt: Item
-      icon: file
-      url: /item
-      slug: item
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentItem
-        pt: PaymentItem
-      icon: file
-      url: /payment-item
-      slug: payment-item
-      relations: *a15
-    - name:
-        en: PaymentMethodItem
-        pt: PaymentMethodItem
-      icon: file
-      url: /payment-method-item
-      slug: payment-method-item
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentValue
-        pt: PaymentValue
-      icon: file
-      url: /payment-value
-      slug: payment-value
-      relations: *a16
-    - name:
-        en: PaymentCoupon
-        pt: PaymentCoupon
-      icon: file
-      url: /payment-coupon
-      slug: payment-coupon
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: PaymentCouponItem
-        pt: PaymentCouponItem
-      icon: file
-      url: /payment-coupon-item
-      slug: payment-coupon-item
-      relations: *a17
-    - name:
-        en: PaymentNotification
-        pt: PaymentNotification
-      icon: file
-      url: /payment-notification
-      slug: payment-notification
-      relations: *a19
   screen:
     - name:
         en: Gateway
@@ -768,44 +621,44 @@ data:
         pt: Tela para gerenciar gateway
       icon: file
     - name:
-        en: PaymentStatus
-        pt: PaymentStatus
+        en: Payment Status
+        pt: Status de Pagamento
       slug: payment-status
       description:
-        en: Screen to manage payment_status
-        pt: Tela para gerenciar payment_status
+        en: Screen to manage payment status
+        pt: Tela para gerenciar status de pagamento
       icon: file
     - name:
-        en: PaymentMethod
-        pt: PaymentMethod
+        en: Payment Method
+        pt: Método de Pagamento
       slug: payment-method
       description:
-        en: Screen to manage payment_method
-        pt: Tela para gerenciar payment_method
+        en: Screen to manage payment method
+        pt: Tela para gerenciar método de pagamento
       icon: file
     - name:
-        en: CardBrand
-        pt: CardBrand
+        en: Card Brand
+        pt: Bandeira do Cartão
       slug: card-brand
       description:
-        en: Screen to manage payment_card_brand
-        pt: Tela para gerenciar payment_card_brand
+        en: Screen to manage card brand
+        pt: Tela para gerenciar bandeira do cartão
       icon: file
     - name:
-        en: DiscountType
-        pt: DiscountType
+        en: Discount Type
+        pt: Tipo de Desconto
       slug: discount-type
       description:
-        en: Screen to manage discount_type
-        pt: Tela para gerenciar discount_type
+        en: Screen to manage discount type
+        pt: Tela para gerenciar tipo de desconto
       icon: file
     - name:
         en: Payment
-        pt: Payment
+        pt: Pagamento
       slug: payment
       description:
         en: Screen to manage payment
-        pt: Tela para gerenciar payment
+        pt: Tela para gerenciar pagamento
       icon: file
     - name:
         en: Item
@@ -816,68 +669,68 @@ data:
         pt: Tela para gerenciar item
       icon: file
     - name:
-        en: PaymentItem
-        pt: PaymentItem
+        en: Payment Item
+        pt: Item de Pagamento
       slug: payment-item
       description:
-        en: Screen to manage payment_item
-        pt: Tela para gerenciar payment_item
+        en: Screen to manage payment item
+        pt: Tela para gerenciar item de pagamento
       icon: file
     - name:
-        en: PaymentMethodItem
-        pt: PaymentMethodItem
+        en: Payment Method Item
+        pt: Item de Método de Pagamento
       slug: payment-method-item
       description:
-        en: Screen to manage payment_method_item
-        pt: Tela para gerenciar payment_method_item
+        en: Screen to manage payment method item
+        pt: Tela para gerenciar item de método de pagamento
       icon: file
     - name:
-        en: PaymentGateway
-        pt: PaymentGateway
+        en: Payment Gateway
+        pt: Gateway de Pagamento
       slug: payment-gateway
       description:
-        en: Screen to manage payment_gateway
-        pt: Tela para gerenciar payment_gateway
+        en: Screen to manage payment gateway
+        pt: Tela para gerenciar gateway de pagamento
       icon: file
     - name:
-        en: PaymentCardBrand
-        pt: PaymentCardBrand
+        en: Payment Card Brand
+        pt: Bandeira do Cartão de Pagamento
       slug: payment-card-brand
       description:
-        en: Screen to manage payment_card_brand
-        pt: Tela para gerenciar payment_card_brand
+        en: Screen to manage payment card brand
+        pt: Tela para gerenciar bandeira do cartão de pagamento
       icon: file
     - name:
-        en: PaymentValue
-        pt: PaymentValue
+        en: Payment Value
+        pt: Valor de Pagamento
       slug: payment-value
       description:
-        en: Screen to manage payment_value
-        pt: Tela para gerenciar payment_value
+        en: Screen to manage payment value
+        pt: Tela para gerenciar valor de pagamento
       icon: file
     - name:
-        en: PaymentCoupon
-        pt: PaymentCoupon
+        en: Payment Coupon
+        pt: Cupom de Pagamento
       slug: payment-coupon
       description:
-        en: Screen to manage payment_coupon
-        pt: Tela para gerenciar payment_coupon
+        en: Screen to manage payment coupon
+        pt: Tela para gerenciar cupom de pagamento
       icon: file
     - name:
-        en: PaymentCouponItem
-        pt: PaymentCouponItem
+        en: Payment Coupon Item
+        pt: Item de Cupom de Pagamento
       slug: payment-coupon-item
       description:
-        en: Screen to manage payment_coupon_item
-        pt: Tela para gerenciar payment_coupon_item
+        en: Screen to manage payment coupon item
+        pt: Tela para gerenciar item de cupom de pagamento
       icon: file
     - name:
-        en: PaymentNotification
-        pt: PaymentNotification
+        en: Payment Notification
+        pt: Notificação de Pagamento
       slug: payment-notification
       description:
-        en: Screen to manage payment_notification
-        pt: Tela para gerenciar payment_notification
+        en: Screen to manage payment notification
+        pt: Tela para gerenciar notificação de pagamento
       icon: file
 tables:
   payment_gateway:
@@ -1375,35 +1228,41 @@ screens:
           - where:
               slug: admin
 routes:
+  - path: management
+    children:
+      - path: payment
+        children:
+          - path: payment-gateway
+            lazy:
+              component: ./pages/management/payment/payment-gateway/index.tsx
+          - path: payment-status
+            lazy:
+              component: ./pages/management/payment/payment-status/index.tsx
+          - path: payment-method
+            lazy:
+              component: ./pages/management/payment/payment-method/index.tsx
+          - path: payment-card-brand
+            lazy:
+              component: ./pages/management/payment/payment-card-brand/index.tsx
+          - path: discount-type
+            lazy:
+              component: ./pages/management/payment/discount-type/index.tsx
+          - path: item
+            lazy:
+              component: ./pages/management/payment/item/index.tsx
+          - path: payment-notification
+            lazy:
+              component: ./pages/management/payment/payment-notification/index.tsx
   - path: payment
     children:
-      - path: payment-gateway
-        lazy:
-          component: ./pages/payment/payment-gateway/index.tsx
-      - path: payment-status
-        lazy:
-          component: ./pages/payment/payment-status/index.tsx
-      - path: payment-method
-        lazy:
-          component: ./pages/payment/payment-method/index.tsx
-      - path: payment-card-brand
-        lazy:
-          component: ./pages/payment/payment-card-brand/index.tsx
-      - path: discount-type
-        lazy:
-          component: ./pages/payment/discount-type/index.tsx
-      - path: payment
+      - path: null
         lazy:
           component: ./pages/payment/payment/index.tsx
-      - path: item
+  - path: payment-coupon
+    children:
+      - path: null
         lazy:
-          component: ./pages/payment/item/index.tsx
-      - path: payment-coupon
-        lazy:
-          component: ./pages/payment/payment-coupon/index.tsx
-      - path: payment-notification
-        lazy:
-          component: ./pages/payment/payment-notification/index.tsx
+          component: ./pages/payment-coupon/index.tsx
 enums:
   payment_status:
     key: slug

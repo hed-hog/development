@@ -1,11 +1,4 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import React, { useEffect, useImperativeHandle, useState } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -16,10 +9,17 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table'
-import { ArrowUp } from 'lucide-react'
-import React, { useEffect, useImperativeHandle, useState } from 'react'
-import { Button } from '../ui/button'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { Checkbox } from '../ui/checkbox'
+import { ArrowUp } from 'lucide-react'
+import { Button } from '../ui/button'
 
 type ListViewProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   loading?: boolean

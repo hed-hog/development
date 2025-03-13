@@ -1,141 +1,90 @@
-tables:
-  chat_room:
-    columns:
-      - type: pk
-      - type: slug
-      - type: created_at
-      - type: updated_at
-  chat_room_person:
-    columns:
-      - type: pk
-      - type: fk
-        name: chat_id
-        references:
-          table: chat_room
-          column: id
-      - type: fk
-        name: person_id
-        references:
-          table: person
-          column: id
-      - type: enum
-        name: role
-        enum:
-          - admin
-          - member
-      - type: created_at
-      - type: updated_at
-  chat_message:
-    columns:
-      - type: pk
-      - type: fk
-        name: chat_id
-        references:
-          table: chat_room
-          column: id
-      - type: fk
-        name: person_id
-        references:
-          table: person
-          column: id
-      - type: enum
-        name: type
-        enum:
-          - text
-          - image
-          - video
-          - audio
-          - file
-      - type: varchar
-        name: content
-        length: 2047
-      - type: datetime
-        name: read_at
-        isNullable: true
-      - type: datetime
-        name: received_at
-        isNullable: true
-      - type: created_at
-      - type: updated_at
 data:
   route:
-    - url: /chat-room
+    - url: /chat-message
       method: GET
       relations: &a1
         role:
           - where:
               slug: admin
-    - url: /chat-room
+    - url: /chat-message
       method: POST
       relations: *a1
-    - url: /chat-room/:id
+    - url: /chat-message/:id
       method: GET
       relations: *a1
-    - url: /chat-room/:id
+    - url: /chat-message/:id
       method: PATCH
       relations: *a1
-    - url: /chat-room
+    - url: /chat-message
       method: DELETE
       relations: *a1
-    - url: /chat-room-person
+    - url: /chat-room
       method: GET
       relations: &a2
         role:
           - where:
               slug: admin
-    - url: /chat-room-person
+    - url: /chat-room
       method: POST
       relations: *a2
-    - url: /chat-room-person/:id
+    - url: /chat-room/:id
       method: GET
       relations: *a2
-    - url: /chat-room-person/:id
+    - url: /chat-room/:id
       method: PATCH
       relations: *a2
-    - url: /chat-room-person
+    - url: /chat-room
       method: DELETE
       relations: *a2
-    - url: /chat-message
+    - url: /chat-room-person
       method: GET
       relations: &a3
         role:
           - where:
               slug: admin
-    - url: /chat-message
+    - url: /chat-room-person
       method: POST
       relations: *a3
-    - url: /chat-message/:id
+    - url: /chat-room-person/:id
       method: GET
       relations: *a3
-    - url: /chat-message/:id
+    - url: /chat-room-person/:id
       method: PATCH
       relations: *a3
-    - url: /chat-message
+    - url: /chat-room-person
       method: DELETE
       relations: *a3
   menu:
-    - name:
-        en: ChatRoom
-        pt: ChatRoom
-      icon: file
-      url: /chat-room
-      slug: chat-room
-      relations: *a1
-    - name:
-        en: ChatRoomPerson
-        pt: ChatRoomPerson
-      icon: file
-      url: /chat-room-person
-      slug: chat-room-person
-      relations: *a2
     - name:
         en: ChatMessage
         pt: ChatMessage
       icon: file
       url: /chat-message
       slug: chat-message
+      relations: *a1
+    - name:
+        en: ChatRoom
+        pt: ChatRoom
+      icon: file
+      url: /chat-room
+      slug: chat-room
+      relations: *a2
+    - name:
+        en: ChatRoomPerson
+        pt: ChatRoomPerson
+      icon: file
+      url: /chat-room-person
+      slug: chat-room-person
       relations: *a3
   screen:
+    - name:
+        en: ChatMessage
+        pt: ChatMessage
+      slug: chat-message
+      description:
+        en: Screen to manage chat_message
+        pt: Tela para gerenciar chat_message
+      icon: file
     - name:
         en: ChatRoom
         pt: ChatRoom
@@ -151,12 +100,4 @@ data:
       description:
         en: Screen to manage chat_room_person
         pt: Tela para gerenciar chat_room_person
-      icon: file
-    - name:
-        en: ChatMessage
-        pt: ChatMessage
-      slug: chat-message
-      description:
-        en: Screen to manage chat_message
-        pt: Tela para gerenciar chat_message
       icon: file

@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/appearance",
-  "version": "0.46.2",
+  "version": "0.46.3",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -15,6 +15,7 @@
     "src/entities/**/*.ts",
     "src/migrations/**/*.ts",
     "src/**/*.ejs",
+    "hedhog/**/*.yaml",
     "hedhog.yaml"
   ],
   "keywords": [],
@@ -30,9 +31,9 @@
     "@hedhog/setting": "latest"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.46.42",
+    "@hedhog/admin": "^0.46.53",
     "@hedhog/file": "^0.46.3",
-    "@hedhog/locale": "^0.46.2",
+    "@hedhog/locale": "^0.46.8",
     "@hedhog/pagination": "^0.46.1",
     "@hedhog/prisma": "^0.46.1",
     "@hedhog/setting": "^0.46.6",

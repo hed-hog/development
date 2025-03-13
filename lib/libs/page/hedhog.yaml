@@ -52,16 +52,28 @@ data:
               slug: admin
     - url: /component
       method: POST
-      relations: *a2
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component/:id
       method: GET
-      relations: *a2
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component/:id
       method: PATCH
-      relations: *a2
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component
       method: DELETE
-      relations: *a2
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component-prop-type
       method: GET
       relations: &a3
@@ -70,16 +82,28 @@ data:
               slug: admin
     - url: /component-prop-type
       method: POST
-      relations: *a3
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component-prop-type/:id
       method: GET
-      relations: *a3
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component-prop-type/:id
       method: PATCH
-      relations: *a3
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component-prop-type
       method: DELETE
-      relations: *a3
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component-prop
       method: GET
       relations: &a4
@@ -88,16 +112,28 @@ data:
               slug: admin
     - url: /component-prop
       method: POST
-      relations: *a4
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component-prop/:id
       method: GET
-      relations: *a4
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component-prop/:id
       method: PATCH
-      relations: *a4
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /component-prop
       method: DELETE
-      relations: *a4
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /instance
       method: GET
       relations: &a5
@@ -106,16 +142,28 @@ data:
               slug: admin
     - url: /instance
       method: POST
-      relations: *a5
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /instance/:id
       method: GET
-      relations: *a5
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /instance/:id
       method: PATCH
-      relations: *a5
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /instance
       method: DELETE
-      relations: *a5
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /instance-prop
       method: GET
       relations: &a6
@@ -124,59 +172,141 @@ data:
               slug: admin
     - url: /instance-prop
       method: POST
-      relations: *a6
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /instance-prop/:prop_id
       method: GET
-      relations: *a6
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /instance-prop/:prop_id
       method: PATCH
-      relations: *a6
+      relations:
+        role:
+          - where:
+              slug: admin
     - url: /instance-prop
       method: DELETE
-      relations: *a6
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /instance-prop/:id
+      method: GET
+      relations: &a7
+        role:
+          - where:
+              slug: admin
+    - url: /instance-prop/:id
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
   menu:
+    - name:
+        en: Pages
+        pt: Páginas
+      icon: file
+      url: /pages
+      slug: /pages
+      relations:
+        role:
+          - where:
+              slug: admin
+    - menu_id:
+        where:
+          slug: /management
+      icon: file
+      name:
+        en: Pages
+        pt: Páginas
+      slug: /management/pages
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: ComponentType
         pt: ComponentType
       icon: file
-      url: /component-type
-      slug: component-type
-      relations: *a1
+      url: /management/pages/component-type
+      slug: /management/pages/component-type
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Component
         pt: Component
       icon: file
-      url: /component
-      slug: component
-      relations: *a2
+      url: /management/pages/component
+      slug: /management/pages/component
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: ComponentPropType
         pt: ComponentPropType
       icon: file
-      url: /component-prop-type
-      slug: component-prop-type
-      relations: *a3
+      url: /management/pages/component-prop-type
+      slug: /management/pages/component-prop-type
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: ComponentProp
         pt: ComponentProp
       icon: file
-      url: /component-prop
-      slug: component-prop
-      relations: *a4
+      url: /management/pages/component-prop
+      slug: /management/pages/component-prop
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: Instance
         pt: Instance
       icon: file
-      url: /instance
-      slug: instance
-      relations: *a5
+      url: /management/pages/instance
+      slug: /management/pages/instance
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: InstanceProp
         pt: InstanceProp
       icon: file
-      url: /instance-prop
-      slug: instance-prop
-      relations: *a6
+      url: /management/pages/instance-prop
+      slug: /management/pages/instance-prop
+      menu_id:
+        where:
+          slug: /management
+      relations:
+        role:
+          - where:
+              slug: admin
   screen:
     - name:
         en: ComponentType
@@ -226,126 +356,27 @@ data:
         en: Screen to manage instance_prop
         pt: Tela para gerenciar instance_prop
       icon: file
-tables:
-  component_type:
-    columns:
-      - type: pk
-      - type: slug
-      - type: created_at
-      - type: updated_at
-  component_type_locale:
-    columns:
-      - type: fk
-        name: type_id
-        references:
-          table: component_type
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: locale_id
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: created_at
-      - type: updated_at
-  component:
-    columns:
-      - type: pk
-      - type: fk
-        name: type_id
-        references:
-          table: component_type
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: created_at
-      - type: updated_at
-  component_prop_type:
-    columns:
-      - type: pk
-      - type: slug
-      - type: created_at
-      - type: updated_at
-  component_prop_type_locale:
-    columns:
-      - type: fk
-        name: type_id
-        references:
-          table: component_prop_type
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: locale_id
-        references:
-          table: locale
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: created_at
-      - type: updated_at
-  component_prop:
-    columns:
-      - type: pk
-      - type: fk
-        name: type_id
-        references:
-          table: component_prop_type
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: component_id
-        references:
-          table: component
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - name: default
-      - type: created_at
-      - type: updated_at
-  instance:
-    columns:
-      - type: pk
-      - type: fk
-        name: component_id
-        references:
-          table: component
-          column: id
-          onDelete: CASCADE
-      - name: name
-      - type: fk
-        name: parent_id
-        references:
-          table: instance
-          column: id
-          onDelete: CASCADE
-      - type: order
-      - type: enum
-        name: visibility
-        default: private
-        enum:
-          - public
-          - private
-          - unlisted
-      - type: created_at
-      - type: updated_at
-  instance_prop:
-    columns:
-      - type: fk
-        name: prop_id
-        isPrimary: true
-        references:
-          table: component_prop
-          column: id
-          onDelete: CASCADE
-      - type: fk
-        name: instance_id
-        isPrimary: true
-        references:
-          table: instance
-          column: id
-          onDelete: CASCADE
-      - name: value
-      - type: created_at
-      - type: updated_at
+
+routes:
+  - path: management
+    children:
+      - path: pages
+        children:
+          - path: component-type
+            lazy:
+              component: ./pages/page/component-type/index.tsx
+          - path: component
+            lazy:
+              component: ./pages/page/component/index.tsx
+          - path: component-prop-type
+            lazy:
+              component: ./pages/page/component-prop-type/index.tsx
+          - path: component-prop
+            lazy:
+              component: ./pages/page/component-prop/index.tsx
+          - path: instance
+            lazy:
+              component: ./pages/page/instance/index.tsx
+          - path: instance-prop
+            lazy:
+              component: ./pages/page/instance-prop/index.tsx

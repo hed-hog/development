@@ -1,0 +1,7 @@
+columns:
+  - type: pk
+  - type: slug
+  - name: subject
+  - name: body
+  - type: created_at
+  - type: updated_at

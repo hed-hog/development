@@ -1,0 +1,17 @@
+columns:
+  - type: pk
+  - type: fk
+    name: prop_id
+    references:
+      table: component_prop
+      column: id
+      onDelete: CASCADE
+  - type: fk
+    name: instance_id
+    references:
+      table: instance
+      column: id
+      onDelete: CASCADE
+  - name: value
+  - type: created_at
+  - type: updated_at

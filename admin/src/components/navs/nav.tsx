@@ -132,7 +132,7 @@ function NavLink({
 
 function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
   return (
-    <Collapsible defaultOpen={true}>
+    <Collapsible defaultOpen={false}>
       <CollapsibleTrigger
         className={cn(
           buttonVariants({ variant: 'ghost', size: 'sm' }),

@@ -1,0 +1,11 @@
+{
+  "create": "Create mail sent",
+  "createText": "Fill the mail sent informations.",
+  "createTooltip": "Create new mail sent",
+  "delete": "Delete mail sent",
+  "deleteText": "Are you sure to delete these mail sent?",
+  "deleteTooltip": "Delete the selected mail sent",
+  "edit": "Edit mail sent",
+  "editText": "View and edit mail sent information.",
+  "editTooltip": "Edit the selected mail sent"
+}

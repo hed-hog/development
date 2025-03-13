@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/page",
-  "version": "0.46.1",
+  "version": "0.46.3",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -15,6 +15,7 @@
     "src/entities/**/*.ts",
     "src/migrations/**/*.ts",
     "src/**/*.ejs",
+    "hedhog/**/*.yaml",
     "hedhog.yaml"
   ],
   "keywords": [],
@@ -23,15 +24,15 @@
   "description": "",
   "peerDependencies": {
     "@hedhog/admin": "latest",
-    "@hedhog/pagination": "latest",
     "@hedhog/locale": "latest",
+    "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest"
   },
   "devDependencies": {
     "@hedhog/admin": "^0.46.42",
+    "@hedhog/locale": "^0.46.8",
     "@hedhog/pagination": "^0.46.1",
     "@hedhog/prisma": "^0.46.1",
-    "@hedhog/locale": "^0.46.2",
     "@nestjs/mapped-types": "^2.1.0"
   }
 }

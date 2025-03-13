@@ -1,0 +1,19 @@
+columns:
+  - type: pk
+  - type: fk
+    name: chat_id
+    references:
+      table: chat_room
+      column: id
+  - type: fk
+    name: person_id
+    references:
+      table: person
+      column: id
+  - type: enum
+    name: role
+    enum:
+      - admin
+      - member
+  - type: created_at
+  - type: updated_at

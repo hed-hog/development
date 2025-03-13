@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/locale",
-  "version": "0.46.6",
+  "version": "0.46.8",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -15,6 +15,7 @@
     "src/entities/**/*.ts",
     "src/migrations/**/*.ts",
     "src/**/*.ejs",
+    "hedhog/**/*.yaml",
     "hedhog.yaml"
   ],
   "keywords": [],
@@ -30,6 +31,6 @@
     "@hedhog/pagination": "^0.46.1",
     "@hedhog/prisma": "^0.46.1",
     "@hedhog/utils": "^0.0.28",
-    "@nestjs/mapped-types": "^2.0.5"
+    "@nestjs/mapped-types": "^2.1.0"
   }
 }

@@ -43,7 +43,7 @@ export const PickerField = <T extends {}>({
       if (typeof item === 'string') {
         return <div>{item}</div>
       }
-      return <div>{(item as any).name}</div>
+      return <div>{(item as any).name ?? (item as any).code}</div>
     }
   }
 
@@ -132,7 +132,7 @@ export const PickerField = <T extends {}>({
       <ListView<T>
         data={items}
         selectable={true}
-        render={(item) => <div>{(item as any).name}</div>}
+        render={(item) => <div>{(item as any).name ?? (item as any).code}</div>}
         textEmpty={textEmpty}
         textLoading={textLoading}
         columnName={columnName}
