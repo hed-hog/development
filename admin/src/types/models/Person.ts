@@ -1,14 +1,9 @@
 import { File } from './File';
 import { PersonType } from './PersonType';
-import { PersonValue } from './PersonValue';
-import { PersonUser } from './PersonUser';
-import { PersonDocument } from './PersonDocument';
 import { PersonContact } from './PersonContact';
-import { PersonAddress } from './PersonAddress';
 import { PersonCustom } from './PersonCustom';
-import { Payment } from './Payment';
-import { SubscriptionPerson } from './SubscriptionPerson';
-import { SubscriptionCancel } from './SubscriptionCancel';
+import { PersonDocument } from './PersonDocument';
+import { PersonAddress } from './PersonAddress';
 
 export type Person = {
   id?: number;
@@ -20,13 +15,8 @@ export type Person = {
   updated_at?: string;
   file?: File;
   person_type?: PersonType;
-  person_value?: PersonValue[];
-  person_user?: PersonUser[];
-  person_document?: PersonDocument[];
   person_contact?: PersonContact[];
-  person_address?: PersonAddress[];
   person_custom?: PersonCustom[];
-  payment?: Payment[];
-  subscription_person?: SubscriptionPerson[];
-  subscription_cancel?: SubscriptionCancel[];
+  person_document?: PersonDocument[];
+  person_address?: PersonAddress[];
 }
