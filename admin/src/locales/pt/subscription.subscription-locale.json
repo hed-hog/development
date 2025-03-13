@@ -1,0 +1,11 @@
+{
+  "create": "Criar assinatura locale",
+  "createText": "Preencha as informações da assinatura locale.",
+  "createTooltip": "Criar nova assinatura locale",
+  "delete": "Excluir assinatura locale",
+  "deleteText": "Você tem certeza de que deseja excluir estas assinatura locale?",
+  "deleteTooltip": "Excluir a assinatura locale selecionada",
+  "edit": "Editar assinatura locale",
+  "editText": "Ver e editar informações da assinatura locale.",
+  "editTooltip": "Editar a assinatura locale selecionada"
+}

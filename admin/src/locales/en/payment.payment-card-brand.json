@@ -1,0 +1,11 @@
+{
+  "create": "Create payment card brand",
+  "createText": "Fill the payment card brand informations.",
+  "createTooltip": "Create new payment card brand",
+  "delete": "Delete payment card brand",
+  "deleteText": "Are you sure to delete these payment card brand?",
+  "deleteTooltip": "Delete the selected payment card brand",
+  "edit": "Edit payment card brand",
+  "editText": "View and edit payment card brand information.",
+  "editTooltip": "Edit the selected payment card brand"
+}
