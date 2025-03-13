@@ -1,0 +1,11 @@
+{
+  "create": "Criar menu locale",
+  "createText": "Preencha as informações do menu locale.",
+  "createTooltip": "Criar novo menu locale",
+  "delete": "Excluir menu locale",
+  "deleteText": "Você tem certeza de que deseja excluir esses menu locale?",
+  "deleteTooltip": "Excluir o menu locale selecionado",
+  "edit": "Editar menu locale",
+  "editText": "Visualizar e editar informações do menu locale.",
+  "editTooltip": "Editar o menu locale selecionado"
+}

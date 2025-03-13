@@ -1,0 +1,11 @@
+{
+  "create": "Criar multifactor",
+  "createText": "Preencha as informações do multifactor.",
+  "createTooltip": "Criar novo multifactor",
+  "delete": "Deletar multifactor",
+  "deleteText": "Você tem certeza de que deseja deletar este multifactor?",
+  "deleteTooltip": "Deletar o multifactor selecionado",
+  "edit": "Editar multifactor",
+  "editText": "Ver e editar informações do multifactor.",
+  "editTooltip": "Editar o multifactor selecionado"
+}

@@ -1,0 +1,11 @@
+{
+  "create": "Criar tela locale",
+  "createText": "Preencha as informações da tela locale.",
+  "createTooltip": "Criar nova tela locale",
+  "delete": "Excluir tela locale",
+  "deleteText": "Você tem certeza de que deseja excluir estas telas locale?",
+  "deleteTooltip": "Excluir a tela locale selecionada",
+  "edit": "Editar tela locale",
+  "editText": "Visualizar e editar as informações da tela locale.",
+  "editTooltip": "Editar a tela locale selecionada"
+}

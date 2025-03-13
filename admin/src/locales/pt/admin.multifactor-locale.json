@@ -1,0 +1,11 @@
+{
+  "create": "Criar multifator local",
+  "createText": "Preencha as informações do multifator local.",
+  "createTooltip": "Criar novo multifator local",
+  "delete": "Excluir multifator local",
+  "deleteText": "Você tem certeza de que deseja excluir este multifator local?",
+  "deleteTooltip": "Excluir o multifator local selecionado",
+  "edit": "Editar multifator local",
+  "editText": "Ver e editar as informações do multifator local.",
+  "editTooltip": "Editar o multifator local selecionado"
+}

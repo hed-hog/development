@@ -1,0 +1,11 @@
+{
+  "create": "Create component prop type locale",
+  "createText": "Fill the component prop type locale informations.",
+  "createTooltip": "Create new component prop type locale",
+  "delete": "Delete component prop type locale",
+  "deleteText": "Are you sure to delete these component prop type locale?",
+  "deleteTooltip": "Delete the selected component prop type locale",
+  "edit": "Edit component prop type locale",
+  "editText": "View and edit component prop type locale information.",
+  "editTooltip": "Edit the selected component prop type locale"
+}
