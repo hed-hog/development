@@ -1064,7 +1064,7 @@ screens:
     menu:
       url: /item
       icon: shopping-cart
-      name: 
+      name:
         en: Products
         pt: Produtos
       slug: /item
@@ -1193,24 +1193,6 @@ screens:
         title:
           en: Notifications
           pt: Notificações
-  item:
-    title:
-      en: Item
-      pt: Item
-    menu:
-      menu_id:
-        where:
-          slug: /payment
-      url: /payment/item
-      icon: user-check
-      name:
-        en: Item
-        pt: Item
-      slug: /payment/item
-      relations:
-        role:
-          - where:
-              slug: admin
   payment_coupon:
     title:
       en: Coupon
