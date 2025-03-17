@@ -7,7 +7,6 @@ import { forwardRef, Module } from '@nestjs/common';
 import { SubscriptionCancelModule } from './subscription-cancel/subscription-cancel.module';
 import { SubscriptionCreateModule } from './subscription-create/subscription-create.module';
 import { SubscriptionListenerModule } from './subscription-listener/subscriptionlistener.module';
-import { SubscriptionPlanItemModule } from './subscription-plan-item/subscription-plan-item.module';
 import { SubscriptionPlanModule } from './subscription-plan/subscription-plan.module';
 import { SubscriptionProfileModule } from './subscription-profile/subscriptionprofile.module';
 import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscription.module';
@@ -21,7 +20,6 @@ import { SubscriptionModule as SubscriptionModule2 } from './subscription/subscr
     forwardRef(() => SubscriptionCancelModule),
     forwardRef(() => SubscriptionCreateModule),
     forwardRef(() => SubscriptionModule2),
-    forwardRef(() => SubscriptionPlanItemModule),
     forwardRef(() => SubscriptionListenerModule),
     forwardRef(() => SubscriptionProfileModule),
     forwardRef(() => ContactModule),

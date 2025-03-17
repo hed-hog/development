@@ -528,6 +528,16 @@ data:
       method: DELETE
       relations: *a20
   menu:
+    - name:
+        en: Products
+        pt: Produtos
+      icon: shopping-cart
+      url: /item
+      slug: /item
+      relations:
+        role:
+          - where:
+              slug: admin
     - icon: credit-card
       name:
         en: Payment
@@ -1047,6 +1057,21 @@ tables:
       - type: created_at
       - type: updated_at
 screens:
+  item:
+    title:
+      en: Item
+      pt: Item
+    menu:
+      url: /item
+      icon: shopping-cart
+      name: 
+        en: Products
+        pt: Produtos
+      slug: /item
+      relations:
+        role:
+          - where:
+              slug: admin
   payment_gateway:
     title:
       en: Gateway
@@ -1258,6 +1283,11 @@ routes:
       - path: null
         lazy:
           component: ./pages/payment/payment/index.tsx
+  - path: item
+    children:
+      - path: null
+        lazy:
+          component: ./pages/payment/item/index.tsx
   - path: payment-coupon
     children:
       - path: null

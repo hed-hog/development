@@ -239,21 +239,6 @@ tables:
           - reason_id
         isUnique: true
 screens:
-  subscription_plan_item:
-    title:
-      en: Subscription Plan Items
-      pt: Produtos
-    menu:
-      url: /subscription-plan-item
-      icon: shopping-cart
-      name:
-        en: Subscription Plans
-        pt: Produtos
-      slug: /subscription-plan-item
-      relations:
-        role:
-          - where:
-              slug: admin
   subscription_plan:
     title:
       en: Subscription Plans
@@ -425,24 +410,6 @@ data:
     - url: /subscription/:subscriptionId/subscription-person/:subscription_id
       method: PATCH
       relations: *a8
-    - url: /subscription-plan-item
-      method: GET
-      relations: &a9
-        role:
-          - where:
-              slug: admin
-    - url: /subscription-plan-item
-      method: POST
-      relations: *a9
-    - url: /subscription-plan-item/:id
-      method: GET
-      relations: *a9
-    - url: /subscription-plan-item/:id
-      method: PATCH
-      relations: *a9
-    - url: /subscription-plan-item
-      method: DELETE
-      relations: *a9
   menu:
     - name:
         en: Subscription
@@ -473,13 +440,6 @@ data:
       url: /subscription
       slug: /subscription
       relations: *a3
-    - name:
-        en: Subscription Plan Item
-        pt: Produtos
-      icon: shopping-cart
-      url: /subscription-plan-item
-      slug: /subscription-plan-item
-      relations: *a9
   screen:
     - name:
         en: Subscription Plan
@@ -497,14 +457,6 @@ data:
         en: Screen to manage subscription
         pt: Tela para gerenciar assinatura
       icon: paywall
-    - name:
-        en: Subscription Plan Item
-        pt: Produtos
-      slug: /subscription-plan-item
-      description:
-        en: Screen to manage subscription plan item
-        pt: Tela para gerenciar produtos
-      icon: shopping-cart
   subscription_cancel_reason:
     - slug: high_price
     - slug: not_using_enough
