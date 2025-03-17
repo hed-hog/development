@@ -410,7 +410,7 @@ data:
     - url: /payment-coupon
       method: DELETE
       relations: *a13
-    - url: /payment-coupon-item
+    - url: /payment-coupon/:couponId/payment-coupon-item
       method: GET
       relations: &a14
         role:
@@ -419,10 +419,10 @@ data:
     - url: /payment-coupon/:couponId/payment-coupon-item
       method: POST
       relations: *a14
-    - url: /payment-coupon/:couponId/payment-coupon-item/:coupon_id
+    - url: /payment-coupon/:couponId/payment-coupon-item/:id
       method: GET
       relations: *a14
-    - url: /payment-coupon/:couponId/payment-coupon-item/:coupon_id
+    - url: /payment-coupon/:couponId/payment-coupon-item/:id
       method: PATCH
       relations: *a14
     - url: /payment-coupon/:couponId/payment-coupon-item
@@ -464,33 +464,6 @@ data:
     - url: /payment/:paymentId/payment-value
       method: DELETE
       relations: *a16
-    - url: /payment-coupon/:paymentCouponId/payment-coupon-item
-      method: GET
-      relations: &a17
-        role:
-          - where:
-              slug: admin
-    - url: /payment-coupon/:paymentCouponId/payment-coupon-item/:coupon_id
-      method: GET
-      relations: *a17
-    - url: /payment-coupon/:paymentCouponId/payment-coupon-item
-      method: POST
-      relations: *a17
-    - url: /payment-coupon/:paymentCouponId/payment-coupon-item/:coupon_id
-      method: PATCH
-      relations: *a17
-    - url: /payment-coupon/:paymentCouponId/payment-coupon-item
-      method: DELETE
-      relations: *a17
-    - url: /payment-coupon/:paymentCouponId/payment-coupon-item/:id
-      method: GET
-      relations: &a18
-        role:
-          - where:
-              slug: admin
-    - url: /payment-coupon/:paymentCouponId/payment-coupon-item/:id
-      method: PATCH
-      relations: *a18
     - url: /payment-notification
       method: GET
       relations: &a19
