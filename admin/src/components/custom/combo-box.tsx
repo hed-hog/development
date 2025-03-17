@@ -50,13 +50,15 @@ export function Combobox(props: ComboboxPrps) {
     if (data) {
       setOptions(
         (data?.data as any).data.map((item: any) => {
+          const finalValueName = item.dashboard_id ? 'dashboard_id' : valueName
+
           if (item.locale) {
             return {
-              [valueName]: item[String(valueName)],
+              [valueName]: item[String(finalValueName)],
               [displayName]:
                 item[String(displayName)] ??
-                item.locale.pt.name ??
-                item.locale.en.name,
+                item.locale.pt?.name ??
+                item.locale.en?.name,
             }
           } else {
             return {

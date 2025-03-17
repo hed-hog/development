@@ -29,5 +29,9 @@
   "subscription": "Assinaturas",
   "subscription_value": "Valores",
   "subscription_person": "Pessoas",
-  "subscription_payment": "Pagamentos"
+  "subscription_payment": "Pagamentos",
+  "dashboard": "Dashboard",
+  "dashboard_item": "Item de Dashboard",
+  "dashboard_user": "Usuário de Dashboard",
+  "dashboard_component": "Componente de Dashboard"
 }

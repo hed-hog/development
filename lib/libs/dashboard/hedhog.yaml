@@ -257,12 +257,14 @@ tables:
       - type: pk
       - name: component_id
         type: fk
+        isPrimary: true
         references:
           table: dashboard_component
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
+        isPrimary: true
         references:
           table: locale
           column: id
@@ -281,12 +283,14 @@ tables:
       - type: pk
       - name: dashboard_id
         type: fk
+        isPrimary: true
         references:
           table: dashboard
           column: id
           onDelete: CASCADE
       - name: locale_id
         type: fk
+        isPrimary: true
         references:
           table: locale
           column: id
