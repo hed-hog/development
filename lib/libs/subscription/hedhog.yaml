@@ -302,22 +302,22 @@ data:
     - url: /subscription-plan
       method: DELETE
       relations: *a1
-    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway
+    - url: /subscription-plan/:planId/subscription-plan-gateway
       method: GET
       relations: &a2
         role:
           - where:
               slug: admin
-    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway/:id
+    - url: /subscription-plan/:planId/subscription-plan-gateway/:id
       method: GET
       relations: *a2
-    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway
+    - url: /subscription-plan/:planId/subscription-plan-gateway
       method: POST
       relations: *a2
-    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway/:id
+    - url: /subscription-plan/:planId/subscription-plan-gateway/:id
       method: PATCH
       relations: *a2
-    - url: /subscription-plan/:subscriptionPlanId/subscription-plan-gateway
+    - url: /subscription-plan/:planId/subscription-plan-gateway
       method: DELETE
       relations: *a2
     - url: /subscription
