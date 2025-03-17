@@ -87,7 +87,26 @@ export class PaymentService {
 
   async create(data: CreateDTO) {
     return this.prismaService.payment.create({
-      data,
+      data: {
+        slug: data.slug,
+        person_id: data.person_id,
+        amount: data.amount,
+        status_id: data.status_id,
+        document: data.document,
+        payment_at: data.payment_at,
+        currency: data.currency,
+        method_id: data.method_id,
+        brand_id: data.brand_id,
+        installments: data.installments,
+        delivered: data.delivered,
+        coupon_id: data.coupon_id,
+        discount: data.discount,
+        payment_gateway: {
+          connect: {
+            id: data.gateway_id,
+          },
+        },
+      },
     });
   }
 
