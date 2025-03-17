@@ -89,23 +89,45 @@ export class PaymentService {
     return this.prismaService.payment.create({
       data: {
         slug: data.slug,
-        person_id: data.person_id,
         amount: data.amount,
-        status_id: data.status_id,
         document: data.document,
         payment_at: data.payment_at,
         currency: data.currency,
-        method_id: data.method_id,
-        brand_id: data.brand_id,
         installments: data.installments,
         delivered: data.delivered,
-        coupon_id: data.coupon_id,
-        discount: data.discount,
+        discount: data.discount ?? 0,
         payment_gateway: {
           connect: {
             id: data.gateway_id,
           },
         },
+        payment_status: {
+          connect: {
+            id: data.status_id,
+          },
+        },
+        payment_method: {
+          connect: {
+            id: data.method_id,
+          },
+        },
+        payment_card_brand: {
+          connect: {
+            id: data.brand_id,
+          },
+        },
+        person: {
+          connect: {
+            id: data.person_id,
+          },
+        },
+        ...(data.coupon_id && {
+          payment_coupon: {
+            connect: {
+              id: data.coupon_id,
+            },
+          },
+        }),
       },
     });
   }

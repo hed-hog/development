@@ -1,4 +1,7 @@
-import FormPanel, { FormPanelRef } from '@/components/panels/form-panel'
+import FormPanel, {
+  FormPanelRef,
+  getFieldsLocale,
+} from '@/components/panels/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
 
 import { useSubscriptionPlanCreate } from '@/features/subscription/subscription-plan'
@@ -63,6 +66,8 @@ const SubscriptionPlanCreatePanel = forwardRef(
             displayName: 'item',
             valueName: 'id',
           },
+          ...getFieldsLocale([{ name: 'name' }]),
+          ...getFieldsLocale([{ name: 'description' }]),
         ]}
         button={{ text: t('create', { ns: 'actions' }) }}
         onSubmit={async (data) => {

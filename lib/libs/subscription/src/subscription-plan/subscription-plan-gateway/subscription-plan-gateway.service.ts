@@ -3,7 +3,7 @@ import { PrismaService } from '@hedhog/prisma';
 import {
   Injectable,
   NotFoundException,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
@@ -13,15 +13,15 @@ import { DeleteDTO } from '@hedhog/core';
 export class SubscriptionPlanGatewayService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   async create(planId: number, data: CreateDTO) {
     return this.prismaService.subscription_plan_gateway.create({
       data: {
         plan_id: planId,
-        ...data
-      }
+        ...data,
+      },
     });
   }
 
@@ -29,8 +29,8 @@ export class SubscriptionPlanGatewayService {
     return this.prismaService.subscription_plan_gateway.findFirst({
       where: {
         plan_id: planId,
-        id: id
-      }
+        id: id,
+      },
     });
   }
 
@@ -40,13 +40,10 @@ export class SubscriptionPlanGatewayService {
 
     return this.paginationService.paginate(
       this.prismaService.subscription_plan_gateway,
+      paginationParams,
       {
-        fields: 'gateway_plan_id',
-        ...paginationParams
+        where,
       },
-      {
-        where
-      }
     );
   }
 
@@ -54,16 +51,16 @@ export class SubscriptionPlanGatewayService {
     return this.prismaService.subscription_plan_gateway.updateMany({
       where: {
         plan_id: planId,
-        id: id
+        id: id,
       },
-      data
+      data,
     });
   }
 
   async delete(planId: number, { ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
@@ -71,9 +68,9 @@ export class SubscriptionPlanGatewayService {
       where: {
         plan_id: planId,
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }

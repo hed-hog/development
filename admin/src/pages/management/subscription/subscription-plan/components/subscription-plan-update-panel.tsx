@@ -1,4 +1,7 @@
-import FormPanel, { FormPanelRef } from '@/components/panels/form-panel'
+import FormPanel, {
+  FormPanelRef,
+  getFieldsLocale,
+} from '@/components/panels/form-panel'
 import { Overlay } from '@/components/custom/overlay'
 import { TabPanel } from '@/components/panels/tab-panel'
 import {
@@ -73,6 +76,8 @@ const SubscriptionPlanUpdatePanel = forwardRef(
                       displayName: 'item',
                       valueName: 'id',
                     },
+                    ...getFieldsLocale([{ name: 'name' }], item),
+                    ...getFieldsLocale([{ name: 'description' }], item),
                   ]}
                   button={{ text: t('save', { ns: 'actions' }) }}
                   onSubmit={(data) => {

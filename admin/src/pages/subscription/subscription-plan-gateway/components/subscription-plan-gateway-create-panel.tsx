@@ -1,56 +1,85 @@
-import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
+import FormPanel, { FormPanelRef } from '@/components/panels/form-panel'
+import { EnumFieldType } from '@/enums/EnumFieldType'
 
-import { useSubscriptionPlanGatewayCreate } from "@/features/subscription/subscription-plan-gateway";
-import { SubscriptionPlanGateway } from "@/types/models";
-import { forwardRef, useImperativeHandle, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import { useSubscriptionPlanGatewayCreate } from '@/features/subscription/subscription-plan-gateway'
+import { SubscriptionPlanGateway } from '@/types/models'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export type SubscriptionPlanGatewayCreatePanelRef = {
-  submit: () => void;
-};
+  submit: () => void
+}
 
 export type SubscriptionPlanGatewayCreatePanelProps = {
-  id: number;
-  onCreated?: (data: SubscriptionPlanGateway) => void;
-};
+  id: number
+  onCreated?: (data: SubscriptionPlanGateway) => void
+}
 
 const SubscriptionPlanGatewayCreatePanel = forwardRef(
   ({ id, onCreated }: SubscriptionPlanGatewayCreatePanelProps, ref) => {
-    const formRef = useRef<FormPanelRef>(null);
-    const { t } = useTranslation(["actions", "fields", "translations"]);
+    const formRef = useRef<FormPanelRef>(null)
+    const { t } = useTranslation(['actions', 'fields', 'translations'])
     const { mutateAsync: createSubscriptionPlanGateway } =
-      useSubscriptionPlanGatewayCreate();
+      useSubscriptionPlanGatewayCreate()
 
     useImperativeHandle(
       ref,
       () => ({
         submit: () => {
-          formRef.current?.submit();
+          formRef.current?.submit()
         },
       }),
-      [formRef],
-    );
+      [formRef]
+    )
 
     return (
       <FormPanel
         ref={formRef}
-        fields={[]}
-        button={{ text: t("create", { ns: "actions" }) }}
+        fields={[
+          {
+            name: 'gateway_id',
+            type: EnumFieldType.COMBOBOX,
+            label: {
+              text: t('subscription.gateway_id', { ns: 'fields' }),
+            },
+            required: true,
+            url: '/payment-gateway',
+            displayName: 'name',
+            valueName: 'id',
+          },
+          {
+            name: 'plan_id',
+            type: EnumFieldType.COMBOBOX,
+            label: {
+              text: t('subscription.plan_id', { ns: 'fields' }),
+            },
+            required: true,
+            url: '/subscription-plan',
+            displayName: 'name',
+            valueName: 'id',
+          },
+        ]}
+        button={{ text: t('create', { ns: 'actions' }) }}
         onSubmit={async (data) => {
           const createdData = await createSubscriptionPlanGateway({
             planId: Number(id),
-            data,
-          });
-          if (typeof onCreated === "function") {
-            onCreated(createdData as any);
+            data: {
+              ...data,
+              plan_id: Number(data.plan_id),
+              gateway_id: Number(data.gateway_id),
+              gateway_plan_id: '',
+            },
+          })
+          if (typeof onCreated === 'function') {
+            onCreated(createdData as any)
           }
         }}
       />
-    );
-  },
-);
+    )
+  }
+)
 
 SubscriptionPlanGatewayCreatePanel.displayName =
-  "SubscriptionPlanGatewayCreatePanel";
+  'SubscriptionPlanGatewayCreatePanel'
 
-export default SubscriptionPlanGatewayCreatePanel;
+export default SubscriptionPlanGatewayCreatePanel
