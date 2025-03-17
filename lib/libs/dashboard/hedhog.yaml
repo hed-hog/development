@@ -254,7 +254,6 @@ tables:
     ifNotExists: true
   dashboard_component_locale:
     columns:
-      - type: pk
       - name: component_id
         type: fk
         isPrimary: true
@@ -280,7 +279,6 @@ tables:
     ifNotExists: true
   dashboard_locale:
     columns:
-      - type: pk
       - name: dashboard_id
         type: fk
         isPrimary: true
