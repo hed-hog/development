@@ -463,11 +463,6 @@ data:
     - slug: found_better_alternative
     - slug: technical_issues
 routes:
-  - path: subscription-plan-item
-    children:
-      - path: null
-        lazy:
-          component: ./pages/subscription-plan-item/index.tsx
   - path: subscription
     children:
       - path: null
