@@ -57,7 +57,6 @@ model dashboard_component {
 }
 
 model dashboard_component_locale {
-  id                  Int                 @id(map: "PK_1616be93221dc9bd3210a149916") @default(autoincrement())
   component_id        Int
   locale_id           Int
   name                String              @db.VarChar(255)
@@ -65,6 +64,8 @@ model dashboard_component_locale {
   updated_at          DateTime            @default(now()) @db.Timestamp(6)
   dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_0f2eba6ea6564d58125eb0a34b4")
   locale              locale              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1caa002d6c3f5d188e3d992a922")
+
+  @@id([component_id, locale_id], map: "PK_4c64473f04145378896f0e2bd50")
 }
 
 model dashboard_item {
@@ -83,7 +84,6 @@ model dashboard_item {
 }
 
 model dashboard_locale {
-  id           Int       @id(map: "PK_e5ba3ed8645627577c11f2dd233") @default(autoincrement())
   dashboard_id Int
   locale_id    Int
   name         String    @db.VarChar(255)
@@ -91,6 +91,8 @@ model dashboard_locale {
   updated_at   DateTime  @default(now()) @db.Timestamp(6)
   dashboard    dashboard @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_715cebc1d9efa853ee50734bc64")
   locale       locale    @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d567466467ab5a0b9f8a2bc5175")
+
+  @@id([dashboard_id, locale_id], map: "PK_c345a8463f40f6d7b9aa585d06e")
 }
 
 model dashboard_user {

@@ -1,5 +1,6 @@
 routes:
-  - path: management
+  - &a1
+    path: management
     children:
       - path: dashboard
         lazy:
@@ -13,3 +14,4 @@ routes:
       - path: dashboard-user
         lazy:
           component: ./pages/management/dashboard/dashboard-user/index.tsx
+  - *a1

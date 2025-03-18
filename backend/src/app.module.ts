@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DashboardModule } from '@hedhog/dashboard';
+import { AppearanceModule } from '@hedhog/appearance';
 import { SubscriptionModule } from '@hedhog/subscription';
 import { PaymentModule } from '@hedhog/payment';
 import { ContactModule } from '@hedhog/contact';
@@ -36,6 +37,7 @@ import { PrismaModule } from '@hedhog/prisma';
     ContactModule,
     PaymentModule,
     SubscriptionModule,
+    AppearanceModule,
     DashboardModule,
   ],
   controllers: [AppController],

@@ -1,18 +1,24 @@
 routes:
-  - path: subscription-plan-item
+  - &a1
+    path: subscription-plan-item
     children:
       - path: null
         lazy:
           component: ./pages/subscription-plan-item/index.tsx
-  - path: subscription
+  - &a2
+    path: subscription
     children:
       - path: null
         lazy:
           component: ./pages/subscription/subscription/index.tsx
-  - path: management
+  - &a3
+    path: management
     children:
       - path: subscription
         children:
           - path: subscription-plan
             lazy:
               component: ./pages/management/subscription/subscription-plan/index.tsx
+  - *a1
+  - *a2
+  - *a3

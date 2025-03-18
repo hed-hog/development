@@ -292,8 +292,8 @@ const SubscriptionUpdatePanel = forwardRef(
                 selectable
                 multiple
                 layout='list'
-                id={`subscription-plan-gateway-${item?.plan_id}`}
-                url={`/subscription-plan/${item?.plan_id}/subscription-plan-gateway`}
+                id={`subscription-plan-gateway-${item?.id}`}
+                url={`/subscription-plan/${item?.id}/subscription-plan-gateway`}
                 render={(item: SubscriptionPlanGateway) => (
                   <div className='flex flex-row gap-2'>
                     <span className='relative px-[0.3rem] py-[0.2rem] text-sm'>

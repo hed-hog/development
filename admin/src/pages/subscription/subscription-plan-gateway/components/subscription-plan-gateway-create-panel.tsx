@@ -48,7 +48,7 @@ const SubscriptionPlanGatewayCreatePanel = forwardRef(
             valueName: 'id',
           },
           {
-            name: 'plan_id',
+            name: 'gateway_plan_id',
             type: EnumFieldType.COMBOBOX,
             label: {
               text: t('subscription.plan_id', { ns: 'fields' }),
@@ -65,9 +65,8 @@ const SubscriptionPlanGatewayCreatePanel = forwardRef(
             planId: Number(id),
             data: {
               ...data,
-              plan_id: Number(data.plan_id),
               gateway_id: Number(data.gateway_id),
-              gateway_plan_id: '',
+              gateway_plan_id: String(data.gateway_plan_id),
             },
           })
           if (typeof onCreated === 'function') {

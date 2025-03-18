@@ -68,7 +68,7 @@ const DashboardItemUpdatePanel = forwardRef(
                       type: EnumFieldType.COMBOBOX,
                       required: true,
                       url: '/dashboard',
-                      displayName: 'dashboard_id',
+                      displayName: 'dashboard',
                       valueName: 'id',
                     },
 
