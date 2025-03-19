@@ -1,5 +1,6 @@
-import { Pagination } from '@hedhog/pagination';
+import { DeleteDTO, Role } from '@hedhog/core';
 import { Locale } from '@hedhog/locale';
+import { Pagination } from '@hedhog/pagination';
 import {
   Body,
   Controller,
@@ -10,24 +11,28 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
+import { ContentService } from './content.service';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { ContentService } from './content.service';
-import { Role, DeleteDTO } from '@hedhog/core';
 
 @Role()
 @Controller('content')
 export class ContentController {
   constructor(
     @Inject(forwardRef(() => ContentService))
-    private readonly contentService: ContentService
+    private readonly contentService: ContentService,
   ) {}
 
   @Get()
   async list(@Locale() locale, @Pagination() paginationParams) {
     return this.contentService.list(locale, paginationParams);
+  }
+
+  @Get('slug/:slug')
+  async slug(@Param('slug') slug: string) {
+    return this.contentService.getBySlug(slug);
   }
 
   @Get(':id')
@@ -44,7 +49,7 @@ export class ContentController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.contentService.update({
       id,
-      data
+      data,
     });
   }
 
