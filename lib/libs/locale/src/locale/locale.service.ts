@@ -424,6 +424,24 @@ export class LocaleService {
     }
   }
 
+  async getModelWithLocaleWhere(modelName: string, where: any) {
+    try {
+      const model = await this.prismaService[modelName].findUnique({
+        where,
+        include: {
+          [this.getTableNameTranslations(modelName)]: {
+            where: { locale: { enabled: true } },
+            include: { locale: { select: { code: true } } },
+          },
+        },
+      });
+
+      return this.mapLocaleData(model, modelName);
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
   async getModelWithLocale(modelName: string, id: number) {
     try {
       const model = await this.prismaService[modelName].findUnique({
@@ -436,36 +454,44 @@ export class LocaleService {
         },
       });
 
-      const localeData = model[this.getTableNameTranslations(modelName)].reduce(
-        (acc, item) => {
-          const localeCode = item.locale.code;
-
-          const strings = Object.entries(item)
-            .filter(([key, value]) => typeof value === 'string')
-            .reduce(
-              (obj, [key, value]) => {
-                obj[key] = value as string;
-                return obj;
-              },
-              {} as Record<string, string>,
-            );
-
-          acc[localeCode] = strings;
-          return acc;
-        },
-        {} as Record<string, Record<string, string>>,
-      );
-
-      return {
-        ...model,
-        locale: localeData,
-      };
+      return this.mapLocaleData(model, modelName);
     } catch (error: any) {
-      if (error.message.includes('Unique constraint failed')) {
-        throw new BadRequestException('Data already exists.');
-      } else {
-        throw new BadRequestException(error);
-      }
+      this.handleError(error);
+    }
+  }
+
+  private mapLocaleData(model: any, modelName: string) {
+    const localeData = model[this.getTableNameTranslations(modelName)].reduce(
+      (acc, item) => {
+        const localeCode = item.locale.code;
+
+        const strings = Object.entries(item)
+          .filter(([key, value]) => typeof value === 'string')
+          .reduce(
+            (obj, [key, value]) => {
+              obj[key] = value as string;
+              return obj;
+            },
+            {} as Record<string, string>,
+          );
+
+        acc[localeCode] = strings;
+        return acc;
+      },
+      {} as Record<string, Record<string, string>>,
+    );
+
+    return {
+      ...model,
+      locale: localeData,
+    };
+  }
+
+  private handleError(error: any) {
+    if (error.message.includes('Unique constraint failed')) {
+      throw new BadRequestException('Data already exists.');
+    } else {
+      throw new BadRequestException(error);
     }
   }
 
