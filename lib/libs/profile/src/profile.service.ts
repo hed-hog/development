@@ -370,6 +370,20 @@ export class ProfileService {
       );
     }
 
+    const personContactData = [
+      {
+        value: email,
+        type_id: PersonContactTypeEnum.EMAIL,
+      },
+    ];
+
+    if (telephone) {
+      personContactData.push({
+        value: String(telephone),
+        type_id: PersonContactTypeEnum.PHONE,
+      });
+    }
+
     const user = await this.prisma.user.create({
       data: {
         email,
@@ -409,16 +423,7 @@ export class ProfileService {
           : undefined,
         person_contact: {
           createMany: {
-            data: [
-              {
-                value: email,
-                type_id: PersonContactTypeEnum.EMAIL,
-              },
-              {
-                value: String(telephone),
-                type_id: PersonContactTypeEnum.PHONE,
-              },
-            ],
+            data: personContactData,
           },
         },
         person_document: {

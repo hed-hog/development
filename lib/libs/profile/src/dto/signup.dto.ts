@@ -36,6 +36,7 @@ export class SignupDTO extends LoginDTO {
   @IsString({ message: 'O CEP deve ser informado.' })
   postal_code: string;
 
+  @IsOptional()
   @IsNumber({}, { message: 'O telefone deve ser informado.' })
   telephone: number;
 }
