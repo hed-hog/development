@@ -356,6 +356,20 @@ export class ProfileService {
 
     fullName = formattedName;
 
+    const addressFields = [street, number, district, city, state, postal_code];
+    const hasAnyAddressField = addressFields.some(
+      (field) => field !== undefined && field !== null,
+    );
+    const hasAllAddressFields = addressFields.every(
+      (field) => field !== undefined && field !== null,
+    );
+
+    if (hasAnyAddressField && !hasAllAddressFields) {
+      throw new BadRequestException(
+        'Se um campo de endereço for fornecido, todos devem ser preenchidos.',
+      );
+    }
+
     const user = await this.prisma.user.create({
       data: {
         email,
@@ -379,18 +393,20 @@ export class ProfileService {
             user_id: user.id,
           },
         },
-        person_address: {
-          create: {
-            street,
-            number,
-            district,
-            city,
-            state,
-            postal_code,
-            country_id: country.id,
-            type_id: PersonAddressTypeEnum.RESIDENTIAL,
-          },
-        },
+        person_address: hasAllAddressFields
+          ? {
+              create: {
+                street,
+                number,
+                district,
+                city,
+                state,
+                postal_code,
+                country_id: country.id,
+                type_id: PersonAddressTypeEnum.RESIDENTIAL,
+              },
+            }
+          : undefined,
         person_contact: {
           createMany: {
             data: [
