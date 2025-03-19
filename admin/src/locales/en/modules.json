@@ -11,6 +11,11 @@
   "person_contact_type": "Contact Type",
   "person_custom_type": "Custom Type",
   "person_document_type": "Document Type",
+  "dashboard": "Dashboard",
+  "dashboard_item": "Dashboard Item",
+  "dashboard_user": "Dashboard User",
+  "dashboard_component": "Dashboard Component",
+  "faq": "FAQ",
   "payment_gateway": "Gateway",
   "payment_status": "Payment Status",
   "payment_method": "Payment Method",
@@ -29,9 +34,5 @@
   "subscription": "Subscriptions",
   "subscription_value": "Values",
   "subscription_person": "People",
-  "subscription_payment": "Payments",
-  "dashboard": "Dashboard",
-  "dashboard_item": "Dashboard Item",
-  "dashboard_user": "Dashboard User",
-  "dashboard_component": "Dashboard Component"
+  "subscription_payment": "Payments"
 }

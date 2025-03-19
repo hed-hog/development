@@ -7,97 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model country {
-  id                   Int                    @id(map: "PK_bf6e37c231c4f4ea56dcd887269") @default(autoincrement())
-  code                 String                 @db.VarChar
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  country_locale       country_locale[]
-  person_address       person_address[]
-  person_document      person_document[]
-  person_document_type person_document_type[]
-}
-
-model country_locale {
-  country_id Int
-  locale_id  Int
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  locale     locale   @relation(fields: [locale_id], references: [id], onUpdate: NoAction, map: "FK_a9c5e221cc5ea25684c6e486b86")
-  country    country  @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_f6078a6569013351b3a316f8f98")
-
-  @@id([country_id, locale_id], map: "PK_df7141e9042d27d998b49a9b325")
-}
-
-model discount_type {
-  id                  Int                   @id(map: "PK_9faf22bda466ac1ca2c126b5a0a") @default(autoincrement())
-  slug                String                @unique(map: "UQ_f3ebb1afc775eed2f67d1dad4af") @db.VarChar(255)
-  name                String                @db.VarChar(63)
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  payment_coupon      payment_coupon[]
-  payment_method_item payment_method_item[]
-}
-
-model file {
-  id            Int           @id(map: "PK_36b46d232307066b3a2c9ea3a1d") @default(autoincrement())
-  filename      String        @db.VarChar
-  path          String        @db.VarChar
-  provider_id   Int
-  location      String        @db.VarChar
-  mimetype_id   Int
-  size          Int           @default(0)
-  created_at    DateTime      @default(now()) @db.Timestamp(6)
-  updated_at    DateTime      @default(now()) @db.Timestamp(6)
-  file_mimetype file_mimetype @relation(fields: [mimetype_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_893f78c26bcde79a87cc0fe45a5")
-  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_afb71f4bd9709183d4f8d4c8ad2")
-  person        person[]
-}
-
-model file_mimetype {
-  id         Int      @id(map: "PK_893f78c26bcde79a87cc0fe45a5") @default(autoincrement())
-  name       String   @db.VarChar
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  file       file[]
-}
-
-model file_provider {
-  id                   Int                    @id(map: "PK_afb71f4bd9709183d4f8d4c8ad2") @default(autoincrement())
-  slug                 String                 @db.VarChar
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  file                 file[]
-  file_provider_locale file_provider_locale[]
-}
-
-model file_provider_locale {
-  provider_id   Int
-  locale_id     Int
-  name          String        @db.VarChar
-  created_at    DateTime      @default(now()) @db.Timestamp(6)
-  updated_at    DateTime      @default(now()) @db.Timestamp(6)
-  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3ebdcb105301319377557c272bc")
-  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4fba1720defa9d0f6a9112ddc89")
-
-  @@id([provider_id, locale_id], map: "PK_c108e943a38100608cfae509b3a")
-}
-
-model item {
-  id                       Int                       @id(map: "PK_d3c0c71f23e7adcf952a1d13423") @default(autoincrement())
-  slug                     String                    @unique(map: "UQ_0f77842c93ceb8c6624a58f538a") @db.VarChar(255)
-  name                     String                    @db.VarChar
-  price                    Decimal                   @db.Decimal
-  created_at               DateTime                  @default(now()) @db.Timestamp(6)
-  updated_at               DateTime                  @default(now()) @db.Timestamp(6)
-  payment_coupon_item      payment_coupon_item[]
-  payment_installment_item payment_installment_item?
-  payment_item             payment_item[]
-  payment_method_item      payment_method_item[]
-  subscription_plan        subscription_plan[]
-}
-
 model locale {
   id                                Int                                 @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
   code                              String                              @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
@@ -105,9 +14,13 @@ model locale {
   enabled                           Boolean                             @default(true)
   created_at                        DateTime                            @default(now()) @db.Timestamp(6)
   updated_at                        DateTime                            @default(now()) @db.Timestamp(6)
+  component_prop_type_locale        component_prop_type_locale[]
+  component_type_locale             component_type_locale[]
+  content_locale                    content_locale[]
   country_locale                    country_locale[]
   dashboard_component_locale        dashboard_component_locale[]
   dashboard_locale                  dashboard_locale[]
+  faq_locale                        faq_locale[]
   file_provider_locale              file_provider_locale[]
   menu_locale                       menu_locale[]
   multifactor_locale                multifactor_locale[]
@@ -186,171 +99,323 @@ model multifactor_locale {
   @@id([multifactor_id, locale_id], map: "PK_1cc26c48643e0908951b8528fd9")
 }
 
-model payment {
-  id                   Int                    @id(map: "PK_fcaec7df5adf9cac408c686b2ab") @default(autoincrement())
-  slug                 String                 @unique(map: "UQ_865d8996a94ef2df5e9eb829bf4") @db.VarChar(255)
-  person_id            Int?
-  gateway_id           Int
-  amount               Decimal                @db.Decimal(10, 2)
-  status_id            Int
-  document             String?                @db.VarChar(14)
-  payment_at           DateTime?              @db.Timestamp(6)
-  currency             String                 @db.VarChar(3)
-  method_id            Int?
-  brand_id             Int?
-  installments         Int                    @default(1)
-  delivered            Int                    @default(0)
-  coupon_id            Int?
-  discount             Decimal                @default(0) @db.Decimal
+model role {
+  id          Int           @id(map: "PK_b36bcfe02fc8de3c57a8b2391c2") @default(autoincrement())
+  slug        String        @unique(map: "UQ_35c9b140caaf6da09cfabb0d675") @db.VarChar(255)
+  created_at  DateTime      @default(now()) @db.Timestamp(6)
+  updated_at  DateTime      @default(now()) @db.Timestamp(6)
+  role_locale role_locale[]
+  role_menu   role_menu[]
+  role_route  role_route[]
+  role_screen role_screen[]
+  role_user   role_user[]
+}
+
+model role_locale {
+  role_id     Int
+  locale_id   Int
+  name        String   @db.VarChar
+  description String   @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  role        role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2294c27f7b13ae4bd3edd845bfa")
+  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2f1f8ebc571f696da89d584c250")
+
+  @@id([role_id, locale_id], map: "PK_c259035e32b4022042cd99aa948")
+}
+
+model role_menu {
+  role_id    Int
+  menu_id    Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_25f45e543fbda0c91da4af7a2a9")
+  menu       menu     @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_96d26921e6aa2172256a55a6bc7")
+
+  @@id([role_id, menu_id], map: "PK_ec8ce21a3846c0f4f3b59c3d310")
+}
+
+model role_route {
+  role_id    Int
+  route_id   Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cfb587091271544695118e9c05d")
+  route      route    @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_fb62a702db3d0b7f5588c4db7b2")
+
+  @@id([role_id, route_id], map: "PK_925753da26ee2b077ab7428ed06")
+}
+
+model role_screen {
+  role_id    Int
+  screen_id  Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_299ad30564c8266309fbebd05ab")
+  screen     screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7313f91bf6d625f7e989d7cfc5a")
+
+  @@id([role_id, screen_id], map: "PK_e12b4dd3c676dfc208c4d50366f")
+}
+
+model role_user {
+  role_id    Int
+  user_id    Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5261e26da61ccaf8aeda8bca8ea")
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_78ee37f2db349d230d502b1c7ea")
+
+  @@id([role_id, user_id], map: "PK_0d02ac0493a7a8193048bbc7da5")
+}
+
+model route {
+  id           Int               @id(map: "PK_08affcd076e46415e5821acf52d") @default(autoincrement())
+  url          String            @db.VarChar
+  method       route_method_enum
+  description  String?           @db.VarChar
+  created_at   DateTime          @default(now()) @db.Timestamp(6)
+  updated_at   DateTime          @default(now()) @db.Timestamp(6)
+  role_route   role_route[]
+  route_screen route_screen[]
+
+  @@unique([url, method], map: "IDX_19974683ac52f73bd0d53aa39a")
+}
+
+model route_screen {
+  route_id   Int
+  screen_id  Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  route      route    @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_6a7e17a4ddcf97e70ec825faff9")
+  screen     screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e0c208670cd186fa86fd3190126")
+
+  @@id([route_id, screen_id], map: "PK_76272b0e5954880b0cece9a0a05")
+}
+
+model screen {
+  id            Int             @id(map: "PK_7d30806a7556636b84d24e75f4d") @default(autoincrement())
+  slug          String          @unique(map: "UQ_3b15715a42af9a149b4391b3818") @db.VarChar(255)
+  icon          String?         @db.VarChar
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @db.Timestamp(6)
+  menu_screen   menu_screen[]
+  role_screen   role_screen[]
+  route_screen  route_screen[]
+  screen_locale screen_locale[]
+}
+
+model screen_locale {
+  screen_id   Int
+  locale_id   Int
+  name        String   @db.VarChar
+  description String   @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cb1dfd415b7d620999be342cb70")
+  screen      screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cb802193d021bef9c3156143a73")
+
+  @@id([screen_id, locale_id], map: "PK_1cd85e4f1dd3e6616bd6a960db2")
+}
+
+model translation {
+  id                    Int                   @id(map: "PK_7aef875e43ab80d34a0cdd39c70") @default(autoincrement())
+  locale_id             Int
+  namespace_id          Int
+  name                  String                @db.VarChar
+  value                 String                @db.VarChar
+  created_at            DateTime              @default(now()) @db.Timestamp(6)
+  updated_at            DateTime              @default(now()) @db.Timestamp(6)
+  locale                locale                @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_70a64feade03541926a4abffe16")
+  translation_namespace translation_namespace @relation(fields: [namespace_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cf3aa3ba3594c508de49e411c2b")
+
+  @@unique([locale_id, namespace_id, name], map: "IDX_86152a28a0b83d37df0bb67c85")
+}
+
+model translation_namespace {
+  id          Int           @id(map: "PK_cf3aa3ba3594c508de49e411c2b") @default(autoincrement())
+  name        String        @db.VarChar
+  created_at  DateTime      @default(now()) @db.Timestamp(6)
+  updated_at  DateTime      @default(now()) @db.Timestamp(6)
+  translation translation[]
+}
+
+model user {
+  id             Int              @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
+  multifactor_id Int?
+  name           String           @db.VarChar
+  email          String           @unique(map: "UQ_e12875dfb3b1d92d7d7c5377e22") @db.VarChar
+  password       String           @db.VarChar
+  code           String?          @db.VarChar
+  created_at     DateTime         @default(now()) @db.Timestamp(6)
+  updated_at     DateTime         @default(now()) @db.Timestamp(6)
+  dashboard_user dashboard_user[]
+  person_user    person_user[]
+  role_user      role_user[]
+  setting_user   setting_user[]
+  multifactor    multifactor?     @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
+}
+
+model file {
+  id            Int           @id(map: "PK_36b46d232307066b3a2c9ea3a1d") @default(autoincrement())
+  filename      String        @db.VarChar
+  path          String        @db.VarChar
+  provider_id   Int
+  location      String        @db.VarChar
+  mimetype_id   Int
+  size          Int           @default(0)
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  file_mimetype file_mimetype @relation(fields: [mimetype_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_893f78c26bcde79a87cc0fe45a5")
+  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_afb71f4bd9709183d4f8d4c8ad2")
+  person        person[]
+}
+
+model file_mimetype {
+  id         Int      @id(map: "PK_893f78c26bcde79a87cc0fe45a5") @default(autoincrement())
+  name       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  file       file[]
+}
+
+model file_provider {
+  id                   Int                    @id(map: "PK_afb71f4bd9709183d4f8d4c8ad2") @default(autoincrement())
+  slug                 String                 @db.VarChar
   created_at           DateTime               @default(now()) @db.Timestamp(6)
   updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  person               person?                @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1a62106f2848bb67d1e816a3458")
-  payment_coupon       payment_coupon?        @relation(fields: [coupon_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_3aeb69bdbcf05f4cf0e2249c64b")
-  payment_card_brand   payment_card_brand?    @relation(fields: [brand_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4c81f8da826394b0b4cd30374cd")
-  payment_method       payment_method?        @relation(fields: [method_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_7744c2b2dd932c9cf42f2b9bc3a")
-  payment_gateway      payment_gateway        @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_8cd60dcc29059b7a42ea42b0eda")
-  payment_status       payment_status         @relation(fields: [status_id], references: [id], onUpdate: NoAction, map: "FK_b59e2e874b077ea7acf724e4711")
-  payment_item         payment_item[]
-  payment_notification payment_notification[]
-  payment_value        payment_value[]
-  subscription_payment subscription_payment[]
+  file                 file[]
+  file_provider_locale file_provider_locale[]
 }
 
-model payment_card_brand {
-  id         Int       @id(map: "PK_a6ea58ffbbb38da4bbddebaf3f8") @default(autoincrement())
-  slug       String    @unique(map: "UQ_7274a61eee5e76dc7e8455bca89") @db.VarChar(255)
-  name       String    @db.VarChar(63)
-  created_at DateTime  @default(now()) @db.Timestamp(6)
-  updated_at DateTime  @default(now()) @db.Timestamp(6)
-  payment    payment[]
+model file_provider_locale {
+  provider_id   Int
+  locale_id     Int
+  name          String        @db.VarChar
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  file_provider file_provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3ebdcb105301319377557c272bc")
+  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4fba1720defa9d0f6a9112ddc89")
+
+  @@id([provider_id, locale_id], map: "PK_c108e943a38100608cfae509b3a")
 }
 
-model payment_coupon {
-  id                  Int                   @id(map: "PK_3aeb69bdbcf05f4cf0e2249c64b") @default(autoincrement())
-  discount_type_id    Int
-  code                String                @unique(map: "UQ_668178aba2ee336b898a8f7fc7d") @db.VarChar
-  description         String?               @db.VarChar
-  value               String                @db.VarChar
-  active              Boolean               @default(true)
-  uses_limit          Int?
-  uses_qtd            Int                   @default(0)
-  starts_at           DateTime              @db.Timestamp(6)
-  ends_at             DateTime?             @db.Timestamp(6)
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  payment             payment[]
-  discount_type       discount_type         @relation(fields: [discount_type_id], references: [id], onUpdate: NoAction, map: "FK_fde4af52e64ecd3aa511d9451a3")
-  payment_coupon_item payment_coupon_item[]
+model setting {
+  id             Int               @id(map: "PK_fcb21187dc6094e24a48f677bed") @default(autoincrement())
+  group_id       Int
+  slug           String            @unique(map: "UQ_a055323cfcbfdef8ab19b5e8b84") @db.VarChar(255)
+  type           setting_type_enum @default(string)
+  value          String?           @db.VarChar(1023)
+  user_override  Boolean           @default(false)
+  created_at     DateTime          @default(now()) @db.Timestamp(6)
+  updated_at     DateTime          @default(now()) @db.Timestamp(6)
+  setting_group  setting_group     @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_07f390cb981a5f4bb7a4a354d06")
+  setting_locale setting_locale[]
+  setting_user   setting_user[]
 }
 
-model payment_coupon_item {
-  id             Int            @id(map: "PK_88af454778b65a1b203438a8fff") @default(autoincrement())
-  coupon_id      Int
-  item_id        Int
-  created_at     DateTime       @default(now()) @db.Timestamp(6)
-  updated_at     DateTime       @default(now()) @db.Timestamp(6)
-  payment_coupon payment_coupon @relation(fields: [coupon_id], references: [id], onUpdate: NoAction, map: "FK_052a6599acb785bcbf91e5f052e")
-  item           item           @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_b3ce7e16e10ae5463a54723d5df")
+model setting_group {
+  id                   Int                    @id(map: "PK_07f390cb981a5f4bb7a4a354d06") @default(autoincrement())
+  icon                 String                 @db.VarChar(31)
+  slug                 String                 @unique(map: "UQ_761e8f4022a795ae7eee22581ca") @db.VarChar(255)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  setting              setting[]
+  setting_group_locale setting_group_locale[]
 }
 
-model payment_gateway {
-  id                        Int                         @id(map: "PK_8cd60dcc29059b7a42ea42b0eda") @default(autoincrement())
-  slug                      String                      @unique(map: "UQ_915a5db40fb02aed4fdec587771") @db.VarChar(255)
-  name                      String                      @db.VarChar(63)
-  created_at                DateTime                    @default(now()) @db.Timestamp(6)
-  updated_at                DateTime                    @default(now()) @db.Timestamp(6)
-  payment                   payment[]
-  payment_notification      payment_notification[]
-  subscription_plan_gateway subscription_plan_gateway[]
+model setting_group_locale {
+  locale_id     Int
+  group_id      Int
+  name          String        @db.VarChar(63)
+  description   String?       @db.VarChar(255)
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5a216b58563d23ffe4fc47c2f81")
+  setting_group setting_group @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9e47153fd708717c436d3016908")
+
+  @@id([locale_id, group_id], map: "PK_ba363f06d3eeec8e42345d205d1")
 }
 
-model payment_installment_item {
-  id               Int      @id(map: "PK_9447479ab8ddf55a12c3c2a1403") @default(autoincrement())
-  item_id          Int      @unique(map: "UQ_51f87847674726e4684b9b6c913")
-  max_installments Int      @default(1)
-  created_at       DateTime @default(now()) @db.Timestamp(6)
-  updated_at       DateTime @default(now()) @db.Timestamp(6)
-  item             item     @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_51f87847674726e4684b9b6c913")
+model setting_locale {
+  locale_id   Int
+  setting_id  Int
+  description String?  @db.VarChar(255)
+  name        String?  @db.VarChar(63)
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1cfadfbb033b62b01e9241342ea")
+  setting     setting  @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f78068a8a9924c19c7d33e8bfb8")
+
+  @@id([locale_id, setting_id], map: "PK_388a9fe9b33b00aff31d26f0912")
 }
 
-model payment_item {
-  id         Int      @id(map: "PK_2d84c71b8a237456c611ba49362") @default(autoincrement())
-  payment_id Int
-  item_id    Int
-  unit_price Decimal  @default(0) @db.Decimal
-  delivered  Int      @default(0)
-  quantity   Int      @default(1)
+model setting_user {
+  user_id    Int
+  setting_id Int
+  value      String?  @db.VarChar(1023)
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-  item       item     @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_2a4f9d8439c5d17bff4d8407fe1")
-  payment    payment  @relation(fields: [payment_id], references: [id], onUpdate: NoAction, map: "FK_4a68ebebc1fa3a668585bd8c724")
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_787278995b974bcb29ac98635e1")
+  setting    setting  @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9d2cd571c1eea2008632c07e95f")
+
+  @@id([user_id, setting_id], map: "PK_9b9f9a08cecc632f2da8f12f4da")
 }
 
-model payment_method {
-  id                  Int                   @id(map: "PK_7744c2b2dd932c9cf42f2b9bc3a") @default(autoincrement())
-  slug                String                @unique(map: "UQ_d245144e0dcd3e72b4959aa505d") @db.VarChar(255)
-  name                String                @db.VarChar(63)
-  created_at          DateTime              @default(now()) @db.Timestamp(6)
-  updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  payment             payment[]
-  payment_method_item payment_method_item[]
+model chat_message {
+  id          Int                    @id(map: "PK_3cc0d85193aade457d3077dd06b") @default(autoincrement())
+  chat_id     Int
+  person_id   Int
+  type        chat_message_type_enum
+  content     String                 @db.VarChar(2047)
+  read_at     DateTime?              @db.Timestamp(6)
+  received_at DateTime?              @db.Timestamp(6)
+  created_at  DateTime               @default(now()) @db.Timestamp(6)
+  updated_at  DateTime               @default(now()) @db.Timestamp(6)
+  chat_room   chat_room              @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_634db173c52edece8dd88ea3d4c")
+  person      person                 @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_dccda5182e0719bbc6e33f3b695")
 }
 
-model payment_method_item {
-  id                Int            @id(map: "PK_80d25d79c428250c5642cf4de57") @default(autoincrement())
-  payment_method_id Int
-  item_id           Int
-  discount_type_id  Int
-  value             Decimal        @default(0) @db.Decimal
-  created_at        DateTime       @default(now()) @db.Timestamp(6)
-  updated_at        DateTime       @default(now()) @db.Timestamp(6)
-  payment_method    payment_method @relation(fields: [payment_method_id], references: [id], onUpdate: NoAction, map: "FK_1dab5dbdfb4b6589f6236d9596a")
-  item              item           @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_39fe85071be37ea7561e1fc619a")
-  discount_type     discount_type  @relation(fields: [discount_type_id], references: [id], onUpdate: NoAction, map: "FK_fbd1e4b0ab001099b1ae141d5bb")
+model chat_room {
+  id               Int                @id(map: "PK_8aa3a52cf74c96469f0ef9fbe3e") @default(autoincrement())
+  slug             String             @unique(map: "UQ_54bb215de8d0e4bc16c56b1a63f") @db.VarChar(255)
+  created_at       DateTime           @default(now()) @db.Timestamp(6)
+  updated_at       DateTime           @default(now()) @db.Timestamp(6)
+  chat_message     chat_message[]
+  chat_room_person chat_room_person[]
 }
 
-model payment_notification {
-  id              Int             @id(map: "PK_ae851104ce3761a083209783d81") @default(autoincrement())
-  gateway_id      Int
-  payment_id      Int?
-  log             String          @db.VarChar
-  created_at      DateTime        @default(now()) @db.Timestamp(6)
-  updated_at      DateTime        @default(now()) @db.Timestamp(6)
-  payment_gateway payment_gateway @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_6392f2cbf81b291977ddc5c36ce")
-  payment         payment?        @relation(fields: [payment_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_be4df3133dfcfbfd712d09a5fed")
+model chat_room_person {
+  id         Int                        @id(map: "PK_0ea8afaae5bbe290fc9e89414f7") @default(autoincrement())
+  chat_id    Int
+  person_id  Int
+  role       chat_room_person_role_enum
+  created_at DateTime                   @default(now()) @db.Timestamp(6)
+  updated_at DateTime                   @default(now()) @db.Timestamp(6)
+  chat_room  chat_room                  @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_b060184b25bd3962f4fc31bbbcf")
+  person     person                     @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_fc5457552a1e8e5d4e22406b3e9")
 }
 
-model payment_status {
-  id                    Int                     @id(map: "PK_b59e2e874b077ea7acf724e4711") @default(autoincrement())
-  slug                  String                  @unique(map: "UQ_a754a6fa331a52327f38f71d05a") @db.VarChar(255)
-  created_at            DateTime                @default(now()) @db.Timestamp(6)
-  updated_at            DateTime                @default(now()) @db.Timestamp(6)
-  payment               payment[]
-  payment_status_locale payment_status_locale[]
+model country {
+  id                   Int                    @id(map: "PK_bf6e37c231c4f4ea56dcd887269") @default(autoincrement())
+  code                 String                 @db.VarChar
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  country_locale       country_locale[]
+  person_address       person_address[]
+  person_document      person_document[]
+  person_document_type person_document_type[]
 }
 
-model payment_status_locale {
-  payment_status_id Int
-  locale_id         Int
-  name              String         @db.VarChar(63)
-  created_at        DateTime       @default(now()) @db.Timestamp(6)
-  updated_at        DateTime       @default(now()) @db.Timestamp(6)
-  payment_status    payment_status @relation(fields: [payment_status_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_654df991c730efd8cc0956593b3")
-  locale            locale         @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_dbf81598026d1523bb6461ce2ea")
-
-  @@id([payment_status_id, locale_id], map: "PK_17f715ac6bb694c99c8ee632542")
-}
-
-model payment_value {
-  id         Int      @id(map: "PK_9506ccc5cd57d212908e0595381") @default(autoincrement())
-  payment_id Int
+model country_locale {
+  country_id Int
+  locale_id  Int
   name       String   @db.VarChar
-  value      String   @db.VarChar
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-  payment    payment  @relation(fields: [payment_id], references: [id], onUpdate: NoAction, map: "FK_fce8c21d9e0b3fa9c1c44e87833")
+  locale     locale   @relation(fields: [locale_id], references: [id], onUpdate: NoAction, map: "FK_a9c5e221cc5ea25684c6e486b86")
+  country    country  @relation(fields: [country_id], references: [id], onUpdate: NoAction, map: "FK_f6078a6569013351b3a316f8f98")
 
-  @@unique([payment_id, name], map: "IDX_1c6b62d90e77f5589e1bdbd6f0")
+  @@id([country_id, locale_id], map: "PK_df7141e9042d27d998b49a9b325")
 }
 
 model person {
@@ -361,6 +426,8 @@ model person {
   birth_at            DateTime?             @db.Date
   created_at          DateTime              @default(now()) @db.Timestamp(6)
   updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  chat_message        chat_message[]
+  chat_room_person    chat_room_person[]
   payment             payment[]
   file                file?                 @relation(fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_0e7be389f108147763fc682c3c4")
   person_type         person_type           @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f900a8c313411c7da8fcbba7975")
@@ -581,222 +648,405 @@ model person_value {
   person     person   @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c14f1b61dff84649c565703578b")
 }
 
-model role {
-  id          Int           @id(map: "PK_b36bcfe02fc8de3c57a8b2391c2") @default(autoincrement())
-  slug        String        @unique(map: "UQ_35c9b140caaf6da09cfabb0d675") @db.VarChar(255)
-  created_at  DateTime      @default(now()) @db.Timestamp(6)
-  updated_at  DateTime      @default(now()) @db.Timestamp(6)
-  role_locale role_locale[]
-  role_menu   role_menu[]
-  role_route  role_route[]
-  role_screen role_screen[]
-  role_user   role_user[]
-}
-
-model role_locale {
-  role_id     Int
-  locale_id   Int
-  name        String   @db.VarChar
-  description String   @db.VarChar
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
-  role        role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2294c27f7b13ae4bd3edd845bfa")
-  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2f1f8ebc571f696da89d584c250")
-
-  @@id([role_id, locale_id], map: "PK_c259035e32b4022042cd99aa948")
-}
-
-model role_menu {
-  role_id    Int
-  menu_id    Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_25f45e543fbda0c91da4af7a2a9")
-  menu       menu     @relation(fields: [menu_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_96d26921e6aa2172256a55a6bc7")
-
-  @@id([role_id, menu_id], map: "PK_ec8ce21a3846c0f4f3b59c3d310")
-}
-
-model role_route {
-  role_id    Int
-  route_id   Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cfb587091271544695118e9c05d")
-  route      route    @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_fb62a702db3d0b7f5588c4db7b2")
-
-  @@id([role_id, route_id], map: "PK_925753da26ee2b077ab7428ed06")
-}
-
-model role_screen {
-  role_id    Int
-  screen_id  Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_299ad30564c8266309fbebd05ab")
-  screen     screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7313f91bf6d625f7e989d7cfc5a")
-
-  @@id([role_id, screen_id], map: "PK_e12b4dd3c676dfc208c4d50366f")
-}
-
-model role_user {
-  role_id    Int
-  user_id    Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5261e26da61ccaf8aeda8bca8ea")
-  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_78ee37f2db349d230d502b1c7ea")
-
-  @@id([role_id, user_id], map: "PK_0d02ac0493a7a8193048bbc7da5")
-}
-
-model route {
-  id           Int               @id(map: "PK_08affcd076e46415e5821acf52d") @default(autoincrement())
-  url          String            @db.VarChar
-  method       route_method_enum
-  description  String?           @db.VarChar
-  created_at   DateTime          @default(now()) @db.Timestamp(6)
-  updated_at   DateTime          @default(now()) @db.Timestamp(6)
-  role_route   role_route[]
-  route_screen route_screen[]
-
-  @@unique([url, method], map: "IDX_19974683ac52f73bd0d53aa39a")
-}
-
-model route_screen {
-  route_id   Int
-  screen_id  Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  route      route    @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_6a7e17a4ddcf97e70ec825faff9")
-  screen     screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_e0c208670cd186fa86fd3190126")
-
-  @@id([route_id, screen_id], map: "PK_76272b0e5954880b0cece9a0a05")
-}
-
-model screen {
-  id            Int             @id(map: "PK_7d30806a7556636b84d24e75f4d") @default(autoincrement())
-  slug          String          @unique(map: "UQ_3b15715a42af9a149b4391b3818") @db.VarChar(255)
-  icon          String?         @db.VarChar
-  created_at    DateTime        @default(now()) @db.Timestamp(6)
-  updated_at    DateTime        @default(now()) @db.Timestamp(6)
-  menu_screen   menu_screen[]
-  role_screen   role_screen[]
-  route_screen  route_screen[]
-  screen_locale screen_locale[]
-}
-
-model screen_locale {
-  screen_id   Int
-  locale_id   Int
-  name        String   @db.VarChar
-  description String   @db.VarChar
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
-  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cb1dfd415b7d620999be342cb70")
-  screen      screen   @relation(fields: [screen_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cb802193d021bef9c3156143a73")
-
-  @@id([screen_id, locale_id], map: "PK_1cd85e4f1dd3e6616bd6a960db2")
-}
-
-model setting {
-  id             Int               @id(map: "PK_fcb21187dc6094e24a48f677bed") @default(autoincrement())
-  group_id       Int
-  slug           String            @unique(map: "UQ_a055323cfcbfdef8ab19b5e8b84") @db.VarChar(255)
-  type           setting_type_enum @default(string)
-  value          String?           @db.VarChar(1023)
-  user_override  Boolean           @default(false)
-  created_at     DateTime          @default(now()) @db.Timestamp(6)
-  updated_at     DateTime          @default(now()) @db.Timestamp(6)
-  setting_group  setting_group     @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_07f390cb981a5f4bb7a4a354d06")
-  setting_locale setting_locale[]
-  setting_user   setting_user[]
-}
-
-model setting_group {
-  id                   Int                    @id(map: "PK_07f390cb981a5f4bb7a4a354d06") @default(autoincrement())
-  icon                 String                 @db.VarChar(31)
-  slug                 String                 @unique(map: "UQ_761e8f4022a795ae7eee22581ca") @db.VarChar(255)
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  updated_at           DateTime               @default(now()) @db.Timestamp(6)
-  setting              setting[]
-  setting_group_locale setting_group_locale[]
-}
-
-model setting_group_locale {
-  locale_id     Int
-  group_id      Int
-  name          String        @db.VarChar(63)
-  description   String?       @db.VarChar(255)
-  created_at    DateTime      @default(now()) @db.Timestamp(6)
-  updated_at    DateTime      @default(now()) @db.Timestamp(6)
-  locale        locale        @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5a216b58563d23ffe4fc47c2f81")
-  setting_group setting_group @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9e47153fd708717c436d3016908")
-
-  @@id([locale_id, group_id], map: "PK_ba363f06d3eeec8e42345d205d1")
-}
-
-model setting_locale {
-  locale_id   Int
-  setting_id  Int
-  description String?  @db.VarChar(255)
-  name        String?  @db.VarChar(63)
-  created_at  DateTime @default(now()) @db.Timestamp(6)
-  updated_at  DateTime @default(now()) @db.Timestamp(6)
-  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1cfadfbb033b62b01e9241342ea")
-  setting     setting  @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f78068a8a9924c19c7d33e8bfb8")
-
-  @@id([locale_id, setting_id], map: "PK_388a9fe9b33b00aff31d26f0912")
-}
-
-model setting_user {
-  user_id    Int
-  setting_id Int
-  value      String?  @db.VarChar(1023)
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_787278995b974bcb29ac98635e1")
-  setting    setting  @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9d2cd571c1eea2008632c07e95f")
-
-  @@id([user_id, setting_id], map: "PK_9b9f9a08cecc632f2da8f12f4da")
-}
-
-model translation {
-  id                    Int                   @id(map: "PK_7aef875e43ab80d34a0cdd39c70") @default(autoincrement())
-  locale_id             Int
-  namespace_id          Int
-  name                  String                @db.VarChar
-  value                 String                @db.VarChar
-  created_at            DateTime              @default(now()) @db.Timestamp(6)
-  updated_at            DateTime              @default(now()) @db.Timestamp(6)
-  locale                locale                @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_70a64feade03541926a4abffe16")
-  translation_namespace translation_namespace @relation(fields: [namespace_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_cf3aa3ba3594c508de49e411c2b")
-
-  @@unique([locale_id, namespace_id, name], map: "IDX_86152a28a0b83d37df0bb67c85")
-}
-
-model translation_namespace {
-  id          Int           @id(map: "PK_cf3aa3ba3594c508de49e411c2b") @default(autoincrement())
-  name        String        @db.VarChar
-  created_at  DateTime      @default(now()) @db.Timestamp(6)
-  updated_at  DateTime      @default(now()) @db.Timestamp(6)
-  translation translation[]
-}
-
-model user {
-  id             Int              @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
-  multifactor_id Int?
-  name           String           @db.VarChar
-  email          String           @unique(map: "UQ_e12875dfb3b1d92d7d7c5377e22") @db.VarChar
-  password       String           @db.VarChar
-  code           String?          @db.VarChar
+model content {
+  id             Int              @id(map: "PK_6a2083913f3647b44f205204e36") @default(autoincrement())
+  slug           String           @unique(map: "UQ_dfe3ab560d448427f463febbe77") @db.VarChar(255)
   created_at     DateTime         @default(now()) @db.Timestamp(6)
   updated_at     DateTime         @default(now()) @db.Timestamp(6)
-  dashboard_user dashboard_user[]
-  person_user    person_user[]
-  role_user      role_user[]
-  setting_user   setting_user[]
-  multifactor    multifactor?     @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
+  content_locale content_locale[]
+}
+
+model content_locale {
+  id         Int      @id(map: "PK_233ffe8f7ab4f6a2a9871da3313") @default(autoincrement())
+  content_id Int
+  locale_id  Int
+  title      String   @db.VarChar
+  body       String
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  locale     locale   @relation(fields: [locale_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_0e00c768c4316d5633cadce4590")
+  content    content  @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_b294e66290fce43f3b3e738c769")
+}
+
+model dashboard {
+  id               Int                @id(map: "PK_233ed28fa3a1f9fbe743f571f75") @default(autoincrement())
+  slug             String             @unique(map: "UQ_49de5ef1bf76edb040ae4e91b0d") @db.VarChar(255)
+  created_at       DateTime           @default(now()) @db.Timestamp(6)
+  updated_at       DateTime           @default(now()) @db.Timestamp(6)
+  dashboard_item   dashboard_item[]
+  dashboard_locale dashboard_locale[]
+}
+
+model dashboard_component {
+  id                         Int                          @id(map: "PK_0db8e7613dacbccf226113cb128") @default(autoincrement())
+  slug                       String                       @unique(map: "UQ_61131edec39967aeebdb9749859") @db.VarChar(255)
+  path                       String                       @db.VarChar(500)
+  min_width                  Int                          @default(1)
+  max_width                  Int?
+  min_height                 Int                          @default(1)
+  max_height                 Int?
+  width                      Int
+  height                     Int
+  is_resizable               Boolean                      @default(true)
+  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
+  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
+  dashboard_component_locale dashboard_component_locale[]
+  dashboard_item             dashboard_item[]
+}
+
+model dashboard_component_locale {
+  component_id        Int
+  locale_id           Int
+  name                String              @db.VarChar(255)
+  created_at          DateTime            @default(now()) @db.Timestamp(6)
+  updated_at          DateTime            @default(now()) @db.Timestamp(6)
+  dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_0f2eba6ea6564d58125eb0a34b4")
+  locale              locale              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1caa002d6c3f5d188e3d992a922")
+
+  @@id([component_id, locale_id], map: "PK_4c64473f04145378896f0e2bd50")
+}
+
+model dashboard_item {
+  id                  Int                 @id(map: "PK_4ad9d196b68ca545a9a52535ed1") @default(autoincrement())
+  component_id        Int
+  dashboard_id        Int
+  width               Int
+  height              Int
+  x_axis              Int
+  y_axis              Int
+  created_at          DateTime            @default(now()) @db.Timestamp(6)
+  updated_at          DateTime            @default(now()) @db.Timestamp(6)
+  dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3a78515cb558278423e37cbee3e")
+  dashboard           dashboard           @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c6b6fb41935b6164a280c5a61e5")
+  dashboard_user      dashboard_user[]
+}
+
+model dashboard_locale {
+  dashboard_id Int
+  locale_id    Int
+  name         String    @db.VarChar(255)
+  created_at   DateTime  @default(now()) @db.Timestamp(6)
+  updated_at   DateTime  @default(now()) @db.Timestamp(6)
+  dashboard    dashboard @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_715cebc1d9efa853ee50734bc64")
+  locale       locale    @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d567466467ab5a0b9f8a2bc5175")
+
+  @@id([dashboard_id, locale_id], map: "PK_c345a8463f40f6d7b9aa585d06e")
+}
+
+model dashboard_user {
+  id             Int            @id(map: "PK_450acb76f1434b5b7119637e94a") @default(autoincrement())
+  item_id        Int
+  user_id        Int
+  width          Int
+  height         Int
+  x_axis         Int
+  y_axis         Int
+  created_at     DateTime       @default(now()) @db.Timestamp(6)
+  updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  user           user           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8f31fe77228612efaa2385eaa6c")
+  dashboard_item dashboard_item @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c2d94e6302ebca142bb77db81d8")
+}
+
+model faq {
+  id         Int          @id(map: "PK_d6f5a52b1a96dd8d0591f9fbc47") @default(autoincrement())
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  updated_at DateTime     @default(now()) @db.Timestamp(6)
+  faq_locale faq_locale[]
+}
+
+model faq_locale {
+  faq_id     Int
+  locale_id  Int
+  question   String   @db.VarChar
+  answer     String
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  locale     locale   @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_50d3de17398f8de283a91137c79")
+  faq        faq      @relation(fields: [faq_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7f452a3b8b391aa822725b0ed45")
+
+  @@id([faq_id, locale_id], map: "PK_53503b36e2adb7267a5eab03012")
+}
+
+model component {
+  id             Int              @id(map: "PK_c084eba2d3b157314de79135f09") @default(autoincrement())
+  type_id        Int
+  name           String           @db.VarChar
+  created_at     DateTime         @default(now()) @db.Timestamp(6)
+  updated_at     DateTime         @default(now()) @db.Timestamp(6)
+  component_type component_type   @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_342675811724f592a8f57a6c6b9")
+  component_prop component_prop[]
+  instance       instance[]
+}
+
+model component_prop {
+  id                  Int                 @id(map: "PK_44b20cb5fa872980fb3eef05bfd") @default(autoincrement())
+  type_id             Int
+  component_id        Int
+  name                String              @db.VarChar
+  default             String              @db.VarChar
+  created_at          DateTime            @default(now()) @db.Timestamp(6)
+  updated_at          DateTime            @default(now()) @db.Timestamp(6)
+  component_prop_type component_prop_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4fd25da5ccf98c6a24001056cd8")
+  component           component           @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_99a4ad518682bd974c908bae828")
+  instance_prop       instance_prop[]
+}
+
+model component_prop_type {
+  id                         Int                          @id(map: "PK_4fd25da5ccf98c6a24001056cd8") @default(autoincrement())
+  slug                       String                       @unique(map: "UQ_56861c12f658bc23575910932ab") @db.VarChar(255)
+  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
+  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
+  component_prop             component_prop[]
+  component_prop_type_locale component_prop_type_locale[]
+}
+
+model component_prop_type_locale {
+  id                  Int                 @id(map: "PK_3cd28d33b9b72ea048e1a8f5e86") @default(autoincrement())
+  type_id             Int
+  locale_id           Int
+  name                String              @db.VarChar
+  created_at          DateTime            @default(now()) @db.Timestamp(6)
+  updated_at          DateTime            @default(now()) @db.Timestamp(6)
+  locale              locale              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3353462d24bbeb9842b6a73ea68")
+  component_prop_type component_prop_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d788d55133910b6aff5f694d8c6")
+}
+
+model component_type {
+  id                    Int                     @id(map: "PK_342675811724f592a8f57a6c6b9") @default(autoincrement())
+  slug                  String                  @unique(map: "UQ_c031cdb8eda1b12376a4671524f") @db.VarChar(255)
+  created_at            DateTime                @default(now()) @db.Timestamp(6)
+  updated_at            DateTime                @default(now()) @db.Timestamp(6)
+  component             component[]
+  component_type_locale component_type_locale[]
+}
+
+model component_type_locale {
+  id             Int            @id(map: "PK_a2393b6d58cb813703eddc9093c") @default(autoincrement())
+  type_id        Int
+  locale_id      Int
+  name           String         @db.VarChar
+  created_at     DateTime       @default(now()) @db.Timestamp(6)
+  updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  component_type component_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4740d9badfe73b02e6ac798eda9")
+  locale         locale         @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_930b65186ce6c9a8cfcc629b7f9")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model instance {
+  id             Int                      @id(map: "PK_eaf60e4a0c399c9935413e06474") @default(autoincrement())
+  component_id   Int
+  name           String                   @db.VarChar
+  parent_id      Int
+  order          Int                      @default(0)
+  visibility     instance_visibility_enum @default(private)
+  created_at     DateTime                 @default(now()) @db.Timestamp(6)
+  updated_at     DateTime                 @default(now()) @db.Timestamp(6)
+  component      component                @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_5680c054811cb005107f15e6763")
+  instance       instance                 @relation("instanceToinstance", fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c78c456e0ba0c9c0a88c7d4aca2")
+  other_instance instance[]               @relation("instanceToinstance")
+  instance_prop  instance_prop[]
+}
+
+model instance_prop {
+  id             Int            @id(map: "PK_5fb532f06e1e4f11bd3d54eb760") @default(autoincrement())
+  prop_id        Int
+  instance_id    Int
+  value          String         @db.VarChar
+  created_at     DateTime       @default(now()) @db.Timestamp(6)
+  updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  instance       instance       @relation(fields: [instance_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_621d74b82be4d0ffdc64dbd0854")
+  component_prop component_prop @relation(fields: [prop_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9f707a6993a985d633b8f4502f0")
+}
+
+model discount_type {
+  id                  Int                   @id(map: "PK_9faf22bda466ac1ca2c126b5a0a") @default(autoincrement())
+  slug                String                @unique(map: "UQ_f3ebb1afc775eed2f67d1dad4af") @db.VarChar(255)
+  name                String                @db.VarChar(63)
+  created_at          DateTime              @default(now()) @db.Timestamp(6)
+  updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  payment_coupon      payment_coupon[]
+  payment_method_item payment_method_item[]
+}
+
+model item {
+  id                       Int                       @id(map: "PK_d3c0c71f23e7adcf952a1d13423") @default(autoincrement())
+  slug                     String                    @unique(map: "UQ_0f77842c93ceb8c6624a58f538a") @db.VarChar(255)
+  name                     String                    @db.VarChar
+  price                    Decimal                   @db.Decimal
+  created_at               DateTime                  @default(now()) @db.Timestamp(6)
+  updated_at               DateTime                  @default(now()) @db.Timestamp(6)
+  payment_coupon_item      payment_coupon_item[]
+  payment_installment_item payment_installment_item?
+  payment_item             payment_item[]
+  payment_method_item      payment_method_item[]
+  subscription_plan        subscription_plan[]
+}
+
+model payment {
+  id                   Int                    @id(map: "PK_fcaec7df5adf9cac408c686b2ab") @default(autoincrement())
+  slug                 String                 @unique(map: "UQ_865d8996a94ef2df5e9eb829bf4") @db.VarChar(255)
+  person_id            Int?
+  gateway_id           Int
+  amount               Decimal                @db.Decimal(10, 2)
+  status_id            Int
+  document             String?                @db.VarChar(14)
+  payment_at           DateTime?              @db.Timestamp(6)
+  currency             String                 @db.VarChar(3)
+  method_id            Int?
+  brand_id             Int?
+  installments         Int                    @default(1)
+  delivered            Int                    @default(0)
+  coupon_id            Int?
+  discount             Decimal                @default(0) @db.Decimal
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  person               person?                @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1a62106f2848bb67d1e816a3458")
+  payment_coupon       payment_coupon?        @relation(fields: [coupon_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_3aeb69bdbcf05f4cf0e2249c64b")
+  payment_card_brand   payment_card_brand?    @relation(fields: [brand_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_4c81f8da826394b0b4cd30374cd")
+  payment_method       payment_method?        @relation(fields: [method_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_7744c2b2dd932c9cf42f2b9bc3a")
+  payment_gateway      payment_gateway        @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_8cd60dcc29059b7a42ea42b0eda")
+  payment_status       payment_status         @relation(fields: [status_id], references: [id], onUpdate: NoAction, map: "FK_b59e2e874b077ea7acf724e4711")
+  payment_item         payment_item[]
+  payment_notification payment_notification[]
+  payment_value        payment_value[]
+  subscription_payment subscription_payment[]
+}
+
+model payment_card_brand {
+  id         Int       @id(map: "PK_a6ea58ffbbb38da4bbddebaf3f8") @default(autoincrement())
+  slug       String    @unique(map: "UQ_7274a61eee5e76dc7e8455bca89") @db.VarChar(255)
+  name       String    @db.VarChar(63)
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
+  payment    payment[]
+}
+
+model payment_coupon {
+  id                  Int                   @id(map: "PK_3aeb69bdbcf05f4cf0e2249c64b") @default(autoincrement())
+  discount_type_id    Int
+  code                String                @unique(map: "UQ_668178aba2ee336b898a8f7fc7d") @db.VarChar
+  description         String?               @db.VarChar
+  value               String                @db.VarChar
+  active              Boolean               @default(true)
+  uses_limit          Int?
+  uses_qtd            Int                   @default(0)
+  starts_at           DateTime              @db.Timestamp(6)
+  ends_at             DateTime?             @db.Timestamp(6)
+  created_at          DateTime              @default(now()) @db.Timestamp(6)
+  updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  payment             payment[]
+  discount_type       discount_type         @relation(fields: [discount_type_id], references: [id], onUpdate: NoAction, map: "FK_fde4af52e64ecd3aa511d9451a3")
+  payment_coupon_item payment_coupon_item[]
+}
+
+model payment_coupon_item {
+  id             Int            @id(map: "PK_88af454778b65a1b203438a8fff") @default(autoincrement())
+  coupon_id      Int
+  item_id        Int
+  created_at     DateTime       @default(now()) @db.Timestamp(6)
+  updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  payment_coupon payment_coupon @relation(fields: [coupon_id], references: [id], onUpdate: NoAction, map: "FK_052a6599acb785bcbf91e5f052e")
+  item           item           @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_b3ce7e16e10ae5463a54723d5df")
+}
+
+model payment_gateway {
+  id                        Int                         @id(map: "PK_8cd60dcc29059b7a42ea42b0eda") @default(autoincrement())
+  slug                      String                      @unique(map: "UQ_915a5db40fb02aed4fdec587771") @db.VarChar(255)
+  name                      String                      @db.VarChar(63)
+  created_at                DateTime                    @default(now()) @db.Timestamp(6)
+  updated_at                DateTime                    @default(now()) @db.Timestamp(6)
+  payment                   payment[]
+  payment_notification      payment_notification[]
+  subscription_plan_gateway subscription_plan_gateway[]
+}
+
+model payment_installment_item {
+  id               Int      @id(map: "PK_9447479ab8ddf55a12c3c2a1403") @default(autoincrement())
+  item_id          Int      @unique(map: "UQ_51f87847674726e4684b9b6c913")
+  max_installments Int      @default(1)
+  created_at       DateTime @default(now()) @db.Timestamp(6)
+  updated_at       DateTime @default(now()) @db.Timestamp(6)
+  item             item     @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_51f87847674726e4684b9b6c913")
+}
+
+model payment_item {
+  id         Int      @id(map: "PK_2d84c71b8a237456c611ba49362") @default(autoincrement())
+  payment_id Int
+  item_id    Int
+  unit_price Decimal  @default(0) @db.Decimal
+  delivered  Int      @default(0)
+  quantity   Int      @default(1)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  item       item     @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_2a4f9d8439c5d17bff4d8407fe1")
+  payment    payment  @relation(fields: [payment_id], references: [id], onUpdate: NoAction, map: "FK_4a68ebebc1fa3a668585bd8c724")
+}
+
+model payment_method {
+  id                  Int                   @id(map: "PK_7744c2b2dd932c9cf42f2b9bc3a") @default(autoincrement())
+  slug                String                @unique(map: "UQ_d245144e0dcd3e72b4959aa505d") @db.VarChar(255)
+  name                String                @db.VarChar(63)
+  created_at          DateTime              @default(now()) @db.Timestamp(6)
+  updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  payment             payment[]
+  payment_method_item payment_method_item[]
+}
+
+model payment_method_item {
+  id                Int            @id(map: "PK_80d25d79c428250c5642cf4de57") @default(autoincrement())
+  payment_method_id Int
+  item_id           Int
+  discount_type_id  Int
+  value             Decimal        @default(0) @db.Decimal
+  created_at        DateTime       @default(now()) @db.Timestamp(6)
+  updated_at        DateTime       @default(now()) @db.Timestamp(6)
+  payment_method    payment_method @relation(fields: [payment_method_id], references: [id], onUpdate: NoAction, map: "FK_1dab5dbdfb4b6589f6236d9596a")
+  item              item           @relation(fields: [item_id], references: [id], onUpdate: NoAction, map: "FK_39fe85071be37ea7561e1fc619a")
+  discount_type     discount_type  @relation(fields: [discount_type_id], references: [id], onUpdate: NoAction, map: "FK_fbd1e4b0ab001099b1ae141d5bb")
+}
+
+model payment_notification {
+  id              Int             @id(map: "PK_ae851104ce3761a083209783d81") @default(autoincrement())
+  gateway_id      Int
+  payment_id      Int?
+  log             String          @db.VarChar
+  created_at      DateTime        @default(now()) @db.Timestamp(6)
+  updated_at      DateTime        @default(now()) @db.Timestamp(6)
+  payment_gateway payment_gateway @relation(fields: [gateway_id], references: [id], onUpdate: NoAction, map: "FK_6392f2cbf81b291977ddc5c36ce")
+  payment         payment?        @relation(fields: [payment_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "FK_be4df3133dfcfbfd712d09a5fed")
+}
+
+model payment_status {
+  id                    Int                     @id(map: "PK_b59e2e874b077ea7acf724e4711") @default(autoincrement())
+  slug                  String                  @unique(map: "UQ_a754a6fa331a52327f38f71d05a") @db.VarChar(255)
+  created_at            DateTime                @default(now()) @db.Timestamp(6)
+  updated_at            DateTime                @default(now()) @db.Timestamp(6)
+  payment               payment[]
+  payment_status_locale payment_status_locale[]
+}
+
+model payment_status_locale {
+  payment_status_id Int
+  locale_id         Int
+  name              String         @db.VarChar(63)
+  created_at        DateTime       @default(now()) @db.Timestamp(6)
+  updated_at        DateTime       @default(now()) @db.Timestamp(6)
+  payment_status    payment_status @relation(fields: [payment_status_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_654df991c730efd8cc0956593b3")
+  locale            locale         @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_dbf81598026d1523bb6461ce2ea")
+
+  @@id([payment_status_id, locale_id], map: "PK_17f715ac6bb694c99c8ee632542")
+}
+
+model payment_value {
+  id         Int      @id(map: "PK_9506ccc5cd57d212908e0595381") @default(autoincrement())
+  payment_id Int
+  name       String   @db.VarChar
+  value      String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  payment    payment  @relation(fields: [payment_id], references: [id], onUpdate: NoAction, map: "FK_fce8c21d9e0b3fa9c1c44e87833")
+
+  @@unique([payment_id, name], map: "IDX_1c6b62d90e77f5589e1bdbd6f0")
 }
 
 model subscription {
@@ -937,85 +1187,6 @@ model subscription_value {
   @@unique([subscription_id, name], map: "IDX_216bbd68ec714c08512b9e40fe")
 }
 
-model dashboard {
-  id               Int                @id(map: "PK_233ed28fa3a1f9fbe743f571f75") @default(autoincrement())
-  slug             String             @unique(map: "UQ_49de5ef1bf76edb040ae4e91b0d") @db.VarChar(255)
-  created_at       DateTime           @default(now()) @db.Timestamp(6)
-  updated_at       DateTime           @default(now()) @db.Timestamp(6)
-  dashboard_item   dashboard_item[]
-  dashboard_locale dashboard_locale[]
-}
-
-model dashboard_component {
-  id                         Int                          @id(map: "PK_0db8e7613dacbccf226113cb128") @default(autoincrement())
-  slug                       String                       @unique(map: "UQ_61131edec39967aeebdb9749859") @db.VarChar(255)
-  path                       String                       @db.VarChar(500)
-  min_width                  Int                          @default(1)
-  max_width                  Int?
-  min_height                 Int                          @default(1)
-  max_height                 Int?
-  width                      Int
-  height                     Int
-  is_resizable               Boolean                      @default(true)
-  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  dashboard_component_locale dashboard_component_locale[]
-  dashboard_item             dashboard_item[]
-}
-
-model dashboard_component_locale {
-  component_id        Int
-  locale_id           Int
-  name                String              @db.VarChar(255)
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_0f2eba6ea6564d58125eb0a34b4")
-  locale              locale              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1caa002d6c3f5d188e3d992a922")
-
-  @@id([component_id, locale_id], map: "PK_4c64473f04145378896f0e2bd50")
-}
-
-model dashboard_item {
-  id                  Int                 @id(map: "PK_4ad9d196b68ca545a9a52535ed1") @default(autoincrement())
-  component_id        Int
-  dashboard_id        Int
-  width               Int
-  height              Int
-  x_axis              Int
-  y_axis              Int
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3a78515cb558278423e37cbee3e")
-  dashboard           dashboard           @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c6b6fb41935b6164a280c5a61e5")
-  dashboard_user      dashboard_user[]
-}
-
-model dashboard_locale {
-  dashboard_id Int
-  locale_id    Int
-  name         String    @db.VarChar(255)
-  created_at   DateTime  @default(now()) @db.Timestamp(6)
-  updated_at   DateTime  @default(now()) @db.Timestamp(6)
-  dashboard    dashboard @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_715cebc1d9efa853ee50734bc64")
-  locale       locale    @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d567466467ab5a0b9f8a2bc5175")
-
-  @@id([dashboard_id, locale_id], map: "PK_c345a8463f40f6d7b9aa585d06e")
-}
-
-model dashboard_user {
-  id             Int            @id(map: "PK_450acb76f1434b5b7119637e94a") @default(autoincrement())
-  item_id        Int
-  user_id        Int
-  width          Int
-  height         Int
-  x_axis         Int
-  y_axis         Int
-  created_at     DateTime       @default(now()) @db.Timestamp(6)
-  updated_at     DateTime       @default(now()) @db.Timestamp(6)
-  user           user           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8f31fe77228612efaa2385eaa6c")
-  dashboard_item dashboard_item @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c2d94e6302ebca142bb77db81d8")
-}
-
 enum route_method_enum {
   GET
   POST
@@ -1032,6 +1203,25 @@ enum setting_type_enum {
   number
   boolean
   json
+}
+
+enum chat_message_type_enum {
+  text
+  image
+  video
+  audio
+  file
+}
+
+enum chat_room_person_role_enum {
+  admin
+  member
+}
+
+enum instance_visibility_enum {
+  public
+  private
+  unlisted
 }
 
 enum subscription_person_role_enum {

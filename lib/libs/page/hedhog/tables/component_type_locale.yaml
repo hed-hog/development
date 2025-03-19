@@ -1,4 +1,5 @@
 columns:
+  - type: pk
   - type: fk
     name: type_id
     references:

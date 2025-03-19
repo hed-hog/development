@@ -70,6 +70,17 @@ const routes = [
         ],
       },
       {
+        path: "faq",
+        children: [
+          {
+            path: "",
+            lazy: async () => ({
+              Component: (await import("./pages/faq/index.tsx")).default,
+            }),
+          },
+        ],
+      },
+      {
         path: "item",
         children: [
           {
@@ -142,6 +153,57 @@ const routes = [
               Component: (await import("./pages/management/menu/index.tsx"))
                 .default,
             }),
+          },
+          {
+            path: "pages",
+            children: [
+              {
+                path: "component",
+                lazy: async () => ({
+                  Component: (await import("./pages/page/component/index.tsx"))
+                    .default,
+                }),
+              },
+              {
+                path: "component-prop",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/page/component-prop/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "component-prop-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/page/component-prop-type/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "component-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/page/component-type/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "instance",
+                lazy: async () => ({
+                  Component: (await import("./pages/page/instance/index.tsx"))
+                    .default,
+                }),
+              },
+              {
+                path: "instance-prop",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/page/instance-prop/index.tsx")
+                  ).default,
+                }),
+              },
+            ],
           },
           {
             path: "payment",
@@ -365,19 +427,6 @@ const routes = [
             lazy: async () => ({
               Component: (
                 await import("./pages/subscription/subscription/index.tsx")
-              ).default,
-            }),
-          },
-        ],
-      },
-      {
-        path: "subscription-plan-item",
-        children: [
-          {
-            path: "",
-            lazy: async () => ({
-              Component: (
-                await import("./pages/subscription-plan-item/index.tsx")
               ).default,
             }),
           },

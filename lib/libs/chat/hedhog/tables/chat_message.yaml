@@ -21,10 +21,10 @@ columns:
   - type: varchar
     name: content
     length: 2047
-  - type: datetime
+  - type: timestamp
     name: read_at
     isNullable: true
-  - type: datetime
+  - type: timestamp
     name: received_at
     isNullable: true
   - type: created_at

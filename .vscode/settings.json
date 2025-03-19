@@ -12,5 +12,6 @@
   "yaml.hover": true,
   "yaml.completion": true,
   "eslint.validate": ["typescript"],
-  "prettier.requireConfig": true
+  "prettier.requireConfig": true,
+  "cmake.sourceDirectory": "E:/Hedhog/development/lib/node_modules/bare-fs"
 }

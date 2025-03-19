@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsOptional } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateDTO {
   @IsNumber()
@@ -10,8 +10,8 @@ export class CreateDTO {
   @IsNumber()
   parent_id: number;
 
-  @IsString()
-  order: string;
+  @IsNumber()
+  order: number;
 
   @IsOptional()
   @IsString()

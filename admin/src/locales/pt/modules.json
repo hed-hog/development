@@ -11,6 +11,11 @@
   "person_contact_type": "Tipos de Contato",
   "person_custom_type": "Tipos Personalizados",
   "person_document_type": "Tipos de Documento",
+  "dashboard": "Dashboard",
+  "dashboard_item": "Item de Dashboard",
+  "dashboard_user": "Usuário de Dashboard",
+  "dashboard_component": "Componente de Dashboard",
+  "faq": "Perguntas Frequentes",
   "payment_gateway": "Gateway",
   "payment_status": "Status de Pagamento",
   "payment_method": "Método de Pagamento",
@@ -29,9 +34,5 @@
   "subscription": "Assinaturas",
   "subscription_value": "Valores",
   "subscription_person": "Pessoas",
-  "subscription_payment": "Pagamentos",
-  "dashboard": "Dashboard",
-  "dashboard_item": "Item de Dashboard",
-  "dashboard_user": "Usuário de Dashboard",
-  "dashboard_component": "Componente de Dashboard"
+  "subscription_payment": "Pagamentos"
 }

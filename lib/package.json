@@ -33,7 +33,8 @@
     "puppeteer": "ts-node ./src/puppeteer/main.ts",
     "create:types": "ts-node scripts/create-types.ts",
     "libs:minor": "ts-node scripts/libs-minor.ts",
-    "install:libs": "ts-node scripts/npm-install-libs.ts"
+    "install:libs": "ts-node scripts/npm-install-libs.ts",
+    "add:libs": "ts-node scripts/add-all-libs.ts"
   },
   "dependencies": {
     "@hedhog/core": "^1.0.6",

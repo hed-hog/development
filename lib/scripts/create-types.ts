@@ -41,7 +41,7 @@ async function createEnumFile(path: string, columns: any[]) {
 async function createTypes(path: string) {
   const tables = await getTables();
 
-  console.log(tables)
+  console.log(tables);
 
   for (const table of tables) {
     let columns = await getTableColumns(table);
@@ -230,13 +230,14 @@ async function main() {
   await createIndex(pathAdmin);
 
   console.info('Types for admin created successfully!');
+
+  process.exit(0);
 }
 
-main()
-  .then(() => {
-    console.info('Types created successfully!');
-    process.exit(0);
-  })
-  .catch((err) => {
+if (!process.env.HEDHOG_SKIP_TYPES) {
+  main().catch((err) => {
     console.error('Error:', err);
   });
+} else {
+  console.info('Skipping types creation...');
+}
