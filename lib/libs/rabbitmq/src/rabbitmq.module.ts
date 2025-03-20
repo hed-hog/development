@@ -8,10 +8,10 @@ import { RabbitMQService } from './rabbitmq.service';
 
 @Global()
 @Module({})
-export class RabbitMQModule {
+export class RabbitmqModule {
   static forRoot(options: RabbitModuleOptions): DynamicModule {
     return {
-      module: RabbitMQModule,
+      module: RabbitmqModule,
       imports: [],
       providers: [
         RabbitMQService,
@@ -26,7 +26,7 @@ export class RabbitMQModule {
 
   static forRootAsync(options: RabbitModuleAsyncOptions): DynamicModule {
     return {
-      module: RabbitMQModule,
+      module: RabbitmqModule,
       imports: [...(options.imports || [])],
       providers: [RabbitMQService, this.createAsyncOptionsProvider(options)],
       exports: [RabbitMQService],

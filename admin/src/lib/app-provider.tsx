@@ -158,15 +158,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setSystemSlogan(getValue('--system-slogan'))
     setImageUrl(getValue('--image-url'))
     setIconUrl(getValue('--icon-url'))
-
-    getValidSignature()
-      .then(() => setIsValidSignature(true))
-      .catch(() => {
-        setIsValidSignature(false)
-      })
   }, [])
 
-  const getValidSignature = () => {
+  const getValidSignature = useCallback(() => {
     return new Promise(async (resolve, reject) => {
       try {
         const { data } = await request({
@@ -179,7 +173,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         reject()
       }
     })
-  }
+  }, [])
+
   const openDialog = (dialog: OpenDialogType) => {
     const id = uuidv4()
     setModals((modals) => {
@@ -245,6 +240,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     }
   }
 
+  const logout = () => {
+    setToken('')
+    setUser({})
+    if (window.location.pathname !== '/login') {
+      window.location.href = '/login'
+    }
+  }
+
   const request = useCallback(
     <T extends {}>(config?: AxiosRequestConfig & { showErrors?: boolean }) => {
       if (config && typeof config?.showErrors === 'undefined') {
@@ -277,6 +280,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         },
         (error) => {
           config?.showErrors && handleError(error)
+
+          if (error.status === 401) {
+            logout()
+          }
+
           return Promise.reject(error)
         }
       )
@@ -284,7 +292,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       return instance.request<T>(config ?? {})
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [token]
+    [token, logout]
   )
 
   const parseToken = (token: string) => {
@@ -401,14 +409,17 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     }
   }
 
-  const logout = () => {
-    setToken('')
-    setUser({})
-    window.location.href = '/login'
-  }
-
   useEffect(() => {
     parseToken(token)
+
+    if (token) {
+      getValidSignature()
+        .then(() => setIsValidSignature(true))
+        .catch(() => {
+          setIsValidSignature(false)
+        })
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
