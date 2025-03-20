@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import ListView from '../views/list-view'
+import DataPanel from '../panels/data-panel'
 import { Button } from '../ui/button'
 import {
   Dialog,
@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog'
-import DataPanel from '../panels/data-panel'
+import ListView from '../views/list-view'
 
 type PickerFieldProps<T> = {
   url: string
@@ -43,7 +43,11 @@ export const PickerField = <T extends {}>({
       if (typeof item === 'string') {
         return <div>{item}</div>
       }
-      return <div>{(item as any).name ?? (item as any).code}</div>
+      return (
+        <div>
+          {(item as any).name ?? (item as any).code ?? (item as any).slug}
+        </div>
+      )
     }
   }
 
@@ -132,7 +136,11 @@ export const PickerField = <T extends {}>({
       <ListView<T>
         data={items}
         selectable={true}
-        render={(item) => <div>{(item as any).name ?? (item as any).code}</div>}
+        render={(item) => (
+          <div>
+            {(item as any).name ?? (item as any).code ?? (item as any).slug}
+          </div>
+        )}
         textEmpty={textEmpty}
         textLoading={textLoading}
         columnName={columnName}
