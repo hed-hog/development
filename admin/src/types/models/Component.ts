@@ -1,6 +1,6 @@
 import { ComponentType } from './ComponentType';
-import { ComponentProp } from './ComponentProp';
 import { Instance } from './Instance';
+import { ComponentProp } from './ComponentProp';
 
 export type Component = {
   id?: number;
@@ -9,6 +9,6 @@ export type Component = {
   created_at?: string;
   updated_at?: string;
   component_type?: ComponentType;
-  component_prop?: ComponentProp[];
   instance?: Instance[];
+  component_prop?: ComponentProp[];
 }

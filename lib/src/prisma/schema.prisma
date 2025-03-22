@@ -253,6 +253,7 @@ model user {
   role_user      role_user[]
   setting_user   setting_user[]
   multifactor    multifactor?     @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
+  user_activity  user_activity[]
 }
 
 model file {
@@ -359,6 +360,17 @@ model setting_user {
   setting    setting  @relation(fields: [setting_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9d2cd571c1eea2008632c07e95f")
 
   @@id([user_id, setting_id], map: "PK_9b9f9a08cecc632f2da8f12f4da")
+}
+
+model user_activity {
+  id         Int      @id(map: "PK_daec6d19443689bda7d7785dff5") @default(autoincrement())
+  user_id    Int
+  ip         String   @db.VarChar
+  user_agent String   @db.VarChar
+  message    String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_11108754ec780c670440e32baad")
 }
 
 model chat_message {
@@ -765,6 +777,40 @@ model faq_locale {
   faq        faq      @relation(fields: [faq_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7f452a3b8b391aa822725b0ed45")
 
   @@id([faq_id, locale_id], map: "PK_53503b36e2adb7267a5eab03012")
+}
+
+model mail {
+  id         Int         @id(map: "PK_5407da42b983ba54c6c62d462d3") @default(autoincrement())
+  slug       String      @unique(map: "UQ_a33780fee5a320eaff8caff4b60") @db.VarChar(255)
+  subject    String      @db.VarChar
+  body       String      @db.VarChar
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  mail_sent  mail_sent[]
+  mail_var   mail_var[]
+}
+
+model mail_sent {
+  id         Int      @id(map: "PK_e270163b87ab8ee62cd8f3d4d53") @default(autoincrement())
+  mail_id    Int
+  subject    String   @db.VarChar
+  from       String   @db.VarChar
+  to         String?  @db.VarChar
+  cc         String?  @db.VarChar
+  bcc        String?  @db.VarChar
+  body       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  mail       mail     @relation(fields: [mail_id], references: [id], onDelete: Cascade, map: "FK_05010af2c9c832519a05780fba7")
+}
+
+model mail_var {
+  id         Int      @id(map: "PK_1c8349729c6b8abfc8ae33dad2d") @default(autoincrement())
+  mail_id    Int
+  name       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  mail       mail     @relation(fields: [mail_id], references: [id], onDelete: Cascade, map: "FK_88b8d9fcc9196ba574fc588147c")
 }
 
 model component {

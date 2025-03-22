@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { cn } from '@/lib/utils'
+import * as React from 'react'
 
 const LayoutContext = React.createContext<{
   offset: number
@@ -90,7 +90,7 @@ const Body = React.forwardRef<
       ref={ref}
       data-layout='body'
       className={cn(
-        'px-4 py-6 md:overflow-hidden md:px-8',
+        'px-4 md:overflow-hidden md:px-8',
         contextVal && contextVal.fixed && 'flex-1',
         className
       )}

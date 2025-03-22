@@ -357,6 +357,98 @@ data:
         pt: Tela para gerenciar instance_prop
       icon: file
 
+screens:
+  page:
+    title:
+      en: Pages
+      pt: Páginas
+    menu:
+      menu_id:
+        where:
+          slug: /pages
+      url: /pages
+      icon: id
+      name:
+        en: Pages
+        pt: Páginas
+      slug: /pages
+      relations:
+        role:
+          - where:
+              slug: admin
+  component:
+    title:
+      en: Component
+      pt: Componente
+    menu:
+      menu_id:
+        where:
+          slug: /management/page
+      url: /management/page/component
+      icon: id
+      name:
+        en: Component
+        pt: Componente
+      slug: /management/page/component
+      relations:
+        role:
+          - where:
+              slug: admin
+  component-prop:
+    title:
+      en: Component Prop
+      pt: Propriedade do Componente
+    menu:
+      menu_id:
+        where:
+          slug: /management/page
+      url: /management/page/component-prop
+      icon: id
+      name:
+        en: Component Prop
+        pt: Propriedade do Componente
+      slug: /management/page/component-prop
+      relations:
+        role:
+          - where:
+              slug: admin
+  component-prop-type:
+    title:
+      en: Component Prop Type
+      pt: Tipo de Propriedade do Componente
+    menu:
+      menu_id:
+        where:
+          slug: /management/page
+      url: /management/page/component-prop-type
+      icon: id
+      name:
+        en: Component Prop Type
+        pt: Tipo de Propriedade do Componente
+      slug: /management/page/component-prop-type
+      relations:
+        role:
+          - where:
+              slug: admin
+  component-type:
+    title:
+      en: Component Type
+      pt: Tipo de Componente
+    menu:
+      menu_id:
+        where:
+          slug: /management/page
+      url: /management/page/component-type
+      icon: id
+      name:
+        en: Component Type
+        pt: Tipo de Componente
+      slug: /management/page/component-type
+      relations:
+        role:
+          - where:
+              slug: admin
+
 routes:
   - path: management
     children:
@@ -377,6 +469,3 @@ routes:
           - path: instance
             lazy:
               component: ./pages/page/instance/index.tsx
-          - path: instance-prop
-            lazy:
-              component: ./pages/page/instance-prop/index.tsx

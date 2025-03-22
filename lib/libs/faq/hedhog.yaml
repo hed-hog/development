@@ -84,7 +84,5 @@ data:
       icon: zoom-question
 routes:
   - path: faq
-    children:
-      - path: null
-        lazy:
-          component: ./pages/faq/index.tsx
+    lazy:
+      component: ./pages/faq/faq/index.tsx

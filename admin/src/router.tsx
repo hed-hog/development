@@ -1,277 +1,270 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
-import GeneralError from "./pages/errors/general-error.tsx";
-import MaintenanceError from "./pages/errors/maintenance-error.tsx";
-import NotFoundError from "./pages/errors/not-found-error.tsx";
-import UnauthorisedError from "./pages/errors/unauthorised-error.tsx";
+import { createBrowserRouter, RouteObject } from 'react-router-dom'
+import GeneralError from './pages/errors/general-error.tsx'
+import MaintenanceError from './pages/errors/maintenance-error.tsx'
+import NotFoundError from './pages/errors/not-found-error.tsx'
+import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 
 const routes = [
   {
-    path: "/login",
+    path: '/login',
     lazy: async () => ({
-      Component: (await import("./pages/auth/login.tsx")).default,
+      Component: (await import('./pages/auth/login.tsx')).default,
     }),
   },
   {
-    path: "/forgot-password",
+    path: '/forgot-password',
     lazy: async () => ({
-      Component: (await import("./pages/auth/forgot-password.tsx")).default,
+      Component: (await import('./pages/auth/forgot-password.tsx')).default,
     }),
   },
   {
-    path: "/email-sent",
+    path: '/email-sent',
     lazy: async () => ({
-      Component: (await import("./pages/auth/email-sent.tsx")).default,
+      Component: (await import('./pages/auth/email-sent.tsx')).default,
     }),
   },
   {
-    path: "/password-recovery/:code",
+    path: '/password-recovery/:code',
     lazy: async () => ({
-      Component: (await import("./pages/auth/password-recovery.tsx")).default,
+      Component: (await import('./pages/auth/password-recovery.tsx')).default,
     }),
   },
   {
-    path: "/otp",
+    path: '/otp',
     lazy: async () => ({
-      Component: (await import("./pages/auth/otp.tsx")).default,
+      Component: (await import('./pages/auth/otp.tsx')).default,
     }),
   },
   {
-    path: "/tests",
+    path: '/tests',
     lazy: async () => ({
-      Component: (await import("./components/custom/color-theme.tsx")).default,
+      Component: (await import('./components/custom/color-theme.tsx')).default,
     }),
   },
 
   // Main route
   {
-    path: "/",
+    path: '/',
     lazy: async () => {
-      const AppShell = await import("./components/app/app-shell.tsx");
-      return { Component: AppShell.default };
+      const AppShell = await import('./components/app/app-shell.tsx')
+      return { Component: AppShell.default }
     },
     errorElement: <GeneralError />,
     children: [
       {
         index: true,
         lazy: async () => ({
-          Component: (await import("./pages/dashboard/index.tsx")).default,
+          Component: (await import('./pages/index.tsx')).default,
         }),
       },
       {
-        path: "contact",
+        path: 'chats',
+        lazy: async () => ({
+          Component: (await import('./pages/chat/chat-room/index.tsx')).default,
+        }),
+      },
+      {
+        path: 'contact',
         children: [
           {
-            path: "person",
+            path: 'person',
             lazy: async () => ({
-              Component: (await import("./pages/contact/person/index.tsx"))
+              Component: (await import('./pages/contact/person/index.tsx'))
                 .default,
             }),
           },
         ],
       },
       {
-        path: "faq",
-        children: [
-          {
-            path: "",
-            lazy: async () => ({
-              Component: (await import("./pages/faq/index.tsx")).default,
-            }),
-          },
-        ],
+        path: 'faq',
+        lazy: async () => ({
+          Component: (await import('./pages/faq/faq/index.tsx')).default,
+        }),
       },
       {
-        path: "item",
+        path: 'item',
         children: [
           {
-            path: "",
+            path: '',
             lazy: async () => ({
-              Component: (await import("./pages/payment/item/index.tsx"))
+              Component: (await import('./pages/payment/item/index.tsx'))
                 .default,
             }),
           },
         ],
       },
       {
-        path: "management",
+        path: 'management',
         children: [
           {
-            path: "",
+            path: '',
             lazy: async () => ({
-              Component: (await import("./pages/management/index.tsx")).default,
+              Component: (await import('./pages/management/index.tsx')).default,
             }),
           },
           {
-            path: "appearance",
+            path: 'appearance',
             lazy: async () => ({
               Component: (
-                await import("./pages/management/appearance/index.tsx")
+                await import('./pages/management/appearance/index.tsx')
               ).default,
             }),
           },
           {
-            path: "dashboard",
+            path: 'dashboard',
             lazy: async () => ({
               Component: (
-                await import("./pages/management/dashboard/dashboard/index.tsx")
+                await import('./pages/management/dashboard/dashboard/index.tsx')
               ).default,
             }),
           },
           {
-            path: "dashboard-component",
+            path: 'dashboard-component',
             lazy: async () => ({
               Component: (
                 await import(
-                  "./pages/management/dashboard/dashboard-component/index.tsx"
+                  './pages/management/dashboard/dashboard-component/index.tsx'
                 )
               ).default,
             }),
           },
           {
-            path: "dashboard-item",
+            path: 'dashboard-item',
             lazy: async () => ({
               Component: (
                 await import(
-                  "./pages/management/dashboard/dashboard-item/index.tsx"
+                  './pages/management/dashboard/dashboard-item/index.tsx'
                 )
               ).default,
             }),
           },
           {
-            path: "dashboard-user",
+            path: 'dashboard-user',
             lazy: async () => ({
               Component: (
                 await import(
-                  "./pages/management/dashboard/dashboard-user/index.tsx"
+                  './pages/management/dashboard/dashboard-user/index.tsx'
                 )
               ).default,
             }),
           },
           {
-            path: "menu",
+            path: 'menu',
             lazy: async () => ({
-              Component: (await import("./pages/management/menu/index.tsx"))
+              Component: (await import('./pages/management/menu/index.tsx'))
                 .default,
             }),
           },
           {
-            path: "pages",
+            path: 'pages',
             children: [
               {
-                path: "component",
+                path: 'component',
                 lazy: async () => ({
-                  Component: (await import("./pages/page/component/index.tsx"))
+                  Component: (await import('./pages/page/component/index.tsx'))
                     .default,
                 }),
               },
               {
-                path: "component-prop",
+                path: 'component-prop',
                 lazy: async () => ({
                   Component: (
-                    await import("./pages/page/component-prop/index.tsx")
+                    await import('./pages/page/component-prop/index.tsx')
                   ).default,
                 }),
               },
               {
-                path: "component-prop-type",
+                path: 'component-prop-type',
                 lazy: async () => ({
                   Component: (
-                    await import("./pages/page/component-prop-type/index.tsx")
+                    await import('./pages/page/component-prop-type/index.tsx')
                   ).default,
                 }),
               },
               {
-                path: "component-type",
+                path: 'component-type',
                 lazy: async () => ({
                   Component: (
-                    await import("./pages/page/component-type/index.tsx")
+                    await import('./pages/page/component-type/index.tsx')
                   ).default,
                 }),
               },
               {
-                path: "instance",
+                path: 'instance',
                 lazy: async () => ({
-                  Component: (await import("./pages/page/instance/index.tsx"))
+                  Component: (await import('./pages/page/instance/index.tsx'))
                     .default,
                 }),
               },
-              {
-                path: "instance-prop",
-                lazy: async () => ({
-                  Component: (
-                    await import("./pages/page/instance-prop/index.tsx")
-                  ).default,
-                }),
-              },
             ],
           },
           {
-            path: "payment",
+            path: 'payment',
             children: [
               {
-                path: "discount-type",
+                path: 'discount-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/management/payment/discount-type/index.tsx"
+                      './pages/management/payment/discount-type/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: "item",
+                path: 'item',
                 lazy: async () => ({
                   Component: (
-                    await import("./pages/management/payment/item/index.tsx")
+                    await import('./pages/management/payment/item/index.tsx')
                   ).default,
                 }),
               },
               {
-                path: "payment-card-brand",
+                path: 'payment-card-brand',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/management/payment/payment-card-brand/index.tsx"
+                      './pages/management/payment/payment-card-brand/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: "payment-gateway",
+                path: 'payment-gateway',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/management/payment/payment-gateway/index.tsx"
+                      './pages/management/payment/payment-gateway/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: "payment-method",
+                path: 'payment-method',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/management/payment/payment-method/index.tsx"
+                      './pages/management/payment/payment-method/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: "payment-notification",
+                path: 'payment-notification',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/management/payment/payment-notification/index.tsx"
+                      './pages/management/payment/payment-notification/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: "payment-status",
+                path: 'payment-status',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/management/payment/payment-status/index.tsx"
+                      './pages/management/payment/payment-status/index.tsx'
                     )
                   ).default,
                 }),
@@ -279,155 +272,127 @@ const routes = [
             ],
           },
           {
-            path: "person",
+            path: 'person',
             children: [
               {
-                path: "person-address-type",
+                path: 'person-address-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/contact/person-address-type/index.tsx"
+                      './pages/contact/person-address-type/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: "person-contact-type",
+                path: 'person-contact-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/contact/person-contact-type/index.tsx"
+                      './pages/contact/person-contact-type/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: "person-custom-type",
+                path: 'person-custom-type',
                 lazy: async () => ({
                   Component: (
-                    await import("./pages/contact/person-custom-type/index.tsx")
+                    await import('./pages/contact/person-custom-type/index.tsx')
                   ).default,
                 }),
               },
               {
-                path: "person-document-type",
+                path: 'person-document-type',
                 lazy: async () => ({
                   Component: (
                     await import(
-                      "./pages/contact/person-document-type/index.tsx"
+                      './pages/contact/person-document-type/index.tsx'
                     )
                   ).default,
                 }),
               },
               {
-                path: "person-type",
+                path: 'person-type',
                 lazy: async () => ({
                   Component: (
-                    await import("./pages/contact/person-type/index.tsx")
+                    await import('./pages/contact/person-type/index.tsx')
                   ).default,
                 }),
               },
             ],
           },
           {
-            path: "role",
+            path: 'role',
             lazy: async () => ({
-              Component: (await import("./pages/management/role/index.tsx"))
+              Component: (await import('./pages/management/role/index.tsx'))
                 .default,
             }),
           },
           {
-            path: "route",
+            path: 'route',
             lazy: async () => ({
-              Component: (await import("./pages/management/route/index.tsx"))
+              Component: (await import('./pages/management/route/index.tsx'))
                 .default,
             }),
           },
           {
-            path: "screen",
+            path: 'screen',
             lazy: async () => ({
-              Component: (await import("./pages/management/screen/index.tsx"))
+              Component: (await import('./pages/management/screen/index.tsx'))
                 .default,
             }),
           },
           {
-            path: "setting",
+            path: 'setting',
             children: [
               {
-                path: "",
+                path: '',
                 lazy: async () => ({
                   Component: (
-                    await import("./pages/management/setting/index.tsx")
+                    await import('./pages/management/setting/index.tsx')
                   ).default,
                 }),
               },
               {
-                path: ":slug",
+                path: ':slug',
                 lazy: async () => ({
                   Component: (
-                    await import("./pages/management/setting/forms.tsx")
+                    await import('./pages/management/setting/forms.tsx')
                   ).default,
                 }),
               },
             ],
           },
           {
-            path: "subscription",
-            children: [
-              {
-                path: "subscription-plan",
-                lazy: async () => ({
-                  Component: (
-                    await import(
-                      "./pages/management/subscription/subscription-plan/index.tsx"
-                    )
-                  ).default,
-                }),
-              },
-            ],
-          },
-          {
-            path: "user",
+            path: 'user',
             lazy: async () => ({
-              Component: (await import("./pages/management/user/index.tsx"))
+              Component: (await import('./pages/management/user/index.tsx'))
                 .default,
             }),
           },
         ],
       },
       {
-        path: "payment",
+        path: 'payment',
         children: [
           {
-            path: "",
+            path: '',
             lazy: async () => ({
-              Component: (await import("./pages/payment/payment/index.tsx"))
+              Component: (await import('./pages/payment/payment/index.tsx'))
                 .default,
             }),
           },
         ],
       },
       {
-        path: "payment-coupon",
+        path: 'payment-coupon',
         children: [
           {
-            path: "",
+            path: '',
             lazy: async () => ({
-              Component: (await import("./pages/payment-coupon/index.tsx"))
+              Component: (await import('./pages/payment-coupon/index.tsx'))
                 .default,
-            }),
-          },
-        ],
-      },
-      {
-        path: "subscription",
-        children: [
-          {
-            path: "",
-            lazy: async () => ({
-              Component: (
-                await import("./pages/subscription/subscription/index.tsx")
-              ).default,
             }),
           },
         ],
@@ -436,15 +401,15 @@ const routes = [
   },
 
   // Error route
-  { path: "/500", Component: GeneralError },
-  { path: "/404", Component: NotFoundError },
-  { path: "/503", Component: MaintenanceError },
-  { path: "/401", Component: UnauthorisedError },
+  { path: '/500', Component: GeneralError },
+  { path: '/404', Component: NotFoundError },
+  { path: '/503', Component: MaintenanceError },
+  { path: '/401', Component: UnauthorisedError },
 
   // Fallback 404 route
-  { path: "*", Component: NotFoundError },
-];
+  { path: '*', Component: NotFoundError },
+]
 
-const router = createBrowserRouter(routes as RouteObject[]);
+const router = createBrowserRouter(routes as RouteObject[])
 
-export default router;
+export default router

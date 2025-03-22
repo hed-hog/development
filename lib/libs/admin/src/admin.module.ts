@@ -5,6 +5,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { CoreModule } from './core/core.module';
 import { MenuModule } from './menu/menu.module';
 import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     forwardRef(() => ScreenModule),
     forwardRef(() => LocaleModule),
     forwardRef(() => UserModule),
+    forwardRef(() => CoreModule),
   ],
   exports: [
     UserModule,

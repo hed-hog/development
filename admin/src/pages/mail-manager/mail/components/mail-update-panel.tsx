@@ -1,0 +1,64 @@
+import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
+import { Overlay } from "@/components/custom/overlay";
+import { TabPanel } from "@/components/panels/tab-panel";
+import { useMailGet, useMailUpdate } from "@/features/mail-manager/mail";
+import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
+import { Mail } from "@/types/models";
+import { useState, forwardRef, useImperativeHandle, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+
+export type MailUpdatePanelProps = {
+  data: Mail;
+  onUpdated?: (data: Mail) => void;
+};
+
+const MailUpdatePanel = forwardRef(
+  ({ data, onUpdated }: MailUpdatePanelProps, ref) => {
+    const { t } = useTranslation(["actions", "fields", "translations"]);
+    const { data: item, isLoading } = useMailGet(data.id as number);
+    const { mutate: mailUpdate } = useMailUpdate();
+    const formRef = useRef<FormPanelRef>(null);
+
+    useEffectAfterFirstUpdate(() => {
+      if (item && formRef.current) {
+        formRef.current.setValuesFromItem(item);
+      }
+    }, [item]);
+
+    useImperativeHandle(ref, () => ({}));
+
+    return (
+      <TabPanel
+        activeTabIndex={0}
+        tabs={[
+          {
+            title: t("details", { ns: "actions" }),
+            children: (
+              <Overlay loading={isLoading}>
+                <FormPanel
+                  ref={formRef}
+                  fields={[]}
+                  button={{ text: t("save", { ns: "actions" }) }}
+                  onSubmit={(data) => {
+                    mailUpdate({
+                      id: data.id,
+                      data,
+                    });
+                    if (typeof onUpdated === "function") {
+                      onUpdated(data);
+                    }
+                  }}
+                />
+              </Overlay>
+            ),
+          },
+        ]}
+      />
+    );
+  },
+);
+
+MailUpdatePanel.displayName = "MailUpdatePanel";
+
+export default MailUpdatePanel;

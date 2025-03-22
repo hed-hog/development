@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Layout } from '@/components/ui/layout'
 import { useApp } from '@/hooks/use-app'
+import { getValue } from '@/lib/get-property-value'
 import { getSideLinks } from '@/lib/get-sidelinks'
 import { cn } from '@/lib/utils'
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
@@ -8,7 +9,6 @@ import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Nav from '../navs/nav'
-import { getValue } from '@/lib/get-property-value'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean

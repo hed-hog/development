@@ -56,48 +56,43 @@ data:
       relations: *a3
   menu:
     - name:
-        en: ChatMessage
-        pt: ChatMessage
-      icon: file
-      url: /chat-message
-      slug: chat-message
+        en: Chats
+        pt: Chats
+      icon: messages
+      url: /chats
+      slug: chats
       relations: *a1
-    - name:
-        en: ChatRoom
-        pt: ChatRoom
-      icon: file
-      url: /chat-room
-      slug: chat-room
-      relations: *a2
-    - name:
-        en: ChatRoomPerson
-        pt: ChatRoomPerson
-      icon: file
-      url: /chat-room-person
-      slug: chat-room-person
-      relations: *a3
   screen:
     - name:
-        en: ChatMessage
-        pt: ChatMessage
-      slug: chat-message
+        en: Chats
+        pt: ChatChatsessage
+      slug: chats
       description:
-        en: Screen to manage chat_message
-        pt: Tela para gerenciar chat_message
-      icon: file
-    - name:
-        en: ChatRoom
-        pt: ChatRoom
-      slug: chat-room
-      description:
-        en: Screen to manage chat_room
-        pt: Tela para gerenciar chat_room
-      icon: file
-    - name:
-        en: ChatRoomPerson
-        pt: ChatRoomPerson
-      slug: chat-room-person
-      description:
-        en: Screen to manage chat_room_person
-        pt: Tela para gerenciar chat_room_person
-      icon: file
+        en: Screen to manage chats
+        pt: Tela para gerenciar chats
+      icon: messages
+
+screens:
+  chat-room:
+    title:
+      en: Chats
+      pt: Chats
+    menu:
+      menu_id:
+        where:
+          slug: /chats
+      url: /chats
+      icon: messages
+      name:
+        en: Chats
+        pt: Chats
+      slug: /chats
+      relations:
+        role:
+          - where:
+              slug: admin
+
+routes:
+  - path: chats
+    lazy:
+      component: ./pages/chat/chat-room/index.tsx
