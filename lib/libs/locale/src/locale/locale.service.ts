@@ -297,10 +297,6 @@ export class LocaleService {
     foreignKeyName: string,
     data: T,
   ) {
-    console.log('====================');
-    console.log({ modelName, foreignKeyName, data });
-    console.log('====================');
-
     try {
       const model = await this.prismaService[modelName].create({
         data: this.prismaService.getValidData(modelName, data),
@@ -309,8 +305,6 @@ export class LocaleService {
       const { locale } = data as {
         locale: Record<string, Record<string, string>>;
       };
-
-      console.log({ model, modelName, foreignKeyName, data, locale });
 
       if (locale) {
         await Promise.all(
@@ -321,14 +315,6 @@ export class LocaleService {
               locale_id: localeRecord.id,
               ...localeData,
             };
-
-            console.log({
-              localeCode,
-              localeData,
-              localeRecord,
-              localeEntry,
-              tableName: this.getTableNameTranslations(modelName),
-            });
 
             await this.prismaService[
               this.getTableNameTranslations(modelName)
@@ -349,7 +335,6 @@ export class LocaleService {
         },
       });
     } catch (error: any) {
-      console.log(error.message);
       if (error.message.includes('Unique constraint failed')) {
         throw new BadRequestException('Data already exists.');
       } else {
@@ -370,25 +355,15 @@ export class LocaleService {
         locale: Record<string, Record<string, string>>;
       };
 
-      console.log({ locale, modelName, foreignKeyName, id, data, where });
-
       if (locale) {
         await Promise.all(
           Object.entries(locale).map(async ([localeCode, localeData]) => {
-            console.log({ localeCode, localeData });
-
             const localeRecord = await this.getByCode(localeCode);
             const localeEntry = {
               [foreignKeyName]: id,
               locale_id: localeRecord.id,
               ...localeData,
             };
-
-            console.log({
-              localeRecord,
-              localeEntry,
-              tableName: this.getTableNameTranslations(modelName),
-            });
 
             await this.prismaService[
               this.getTableNameTranslations(modelName)
@@ -405,10 +380,6 @@ export class LocaleService {
           }),
         );
       }
-
-      console.log({
-        validData: this.prismaService.getValidData(modelName, data),
-      });
 
       return this.prismaService[modelName].update({
         where: { ...where, id },
@@ -505,11 +476,6 @@ export class LocaleService {
     try {
       const fields = this.prismaService.getFields(modelName);
       let OR: any[] = [];
-
-      console.log({
-        fields,
-        tableName: this.getTableNameTranslations(modelName),
-      });
 
       if (fields) {
         OR = this.prismaService.createInsensitiveSearch(

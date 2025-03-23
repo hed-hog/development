@@ -26,8 +26,8 @@ export class MailController {
   ) {}
 
   @Get()
-  async list(@Pagination() paginationParams) {
-    return this.mailService.list(paginationParams);
+  async list(@Locale() locale, @Pagination() paginationParams) {
+    return this.mailService.list(locale, paginationParams);
   }
 
   @Get(':id')

@@ -37,7 +37,7 @@
     "add:libs": "ts-node scripts/add-all-libs.ts"
   },
   "dependencies": {
-    "@hedhog/core": "^1.0.6",
+    "@hedhog/core": "^1.0.7",
     "@nestjs/axios": "^3.1.1",
     "@nestjs/common": "^10.4.7",
     "@nestjs/config": "^3.3.0",

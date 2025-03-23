@@ -128,7 +128,9 @@ export class PaginationService {
       const lastPage = Math.ceil(total / pageSize);
 
       if (translationKey) {
-        data = data.map((item: any) => itemTranslations(translationKey, item));
+        data = data.map((item: any) => {
+          return itemTranslations(translationKey, item);
+        });
       }
 
       return {

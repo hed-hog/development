@@ -6,5 +6,9 @@
   "apply": "Aplicar",
   "name": "Nome",
   "description": "Descrição",
-  "slug": "Slug"
+  "slug": "Slug",
+  "title": "Título",
+  "body": "Conteúdo",
+  "dateFormat": "d 'de' MMMM 'de' yyyy",
+  "updated": "Última atualização"
 }

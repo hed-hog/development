@@ -3,6 +3,7 @@ import { AppearanceModule } from '@hedhog/appearance';
 import { CbcModule } from '@hedhog/cbc';
 import { ChatModule } from '@hedhog/chat';
 import { ContactModule } from '@hedhog/contact';
+import { ContentModule } from '@hedhog/content';
 import { CountryModule } from '@hedhog/country';
 import { DashboardModule } from '@hedhog/dashboard';
 import { FaqModule } from '@hedhog/faq';
@@ -54,6 +55,7 @@ import { AppService } from './app.service';
     DashboardModule,
     MailManagerModule,
     PageModule,
+    ContentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

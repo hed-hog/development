@@ -210,7 +210,7 @@ data:
     - name:
         en: Pages
         pt: Páginas
-      icon: file
+      icon: layout-sidebar
       url: /pages
       slug: /pages
       relations:
@@ -230,132 +230,90 @@ data:
           - where:
               slug: admin
     - name:
-        en: ComponentType
-        pt: ComponentType
-      icon: file
+        en: Component Type
+        pt: Tipo de Componente
+      icon: triangle
       url: /management/pages/component-type
       slug: /management/pages/component-type
       menu_id:
         where:
-          slug: /management
+          slug: /management/pages
       relations:
         role:
           - where:
               slug: admin
     - name:
         en: Component
-        pt: Component
-      icon: file
+        pt: Componente
+      icon: components
       url: /management/pages/component
       slug: /management/pages/component
       menu_id:
         where:
-          slug: /management
+          slug: /management/pages
       relations:
         role:
           - where:
               slug: admin
     - name:
-        en: ComponentPropType
-        pt: ComponentPropType
-      icon: file
+        en: Component Prop Type
+        pt: Tipo de Propriedade do Componente
+      icon: triangle
       url: /management/pages/component-prop-type
       slug: /management/pages/component-prop-type
       menu_id:
         where:
-          slug: /management
+          slug: /management/pages
       relations:
         role:
           - where:
               slug: admin
     - name:
-        en: ComponentProp
-        pt: ComponentProp
-      icon: file
+        en: Component Prop
+        pt: Propriedade do Componente
+      icon: square
       url: /management/pages/component-prop
       slug: /management/pages/component-prop
       menu_id:
         where:
-          slug: /management
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Instance
-        pt: Instance
-      icon: file
-      url: /management/pages/instance
-      slug: /management/pages/instance
-      menu_id:
-        where:
-          slug: /management
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: InstanceProp
-        pt: InstanceProp
-      icon: file
-      url: /management/pages/instance-prop
-      slug: /management/pages/instance-prop
-      menu_id:
-        where:
-          slug: /management
+          slug: /management/pages
       relations:
         role:
           - where:
               slug: admin
   screen:
     - name:
-        en: ComponentType
-        pt: ComponentType
+        en: Component Type
+        pt: Tipo de Componente
       slug: component-type
       description:
         en: Screen to manage component_type
         pt: Tela para gerenciar component_type
-      icon: file
+      icon: triangle
     - name:
         en: Component
-        pt: Component
+        pt: Componente
       slug: component
       description:
         en: Screen to manage component
         pt: Tela para gerenciar component
-      icon: file
+      icon: components
     - name:
-        en: ComponentPropType
-        pt: ComponentPropType
+        en: Component Prop Type
+        pt: Tipo de Propriedade do Componente
       slug: component-prop-type
       description:
         en: Screen to manage component_prop_type
         pt: Tela para gerenciar component_prop_type
-      icon: file
+      icon: triangle
     - name:
-        en: ComponentProp
-        pt: ComponentProp
+        en: Component Prop
+        pt: Propriedade do Componente
       slug: component-prop
       description:
         en: Screen to manage component_prop
         pt: Tela para gerenciar component_prop
-      icon: file
-    - name:
-        en: Instance
-        pt: Instance
-      slug: instance
-      description:
-        en: Screen to manage instance
-        pt: Tela para gerenciar instance
-      icon: file
-    - name:
-        en: InstanceProp
-        pt: InstanceProp
-      slug: instance-prop
-      description:
-        en: Screen to manage instance_prop
-        pt: Tela para gerenciar instance_prop
-      icon: file
+      icon: square
 
 screens:
   page:
@@ -363,11 +321,8 @@ screens:
       en: Pages
       pt: Páginas
     menu:
-      menu_id:
-        where:
-          slug: /pages
       url: /pages
-      icon: id
+      icon: layout-sidebar
       name:
         en: Pages
         pt: Páginas
@@ -385,7 +340,7 @@ screens:
         where:
           slug: /management/page
       url: /management/page/component
-      icon: id
+      icon: components
       name:
         en: Component
         pt: Componente
@@ -403,7 +358,7 @@ screens:
         where:
           slug: /management/page
       url: /management/page/component-prop
-      icon: id
+      icon: square
       name:
         en: Component Prop
         pt: Propriedade do Componente
@@ -421,7 +376,7 @@ screens:
         where:
           slug: /management/page
       url: /management/page/component-prop-type
-      icon: id
+      icon: triangle
       name:
         en: Component Prop Type
         pt: Tipo de Propriedade do Componente
@@ -439,7 +394,7 @@ screens:
         where:
           slug: /management/page
       url: /management/page/component-type
-      icon: id
+      icon: triangle
       name:
         en: Component Type
         pt: Tipo de Componente
@@ -450,6 +405,9 @@ screens:
               slug: admin
 
 routes:
+  - path: pages
+    lazy:
+      component: ./pages/page/instance/index.tsx
   - path: management
     children:
       - path: pages
@@ -466,6 +424,3 @@ routes:
           - path: component-prop
             lazy:
               component: ./pages/page/component-prop/index.tsx
-          - path: instance
-            lazy:
-              component: ./pages/page/instance/index.tsx

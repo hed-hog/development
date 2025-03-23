@@ -56,27 +56,51 @@ data:
       relations: *a3
   menu:
     - name:
+        en: Email
+        pt: E-mail
+      icon: mail-cog
+      url: /mail-manager
+      slug: mail-manager
+      relations: *a1
+    - name:
         en: Mail
         pt: Mail
       icon: file
       url: /mail
       slug: mail
-      relations: *a1
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: MailSent
         pt: MailSent
       icon: file
       url: /mail-sent
       slug: mail-sent
-      relations: *a2
+      relations:
+        role:
+          - where:
+              slug: admin
     - name:
         en: MailVar
         pt: MailVar
       icon: file
       url: /mail-var
       slug: mail-var
-      relations: *a3
+      relations:
+        role:
+          - where:
+              slug: admin
   screen:
+    - name:
+        en: Email
+        pt: E-mail
+      slug: /mail-manager
+      description:
+        en: Screen to manage mail
+        pt: Tela para gerenciar mail
+      icon: mail-cog
     - name:
         en: Mail
         pt: Mail
@@ -101,3 +125,41 @@ data:
         en: Screen to manage mail_var
         pt: Tela para gerenciar mail_var
       icon: file
+  mail:
+    - slug: forget-password
+      subject:
+        en: Forget Password
+        pt: Esqueci a Senha
+      body:
+        en: |
+          <p>Hi, <strong>{{name}}</strong></p>
+          <p>Click on the link below to reset your password:</p>
+          <p><a href="{{link}}">{{link}}</a></p>
+          <p>Thanks</p>
+        pt: |
+          <p>Olá, <strong>{{name}}</strong></p>
+          <p>Clique no link abaixo para redefinir sua senha:</p>
+          <p><a href="{{link}}">{{link}}</a></p>
+          <p>Obrigado</p>
+screens:
+  page:
+    title:
+      en: Email
+      pt: E-mail
+    menu:
+      url: /mail-manager
+      icon: layout-sidebar
+      name:
+        en: Email
+        pt: E-mail
+      slug: /mail-manager
+      relations:
+        role:
+          - where:
+              slug: admin
+routes:
+  - path: mail-manager
+    children:
+      - path: page
+        lazy:
+          component: ./pages/mail-manager/mail/index.tsx

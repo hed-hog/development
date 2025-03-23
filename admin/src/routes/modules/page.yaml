@@ -1,5 +1,9 @@
 routes:
   - &a1
+    path: pages
+    lazy:
+      component: ./pages/page/instance/index.tsx
+  - &a2
     path: management
     children:
       - path: pages
@@ -16,10 +20,5 @@ routes:
           - path: component-prop
             lazy:
               component: ./pages/page/component-prop/index.tsx
-          - path: instance
-            lazy:
-              component: ./pages/page/instance/index.tsx
-          - path: instance-prop
-            lazy:
-              component: ./pages/page/instance-prop/index.tsx
   - *a1
+  - *a2

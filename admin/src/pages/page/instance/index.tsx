@@ -1,4 +1,3 @@
-
 import { PageTitle } from '@/components/custom/page-title'
 import DataPanel from '@/components/panels/data-panel'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -29,11 +28,7 @@ export default function Page() {
     pt: ptBR,
   }
 
-  const { t } = useTranslation([
-    'modules',
-    'actions',
-    'fields',
-  ])
+  const { t } = useTranslation(['modules', 'actions', 'fields'])
 
   const openCreate = () => {
     const id = openSheet({
@@ -90,14 +85,14 @@ export default function Page() {
           <Card className='w-full rounded-none border-none bg-none'>
             <CardHeader className='flex flex-row rounded-t-lg px-4 py-3'>
               <Avatar>
-                <AvatarImage src='' alt={item.slug} />
+                <AvatarImage src='' alt={item.name} />
                 <AvatarFallback>
-                  {item.slug.substring(0, 2).toLocaleUpperCase()}
+                  {item.name.substring(0, 2).toLocaleUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className='flex flex-col px-4' style={{ marginTop: 0 }}>
                 <CardTitle className='text-md font-semibold'>
-                  {item.slug}
+                  {item.name}
                 </CardTitle>
                 <div className='flex flex-row'>
                   <IconClock className='mr-0.5 h-4 w-4' />

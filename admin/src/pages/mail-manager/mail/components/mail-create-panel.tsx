@@ -1,4 +1,7 @@
-import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
+import FormPanel, {
+  FormPanelRef,
+  getFieldsLocale,
+} from "@/components/panels/form-panel";
 
 import { useMailCreate } from "@/features/mail-manager/mail";
 import { Mail } from "@/types/models";
@@ -32,7 +35,7 @@ const MailCreatePanel = forwardRef(
     return (
       <FormPanel
         ref={formRef}
-        fields={[]}
+        fields={[...getFieldsLocale([{ name: "name" }])]}
         button={{ text: t("create", { ns: "actions" }) }}
         onSubmit={async (data) => {
           const createdData = await createMail({

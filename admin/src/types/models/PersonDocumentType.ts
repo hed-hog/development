@@ -1,6 +1,6 @@
 import { Country } from './Country';
-import { PersonDocument } from './PersonDocument';
 import { PersonDocumentTypeLocale } from './PersonDocumentTypeLocale';
+import { PersonDocument } from './PersonDocument';
 
 export type PersonDocumentType = {
   id?: number;
@@ -9,7 +9,7 @@ export type PersonDocumentType = {
   created_at?: string;
   updated_at?: string;
   country?: Country;
-  person_document?: PersonDocument[];
   person_document_type_locale?: PersonDocumentTypeLocale[];
+  person_document?: PersonDocument[];
   name?: string;
 }

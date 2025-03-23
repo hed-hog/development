@@ -7,13 +7,14 @@ tables:
       - type: updated_at
   content_locale:
     columns:
-      - type: pk
       - type: fk
+        isPrimary: true
         name: content_id
         references:
           table: content
           column: id
       - type: fk
+        isPrimary: true
         name: locale_id
         references:
           table: locale
@@ -46,17 +47,70 @@ data:
   menu:
     - name:
         en: Content
-        pt: Content
-      icon: file
+        pt: Conteúdo
+      icon: align-box-left-middle
       url: /content
       slug: content
       relations: *a1
   screen:
     - name:
         en: Content
-        pt: Content
+        pt: Conteúdo
       slug: content
       description:
-        en: Screen to manage content
-        pt: Tela para gerenciar content
-      icon: file
+        en: Content
+        pt: Conteúdo
+      icon: align-box-left-middle
+  content:
+    - slug: terms
+      title:
+        en: Terms of Use
+        pt: Termos de Uso
+      body:
+        en: |
+          <div>
+            <h1>Terms of Use</h1>
+            <p>This is the terms of service.</p>
+          </div>
+        pt: |
+          <div>
+            <h1>Termos de Uso</h1>
+            <p>Este é o termo de serviço.</p>
+          </div>
+    - slug: privacy
+      title:
+        en: Privacy Policy
+        pt: Política de Privacidade
+      body:
+        en: |
+          <div>
+            <h1>Privacy Policy</h1>
+            <p>This is the privacy policy.</p>
+          </div>
+        pt: |
+          <div>
+            <h1>Política de Privacidade</h1>
+            <p>Este é a política de privacidade.</p>
+          </div>
+
+screens:
+  page:
+    title:
+      en: Content
+      pt: Conteúdo
+    menu:
+      url: /content
+      icon: layout-sidebar
+      name:
+        en: Pages
+        pt: Páginas
+      slug: /content
+      relations:
+        role:
+          - where:
+              slug: admin
+
+routes:
+  - path: content
+    lazy:
+      component: ./pages/content/content/index.tsx

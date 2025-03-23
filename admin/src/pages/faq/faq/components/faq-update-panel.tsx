@@ -5,7 +5,7 @@ import FormPanel, {
 } from '@/components/panels/form-panel'
 import { TabPanel } from '@/components/panels/tab-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useFaqGet, useFaqUpdate } from '@/features/faq'
+import { useFaqGet, useFaqUpdate } from '@/features/faq/faq'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { Faq } from '@/types/models'
 import { forwardRef, useImperativeHandle, useRef } from 'react'

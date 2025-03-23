@@ -1,0 +1,19 @@
+columns:
+  - type: fk
+    name: mail_id
+    isPrimary: true
+    references:
+      table: mail
+      column: id
+      onDelete: cascade
+  - name: locale_id
+    type: fk
+    isPrimary: true
+    references:
+      table: locale
+      column: id
+      onDelete: CASCADE
+  - name: subject
+  - name: body
+  - type: created_at
+  - type: updated_at

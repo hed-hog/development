@@ -9,55 +9,49 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
+import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
 export class MailService {
+  private readonly modelName = 'mail';
+  private readonly foreignKey = 'mail_id';
+
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
+    @Inject(forwardRef(() => LocaleService))
+    private readonly localeService: LocaleService
   ) {}
 
-  async list(paginationParams: PaginationDTO) {
-    const fields = ['slug', 'subject', 'body'];
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
-      fields,
+  async list(locale: string, paginationParams: PaginationDTO) {
+    return this.localeService.listModelWithLocale(
+      locale,
+      this.modelName,
       paginationParams
-    );
-
-    if (paginationParams.search && !isNaN(+paginationParams.search)) {
-      OR.push({ id: { equals: +paginationParams.search } });
-    }
-
-    return this.paginationService.paginate(
-      this.prismaService.mail,
-      paginationParams,
-      {
-        where: {
-          OR
-        }
-      }
     );
   }
 
   async get(id: number) {
-    return this.prismaService.mail.findUnique({
-      where: { id: id }
-    });
+    return this.localeService.getModelWithLocale(this.modelName, id);
   }
 
   async create(data: CreateDTO) {
-    return this.prismaService.mail.create({
+    return this.localeService.createModelWithLocale(
+      this.modelName,
+      this.foreignKey,
       data
-    });
+    );
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
-    return this.prismaService.mail.update({
-      where: { id: id },
+    return this.localeService.updateModelWithLocale(
+      this.modelName,
+      this.foreignKey,
+      id,
       data
-    });
+    );
   }
 
   async delete({ ids }: DeleteDTO) {

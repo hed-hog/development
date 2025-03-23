@@ -1,23 +1,22 @@
-
 import { PageTitle } from '@/components/custom/page-title'
 import DataPanel from '@/components/panels/data-panel'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useInstanceDelete } from '@/features/page/instance'
+import { useComponentPropTypeDelete } from '@/features/page/component-prop-type'
 import { useApp } from '@/hooks/use-app'
 import { isPlural } from '@/lib/utils'
-import { Instance } from '@/types/models'
+import { ComponentPropType } from '@/types/models'
 import { IconClock, IconEdit, IconPlus, IconTrash } from '@tabler/icons-react'
 import { formatDistance, Locale } from 'date-fns'
 import { enUS, ptBR } from 'date-fns/locale'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import InstanceCreatePanel from './components/instance-create-panel'
-import InstanceUpdatePanel from './components/instance-update-panel'
+import ComponentPropTypeCreatePanel from './components/component-prop-type-create-panel'
+import ComponentPropTypeUpdatePanel from './components/component-prop-type-update-panel'
 
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState<Instance[]>([])
-  const { mutate: deleteInstance } = useInstanceDelete()
+  const [selectedItems, setSelectedItems] = useState<ComponentPropType[]>([])
+  const { mutate: deleteComponentPropType } = useComponentPropTypeDelete()
   const { openSheet, confirm, closeSheet } = useApp()
   const { t: userT } = useTranslation('users')
   const {
@@ -29,42 +28,43 @@ export default function Page() {
     pt: ptBR,
   }
 
-  const { t } = useTranslation([
-    'modules',
-    'actions',
-    'fields',
-  ])
+  const { t } = useTranslation(['modules', 'actions', 'fields'])
 
   const openCreate = () => {
     const id = openSheet({
-      title: t('create', { ns: 'contact.person' }),
-      description: t('createText', { ns: 'contact.person' }),
-      children: () => <InstanceCreatePanel onCreated={() => closeSheet(id)} />,
+      title: t('create', { ns: 'page.component-prop-type' }),
+      description: t('createText', { ns: 'page.component-prop-type' }),
+      children: () => (
+        <ComponentPropTypeCreatePanel onCreated={() => closeSheet(id)} />
+      ),
     })
 
     return id
   }
 
-  const openDelete = (items: Instance[]) => {
+  const openDelete = (items: ComponentPropType[]) => {
     return confirm({
-      title: `${t('delete', { ns: 'contact.person' })} ${items.length} ${isPlural(items.length) ? t('items', { ns: 'actions' }) : t('item', { ns: 'actions' })}`,
-      description: t('deleteText', { ns: 'contact.person' }),
+      title: `${t('delete', { ns: 'page.component-prop-type' })} ${items.length} ${isPlural(items.length) ? t('items', { ns: 'actions' }) : t('item', { ns: 'actions' })}`,
+      description: t('deleteText', { ns: 'page.component-prop-type' }),
     })
       .then(() =>
-        deleteInstance(
+        deleteComponentPropType(
           items.map((item) => item.id).filter((id) => id !== undefined)
         )
       )
       .catch(() => setSelectedItems(items))
   }
 
-  const openUpdate = (item: Instance) => {
+  const openUpdate = (item: ComponentPropType) => {
     const id = openSheet({
       children: () => (
-        <InstanceUpdatePanel data={item} onUpdated={() => closeSheet(id)} />
+        <ComponentPropTypeUpdatePanel
+          data={item}
+          onUpdated={() => closeSheet(id)}
+        />
       ),
-      title: t('edit', { ns: 'contact.person' }),
-      description: t('editText', { ns: 'contact.person' }),
+      title: t('edit', { ns: 'page.component-prop-type' }),
+      description: t('editText', { ns: 'page.component-prop-type' }),
     })
 
     return id
@@ -74,9 +74,9 @@ export default function Page() {
     <>
       <PageTitle title={t('title', { ns: 'modules' })} />
       <DataPanel
-        url='/instance'
+        url='/ComponentPropType'
         layout='grid'
-        id='instance'
+        id='ComponentPropType'
         selectable
         hasSearch
         responsiveColumns={{
@@ -86,7 +86,7 @@ export default function Page() {
           lg: 2,
           xl: 3,
         }}
-        render={(item: Instance) => (
+        render={(item: ComponentPropType) => (
           <Card className='w-full rounded-none border-none bg-none'>
             <CardHeader className='flex flex-row rounded-t-lg px-4 py-3'>
               <Avatar>
@@ -115,15 +115,15 @@ export default function Page() {
             <CardContent className='px-4 py-2'></CardContent>
           </Card>
         )}
-        selected={selectedItems as Instance[]}
+        selected={selectedItems as ComponentPropType[]}
         multiple
         onItemDoubleClick={(item) => openUpdate(item)}
         menuActions={[
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: t('edit', { ns: 'actions' }),
-            tooltip: t('editTooltip', { ns: 'contact.person' }),
-            handler: (items: Instance[]) => {
+            tooltip: t('editTooltip', { ns: 'page.component-prop-type' }),
+            handler: (items: ComponentPropType[]) => {
               if (items.length === 1) openUpdate(items[0])
             },
             show: 'once',
@@ -131,9 +131,9 @@ export default function Page() {
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: t('delete', { ns: 'actions' }),
-            tooltip: t('deleteTooltip', { ns: 'contact.person' }),
+            tooltip: t('deleteTooltip', { ns: 'page.component-prop-type' }),
             variant: 'destructive',
-            handler: (items: Instance[]) => {
+            handler: (items: ComponentPropType[]) => {
               openDelete(items)
             },
             show: 'some',
@@ -141,7 +141,7 @@ export default function Page() {
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: t('create', { ns: 'actions' }),
-            tooltip: t('createTooltip', { ns: 'contact.person' }),
+            tooltip: t('createTooltip', { ns: 'page.component-prop-type' }),
             variant: 'default',
             handler: () => {
               openCreate()

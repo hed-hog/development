@@ -3,8 +3,7 @@ import FormPanel, {
   getFieldsLocale,
 } from '@/components/panels/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-
-import { useFaqCreate } from '@/features/faq'
+import { useFaqCreate } from '@/features/faq/faq'
 import { Faq } from '@/types/models'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
