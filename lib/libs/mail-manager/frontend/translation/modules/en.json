@@ -1,3 +1,6 @@
 {
-  "page": "Email"
+  "mail": "Mail",
+  "mail_manager": "Mail Manager",
+  "mail_sent": "Sent Mails",
+  "mail_var": "Mail Variables"
 }

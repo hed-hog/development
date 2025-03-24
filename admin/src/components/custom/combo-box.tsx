@@ -58,7 +58,8 @@ export function Combobox(props: ComboboxPrps) {
               [displayName]:
                 item[String(displayName)] ??
                 item.locale.pt?.name ??
-                item.locale.en?.name,
+                item.locale.en?.name ??
+                item.slug,
             }
           } else {
             return {

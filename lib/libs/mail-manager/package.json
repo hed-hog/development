@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/mail-manager",
-  "version": "0.48.7",
+  "version": "0.48.10",
   "private": false,
   "main": "dist/index.js",
   "scripts": {

@@ -1,1 +1,11 @@
-{}
+{
+  "mail_manager.mail_id": "Mail ID",
+  "mail_manager.subject": "Subject",
+  "mail_manager.from": "From",
+  "mail_manager.to": "To",
+  "mail_manager.cc": "CC",
+  "mail_manager.bcc": "BCC",
+  "mail_manager.body": "Body",
+  "mail_manager.slug": "Slug",
+  "mail_manager.name": "Name"
+}

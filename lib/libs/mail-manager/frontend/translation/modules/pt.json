@@ -1,3 +1,6 @@
 {
-  "page": "E-mail"
+  "mail": "E-mail",
+  "mail_manager": "Gerenciador de E-mail",
+  "mail_sent": "E-mails Enviados",
+  "mail_var": "Variáveis para E-mails"
 }
