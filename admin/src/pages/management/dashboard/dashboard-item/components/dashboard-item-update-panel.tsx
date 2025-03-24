@@ -4,7 +4,7 @@ import { TabPanel } from '@/components/panels/tab-panel'
 import {
   useDashboardItemGet,
   useDashboardItemUpdate,
-} from '@/features/dashboard/dashboard-item'
+} from '@/features/admin/dashboard-item'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { DashboardItem } from '@/types/models'
 import { forwardRef, useImperativeHandle, useRef } from 'react'

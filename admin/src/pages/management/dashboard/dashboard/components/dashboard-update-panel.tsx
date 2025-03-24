@@ -4,10 +4,7 @@ import FormPanel, {
 } from '@/components/panels/form-panel'
 import { Overlay } from '@/components/custom/overlay'
 import { TabPanel } from '@/components/panels/tab-panel'
-import {
-  useDashboardGet,
-  useDashboardUpdate,
-} from '@/features/dashboard/dashboard'
+import { useDashboardGet, useDashboardUpdate } from '@/features/admin/dashboard'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { Dashboard } from '@/types/models'
 import { forwardRef, useImperativeHandle, useRef } from 'react'

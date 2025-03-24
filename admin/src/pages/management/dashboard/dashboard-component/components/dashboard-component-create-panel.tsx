@@ -3,7 +3,7 @@ import FormPanel, {
   getFieldsLocale,
 } from '@/components/panels/form-panel'
 import { EnumFieldType } from '@/enums/EnumFieldType'
-import { useDashboardComponentCreate } from '@/features/dashboard/dashboard-component'
+import { useDashboardComponentCreate } from '@/features/admin/dashboard-component'
 import { DashboardComponent } from '@/types/models'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useTranslation } from 'react-i18next'

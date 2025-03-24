@@ -135,4 +135,4 @@ const DashboardUserUpdatePanel = forwardRef(
 
 DashboardUserUpdatePanel.displayName = 'DashboardUserUpdatePanel'
 
-export default DashboardUserUpdatePanel
+export default DashboardUserUpdatePanel;

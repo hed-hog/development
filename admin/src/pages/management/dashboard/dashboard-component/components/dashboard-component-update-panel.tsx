@@ -7,7 +7,7 @@ import { TabPanel } from '@/components/panels/tab-panel'
 import {
   useDashboardComponentGet,
   useDashboardComponentUpdate,
-} from '@/features/dashboard/dashboard-component'
+} from '@/features/admin/dashboard-component'
 import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
 import { DashboardComponent } from '@/types/models'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
