@@ -5,6 +5,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { CoreModule } from './core/core.module';
 import { MenuModule } from './menu/menu.module';
 import { RoleModule } from './role/role.module';
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module';
   imports: [
     ConfigModule.forRoot(),
     forwardRef(() => AuthModule),
+    forwardRef(() => DashboardModule),
     forwardRef(() => MailModule),
     forwardRef(() => MenuModule),
     forwardRef(() => PaginationModule),
