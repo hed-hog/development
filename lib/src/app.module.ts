@@ -5,7 +5,6 @@ import { ChatModule } from '@hedhog/chat';
 import { ContactModule } from '@hedhog/contact';
 import { ContentModule } from '@hedhog/content';
 import { CountryModule } from '@hedhog/country';
-import { DashboardModule } from '@hedhog/dashboard';
 import { FaqModule } from '@hedhog/faq';
 import { FileModule } from '@hedhog/file';
 import { LocaleModule } from '@hedhog/locale';
@@ -52,7 +51,6 @@ import { AppService } from './app.service';
     ProfileModule,
     SubscriptionModule,
     ChatModule,
-    DashboardModule,
     MailManagerModule,
     PageModule,
     ContentModule,
