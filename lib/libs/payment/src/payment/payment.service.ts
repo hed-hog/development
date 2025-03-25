@@ -111,16 +111,20 @@ export class PaymentService {
             id: data.method_id,
           },
         },
-        payment_card_brand: {
-          connect: {
-            id: data.brand_id,
+        ...(data.brand_id && {
+          payment_card_brand: {
+            connect: {
+              id: data.brand_id,
+            },
           },
-        },
-        person: {
-          connect: {
-            id: data.person_id,
+        }),
+        ...(data.person_id && {
+          person: {
+            connect: {
+              id: data.person_id,
+            },
           },
-        },
+        }),
         ...(data.coupon_id && {
           payment_coupon: {
             connect: {
