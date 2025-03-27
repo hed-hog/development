@@ -1,65 +1,65 @@
-import FormPanel, { FormPanelRef } from "@/components/panels/form-panel";
-import { Overlay } from "@/components/custom/overlay";
-import { TabPanel } from "@/components/panels/tab-panel";
+import FormPanel, { FormPanelRef } from '@/components/panels/form-panel'
+import { Overlay } from '@/components/custom/overlay'
+import { TabPanel } from '@/components/panels/tab-panel'
 import {
   usePaymentGatewayGet,
   usePaymentGatewayUpdate,
-} from "@/features/payment/payment-gateway";
-import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
-import { PaymentGateway } from "@/types/models";
-import { useState, forwardRef, useImperativeHandle, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
-import { EnumFieldType } from "@/enums/EnumFieldType";
+} from '@/features/payment/payment-gateway'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { PaymentGateway } from '@/types/models'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { EnumFieldType } from '@/enums/EnumFieldType'
 
 export type PaymentGatewayUpdatePanelProps = {
-  data: PaymentGateway;
-  onUpdated?: (data: PaymentGateway) => void;
-};
+  data: PaymentGateway
+  onUpdated?: (data: PaymentGateway) => void
+}
 
 const PaymentGatewayUpdatePanel = forwardRef(
   ({ data, onUpdated }: PaymentGatewayUpdatePanelProps, ref) => {
-    const { t } = useTranslation(["actions", "fields", "translations"]);
-    const { data: item, isLoading } = usePaymentGatewayGet(data.id as number);
-    const { mutate: paymentGatewayUpdate } = usePaymentGatewayUpdate();
-    const formRef = useRef<FormPanelRef>(null);
+    const { t } = useTranslation(['actions', 'fields', 'translations'])
+    const { data: item, isLoading } = usePaymentGatewayGet(data.id as number)
+    const { mutate: paymentGatewayUpdate } = usePaymentGatewayUpdate()
+    const formRef = useRef<FormPanelRef>(null)
 
     useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
-        formRef.current.setValuesFromItem(item);
+        formRef.current.setValuesFromItem(item)
       }
-    }, [item]);
+    }, [item])
 
-    useImperativeHandle(ref, () => ({}));
+    useImperativeHandle(ref, () => ({}))
 
     return (
       <TabPanel
         activeTabIndex={0}
         tabs={[
           {
-            title: t("details", { ns: "actions" }),
+            title: t('details', { ns: 'actions' }),
             children: (
               <Overlay loading={isLoading}>
                 <FormPanel
                   ref={formRef}
                   fields={[
                     {
-                      name: "name",
+                      name: 'name',
                       label: {
-                        text: t("payment_gateway.name", { ns: "fields" }),
+                        text: t('payment_gateway.name', { ns: 'fields' }),
                       },
                       type: EnumFieldType.TEXT,
                       required: true,
                     },
                   ]}
-                  button={{ text: t("save", { ns: "actions" }) }}
+                  button={{ text: t('save', { ns: 'actions' }) }}
                   onSubmit={(data) => {
                     paymentGatewayUpdate({
                       id: data.id,
                       data,
-                    });
-                    if (typeof onUpdated === "function") {
-                      onUpdated(data);
+                    })
+                    if (typeof onUpdated === 'function') {
+                      onUpdated(data)
                     }
                   }}
                 />
@@ -68,10 +68,10 @@ const PaymentGatewayUpdatePanel = forwardRef(
           },
         ]}
       />
-    );
-  },
-);
+    )
+  }
+)
 
-PaymentGatewayUpdatePanel.displayName = "PaymentGatewayUpdatePanel";
+PaymentGatewayUpdatePanel.displayName = 'PaymentGatewayUpdatePanel'
 
-export default PaymentGatewayUpdatePanel;
+export default PaymentGatewayUpdatePanel

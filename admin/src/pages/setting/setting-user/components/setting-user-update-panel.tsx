@@ -19,7 +19,9 @@ export type SettingUserUpdatePanelProps = {
 const SettingUserUpdatePanel = forwardRef(
   ({ data, onUpdated }: SettingUserUpdatePanelProps, ref) => {
     const { t } = useTranslation(['actions'])
-    const { data: item, isLoading } = useSettingUserGet(data.id as number)
+    const { data: item, isLoading } = useSettingUserGet(
+      (data as any).id as number
+    )
     const { mutate: settingUserUpdate } = useSettingUserUpdate()
     const formRef = useRef<FormPanelRef>(null)
 

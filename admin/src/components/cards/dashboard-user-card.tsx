@@ -96,9 +96,11 @@ export default function DashboardUserCard({ item }: { item: DashboardUser }) {
           <div className='grid grid-cols-1 gap-3 md:grid-cols-2'>
             <InfoItem
               label='ID'
-              value={item.id}
+              value={Number(item.id)}
               icon={<Link2 className='h-4 w-4' />}
-              onCopy={() => copyToClipboard(item.id.toString(), 'id')}
+              onCopy={() =>
+                copyToClipboard(item.id?.toString() as string, 'id')
+              }
               copied={copied === 'id'}
             />
             <InfoItem
@@ -395,7 +397,7 @@ export default function DashboardUserCard({ item }: { item: DashboardUser }) {
                 <div className='space-y-3'>
                   <InfoItem
                     label='ID do Item'
-                    value={item.dashboard_item.id}
+                    value={Number(item.dashboard_item.id)}
                     icon={<LayoutDashboard className='h-4 w-4' />}
                   />
 

@@ -1,36 +1,35 @@
-import FormPanel, { FormPanelRef } from '@/components/panels/form-panel';
-import { Overlay } from '@/components/custom/overlay';
-import { TabPanel } from '@/components/panels/tab-panel';
+import FormPanel, { FormPanelRef } from '@/components/panels/form-panel'
+import { Overlay } from '@/components/custom/overlay'
+import { TabPanel } from '@/components/panels/tab-panel'
 import {
   usePaymentItemGet,
   usePaymentItemUpdate,
-} from '@/features/payment/payment-item';
-import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update';
-import { PaymentItem } from '@/types/models';
-import { useState, forwardRef, useImperativeHandle, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
+} from '@/features/payment/payment-item'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { PaymentItem } from '@/types/models'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export type PaymentItemUpdatePanelProps = {
-  id: number;
-  data: PaymentItem;
-  onUpdated?: (data: PaymentItem) => void;
-};
+  id: number
+  data: PaymentItem
+  onUpdated?: (data: PaymentItem) => void
+}
 
 const PaymentItemUpdatePanel = forwardRef(
   ({ id, data, onUpdated }: PaymentItemUpdatePanelProps, ref) => {
-    const { t } = useTranslation(['actions', 'fields', 'translations']);
-    const { data: item, isLoading } = usePaymentItemGet(id, data.id as number);
-    const { mutate: paymentItemUpdate } = usePaymentItemUpdate();
-    const formRef = useRef<FormPanelRef>(null);
+    const { t } = useTranslation(['actions', 'fields', 'translations'])
+    const { data: item, isLoading } = usePaymentItemGet(id, data.id as number)
+    const { mutate: paymentItemUpdate } = usePaymentItemUpdate()
+    const formRef = useRef<FormPanelRef>(null)
 
     useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
-        formRef.current.setValuesFromItem(item);
+        formRef.current.setValuesFromItem(item)
       }
-    }, [item]);
+    }, [item])
 
-    useImperativeHandle(ref, () => ({}));
+    useImperativeHandle(ref, () => ({}))
 
     return (
       <TabPanel
@@ -49,9 +48,9 @@ const PaymentItemUpdatePanel = forwardRef(
                       paymentId: id,
                       id: data.id,
                       data,
-                    });
+                    })
                     if (typeof onUpdated === 'function') {
-                      onUpdated(data);
+                      onUpdated(data)
                     }
                   }}
                 />
@@ -60,10 +59,10 @@ const PaymentItemUpdatePanel = forwardRef(
           },
         ]}
       />
-    );
-  },
-);
+    )
+  }
+)
 
-PaymentItemUpdatePanel.displayName = 'PaymentItemUpdatePanel';
+PaymentItemUpdatePanel.displayName = 'PaymentItemUpdatePanel'
 
-export default PaymentItemUpdatePanel;
+export default PaymentItemUpdatePanel

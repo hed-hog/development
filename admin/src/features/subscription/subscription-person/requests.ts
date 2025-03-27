@@ -1,71 +1,71 @@
-import { useApp } from "@/hooks/use-app";
-import { Delete, PaginationParams, PaginationResult } from "@/types";
-import { SubscriptionPersonType } from "@/types/models";
-import { HttpMethod } from "@/types/http-method";
+import { useApp } from '@/hooks/use-app'
+import { Delete, PaginationParams, PaginationResult } from '@/types'
+import { SubscriptionPerson } from '@/types/models'
+import { HttpMethod } from '@/types/http-method'
 
 export function requests() {
-  const { request } = useApp();
+  const { request } = useApp()
 
   const subscriptionPersonList = async (
     subscriptionId: number,
-    params: PaginationParams & { id?: number },
+    params: PaginationParams & { id?: number }
   ) => {
-    return request<PaginationResult<SubscriptionPersonType>>({
+    return request<PaginationResult<SubscriptionPerson>>({
       url: `/subscription/${subscriptionId}/subscription-person`,
       params,
-    }).then((res) => res.data);
-  };
+    }).then((res) => res.data)
+  }
 
   const subscriptionPersonCreate = async (params: {
-    subscriptionId: number;
-    data: SubscriptionPersonType;
+    subscriptionId: number
+    data: SubscriptionPerson
   }) => {
-    const { subscriptionId, data } = params;
+    const { subscriptionId, data } = params
 
-    return request<SubscriptionPersonType>({
+    return request<SubscriptionPerson>({
       url: `/subscription/${subscriptionId}/subscription-person`,
       method: HttpMethod.POST,
       data: data,
-    }).then((res) => res.data);
-  };
+    }).then((res) => res.data)
+  }
 
   const subscriptionPersonUpdate = async (params: {
-    subscriptionId: number;
-    id: number;
-    data: SubscriptionPersonType;
+    subscriptionId: number
+    id: number
+    data: SubscriptionPerson
   }) => {
-    const { subscriptionId, id, data } = params;
+    const { subscriptionId, id, data } = params
 
-    return request<SubscriptionPersonType>({
+    return request<SubscriptionPerson>({
       url: `/subscription/${subscriptionId}/subscription-person/${id}`,
       method: HttpMethod.PATCH,
       data: data,
-    }).then((res) => res.data);
-  };
+    }).then((res) => res.data)
+  }
 
   const subscriptionPersonDelete = async (params: {
-    id: number;
-    ids: number[];
+    id: number
+    ids: number[]
   }) => {
-    const { id, ids } = params;
+    const { id, ids } = params
 
     return request<Delete>({
       url: `/subscription/${id}/subscription-person`,
       method: HttpMethod.DELETE,
       data: { ids },
-    }).then((res) => res.data);
-  };
+    }).then((res) => res.data)
+  }
 
   const subscriptionPersonGet = async (params: {
-    subscriptionId: number;
-    id: number;
+    subscriptionId: number
+    id: number
   }) => {
-    const { subscriptionId, id } = params;
+    const { subscriptionId, id } = params
 
-    return request<SubscriptionPersonType>({
+    return request<SubscriptionPerson>({
       url: `/subscription/${subscriptionId}/subscription-person/${id}`,
-    }).then((res) => res.data);
-  };
+    }).then((res) => res.data)
+  }
 
   return {
     subscriptionPersonCreate,
@@ -73,5 +73,5 @@ export function requests() {
     subscriptionPersonDelete,
     subscriptionPersonList,
     subscriptionPersonGet,
-  };
+  }
 }

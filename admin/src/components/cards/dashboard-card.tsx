@@ -40,7 +40,7 @@ import { formatDate } from '@/lib/date-string'
 export default function DashboardInfoCard({ item }: { item: Dashboard }) {
   const [copied, setCopied] = useState<string | null>(null)
   const [selectedItemId, setSelectedItemId] = useState<number | null>(
-    item.dashboard_item.length > 0 ? item.dashboard_item[0].id : null
+    item.dashboard_item?.length ? (item.dashboard_item[0]?.id ?? null) : null
   )
 
   const copyToClipboard = (text: string, field: string) => {
@@ -87,8 +87,8 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
               variant='outline'
               className='border-purple-400 bg-purple-500/30 text-white'
             >
-              {item.dashboard_item.length} Item
-              {item.dashboard_item.length !== 1 ? 's' : ''}
+              {item.dashboard_item?.length} Item
+              {item.dashboard_item?.length !== 1 ? 's' : ''}
             </Badge>
             {item.id && (
               <Badge
@@ -111,9 +111,9 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
             <div className='grid grid-cols-1 gap-3 md:grid-cols-2'>
               <InfoItem
                 label='Nome'
-                value={item.name}
+                value={String(item.name)}
                 icon={<LayoutDashboard className='h-4 w-4' />}
-                onCopy={() => copyToClipboard(item.name, 'name')}
+                onCopy={() => copyToClipboard(String(item.name), 'name')}
                 copied={copied === 'name'}
               />
               <InfoItem
@@ -142,7 +142,7 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
               )}
               <InfoItem
                 label='Total de Itens'
-                value={item.dashboard_item.length}
+                value={Number(item.dashboard_item?.length)}
                 icon={<Layers className='h-4 w-4' />}
               />
             </div>
@@ -168,7 +168,7 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
                 )}
               </div>
 
-              {item.dashboard_item.map((dashboardItem) => (
+              {item.dashboard_item?.map((dashboardItem) => (
                 <div
                   key={dashboardItem.id}
                   className={`absolute flex cursor-pointer items-center justify-center rounded-md border-2 font-medium text-white transition-all duration-200 ${
@@ -184,7 +184,7 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
                     minWidth: '20px',
                     minHeight: '20px',
                   }}
-                  onClick={() => setSelectedItemId(dashboardItem.id)}
+                  onClick={() => setSelectedItemId(Number(dashboardItem.id))}
                 >
                   <div className='max-w-full truncate p-1 text-xs'>
                     {dashboardItem.dashboard_component?.name ||
@@ -194,8 +194,8 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
               ))}
 
               <div className='absolute bottom-2 right-2 rounded bg-white/80 px-2 py-1 text-xs text-slate-600'>
-                Grid 12x12 • {item.dashboard_item.length} item
-                {item.dashboard_item.length !== 1 ? 's' : ''}
+                Grid 12x12 • {item.dashboard_item?.length} item
+                {item.dashboard_item?.length !== 1 ? 's' : ''}
               </div>
             </div>
           </div>
@@ -212,12 +212,12 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
                 variant='outline'
                 className='border-indigo-200 bg-indigo-100 text-indigo-800'
               >
-                {item.dashboard_item.length} item
-                {item.dashboard_item.length !== 1 ? 's' : ''}
+                {item.dashboard_item?.length} item
+                {item.dashboard_item?.length !== 1 ? 's' : ''}
               </Badge>
             </div>
 
-            {item.dashboard_item.length > 0 ? (
+            {(item.dashboard_item?.length ?? 0) > 0 ? (
               <>
                 <Tabs
                   defaultValue={selectedItemId?.toString() || ''}
@@ -225,10 +225,10 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
                   onValueChange={(value) => setSelectedItemId(Number(value))}
                 >
                   <TabsList className='mb-3 flex h-auto flex-wrap'>
-                    {item.dashboard_item.map((item) => (
+                    {item.dashboard_item?.map((item) => (
                       <TabsTrigger
                         key={item.id}
-                        value={item.id.toString()}
+                        value={item.id?.toString() as string}
                         className='mb-1 text-xs'
                       >
                         {item.dashboard_component?.slug || `Item ${item.id}`}
@@ -236,7 +236,7 @@ export default function DashboardInfoCard({ item }: { item: Dashboard }) {
                     ))}
                   </TabsList>
 
-                  {item.dashboard_item.map((filteredItem: any) => (
+                  {item.dashboard_item?.map((filteredItem: any) => (
                     <TabsContent
                       key={filteredItem.id}
                       value={filteredItem.id.toString()}

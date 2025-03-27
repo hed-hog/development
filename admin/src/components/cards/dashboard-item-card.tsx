@@ -173,22 +173,22 @@ export default function DashboardItemCard({ item }: { item: DashboardItem }) {
                   <div className='grid grid-cols-1 gap-3 md:grid-cols-2'>
                     <InfoItem
                       label='Largura Mín.'
-                      value={item.dashboard_component.min_width}
+                      value={Number(item.dashboard_component.min_width)}
                       icon={<Move className='h-4 w-4' />}
                     />
                     <InfoItem
                       label='Largura Máx.'
-                      value={item.dashboard_component.max_width}
+                      value={Number(item.dashboard_component.max_width)}
                       icon={<Move className='h-4 w-4' />}
                     />
                     <InfoItem
                       label='Altura Mín.'
-                      value={item.dashboard_component.min_height}
+                      value={Number(item.dashboard_component.min_height)}
                       icon={<Maximize2 className='h-4 w-4' />}
                     />
                     <InfoItem
                       label='Altura Máx.'
-                      value={item.dashboard_component.max_height}
+                      value={Number(item.dashboard_component.max_height)}
                       icon={<Maximize2 className='h-4 w-4' />}
                     />
                   </div>

@@ -1,55 +1,64 @@
 import FormPanel, {
   FormPanelRef,
   getFieldsLocale,
-} from "@/components/panels/form-panel";
-import { Overlay } from "@/components/custom/overlay";
-import { TabPanel } from "@/components/panels/tab-panel";
-import { useMailGet, useMailUpdate } from "@/features/mail-manager/mail";
-import useEffectAfterFirstUpdate from "@/hooks/use-effect-after-first-update";
-import { Mail } from "@/types/models";
-import { useState, forwardRef, useImperativeHandle, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+} from '@/components/panels/form-panel'
+import { Overlay } from '@/components/custom/overlay'
+import { TabPanel } from '@/components/panels/tab-panel'
+import { useMailGet, useMailUpdate } from '@/features/mail-manager/mail'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { Mail } from '@/types/models'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { EnumFieldType } from '@/enums/EnumFieldType'
 
 export type MailUpdatePanelProps = {
-  data: Mail;
-  onUpdated?: (data: Mail) => void;
-};
+  data: Mail
+  onUpdated?: (data: Mail) => void
+}
 
 const MailUpdatePanel = forwardRef(
   ({ data, onUpdated }: MailUpdatePanelProps, ref) => {
-    const { t } = useTranslation(["actions", "fields", "translations"]);
-    const { data: item, isLoading } = useMailGet(data.id as number);
-    const { mutate: mailUpdate } = useMailUpdate();
-    const formRef = useRef<FormPanelRef>(null);
+    const { t } = useTranslation(['actions', 'fields', 'translations'])
+    const { data: item, isLoading } = useMailGet(data.id as number)
+    const { mutate: mailUpdate } = useMailUpdate()
+    const formRef = useRef<FormPanelRef>(null)
 
     useEffectAfterFirstUpdate(() => {
       if (item && formRef.current) {
-        formRef.current.setValuesFromItem(item);
+        formRef.current.setValuesFromItem(item)
       }
-    }, [item]);
+    }, [item])
 
-    useImperativeHandle(ref, () => ({}));
+    useImperativeHandle(ref, () => ({}))
 
     return (
       <TabPanel
         activeTabIndex={0}
         tabs={[
           {
-            title: t("details", { ns: "actions" }),
+            title: t('details', { ns: 'actions' }),
             children: (
               <Overlay loading={isLoading}>
                 <FormPanel
                   ref={formRef}
-                  fields={[...getFieldsLocale([{ name: "name" }], item)]}
-                  button={{ text: t("save", { ns: "actions" }) }}
+                  fields={[
+                    {
+                      name: 'slug',
+                      label: { text: t('mail_manager.slug', { ns: 'fields' }) },
+                      type: EnumFieldType.TEXT,
+                      required: true,
+                    },
+                    ...getFieldsLocale([{ name: 'subject' }]),
+                    ...getFieldsLocale([{ name: 'body' }], item),
+                  ]}
+                  button={{ text: t('save', { ns: 'actions' }) }}
                   onSubmit={(data) => {
                     mailUpdate({
                       id: data.id,
                       data,
-                    });
-                    if (typeof onUpdated === "function") {
-                      onUpdated(data);
+                    })
+                    if (typeof onUpdated === 'function') {
+                      onUpdated(data)
                     }
                   }}
                 />
@@ -58,10 +67,10 @@ const MailUpdatePanel = forwardRef(
           },
         ]}
       />
-    );
-  },
-);
+    )
+  }
+)
 
-MailUpdatePanel.displayName = "MailUpdatePanel";
+MailUpdatePanel.displayName = 'MailUpdatePanel'
 
-export default MailUpdatePanel;
+export default MailUpdatePanel

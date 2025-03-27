@@ -63,9 +63,9 @@ export default function ComponentInfoCard({
             <div className='grid grid-cols-1 gap-3'>
               <InfoItem
                 label='Nome'
-                value={item.name}
+                value={String(item.name)}
                 icon={<Code className='h-4 w-4' />}
-                onCopy={() => copyToClipboard(item.name, 'name')}
+                onCopy={() => copyToClipboard(String(item.name), 'name')}
                 copied={copied === 'name'}
               />
               <InfoItem
