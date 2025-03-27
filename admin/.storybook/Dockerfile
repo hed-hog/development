@@ -12,7 +12,7 @@ RUN npm run build-storybook;
 
 FROM nginx:alpine AS production
 
-COPY --from=build storybook-static /usr/share/nginx/html
+COPY --from=build /app/storybook-static /usr/share/nginx/html
 
 EXPOSE 80
 
