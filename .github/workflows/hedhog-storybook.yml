@@ -56,16 +56,10 @@ jobs:
                   doctl kubernetes cluster kubeconfig save ${{ vars.K8S_CLUSTER_ID }}
 
             - name: Update deployment file
-              run: |
-                if [ ! -f "$GITHUB_WORKSPACE/admin/k8s/deployment.yaml" ]; then
-                  echo "Error: deployment.yaml file not found at $GITHUB_WORKSPACE/admin/k8s/"
-                  exit 1
-                fi
-                TAG=$(echo $GITHUB_SHA | head -c7)
-                sed -i 's|<IMAGE>|registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }}|' $GITHUB_WORKSPACE/admin/k8s/deployment.yaml
+              run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }}|' ./development/admin/k8s/deployment.yaml
 
             - name: Apply Kubernetes deployment
-              run: kubectl apply -f admin/k8s/deployment.yaml
+              run: kubectl apply -f ./development/admin/k8s/deployment.yaml
 
     clearImages:
         permissions:
