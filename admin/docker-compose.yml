@@ -3,5 +3,5 @@ services:
   app:
     build: .
     ports:
-      - "80:80"
-    restart: always
+      - '80:80'
+    restart: no
