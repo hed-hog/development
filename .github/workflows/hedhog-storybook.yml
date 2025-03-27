@@ -21,8 +21,7 @@ jobs:
 
             - name: Build Docker image
               run: |
-                  docker build \
-                  -t registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }} .
+                  docker build -f admin/Dockerfile -t registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }} .
 
             - name: Push Docker image
               run: |
