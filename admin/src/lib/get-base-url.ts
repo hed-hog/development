@@ -1,1 +1,1 @@
-export const getBaseURL = () => 'undefined'
+export const getBaseURL = () => 'http://localhost:3000'

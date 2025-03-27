@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
 import { enUS, Locale, ptBR } from 'date-fns/locale'
 import * as React from 'react'
-import { DayPicker } from 'react-day-picker'
+import { CustomComponents, DayPicker } from 'react-day-picker'
 import { useTranslation } from 'react-i18next'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
@@ -161,11 +161,13 @@ function Calendar({
         day_hidden: 'invisible',
         ...classNames,
       }}
-      components={{
-        IconLeft: () => <ChevronLeftIcon className='h-4 w-4' />,
-        IconRight: () => <ChevronRightIcon className='h-4 w-4' />,
-        Caption: CustomCaption,
-      }}
+      components={
+        {
+          IconLeft: () => <ChevronLeftIcon className='h-4 w-4' />,
+          IconRight: () => <ChevronRightIcon className='h-4 w-4' />,
+          Caption: CustomCaption,
+        } as Partial<CustomComponents>
+      }
       {...props}
     />
   )
