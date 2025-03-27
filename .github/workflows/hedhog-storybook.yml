@@ -3,7 +3,7 @@ name: Build and Deploy to DigitalOcean
 on:
     push:
         branches:
-            - production
+            - production-admin
 
 jobs:
     build:
