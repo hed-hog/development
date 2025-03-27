@@ -19,7 +19,6 @@ const preview: Preview = {
     },
   },
   decorators: [
-    // 👇 Defining the decorator in the preview file applies it to all stories
     (Story) => {
       return (
         <AppProvider>
