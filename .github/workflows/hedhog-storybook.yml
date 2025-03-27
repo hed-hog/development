@@ -1,119 +1,110 @@
-name: hedhog-storybook
+name: Build and Deploy to DigitalOcean
 
 on:
-  push:
-    branches: [production]
-  workflow_dispatch:
-
-env:
-  ACR_RESOURCE_GROUP: rg_k8s_hcode
-  AZURE_CONTAINER_REGISTRY: hcoderegistry
-  CONTAINER_NAME: hedhog-storybook
-  CLUSTER_RESOURCE_GROUP: rg_k8s_hcode
-  CLUSTER_NAME: hcode_k8s
-  DEPLOYMENT_MANIFEST_PATH: |
-    ./admin/k8s/storybook.yaml
-  DOCKER_FILE: ./admin/.storybook/Dockerfile
-  BUILD_CONTEXT_PATH: ./admin
-  NAMESPACE: hcode
+    push:
+        branches:
+            - production-admin
 
 jobs:
-  buildImage:
-    permissions:
-      contents: read
-      id-token: write
-    runs-on: ubuntu-latest
-    steps:
-      # Checks out the repository this file is in
-      - uses: actions/checkout@v3
+    build:
+        runs-on: ubuntu-latest
 
-      # Logs in with your Azure credentials
-      - name: Azure login
-        uses: azure/login@v1.4.6
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-      # Builds and pushes an image up to your Azure Container Registry
-      - name: Build and push image to ACR
-        run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ${{ env.DOCKER_FILE }} ${{ env.BUILD_CONTEXT_PATH }}
-  deploy:
-    permissions:
-      actions: read
-      contents: read
-      id-token: write
-    runs-on: ubuntu-latest
-    needs: [buildImage]
-    steps:
-      # Checks out the repository this file is in
-      - uses: actions/checkout@v3
+            - name: Log in to DigitalOcean Container Registry
+              env:
+                  DO_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+              run: |
+                  echo $DO_ACCESS_TOKEN | docker login --username doctl --password-stdin registry.digitalocean.com
 
-      # Logs in with your Azure credentials
-      - name: Azure login
-        uses: azure/login@v1.4.6
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+            - name: Build Docker image
+              run: |
+                  docker build \
+                  --build-arg BUILD_ENV_FILE=do.build.env \
+                  --build-arg PROD_ENV_FILE=do.prod.env \
+                  -t registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }} .
 
-      # Use kubelogin to configure your kubeconfig for Azure auth
-      - name: Set up kubelogin for non-interactive login
-        uses: azure/use-kubelogin@v1
-        with:
-          kubelogin-version: 'v0.0.25'
+            - name: Push Docker image
+              run: |
+                  docker push registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }}
 
-      # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
-      - name: Get K8s context
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
-          cluster-name: ${{ env.CLUSTER_NAME }}
-          admin: 'false'
-          use-kubelogin: 'true'
-      - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && IMAGE_NAME=$(echo $IMAGE_NAME) && REGISTRY_NAME=$(echo $REGISTRY_NAME) && sed -i 's|<IMAGE>|${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}|' $GITHUB_WORKSPACE/admin/k8s/storybook.yaml
-      - name: Kubernetes deployment
-        run: kubectl apply -f ./admin/k8s/storybook.yaml
-  clearImages:
-    permissions:
-      actions: read
-      contents: read
-      id-token: write
-    runs-on: ubuntu-latest
-    needs:
-      - deploy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
-        name: Azure login
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      - name: Install jq
-        run: sudo apt-get install -y jq
-      - name: List Image Tags and Extract Tags Property
-        id: extract_tags
-        run: |
-          TAGS_JSON=$(az acr repository show-manifests --name ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io --repository ${{ env.CONTAINER_NAME }} --orderby time_asc --output json | jq -r '[.[] | .tags[]?]')
-          echo "Combined Tags JSON: $TAGS_JSON"
-          TAGS_JSON=$(echo "$TAGS_JSON" | jq -c '.')
-          echo "Compressed Tags JSON: $TAGS_JSON"
-          echo "::set-output name=tags_json::$TAGS_JSON"
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build
+        permissions: write-all
 
-      - name: Execute Command for Each Tag
-        run: |
-          # Receive array
-          TAGS_ARRAY=($(echo '${{ steps.extract_tags.outputs.tags_json }}' | jq -r '.[]'))
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-          # Remove the last two items from the array
-          unset TAGS_ARRAY[${#TAGS_ARRAY[@]}-1]  # Remove last item
+            - name: Set up kubectl
+              uses: azure/setup-kubectl@v1
+              with:
+                  version: 'latest'
 
-          # Iterate over each tag
-          for tag in "${TAGS_ARRAY[@]}"; do
-          echo "Deleting tag: $tag"
-          # Deleting tag: $tag
-          az acr repository delete --name ${{ env.AZURE_CONTAINER_REGISTRY }} --image ${{ env.CONTAINER_NAME }}:$tag --yes
-          done
+            - name: Install doctl
+              run: sudo snap install doctl --classic
+
+            - name: Log in to doctl
+              env:
+                  DO_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+              run: doctl auth init -t $DO_ACCESS_TOKEN
+
+            - name: Save Kubeconfig
+              run: |
+                  mkdir -p /home/runner/.kube
+                  sudo snap connect doctl:kube-config
+                  doctl kubernetes cluster kubeconfig save ${{ vars.K8S_CLUSTER_ID }}
+
+            - name: Update deployment file
+              run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }}|' $GITHUB_WORKSPACE/k8s/deployment.yaml
+
+            - name: Apply Kubernetes deployment
+              run: kubectl apply -f k8s/deployment.yaml
+
+    clearImages:
+        permissions:
+            actions: read
+            contents: read
+            id-token: write
+        runs-on: ubuntu-latest
+        needs:
+            - deploy
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install doctl
+              run: sudo snap install doctl --classic
+
+            - name: DigitalOcean login
+              run: doctl auth init -t ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+            - name: Install jq
+              run: sudo apt-get install -y jq
+
+            - name: Delete manifests
+              run: |
+                  MANIFESTS_JSON=$(doctl registry repository list-manifests ${{ vars.CONTAINER_NAME }} --output json)
+                  if [ -z "$MANIFESTS_JSON" ]; then
+                    echo "No manifests found"
+                    exit 0
+                  fi
+
+                  if ! command -v jq &> /dev/null; then
+                    echo "jq is not installed. Please install jq to proceed."
+                    exit 1
+                  fi
+
+                  MANIFESTS_ARRAY=($(echo "$MANIFESTS_JSON" | jq -r --arg SHA "${{ github.sha }}" '.[] | select(.tags | index($SHA) | not) | .digest'))
+                  if [ ${#MANIFESTS_ARRAY[@]} -eq 0 ]; then
+                    echo "No manifests to delete"
+                    exit 0
+                  fi
+
+                  for digest in "${MANIFESTS_ARRAY[@]}"; do
+                    digest=$(echo $digest | tr -d '\r')
+                    echo "Deleting manifest with digest: ${{ vars.CONTAINER_NAME }} $digest"
+                    doctl registry repository delete-manifest ${{ vars.CONTAINER_NAME }} $digest --force --verbose
+                  done
