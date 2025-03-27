@@ -2,7 +2,7 @@ import '@/index.css'
 import type { Preview } from '@storybook/react'
 import React from 'react'
 import { themes } from 'storybook/internal/theming'
-import { ThemeProvider } from '../src/components/theme-provider'
+import { ThemeProvider } from '../src/components/app/theme-provider'
 import { Toaster } from '../src/components/ui/toaster'
 import { AppProvider } from '../src/lib/app-provider'
 
