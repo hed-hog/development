@@ -716,6 +716,7 @@ data:
         pt: Tela para gerenciar notificação de pagamento
       icon: file
 
+tables:
   payment_gateway:
     columns:
       - type: pk
