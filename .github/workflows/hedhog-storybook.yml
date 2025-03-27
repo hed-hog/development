@@ -56,10 +56,10 @@ jobs:
                   doctl kubernetes cluster kubeconfig save ${{ vars.K8S_CLUSTER_ID }}
 
             - name: Update deployment file
-              run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }}|' $GITHUB_WORKSPACE/admin/.storybook/k8s/storybook.yaml
+              run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }}|' $GITHUB_WORKSPACE/admin/k8s/storybook.yaml
 
             - name: Apply Kubernetes deployment
-              run: kubectl apply -f admin/.storybook/k8s/storybook.yaml
+              run: kubectl apply -f admin/k8s/storybook.yaml
 
     clearImages:
         permissions:
