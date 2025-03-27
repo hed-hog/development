@@ -22,8 +22,6 @@ jobs:
             - name: Build Docker image
               run: |
                   docker build \
-                  --build-arg BUILD_ENV_FILE=do.build.env \
-                  --build-arg PROD_ENV_FILE=do.prod.env \
                   -t registry.digitalocean.com/${{ vars.REGISTRY }}/${{ vars.CONTAINER_NAME }}:${{ github.sha }} .
 
             - name: Push Docker image
