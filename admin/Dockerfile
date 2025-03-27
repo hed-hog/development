@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copiar os arquivos package.json e package-lock.json
 COPY package*.json ./
+COPY .env.production .env
 
 # Instalar as dependências
 RUN npm install --force
