@@ -1,4 +1,4 @@
-import { spawn } from "child_process";
+const { spawn } = require("child_process");
 
 const app = process.argv[2];
 const branchName = `production-${app}`;
