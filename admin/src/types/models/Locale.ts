@@ -1,12 +1,12 @@
-import { MenuLocale } from './MenuLocale';
-import { DashboardComponentLocale } from './DashboardComponentLocale';
 import { Translation } from './Translation';
-import { DashboardLocale } from './DashboardLocale';
-import { SettingLocale } from './SettingLocale';
+import { DashboardComponentLocale } from './DashboardComponentLocale';
 import { ScreenLocale } from './ScreenLocale';
-import { SettingGroupLocale } from './SettingGroupLocale';
-import { MultifactorLocale } from './MultifactorLocale';
 import { RoleLocale } from './RoleLocale';
+import { DashboardLocale } from './DashboardLocale';
+import { MultifactorLocale } from './MultifactorLocale';
+import { MenuLocale } from './MenuLocale';
+import { SettingGroupLocale } from './SettingGroupLocale';
+import { SettingLocale } from './SettingLocale';
 
 export type Locale = {
   id?: number;
@@ -15,13 +15,13 @@ export type Locale = {
   enabled?: boolean;
   created_at?: string;
   updated_at?: string;
-  menu_locale?: MenuLocale[];
-  dashboard_component_locale?: DashboardComponentLocale[];
   translation?: Translation[];
-  dashboard_locale?: DashboardLocale[];
-  setting_locale?: SettingLocale[];
+  dashboard_component_locale?: DashboardComponentLocale[];
   screen_locale?: ScreenLocale[];
-  setting_group_locale?: SettingGroupLocale[];
-  multifactor_locale?: MultifactorLocale[];
   role_locale?: RoleLocale[];
+  dashboard_locale?: DashboardLocale[];
+  multifactor_locale?: MultifactorLocale[];
+  menu_locale?: MenuLocale[];
+  setting_group_locale?: SettingGroupLocale[];
+  setting_locale?: SettingLocale[];
 }
