@@ -135,7 +135,8 @@
       "^@hedhog/content(|/.*)$": "<rootDir>/libs/content/src/$1",
       "^@hedhog/chat(|/.*)$": "<rootDir>/libs/chat/src/$1",
       "^@hedhog/dashboard(|/.*)$": "<rootDir>/libs/dashboard/src/$1",
-      "^@hedhog/mail-manager(|/.*)$": "<rootDir>/libs/mail-manager/src/$1"
+      "^@hedhog/mail-manager(|/.*)$": "<rootDir>/libs/mail-manager/src/$1",
+      "^@hedhog/contact-us(|/.*)$": "<rootDir>/libs/contact-us/src/$1"
     }
   }
 }

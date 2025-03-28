@@ -374,6 +374,85 @@ model user_activity {
   user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_11108754ec780c670440e32baad")
 }
 
+model dashboard {
+  id               Int                @id(map: "PK_233ed28fa3a1f9fbe743f571f75") @default(autoincrement())
+  slug             String             @unique(map: "UQ_49de5ef1bf76edb040ae4e91b0d") @db.VarChar(255)
+  created_at       DateTime           @default(now()) @db.Timestamp(6)
+  updated_at       DateTime           @default(now()) @db.Timestamp(6)
+  dashboard_item   dashboard_item[]
+  dashboard_locale dashboard_locale[]
+}
+
+model dashboard_component {
+  id                         Int                          @id(map: "PK_0db8e7613dacbccf226113cb128") @default(autoincrement())
+  slug                       String                       @unique(map: "UQ_61131edec39967aeebdb9749859") @db.VarChar(255)
+  path                       String                       @db.VarChar(500)
+  min_width                  Int                          @default(1)
+  max_width                  Int?
+  min_height                 Int                          @default(1)
+  max_height                 Int?
+  width                      Int
+  height                     Int
+  is_resizable               Boolean                      @default(true)
+  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
+  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
+  dashboard_component_locale dashboard_component_locale[]
+  dashboard_item             dashboard_item[]
+}
+
+model dashboard_component_locale {
+  component_id        Int
+  locale_id           Int
+  name                String              @db.VarChar(255)
+  created_at          DateTime            @default(now()) @db.Timestamp(6)
+  updated_at          DateTime            @default(now()) @db.Timestamp(6)
+  dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_0f2eba6ea6564d58125eb0a34b4")
+  locale              locale              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1caa002d6c3f5d188e3d992a922")
+
+  @@id([component_id, locale_id], map: "PK_4c64473f04145378896f0e2bd50")
+}
+
+model dashboard_item {
+  id                  Int                 @id(map: "PK_4ad9d196b68ca545a9a52535ed1") @default(autoincrement())
+  component_id        Int
+  dashboard_id        Int
+  width               Int
+  height              Int
+  x_axis              Int
+  y_axis              Int
+  created_at          DateTime            @default(now()) @db.Timestamp(6)
+  updated_at          DateTime            @default(now()) @db.Timestamp(6)
+  dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3a78515cb558278423e37cbee3e")
+  dashboard           dashboard           @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c6b6fb41935b6164a280c5a61e5")
+  dashboard_user      dashboard_user[]
+}
+
+model dashboard_locale {
+  dashboard_id Int
+  locale_id    Int
+  name         String    @db.VarChar(255)
+  created_at   DateTime  @default(now()) @db.Timestamp(6)
+  updated_at   DateTime  @default(now()) @db.Timestamp(6)
+  dashboard    dashboard @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_715cebc1d9efa853ee50734bc64")
+  locale       locale    @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d567466467ab5a0b9f8a2bc5175")
+
+  @@id([dashboard_id, locale_id], map: "PK_c345a8463f40f6d7b9aa585d06e")
+}
+
+model dashboard_user {
+  id             Int            @id(map: "PK_450acb76f1434b5b7119637e94a") @default(autoincrement())
+  item_id        Int
+  user_id        Int
+  width          Int
+  height         Int
+  x_axis         Int
+  y_axis         Int
+  created_at     DateTime       @default(now()) @db.Timestamp(6)
+  updated_at     DateTime       @default(now()) @db.Timestamp(6)
+  user           user           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8f31fe77228612efaa2385eaa6c")
+  dashboard_item dashboard_item @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c2d94e6302ebca142bb77db81d8")
+}
+
 model chat_message {
   id          Int                    @id(map: "PK_3cc0d85193aade457d3077dd06b") @default(autoincrement())
   chat_id     Int
@@ -680,85 +759,6 @@ model content_locale {
   content    content  @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_b294e66290fce43f3b3e738c769")
 
   @@id([content_id, locale_id], map: "PK_f0667e1e53b5ccd7d00fc66b2b4")
-}
-
-model dashboard {
-  id               Int                @id(map: "PK_233ed28fa3a1f9fbe743f571f75") @default(autoincrement())
-  slug             String             @unique(map: "UQ_49de5ef1bf76edb040ae4e91b0d") @db.VarChar(255)
-  created_at       DateTime           @default(now()) @db.Timestamp(6)
-  updated_at       DateTime           @default(now()) @db.Timestamp(6)
-  dashboard_item   dashboard_item[]
-  dashboard_locale dashboard_locale[]
-}
-
-model dashboard_component {
-  id                         Int                          @id(map: "PK_0db8e7613dacbccf226113cb128") @default(autoincrement())
-  slug                       String                       @unique(map: "UQ_61131edec39967aeebdb9749859") @db.VarChar(255)
-  path                       String                       @db.VarChar(500)
-  min_width                  Int                          @default(1)
-  max_width                  Int?
-  min_height                 Int                          @default(1)
-  max_height                 Int?
-  width                      Int
-  height                     Int
-  is_resizable               Boolean                      @default(true)
-  created_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  updated_at                 DateTime                     @default(now()) @db.Timestamp(6)
-  dashboard_component_locale dashboard_component_locale[]
-  dashboard_item             dashboard_item[]
-}
-
-model dashboard_component_locale {
-  component_id        Int
-  locale_id           Int
-  name                String              @db.VarChar(255)
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_0f2eba6ea6564d58125eb0a34b4")
-  locale              locale              @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_1caa002d6c3f5d188e3d992a922")
-
-  @@id([component_id, locale_id], map: "PK_4c64473f04145378896f0e2bd50")
-}
-
-model dashboard_item {
-  id                  Int                 @id(map: "PK_4ad9d196b68ca545a9a52535ed1") @default(autoincrement())
-  component_id        Int
-  dashboard_id        Int
-  width               Int
-  height              Int
-  x_axis              Int
-  y_axis              Int
-  created_at          DateTime            @default(now()) @db.Timestamp(6)
-  updated_at          DateTime            @default(now()) @db.Timestamp(6)
-  dashboard_component dashboard_component @relation(fields: [component_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_3a78515cb558278423e37cbee3e")
-  dashboard           dashboard           @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c6b6fb41935b6164a280c5a61e5")
-  dashboard_user      dashboard_user[]
-}
-
-model dashboard_locale {
-  dashboard_id Int
-  locale_id    Int
-  name         String    @db.VarChar(255)
-  created_at   DateTime  @default(now()) @db.Timestamp(6)
-  updated_at   DateTime  @default(now()) @db.Timestamp(6)
-  dashboard    dashboard @relation(fields: [dashboard_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_715cebc1d9efa853ee50734bc64")
-  locale       locale    @relation(fields: [locale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_d567466467ab5a0b9f8a2bc5175")
-
-  @@id([dashboard_id, locale_id], map: "PK_c345a8463f40f6d7b9aa585d06e")
-}
-
-model dashboard_user {
-  id             Int            @id(map: "PK_450acb76f1434b5b7119637e94a") @default(autoincrement())
-  item_id        Int
-  user_id        Int
-  width          Int
-  height         Int
-  x_axis         Int
-  y_axis         Int
-  created_at     DateTime       @default(now()) @db.Timestamp(6)
-  updated_at     DateTime       @default(now()) @db.Timestamp(6)
-  user           user           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8f31fe77228612efaa2385eaa6c")
-  dashboard_item dashboard_item @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_c2d94e6302ebca142bb77db81d8")
 }
 
 model faq {

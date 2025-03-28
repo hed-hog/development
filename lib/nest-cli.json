@@ -204,6 +204,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/dashboard/tsconfig.lib.json"
       }
+    },
+    "contact-us": {
+      "type": "library",
+      "root": "libs/contact-us",
+      "entryFile": "index",
+      "sourceRoot": "libs/contact-us/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/contact-us/tsconfig.lib.json"
+      }
     }
   }
 }

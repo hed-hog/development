@@ -1,0 +1,56 @@
+tables:
+  contact_us:
+    columns:
+      - type: pk
+      - name: name
+        locale:
+          en: Name
+          pt: Nome
+      - name: email
+        locale:
+          en: Email
+          pt: E-mail
+      - name: message
+        locale:
+          en: Message
+          pt: Mensagem
+        length: 1024
+      - type: created_at
+      - type: updated_at
+data:
+  route:
+    - url: /contact-us
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /contact-us
+      method: POST
+      relations: *a1
+    - url: /contact-us/:id
+      method: GET
+      relations: *a1
+    - url: /contact-us/:id
+      method: PATCH
+      relations: *a1
+    - url: /contact-us
+      method: DELETE
+      relations: *a1
+  menu:
+    - name:
+        en: ContactUs
+        pt: ContactUs
+      icon: file
+      url: /contact-us
+      slug: contact-us
+      relations: *a1
+  screen:
+    - name:
+        en: ContactUs
+        pt: ContactUs
+      slug: contact-us
+      description:
+        en: Screen to manage contact_us
+        pt: Tela para gerenciar contact_us
+      icon: file
