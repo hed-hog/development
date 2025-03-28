@@ -72,7 +72,5 @@ screens:
               slug: admin
 routes:
   - path: contact-us
-    children:
-      - path: contact-us
-        lazy:
-          component: ./pages/contact-us/contact-us/index.tsx
+    lazy:
+      component: ./pages/contact-us/contact-us/index.tsx
