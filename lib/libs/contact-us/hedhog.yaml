@@ -39,21 +39,21 @@ data:
       relations: *a1
   menu:
     - name:
-        en: ContactUs
-        pt: ContactUs
-      icon: file
+        en: Contact Us
+        pt: Fale Conosco
+      icon: phone
       url: /contact-us
       slug: contact-us
       relations: *a1
   screen:
     - name:
-        en: ContactUs
-        pt: ContactUs
+        en: Contact Us
+        pt: Fale Conosco
       slug: contact-us
       description:
         en: Screen to manage contact us
-        pt: Tela para gerenciar Fale consoste
-      icon: file
+        pt: Tela para gerenciar Fale conosco
+      icon: phone
 screens:
   contact-us:
     title:
@@ -61,7 +61,7 @@ screens:
       pt: Fale Conosco
     menu:
       url: /contact-us
-      icon: file
+      icon: phone
       name:
         en: Contact Us
         pt: Fale Conosco

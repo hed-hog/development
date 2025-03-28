@@ -1,11 +1,11 @@
 {
-  "create": "Create Contact us",
-  "createText": "Fill the contact us informations.",
-  "createTooltip": "Create new contact us",
-  "delete": "Delete Contact us",
-  "deleteText": "Are you sure to delete these contact uss?",
-  "deleteTooltip": "Delete the selected contact uss",
-  "edit": "Edit Contact us",
-  "editText": "View and edit contact us information.",
-  "editTooltip": "Edit the selected contact uss"
+  "create": "Criar Contato",
+  "createText": "Preencha as informa es do contato.",
+  "createTooltip": "Criar novo contato",
+  "delete": "Excluir Contato",
+  "deleteText": "Tem certeza de que deseja excluir esses contatos?",
+  "deleteTooltip": "Excluir o contato selecionado",
+  "edit": "Editar Contato",
+  "editText": "Ver e editar informa es do contato.",
+  "editTooltip": "Editar o contato selecionado"
 }
