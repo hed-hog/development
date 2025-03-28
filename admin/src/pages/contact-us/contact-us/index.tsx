@@ -29,7 +29,7 @@ export default function Page() {
   }
 
   const { t } = useTranslation([
-    'contact.person',
+    'contact-us.contact-us',
     'modules',
     'actions',
     'fields',
@@ -37,8 +37,8 @@ export default function Page() {
 
   const openCreate = () => {
     const id = openSheet({
-      title: t('create', { ns: 'contact.person' }),
-      description: t('createText', { ns: 'contact.person' }),
+      title: t('create', { ns: 'contact-us.contact-us' }),
+      description: t('createText', { ns: 'contact-us.contact-us' }),
       children: () => <ContactUsCreatePanel onCreated={() => closeSheet(id)} />,
     })
 
@@ -47,8 +47,8 @@ export default function Page() {
 
   const openDelete = (items: ContactUs[]) => {
     return confirm({
-      title: `${t('delete', { ns: 'contact.person' })} ${items.length} ${isPlural(items.length) ? t('items', { ns: 'actions' }) : t('item', { ns: 'actions' })}`,
-      description: t('deleteText', { ns: 'contact.person' }),
+      title: `${t('delete', { ns: 'contact-us.contact-us' })} ${items.length} ${isPlural(items.length) ? t('items', { ns: 'actions' }) : t('item', { ns: 'actions' })}`,
+      description: t('deleteText', { ns: 'contact-us.contact-us' }),
     })
       .then(() =>
         deleteContactUs(
@@ -63,8 +63,8 @@ export default function Page() {
       children: () => (
         <ContactUsUpdatePanel data={item} onUpdated={() => closeSheet(id)} />
       ),
-      title: t('edit', { ns: 'contact.person' }),
-      description: t('editText', { ns: 'contact.person' }),
+      title: t('edit', { ns: 'contact-us.contact-us' }),
+      description: t('editText', { ns: 'contact-us.contact-us' }),
     })
 
     return id
@@ -113,7 +113,8 @@ export default function Page() {
               </div>
             </CardHeader>
             <CardContent className='px-4 py-2'>
-              {item.email && item.email.length && <div>asda</div>}
+              {item.email && item.email.length && <div>{item.email}</div>}
+              {item.message && item.message.length && <div>{item.message}</div>}
             </CardContent>
           </Card>
         )}
@@ -124,7 +125,7 @@ export default function Page() {
           {
             icon: <IconEdit className='mr-1 w-8 cursor-pointer' />,
             label: t('edit', { ns: 'actions' }),
-            tooltip: t('editTooltip', { ns: 'contact.person' }),
+            tooltip: t('editTooltip', { ns: 'contact-us.contact-us' }),
             handler: (items: ContactUs[]) => {
               if (items.length === 1) openUpdate(items[0])
             },
@@ -133,7 +134,7 @@ export default function Page() {
           {
             icon: <IconTrash className='mr-1 w-8 cursor-pointer' />,
             label: t('delete', { ns: 'actions' }),
-            tooltip: t('deleteTooltip', { ns: 'contact.person' }),
+            tooltip: t('deleteTooltip', { ns: 'contact-us.contact-us' }),
             variant: 'destructive',
             handler: (items: ContactUs[]) => {
               openDelete(items)
@@ -143,7 +144,7 @@ export default function Page() {
           {
             icon: <IconPlus className='mr-1 w-8 cursor-pointer' />,
             label: t('create', { ns: 'actions' }),
-            tooltip: t('createTooltip', { ns: 'contact.person' }),
+            tooltip: t('createTooltip', { ns: 'contact-us.contact-us' }),
             variant: 'default',
             handler: () => {
               openCreate()

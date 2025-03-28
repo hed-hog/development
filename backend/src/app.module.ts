@@ -1,18 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SubscriptionModule } from '@hedhog/subscription';
-import { PaymentModule } from '@hedhog/payment';
-import { RabbitmqModule } from '@hedhog/rabbitmq';
-import { ProfileModule } from '@hedhog/profile';
-import { PageModule } from '@hedhog/page';
-import { MailManagerModule } from '@hedhog/mail-manager';
-import { FaqModule } from '@hedhog/faq';
-import { DashboardModule } from '@hedhog/dashboard';
-import { ContentModule } from '@hedhog/content';
-import { ChatModule } from '@hedhog/chat';
-import { ContactModule } from '@hedhog/contact';
-import { CountryModule } from '@hedhog/country';
-import { AppearanceModule } from '@hedhog/appearance';
-import { FileModule } from '@hedhog/file';
+import { ContactUsModule } from '@hedhog/contact-us';
 import { SettingModule } from '@hedhog/setting';
 import { AdminModule } from '@hedhog/admin';
 import { MailModule } from '@hedhog/mail';
@@ -39,20 +26,7 @@ import { PrismaModule } from '@hedhog/prisma';
     }),
     AdminModule,
     SettingModule,
-    FileModule,
-    AppearanceModule,
-    CountryModule,
-    ContactModule,
-    ChatModule,
-    ContentModule,
-    DashboardModule,
-    FaqModule,
-    MailManagerModule,
-    PageModule,
-    ProfileModule,
-    RabbitmqModule,
-    PaymentModule,
-    SubscriptionModule,
+    ContactUsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

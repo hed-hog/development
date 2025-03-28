@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/contact-us",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -24,12 +24,14 @@
   "peerDependencies": {
     "@hedhog/admin": "latest",
     "@hedhog/pagination": "latest",
-    "@hedhog/prisma": "latest"
+    "@hedhog/prisma": "latest",
+    "@hedhog/setting": "latest"
   },
   "devDependencies": {
     "@hedhog/admin": "^0.48.10",
     "@hedhog/core": "^1.0.7",
     "@hedhog/pagination": "^0.48.1",
+    "@hedhog/setting": "0.48.1",
     "@hedhog/prisma": "^0.48.1",
     "@nestjs/mapped-types": "^2.1.0"
   }
