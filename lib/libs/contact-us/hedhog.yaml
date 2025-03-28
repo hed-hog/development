@@ -51,6 +51,28 @@ data:
         pt: ContactUs
       slug: contact-us
       description:
-        en: Screen to manage contact_us
-        pt: Tela para gerenciar contact_us
+        en: Screen to manage contact us
+        pt: Tela para gerenciar Fale consoste
       icon: file
+screens:
+  contact-us:
+    title:
+      en: Contact Us
+      pt: Fale Conosco
+    menu:
+      url: /contact-us
+      icon: file
+      name:
+        en: Contact Us
+        pt: Fale Conosco
+      slug: /contact-us
+      relations:
+        role:
+          - where:
+              slug: admin
+routes:
+  - path: contact-us
+    children:
+      - path: contact-us
+        lazy:
+          component: ./pages/contact-us/contact-us/index.tsx

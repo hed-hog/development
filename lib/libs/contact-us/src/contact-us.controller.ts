@@ -1,5 +1,5 @@
+import { DeleteDTO, Role } from '@hedhog/core';
 import { Pagination } from '@hedhog/pagination';
-import { Locale } from '@hedhog/locale';
 import {
   Body,
   Controller,
@@ -10,19 +10,18 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
+import { ContactUsService } from './contact-us.service';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { ContactUsService } from './contact-us.service';
-import { Role, DeleteDTO } from '@hedhog/core';
 
 @Role()
 @Controller('contact-us')
 export class ContactUsController {
   constructor(
     @Inject(forwardRef(() => ContactUsService))
-    private readonly contactUsService: ContactUsService
+    private readonly contactUsService: ContactUsService,
   ) {}
 
   @Get()
@@ -44,7 +43,7 @@ export class ContactUsController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDTO) {
     return this.contactUsService.update({
       id,
-      data
+      data,
     });
   }
 
