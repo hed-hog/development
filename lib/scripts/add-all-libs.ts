@@ -21,7 +21,6 @@ async function main() {
         'payment',
         'prisma',
         'setting',
-        'contact-us',
       ].includes(lib),
   );
   for (const lib of libs) {
