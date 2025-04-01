@@ -1,0 +1,11 @@
+{
+  "create": "Criar FAQ",
+  "createText": "Preencha as informações da FAQ.",
+  "createTooltip": "Criar nova FAQ",
+  "delete": "Deletar FAQ",
+  "deleteText": "Você tem certeza de que deseja deletar estas FAQ?",
+  "deleteTooltip": "Deletar a FAQ selecionada",
+  "edit": "Editar FAQ",
+  "editText": "Ver e editar as informações da FAQ.",
+  "editTooltip": "Editar a FAQ selecionada"
+}

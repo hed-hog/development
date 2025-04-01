@@ -1,0 +1,11 @@
+{
+  "create": "Criar documento de pessoa",
+  "createText": "Preencha as informações do documento de pessoa.",
+  "createTooltip": "Criar um novo documento de pessoa",
+  "delete": "Deletar documento de pessoa",
+  "deleteText": "Você tem certeza de que deseja deletar estes documentos de pessoa?",
+  "deleteTooltip": "Deletar o documento de pessoa selecionado",
+  "edit": "Editar documento de pessoa",
+  "editText": "Visualizar e editar as informações do documento de pessoa.",
+  "editTooltip": "Editar o documento de pessoa selecionado"
+}

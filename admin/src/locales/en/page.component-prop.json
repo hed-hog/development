@@ -1,0 +1,11 @@
+{
+  "create": "Create component prop",
+  "createText": "Fill the component prop informations.",
+  "createTooltip": "Create new component prop",
+  "delete": "Delete component prop",
+  "deleteText": "Are you sure to delete these component prop?",
+  "deleteTooltip": "Delete the selected component prop",
+  "edit": "Edit component prop",
+  "editText": "View and edit component prop information.",
+  "editTooltip": "Edit the selected component prop"
+}

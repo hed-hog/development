@@ -1,0 +1,11 @@
+{
+  "create": "Create card brand",
+  "createText": "Fill the card brand informations.",
+  "createTooltip": "Create new card brand",
+  "delete": "Delete card brand",
+  "deleteText": "Are you sure to delete these card brand?",
+  "deleteTooltip": "Delete the selected card brand",
+  "edit": "Edit card brand",
+  "editText": "View and edit card brand information.",
+  "editTooltip": "Edit the selected card brand"
+}

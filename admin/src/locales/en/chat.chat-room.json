@@ -1,0 +1,11 @@
+{
+  "create": "Create chat room",
+  "createText": "Fill the chat room informations.",
+  "createTooltip": "Create new chat room",
+  "delete": "Delete chat room",
+  "deleteText": "Are you sure to delete these chat room?",
+  "deleteTooltip": "Delete the selected chat room",
+  "edit": "Edit chat room",
+  "editText": "View and edit chat room information.",
+  "editTooltip": "Edit the selected chat room"
+}
