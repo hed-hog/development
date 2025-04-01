@@ -30,12 +30,6 @@ export class ContentController {
     return this.contentService.list(locale, paginationParams);
   }
 
-  @Get('slug/:slug')
-  async slug(@Param('slug') slug: string) {
-    console.log('slug', slug);
-    return this.contentService.getBySlug(slug);
-  }
-
   @Get(':id')
   async get(@Param('id', ParseIntPipe) id: number) {
     console.log('id', id);

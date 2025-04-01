@@ -1,8 +1,8 @@
 import { SubscriptionStatusEnum } from './SubscriptionStatusEnum';
 import { SubscriptionPlan } from './SubscriptionPlan';
-import { SubscriptionPayment } from './SubscriptionPayment';
 import { SubscriptionValue } from './SubscriptionValue';
 import { SubscriptionPerson } from './SubscriptionPerson';
+import { SubscriptionPayment } from './SubscriptionPayment';
 import { SubscriptionCancel } from './SubscriptionCancel';
 
 export type Subscription = {
@@ -13,8 +13,8 @@ export type Subscription = {
   created_at?: string;
   updated_at?: string;
   subscription_plan?: SubscriptionPlan;
-  subscription_payment?: SubscriptionPayment[];
   subscription_value?: SubscriptionValue[];
   subscription_person?: SubscriptionPerson[];
+  subscription_payment?: SubscriptionPayment[];
   subscription_cancel?: SubscriptionCancel[];
 }

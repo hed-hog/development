@@ -37,10 +37,14 @@ export class ContentService {
     return this.localeService.getModelWithLocale(this.modelName, id);
   }
 
-  async getBySlug(slug: string) {
-    return this.localeService.getModelWithLocaleWhere(this.modelName, {
-      slug,
-    });
+  async getBySlug(slug: string, locale: string) {
+    return this.localeService.getModelWithCurrentLocaleWhere(
+      this.modelName,
+      {
+        slug,
+      },
+      locale,
+    );
   }
 
   async create(data: CreateDTO) {

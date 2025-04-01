@@ -1,5 +1,5 @@
-import { SettingGroupLocale } from './SettingGroupLocale';
 import { Setting } from './Setting';
+import { SettingGroupLocale } from './SettingGroupLocale';
 
 export type SettingGroup = {
   id?: number;
@@ -7,8 +7,8 @@ export type SettingGroup = {
   slug: string;
   created_at?: string;
   updated_at?: string;
-  setting_group_locale?: SettingGroupLocale[];
   setting?: Setting[];
+  setting_group_locale?: SettingGroupLocale[];
   name?: string;
   description?: string;
 }

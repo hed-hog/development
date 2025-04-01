@@ -14,7 +14,7 @@ import { bytesToHuman } from '@/lib/bytes-to-human'
 import { secondsToHuman } from '@/lib/seconds-to-human'
 import { DashboardDefaultData } from '@/types'
 
-export const SystemInfo = () => {
+const SystemInfo = () => {
   const { request } = useApp()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [data, setData] = useState<DashboardDefaultData>({
@@ -140,3 +140,5 @@ export const SystemInfo = () => {
     </Card>
   )
 }
+
+export default SystemInfo

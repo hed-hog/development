@@ -1,3 +1,4 @@
+import { itemTranslations } from '@hedhog/core';
 import {
   PageOrderDirection,
   PaginationDTO,
@@ -408,6 +409,28 @@ export class LocaleService {
       });
 
       return this.mapLocaleData(model, modelName);
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async getModelWithCurrentLocaleWhere(
+    modelName: string,
+    where: any,
+    locale: string,
+  ) {
+    try {
+      const model = await this.prismaService[modelName].findUnique({
+        where,
+        include: {
+          [this.getTableNameTranslations(modelName)]: {
+            where: { locale: { code: locale } },
+            include: { locale: { select: { code: true } } },
+          },
+        },
+      });
+
+      return itemTranslations(this.getTableNameTranslations(modelName), model);
     } catch (error: any) {
       this.handleError(error);
     }

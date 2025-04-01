@@ -1,5 +1,5 @@
-import { DashboardItem } from './DashboardItem';
 import { DashboardComponentLocale } from './DashboardComponentLocale';
+import { DashboardItem } from './DashboardItem';
 
 export type DashboardComponent = {
   id?: number;
@@ -14,7 +14,7 @@ export type DashboardComponent = {
   is_resizable?: boolean;
   created_at?: string;
   updated_at?: string;
-  dashboard_item?: DashboardItem[];
   dashboard_component_locale?: DashboardComponentLocale[];
+  dashboard_item?: DashboardItem[];
   name?: string;
 }

@@ -812,9 +812,57 @@ data:
     - slug: default
   dashboard_component:
     - slug: system-info
-      path: /components/dashboard/SystemInfo
-      min_width:
-
+      path: SystemInfo
+      width: 4
+      height: 14
+      name:
+        en: System Info
+        pt: Informações do Sistema
+    - slug: module-installed
+      path: ModuleInstalled
+      width: 4
+      height: 14
+      name:
+        en: Modules Installed
+        pt: Módulos Instalados
+    - slug: user-summary
+      path: UserSummary
+      width: 4
+      height: 14
+      name:
+        en: Users Summary
+        pt: Resumo de Usuários
+  dashboard_item:
+    - component_id:
+        where:
+          slug: system-info
+      dashboard_id:
+        where:
+          slug: default
+      width: 4
+      height: 14
+      x_axis: 0
+      y_axis: 0
+    - component_id:
+        where:
+          slug: module-installed
+      dashboard_id:
+        where:
+          slug: default
+      width: 4
+      height: 14
+      x_axis: 4
+      y_axis: 0
+    - component_id:
+        where:
+          slug: user-summary
+      dashboard_id:
+        where:
+          slug: default
+      width: 4
+      height: 14
+      x_axis: 8
+      y_axis: 0
 screens:
   dashboard:
     title:
