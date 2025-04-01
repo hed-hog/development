@@ -1,0 +1,25 @@
+columns:
+  - type: pk
+  - name: item_id
+    type: fk
+    references:
+      table: dashboard_item
+      column: id
+      onDelete: CASCADE
+  - name: user_id
+    type: fk
+    references:
+      table: user
+      column: id
+      onDelete: CASCADE
+  - name: width
+    type: int
+  - name: height
+    type: int
+  - name: x_axis
+    type: int
+  - name: y_axis
+    type: int
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

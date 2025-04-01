@@ -1,0 +1,19 @@
+columns:
+  - name: menu_id
+    type: fk
+    isPrimary: true
+    references:
+      table: menu
+      column: id
+      onDelete: CASCADE
+  - name: locale_id
+    type: fk
+    isPrimary: true
+    references:
+      table: locale
+      column: id
+      onDelete: CASCADE
+  - name: name
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

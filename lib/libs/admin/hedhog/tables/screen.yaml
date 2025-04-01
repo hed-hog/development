@@ -1,0 +1,8 @@
+columns:
+  - type: pk
+  - type: slug
+  - name: icon
+    isNullable: true
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

@@ -1,0 +1,9 @@
+columns:
+  - type: pk
+  - type: slug
+    locale:
+      en: Slug
+      pt: Slug
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

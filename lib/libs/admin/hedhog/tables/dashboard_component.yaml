@@ -1,0 +1,34 @@
+columns:
+  - type: pk
+  - type: slug
+    locale:
+      en: Slug
+      pt: Slug
+  - name: path
+    type: varchar
+    length: 500
+    locale:
+      en: Path
+      pt: Caminho
+  - name: min_width
+    type: int
+    default: 1
+  - name: max_width
+    type: int
+    isNullable: true
+  - name: min_height
+    type: int
+    default: 1
+  - name: max_height
+    type: int
+    isNullable: true
+  - name: width
+    type: int
+  - name: height
+    type: int
+  - name: is_resizable
+    type: boolean
+    default: true
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

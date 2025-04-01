@@ -1,0 +1,24 @@
+columns:
+  - name: dashboard_id
+    type: fk
+    isPrimary: true
+    references:
+      table: dashboard
+      column: id
+      onDelete: CASCADE
+  - name: locale_id
+    type: fk
+    isPrimary: true
+    references:
+      table: locale
+      column: id
+      onDelete: CASCADE
+  - name: name
+    type: varchar
+    length: 255
+    locale:
+      en: Name
+      pt: Nome
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

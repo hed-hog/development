@@ -1,0 +1,18 @@
+columns:
+  - name: role_id
+    type: fk
+    isPrimary: true
+    references:
+      table: role
+      column: id
+      onDelete: CASCADE
+  - name: route_id
+    type: fk
+    isPrimary: true
+    references:
+      table: route
+      column: id
+      onDelete: CASCADE
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

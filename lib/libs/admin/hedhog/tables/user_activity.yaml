@@ -1,0 +1,14 @@
+columns:
+  - type: pk
+  - name: user_id
+    type: fk
+    references:
+      table: user
+      column: id
+      onDelete: CASCADE
+  - name: ip
+  - name: user_agent
+  - name: message
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

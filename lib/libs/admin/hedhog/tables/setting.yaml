@@ -1,0 +1,27 @@
+columns:
+  - type: pk
+  - name: group_id
+    type: fk
+    references:
+      table: setting_group
+      column: id
+      onDelete: CASCADE
+  - type: slug
+  - name: type
+    type: enum
+    enum:
+      - string
+      - array
+      - number
+      - boolean
+      - json
+    default: string
+  - name: value
+    length: 1023
+    isNullable: true
+  - name: user_override
+    type: boolean
+    default: false
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

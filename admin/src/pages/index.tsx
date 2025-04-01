@@ -1,15 +1,8 @@
 import { PageTitle } from '@/components/custom/page-title'
-import {
-  Cpu,
-  Database,
-  HardDrive,
-  Package,
-  Server,
-  User,
-  Users,
-} from 'lucide-react'
+import { Database, Package, User, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+import { SystemInfo } from '@/components/dashboard/SystemInfo'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -20,60 +13,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import { useApp } from '@/hooks/use-app'
 import { bytesToHuman } from '@/lib/bytes-to-human'
-import { secondsToHuman } from '@/lib/seconds-to-human'
+import { DashboardDefaultData } from '@/types'
 import { useNavigate } from 'react-router-dom'
-
-type CodeResponse = {
-  os: {
-    name: string
-    platform: string
-    version: string
-    architecture: string
-    uptime: number
-    cpu: {
-      model: string
-      speed: number
-      physicalCores: number
-      virtualCores: number
-    }
-    memory: {
-      total: number
-      free: number
-    }
-    disk: Array<{
-      filesystem: string
-      size: number
-      free: number
-    }>
-  }
-  modules: Array<{
-    name: string
-    version: string
-    latestVersion: string
-    upToDate: boolean
-  }>
-  users: {
-    total: number
-    admin: number
-    active: number
-    activities: Array<any>
-  }
-  database: {
-    connections: number
-    size: number
-    queriesPerSecond: number
-  }
-}
 
 export default function Page() {
   const navigate = useNavigate()
 
   const { request } = useApp()
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [data, setData] = useState<CodeResponse>({
+  const [data, setData] = useState<DashboardDefaultData>({
     os: {
       name: '',
       platform: '',
@@ -127,79 +77,7 @@ export default function Page() {
       <div className='mt-4 space-y-6 '>
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {/* System Information Card */}
-          <Card>
-            <CardHeader className='pb-2'>
-              <CardTitle className='flex items-center'>
-                <Server className='mr-2 h-5 w-5 text-primary' />
-                Informações do Sistema
-              </CardTitle>
-              <CardDescription>
-                Detalhes do sistema operacional e hardware
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isRefreshing ? (
-                <div className='space-y-4'>
-                  <div className='animate-pulse'>
-                    <div className='mb-2 h-4 w-3/4 rounded bg-gray-200'></div>
-                    <div className='mb-2 h-4 w-1/2 rounded bg-gray-200'></div>
-                    <div className='mb-2 h-4 w-1/4 rounded bg-gray-200'></div>
-                    <div className='mb-2 h-4 w-2/3 rounded bg-gray-200'></div>
-                  </div>
-                  <Separator />
-                  <div className='animate-pulse'>
-                    <div className='mb-2 h-4 w-3/4 rounded bg-gray-200'></div>
-                    <div className='mb-2 h-4 w-1/2 rounded bg-gray-200'></div>
-                    <div className='mb-2 h-4 w-1/4 rounded bg-gray-200'></div>
-                    <div className='mb-2 h-4 w-2/3 rounded bg-gray-200'></div>
-                  </div>
-                </div>
-              ) : (
-                <div className='space-y-4'>
-                  <div>
-                    <h3 className='flex items-center text-sm font-medium'>
-                      <HardDrive className='mr-2 h-4 w-4 text-muted-foreground' />
-                      Sistema Operacional
-                    </h3>
-                    <div className='mt-1 grid grid-cols-2 gap-1 text-sm'>
-                      <div className='text-muted-foreground'>Nome:</div>
-                      <div>{data.os.name}</div>
-                      <div className='text-muted-foreground'>Versão:</div>
-                      <div>{data.os.version}</div>
-                      <div className='text-muted-foreground'>Arquitetura:</div>
-                      <div>{data.os.architecture}</div>
-                      <div className='text-muted-foreground'>Tempo ativo:</div>
-                      <div>{secondsToHuman(data.os.uptime, true)}</div>
-                    </div>
-                  </div>
-                  <Separator />
-                  <div>
-                    <h3 className='flex items-center text-sm font-medium'>
-                      <Cpu className='mr-2 h-4 w-4 text-muted-foreground' />
-                      Hardware
-                    </h3>
-                    <div className='mt-1 grid grid-cols-2 gap-1 text-sm'>
-                      <div className='text-muted-foreground'>CPU:</div>
-                      <div>{data.os.cpu.model}</div>
-                      <div className='text-muted-foreground'>Memória:</div>
-                      <div>{bytesToHuman(data.os.memory.total)}</div>
-                      {data.os.disk.map((disk) => (
-                        <>
-                          <div className='text-muted-foreground'>
-                            Disco {disk.filesystem}:
-                          </div>
-                          <div>
-                            {bytesToHuman(disk.size)} ({bytesToHuman(disk.free)}{' '}
-                            free)
-                          </div>
-                        </>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <SystemInfo />
 
           {/* Modules Card */}
           <Card>

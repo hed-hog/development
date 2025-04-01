@@ -1,0 +1,25 @@
+columns:
+  - type: pk
+  - name: locale_id
+    type: fk
+    references:
+      table: locale
+      column: id
+      onDelete: CASCADE
+  - name: namespace_id
+    type: fk
+    references:
+      table: translation_namespace
+      column: id
+      onDelete: CASCADE
+  - name: name
+  - name: value
+  - type: created_at
+  - type: updated_at
+indices:
+  - columns:
+      - locale_id
+      - namespace_id
+      - name
+    isUnique: true
+ifNotExists: true

@@ -1,0 +1,23 @@
+columns:
+  - type: pk
+  - name: url
+  - name: method
+    type: enum
+    enum:
+      - GET
+      - POST
+      - PATCH
+      - DELETE
+      - PUT
+      - OPTIONS
+      - HEAD
+  - name: description
+    isNullable: true
+  - type: created_at
+  - type: updated_at
+indices:
+  - columns:
+      - url
+      - method
+    isUnique: true
+ifNotExists: true

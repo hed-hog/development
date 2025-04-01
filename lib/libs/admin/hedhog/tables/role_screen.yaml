@@ -1,0 +1,18 @@
+columns:
+  - name: role_id
+    type: fk
+    isPrimary: true
+    references:
+      table: role
+      column: id
+      onDelete: CASCADE
+  - name: screen_id
+    type: fk
+    isPrimary: true
+    references:
+      table: screen
+      column: id
+      onDelete: CASCADE
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

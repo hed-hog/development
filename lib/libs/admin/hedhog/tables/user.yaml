@@ -1,0 +1,18 @@
+columns:
+  - type: pk
+  - name: multifactor_id
+    type: fk
+    isNullable: true
+    references:
+      table: multifactor
+      column: id
+      onDelete: SET NULL
+  - name: name
+  - name: email
+    isUnique: true
+  - name: password
+  - name: code
+    isNullable: true
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

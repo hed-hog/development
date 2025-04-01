@@ -1,0 +1,8 @@
+columns:
+  - type: pk
+  - name: icon
+    length: 31
+  - type: slug
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

@@ -1,0 +1,6 @@
+columns:
+  - type: pk
+  - name: name
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

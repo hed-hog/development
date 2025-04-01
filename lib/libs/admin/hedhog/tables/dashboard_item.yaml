@@ -1,0 +1,25 @@
+columns:
+  - type: pk
+  - name: component_id
+    type: fk
+    references:
+      table: dashboard_component
+      column: id
+      onDelete: CASCADE
+  - name: dashboard_id
+    type: fk
+    references:
+      table: dashboard
+      column: id
+      onDelete: CASCADE
+  - name: width
+    type: int
+  - name: height
+    type: int
+  - name: x_axis
+    type: int
+  - name: y_axis
+    type: int
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

@@ -1,0 +1,20 @@
+columns:
+  - name: screen_id
+    type: fk
+    isPrimary: true
+    references:
+      table: screen
+      column: id
+      onDelete: CASCADE
+  - name: locale_id
+    type: fk
+    isPrimary: true
+    references:
+      table: locale
+      column: id
+      onDelete: CASCADE
+  - name: name
+  - name: description
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

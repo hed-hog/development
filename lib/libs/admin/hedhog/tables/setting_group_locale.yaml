@@ -1,0 +1,23 @@
+columns:
+  - name: locale_id
+    type: fk
+    isPrimary: true
+    references:
+      table: locale
+      column: id
+      onDelete: CASCADE
+  - name: group_id
+    type: fk
+    isPrimary: true
+    references:
+      table: setting_group
+      column: id
+      onDelete: CASCADE
+  - name: name
+    length: 63
+  - name: description
+    length: 255
+    isNullable: true
+  - type: created_at
+  - type: updated_at
+ifNotExists: true

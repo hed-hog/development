@@ -1,0 +1,16 @@
+columns:
+  - name: menu_id
+    type: fk
+    isPrimary: true
+    references:
+      table: menu
+      column: id
+      onDelete: CASCADE
+  - name: screen_id
+    type: fk
+    isPrimary: true
+    references:
+      table: screen
+      column: id
+      onDelete: CASCADE
+ifNotExists: true
