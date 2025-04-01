@@ -15,7 +15,6 @@ import { PaginationModule } from '@hedhog/pagination';
 import { PaymentModule } from '@hedhog/payment';
 import { PrismaModule } from '@hedhog/prisma';
 import { ProfileModule } from '@hedhog/profile';
-import { SettingModule } from '@hedhog/setting';
 import { SubscriptionModule } from '@hedhog/subscription';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -43,7 +42,6 @@ import { AppService } from './app.service';
     ContactModule,
     CountryModule,
     LocaleModule,
-    SettingModule,
     FileModule,
     CbcModule,
     FaqModule,

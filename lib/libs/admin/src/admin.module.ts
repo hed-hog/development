@@ -40,6 +40,7 @@ import { UserModule } from './user/user.module';
     MenuModule,
     ScreenModule,
     LocaleModule,
+    SettingModule,
   ],
 })
 export class AdminModule {}

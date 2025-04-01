@@ -1,16 +1,16 @@
 import { File } from './File';
 import { PersonType } from './PersonType';
-import { ChatMessage } from './ChatMessage';
-import { PersonContact } from './PersonContact';
-import { ChatRoomPerson } from './ChatRoomPerson';
 import { PersonUser } from './PersonUser';
-import { PersonAddress } from './PersonAddress';
-import { Payment } from './Payment';
-import { SubscriptionCancel } from './SubscriptionCancel';
 import { PersonValue } from './PersonValue';
-import { SubscriptionPerson } from './SubscriptionPerson';
-import { PersonCustom } from './PersonCustom';
 import { PersonDocument } from './PersonDocument';
+import { PersonContact } from './PersonContact';
+import { PersonAddress } from './PersonAddress';
+import { PersonCustom } from './PersonCustom';
+import { ChatMessage } from './ChatMessage';
+import { ChatRoomPerson } from './ChatRoomPerson';
+import { Payment } from './Payment';
+import { SubscriptionPerson } from './SubscriptionPerson';
+import { SubscriptionCancel } from './SubscriptionCancel';
 
 export type Person = {
   id?: number;
@@ -22,15 +22,15 @@ export type Person = {
   updated_at?: string;
   file?: File;
   person_type?: PersonType;
-  chat_message?: ChatMessage[];
-  person_contact?: PersonContact[];
-  chat_room_person?: ChatRoomPerson[];
   person_user?: PersonUser[];
-  person_address?: PersonAddress[];
-  payment?: Payment[];
-  subscription_cancel?: SubscriptionCancel[];
   person_value?: PersonValue[];
-  subscription_person?: SubscriptionPerson[];
-  person_custom?: PersonCustom[];
   person_document?: PersonDocument[];
+  person_contact?: PersonContact[];
+  person_address?: PersonAddress[];
+  person_custom?: PersonCustom[];
+  chat_message?: ChatMessage[];
+  chat_room_person?: ChatRoomPerson[];
+  payment?: Payment[];
+  subscription_person?: SubscriptionPerson[];
+  subscription_cancel?: SubscriptionCancel[];
 }
