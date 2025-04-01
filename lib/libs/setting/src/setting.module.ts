@@ -1,9 +1,9 @@
+import { LocaleModule } from '@hedhog/locale';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { Module, forwardRef } from '@nestjs/common';
-import { SettingsController } from './setting/setting.controller';
-import { SettingService } from './setting/setting.service';
-import { LocaleModule } from '@hedhog/locale';
+import { SettingsController } from '../../admin/src/setting/setting.controller';
+import { SettingService } from '../../admin/src/setting/setting.service';
 
 @Module({
   providers: [SettingService],

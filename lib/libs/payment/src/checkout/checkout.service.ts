@@ -1,3 +1,4 @@
+import { SettingService } from '@hedhog/admin';
 import {
   ContactService,
   PersonContactTypeEnum,
@@ -6,7 +7,6 @@ import {
 } from '@hedhog/contact';
 import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
-import { SettingService } from '@hedhog/setting';
 import { HttpService } from '@nestjs/axios';
 import {
   BadRequestException,

@@ -5,12 +5,13 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { CoreModule } from './core/core.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { MenuModule } from './menu/menu.module';
 import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
 import { ScreenModule } from './screen/screen.module';
+import { SettingModule } from './setting/setting.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -28,6 +29,7 @@ import { UserModule } from './user/user.module';
     forwardRef(() => LocaleModule),
     forwardRef(() => UserModule),
     forwardRef(() => CoreModule),
+    forwardRef(() => SettingModule),
   ],
   exports: [
     UserModule,

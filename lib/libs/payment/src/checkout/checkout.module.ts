@@ -3,7 +3,6 @@ import { ContactModule } from '@hedhog/contact';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
-import { SettingModule } from '@hedhog/setting';
 import { HttpModule } from '@nestjs/axios';
 import { forwardRef, Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -23,7 +22,6 @@ import { CheckoutService } from './checkout.service';
     forwardRef(() => PaginationModule),
     forwardRef(() => PaymentModule),
     forwardRef(() => PaymentCouponModule),
-    forwardRef(() => SettingModule),
     forwardRef(() => ContactModule),
     forwardRef(() => MailModule),
   ],

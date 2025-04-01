@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/payment",
-  "version": "0.48.4",
+  "version": "0.48.7",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -30,18 +30,16 @@
     "@hedhog/mail": "latest",
     "@hedhog/pagination": "latest",
     "@hedhog/prisma": "latest",
-    "@hedhog/setting": "latest",
     "@nestjs/event-emitter": "^3.0.0"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.48.1",
+    "@hedhog/admin": "^0.48.11",
     "@hedhog/contact": "^0.48.1",
     "@hedhog/core": "^1.0.6",
     "@hedhog/locale": "^0.48.1",
     "@hedhog/mail": "^0.48.1",
     "@hedhog/pagination": "^0.48.1",
     "@hedhog/prisma": "^0.48.1",
-    "@hedhog/setting": "^0.48.1",
     "@nestjs/event-emitter": "^3.0.0",
     "@nestjs/mapped-types": "^2.1.0"
   },

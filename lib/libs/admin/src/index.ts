@@ -18,3 +18,5 @@ export * from './screen/screen.service';
 // User Module
 export * from './user/constants/user.constants';
 export * from './user/user.service';
+
+export * from './setting/setting.service';
