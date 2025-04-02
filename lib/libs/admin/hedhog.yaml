@@ -832,6 +832,13 @@ data:
       name:
         en: Users Summary
         pt: Resumo de Usuários
+    - slug: database-stats
+      path: DatabaseStats
+      width: 12
+      height: 4
+      name:
+        en: Database Stats
+        pt: Estatísticas do Banco de Dados
   dashboard_item:
     - component_id:
         where:
@@ -863,6 +870,16 @@ data:
       height: 14
       x_axis: 8
       y_axis: 0
+    - component_id:
+        where:
+          slug: database-stats
+      dashboard_id:
+        where:
+          slug: default
+      width: 12
+      height: 4
+      x_axis: 0
+      y_axis: 14
 screens:
   dashboard:
     title:
