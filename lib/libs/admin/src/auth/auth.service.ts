@@ -268,9 +268,7 @@ export class AuthService {
       await this.mail.send({
         to: email,
         subject: `Recuperação de Senha`,
-        body: getForgetPasswordEmail(
-          `${appUrl}/login?mode=reset-password&code=${code}`,
-        ),
+        body: getForgetPasswordEmail(`${appUrl}/home?reset&code=${code}`),
       });
     }
 
