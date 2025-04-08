@@ -56,65 +56,39 @@ data:
       relations: *a3
   menu:
     - name:
-        en: Email
-        pt: E-mail
+        en: Emails
+        pt: E-mails
       icon: mail-cog
-      url: /mail-manager/mail
-      slug: /mail-manager/mail
+      url: /management/mail-manager/email
+      slug: /management/mail-manager/email
       relations: *a1
     - name:
-        en: Mail Sent
-        pt: Emails Enviados
-      icon: mail-cog
-      url: /mail-manager/mail-sent
-      slug: /mail-manager/mail-sent
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: Mail Variables
-        pt: Variáveis de Emails
-      icon: mail-cog
-      url: /mail-manager/mail-var
-      slug: /mail-manager/mail-var
+        en: Sent Emails
+        pt: E-mails Enviados
+      icon: mail-forward
+      url: /management/mail-manager/email-sent
+      slug: /management/mail-manager/email-sent
       relations:
         role:
           - where:
               slug: admin
   screen:
     - name:
-        en: Email
-        pt: E-mail
+        en: Emails Manage
+        pt: Gerenciar E-mails
       slug: /mail-manager
       description:
         en: Screen to manage mail
         pt: Tela para gerenciar mail
       icon: mail-cog
     - name:
-        en: Mail
-        pt: Mail
-      slug: mail
-      description:
-        en: Screen to manage mail
-        pt: Tela para gerenciar mail
-      icon: file
-    - name:
-        en: MailSent
-        pt: MailSent
+        en: Sent Emails
+        pt: E-mails Enviados
       slug: mail-sent
       description:
         en: Screen to manage mail_sent
         pt: Tela para gerenciar mail_sent
-      icon: file
-    - name:
-        en: MailVar
-        pt: MailVar
-      slug: mail-var
-      description:
-        en: Screen to manage mail_var
-        pt: Tela para gerenciar mail_var
-      icon: file
+      icon: mail-forward
   mail:
     - slug: forget-password
       subject:
@@ -134,28 +108,27 @@ data:
 screens:
   page:
     title:
-      en: Email
-      pt: E-mail
+      en: Emails Manager
+      pt: Gerenciador de E-mails
     menu:
       url: /mail-manager
       icon: layout-sidebar
       name:
-        en: Email
-        pt: E-mail
+        en: Emails Manager
+        pt: Gerenciador de E-mails
       slug: /mail-manager
       relations:
         role:
           - where:
               slug: admin
 routes:
-  - path: mail-manager
+  - path: management
     children:
-      - path: mail
-        lazy:
-          component: ./pages/mail-manager/mail/index.tsx
-      - path: mail-sent
-        lazy:
-          component: ./pages/mail-manager/mail-sent/index.tsx
-      - path: mail-var
-        lazy:
-          component: ./pages/mail-manager/mail-var/index.tsx
+      - path: mail-manager
+        children:
+          - path: mail
+            lazy:
+              component: ./pages/mail-manager/mail/index.tsx
+          - path: mail-sent
+            lazy:
+              component: ./pages/mail-manager/mail-sent/index.tsx

@@ -58,6 +58,91 @@ const routes = [
         }),
       },
       {
+        path: "/category",
+        lazy: async () => ({
+          Component: (await import("./pages/category/category/index.tsx"))
+            .default,
+        }),
+      },
+      {
+        path: "chats",
+        lazy: async () => ({
+          Component: (await import("./pages/chat/chat-room/index.tsx")).default,
+        }),
+      },
+      {
+        path: "contact",
+        children: [
+          {
+            path: "person",
+            lazy: async () => ({
+              Component: (await import("./pages/contact/person/index.tsx"))
+                .default,
+            }),
+          },
+        ],
+      },
+      {
+        path: "contact-us",
+        lazy: async () => ({
+          Component: (await import("./pages/contact-us/contact-us/index.tsx"))
+            .default,
+        }),
+      },
+      {
+        path: "content",
+        lazy: async () => ({
+          Component: (await import("./pages/content/content/index.tsx"))
+            .default,
+        }),
+      },
+      {
+        path: "faq",
+        lazy: async () => ({
+          Component: (await import("./pages/faq/faq/index.tsx")).default,
+        }),
+      },
+      {
+        path: "item",
+        children: [
+          {
+            path: "",
+            lazy: async () => ({
+              Component: (await import("./pages/payment/item/index.tsx"))
+                .default,
+            }),
+          },
+        ],
+      },
+      {
+        path: "mail-manager",
+        children: [
+          {
+            path: "mail",
+            lazy: async () => ({
+              Component: (await import("./pages/mail-manager/mail/index.tsx"))
+                .default,
+            }),
+          },
+          {
+            path: "mail-sent",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/mail-manager/mail-sent/index.tsx")
+              ).default,
+            }),
+          },
+          {
+            path: "mail-var",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/mail-manager/mail-var/index.tsx")
+              ).default,
+            }),
+          },
+        ],
+      },
+      {
         path: "management",
         children: [
           {
@@ -120,6 +205,166 @@ const routes = [
             }),
           },
           {
+            path: "pages",
+            children: [
+              {
+                path: "component",
+                lazy: async () => ({
+                  Component: (await import("./pages/page/component/index.tsx"))
+                    .default,
+                }),
+              },
+              {
+                path: "component-prop",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/page/component-prop/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "component-prop-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/page/component-prop-type/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "component-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/page/component-type/index.tsx")
+                  ).default,
+                }),
+              },
+            ],
+          },
+          {
+            path: "payment",
+            children: [
+              {
+                path: "discount-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/management/payment/discount-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "item",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/management/payment/item/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "payment-card-brand",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/management/payment/payment-card-brand/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "payment-gateway",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/management/payment/payment-gateway/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "payment-method",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/management/payment/payment-method/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "payment-notification",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/management/payment/payment-notification/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "payment-status",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/management/payment/payment-status/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+            ],
+          },
+          {
+            path: "person",
+            children: [
+              {
+                path: "person-address-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-address-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "person-contact-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-contact-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "person-custom-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/contact/person-custom-type/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "person-document-type",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/contact/person-document-type/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+              {
+                path: "person-type",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/contact/person-type/index.tsx")
+                  ).default,
+                }),
+              },
+            ],
+          },
+          {
             path: "role",
             lazy: async () => ({
               Component: (await import("./pages/management/role/index.tsx"))
@@ -162,10 +407,74 @@ const routes = [
             ],
           },
           {
+            path: "subscription",
+            children: [
+              {
+                path: "subscription-plan",
+                lazy: async () => ({
+                  Component: (
+                    await import(
+                      "./pages/management/subscription/subscription-plan/index.tsx"
+                    )
+                  ).default,
+                }),
+              },
+            ],
+          },
+          {
             path: "user",
             lazy: async () => ({
               Component: (await import("./pages/management/user/index.tsx"))
                 .default,
+            }),
+          },
+        ],
+      },
+      {
+        path: "pages",
+        lazy: async () => ({
+          Component: (await import("./pages/page/instance/index.tsx")).default,
+        }),
+      },
+      {
+        path: "payment",
+        children: [
+          {
+            path: "",
+            lazy: async () => ({
+              Component: (await import("./pages/payment/payment/index.tsx"))
+                .default,
+            }),
+          },
+        ],
+      },
+      {
+        path: "payment-coupon",
+        children: [
+          {
+            path: "",
+            lazy: async () => ({
+              Component: (await import("./pages/payment-coupon/index.tsx"))
+                .default,
+            }),
+          },
+        ],
+      },
+      {
+        path: "rating",
+        lazy: async () => ({
+          Component: (await import("./pages/rating/rating/index.tsx")).default,
+        }),
+      },
+      {
+        path: "subscription",
+        children: [
+          {
+            path: "",
+            lazy: async () => ({
+              Component: (
+                await import("./pages/subscription/subscription/index.tsx")
+              ).default,
             }),
           },
         ],

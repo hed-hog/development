@@ -8,6 +8,7 @@ import { PersonAddress } from './PersonAddress';
 import { PersonCustom } from './PersonCustom';
 import { ChatMessage } from './ChatMessage';
 import { ChatRoomPerson } from './ChatRoomPerson';
+import { Rating } from './Rating';
 import { Payment } from './Payment';
 import { SubscriptionPerson } from './SubscriptionPerson';
 import { SubscriptionCancel } from './SubscriptionCancel';
@@ -31,6 +32,7 @@ export type Person = {
   person_custom?: PersonCustom[];
   chat_message?: ChatMessage[];
   chat_room_person?: ChatRoomPerson[];
+  rating?: Rating[];
   payment?: Payment[];
   subscription_person?: SubscriptionPerson[];
   subscription_cancel?: SubscriptionCancel[];

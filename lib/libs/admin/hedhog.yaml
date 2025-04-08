@@ -343,6 +343,66 @@ data:
         role:
           - where:
               slug: admin
+    - url: /setting/group/:slug
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting/user
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting
+      method: POST
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting/:settingId
+      method: GET
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting/user/:slug
+      method: PUT
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting/:slug
+      method: PUT
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting
+      method: PUT
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting
+      method: DELETE
+      relations:
+        role:
+          - where:
+              slug: admin
+    - url: /setting/:settingId
+      method: PATCH
+      relations:
+        role:
+          - where:
+              slug: admin
   setting_group:
     - slug: general
       icon: settings

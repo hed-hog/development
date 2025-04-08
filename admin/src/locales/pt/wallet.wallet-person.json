@@ -1,0 +1,11 @@
+{
+  "create": "Criar carteira pessoa",
+  "createText": "Preencha as informações da carteira pessoa.",
+  "createTooltip": "Criar nova carteira pessoa",
+  "delete": "Deletar carteira pessoa",
+  "deleteText": "Você tem certeza de que deseja deletar estas carteira pessoa?",
+  "deleteTooltip": "Deletar a carteira pessoa selecionada",
+  "edit": "Editar carteira pessoa",
+  "editText": "Ver e editar informações da carteira pessoa.",
+  "editTooltip": "Editar a carteira pessoa selecionada"
+}

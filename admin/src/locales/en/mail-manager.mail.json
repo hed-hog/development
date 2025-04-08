@@ -1,0 +1,11 @@
+{
+  "create": "Create mail",
+  "createText": "Fill the mail informations.",
+  "createTooltip": "Create new mail",
+  "delete": "Delete mail",
+  "deleteText": "Are you sure to delete these mail?",
+  "deleteTooltip": "Delete the selected mail",
+  "edit": "Edit mail",
+  "editText": "View and edit mail information.",
+  "editTooltip": "Edit the selected mail"
+}

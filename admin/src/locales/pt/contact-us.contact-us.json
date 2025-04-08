@@ -1,0 +1,11 @@
+{
+  "create": "Criar Contato",
+  "createText": "Preencha as informaçes do contato.",
+  "createTooltip": "Criar novo contato",
+  "delete": "Excluir Contato",
+  "deleteText": "Tem certeza de que deseja excluir esses contatos?",
+  "deleteTooltip": "Excluir o contato selecionado",
+  "edit": "Editar Contato",
+  "editText": "Ver e editar informaçes do contato.",
+  "editTooltip": "Editar o contato selecionado"
+}

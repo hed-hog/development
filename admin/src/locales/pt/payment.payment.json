@@ -1,0 +1,11 @@
+{
+  "create": "Criar pagamento",
+  "createText": "Preencha as informações do pagamento.",
+  "createTooltip": "Criar novo pagamento",
+  "delete": "Excluir pagamento",
+  "deleteText": "Você tem certeza de que deseja excluir esses pagamentos?",
+  "deleteTooltip": "Excluir o pagamento selecionado",
+  "edit": "Editar pagamento",
+  "editText": "Ver e editar informações do pagamento.",
+  "editTooltip": "Editar o pagamento selecionado"
+}

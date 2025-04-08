@@ -50,6 +50,14 @@ data:
         en: Screen to manage ratings
         pt: Tela para gerenciar avaliações
       icon: stars
+  menu:
+    - name:
+        en: Ratings
+        pt: Avaliações
+      icon: stars
+      url: /rating
+      slug: rating
+      relations: *a1
 
 screens:
   rating:

@@ -1,0 +1,11 @@
+{
+  "create": "Criar transação de carteira",
+  "createText": "Preencha as informações da transação de carteira.",
+  "createTooltip": "Criar nova transação de carteira",
+  "delete": "Excluir transação de carteira",
+  "deleteText": "Tem certeza de que deseja excluir estas transações de carteira?",
+  "deleteTooltip": "Excluir a transação de carteira selecionada",
+  "edit": "Editar transação de carteira",
+  "editText": "Visualizar e editar informações da transação de carteira.",
+  "editTooltip": "Editar a transação de carteira selecionada"
+}

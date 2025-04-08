@@ -1,0 +1,11 @@
+{
+  "create": "Create rating",
+  "createText": "Fill the rating informations.",
+  "createTooltip": "Create new rating",
+  "delete": "Delete rating",
+  "deleteText": "Are you sure to delete these rating?",
+  "deleteTooltip": "Delete the selected rating",
+  "edit": "Edit rating",
+  "editText": "View and edit rating information.",
+  "editTooltip": "Edit the selected rating"
+}
