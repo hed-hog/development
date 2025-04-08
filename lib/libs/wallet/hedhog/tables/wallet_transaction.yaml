@@ -1,6 +1,5 @@
 columns:
-  - name: id
-    type: pk
+  - type: pk
   - name: wallet_id
     type: fk
     references:

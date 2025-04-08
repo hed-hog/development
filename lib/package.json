@@ -139,7 +139,8 @@
       "^@hedhog/contact-us(|/.*)$": "<rootDir>/libs/contact-us/src/$1",
       "^@hedhog/wallet(|/.*)$": "<rootDir>/libs/wallet/src/$1",
       "^@hedhog/category(|/.*)$": "<rootDir>/libs/category/src/$1",
-      "^@hedhog/tag(|/.*)$": "<rootDir>/libs/tag/src/$1"
+      "^@hedhog/tag(|/.*)$": "<rootDir>/libs/tag/src/$1",
+      "^@hedhog/rating(|/.*)$": "<rootDir>/libs/rating/src/$1"
     }
   }
 }

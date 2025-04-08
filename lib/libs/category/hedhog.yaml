@@ -5,6 +5,7 @@ tables:
       - type: slug
       - type: fk
         name: category_id
+        isNullable: true
         references:
           table: category
           column: id
@@ -50,17 +51,21 @@ data:
   menu:
     - name:
         en: Category
-        pt: Category
-      icon: file
+        pt: Categoria
+      icon: category-2
       url: /category
       slug: category
       relations: *a1
   screen:
     - name:
         en: Category
-        pt: Category
+        pt: Categoria
       slug: category
       description:
         en: Screen to manage category
         pt: Tela para gerenciar category
-      icon: file
+      icon: category-2
+routes:
+  - path: /category
+    lazy:
+      component: ./pages/category/category/index.tsx

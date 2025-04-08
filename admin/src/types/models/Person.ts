@@ -1,17 +1,17 @@
 import { File } from './File';
 import { PersonType } from './PersonType';
-import { PersonDocument } from './PersonDocument';
-import { ChatMessage } from './ChatMessage';
-import { WalletPerson } from './WalletPerson';
-import { ChatRoomPerson } from './ChatRoomPerson';
-import { PersonContact } from './PersonContact';
-import { SubscriptionCancel } from './SubscriptionCancel';
-import { Payment } from './Payment';
-import { PersonAddress } from './PersonAddress';
 import { PersonUser } from './PersonUser';
 import { PersonValue } from './PersonValue';
-import { SubscriptionPerson } from './SubscriptionPerson';
+import { PersonDocument } from './PersonDocument';
+import { PersonContact } from './PersonContact';
+import { PersonAddress } from './PersonAddress';
 import { PersonCustom } from './PersonCustom';
+import { ChatMessage } from './ChatMessage';
+import { ChatRoomPerson } from './ChatRoomPerson';
+import { Payment } from './Payment';
+import { SubscriptionPerson } from './SubscriptionPerson';
+import { SubscriptionCancel } from './SubscriptionCancel';
+import { WalletPerson } from './WalletPerson';
 
 export type Person = {
   id?: number;
@@ -23,16 +23,16 @@ export type Person = {
   updated_at?: string;
   file?: File;
   person_type?: PersonType;
-  person_document?: PersonDocument[];
-  chat_message?: ChatMessage[];
-  wallet_person?: WalletPerson[];
-  chat_room_person?: ChatRoomPerson[];
-  person_contact?: PersonContact[];
-  subscription_cancel?: SubscriptionCancel[];
-  payment?: Payment[];
-  person_address?: PersonAddress[];
   person_user?: PersonUser[];
   person_value?: PersonValue[];
-  subscription_person?: SubscriptionPerson[];
+  person_document?: PersonDocument[];
+  person_contact?: PersonContact[];
+  person_address?: PersonAddress[];
   person_custom?: PersonCustom[];
+  chat_message?: ChatMessage[];
+  chat_room_person?: ChatRoomPerson[];
+  payment?: Payment[];
+  subscription_person?: SubscriptionPerson[];
+  subscription_cancel?: SubscriptionCancel[];
+  wallet_person?: WalletPerson[];
 }

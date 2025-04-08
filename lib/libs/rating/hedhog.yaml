@@ -1,0 +1,71 @@
+tables:
+  rating:
+    columns:
+      - type: pk
+      - name: comment
+        field: richtext
+        locale:
+          en: Comment
+          pt: Comentário
+      - name: note
+        type: decimal
+        precision: 2
+        locale:
+          en: Note
+          pt: Nota
+      - type: fk
+        name: person_id
+        references:
+          table: person
+          column: id
+          onDelete: CASCADE
+      - type: created_at
+      - type: updated_at
+data:
+  route:
+    - url: /rating
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /rating
+      method: POST
+      relations: *a1
+    - url: /rating/:id
+      method: GET
+      relations: *a1
+    - url: /rating/:id
+      method: PATCH
+      relations: *a1
+    - url: /rating
+      method: DELETE
+      relations: *a1
+  screen:
+    - name:
+        en: Ratings
+        pt: Avaliações
+      slug: rating
+      description:
+        en: Screen to manage ratings
+        pt: Tela para gerenciar avaliações
+      icon: stars
+
+screens:
+  rating:
+    title:
+      en: Ratings
+      pt: Avaliações
+    menu:
+      name:
+        en: Ratings
+        pt: Avaliações
+      icon: stars
+      url: /rating
+      slug: rating
+      relations: *a1
+
+routes:
+  - path: rating
+    lazy:
+      component: ./pages/rating/rating/index.tsx

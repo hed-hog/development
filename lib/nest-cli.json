@@ -240,6 +240,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/tag/tsconfig.lib.json"
       }
+    },
+    "rating": {
+      "type": "library",
+      "root": "libs/rating",
+      "entryFile": "index",
+      "sourceRoot": "libs/rating/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/rating/tsconfig.lib.json"
+      }
     }
   }
 }

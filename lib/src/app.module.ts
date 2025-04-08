@@ -1,6 +1,6 @@
 import { AdminModule } from '@hedhog/admin';
 import { AppearanceModule } from '@hedhog/appearance';
-import { CbcModule } from '@hedhog/cbc';
+import { CategoryModule } from '@hedhog/category';
 import { ChatModule } from '@hedhog/chat';
 import { ContactModule } from '@hedhog/contact';
 import { ContentModule } from '@hedhog/content';
@@ -15,7 +15,10 @@ import { PaginationModule } from '@hedhog/pagination';
 import { PaymentModule } from '@hedhog/payment';
 import { PrismaModule } from '@hedhog/prisma';
 import { ProfileModule } from '@hedhog/profile';
+import { RatingModule } from '@hedhog/rating';
 import { SubscriptionModule } from '@hedhog/subscription';
+import { TagModule } from '@hedhog/tag';
+import { WalletModule } from '@hedhog/wallet';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -43,7 +46,6 @@ import { AppService } from './app.service';
     CountryModule,
     LocaleModule,
     FileModule,
-    CbcModule,
     FaqModule,
     PaymentModule,
     ProfileModule,
@@ -52,6 +54,10 @@ import { AppService } from './app.service';
     MailManagerModule,
     PageModule,
     ContentModule,
+    CategoryModule,
+    TagModule,
+    WalletModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
