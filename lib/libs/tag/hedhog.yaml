@@ -3,6 +3,9 @@ tables:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   tag_locale:
@@ -13,13 +16,18 @@ tables:
         references:
           table: tag
           column: id
+          onDelete: CASCADE
       - type: fk
-        name: locale
+        name: locale_id
         isPrimary: true
         references:
           table: locale
           column: id
+          onDelete: CASCADE
       - name: name
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
 data:
@@ -74,7 +82,5 @@ screens:
       relations: *a1
 routes:
   - path: tag
-    children:
-      - path: tag
-        lazy:
-          component: ./pages/tag/tag/index.tsx
+    lazy:
+      component: ./pages/tag/tag/index.tsx

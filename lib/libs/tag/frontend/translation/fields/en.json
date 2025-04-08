@@ -1,1 +1,5 @@
-{}
+{
+  "tag.slug": "Slug",
+  "tag.name": "Name",
+  "tag_locale.name": "Name"
+}
