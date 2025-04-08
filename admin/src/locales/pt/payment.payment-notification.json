@@ -1,0 +1,11 @@
+{
+  "create": "Criar notificação de pagamento",
+  "createText": "Preencha as informações da notificação de pagamento.",
+  "createTooltip": "Criar nova notificação de pagamento",
+  "delete": "Deletar notificação de pagamento",
+  "deleteText": "Você tem certeza de que deseja deletar estas notificações de pagamento?",
+  "deleteTooltip": "Deletar a notificação de pagamento selecionada",
+  "edit": "Editar notificação de pagamento",
+  "editText": "Visualizar e editar informações da notificação de pagamento.",
+  "editTooltip": "Editar a notificação de pagamento selecionada"
+}

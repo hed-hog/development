@@ -1,0 +1,11 @@
+{
+  "create": "Create content locale",
+  "createText": "Fill the content locale informations.",
+  "createTooltip": "Create new content locale",
+  "delete": "Delete content locale",
+  "deleteText": "Are you sure to delete these content locale?",
+  "deleteTooltip": "Delete the selected content locale",
+  "edit": "Edit content locale",
+  "editText": "View and edit content locale information.",
+  "editTooltip": "Edit the selected content locale"
+}

@@ -1,0 +1,9 @@
+columns:
+  - type: pk
+  - name: name
+  - name: balance
+    type: decimal
+    precision: 10
+    scale: 2
+  - type: created_at
+  - type: updated_at

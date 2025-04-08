@@ -1,0 +1,11 @@
+{
+  "create": "Criar email enviado",
+  "createText": "Preencha as informações do email enviado.",
+  "createTooltip": "Criar novo email enviado",
+  "delete": "Excluir email enviado",
+  "deleteText": "Tem certeza de que deseja excluir estes emails enviados?",
+  "deleteTooltip": "Excluir o email enviado selecionado",
+  "edit": "Editar email enviado",
+  "editText": "Visualizar e editar informações do email enviado.",
+  "editTooltip": "Editar o email enviado selecionado"
+}

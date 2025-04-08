@@ -1,0 +1,14 @@
+columns:
+  - type: pk
+  - type: fk
+    name: wallet_id
+    references:
+      table: wallet
+      column: id
+  - type: fk
+    name: person_id
+    references:
+      table: person
+      column: id
+  - type: created_at
+  - type: updated_at

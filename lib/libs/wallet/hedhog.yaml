@@ -1,0 +1,73 @@
+data:
+  route:
+    - url: /wallet
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /wallet
+      method: POST
+      relations: *a1
+    - url: /wallet/:id
+      method: GET
+      relations: *a1
+    - url: /wallet/:id
+      method: PATCH
+      relations: *a1
+    - url: /wallet
+      method: DELETE
+      relations: *a1
+    - url: /wallet-person
+      method: GET
+      relations: &a2
+        role:
+          - where:
+              slug: admin
+    - url: /wallet-person
+      method: POST
+      relations: *a2
+    - url: /wallet-person/:id
+      method: GET
+      relations: *a2
+    - url: /wallet-person/:id
+      method: PATCH
+      relations: *a2
+    - url: /wallet-person
+      method: DELETE
+      relations: *a2
+    - url: /wallet-transaction
+      method: GET
+      relations: &a3
+        role:
+          - where:
+              slug: admin
+    - url: /wallet-transaction
+      method: POST
+      relations: *a3
+    - url: /wallet-transaction/:id
+      method: GET
+      relations: *a3
+    - url: /wallet-transaction/:id
+      method: PATCH
+      relations: *a3
+    - url: /wallet-transaction
+      method: DELETE
+      relations: *a3
+  menu:
+    - name:
+        en: Wallet
+        pt: Wallet
+      icon: file
+      url: /wallet
+      slug: wallet
+      relations: *a1
+  screen:
+    - name:
+        en: Wallet
+        pt: Wallet
+      slug: wallet
+      description:
+        en: Screen to manage wallet
+        pt: Tela para gerenciar wallet
+      icon: file

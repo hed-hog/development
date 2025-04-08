@@ -1,0 +1,11 @@
+{
+  "create": "Criar plano de assinatura",
+  "createText": "Preencha as informações do plano de assinatura.",
+  "createTooltip": "Criar novo plano de assinatura",
+  "delete": "Excluir plano de assinatura",
+  "deleteText": "Você tem certeza de que deseja excluir esses planos de assinatura?",
+  "deleteTooltip": "Excluir o plano de assinatura selecionado",
+  "edit": "Editar plano de assinatura",
+  "editText": "Visualizar e editar informações do plano de assinatura.",
+  "editTooltip": "Editar o plano de assinatura selecionado"
+}

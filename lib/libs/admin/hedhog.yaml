@@ -812,28 +812,28 @@ data:
     - slug: default
   dashboard_component:
     - slug: system-info
-      path: SystemInfo
+      path: system-info
       width: 4
       height: 14
       name:
         en: System Info
         pt: Informações do Sistema
     - slug: module-installed
-      path: ModuleInstalled
+      path: module-installed
       width: 4
       height: 14
       name:
         en: Modules Installed
         pt: Módulos Instalados
     - slug: user-summary
-      path: UserSummary
+      path: user-summary
       width: 4
       height: 14
       name:
         en: Users Summary
         pt: Resumo de Usuários
     - slug: database-stats
-      path: DatabaseStats
+      path: database-stats
       width: 12
       height: 4
       name:

@@ -1,0 +1,11 @@
+{
+  "create": "Create component",
+  "createText": "Fill the component informations.",
+  "createTooltip": "Create new component",
+  "delete": "Delete component",
+  "deleteText": "Are you sure to delete these components?",
+  "deleteTooltip": "Delete the selected component",
+  "edit": "Edit component",
+  "editText": "View and edit component information.",
+  "editTooltip": "Edit the selected component"
+}

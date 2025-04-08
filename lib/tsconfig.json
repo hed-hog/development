@@ -156,6 +156,12 @@
       ],
       "@hedhog/contact-us/*": [
         "libs/contact-us/src/*"
+      ],
+      "@hedhog/wallet": [
+        "libs/wallet/src"
+      ],
+      "@hedhog/wallet/*": [
+        "libs/wallet/src/*"
       ]
     }
   },
