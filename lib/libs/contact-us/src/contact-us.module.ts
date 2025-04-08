@@ -4,6 +4,7 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { ContactUsController } from './contact-us.controller';
 import { ContactUsService } from './contact-us.service';
+import { PublicController } from './public.controller';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { ContactUsService } from './contact-us.service';
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule),
   ],
-  controllers: [ContactUsController],
+  controllers: [ContactUsController, PublicController],
   providers: [ContactUsService],
   exports: [ContactUsService],
 })
