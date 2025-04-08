@@ -64,7 +64,6 @@ export class RoleGuard implements CanActivate {
     }
 
     const userId = (request as any)?.auth?.user?.id;
-    console.log('RoleGuard', { userId });
 
     let httpMethod: any;
     switch (requestMethod) {
