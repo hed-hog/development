@@ -74,7 +74,5 @@ screens:
       relations: *a1
 routes:
   - path: tag
-    children:
-      - path: tag
-        lazy:
-          component: ./pages/tag/tag/index.tsx
+    lazy:
+      component: ./pages/tag/tag/index.tsx
