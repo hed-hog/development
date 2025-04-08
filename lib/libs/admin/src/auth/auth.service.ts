@@ -24,6 +24,7 @@ import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
 import { LoginDTO } from './dto/login.dto';
 import { OtpDTO } from './dto/otp.dto';
+import { RegisterDTO } from './dto/register.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
 
@@ -62,6 +63,33 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async register({ email, name, password, code, multifactor_id }: RegisterDTO) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    if (user) {
+      throw new ConflictException('Already exists a user with this email');
+    }
+
+    const salt = await genSalt();
+    password = await hash(password, salt);
+
+    const newUser = await this.prisma.user.create({
+      data: {
+        email,
+        name,
+        password,
+        multifactor_id,
+        code,
+      },
+    });
+
+    return this.getToken(newUser);
   }
 
   async createUser({

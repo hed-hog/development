@@ -115,34 +115,6 @@ const routes = [
         ],
       },
       {
-        path: "mail-manager",
-        children: [
-          {
-            path: "mail",
-            lazy: async () => ({
-              Component: (await import("./pages/mail-manager/mail/index.tsx"))
-                .default,
-            }),
-          },
-          {
-            path: "mail-sent",
-            lazy: async () => ({
-              Component: (
-                await import("./pages/mail-manager/mail-sent/index.tsx")
-              ).default,
-            }),
-          },
-          {
-            path: "mail-var",
-            lazy: async () => ({
-              Component: (
-                await import("./pages/mail-manager/mail-var/index.tsx")
-              ).default,
-            }),
-          },
-        ],
-      },
-      {
         path: "management",
         children: [
           {
@@ -196,6 +168,27 @@ const routes = [
                 )
               ).default,
             }),
+          },
+          {
+            path: "mail-manager",
+            children: [
+              {
+                path: "mail",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/mail-manager/mail/index.tsx")
+                  ).default,
+                }),
+              },
+              {
+                path: "mail-sent",
+                lazy: async () => ({
+                  Component: (
+                    await import("./pages/mail-manager/mail-sent/index.tsx")
+                  ).default,
+                }),
+              },
+            ],
           },
           {
             path: "menu",

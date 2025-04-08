@@ -13,4 +13,7 @@ export default defineConfig({
     port: 3100,
   },
   mode: 'development',
+  css: {
+    devSourcemap: false,
+  },
 })

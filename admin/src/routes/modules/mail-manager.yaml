@@ -1,14 +1,13 @@
 routes:
   - &a1
-    path: mail-manager
+    path: management
     children:
-      - path: mail
-        lazy:
-          component: ./pages/mail-manager/mail/index.tsx
-      - path: mail-sent
-        lazy:
-          component: ./pages/mail-manager/mail-sent/index.tsx
-      - path: mail-var
-        lazy:
-          component: ./pages/mail-manager/mail-var/index.tsx
+      - path: mail-manager
+        children:
+          - path: mail
+            lazy:
+              component: ./pages/mail-manager/mail/index.tsx
+          - path: mail-sent
+            lazy:
+              component: ./pages/mail-manager/mail-sent/index.tsx
   - *a1
