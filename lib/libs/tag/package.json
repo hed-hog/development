@@ -1,0 +1,37 @@
+{
+  "name": "@hedhog/tag",
+  "version": "0.0.0",
+  "private": false,
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "prebuild": "npm run clean",
+    "build": "tsc --project tsconfig.production.json && npm version patch",
+    "prod": "npm run build && npm publish --access public"
+  },
+  "files": [
+    "dist/**/*",
+    "frontend/**/*",
+    "src/entities/**/*.ts",
+    "src/migrations/**/*.ts",
+    "src/**/*.ejs",
+    "hedhog.yaml"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "peerDependencies": {
+    "@hedhog/admin": "latest",
+    "@hedhog/locale": "latest",
+    "@hedhog/pagination": "latest",
+    "@hedhog/prisma": "latest"
+  },
+  "devDependencies": {
+    "@hedhog/admin": "^0.48.22",
+    "@hedhog/locale": "^0.48.4",
+    "@hedhog/pagination": "^0.48.1",
+    "@hedhog/prisma": "^0.48.1",
+    "@nestjs/mapped-types": "^2.1.0"
+  }
+}

@@ -168,6 +168,12 @@
       ],
       "@hedhog/category/*": [
         "libs/category/src/*"
+      ],
+      "@hedhog/tag": [
+        "libs/tag/src"
+      ],
+      "@hedhog/tag/*": [
+        "libs/tag/src/*"
       ]
     }
   },
