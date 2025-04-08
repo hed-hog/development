@@ -3,6 +3,9 @@ tables:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   tag_locale:
@@ -20,6 +23,9 @@ tables:
           table: locale
           column: id
       - name: name
+        locale:
+          en: Name
+          pt: Nome
       - type: created_at
       - type: updated_at
 data:
