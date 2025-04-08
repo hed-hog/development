@@ -6,11 +6,17 @@ columns:
       table: wallet
       column: id
   - name: type
+    locale:
+      pt: Tipo
+      en: Type
     type: enum
     enum:
       - deposit
       - withdraw
   - name: amount
+    locale:
+      pt: Quantia
+      en: Amount
     type: decimal
     precision: 10
     scale: 2

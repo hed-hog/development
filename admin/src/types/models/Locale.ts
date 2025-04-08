@@ -1,63 +1,61 @@
-import { MultifactorLocale } from './MultifactorLocale';
-import { Translation } from './Translation';
-import { SettingGroupLocale } from './SettingGroupLocale';
-import { FileProviderLocale } from './FileProviderLocale';
-import { RoleLocale } from './RoleLocale';
-import { SettingLocale } from './SettingLocale';
-import { CategoryLocale } from './CategoryLocale';
-import { PersonTypeLocale } from './PersonTypeLocale';
-import { DashboardComponentLocale } from './DashboardComponentLocale';
-import { MenuLocale } from './MenuLocale';
-import { ScreenLocale } from './ScreenLocale';
-import { DashboardLocale } from './DashboardLocale';
-import { CountryLocale } from './CountryLocale';
-import { PersonDocumentTypeLocale } from './PersonDocumentTypeLocale';
-import { PersonContactTypeLocale } from './PersonContactTypeLocale';
-import { PersonAddressTypeLocale } from './PersonAddressTypeLocale';
-import { PersonCustomTypeLocale } from './PersonCustomTypeLocale';
-import { PersonCustomLocale } from './PersonCustomLocale';
-import { ContentLocale } from './ContentLocale';
-import { FaqLocale } from './FaqLocale';
-import { MailLocale } from './MailLocale';
-import { ComponentPropTypeLocale } from './ComponentPropTypeLocale';
-import { ComponentTypeLocale } from './ComponentTypeLocale';
-import { PaymentStatusLocale } from './PaymentStatusLocale';
-import { SubscriptionPlanLocale } from './SubscriptionPlanLocale';
-import { SubscriptionCancelReasonLocale } from './SubscriptionCancelReasonLocale';
-import { TagLocale } from './TagLocale';
+import { CategoryLocale } from './CategoryLocale'
+import { ComponentPropTypeLocale } from './ComponentPropTypeLocale'
+import { ComponentTypeLocale } from './ComponentTypeLocale'
+import { ContentLocale } from './ContentLocale'
+import { CountryLocale } from './CountryLocale'
+import { DashboardComponentLocale } from './DashboardComponentLocale'
+import { DashboardLocale } from './DashboardLocale'
+import { FaqLocale } from './FaqLocale'
+import { FileProviderLocale } from './FileProviderLocale'
+import { MailLocale } from './MailLocale'
+import { MenuLocale } from './MenuLocale'
+import { MultifactorLocale } from './MultifactorLocale'
+import { PaymentStatusLocale } from './PaymentStatusLocale'
+import { PersonAddressTypeLocale } from './PersonAddressTypeLocale'
+import { PersonContactTypeLocale } from './PersonContactTypeLocale'
+import { PersonCustomLocale } from './PersonCustomLocale'
+import { PersonCustomTypeLocale } from './PersonCustomTypeLocale'
+import { PersonDocumentTypeLocale } from './PersonDocumentTypeLocale'
+import { RoleLocale } from './RoleLocale'
+import { ScreenLocale } from './ScreenLocale'
+import { SettingGroupLocale } from './SettingGroupLocale'
+import { SettingLocale } from './SettingLocale'
+import { SubscriptionCancelReasonLocale } from './SubscriptionCancelReasonLocale'
+import { SubscriptionPlanLocale } from './SubscriptionPlanLocale'
+import { TagLocale } from './TagLocale'
+import { Translation } from './Translation'
 
 export type Locale = {
-  id?: number;
-  code: string;
-  region: string;
-  enabled?: boolean;
-  created_at?: string;
-  updated_at?: string;
-  multifactor_locale?: MultifactorLocale[];
-  translation?: Translation[];
-  setting_group_locale?: SettingGroupLocale[];
-  file_provider_locale?: FileProviderLocale[];
-  role_locale?: RoleLocale[];
-  setting_locale?: SettingLocale[];
-  category_locale?: CategoryLocale[];
-  person_type_locale?: PersonTypeLocale[];
-  dashboard_component_locale?: DashboardComponentLocale[];
-  menu_locale?: MenuLocale[];
-  screen_locale?: ScreenLocale[];
-  dashboard_locale?: DashboardLocale[];
-  country_locale?: CountryLocale[];
-  person_document_type_locale?: PersonDocumentTypeLocale[];
-  person_contact_type_locale?: PersonContactTypeLocale[];
-  person_address_type_locale?: PersonAddressTypeLocale[];
-  person_custom_type_locale?: PersonCustomTypeLocale[];
-  person_custom_locale?: PersonCustomLocale[];
-  content_locale?: ContentLocale[];
-  faq_locale?: FaqLocale[];
-  mail_locale?: MailLocale[];
-  component_prop_type_locale?: ComponentPropTypeLocale[];
-  component_type_locale?: ComponentTypeLocale[];
-  payment_status_locale?: PaymentStatusLocale[];
-  subscription_plan_locale?: SubscriptionPlanLocale[];
-  subscription_cancel_reason_locale?: SubscriptionCancelReasonLocale[];
-  tag_locale_tag_locale_localeTolocale?: TagLocale[];
+  id?: number
+  code: string
+  region: string
+  enabled?: boolean
+  created_at?: string
+  updated_at?: string
+  file_provider_locale?: FileProviderLocale[]
+  multifactor_locale?: MultifactorLocale[]
+  setting_group_locale?: SettingGroupLocale[]
+  dashboard_component_locale?: DashboardComponentLocale[]
+  screen_locale?: ScreenLocale[]
+  setting_locale?: SettingLocale[]
+  translation?: Translation[]
+  dashboard_locale?: DashboardLocale[]
+  menu_locale?: MenuLocale[]
+  role_locale?: RoleLocale[]
+  category_locale?: CategoryLocale[]
+  country_locale?: CountryLocale[]
+  person_document_type_locale?: PersonDocumentTypeLocale[]
+  person_contact_type_locale?: PersonContactTypeLocale[]
+  person_address_type_locale?: PersonAddressTypeLocale[]
+  person_custom_type_locale?: PersonCustomTypeLocale[]
+  person_custom_locale?: PersonCustomLocale[]
+  content_locale?: ContentLocale[]
+  faq_locale?: FaqLocale[]
+  mail_locale?: MailLocale[]
+  component_prop_type_locale?: ComponentPropTypeLocale[]
+  component_type_locale?: ComponentTypeLocale[]
+  payment_status_locale?: PaymentStatusLocale[]
+  subscription_plan_locale?: SubscriptionPlanLocale[]
+  subscription_cancel_reason_locale?: SubscriptionCancelReasonLocale[]
+  tag_locale_tag_locale_localeTolocale?: TagLocale[]
 }

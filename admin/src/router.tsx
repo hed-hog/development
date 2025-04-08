@@ -472,29 +472,6 @@ const routes = [
           },
         ],
       },
-      {
-        path: 'tag',
-        children: [
-          {
-            path: 'tag',
-            lazy: async () => ({
-              Component: (await import('./pages/tag/tag/index.tsx')).default,
-            }),
-          },
-        ],
-      },
-      {
-        path: 'wallet',
-        children: [
-          {
-            path: 'wallet',
-            lazy: async () => ({
-              Component: (await import('./pages/wallet/wallet/index.tsx'))
-                .default,
-            }),
-          },
-        ],
-      },
     ],
   },
 

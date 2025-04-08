@@ -301,6 +301,11 @@ export class SettingService {
       );
     }
 
+    console.log('SettingService', 'setSettingUserValue', {
+      setting,
+      user,
+    });
+
     return await this.prismaService.setting_user.upsert({
       where: {
         user_id_setting_id: {
@@ -344,10 +349,15 @@ export class SettingService {
 
     const slugUserOverride = setting.filter((setting) => setting.user_override);
 
+    console.log('SettingService', 'getSettingValues', {
+      setting,
+      slugUserOverride,
+    });
+
     const settingUser = await this.prismaService.setting_user.findMany({
       where: {
         setting_id: {
-          in: slugUserOverride.map((setting) => setting.id),
+          in: slugUserOverride.map((setting) => setting?.id),
         },
       },
       select: {

@@ -59,8 +59,21 @@ data:
         en: Emails
         pt: E-mails
       icon: mail-cog
+      url: /management/mail-manager
+      slug: /management/mail-manager
+      menu_id:
+        where:
+          slug: /management
+      relations: *a1
+    - name:
+        en: Email Templates
+        pt: Modelos de E-mail
+      icon: mail-cog
       url: /management/mail-manager/email
       slug: /management/mail-manager/email
+      menu_id:
+        where:
+          slug: /management/mail-manager
       relations: *a1
     - name:
         en: Sent Emails
@@ -68,6 +81,9 @@ data:
       icon: mail-forward
       url: /management/mail-manager/email-sent
       slug: /management/mail-manager/email-sent
+      menu_id:
+        where:
+          slug: /management/mail-manager
       relations:
         role:
           - where:

@@ -1,8 +1,8 @@
 import { SubscriptionPlanDurationEnum } from './SubscriptionPlanDurationEnum';
 import { Item } from './Item';
-import { Subscription } from './Subscription';
 import { SubscriptionPlanLocale } from './SubscriptionPlanLocale';
 import { SubscriptionPlanGateway } from './SubscriptionPlanGateway';
+import { Subscription } from './Subscription';
 
 export type SubscriptionPlan = {
   id?: number;
@@ -13,9 +13,9 @@ export type SubscriptionPlan = {
   created_at?: string;
   updated_at?: string;
   item?: Item;
-  subscription?: Subscription[];
   subscription_plan_locale?: SubscriptionPlanLocale[];
   subscription_plan_gateway?: SubscriptionPlanGateway[];
+  subscription?: Subscription[];
   name?: string;
   description?: string;
 }
