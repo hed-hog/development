@@ -1,15 +1,15 @@
+import { DeleteDTO } from '@hedhog/core';
+import { LocaleService } from '@hedhog/locale';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
-import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
 export class ContentService {
@@ -22,14 +22,14 @@ export class ContentService {
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
     @Inject(forwardRef(() => LocaleService))
-    private readonly localeService: LocaleService
+    private readonly localeService: LocaleService,
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
     return this.localeService.listModelWithLocale(
       locale,
       this.modelName,
-      paginationParams
+      paginationParams,
     );
   }
 
@@ -41,7 +41,7 @@ export class ContentService {
     return this.localeService.createModelWithLocale(
       this.modelName,
       this.foreignKey,
-      data
+      data,
     );
   }
 
@@ -50,23 +50,33 @@ export class ContentService {
       this.modelName,
       this.foreignKey,
       id,
-      data
+      data,
     );
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
     return this.prismaService.content.deleteMany({
       where: {
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
+  }
+
+  async getBySlug(slug: string, locale: string) {
+    return this.localeService.getModelWithCurrentLocaleWhere(
+      this.modelName,
+      {
+        slug,
+      },
+      locale,
+    );
   }
 }
