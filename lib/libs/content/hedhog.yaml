@@ -13,15 +13,23 @@ tables:
         references:
           table: content
           column: id
+          onDelete: CASCADE
       - type: fk
         isPrimary: true
         name: locale_id
         references:
           table: locale
+          onDelete: CASCADE
           column: id
       - name: title
+        locale:
+          en: Title
+          pt: Título
       - type: text
         name: body
+        locale:
+          en: Body
+          pt: Conteúdo
       - type: created_at
       - type: updated_at
 data:
@@ -61,38 +69,6 @@ data:
         en: Content
         pt: Conteúdo
       icon: align-box-left-middle
-  content:
-    - slug: terms
-      title:
-        en: Terms of Use
-        pt: Termos de Uso
-      body:
-        en: |
-          <div>
-            <h1>Terms of Use</h1>
-            <p>This is the terms of service.</p>
-          </div>
-        pt: |
-          <div>
-            <h1>Termos de Uso</h1>
-            <p>Este é o termo de serviço.</p>
-          </div>
-    - slug: privacy
-      title:
-        en: Privacy Policy
-        pt: Política de Privacidade
-      body:
-        en: |
-          <div>
-            <h1>Privacy Policy</h1>
-            <p>This is the privacy policy.</p>
-          </div>
-        pt: |
-          <div>
-            <h1>Política de Privacidade</h1>
-            <p>Este é a política de privacidade.</p>
-          </div>
-
 screens:
   page:
     title:
