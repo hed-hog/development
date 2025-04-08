@@ -70,7 +70,7 @@ data:
         pt: Conteúdo
       icon: align-box-left-middle
 screens:
-  page:
+  content:
     title:
       en: Content
       pt: Conteúdo
@@ -78,15 +78,13 @@ screens:
       url: /content
       icon: layout-sidebar
       name:
-        en: Pages
-        pt: Páginas
+        en: Content
+        pt: Conteúdo
       slug: /content
-      relations:
-        role:
-          - where:
-              slug: admin
-
+      relations: *a1
 routes:
   - path: content
-    lazy:
-      component: ./pages/content/content/index.tsx
+    children:
+      - path: content
+        lazy:
+          component: ./pages/content/content/index.tsx

@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@hedhog/admin": "^0.48.15",
-    "@hedhog/locale": "^0.48.4",
+    "@hedhog/locale": "^0.51.1",
     "@hedhog/pagination": "^0.48.1",
     "@hedhog/prisma": "^0.48.1",
     "@nestjs/mapped-types": "^2.1.0"

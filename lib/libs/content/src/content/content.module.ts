@@ -4,7 +4,6 @@ import { PrismaModule } from '@hedhog/prisma';
 import { forwardRef, Module } from '@nestjs/common';
 import { ContentService } from './content.service';
 import { ContentController } from './content.controller';
-import { ContentPublicController } from './content-public.controller';
 
 @Module({
   imports: [
@@ -12,7 +11,7 @@ import { ContentPublicController } from './content-public.controller';
     forwardRef(() => PrismaModule),
     forwardRef(() => PaginationModule)
   ],
-  controllers: [ContentController, ContentPublicController],
+  controllers: [ContentController],
   providers: [ContentService],
   exports: [ContentService]
 })

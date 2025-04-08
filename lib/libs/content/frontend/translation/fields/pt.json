@@ -1,1 +1,6 @@
-{}
+{
+  "content.title": "Título",
+  "content.body": "Conteúdo",
+  "content_locale.title": "Título",
+  "content_locale.body": "Conteúdo"
+}
