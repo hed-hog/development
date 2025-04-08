@@ -1,0 +1,11 @@
+{
+  "create": "Criar tag",
+  "createText": "Preencha as informações da tag.",
+  "createTooltip": "Criar nova tag",
+  "delete": "Deletar tag",
+  "deleteText": "Você tem certeza de que deseja deletar estas tags?",
+  "deleteTooltip": "Deletar a tag selecionada",
+  "edit": "Editar tag",
+  "editText": "Visualizar e editar informações da tag.",
+  "editTooltip": "Editar a tag selecionada"
+}

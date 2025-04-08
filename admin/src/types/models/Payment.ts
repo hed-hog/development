@@ -4,10 +4,10 @@ import { PaymentStatus } from './PaymentStatus';
 import { PaymentMethod } from './PaymentMethod';
 import { PaymentCardBrand } from './PaymentCardBrand';
 import { PaymentCoupon } from './PaymentCoupon';
-import { SubscriptionPayment } from './SubscriptionPayment';
 import { PaymentNotification } from './PaymentNotification';
 import { PaymentItem } from './PaymentItem';
 import { PaymentValue } from './PaymentValue';
+import { SubscriptionPayment } from './SubscriptionPayment';
 
 export type Payment = {
   id?: number;
@@ -33,8 +33,8 @@ export type Payment = {
   payment_method?: PaymentMethod;
   payment_card_brand?: PaymentCardBrand;
   payment_coupon?: PaymentCoupon;
-  subscription_payment?: SubscriptionPayment[];
   payment_notification?: PaymentNotification[];
   payment_item?: PaymentItem[];
   payment_value?: PaymentValue[];
+  subscription_payment?: SubscriptionPayment[];
 }

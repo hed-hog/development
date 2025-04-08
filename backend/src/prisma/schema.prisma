@@ -7,6 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model category {
+  id              Int               @id(map: "PK_9c4e4a89e3674fc9f382d733f03") @default(autoincrement())
+  slug            String            @unique(map: "UQ_cb73208f151aa71cdd78f662d70") @db.VarChar(255)
+  category_id     Int
+  created_at      DateTime          @default(now()) @db.Timestamp(6)
+  updated_at      DateTime          @default(now()) @db.Timestamp(6)
+  category        category          @relation("categoryTocategory", fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_cc7f32b7ab33c70b9e715afae84")
+  other_category  category[]        @relation("categoryTocategory")
+  category_locale category_locale[]
+}
+
+model category_locale {
+  category_id Int
+  locale_id   Int
+  name        String   @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  locale      locale   @relation(fields: [locale_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_42628cb0187a1a24f9fedaf0283")
+  category    category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_c1b493b4088aac71fcfc899a597")
+
+  @@id([category_id, locale_id], map: "PK_e56abeb6623877833eb81839ab4")
+}
+
 model chat_message {
   id          Int                    @id(map: "PK_3cc0d85193aade457d3077dd06b") @default(autoincrement())
   chat_id     Int
@@ -353,37 +376,39 @@ model item {
 }
 
 model locale {
-  id                                Int                                 @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
-  code                              String                              @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
-  region                            String                              @db.Char(2)
-  enabled                           Boolean                             @default(true)
-  created_at                        DateTime                            @default(now()) @db.Timestamp(6)
-  updated_at                        DateTime                            @default(now()) @db.Timestamp(6)
-  component_prop_type_locale        component_prop_type_locale[]
-  component_type_locale             component_type_locale[]
-  content_locale                    content_locale[]
-  country_locale                    country_locale[]
-  dashboard_component_locale        dashboard_component_locale[]
-  dashboard_locale                  dashboard_locale[]
-  faq_locale                        faq_locale[]
-  file_provider_locale              file_provider_locale[]
-  mail_locale                       mail_locale[]
-  menu_locale                       menu_locale[]
-  multifactor_locale                multifactor_locale[]
-  payment_status_locale             payment_status_locale[]
-  person_address_type_locale        person_address_type_locale[]
-  person_contact_type_locale        person_contact_type_locale[]
-  person_custom_locale              person_custom_locale[]
-  person_custom_type_locale         person_custom_type_locale[]
-  person_document_type_locale       person_document_type_locale[]
-  person_type_locale                person_type_locale[]
-  role_locale                       role_locale[]
-  screen_locale                     screen_locale[]
-  setting_group_locale              setting_group_locale[]
-  setting_locale                    setting_locale[]
-  subscription_cancel_reason_locale subscription_cancel_reason_locale[]
-  subscription_plan_locale          subscription_plan_locale[]
-  translation                       translation[]
+  id                                   Int                                 @id(map: "PK_4b7a3ebe8ec48f1bb2c4b80e349") @default(autoincrement())
+  code                                 String                              @unique(map: "UQ_03f3269461e7b003dca6b1699f4") @db.Char(2)
+  region                               String                              @db.Char(2)
+  enabled                              Boolean                             @default(true)
+  created_at                           DateTime                            @default(now()) @db.Timestamp(6)
+  updated_at                           DateTime                            @default(now()) @db.Timestamp(6)
+  category_locale                      category_locale[]
+  component_prop_type_locale           component_prop_type_locale[]
+  component_type_locale                component_type_locale[]
+  content_locale                       content_locale[]
+  country_locale                       country_locale[]
+  dashboard_component_locale           dashboard_component_locale[]
+  dashboard_locale                     dashboard_locale[]
+  faq_locale                           faq_locale[]
+  file_provider_locale                 file_provider_locale[]
+  mail_locale                          mail_locale[]
+  menu_locale                          menu_locale[]
+  multifactor_locale                   multifactor_locale[]
+  payment_status_locale                payment_status_locale[]
+  person_address_type_locale           person_address_type_locale[]
+  person_contact_type_locale           person_contact_type_locale[]
+  person_custom_locale                 person_custom_locale[]
+  person_custom_type_locale            person_custom_type_locale[]
+  person_document_type_locale          person_document_type_locale[]
+  person_type_locale                   person_type_locale[]
+  role_locale                          role_locale[]
+  screen_locale                        screen_locale[]
+  setting_group_locale                 setting_group_locale[]
+  setting_locale                       setting_locale[]
+  subscription_cancel_reason_locale    subscription_cancel_reason_locale[]
+  subscription_plan_locale             subscription_plan_locale[]
+  tag_locale_tag_locale_localeTolocale tag_locale[]                        @relation("tag_locale_localeTolocale")
+  translation                          translation[]
 }
 
 model mail {
@@ -1205,6 +1230,26 @@ model subscription_value {
   subscription    subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_7ae981dc75a2a49c632dd666387")
 
   @@unique([subscription_id, name], map: "IDX_216bbd68ec714c08512b9e40fe")
+}
+
+model tag {
+  id         Int          @id(map: "PK_8e4052373c579afc1471f526760") @default(autoincrement())
+  slug       String       @unique(map: "UQ_3413aed3ecde54f832c4f44f045") @db.VarChar(255)
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  updated_at DateTime     @default(now()) @db.Timestamp(6)
+  tag_locale tag_locale[]
+}
+
+model tag_locale {
+  tag_id                           Int
+  locale                           Int
+  name                             String   @db.VarChar
+  created_at                       DateTime @default(now()) @db.Timestamp(6)
+  updated_at                       DateTime @default(now()) @db.Timestamp(6)
+  tag                              tag      @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_600d97c71393728acec8db33aac")
+  locale_tag_locale_localeTolocale locale   @relation("tag_locale_localeTolocale", fields: [locale], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_986e0f73f38eeb3ddc3b48b1abd")
+
+  @@id([tag_id, locale], map: "PK_a9f81ee96f632a93ba36f30e224")
 }
 
 model translation {
