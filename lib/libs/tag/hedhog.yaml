@@ -46,7 +46,7 @@ data:
     - name:
         en: Tag
         pt: Tag
-      icon: file
+      icon: tags
       url: /tag
       slug: tag
       relations: *a1
@@ -56,6 +56,25 @@ data:
         pt: Tag
       slug: tag
       description:
-        en: Screen to manage tag
-        pt: Tela para gerenciar tag
-      icon: file
+        en: Screen to manage tags
+        pt: Tela para gerenciar tags
+      icon: tags
+screens:
+  tag:
+    title:
+      en: Tags
+      pt: Tags
+    menu:
+      name:
+        en: Tags
+        pt: Tags
+      icon: tags
+      url: /tags
+      slug: tag
+      relations: *a1
+routes:
+  - path: tag
+    children:
+      - path: tag
+        lazy:
+          component: ./pages/tag/tag/index.tsx
