@@ -13,6 +13,6 @@ export type Instance = {
   updated_at?: string;
   component?: Component;
   instance?: Instance;
-  other_instance?: Instance[];
   instance_prop?: InstanceProp[];
+  other_instance?: Instance[];
 }

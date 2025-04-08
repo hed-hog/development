@@ -1,5 +1,5 @@
-import { MailLocale } from './MailLocale';
 import { MailSent } from './MailSent';
+import { MailLocale } from './MailLocale';
 import { MailVar } from './MailVar';
 
 export type Mail = {
@@ -7,8 +7,8 @@ export type Mail = {
   slug: string;
   created_at?: string;
   updated_at?: string;
-  mail_locale?: MailLocale[];
   mail_sent?: MailSent[];
+  mail_locale?: MailLocale[];
   mail_var?: MailVar[];
   subject?: string;
   body?: string;

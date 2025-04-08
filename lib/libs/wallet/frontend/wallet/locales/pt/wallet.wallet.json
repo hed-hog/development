@@ -1,11 +1,11 @@
 {
-  "create": "Create Wallet",
-  "createText": "Fill the wallet informations.",
-  "createTooltip": "Create new wallet",
-  "delete": "Delete Wallet",
-  "deleteText": "Are you sure to delete these wallets?",
-  "deleteTooltip": "Delete the selected wallets",
-  "edit": "Edit Wallet",
-  "editText": "View and edit wallet information.",
-  "editTooltip": "Edit the selected wallets"
+  "create": "Criar Carteira",
+  "createText": "Preencha as informações da carteira.",
+  "createTooltip": "Criar nova carteira",
+  "delete": "Excluir Carteira",
+  "deleteText": "Tem certeza de que deseja excluir essas carteiras?",
+  "deleteTooltip": "Excluir as carteiras selecionadas",
+  "edit": "Editar Carteira",
+  "editText": "Visualize e edite as informações da carteira.",
+  "editTooltip": "Editar as carteiras selecionadas"
 }

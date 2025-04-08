@@ -1,49 +1,62 @@
-import { useApp } from "@/hooks/use-app";
-import { Delete, PaginationParams, PaginationResult } from "@/types";
-import { Wallet } from "@/types/models";
-import { HttpMethod } from "@/types/http-method";
+import { useApp } from '@/hooks/use-app'
+import { Delete, PaginationParams, PaginationResult } from '@/types'
+import { Wallet } from '@/types/models'
+import { HttpMethod } from '@/types/http-method'
 
 export function requests() {
-  const { request } = useApp();
+  const { request } = useApp()
 
   const walletList = async (params: PaginationParams) => {
     return request<PaginationResult<Wallet>>({
-      url: "/wallet",
+      url: '/wallet',
       params,
-    }).then((res) => res.data);
-  };
+    }).then((res) => res.data)
+  }
 
   const walletGet = async (id: number) => {
     return request<Wallet>({
       url: `/wallet/${id}`,
-    }).then((res) => res.data);
-  };
+    }).then((res) => res.data)
+  }
 
   const walletCreate = async (params: { data: Wallet }) => {
-    const { data } = params;
+    const { data } = params
     return request<Wallet>({
-      url: "/wallet",
+      url: '/wallet',
       method: HttpMethod.POST,
-      data: data,
-    }).then((res) => res.data);
-  };
+      data: {
+        name: data.name,
+        balance: Number(data.balance),
+      },
+    }).then((res) => res.data)
+  }
 
   const walletDelete = async (ids: number[]) => {
     return request<Delete>({
-      url: "/wallet",
+      url: '/wallet',
       data: { ids },
       method: HttpMethod.DELETE,
-    }).then((res) => res.data);
-  };
+    }).then((res) => res.data)
+  }
 
   const walletUpdate = async (params: { id: number; data: Wallet }) => {
-    const { id, data } = params;
+    const { id } = params
+    let data = {}
+
+    Object.keys(params.data).forEach((key) => {
+      if (key === 'balance') {
+        data[key] = Number(params.data[key])
+      } else {
+        data[key] = params.data[key]
+      }
+    })
+
     return request<Wallet>({
       url: `/wallet/${id}`,
       method: HttpMethod.PATCH,
-      data: data,
-    }).then((res) => res.data);
-  };
+      data,
+    }).then((res) => res.data)
+  }
 
   return {
     walletCreate,
@@ -51,5 +64,5 @@ export function requests() {
     walletDelete,
     walletList,
     walletGet,
-  };
+  }
 }

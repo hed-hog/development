@@ -62,26 +62,6 @@ data:
       url: /wallet
       slug: wallet
       relations: *a1
-    - name:
-        en: WalletPerson
-        pt: WalletPerson
-      icon: file
-      url: /wallet-person
-      slug: wallet-person
-      relations:
-        role:
-          - where:
-              slug: admin
-    - name:
-        en: WalletTransaction
-        pt: WalletTransaction
-      icon: file
-      url: /wallet-transaction
-      slug: wallet-transaction
-      relations:
-        role:
-          - where:
-              slug: admin
   screen:
     - name:
         en: Wallet
