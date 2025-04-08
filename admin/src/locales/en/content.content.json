@@ -1,11 +1,11 @@
 {
-  "create": "Create content",
+  "create": "Create Content",
   "createText": "Fill the content informations.",
   "createTooltip": "Create new content",
-  "delete": "Delete content",
-  "deleteText": "Are you sure to delete these content?",
-  "deleteTooltip": "Delete the selected content",
-  "edit": "Edit content",
+  "delete": "Delete Content",
+  "deleteText": "Are you sure to delete these contents?",
+  "deleteTooltip": "Delete the selected contents",
+  "edit": "Edit Content",
   "editText": "View and edit content information.",
-  "editTooltip": "Edit the selected content"
+  "editTooltip": "Edit the selected contents"
 }

@@ -41,15 +41,15 @@ export function requests() {
 
   const walletUpdate = async (params: { id: number; data: Wallet }) => {
     const { id } = params
-    let data = {}
+    let data  = {};
 
-    Object.keys(params.data).forEach((key) => {
+    Object.keys(params.data).forEach(key => {
       if (key === 'balance') {
         data[key] = Number(params.data[key])
       } else {
         data[key] = params.data[key]
       }
-    })
+    });
 
     return request<Wallet>({
       url: `/wallet/${id}`,

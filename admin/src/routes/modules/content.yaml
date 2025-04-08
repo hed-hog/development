@@ -1,6 +1,8 @@
 routes:
   - &a1
     path: content
-    lazy:
-      component: ./pages/content/content/index.tsx
+    children:
+      - path: content
+        lazy:
+          component: ./pages/content/content/index.tsx
   - *a1

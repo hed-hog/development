@@ -91,10 +91,15 @@ const routes = [
       },
       {
         path: "content",
-        lazy: async () => ({
-          Component: (await import("./pages/content/content/index.tsx"))
-            .default,
-        }),
+        children: [
+          {
+            path: "content",
+            lazy: async () => ({
+              Component: (await import("./pages/content/content/index.tsx"))
+                .default,
+            }),
+          },
+        ],
       },
       {
         path: "faq",
