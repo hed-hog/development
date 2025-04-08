@@ -122,7 +122,5 @@ screens:
       relations: *a1
 routes:
   - path: wallet
-    children:
-      - path: wallet
-        lazy:
-          component: ./pages/wallet/wallet/index.tsx
+    lazy:
+      component: ./pages/wallet/wallet/index.tsx
