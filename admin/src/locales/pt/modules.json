@@ -42,5 +42,7 @@
   "subscription": "Assinaturas",
   "subscription_value": "Valores",
   "subscription_person": "Pessoas",
-  "subscription_payment": "Pagamentos"
+  "subscription_payment": "Pagamentos",
+  "tag": "Tags",
+  "wallet": "Carteira"
 }

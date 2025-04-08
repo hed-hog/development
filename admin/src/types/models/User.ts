@@ -1,8 +1,8 @@
 import { Multifactor } from './Multifactor';
-import { RoleUser } from './RoleUser';
-import { SettingUser } from './SettingUser';
-import { UserActivity } from './UserActivity';
 import { DashboardUser } from './DashboardUser';
+import { RoleUser } from './RoleUser';
+import { UserActivity } from './UserActivity';
+import { SettingUser } from './SettingUser';
 import { PersonUser } from './PersonUser';
 
 export type User = {
@@ -15,9 +15,9 @@ export type User = {
   created_at?: string;
   updated_at?: string;
   multifactor?: Multifactor;
-  role_user?: RoleUser[];
-  setting_user?: SettingUser[];
-  user_activity?: UserActivity[];
   dashboard_user?: DashboardUser[];
+  role_user?: RoleUser[];
+  user_activity?: UserActivity[];
+  setting_user?: SettingUser[];
   person_user?: PersonUser[];
 }

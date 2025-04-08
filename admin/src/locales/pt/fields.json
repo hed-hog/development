@@ -143,5 +143,9 @@
   "subscription_plan.description": "Descrição do Plano",
   "subscription.name": "Nome da Assinatura",
   "subscription.status": "Status",
-  "subscription.limit": "Limite"
+  "subscription.limit": "Limite",
+  "wallet.name": "Nome",
+  "wallet.balance": "Saldo",
+  "wallet_transaction.type": "Tipo",
+  "wallet_transaction.amount": "Quantia"
 }
