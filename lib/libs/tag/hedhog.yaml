@@ -16,12 +16,14 @@ tables:
         references:
           table: tag
           column: id
+          onDelete: CASCADE
       - type: fk
         name: locale_id
         isPrimary: true
         references:
           table: locale
           column: id
+          onDelete: CASCADE
       - name: name
         locale:
           en: Name
