@@ -137,7 +137,8 @@
       "^@hedhog/dashboard(|/.*)$": "<rootDir>/libs/dashboard/src/$1",
       "^@hedhog/mail-manager(|/.*)$": "<rootDir>/libs/mail-manager/src/$1",
       "^@hedhog/contact-us(|/.*)$": "<rootDir>/libs/contact-us/src/$1",
-      "^@hedhog/wallet(|/.*)$": "<rootDir>/libs/wallet/src/$1"
+      "^@hedhog/wallet(|/.*)$": "<rootDir>/libs/wallet/src/$1",
+      "^@hedhog/category(|/.*)$": "<rootDir>/libs/category/src/$1"
     }
   }
 }

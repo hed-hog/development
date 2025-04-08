@@ -162,6 +162,12 @@
       ],
       "@hedhog/wallet/*": [
         "libs/wallet/src/*"
+      ],
+      "@hedhog/category": [
+        "libs/category/src"
+      ],
+      "@hedhog/category/*": [
+        "libs/category/src/*"
       ]
     }
   },

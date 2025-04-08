@@ -1,0 +1,66 @@
+tables:
+  category:
+    columns:
+      - type: pk
+      - type: slug
+      - type: fk
+        name: category_id
+        references:
+          table: category
+          column: id
+      - type: created_at
+      - type: updated_at
+  category_locale:
+    columns:
+      - type: fk
+        name: category_id
+        isPrimary: true
+        references:
+          table: category
+          column: id
+      - type: fk
+        name: locale_id
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+      - name: name
+      - type: created_at
+      - type: updated_at
+data:
+  route:
+    - url: /category
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /category
+      method: POST
+      relations: *a1
+    - url: /category/:id
+      method: GET
+      relations: *a1
+    - url: /category/:id
+      method: PATCH
+      relations: *a1
+    - url: /category
+      method: DELETE
+      relations: *a1
+  menu:
+    - name:
+        en: Category
+        pt: Category
+      icon: file
+      url: /category
+      slug: category
+      relations: *a1
+  screen:
+    - name:
+        en: Category
+        pt: Category
+      slug: category
+      description:
+        en: Screen to manage category
+        pt: Tela para gerenciar category
+      icon: file
