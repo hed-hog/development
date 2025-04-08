@@ -1,1 +1,6 @@
-{}
+{
+  "wallet.name": "Nome",
+  "wallet.balance": "Saldo",
+  "wallet_transaction.type": "Tipo",
+  "wallet_transaction.amount": "Quantia"
+}

@@ -7,7 +7,7 @@ export type Category = {
   created_at?: string;
   updated_at?: string;
   category?: Category;
-  other_category?: Category[];
   category_locale?: CategoryLocale[];
+  other_category?: Category[];
   name?: string;
 }

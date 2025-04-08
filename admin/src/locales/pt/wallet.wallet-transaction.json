@@ -1,11 +1,11 @@
 {
-  "create": "Criar transação de carteira",
-  "createText": "Preencha as informações da transação de carteira.",
-  "createTooltip": "Criar nova transação de carteira",
-  "delete": "Excluir transação de carteira",
-  "deleteText": "Tem certeza de que deseja excluir estas transações de carteira?",
-  "deleteTooltip": "Excluir a transação de carteira selecionada",
-  "edit": "Editar transação de carteira",
-  "editText": "Visualizar e editar informações da transação de carteira.",
-  "editTooltip": "Editar a transação de carteira selecionada"
+  "create": "Create Wallet transaction",
+  "createText": "Fill the wallet transaction informations.",
+  "createTooltip": "Create new wallet transaction",
+  "delete": "Delete Wallet transaction",
+  "deleteText": "Are you sure to delete these wallet transactions?",
+  "deleteTooltip": "Delete the selected wallet transactions",
+  "edit": "Edit Wallet transaction",
+  "editText": "View and edit wallet transaction information.",
+  "editTooltip": "Edit the selected wallet transactions"
 }

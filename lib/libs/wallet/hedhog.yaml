@@ -57,17 +57,72 @@ data:
   menu:
     - name:
         en: Wallet
-        pt: Wallet
-      icon: file
+        pt: Carteira
+      icon: wallet
       url: /wallet
       slug: wallet
       relations: *a1
+    - name:
+        en: WalletPerson
+        pt: WalletPerson
+      icon: file
+      url: /wallet-person
+      slug: wallet-person
+      relations:
+        role:
+          - where:
+              slug: admin
+    - name:
+        en: WalletTransaction
+        pt: WalletTransaction
+      icon: file
+      url: /wallet-transaction
+      slug: wallet-transaction
+      relations:
+        role:
+          - where:
+              slug: admin
   screen:
     - name:
         en: Wallet
-        pt: Wallet
+        pt: Carteira
       slug: wallet
       description:
         en: Screen to manage wallet
-        pt: Tela para gerenciar wallet
+        pt: Tela para gerenciar Carteira
+      icon: wallet
+    - name:
+        en: WalletPerson
+        pt: WalletPerson
+      slug: wallet-person
+      description:
+        en: Screen to manage wallet_person
+        pt: Tela para gerenciar wallet_person
       icon: file
+    - name:
+        en: WalletTransaction
+        pt: WalletTransaction
+      slug: wallet-transaction
+      description:
+        en: Screen to manage wallet_transaction
+        pt: Tela para gerenciar wallet_transaction
+      icon: file
+screens:
+  wallet:
+    title:
+      en: Wallet
+      pt: Carteira
+    menu:
+      name:
+        en: Wallet
+        pt: Carteira
+      icon: wallet
+      url: /wallet
+      slug: wallet
+      relations: *a1
+routes:
+  - path: wallet
+    children:
+      - path: wallet
+        lazy:
+          component: ./pages/wallet/wallet/index.tsx

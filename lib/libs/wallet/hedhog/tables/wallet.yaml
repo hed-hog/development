@@ -1,7 +1,13 @@
 columns:
   - type: pk
   - name: name
+    locale:
+      pt: Nome
+      en: Name
   - name: balance
+    locale:
+      pt: Saldo
+      en: Balance
     type: decimal
     precision: 10
     scale: 2

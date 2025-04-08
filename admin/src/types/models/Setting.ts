@@ -1,7 +1,7 @@
 import { SettingTypeEnum } from './SettingTypeEnum';
 import { SettingGroup } from './SettingGroup';
-import { SettingUser } from './SettingUser';
 import { SettingLocale } from './SettingLocale';
+import { SettingUser } from './SettingUser';
 
 export type Setting = {
   id?: number;
@@ -13,8 +13,8 @@ export type Setting = {
   created_at?: string;
   updated_at?: string;
   setting_group?: SettingGroup;
-  setting_user?: SettingUser[];
   setting_locale?: SettingLocale[];
+  setting_user?: SettingUser[];
   description?: string;
   name?: string;
 }
