@@ -1,11 +1,11 @@
 {
-  "create": "Criar carteira pessoa",
-  "createText": "Preencha as informações da carteira pessoa.",
-  "createTooltip": "Criar nova carteira pessoa",
-  "delete": "Deletar carteira pessoa",
-  "deleteText": "Você tem certeza de que deseja deletar estas carteira pessoa?",
-  "deleteTooltip": "Deletar a carteira pessoa selecionada",
-  "edit": "Editar carteira pessoa",
-  "editText": "Ver e editar informações da carteira pessoa.",
-  "editTooltip": "Editar a carteira pessoa selecionada"
+  "create": "Create Wallet person",
+  "createText": "Fill the wallet person informations.",
+  "createTooltip": "Create new wallet person",
+  "delete": "Delete Wallet person",
+  "deleteText": "Are you sure to delete these wallet persons?",
+  "deleteTooltip": "Delete the selected wallet persons",
+  "edit": "Edit Wallet person",
+  "editText": "View and edit wallet person information.",
+  "editTooltip": "Edit the selected wallet persons"
 }

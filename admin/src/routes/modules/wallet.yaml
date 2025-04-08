@@ -1,1 +1,8 @@
-routes: []
+routes:
+  - &a1
+    path: wallet
+    children:
+      - path: wallet
+        lazy:
+          component: ./pages/wallet/wallet/index.tsx
+  - *a1

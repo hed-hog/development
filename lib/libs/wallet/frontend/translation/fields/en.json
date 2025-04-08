@@ -1,1 +1,6 @@
-{}
+{
+  "wallet.name": "Name",
+  "wallet.balance": "Balance",
+  "wallet_transaction.type": "Type",
+  "wallet_transaction.amount": "Amount"
+}

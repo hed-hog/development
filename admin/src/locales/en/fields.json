@@ -141,5 +141,9 @@
   "subscription.end_at": "End Date",
   "subscription.role": "Role",
   "subscription.status": "Status",
-  "subscription.limit": "Limit"
+  "subscription.limit": "Limit",
+  "wallet.name": "Name",
+  "wallet.balance": "Balance",
+  "wallet_transaction.type": "Type",
+  "wallet_transaction.amount": "Amount"
 }

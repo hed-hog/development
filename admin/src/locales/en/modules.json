@@ -42,5 +42,7 @@
   "subscription": "Subscriptions",
   "subscription_value": "Values",
   "subscription_person": "People",
-  "subscription_payment": "Payments"
+  "subscription_payment": "Payments",
+  "tag": "Tags",
+  "wallet": "Wallet"
 }

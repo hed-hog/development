@@ -1,11 +1,11 @@
 {
-  "create": "Create tag",
+  "create": "Create Tag",
   "createText": "Fill the tag informations.",
   "createTooltip": "Create new tag",
-  "delete": "Delete tag",
-  "deleteText": "Are you sure to delete these tag?",
-  "deleteTooltip": "Delete the selected tag",
-  "edit": "Edit tag",
+  "delete": "Delete Tag",
+  "deleteText": "Are you sure to delete these tags?",
+  "deleteTooltip": "Delete the selected tags",
+  "edit": "Edit Tag",
   "editText": "View and edit tag information.",
-  "editTooltip": "Edit the selected tag"
+  "editTooltip": "Edit the selected tags"
 }
