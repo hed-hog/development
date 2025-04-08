@@ -228,7 +228,11 @@ export class CoreService {
   private getDiskCommand() {
     switch (os.platform()) {
       case 'win32':
-        return 'wmic logicaldisk get size,freespace,caption';
+        if (fs.existsSync('C:\\Windows\\System32\\wbem\\wmic.exe')) {
+          return 'wmic logicaldisk get size,freespace,caption';
+        } else {
+          return 'powershell -Command "Get-PSDrive -PSProvider FileSystem | Select-Object Name,Used,Free"';
+        }
       case 'darwin':
       case 'linux':
         return 'df -h';
