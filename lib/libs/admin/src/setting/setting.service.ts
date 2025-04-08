@@ -301,11 +301,6 @@ export class SettingService {
       );
     }
 
-    console.log('SettingService', 'setSettingUserValue', {
-      setting,
-      user,
-    });
-
     return await this.prismaService.setting_user.upsert({
       where: {
         user_id_setting_id: {
