@@ -1,0 +1,11 @@
+{
+  "create": "Criar marca de cartão de pagamento",
+  "createText": "Preencha as informações da marca de cartão de pagamento.",
+  "createTooltip": "Criar nova marca de cartão de pagamento",
+  "delete": "Excluir marca de cartão de pagamento",
+  "deleteText": "Você tem certeza de que deseja excluir estas marcas de cartão de pagamento?",
+  "deleteTooltip": "Excluir a marca de cartão de pagamento selecionada",
+  "edit": "Editar marca de cartão de pagamento",
+  "editText": "Visualizar e editar informações da marca de cartão de pagamento.",
+  "editTooltip": "Editar a marca de cartão de pagamento selecionada"
+}

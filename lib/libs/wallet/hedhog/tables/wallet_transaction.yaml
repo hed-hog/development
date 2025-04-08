@@ -1,0 +1,19 @@
+columns:
+  - name: id
+    type: pk
+  - name: wallet_id
+    type: fk
+    references:
+      table: wallet
+      column: id
+  - name: type
+    type: enum
+    enum:
+      - deposit
+      - withdraw
+  - name: amount
+    type: decimal
+    precision: 10
+    scale: 2
+  - type: created_at
+  - type: updated_at

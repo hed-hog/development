@@ -1,0 +1,11 @@
+{
+  "create": "Create person document type",
+  "createText": "Fill the person document type informations.",
+  "createTooltip": "Create new person document type",
+  "delete": "Delete person document type",
+  "deleteText": "Are you sure to delete these person document type?",
+  "deleteTooltip": "Delete the selected person document type",
+  "edit": "Edit person document type",
+  "editText": "View and edit person document type information.",
+  "editTooltip": "Edit the selected person document type"
+}

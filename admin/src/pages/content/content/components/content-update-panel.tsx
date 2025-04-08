@@ -1,0 +1,87 @@
+import { Overlay } from '@/components/custom/overlay'
+import FormPanel, {
+  FormPanelRef,
+  getFieldsLocale,
+} from '@/components/panels/form-panel'
+import { TabPanel } from '@/components/panels/tab-panel'
+import { EnumFieldType } from '@/enums/EnumFieldType'
+import { useContentGet, useContentUpdate } from '@/features/content/content'
+import useEffectAfterFirstUpdate from '@/hooks/use-effect-after-first-update'
+import { Content } from '@/types/models'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+
+export type ContentUpdatePanelProps = {
+  data: Content
+  onUpdated?: (data: Content) => void
+}
+
+const ContentUpdatePanel = forwardRef(
+  ({ data, onUpdated }: ContentUpdatePanelProps, ref) => {
+    const { t } = useTranslation(['actions', 'fields', 'translations'])
+    const { data: item, isLoading } = useContentGet(data.id as number)
+    const { mutate: contentUpdate } = useContentUpdate()
+    const formRef = useRef<FormPanelRef>(null)
+
+    useEffectAfterFirstUpdate(() => {
+      if (item && formRef.current) {
+        formRef.current.setValuesFromItem(item)
+      }
+    }, [item])
+
+    useImperativeHandle(ref, () => ({}))
+
+    return (
+      <TabPanel
+        activeTabIndex={0}
+        tabs={[
+          {
+            title: t('details', { ns: 'actions' }),
+            children: (
+              <Overlay loading={isLoading}>
+                <FormPanel
+                  ref={formRef}
+                  fields={[
+                    {
+                      name: 'slug',
+                      type: EnumFieldType.TEXT,
+                      label: {
+                        text: t('slug', { ns: 'translation' }),
+                      },
+                      required: true,
+                    },
+                    ...getFieldsLocale(
+                      [
+                        { name: 'title', required: true },
+                        {
+                          name: 'body',
+                          type: EnumFieldType.HTML,
+                          required: true,
+                        },
+                      ],
+                      item
+                    ),
+                  ]}
+                  button={{ text: t('save', { ns: 'actions' }) }}
+                  onSubmit={(data) => {
+                    contentUpdate({
+                      id: data.id,
+                      data,
+                    })
+                    if (typeof onUpdated === 'function') {
+                      onUpdated(data)
+                    }
+                  }}
+                />
+              </Overlay>
+            ),
+          },
+        ]}
+      />
+    )
+  }
+)
+
+ContentUpdatePanel.displayName = 'ContentUpdatePanel'
+
+export default ContentUpdatePanel

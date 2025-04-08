@@ -156,6 +156,24 @@
       ],
       "@hedhog/contact-us/*": [
         "libs/contact-us/src/*"
+      ],
+      "@hedhog/wallet": [
+        "libs/wallet/src"
+      ],
+      "@hedhog/wallet/*": [
+        "libs/wallet/src/*"
+      ],
+      "@hedhog/category": [
+        "libs/category/src"
+      ],
+      "@hedhog/category/*": [
+        "libs/category/src/*"
+      ],
+      "@hedhog/tag": [
+        "libs/tag/src"
+      ],
+      "@hedhog/tag/*": [
+        "libs/tag/src/*"
       ]
     }
   },

@@ -1,0 +1,11 @@
+{
+  "create": "Create subscription plan locale",
+  "createText": "Fill the subscription plan locale informations.",
+  "createTooltip": "Create new subscription plan locale",
+  "delete": "Delete subscription plan locale",
+  "deleteText": "Are you sure to delete these subscription plan locale?",
+  "deleteTooltip": "Delete the selected subscription plan locale",
+  "edit": "Edit subscription plan locale",
+  "editText": "View and edit subscription plan locale information.",
+  "editTooltip": "Edit the selected subscription plan locale"
+}

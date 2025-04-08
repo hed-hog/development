@@ -1,0 +1,11 @@
+{
+  "create": "Create payment coupon item",
+  "createText": "Fill the payment coupon item informations.",
+  "createTooltip": "Create new payment coupon item",
+  "delete": "Delete payment coupon item",
+  "deleteText": "Are you sure to delete these payment coupon item?",
+  "deleteTooltip": "Delete the selected payment coupon item",
+  "edit": "Edit payment coupon item",
+  "editText": "View and edit payment coupon item information.",
+  "editTooltip": "Edit the selected payment coupon item"
+}

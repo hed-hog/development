@@ -316,6 +316,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const login = (email: string, password: string) => {
     return new Promise<void>(async (resolve, reject) => {
       try {
+        console.log({ email, password })
         const { data } = await request<RequestLoginType>({
           method: 'POST',
           url: '/auth/login',
@@ -324,6 +325,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
             password,
           },
         })
+
+        console.log({ data })
 
         if (data.token) {
           setToken(data.token)

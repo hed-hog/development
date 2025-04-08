@@ -1,0 +1,61 @@
+tables:
+  tag:
+    columns:
+      - type: pk
+      - type: slug
+      - type: created_at
+      - type: updated_at
+  tag_locale:
+    columns:
+      - type: fk
+        name: tag_id
+        isPrimary: true
+        references:
+          table: tag
+          column: id
+      - type: fk
+        name: locale
+        isPrimary: true
+        references:
+          table: locale
+          column: id
+      - name: name
+      - type: created_at
+      - type: updated_at
+data:
+  route:
+    - url: /tag
+      method: GET
+      relations: &a1
+        role:
+          - where:
+              slug: admin
+    - url: /tag
+      method: POST
+      relations: *a1
+    - url: /tag/:id
+      method: GET
+      relations: *a1
+    - url: /tag/:id
+      method: PATCH
+      relations: *a1
+    - url: /tag
+      method: DELETE
+      relations: *a1
+  menu:
+    - name:
+        en: Tag
+        pt: Tag
+      icon: file
+      url: /tag
+      slug: tag
+      relations: *a1
+  screen:
+    - name:
+        en: Tag
+        pt: Tag
+      slug: tag
+      description:
+        en: Screen to manage tag
+        pt: Tela para gerenciar tag
+      icon: file

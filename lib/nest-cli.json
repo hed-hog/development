@@ -213,6 +213,33 @@
       "compilerOptions": {
         "tsConfigPath": "libs/contact-us/tsconfig.lib.json"
       }
+    },
+    "wallet": {
+      "type": "library",
+      "root": "libs/wallet",
+      "entryFile": "index",
+      "sourceRoot": "libs/wallet/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/wallet/tsconfig.lib.json"
+      }
+    },
+    "category": {
+      "type": "library",
+      "root": "libs/category",
+      "entryFile": "index",
+      "sourceRoot": "libs/category/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/category/tsconfig.lib.json"
+      }
+    },
+    "tag": {
+      "type": "library",
+      "root": "libs/tag",
+      "entryFile": "index",
+      "sourceRoot": "libs/tag/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/tag/tsconfig.lib.json"
+      }
     }
   }
 }
