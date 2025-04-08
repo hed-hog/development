@@ -14,7 +14,7 @@ tables:
           table: tag
           column: id
       - type: fk
-        name: locale
+        name: locale_id
         isPrimary: true
         references:
           table: locale
