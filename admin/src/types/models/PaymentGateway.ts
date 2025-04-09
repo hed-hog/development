@@ -1,5 +1,5 @@
-import { PaymentNotification } from './PaymentNotification';
 import { Payment } from './Payment';
+import { PaymentNotification } from './PaymentNotification';
 import { SubscriptionPlanGateway } from './SubscriptionPlanGateway';
 
 export type PaymentGateway = {
@@ -8,7 +8,7 @@ export type PaymentGateway = {
   name: string;
   created_at?: string;
   updated_at?: string;
-  payment_notification?: PaymentNotification[];
   payment?: Payment[];
+  payment_notification?: PaymentNotification[];
   subscription_plan_gateway?: SubscriptionPlanGateway[];
 }

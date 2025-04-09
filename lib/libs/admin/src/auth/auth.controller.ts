@@ -121,7 +121,10 @@ export class AuthController {
   }
 
   @Post('2fa/verify')
-  async verify2fa(@User() { id }, @Body() { secret }: { secret: string }) {
-    return this.service.verify2fa(id, secret);
+  async verify2fa(
+    @User() { id },
+    @Body() { secret, token }: { secret: string; token: string },
+  ) {
+    return this.service.verify2fa(id, token);
   }
 }

@@ -503,36 +503,61 @@ export class AuthService {
 
     const secret = speakeasy.generateSecret({
       name: appName,
+      otpauth: {
+        label: appName,
+        issuer,
+      },
+      encoding: 'base32',
     });
 
     const otpauth = speakeasy.otpauthURL({
       secret: secret.base32,
-      label: appName,
+      label: `${issuer}:${user.email}`,
       issuer,
+      encoding: 'base32',
+      image:
+        'https://storage.googleapis.com/hcode-public-storage/logos/Hcode_Logo.png',
     });
 
     const qrCode = await qrcode.toDataURL(otpauth);
 
-    return { qrCode, secret: secret.base32 };
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        multifactor_id: MultifactorType.APP,
+        code: secret.base32,
+      },
+    });
+
+    return { qrCode, otpauthUrl: secret.otpauth_url };
   }
 
   async create2faRecoveryCodes(userId: number) {}
 
-  async verify2fa(userId: number, secret: string) {
+  async verify2fa(userId: number, token: string) {
     const user = await this.prisma.user.findFirst({
       where: {
         id: userId,
       },
     });
 
+    console.log('verify2fa', { userId, token, user });
+
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
 
     const isValid = await speakeasy.totp.verify({
-      secret,
+      secret: user.code,
       encoding: 'base32',
+      token,
+      window: 0,
+      step: 30,
     });
+
+    console.log('isValid', isValid);
 
     if (!isValid) {
       throw new BadRequestException('Código inválido');
@@ -544,7 +569,7 @@ export class AuthService {
       },
       data: {
         multifactor_id: MultifactorType.APP,
-        code: secret,
+        code: user.code,
       },
     });
 

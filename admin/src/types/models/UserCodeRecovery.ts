@@ -1,6 +1,6 @@
 import { User } from './User';
 
-export type UserM2fRecoveries = {
+export type UserCodeRecovery = {
   id?: number;
   user_id?: number;
   code: string;

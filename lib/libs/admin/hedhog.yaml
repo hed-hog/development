@@ -424,6 +424,56 @@ data:
               pt: A URL base do sistema
             value: http://localhost:3200
             user_override: false
+    - slug: multifactor
+      icon: lock-password
+      name:
+        en: Multifactor
+        pt: Multifator
+      description:
+        en: Configure the multifactor authentication settings.
+        pt: Configurar as definições de autenticação multifatorial.
+      relations:
+        setting:
+          - slug: mfa-issuer
+            type: string
+            name:
+              en: Issuer
+              pt: Emissor
+            description:
+              en: The issuer of the multifactor authentication
+              pt: O emissor da autenticação multifatorial
+            value: Hedhog
+            user_override: false
+          - slug: mfa-image
+            type: string
+            name:
+              en: Image
+              pt: Imagem
+            description:
+              en: The image to use for the multifactor authentication
+              pt: A imagem a utilizar para a autenticação multifatorial
+            value: ''
+            user_override: false
+          - slug: mfa-window
+            type: number
+            name:
+              en: Window
+              pt: Janela
+            description:
+              en: The window value defines the tolerance margin for multifactor authentication, allowing to verify tokens that are within a specific range of counters (HOTP) or time periods (TOTP), both before and after the expected value.
+              pt: O valor window define a margem de tolerância para autenticação multifatorial, permitindo verificar tokens que estão dentro de um intervalo específico de contadores (HOTP) ou períodos de tempo (TOTP), tanto antes quanto depois do valor esperado.
+            value: 1
+            user_override: false
+          - slug: mfa-setp
+            type: number
+            name:
+              en: Step
+              pt: Passo
+            description:
+              en: The step in seconds that determines how long a code will be available in the user's app for multifactor authentication
+              pt: O passo em segundos que determina por quanto tempo um código ficará disponível no aplicativo do usuário para autenticação multifatorial
+            value: 30
+            user_override: false
     - slug: localization
       icon: world
       name:

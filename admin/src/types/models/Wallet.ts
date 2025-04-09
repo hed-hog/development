@@ -1,5 +1,5 @@
-import { WalletTransaction } from './WalletTransaction';
 import { WalletPerson } from './WalletPerson';
+import { WalletTransaction } from './WalletTransaction';
 
 export type Wallet = {
   id?: number;
@@ -7,6 +7,6 @@ export type Wallet = {
   balance: any;
   created_at?: string;
   updated_at?: string;
-  wallet_transaction?: WalletTransaction[];
   wallet_person?: WalletPerson[];
+  wallet_transaction?: WalletTransaction[];
 }

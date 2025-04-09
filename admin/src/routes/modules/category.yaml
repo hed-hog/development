@@ -1,6 +1,0 @@
-routes:
-  - &a1
-    path: /category
-    lazy:
-      component: ./pages/category/category/index.tsx
-  - *a1
