@@ -1,3 +1,3 @@
-export enum ChatRoomPersonRoleEnum {
+export enum ChatPersonRoleEnum {
   admin = 'admin',  member = 'member'
 }

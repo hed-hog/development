@@ -456,6 +456,76 @@ data:
               pt: O fuso horário a utilizar
             value: UTC
             user_override: true
+    - slug: oauth
+      icon: brand-auth0
+      name:
+        en: OAuth
+        pt: OAuth
+      description:
+        en: OAuth settings and configurations.
+        pt: Configurações e definições do OAuth.
+      relations:
+        setting:
+          - slug: google_client_id
+            type: string
+            name:
+              en: Google Client ID
+              pt: ID do Cliente Google
+            description:
+              en: The client ID for Google OAuth
+              pt: O ID do cliente para o OAuth do Google
+            value: ''
+            user_override: false
+          - slug: google_client_secret
+            type: string
+            name:
+              en: Google Client Secret
+              pt: Segredo do Cliente Google
+            description:
+              en: The client secret for Google OAuth
+              pt: O segredo do cliente para o OAuth do Google
+            value: ''
+            user_override: false
+          - slug: google_scopes
+            type: array
+            name:
+              en: Google Scopes
+              pt: Escopos do Google
+            description:
+              en: The scopes for Google OAuth
+              pt: Os escopos para o OAuth do Google
+            value: email,profile
+            user_override: false
+          - slug: facebook_client_id
+            type: string
+            name:
+              en: Facebook Client ID
+              pt: ID do Cliente Facebook
+            description:
+              en: The client ID for Facebook OAuth
+              pt: O ID do cliente para o OAuth do Facebook
+            value: ''
+            user_override: false
+          - slug: facebook_client_secret
+            type: string
+            name:
+              en: Facebook Client Secret
+              pt: Segredo do Cliente Facebook
+            description:
+              en: The client secret for Facebook OAuth
+              pt: O segredo do cliente para o OAuth do Facebook
+            value: ''
+            user_override: false
+          - slug: facebook_scopes
+            type: array
+            name:
+              en: Facebook Scopes
+              pt: Escopos do Facebook
+            description:
+              en: The scopes for Facebook OAuth
+              pt: Os escopos para o OAuth do Facebook
+            value: id,emails,name,displayName,photos
+            user_override: false
   menu:
     - url: /management/setting
       icon: settings

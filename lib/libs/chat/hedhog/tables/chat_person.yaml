@@ -3,7 +3,7 @@ columns:
   - type: fk
     name: chat_id
     references:
-      table: chat_room
+      table: chat
       column: id
   - type: fk
     name: person_id

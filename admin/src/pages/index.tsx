@@ -76,7 +76,11 @@ export default function Dashboard() {
       >
         {Boolean(dashboardCards.length) &&
           dashboardCards.map((card, index) => (
-            <div key={String(index + 1)}>
+            <div
+              key={String(index + 1)}
+              data-item='CARD'
+              className='h-full overflow-hidden'
+            >
               <DynamicComponentLoader path={card.dashboard_component.path} />
             </div>
           ))}

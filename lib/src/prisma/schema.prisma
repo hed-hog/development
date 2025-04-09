@@ -243,20 +243,21 @@ model translation_namespace {
 }
 
 model user {
-  id             Int              @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
-  multifactor_id Int?
-  name           String           @db.VarChar
-  email          String           @unique(map: "UQ_e12875dfb3b1d92d7d7c5377e22") @db.VarChar
-  password       String           @db.VarChar
-  code           String?          @db.VarChar
-  created_at     DateTime         @default(now()) @db.Timestamp(6)
-  updated_at     DateTime         @default(now()) @db.Timestamp(6)
-  dashboard_user dashboard_user[]
-  person_user    person_user[]
-  role_user      role_user[]
-  setting_user   setting_user[]
-  multifactor    multifactor?     @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
-  user_activity  user_activity[]
+  id                  Int                   @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
+  multifactor_id      Int?
+  name                String                @db.VarChar
+  email               String                @unique(map: "UQ_e12875dfb3b1d92d7d7c5377e22") @db.VarChar
+  password            String                @db.VarChar
+  code                String?               @db.VarChar
+  created_at          DateTime              @default(now()) @db.Timestamp(6)
+  updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  dashboard_user      dashboard_user[]
+  person_user         person_user[]
+  role_user           role_user[]
+  setting_user        setting_user[]
+  multifactor         multifactor?          @relation(fields: [multifactor_id], references: [id], onUpdate: NoAction, map: "FK_9b6db84173251ad3e643083250e")
+  user_activity       user_activity[]
+  user_m2f_recoveries user_m2f_recoveries[]
 }
 
 model user_activity {
@@ -455,6 +456,15 @@ model file_provider_locale {
   @@id([provider_id, locale_id], map: "PK_c108e943a38100608cfae509b3a")
 }
 
+model user_m2f_recoveries {
+  id         Int      @id(map: "PK_0be6e942ab9884c904bee219b81") @default(autoincrement())
+  user_id    Int?
+  code       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  user       user?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_a82cd7be5d0a755b4ac1d35791d")
+}
+
 model category {
   id              Int               @id(map: "PK_9c4e4a89e3674fc9f382d733f03") @default(autoincrement())
   slug            String            @unique(map: "UQ_cb73208f151aa71cdd78f662d70") @db.VarChar(255)
@@ -478,6 +488,15 @@ model category_locale {
   @@id([category_id, locale_id], map: "PK_e56abeb6623877833eb81839ab4")
 }
 
+model chat {
+  id           Int            @id(map: "PK_9d0b2ba74336710fd31154738a5") @default(autoincrement())
+  slug         String         @unique(map: "UQ_0bc9e7abdc2a205fe4c36ad321b") @db.VarChar(255)
+  created_at   DateTime       @default(now()) @db.Timestamp(6)
+  updated_at   DateTime       @default(now()) @db.Timestamp(6)
+  chat_message chat_message[]
+  chat_person  chat_person[]
+}
+
 model chat_message {
   id          Int                    @id(map: "PK_3cc0d85193aade457d3077dd06b") @default(autoincrement())
   chat_id     Int
@@ -488,28 +507,19 @@ model chat_message {
   received_at DateTime?              @db.Timestamp(6)
   created_at  DateTime               @default(now()) @db.Timestamp(6)
   updated_at  DateTime               @default(now()) @db.Timestamp(6)
-  chat_room   chat_room              @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_634db173c52edece8dd88ea3d4c")
+  chat        chat                   @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_634db173c52edece8dd88ea3d4c")
   person      person                 @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_dccda5182e0719bbc6e33f3b695")
 }
 
-model chat_room {
-  id               Int                @id(map: "PK_8aa3a52cf74c96469f0ef9fbe3e") @default(autoincrement())
-  slug             String             @unique(map: "UQ_54bb215de8d0e4bc16c56b1a63f") @db.VarChar(255)
-  created_at       DateTime           @default(now()) @db.Timestamp(6)
-  updated_at       DateTime           @default(now()) @db.Timestamp(6)
-  chat_message     chat_message[]
-  chat_room_person chat_room_person[]
-}
-
-model chat_room_person {
-  id         Int                        @id(map: "PK_0ea8afaae5bbe290fc9e89414f7") @default(autoincrement())
+model chat_person {
+  id         Int                   @id(map: "PK_3fd3aba7cff0efd62440b687fe5") @default(autoincrement())
   chat_id    Int
   person_id  Int
-  role       chat_room_person_role_enum
-  created_at DateTime                   @default(now()) @db.Timestamp(6)
-  updated_at DateTime                   @default(now()) @db.Timestamp(6)
-  chat_room  chat_room                  @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_b060184b25bd3962f4fc31bbbcf")
-  person     person                     @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_fc5457552a1e8e5d4e22406b3e9")
+  role       chat_person_role_enum
+  created_at DateTime              @default(now()) @db.Timestamp(6)
+  updated_at DateTime              @default(now()) @db.Timestamp(6)
+  chat       chat                  @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_2bb6c5b563f83dbab8ce93f9585")
+  person     person                @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_d0253687a51aec672651c36ec01")
 }
 
 model country {
@@ -544,7 +554,7 @@ model person {
   created_at          DateTime              @default(now()) @db.Timestamp(6)
   updated_at          DateTime              @default(now()) @db.Timestamp(6)
   chat_message        chat_message[]
-  chat_room_person    chat_room_person[]
+  chat_person         chat_person[]
   payment             payment[]
   file                file?                 @relation(fields: [photo_id], references: [id], onUpdate: NoAction, map: "FK_0e7be389f108147763fc682c3c4")
   person_type         person_type           @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_f900a8c313411c7da8fcbba7975")
@@ -1369,7 +1379,7 @@ enum chat_message_type_enum {
   file
 }
 
-enum chat_room_person_role_enum {
+enum chat_person_role_enum {
   admin
   member
 }

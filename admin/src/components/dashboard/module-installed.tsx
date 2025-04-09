@@ -64,7 +64,7 @@ const ModuleInstalled = () => {
   }, []);
 
   return (
-    <Card>
+    <Card className="flex h-full flex-col">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center">
           <Package className="mr-2 h-5 w-5 text-primary" />
@@ -72,7 +72,7 @@ const ModuleInstalled = () => {
         </CardTitle>
         <CardDescription>Módulos e suas versões</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-1 flex-col overflow-auto">
         {isRefreshing ? (
           <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, index) => (

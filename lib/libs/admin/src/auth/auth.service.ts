@@ -11,6 +11,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
+import * as qrcode from 'qrcode';
+import * as speakeasy from 'speakeasy';
 import {
   getChangeEmailEmail,
   getChangePasswordEmail,
@@ -484,5 +486,68 @@ export class AuthService {
     return this.prisma.user.findUnique({
       where: { id },
     });
+  }
+
+  async generate2fa(userId: number) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    const issuer = 'Hedhog';
+    const appName = `${issuer} (${user.email})`;
+
+    const secret = speakeasy.generateSecret({
+      name: appName,
+    });
+
+    const otpauth = speakeasy.otpauthURL({
+      secret: secret.base32,
+      label: appName,
+      issuer,
+    });
+
+    const qrCode = await qrcode.toDataURL(otpauth);
+
+    return { qrCode, secret: secret.base32 };
+  }
+
+  async create2faRecoveryCodes(userId: number) {}
+
+  async verify2fa(userId: number, secret: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    const isValid = await speakeasy.totp.verify({
+      secret,
+      encoding: 'base32',
+    });
+
+    if (!isValid) {
+      throw new BadRequestException('Código inválido');
+    }
+
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        multifactor_id: MultifactorType.APP,
+        code: secret,
+      },
+    });
+
+    return this.getToken(user);
   }
 }

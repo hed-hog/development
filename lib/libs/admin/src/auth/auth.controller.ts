@@ -114,4 +114,14 @@ export class AuthController {
   async changeEmail(@Body() { currentEmail, password, newEmail }: EmailDTO) {
     return this.service.changeEmail({ currentEmail, password, newEmail });
   }
+
+  @Post('2fa/generate')
+  async generate2fa(@User() { id }) {
+    return this.service.generate2fa(id);
+  }
+
+  @Post('2fa/verify')
+  async verify2fa(@User() { id }, @Body() { secret }: { secret: string }) {
+    return this.service.verify2fa(id, secret);
+  }
 }

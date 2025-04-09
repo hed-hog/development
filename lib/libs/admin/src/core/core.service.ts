@@ -220,7 +220,8 @@ export class CoreService {
           os.platform() === 'win32'
             ? this.parseWindowsDiskInfo(stdout)
             : this.parseUnixDiskInfo(stdout);
-        resolve(diskInfo);
+
+        resolve(diskInfo.filter((disk) => disk.filesystem !== undefined));
       });
     });
   }
@@ -257,18 +258,36 @@ export class CoreService {
     return result;
   }
 
+  private parsedSizeFormated(size: string): number {
+    const unit = size.slice(-1).toUpperCase();
+    const value = parseFloat(size.slice(0, -1));
+
+    switch (unit) {
+      case 'T':
+        return value * 1024 ** 4;
+      case 'G':
+        return value * 1024 ** 3;
+      case 'M':
+        return value * 1024 ** 2;
+      case 'K':
+        return value * 1024;
+      default:
+        return value; // Assume bytes if no unit is provided
+    }
+  }
+
   private parseUnixDiskInfo(output: string) {
     const lines = output.trim().split('\n');
     const result = [];
     for (let i = 1; i < lines.length; i++) {
       const parts = lines[i].split(/\s+/);
       if (parts.length >= 6) {
+        const size = this.parsedSizeFormated(parts[1]);
+        const free = this.parsedSizeFormated(parts[3]);
         result.push({
           filesystem: parts[0],
-          size: parts[1],
-          used: parts[2],
-          available: parts[3],
-          capacity: parts[4],
+          free,
+          size,
           mountpoint: parts[5],
         });
       }
