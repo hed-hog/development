@@ -20,7 +20,7 @@ export class UserService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) { }
+  ) {}
 
   async listRoles(userId: number, paginationParams: PaginationDTO) {
     return this.paginationService.paginate(
@@ -95,6 +95,14 @@ export class UserService {
         email,
         name,
         password: hashedPassword,
+      },
+    });
+  }
+
+  async getByEmail(email: string) {
+    return this.prismaService.user.findFirst({
+      where: {
+        email,
       },
     });
   }

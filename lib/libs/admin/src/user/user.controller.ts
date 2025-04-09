@@ -52,6 +52,11 @@ export class UserController {
     return this.userService.get(userId);
   }
 
+  @Get('email/:email')
+  async getByEmail(@Param('email') email: string) {
+    return this.userService.getByEmail(email);
+  }
+
   @Post()
   create(@Body() data: CreateDTO) {
     return this.userService.create(data);
