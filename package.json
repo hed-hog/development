@@ -1,5 +1,5 @@
 {
-  "name": "hadsys",
+  "name": "hedhog",
   "version": "1.0.0",
   "scripts": {
     "dev": "npm start",
