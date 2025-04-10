@@ -13,6 +13,7 @@ interface IProvider {
   metaData(filepath: string): Promise<any>;
   buffer(filepath: string): Promise<any>;
   tempURL(filepath: string, expires?: number): Promise<any>;
+  initValidation(): Promise<any>;
 }
 
 export abstract class AbstractProvider implements IProvider {
@@ -28,6 +29,7 @@ export abstract class AbstractProvider implements IProvider {
   abstract metaData(filepath: string): Promise<any>;
   abstract buffer(filepath: string): Promise<any>;
   abstract tempURL(filepath: string, expires?: number): Promise<any>;
+  abstract initValidation(): Promise<any>;
 
   getExtension(filename: string) {
     return filename.split('.').pop();

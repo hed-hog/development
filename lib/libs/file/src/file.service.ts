@@ -3,9 +3,10 @@ import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
+  forwardRef,
   Inject,
   Injectable,
-  forwardRef,
+  OnModuleInit,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DeleteDTO } from './dto/delete.dto';
@@ -14,7 +15,7 @@ import { EnumProvider } from './provider/provider.enum';
 import { ProviderFactory } from './provider/provider.factory';
 
 @Injectable()
-export class FileService {
+export class FileService implements OnModuleInit {
   private providerId: number;
   private mimetypes: Record<string, number> = {};
   private setting: Record<string, string>;
@@ -29,6 +30,10 @@ export class FileService {
     @Inject(forwardRef(() => JwtService))
     private readonly jwtService: JwtService,
   ) {}
+
+  async onModuleInit() {
+    await this.getProvider();
+  }
 
   async getProvider(): Promise<AbstractProvider> {
     this.setting = await this.settingService.getSettingValues([

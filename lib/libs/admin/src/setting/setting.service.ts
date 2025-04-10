@@ -324,7 +324,9 @@ export class SettingService {
     });
   }
 
-  async getSettingValues(slug: string | string[]) {
+  async getSettingValues(
+    slug: string | string[],
+  ): Promise<Record<string, any>> {
     slug = Array.isArray(slug) ? slug : [slug];
 
     let setting = await this.prismaService.setting.findMany({
@@ -343,7 +345,7 @@ export class SettingService {
     });
 
     const slugUserOverride = setting.filter((setting) => setting.user_override);
-    
+
     const settingUser = await this.prismaService.setting_user.findMany({
       where: {
         setting_id: {

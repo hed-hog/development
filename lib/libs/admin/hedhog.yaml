@@ -444,16 +444,6 @@ data:
               pt: O emissor da autenticação multifatorial
             value: Hedhog
             user_override: false
-          - slug: mfa-image
-            type: string
-            name:
-              en: Image
-              pt: Imagem
-            description:
-              en: The image to use for the multifactor authentication
-              pt: A imagem a utilizar para a autenticação multifatorial
-            value: ''
-            user_override: false
           - slug: mfa-window
             type: number
             name:

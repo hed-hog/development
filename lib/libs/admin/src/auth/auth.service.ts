@@ -7,6 +7,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  OnModuleInit,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -20,18 +21,21 @@ import {
   getForgetPasswordEmail,
   getResetPasswordEmail,
 } from '../emails';
+import { SettingService } from '../setting/setting.service';
 import { ChangeDTO } from './dto/change.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
+import { LoginWithCodeDTO } from './dto/login-with-code.dto';
 import { LoginDTO } from './dto/login.dto';
-import { OtpDTO } from './dto/otp.dto';
 import { RegisterDTO } from './dto/register.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
+  private settings: Record<string, any> = {};
+
   constructor(
     private readonly configService: ConfigService,
     @Inject(forwardRef(() => PrismaService))
@@ -40,7 +44,18 @@ export class AuthService {
     private readonly jwt: JwtService,
     @Inject(forwardRef(() => MailService))
     private readonly mail: MailService,
+    @Inject(forwardRef(() => SettingService))
+    private readonly setting: SettingService,
   ) {}
+
+  async onModuleInit() {
+    this.settings = await this.setting.getSettingValues([
+      'mfa-issuer',
+      'mfa-window',
+      'mfa-setp',
+      'system-name',
+    ]);
+  }
 
   async createUserCheck(code: string) {
     try {
@@ -222,37 +237,46 @@ export class AuthService {
       throw new BadRequestException('Acesso negado');
     }
 
+    console.log('loginWithEmailAndPassword', { user });
+
     if (!user.multifactor_id) {
       return this.getToken(user);
     } else {
-      if (user.multifactor_id === MultifactorType.EMAIL) {
-        const code = this.generateRandomNumber();
+      switch (user.multifactor_id) {
+        case MultifactorType.EMAIL:
+          const code = this.generateRandomNumber();
 
-        await this.prisma.user.update({
-          where: {
-            id: user.id,
-          },
-          data: {
-            code: String(code),
-          },
-        });
+          await this.prisma.user.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              code: String(code),
+            },
+          });
 
-        await this.mail.send({
-          to: user.email,
-          subject: 'Código de Login',
-          body: `Seu código de login é ${code}`,
-        });
+          await this.mail.send({
+            to: user.email,
+            subject: 'Código de Login',
+            body: `Seu código de login é ${code}`,
+          });
+
+          return {
+            token: this.jwt.sign({
+              id: user.id,
+              mfa: user.multifactor_id,
+            }),
+            mfa: true,
+          };
+        case MultifactorType.APP:
+          return {
+            token: this.jwt.sign({
+              id: user.id,
+              mfa: user.multifactor_id,
+            }),
+            mfa: true,
+          };
       }
-
-      return {
-        name: user.name,
-        email: user.email,
-        token: this.jwt.sign({
-          id: user.id,
-          mfa: user.multifactor_id,
-        }),
-        mfa: true,
-      };
     }
   }
 
@@ -452,30 +476,85 @@ export class AuthService {
     }
   }
 
-  async otp({ token, code }: OtpDTO) {
-    const data = this.jwt.decode(token);
+  async checkCodeMfa(userId: number, code: number) {
+    const window = this.settings['mfa-window'] ?? 0;
+    const step = this.settings['mfa-setp'] ?? 30;
 
     const user = await this.prisma.user.findFirst({
       where: {
-        id: data['id'],
-        code: String(code),
+        id: userId,
+      },
+      select: {
+        code: true,
       },
     });
 
     if (!user) {
-      throw new NotFoundException('Código inválido');
+      throw new NotFoundException('Usuário não encontrado');
     }
 
-    await this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        code: null,
-      },
+    const isValid = await speakeasy.totp.verify({
+      secret: user.code,
+      encoding: 'base32',
+      token: String(code),
+      window,
+      step,
     });
 
-    return this.getToken(user);
+    return isValid;
+  }
+
+  async loginCode({ token, code }: LoginWithCodeDTO) {
+    const data = this.jwt.decode(token);
+
+    console.log('loginCode', { data });
+
+    if (!data?.mfa || !data?.id) {
+      throw new BadRequestException('Código inválido');
+    }
+
+    switch (data.mfa) {
+      case MultifactorType.EMAIL:
+        const user = await this.prisma.user.findFirst({
+          where: {
+            id: data.id,
+            code: String(code),
+          },
+        });
+
+        if (!user) {
+          throw new NotFoundException('Código inválido');
+        }
+
+        await this.prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            code: null,
+          },
+        });
+
+        return this.getToken(user);
+      case MultifactorType.APP:
+        const isValid = await this.checkCodeMfa(data.id, code);
+
+        if (!isValid) {
+          throw new NotFoundException('Código inválido');
+        }
+
+        const userApp = await this.prisma.user.findFirst({
+          where: {
+            id: data.id,
+          },
+        });
+
+        if (!userApp) {
+          throw new NotFoundException('Código inválido');
+        }
+
+        return this.getToken(userApp);
+    }
   }
 
   async login({ email, password }: LoginDTO) {
@@ -498,7 +577,8 @@ export class AuthService {
       },
     });
 
-    const issuer = 'Hedhog';
+    const issuer = this.settings['mfa-issuer'] ?? 'Hedhog';
+
     const appName = `${issuer} (${user.email})`;
 
     const secret = speakeasy.generateSecret({
@@ -515,8 +595,6 @@ export class AuthService {
       label: `${issuer}:${user.email}`,
       issuer,
       encoding: 'base32',
-      image:
-        'https://storage.googleapis.com/hcode-public-storage/logos/Hcode_Logo.png',
     });
 
     const qrCode = await qrcode.toDataURL(otpauth);
@@ -537,13 +615,14 @@ export class AuthService {
   async create2faRecoveryCodes(userId: number) {}
 
   async verify2fa(userId: number, token: string) {
+    const window = this.settings['mfa-window'] ?? 0;
+    const step = this.settings['mfa-setp'] ?? 30;
+
     const user = await this.prisma.user.findFirst({
       where: {
         id: userId,
       },
     });
-
-    console.log('verify2fa', { userId, token, user });
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
@@ -553,11 +632,9 @@ export class AuthService {
       secret: user.code,
       encoding: 'base32',
       token,
-      window: 0,
-      step: 30,
+      window,
+      step,
     });
-
-    console.log('isValid', isValid);
 
     if (!isValid) {
       throw new BadRequestException('Código inválido');

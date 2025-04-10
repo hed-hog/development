@@ -1,0 +1,17 @@
+routes:
+  - &a1
+    path: management
+    children:
+      - path: dashboard
+        lazy:
+          component: ./pages/management/dashboard/dashboard/index.tsx
+      - path: dashboard-component
+        lazy:
+          component: ./pages/management/dashboard/dashboard-component/index.tsx
+      - path: dashboard-item
+        lazy:
+          component: ./pages/management/dashboard/dashboard-item/index.tsx
+      - path: dashboard-user
+        lazy:
+          component: ./pages/management/dashboard/dashboard-user/index.tsx
+  - *a1

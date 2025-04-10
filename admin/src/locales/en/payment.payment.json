@@ -1,0 +1,11 @@
+{
+  "create": "Create payment",
+  "createText": "Fill the payment informations.",
+  "createTooltip": "Create new payment",
+  "delete": "Delete payment",
+  "deleteText": "Are you sure to delete these payment?",
+  "deleteTooltip": "Delete the selected payment",
+  "edit": "Edit payment",
+  "editText": "View and edit payment information.",
+  "editTooltip": "Edit the selected payment"
+}

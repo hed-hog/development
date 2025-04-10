@@ -1,0 +1,11 @@
+{
+  "create": "Create Wallet",
+  "createText": "Fill the wallet informations.",
+  "createTooltip": "Create new wallet",
+  "delete": "Delete Wallet",
+  "deleteText": "Are you sure to delete these wallets?",
+  "deleteTooltip": "Delete the selected wallets",
+  "edit": "Edit Wallet",
+  "editText": "View and edit wallet information.",
+  "editTooltip": "Edit the selected wallets"
+}

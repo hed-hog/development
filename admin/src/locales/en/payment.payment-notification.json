@@ -1,0 +1,11 @@
+{
+  "create": "Create payment notification",
+  "createText": "Fill the payment notification informations.",
+  "createTooltip": "Create new payment notification",
+  "delete": "Delete payment notification",
+  "deleteText": "Are you sure to delete these payment notifications?",
+  "deleteTooltip": "Delete the selected payment notification",
+  "edit": "Edit payment notification",
+  "editText": "View and edit payment notification information.",
+  "editTooltip": "Edit the selected payment notification"
+}

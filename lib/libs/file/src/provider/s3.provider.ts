@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import { AbstractProvider } from './abstract,provider';
 
@@ -6,6 +7,47 @@ export class S3Provider extends AbstractProvider {
 
   constructor(private setting: Record<string, string>) {
     super();
+    this.initValidation();
+  }
+
+  async initValidation() {
+    if (!this.setting['storage-s3-key']) {
+      throw new BadRequestException(
+        `You must set the storage-s3-key in the setting.`,
+      );
+    }
+
+    if (!this.setting['storage-s3-secret']) {
+      throw new BadRequestException(
+        `You must set the storage-s3-secret in the setting.`,
+      );
+    }
+
+    if (!this.setting['storage-s3-region']) {
+      throw new BadRequestException(
+        `You must set the storage-s3-region in the setting.`,
+      );
+    }
+
+    if (!this.setting['storage-s3-bucket']) {
+      throw new BadRequestException(
+        `You must set the storage-s3-bucket in the setting.`,
+      );
+    }
+
+    const s3 = await this.getClient();
+
+    try {
+      await s3
+        .headBucket({
+          Bucket: this.setting['storage-s3-bucket'],
+        })
+        .promise();
+    } catch (error) {
+      throw new BadRequestException(
+        `The bucket "${this.setting['storage-s3-bucket']}" does not exist or you do not have access to it.`,
+      );
+    }
   }
 
   async getClient() {

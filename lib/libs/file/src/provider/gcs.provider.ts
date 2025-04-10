@@ -1,4 +1,5 @@
 import { Storage } from '@google-cloud/storage';
+import { BadRequestException } from '@nestjs/common';
 import { AbstractProvider } from './abstract,provider';
 
 export class GCSProvider extends AbstractProvider {
@@ -6,6 +7,31 @@ export class GCSProvider extends AbstractProvider {
 
   constructor(private setting: Record<string, string>) {
     super();
+    this.initValidation();
+  }
+
+  async initValidation() {
+    if (!this.setting['storage-gcs-keyfile']) {
+      throw new BadRequestException(
+        `You must set the storage-gcs-keyfile in the setting.`,
+      );
+    }
+
+    if (!this.setting['storage-gcs-bucket']) {
+      throw new BadRequestException(
+        `You must set the storage-gcs-bucket in the setting.`,
+      );
+    }
+
+    const storage = await this.getClient();
+    const bucket = storage.bucket(this.setting['storage-gcs-bucket']);
+
+    const exists = await bucket.exists();
+    if (!exists[0]) {
+      throw new BadRequestException(
+        `The bucket "${this.setting['storage-gcs-bucket']}" does not exist.`,
+      );
+    }
   }
 
   async getClient() {

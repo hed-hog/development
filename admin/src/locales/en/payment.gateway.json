@@ -1,0 +1,11 @@
+{
+  "create": "Create gateway",
+  "createText": "Fill the gateway informations.",
+  "createTooltip": "Create new gateway",
+  "delete": "Delete gateway",
+  "deleteText": "Are you sure to delete these gateway?",
+  "deleteTooltip": "Delete the selected gateway",
+  "edit": "Edit gateway",
+  "editText": "View and edit gateway information.",
+  "editTooltip": "Edit the selected gateway"
+}

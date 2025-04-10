@@ -4,11 +4,45 @@ import {
   generateBlobSASQueryParameters,
   StorageSharedKeyCredential,
 } from '@azure/storage-blob';
+import { BadRequestException } from '@nestjs/common';
 import { AbstractProvider } from './abstract,provider';
 
 export class AzureProvider extends AbstractProvider {
   constructor(private setting: Record<string, string>) {
     super();
+    this.initValidation();
+  }
+
+  async initValidation() {
+    if (!this.setting['storage-abs-account']) {
+      throw new BadRequestException(
+        `You must set the storage-abs-account in the setting.`,
+      );
+    }
+
+    if (!this.setting['storage-abs-key']) {
+      throw new BadRequestException(
+        `You must set the storage-abs-key in the setting.`,
+      );
+    }
+
+    if (!this.setting['storage-abs-container']) {
+      throw new BadRequestException(
+        `You must set the storage-abs-container in the setting.`,
+      );
+    }
+
+    const blobServiceClient = await this.getClient();
+    const containerClient = blobServiceClient.getContainerClient(
+      this.setting['storage-abs-container'],
+    );
+
+    const exists = await containerClient.exists();
+    if (!exists) {
+      throw new BadRequestException(
+        `The container "${this.setting['storage-abs-container']}" does not exist.`,
+      );
+    }
   }
 
   async getClient() {

@@ -1,0 +1,11 @@
+{
+  "create": "Create subscription payment",
+  "createText": "Fill the subscription payment informations.",
+  "createTooltip": "Create new subscription payment",
+  "delete": "Delete subscription payment",
+  "deleteText": "Are you sure to delete these subscription payment?",
+  "deleteTooltip": "Delete the selected subscription payment",
+  "edit": "Edit subscription payment",
+  "editText": "View and edit subscription payment information.",
+  "editTooltip": "Edit the selected subscription payment"
+}

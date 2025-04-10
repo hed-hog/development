@@ -13,8 +13,8 @@ import { ChangeDTO } from './dto/change.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { EmailDTO } from './dto/email.dto';
 import { ForgetDTO } from './dto/forget.dto';
+import { LoginWithCodeDTO } from './dto/login-with-code.dto';
 import { LoginDTO } from './dto/login.dto';
-import { OtpDTO } from './dto/otp.dto';
 import { RegisterDTO } from './dto/register.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { User as UserType } from './types/user.type';
@@ -65,9 +65,9 @@ export class AuthController {
   }
 
   @Public()
-  @Post('otp')
-  async otp(@Body() { token, code }: OtpDTO) {
-    return this.service.otp({ token, code });
+  @Post('login-code')
+  async loginCode(@Body() { token, code }: LoginWithCodeDTO) {
+    return this.service.loginCode({ token, code });
   }
 
   @Public()

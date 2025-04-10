@@ -9,9 +9,22 @@ import { AbstractProvider } from './abstract,provider';
 export class LocalProvider extends AbstractProvider {
   constructor(private setting: Record<string, string>) {
     super();
+    this.initValidation();
   }
 
-  async createForderRecursive(path: string) {
+  async initValidation() {
+    if (!this.setting['storage-local-path']) {
+      throw new BadRequestException(
+        `You must set the storage-local-path in the setting.`,
+      );
+    }
+
+    if (!existsSync(this.setting['storage-local-path'])) {
+      await this.createFolderRecursive(this.setting['storage-local-path']);
+    }
+  }
+
+  async createFolderRecursive(path: string) {
     const folders = join(path).split(sep);
     let currentPath = '';
     for (const folder of folders) {
@@ -37,7 +50,7 @@ export class LocalProvider extends AbstractProvider {
     }
 
     if (!existsSync(storagePath)) {
-      await this.createForderRecursive(storagePath);
+      await this.createFolderRecursive(storagePath);
     }
 
     if (!existsSync(storagePath)) {
@@ -63,7 +76,7 @@ export class LocalProvider extends AbstractProvider {
     }
 
     if (!existsSync(storagePath)) {
-      await this.createForderRecursive(storagePath);
+      await this.createFolderRecursive(storagePath);
     }
 
     if (!existsSync(storagePath)) {
