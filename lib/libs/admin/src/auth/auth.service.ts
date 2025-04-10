@@ -504,10 +504,55 @@ export class AuthService implements OnModuleInit {
     return isValid;
   }
 
-  async loginCode({ token, code }: LoginWithCodeDTO) {
+  async loginRecoveryCode({ token, code }: LoginWithCodeDTO) {
     const data = this.jwt.decode(token);
 
-    console.log('loginCode', { data });
+    if (!data?.mfa || !data?.id) {
+      throw new BadRequestException('Código inválido');
+    }
+
+    switch (data.mfa) {
+      case MultifactorType.EMAIL:
+      //TO DO
+      case MultifactorType.APP:
+        const codes = await this.prisma.user_code_recovery.findMany({
+          where: {
+            user_id: data.id,
+          },
+        });
+
+        let isValid = false;
+
+        for (const item of codes) {
+          const isCodeValid = await compare(String(code), item.code);
+
+          if (isCodeValid) {
+            isValid = true;
+            await this.prisma.user_code_recovery.delete({
+              where: {
+                id: item.id,
+              },
+            });
+            break;
+          }
+        }
+
+        if (!isValid) {
+          throw new NotFoundException('Código inválido');
+        }
+
+        const user = await this.prisma.user.findFirst({
+          where: {
+            id: data.id,
+          },
+        });
+
+        return this.getToken(user);
+    }
+  }
+
+  async loginCode({ token, code }: LoginWithCodeDTO) {
+    const data = this.jwt.decode(token);
 
     if (!data?.mfa || !data?.id) {
       throw new BadRequestException('Código inválido');
@@ -567,15 +612,20 @@ export class AuthService implements OnModuleInit {
     });
   }
 
-  async generate2fa(userId: number) {
+  async generateMfa(userId: number) {
     const user = await this.prisma.user.findFirst({
       where: {
         id: userId,
       },
       select: {
         email: true,
+        multifactor_id: true,
       },
     });
+
+    if (user.multifactor_id) {
+      throw new ConflictException('Usuário já possui MFA habilitado');
+    }
 
     const issuer = this.settings['mfa-issuer'] ?? 'Hedhog';
 
@@ -604,17 +654,74 @@ export class AuthService implements OnModuleInit {
         id: userId,
       },
       data: {
-        multifactor_id: MultifactorType.APP,
         code: secret.base32,
       },
     });
 
-    return { qrCode, otpauthUrl: secret.otpauth_url };
+    return { otpauthUrl: secret.otpauth_url, qrCode };
   }
 
-  async create2faRecoveryCodes(userId: number) {}
+  generateRecoveryCodes(count = 10): string[] {
+    const codes = Array.from({ length: count }, () => {
+      const array = new Uint8Array(4);
+      globalThis.crypto.getRandomValues(array);
+      return Array.from(array)
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+    });
+    return codes;
+  }
 
-  async verify2fa(userId: number, token: string) {
+  async createMfaRecoveryCodes(userId: number) {
+    const codes = this.generateRecoveryCodes();
+
+    await this.prisma.user_code_recovery.deleteMany({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    const salt = await genSalt();
+
+    const data = [];
+
+    for (const code of codes) {
+      const hashCode = await hash(code, salt);
+
+      data.push({
+        user_id: userId,
+        code: hashCode,
+      });
+    }
+
+    await this.prisma.user_code_recovery.createMany({
+      data,
+    });
+
+    return codes;
+  }
+
+  async removeMfa(userId: number, token: string) {
+    try {
+      await this.verifyMfa(userId, token, false);
+
+      const user = await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          multifactor_id: null,
+          code: null,
+        },
+      });
+
+      return this.getToken(user);
+    } catch (error: any) {
+      throw new BadRequestException(`Invalid code: ${error?.message}`);
+    }
+  }
+
+  async verifyMfa(userId: number, token: string, verifyMultifactor = true) {
     const window = this.settings['mfa-window'] ?? 0;
     const step = this.settings['mfa-setp'] ?? 30;
 
@@ -623,6 +730,10 @@ export class AuthService implements OnModuleInit {
         id: userId,
       },
     });
+
+    if (verifyMultifactor && user.multifactor_id) {
+      throw new ConflictException('Usuário já possui MFA habilitado');
+    }
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
@@ -646,10 +757,11 @@ export class AuthService implements OnModuleInit {
       },
       data: {
         multifactor_id: MultifactorType.APP,
-        code: user.code,
       },
     });
 
-    return this.getToken(user);
+    const codes = await this.createMfaRecoveryCodes(userId);
+
+    return { ...this.getToken(user), codes };
   }
 }

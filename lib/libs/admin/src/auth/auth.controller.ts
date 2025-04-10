@@ -7,6 +7,7 @@ import {
   Inject,
   Post,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ChangeDTO } from './dto/change.dto';
@@ -71,6 +72,12 @@ export class AuthController {
   }
 
   @Public()
+  @Post('login-recovery-code')
+  async loginRecoveryCode(@Body() { token, code }: LoginWithCodeDTO) {
+    return this.service.loginRecoveryCode({ token, code });
+  }
+
+  @Public()
   @Post('forget')
   async forget(
     @Body()
@@ -115,16 +122,19 @@ export class AuthController {
     return this.service.changeEmail({ currentEmail, password, newEmail });
   }
 
-  @Post('2fa/generate')
-  async generate2fa(@User() { id }) {
-    return this.service.generate2fa(id);
+  @Delete('mfa-remove')
+  async removeMfa(@User() { id }, @Body() { token }: { token: string }) {
+    return this.service.removeMfa(id, token);
   }
 
-  @Post('2fa/verify')
-  async verify2fa(
-    @User() { id },
-    @Body() { secret, token }: { secret: string; token: string },
-  ) {
-    return this.service.verify2fa(id, token);
+  @Post('mfa-generate')
+  async generateMfa(@User() { id }) {
+    return this.service.generateMfa(id);
+  }
+
+  @Post('mfa-verify')
+  async verifyMfa(@User() { id }, @Body() { token }: { token: string }) {
+    console.log('mfa-verify');
+    return this.service.verifyMfa(id, token);
   }
 }
