@@ -28,10 +28,10 @@ tables:
         locale:
           en: Title
           pt: Título
-      - name: content
+      - name: body
         field: richtext
         locale:
-          en: Content
+          en: Body
           pt: Conteúdo
       - type: created_at
       - type: updated_at

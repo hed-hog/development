@@ -1,11 +1,11 @@
 {
-  "create": "Create Content",
-  "createText": "Fill the content informations.",
-  "createTooltip": "Create new content",
-  "delete": "Delete Content",
-  "deleteText": "Are you sure to delete these contents?",
-  "deleteTooltip": "Delete the selected contents",
-  "edit": "Edit Content",
-  "editText": "View and edit content information.",
-  "editTooltip": "Edit the selected contents"
+  "create": "Criar Conteudo",
+  "createText": "Preencha as informacoes do conteudo.",
+  "createTooltip": "Criar novo conteudo",
+  "delete": "Excluir Conteudo",
+  "deleteText": "Tem certeza de que deseja excluir estes conteudos?",
+  "deleteTooltip": "Excluir os conteudos selecionados",
+  "edit": "Editar Conteudo",
+  "editText": "Visualizar e editar informacoes do conteudo.",
+  "editTooltip": "Editar os conteudos selecionados"
 }

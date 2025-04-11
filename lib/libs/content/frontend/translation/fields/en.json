@@ -1,7 +1,7 @@
 {
   "content.slug": "Slug",
   "content.title": "Title",
-  "content.content": "Content",
+  "content.body": "Body",
   "content_locale.title": "Title",
-  "content_locale.content": "Content"
+  "content_locale.body": "Body"
 }
