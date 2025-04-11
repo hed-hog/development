@@ -3,32 +3,35 @@ tables:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   content_locale:
     columns:
       - type: fk
-        isPrimary: true
         name: content_id
+        isPrimary: true
         references:
           table: content
           column: id
           onDelete: CASCADE
       - type: fk
-        isPrimary: true
         name: locale_id
+        isPrimary: true
         references:
           table: locale
-          onDelete: CASCADE
           column: id
+          onDelete: CASCADE
       - name: title
         locale:
           en: Title
           pt: Título
-      - type: text
-        name: body
+      - name: content
+        field: richtext
         locale:
-          en: Body
+          en: Content
           pt: Conteúdo
       - type: created_at
       - type: updated_at
@@ -84,7 +87,5 @@ screens:
       relations: *a1
 routes:
   - path: content
-    children:
-      - path: content
-        lazy:
-          component: ./pages/content/content/index.tsx
+    lazy:
+      component: ./pages/content/content/index.tsx
