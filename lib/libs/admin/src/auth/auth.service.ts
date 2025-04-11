@@ -518,7 +518,6 @@ export class AuthService implements OnModuleInit {
 
     switch (data.mfa) {
       case MultifactorType.EMAIL:
-      //TO DO
       case MultifactorType.APP:
         const codes = await this.prisma.user_code_recovery.findMany({
           where: {
