@@ -3,6 +3,9 @@ tables:
     columns:
       - type: pk
       - type: slug
+        locale:
+          en: Slug
+          pt: Slug
       - type: created_at
       - type: updated_at
   content_locale:
@@ -28,7 +31,7 @@ tables:
       - type: text
         name: body
         locale:
-          en: Body
+          en: Content
           pt: Conteúdo
       - type: created_at
       - type: updated_at
@@ -84,7 +87,5 @@ screens:
       relations: *a1
 routes:
   - path: content
-    children:
-      - path: content
-        lazy:
-          component: ./pages/content/content/index.tsx
+    lazy:
+      component: ./pages/content/content/index.tsx
