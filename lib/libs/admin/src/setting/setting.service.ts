@@ -387,8 +387,6 @@ export class SettingService {
         ss.value;
     });
 
-    console.log('getSettingValues', data);
-
     return data;
   }
 
