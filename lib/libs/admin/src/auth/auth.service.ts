@@ -1,5 +1,6 @@
 import { MailService } from '@hedhog/mail';
 import { PrismaService } from '@hedhog/prisma';
+import { HttpService } from '@nestjs/axios';
 import {
   BadRequestException,
   ConflictException,
@@ -13,6 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
 import * as qrcode from 'qrcode';
+import { lastValueFrom } from 'rxjs';
 import * as speakeasy from 'speakeasy';
 import {
   getChangeEmailEmail,
@@ -34,9 +36,10 @@ import { MultifactorType } from './enums/multifactor-type.enum';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
-  private settings: Record<string, any> = {};
+  public settings: Record<string, any> = {};
 
   constructor(
+    private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     @Inject(forwardRef(() => PrismaService))
     private readonly prisma: PrismaService,
@@ -54,6 +57,10 @@ export class AuthService implements OnModuleInit {
       'mfa-window',
       'mfa-setp',
       'system-name',
+      'google_client_id',
+      'google_client_secret',
+      'google_scopes',
+      'url',
     ]);
   }
 
@@ -236,8 +243,6 @@ export class AuthService implements OnModuleInit {
     if (!isPasswordValid) {
       throw new BadRequestException('Acesso negado');
     }
-
-    console.log('loginWithEmailAndPassword', { user });
 
     if (!user.multifactor_id) {
       return this.getToken(user);
@@ -763,5 +768,87 @@ export class AuthService implements OnModuleInit {
     const codes = await this.createMfaRecoveryCodes(userId);
 
     return { ...this.getToken(user), codes };
+  }
+
+  async loginGoogle(res: any) {
+    const redirectURI = new URL(
+      '/auth/google/callback',
+      this.settings['url'],
+    ).toString();
+
+    const params = new URLSearchParams({
+      client_id: this.settings['google_client_id'],
+      redirect_uri: redirectURI,
+      response_type: 'code',
+      scope: this.settings['google_scopes'].join(' '),
+    });
+
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+
+    return res.redirect(url);
+  }
+
+  async callbackGoogle(code: string) {
+    const tokenUrl = 'https://oauth2.googleapis.com/token';
+    const profileUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
+
+    const tokenResponse = await this.fetchGoogleToken(code, tokenUrl);
+    const profile = await this.fetchGoogleProfile(
+      tokenResponse.access_token,
+      profileUrl,
+    );
+
+    let user = await this.findOrCreateUser(profile);
+
+    return this.getToken(user);
+  }
+
+  private async fetchGoogleToken(code: string, url: string) {
+    const response = await lastValueFrom(
+      this.httpService.post(
+        url,
+        {
+          client_id: this.settings['google_client_id'],
+          client_secret: this.settings['google_client_secret'],
+          redirect_uri: `${this.settings['url']}/auth/google/callback`,
+          grant_type: 'authorization_code',
+          code,
+        },
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        },
+      ),
+    );
+
+    return response.data;
+  }
+
+  private async fetchGoogleProfile(accessToken: string, url: string) {
+    const response = await lastValueFrom(
+      this.httpService.get(url, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }),
+    );
+
+    return response.data;
+  }
+
+  private async findOrCreateUser(profile: any) {
+    let user = await this.prisma.user.findFirst({
+      where: { email: profile.email },
+    });
+
+    if (!user) {
+      user = await this.prisma.user.create({
+        data: {
+          email: profile.email,
+          name: profile.name,
+          password: '',
+          code: profile.id,
+        },
+      });
+    }
+
+    return user;
   }
 }

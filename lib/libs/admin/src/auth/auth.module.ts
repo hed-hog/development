@@ -1,5 +1,6 @@
 import { MailModule } from '@hedhog/mail';
 import { PrismaModule } from '@hedhog/prisma';
+import { HttpModule } from '@nestjs/axios';
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -29,6 +30,7 @@ import { AuthGuard } from './guards/auth.guard';
     forwardRef(() => MailModule),
     forwardRef(() => SettingModule),
     ConfigModule,
+    HttpModule,
   ],
   controllers: [AuthController],
   providers: [

@@ -344,7 +344,7 @@ export class SettingService {
       },
     });
 
-    const slugUserOverride = setting.filter((setting) => setting.user_override);
+    const slugUserOverride = setting.filter((s) => s.user_override);
 
     const settingUser = await this.prismaService.setting_user.findMany({
       where: {
@@ -360,27 +360,34 @@ export class SettingService {
 
     const data: Record<string, any> = {};
 
-    setting.forEach((setting) => {
-      switch (setting.type) {
+    for (const s of setting) {
+      switch (s.type) {
         case 'boolean':
-          data[setting.slug] = setting.value === 'true';
+          data[s.slug] = s.value === 'true';
           break;
         case 'number':
-          data[setting.slug] = Number(setting.value);
+          data[s.slug] = Number(s.value);
           break;
         case 'array':
         case 'json':
-          data[setting.slug] = JSON.parse(setting.value);
+          try {
+            data[s.slug] = JSON.parse(s.value);
+          } catch (err) {
+            console.error('Error parsing JSON', s.value, err);
+            data[s.slug] = s.value;
+          }
           break;
         default:
-          data[setting.slug] = setting.value;
+          data[s.slug] = s.value;
       }
+    }
+
+    settingUser.forEach((ss) => {
+      data[slugUserOverride.find((s) => s.id === ss.setting_id).slug] =
+        ss.value;
     });
 
-    settingUser.forEach((setting) => {
-      data[slugUserOverride.find((s) => s.id === setting.setting_id).slug] =
-        setting.value;
-    });
+    console.log('getSettingValues', data);
 
     return data;
   }

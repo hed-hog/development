@@ -2,12 +2,13 @@ import { Public, Role, User } from '@hedhog/core';
 import {
   Body,
   Controller,
+  Delete,
   forwardRef,
   Get,
   Inject,
   Post,
   Query,
-  Delete,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ChangeDTO } from './dto/change.dto';
@@ -136,5 +137,17 @@ export class AuthController {
   async verifyMfa(@User() { id }, @Body() { token }: { token: string }) {
     console.log('mfa-verify');
     return this.service.verifyMfa(id, token);
+  }
+
+  @Public()
+  @Get('google/login')
+  async loginGoogle(@Res() res) {
+    return this.service.loginGoogle(res);
+  }
+
+  @Public()
+  @Get('google/callback')
+  async callbackGoogle(@Query() { code }: { code: string }) {
+    return this.service.callbackGoogle(code);
   }
 }

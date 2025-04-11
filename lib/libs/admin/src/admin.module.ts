@@ -2,6 +2,7 @@ import { LocaleModule } from '@hedhog/locale';
 import { MailModule } from '@hedhog/mail';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
+import { HttpModule } from '@nestjs/axios';
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    HttpModule,
     ConfigModule.forRoot(),
     forwardRef(() => AuthModule),
     forwardRef(() => DashboardModule),
