@@ -11,24 +11,24 @@ tables:
   content_locale:
     columns:
       - type: fk
-        isPrimary: true
         name: content_id
+        isPrimary: true
         references:
           table: content
           column: id
           onDelete: CASCADE
       - type: fk
-        isPrimary: true
         name: locale_id
+        isPrimary: true
         references:
           table: locale
-          onDelete: CASCADE
           column: id
+          onDelete: CASCADE
       - name: title
         locale:
           en: Title
           pt: Título
-      - name: body
+      - name: content
         field: richtext
         locale:
           en: Content
