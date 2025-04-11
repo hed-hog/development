@@ -28,8 +28,8 @@ tables:
         locale:
           en: Title
           pt: Título
-      - type: text
-        name: body
+      - name: body
+        field: richtext
         locale:
           en: Content
           pt: Conteúdo
@@ -87,5 +87,7 @@ screens:
       relations: *a1
 routes:
   - path: content
-    lazy:
-      component: ./pages/content/content/index.tsx
+    children:
+      - path: content
+        lazy:
+          component: ./pages/content/content/index.tsx
