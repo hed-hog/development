@@ -103,7 +103,7 @@ export class MailService {
       throw new Error(`Template "${slug}" not found for locale "${locale}"`);
     }
 
-    const { subject, body } = mail[0];
+    const { subject, body } = mail.mail_locale[0];
 
     const parsedSubject = this.interpolate(subject, variables);
     const parsedBody = this.interpolate(body, variables);
@@ -113,6 +113,8 @@ export class MailService {
       subject: parsedSubject,
       body: parsedBody,
     });
+
+    console.log({ locale, mail, parsedSubject, parsedBody });
   }
 
   private interpolate(
