@@ -1,4 +1,5 @@
 import { MailModule } from '@hedhog/mail';
+import { MailManagerModule } from '@hedhog/mail-manager';
 import { PrismaModule } from '@hedhog/prisma';
 import { HttpModule } from '@nestjs/axios';
 import { forwardRef, Module } from '@nestjs/common';
@@ -28,6 +29,7 @@ import { AuthGuard } from './guards/auth.guard';
     ),
     forwardRef(() => PrismaModule),
     forwardRef(() => MailModule),
+    forwardRef(() => MailManagerModule),
     forwardRef(() => SettingModule),
     ConfigModule,
     HttpModule,

@@ -6,6 +6,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { MailSentModule } from './mail-sent/mail-sent.module';
 import { MailVarModule } from './mail-var/mail-var.module';
 import { MailModule } from './mail/mail.module';
+import { MailService as MailMainService } from './mail/mail.service';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { MailModule } from './mail/mail.module';
     forwardRef(() => MailVarModule),
   ],
   controllers: [],
-  providers: [],
-  exports: [],
+  providers: [MailMainService],
+  exports: [MailMainService],
 })
 export class MailManagerModule {}

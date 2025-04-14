@@ -1,4 +1,5 @@
 import { Public, Role, User } from '@hedhog/core';
+import { Locale } from '@hedhog/locale';
 import {
   Body,
   Controller,
@@ -36,8 +37,8 @@ export class AuthController {
 
   @Public()
   @Post('create-user')
-  async createUser(@Body() data: CreateUserDTO) {
-    return this.service.createUser(data);
+  async createUser(@Locale() Locale, @Body() data: CreateUserDTO) {
+    return this.service.createUser(Locale, data);
   }
 
   @Role()
@@ -48,8 +49,8 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  async login(@Body() { email, password }: LoginDTO) {
-    return this.service.login({ email, password });
+  async login(@Locale() locale: string, @Body() { email, password }: LoginDTO) {
+    return this.service.login(locale, { email, password });
   }
 
   @Public()
@@ -81,6 +82,7 @@ export class AuthController {
   @Public()
   @Post('forget')
   async forget(
+    @Locale() locale: string,
     @Body()
     {
       email,
@@ -89,15 +91,18 @@ export class AuthController {
       body: string;
     },
   ) {
-    return this.service.forget({
+    return this.service.forget(locale, {
       email,
     });
   }
 
   @Public()
   @Post('reset')
-  async reset(@Body() { newPassword, confirmNewPassword, code }: ResetDTO) {
-    return this.service.resetPassword({
+  async reset(
+    @Locale() locale: string,
+    @Body() { newPassword, confirmNewPassword, code }: ResetDTO,
+  ) {
+    return this.service.resetPassword(locale, {
       newPassword,
       confirmNewPassword,
       code,
@@ -107,10 +112,11 @@ export class AuthController {
   @Public()
   @Post('change-password')
   async changePassword(
+    @Locale() locale: string,
     @Body()
     { email, currentPassword, newPassword, confirmNewPassword }: ChangeDTO,
   ) {
-    return this.service.changePassword({
+    return this.service.changePassword(locale, {
       email,
       currentPassword,
       newPassword,
@@ -119,8 +125,15 @@ export class AuthController {
   }
 
   @Post('change-email')
-  async changeEmail(@Body() { currentEmail, password, newEmail }: EmailDTO) {
-    return this.service.changeEmail({ currentEmail, password, newEmail });
+  async changeEmail(
+    @Locale() locale: string,
+    @Body() { currentEmail, password, newEmail }: EmailDTO,
+  ) {
+    return this.service.changeEmail(locale, {
+      currentEmail,
+      password,
+      newEmail,
+    });
   }
 
   @Delete('mfa-remove')

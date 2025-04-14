@@ -1,4 +1,4 @@
-import { MailService } from '@hedhog/mail';
+import { MailService as MailManagerService } from '@hedhog/mail-manager';
 import { PrismaService } from '@hedhog/prisma';
 import { HttpService } from '@nestjs/axios';
 import {
@@ -16,13 +16,6 @@ import { compare, genSalt, hash } from 'bcrypt';
 import * as qrcode from 'qrcode';
 import { lastValueFrom } from 'rxjs';
 import * as speakeasy from 'speakeasy';
-import {
-  getChangeEmailEmail,
-  getChangePasswordEmail,
-  getCreateUserEmail,
-  getForgetPasswordEmail,
-  getResetPasswordEmail,
-} from '../emails';
 import { SettingService } from '../setting/setting.service';
 import { ChangeDTO } from './dto/change.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -45,8 +38,8 @@ export class AuthService implements OnModuleInit {
     private readonly prisma: PrismaService,
     @Inject(forwardRef(() => JwtService))
     private readonly jwt: JwtService,
-    @Inject(forwardRef(() => MailService))
-    private readonly mail: MailService,
+    @Inject(forwardRef(() => MailManagerService))
+    private readonly mail: MailManagerService,
     @Inject(forwardRef(() => SettingService))
     private readonly setting: SettingService,
   ) {}
@@ -116,17 +109,20 @@ export class AuthService implements OnModuleInit {
     return this.getToken(newUser);
   }
 
-  async createUser({
-    code,
-    password,
-    street,
-    number,
-    complement,
-    district,
-    city,
-    state,
-    postal_code,
-  }: CreateUserDTO) {
+  async createUser(
+    locale: string,
+    {
+      code,
+      password,
+      street,
+      number,
+      complement,
+      district,
+      city,
+      state,
+      postal_code,
+    }: CreateUserDTO,
+  ) {
     try {
       const user = await this.createUserCheck(code);
       const salt = await genSalt();
@@ -191,12 +187,10 @@ export class AuthService implements OnModuleInit {
         });
       }
 
-      await this.mail.send({
-        to: user.email,
-        subject: 'Conta criada',
-        body: getCreateUserEmail({
-          name: user.name,
-        }),
+      await this.mail.sendTemplatedMail(locale, {
+        email: user.email,
+        slug: 'create-user',
+        variables: {},
       });
 
       return this.getToken(user);
@@ -228,7 +222,11 @@ export class AuthService implements OnModuleInit {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  async loginWithEmailAndPassword(email: string, password: string) {
+  async loginWithEmailAndPassword(
+    locale: string,
+    email: string,
+    password: string,
+  ) {
     const user = await this.prisma.user.findFirst({
       where: {
         email,
@@ -260,10 +258,10 @@ export class AuthService implements OnModuleInit {
             },
           });
 
-          await this.mail.send({
-            to: user.email,
-            subject: 'Código de Login',
-            body: `Seu código de login é ${code}`,
+          await this.mail.sendTemplatedMail(locale, {
+            email: user.email,
+            slug: 'login',
+            variables: { code: String(code) },
           });
 
           return {
@@ -295,7 +293,7 @@ export class AuthService implements OnModuleInit {
     };
   }
 
-  async forget({ email }: ForgetDTO) {
+  async forget(locale: string, { email }: ForgetDTO) {
     const appUrl =
       process.env.APP_URL ?? this.configService.get<string>('APP_URL');
 
@@ -324,10 +322,13 @@ export class AuthService implements OnModuleInit {
         },
       });
 
-      await this.mail.send({
-        to: email,
-        subject: `Recuperação de Senha`,
-        body: getForgetPasswordEmail(`${appUrl}/home?reset&code=${code}`),
+      await this.mail.sendTemplatedMail(locale, {
+        email,
+        slug: 'forget',
+        variables: {
+          appUrl,
+          code,
+        },
       });
     }
 
@@ -337,12 +338,10 @@ export class AuthService implements OnModuleInit {
     };
   }
 
-  async changePassword({
-    email,
-    currentPassword,
-    newPassword,
-    confirmNewPassword,
-  }: ChangeDTO) {
+  async changePassword(
+    locale: string,
+    { email, currentPassword, newPassword, confirmNewPassword }: ChangeDTO,
+  ) {
     if (newPassword !== confirmNewPassword) {
       throw new BadRequestException('Senhas não conferem');
     }
@@ -367,16 +366,19 @@ export class AuthService implements OnModuleInit {
       },
     });
 
-    await this.mail.send({
-      to: email,
-      subject: `Senha alterada`,
-      body: getChangePasswordEmail(),
+    await this.mail.sendTemplatedMail(locale, {
+      email,
+      slug: 'change-password',
+      variables: {},
     });
 
     return this.getToken(newUser);
   }
 
-  async changeEmail({ currentEmail, password, newEmail }: EmailDTO) {
+  async changeEmail(
+    locale: string,
+    { currentEmail, password, newEmail }: EmailDTO,
+  ) {
     const user = await this.prisma.user.findFirst({
       where: { email: currentEmail },
     });
@@ -424,16 +426,19 @@ export class AuthService implements OnModuleInit {
       data: { value: newEmail },
     });
 
-    await this.mail.send({
-      to: newEmail,
-      subject: `Email alterado`,
-      body: getChangeEmailEmail(),
+    await this.mail.sendTemplatedMail(locale, {
+      email: newEmail,
+      slug: 'change-email',
+      variables: {},
     });
 
     return this.getToken(newUser);
   }
 
-  async resetPassword({ code, newPassword, confirmNewPassword }: ResetDTO) {
+  async resetPassword(
+    locale: string,
+    { code, newPassword, confirmNewPassword }: ResetDTO,
+  ) {
     if (newPassword !== confirmNewPassword) {
       throw new BadRequestException('Senhas não conferem');
     }
@@ -464,10 +469,10 @@ export class AuthService implements OnModuleInit {
           },
         });
 
-        await this.mail.send({
-          to: user.email,
-          subject: `Senha recuperada`,
-          body: getResetPasswordEmail(),
+        await this.mail.sendTemplatedMail(locale, {
+          email: user.email,
+          slug: 'reset-password',
+          variables: {},
         });
 
         return this.getToken(user);
@@ -606,8 +611,8 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async login({ email, password }: LoginDTO) {
-    return this.loginWithEmailAndPassword(email, password);
+  async login(locale: string, { email, password }: LoginDTO) {
+    return this.loginWithEmailAndPassword(locale, email, password);
   }
 
   async verify(id: number) {

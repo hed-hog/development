@@ -1,5 +1,6 @@
 import { LocaleModule } from '@hedhog/locale';
 import { MailModule } from '@hedhog/mail';
+import { MailManagerModule } from '@hedhog/mail-manager';
 import { PaginationModule } from '@hedhog/pagination';
 import { PrismaModule } from '@hedhog/prisma';
 import { HttpModule } from '@nestjs/axios';
@@ -22,6 +23,7 @@ import { UserModule } from './user/user.module';
     forwardRef(() => AuthModule),
     forwardRef(() => DashboardModule),
     forwardRef(() => MailModule),
+    forwardRef(() => MailManagerModule),
     forwardRef(() => MenuModule),
     forwardRef(() => PaginationModule),
     forwardRef(() => RoleModule),
@@ -37,6 +39,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     AuthModule,
     MailModule,
+    MailManagerModule,
     RouteModule,
     RoleModule,
     MenuModule,
