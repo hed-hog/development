@@ -1,15 +1,17 @@
-import { PaginationDTO, PaginationService } from '@hedhog/pagination';
+import { DeleteDTO } from '@hedhog/core';
+import { LocaleService } from '@hedhog/locale';
+import { MailService as MailMainService } from '@hedhog/mail';
+import { PaginationDTO } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
+import { SendTemplatedMailDTO } from './dto/send.dto';
 import { UpdateDTO } from './dto/update.dto';
-import { LocaleService } from '@hedhog/locale';
 
 @Injectable()
 export class MailService {
@@ -19,17 +21,17 @@ export class MailService {
   constructor(
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
-    @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService,
+    @Inject(forwardRef(() => MailMainService))
+    private readonly mailMainService: MailMainService,
     @Inject(forwardRef(() => LocaleService))
-    private readonly localeService: LocaleService
+    private readonly localeService: LocaleService,
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
     return this.localeService.listModelWithLocale(
       locale,
       this.modelName,
-      paginationParams
+      paginationParams,
     );
   }
 
@@ -41,7 +43,7 @@ export class MailService {
     return this.localeService.createModelWithLocale(
       this.modelName,
       this.foreignKey,
-      data
+      data,
     );
   }
 
@@ -50,23 +52,63 @@ export class MailService {
       this.modelName,
       this.foreignKey,
       id,
-      data
+      data,
     );
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
     return this.prismaService.mail.deleteMany({
       where: {
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
+  }
+
+  async sendTemplatedMail(
+    locale: string,
+    { email, slug, variables }: SendTemplatedMailDTO,
+  ) {
+    const mail = await this.prismaService.mail.findUnique({
+      where: { slug },
+      include: {
+        mail_locale: {
+          where: { locale_id: locale },
+          select: { subject: true, body: true },
+        },
+        mail_var: {
+          select: { name: true },
+        },
+      },
+    });
+
+    if (!mail) {
+      throw new Error(`Template "${slug}" not found for locale "${locale}"`);
+    }
+
+    const { subject, body } = mail[0];
+
+    const parsedSubject = this.interpolate(subject, variables);
+    const parsedBody = this.interpolate(body, variables);
+
+    await this.mailMainService.send({
+      to: email,
+      subject: parsedSubject,
+      body: parsedBody,
+    });
+  }
+
+  private interpolate(
+    template: string,
+    variables: Record<string, string>,
+  ): string {
+    return template.replace(/\{\{(\w+)\}\}/g, (_, key) => variables[key] ?? '');
   }
 }
