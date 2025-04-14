@@ -1,13 +1,13 @@
+import { DeleteDTO } from '@hedhog/core';
 import { PaginationDTO, PaginationService } from '@hedhog/pagination';
 import { PrismaService } from '@hedhog/prisma';
 import {
   BadRequestException,
   Inject,
   Injectable,
-  forwardRef
+  forwardRef,
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
-import { DeleteDTO } from '@hedhog/core';
 import { UpdateDTO } from './dto/update.dto';
 
 @Injectable()
@@ -16,14 +16,14 @@ export class MailSentService {
     @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['subject', 'from', 'to', 'cc', 'bcc', 'body'];
     const OR: any[] = this.prismaService.createInsensitiveSearch(
       fields,
-      paginationParams
+      paginationParams,
     );
 
     if (paginationParams.search && !isNaN(+paginationParams.search)) {
@@ -35,44 +35,52 @@ export class MailSentService {
       paginationParams,
       {
         where: {
-          OR
-        }
-      }
+          OR,
+        },
+      },
     );
   }
 
   async get(id: number) {
     return this.prismaService.mail_sent.findUnique({
-      where: { id: id }
+      where: { id: id },
     });
   }
 
   async create(data: CreateDTO) {
     return this.prismaService.mail_sent.create({
-      data
+      data: {
+        mail_id: data.mail_id,
+        subject: data.subject,
+        from: data.from,
+        to: data.to,
+        cc: data.cc,
+        bcc: data.bcc,
+        body: data.body,
+      },
     });
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
     return this.prismaService.mail_sent.update({
       where: { id: id },
-      data
+      data,
     });
   }
 
   async delete({ ids }: DeleteDTO) {
     if (ids == undefined || ids == null) {
       throw new BadRequestException(
-        'You must select at least one item to delete.'
+        'You must select at least one item to delete.',
       );
     }
 
     return this.prismaService.mail_sent.deleteMany({
       where: {
         id: {
-          in: ids
-        }
-      }
+          in: ids,
+        },
+      },
     });
   }
 }
