@@ -295,7 +295,9 @@ export class AuthService implements OnModuleInit {
 
   async forget(locale: string, { email }: ForgetDTO) {
     const appUrl =
-      process.env.APP_URL ?? this.configService.get<string>('APP_URL');
+      process.env.APP_URL ??
+      process.env.FRONTEND_URL ??
+      this.configService.get<string>('APP_URL');
 
     const user = await this.prisma.user.findFirst({
       where: {
@@ -324,7 +326,7 @@ export class AuthService implements OnModuleInit {
 
       await this.mail.sendTemplatedMail(locale, {
         email,
-        slug: 'forget',
+        slug: 'forget-password',
         variables: {
           appUrl,
           code,

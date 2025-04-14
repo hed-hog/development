@@ -350,7 +350,7 @@ export class MailService implements OnModuleInit {
 
       this.log('Email sent:', result);
 
-      return result;
+      return { result, mail };
     }
   }
 }

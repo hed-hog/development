@@ -9,6 +9,7 @@ import {
   Injectable,
   forwardRef,
 } from '@nestjs/common';
+import { MailSentService } from '../mail-sent/mail-sent.service';
 import { CreateDTO } from './dto/create.dto';
 import { SendTemplatedMailDTO } from './dto/send.dto';
 import { UpdateDTO } from './dto/update.dto';
@@ -25,6 +26,8 @@ export class MailService {
     private readonly mailMainService: MailMainService,
     @Inject(forwardRef(() => LocaleService))
     private readonly localeService: LocaleService,
+    @Inject(forwardRef(() => MailSentService))
+    private readonly mailSentService: MailSentService,
   ) {}
 
   async list(locale: string, paginationParams: PaginationDTO) {
@@ -76,11 +79,48 @@ export class MailService {
     locale: string,
     { email, slug, variables }: SendTemplatedMailDTO,
   ) {
+    const localeRecord = await this.getLocaleRecord(locale);
+    const mail = await this.getMailTemplate(slug, localeRecord.id);
+
+    const { subject, body } = mail.mail_locale[0];
+    const parsedSubject = this.interpolateTemplate(subject, variables);
+    const parsedBody = this.interpolateTemplate(body, variables);
+
+    const { mail: mailSent } = await this.mailMainService.send({
+      to: email,
+      subject: parsedSubject,
+      body: parsedBody,
+    });
+
+    return this.mailSentService.create({
+      body: parsedBody,
+      subject: parsedSubject,
+      to: email,
+      from: mailSent.from,
+      cc: mailSent.cc,
+      bcc: mailSent.bcc,
+      mail_id: mail.id,
+    });
+  }
+
+  private async getLocaleRecord(locale: string) {
+    const localeRecord = await this.prismaService.locale.findUnique({
+      where: { code: locale },
+    });
+
+    if (!localeRecord) {
+      throw new Error(`Locale "${locale}" not found`);
+    }
+
+    return localeRecord;
+  }
+
+  private async getMailTemplate(slug: string, localeId: number) {
     const mail = await this.prismaService.mail.findUnique({
       where: { slug },
       include: {
         mail_locale: {
-          where: { locale_id: locale },
+          where: { locale_id: localeId },
           select: { subject: true, body: true },
         },
         mail_var: {
@@ -90,22 +130,13 @@ export class MailService {
     });
 
     if (!mail) {
-      throw new Error(`Template "${slug}" not found for locale "${locale}"`);
+      throw new Error(`Template "${slug}" not found for locale "${localeId}"`);
     }
 
-    const { subject, body } = mail[0];
-
-    const parsedSubject = this.interpolate(subject, variables);
-    const parsedBody = this.interpolate(body, variables);
-
-    await this.mailMainService.send({
-      to: email,
-      subject: parsedSubject,
-      body: parsedBody,
-    });
+    return mail;
   }
 
-  private interpolate(
+  private interpolateTemplate(
     template: string,
     variables: Record<string, string>,
   ): string {
