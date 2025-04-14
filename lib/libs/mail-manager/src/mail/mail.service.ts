@@ -97,8 +97,8 @@ export class MailService {
       subject: parsedSubject,
       to: email,
       from: mailSent.from,
-      cc: mailSent.cc,
-      bcc: mailSent.bcc,
+      cc: mailSent.cc as string,
+      bcc: mailSent.bcc as string,
       mail_id: mail.id,
     });
   }

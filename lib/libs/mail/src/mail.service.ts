@@ -169,7 +169,7 @@ export class MailService implements OnModuleInit {
 
     this.log('Email sent:', result);
 
-    return result;
+    return { result, mail };
   }
 
   async sendWithGmail(mail: Mail) {
@@ -218,7 +218,7 @@ export class MailService implements OnModuleInit {
 
     this.log('Email sent:', result);
 
-    return result;
+    return { result, mail };
   }
 
   async sendWithSES(mail: Mail) {
@@ -314,11 +314,14 @@ export class MailService implements OnModuleInit {
         }),
       );
 
-      return ses
-        .sendRawEmail({
-          RawMessage: { Data: mailContent.toString() },
-        })
-        .promise();
+      return {
+        result: await ses
+          .sendRawEmail({
+            RawMessage: { Data: mailContent.toString() },
+          })
+          .promise(),
+        mail,
+      };
     } else {
       const params = {
         Destination: {
