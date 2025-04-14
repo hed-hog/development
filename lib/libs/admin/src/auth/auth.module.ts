@@ -30,7 +30,7 @@ import { AuthGuard } from './guards/auth.guard';
     forwardRef(() => PrismaModule),
     forwardRef(() => MailModule),
     forwardRef(() => SettingModule),
-    MailManagerModule,
+    forwardRef(() => MailManagerModule),
     ConfigModule,
     HttpModule,
   ],
