@@ -324,7 +324,7 @@ export class AuthService implements OnModuleInit {
 
       await this.mail.sendTemplatedMail(locale, {
         email,
-        slug: 'forget',
+        slug: 'forget-password',
         variables: {
           appUrl,
           code,
