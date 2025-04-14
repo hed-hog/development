@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/mail-manager",
-  "version": "0.48.25",
+  "version": "0.48.26",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
@@ -30,11 +30,11 @@
     "@hedhog/prisma": "latest"
   },
   "devDependencies": {
-    "@hedhog/admin": "^0.46.53",
-    "@hedhog/locale": "^0.48.2",
-    "@hedhog/mail": "^0.51.1",
-    "@hedhog/pagination": "^0.46.1",
-    "@hedhog/prisma": "^0.46.1",
+    "@hedhog/admin": "^0.51.25",
+    "@hedhog/locale": "^0.51.1",
+    "@hedhog/mail": "^0.51.2",
+    "@hedhog/pagination": "^0.51.1",
+    "@hedhog/prisma": "^0.51.1",
     "@nestjs/mapped-types": "^2.1.0"
   }
 }
