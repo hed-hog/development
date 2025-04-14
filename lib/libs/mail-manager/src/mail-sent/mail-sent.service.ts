@@ -52,7 +52,7 @@ export class MailSentService {
       data: {
         mail_id: data.mail_id,
         subject: data.subject,
-        from: data.from,
+        from: data.from ?? 'mail@mail.com',
         to: data.to,
         cc: data.cc,
         bcc: data.bcc,
