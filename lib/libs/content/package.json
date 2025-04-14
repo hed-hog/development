@@ -1,6 +1,6 @@
 {
   "name": "@hedhog/content",
-  "version": "0.48.21",
+  "version": "0.48.22",
   "private": false,
   "main": "dist/index.js",
   "scripts": {
