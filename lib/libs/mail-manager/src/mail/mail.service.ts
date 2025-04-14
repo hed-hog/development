@@ -76,11 +76,21 @@ export class MailService {
     locale: string,
     { email, slug, variables }: SendTemplatedMailDTO,
   ) {
+    const localeRecord = await this.prismaService.locale.findUnique({
+      where: { code: locale },
+    });
+
+    if (!localeRecord) {
+      throw new Error(`Locale "${locale}" not found`);
+    }
+
+    const locale_id = localeRecord.id;
+
     const mail = await this.prismaService.mail.findUnique({
       where: { slug },
       include: {
         mail_locale: {
-          where: { locale_id: locale },
+          where: { locale_id },
           select: { subject: true, body: true },
         },
         mail_var: {
