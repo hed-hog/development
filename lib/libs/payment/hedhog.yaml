@@ -1253,20 +1253,14 @@ routes:
             lazy:
               component: ./pages/management/payment/payment-notification/index.tsx
   - path: payment
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment/payment/index.tsx
+    lazy:
+      component: ./pages/payment/payment/index.tsx
   - path: item
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment/item/index.tsx
+    lazy:
+      component: ./pages/payment/item/index.tsx
   - path: payment-coupon
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment-coupon/index.tsx
+    lazy:
+      component: ./pages/payment-coupon/index.tsx
 enums:
   payment_status:
     key: slug
