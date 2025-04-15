@@ -1,6 +1,6 @@
 import { DiscountType } from './DiscountType';
-import { Payment } from './Payment';
 import { PaymentCouponItem } from './PaymentCouponItem';
+import { Payment } from './Payment';
 
 export type PaymentCoupon = {
   id?: number;
@@ -16,6 +16,6 @@ export type PaymentCoupon = {
   created_at?: string;
   updated_at?: string;
   discount_type?: DiscountType;
-  payment?: Payment[];
   payment_coupon_item?: PaymentCouponItem[];
+  payment?: Payment[];
 }

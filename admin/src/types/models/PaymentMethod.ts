@@ -1,5 +1,5 @@
-import { Payment } from './Payment';
 import { PaymentMethodItem } from './PaymentMethodItem';
+import { Payment } from './Payment';
 
 export type PaymentMethod = {
   id?: number;
@@ -7,6 +7,6 @@ export type PaymentMethod = {
   name: string;
   created_at?: string;
   updated_at?: string;
-  payment?: Payment[];
   payment_method_item?: PaymentMethodItem[];
+  payment?: Payment[];
 }

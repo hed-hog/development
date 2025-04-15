@@ -27,22 +27,16 @@ routes:
               component: ./pages/management/payment/payment-notification/index.tsx
   - &a2
     path: payment
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment/payment/index.tsx
+    lazy:
+      component: ./pages/payment/payment/index.tsx
   - &a3
     path: item
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment/item/index.tsx
+    lazy:
+      component: ./pages/payment/item/index.tsx
   - &a4
     path: payment-coupon
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment-coupon/index.tsx
+    lazy:
+      component: ./pages/payment-coupon/index.tsx
   - *a1
   - *a2
   - *a3

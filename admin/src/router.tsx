@@ -104,15 +104,9 @@ const routes = [
       },
       {
         path: "item",
-        children: [
-          {
-            path: "",
-            lazy: async () => ({
-              Component: (await import("./pages/payment/item/index.tsx"))
-                .default,
-            }),
-          },
-        ],
+        lazy: async () => ({
+          Component: (await import("./pages/payment/item/index.tsx")).default,
+        }),
       },
       {
         path: "management",
@@ -431,27 +425,16 @@ const routes = [
       },
       {
         path: "payment",
-        children: [
-          {
-            path: "",
-            lazy: async () => ({
-              Component: (await import("./pages/payment/payment/index.tsx"))
-                .default,
-            }),
-          },
-        ],
+        lazy: async () => ({
+          Component: (await import("./pages/payment/payment/index.tsx"))
+            .default,
+        }),
       },
       {
         path: "payment-coupon",
-        children: [
-          {
-            path: "",
-            lazy: async () => ({
-              Component: (await import("./pages/payment-coupon/index.tsx"))
-                .default,
-            }),
-          },
-        ],
+        lazy: async () => ({
+          Component: (await import("./pages/payment-coupon/index.tsx")).default,
+        }),
       },
       {
         path: "rating",
