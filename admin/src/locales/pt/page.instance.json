@@ -1,0 +1,11 @@
+{
+  "create": "Criar instância",
+  "createText": "Preencha as informações da instância.",
+  "createTooltip": "Criar nova instância",
+  "delete": "Excluir instância",
+  "deleteText": "Você tem certeza de que deseja excluir estas instâncias?",
+  "deleteTooltip": "Excluir a instância selecionada",
+  "edit": "Editar instância",
+  "editText": "Ver e editar informações da instância.",
+  "editTooltip": "Editar a instância selecionada"
+}

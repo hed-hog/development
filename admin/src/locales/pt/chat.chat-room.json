@@ -1,0 +1,11 @@
+{
+  "create": "Criar sala de chat",
+  "createText": "Preencha as informações da sala de chat.",
+  "createTooltip": "Criar nova sala de chat",
+  "delete": "Excluir sala de chat",
+  "deleteText": "Tem certeza de que deseja excluir estas salas de chat?",
+  "deleteTooltip": "Excluir a sala de chat selecionada",
+  "edit": "Editar sala de chat",
+  "editText": "Visualizar e editar as informações da sala de chat.",
+  "editTooltip": "Editar a sala de chat selecionada"
+}

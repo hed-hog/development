@@ -1,0 +1,6 @@
+routes:
+  - &a1
+    path: rating
+    lazy:
+      component: ./pages/rating/rating/index.tsx
+  - *a1

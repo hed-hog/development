@@ -1,0 +1,11 @@
+{
+  "create": "Criar gateway de pagamento",
+  "createText": "Preencha as informações do gateway de pagamento.",
+  "createTooltip": "Criar novo gateway de pagamento",
+  "delete": "Excluir gateway de pagamento",
+  "deleteText": "Você tem certeza de que deseja excluir estes gateways de pagamento?",
+  "deleteTooltip": "Excluir o gateway de pagamento selecionado",
+  "edit": "Editar gateway de pagamento",
+  "editText": "Visualizar e editar informações do gateway de pagamento.",
+  "editTooltip": "Editar o gateway de pagamento selecionado"
+}
