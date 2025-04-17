@@ -19,24 +19,6 @@ data:
               en: The payment provider to use
               pt: O provedor de pagamento a utilizar
             value: MERCADO_PAGO
-          - slug: payment-mercado-pago-token
-            type: string
-            name:
-              en: Mercado Pago Token
-              pt: Token do Mercado Pago
-            description:
-              en: The token to use with Mercado Pago
-              pt: O token a utilizar com o Mercado Pago
-            value: ''
-          - slug: payment-mercado-pago-public-key
-            type: string
-            name:
-              en: Mercado Pago Client ID
-              pt: ID do Cliente do Mercado Pago
-            description:
-              en: The client ID to use with Mercado Pago
-              pt: O ID do cliente a utilizar com o Mercado Pago
-            value: ''
           - slug: payment-currency
             type: string
             name:
@@ -91,6 +73,42 @@ data:
               en: The maximum number of installments allowed in the system. This setting will override the item installment setting.
               pt: O número máximo de parcelas permitido no sistema. Esta configuração sobreporá a configuração de parcelamento por item.
             value: 12
+          - slug: payment-mercado-pago-token
+            type: string
+            name:
+              en: Mercado Pago Token
+              pt: Token do Mercado Pago
+            description:
+              en: The token to use with Mercado Pago
+              pt: O token a utilizar com o Mercado Pago
+            value: ''
+          - slug: payment-mercado-pago-public-key
+            type: string
+            name:
+              en: Mercado Pago Client ID
+              pt: ID do Cliente do Mercado Pago
+            description:
+              en: The client ID to use with Mercado Pago
+              pt: O ID do cliente a utilizar com o Mercado Pago
+            value: ''
+          - slug: payment-stripe-token
+            type: string
+            name:
+              en: Stripe Token
+              pt: Token do Stripe
+            description:
+              en: The token to use with Stripe
+              pt: O token a utilizar com o Stripe
+            value: ''
+          - slug: payment-stripe-public-key
+            type: string
+            name:
+              en: Stripe Client ID
+              pt: ID do Cliente do Stripe
+            description:
+              en: The client ID to use with Stripe
+              pt: O ID do cliente a utilizar com o Stripe
+            value: ''
   payment_gateway:
     - name: Stripe
       slug: STRIPE
@@ -1235,20 +1253,14 @@ routes:
             lazy:
               component: ./pages/management/payment/payment-notification/index.tsx
   - path: payment
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment/payment/index.tsx
+    lazy:
+      component: ./pages/payment/payment/index.tsx
   - path: item
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment/item/index.tsx
+    lazy:
+      component: ./pages/payment/item/index.tsx
   - path: payment-coupon
-    children:
-      - path: null
-        lazy:
-          component: ./pages/payment-coupon/index.tsx
+    lazy:
+      component: ./pages/payment-coupon/index.tsx
 enums:
   payment_status:
     key: slug

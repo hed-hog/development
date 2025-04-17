@@ -534,7 +534,7 @@ data:
             description:
               en: The scopes for Google OAuth
               pt: Os escopos para o OAuth do Google
-            value: '{["email","profile"]}'
+            value: '["email","profile"]'
             user_override: false
           - slug: facebook_client_id
             type: string
@@ -564,7 +564,7 @@ data:
             description:
               en: The scopes for Facebook OAuth
               pt: Os escopos para o OAuth do Facebook
-            value: '{["id","emails","name","displayName","photos"]}'
+            value: '["id","emails","name","displayName","photos"]'
             user_override: false
   menu:
     - url: /management/setting
