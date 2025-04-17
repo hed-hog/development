@@ -1,0 +1,11 @@
+{
+  "create": "Criar componente",
+  "createText": "Preencha as informações do componente.",
+  "createTooltip": "Criar novo componente",
+  "delete": "Deletar componente",
+  "deleteText": "Você tem certeza de que deseja deletar estes componentes?",
+  "deleteTooltip": "Deletar o componente selecionado",
+  "edit": "Editar componente",
+  "editText": "Ver e editar informações do componente.",
+  "editTooltip": "Editar o componente selecionado"
+}

@@ -1,0 +1,11 @@
+{
+  "create": "Create item",
+  "createText": "Fill the item informations.",
+  "createTooltip": "Create new item",
+  "delete": "Delete item",
+  "deleteText": "Are you sure to delete these item?",
+  "deleteTooltip": "Delete the selected item",
+  "edit": "Edit item",
+  "editText": "View and edit item information.",
+  "editTooltip": "Edit the selected item"
+}

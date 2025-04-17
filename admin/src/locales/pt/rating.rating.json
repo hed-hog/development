@@ -1,0 +1,11 @@
+{
+  "create": "Criar rating",
+  "createText": "Preencha as informações do rating.",
+  "createTooltip": "Criar novo rating",
+  "delete": "Excluir rating",
+  "deleteText": "Você tem certeza de que deseja excluir estes rating?",
+  "deleteTooltip": "Excluir o rating selecionado",
+  "edit": "Editar rating",
+  "editText": "Visualizar e editar informações do rating.",
+  "editTooltip": "Editar o rating selecionado"
+}
