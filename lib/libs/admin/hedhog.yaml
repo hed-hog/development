@@ -944,6 +944,13 @@ data:
               url:
                 in:
                   - /setting/:slug
+    - slug: user
+      name:
+        en: User
+        pt: Usuário
+      description:
+        en: Normal user of the system.
+        pt: Usuário comum do sistema.
   translation_namespace:
     - name: translation
       relations:

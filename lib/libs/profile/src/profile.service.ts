@@ -396,6 +396,21 @@ export class ProfileService {
       where: { code: 'BRA' },
     });
 
+    const userRole = await this.prisma.role.findFirst({
+      where: { slug: 'user' },
+    });
+
+    if (!userRole) {
+      throw new Error('Role padrão "user" não encontrada');
+    }
+
+    await this.prisma.role_user.create({
+      data: {
+        user_id: user.id,
+        role_id: userRole.id,
+      },
+    });
+
     await this.prisma.person.create({
       data: {
         name: fullName,
