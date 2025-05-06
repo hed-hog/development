@@ -102,7 +102,9 @@ export class RoleGuard implements CanActivate {
             role: {
               role_user: {
                 some: {
-                  user_id: Number(userId),
+                  user_id: {
+                    equals: userId,
+                  },
                 },
               },
             },
