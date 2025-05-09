@@ -17,6 +17,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DeleteDTO } from './dto/delete.dto';
 import { FileService } from './file.service';
+import { UploadFileDTO } from './dto/upload.dto';
 
 @Role()
 @Controller('file')
@@ -52,8 +53,12 @@ export class FileController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile() file: Express.Multer.File) {
-    return this.fileService.upload('files', file);
+  async upload(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: UploadFileDTO,
+  ) {
+    const destination = body.destination || 'files';
+    return this.fileService.upload(destination, file);
   }
 
   @Delete()
