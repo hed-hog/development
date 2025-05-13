@@ -55,7 +55,7 @@ export class CheckoutService implements OnModuleInit {
     private readonly contactService: ContactService,
     @Inject(forwardRef(() => MailService))
     private readonly mailService: MailService,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     try {
@@ -155,7 +155,7 @@ export class CheckoutService implements OnModuleInit {
 
   private async checkApplyMethodDiscount(paymentId: number) {
     const discountCumulative =
-      this.setting['payment-discount-cumulative'] === 'true';
+      String(this.setting['payment-discount-cumulative']) === 'true';
 
     const payment = await this.prismaService.payment.findUnique({
       where: { id: paymentId },
@@ -337,6 +337,7 @@ export class CheckoutService implements OnModuleInit {
           debitEnabled: this.setting['payment-method-debit-enabled'],
           pixEnabled: this.setting['payment-method-pix-enabled'],
           maxInstallments: this.setting['payment-max-installments'],
+          pixDiscount: this.setting['payment-method-pix-discount'],
         };
 
       default:
@@ -363,6 +364,7 @@ export class CheckoutService implements OnModuleInit {
       'payment-method-debit-enabled',
       'payment-method-pix-enabled',
       'payment-max-installments',
+      'payment-method-pix-discount',
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
@@ -925,7 +927,7 @@ export class CheckoutService implements OnModuleInit {
     const payment = await this.getPaymentWithItems(paymentSlug);
     const hasMethodDiscount = await this.hasMethodDiscount(payment.id);
     const discountCumulative =
-      this.setting['payment-discount-cumulative'] === 'true';
+      String(this.setting['payment-discount-cumulative']) === 'true';
 
     if (hasMethodDiscount && !discountCumulative) {
       throw new BadRequestException('Method discount not cumulative.');
