@@ -145,12 +145,38 @@ export class CheckoutService implements OnModuleInit {
       },
       data: {
         method_id: methodId,
+        discount: "0",
       },
     });
 
     await this.checkApplyMethodDiscount(paymentId);
 
+    await this.verifyPixDiscount(paymentId);
+
     return this.getPaymentDetails(paymentId);
+  }
+
+  async verifyPixDiscount(paymentId: number) {
+
+    const payment = await this.getPaymentDetails(paymentId);
+
+    const pixDiscount = this.setting['payment-method-pix-discount'];
+
+    if (pixDiscount && !isNaN(+pixDiscount) && +pixDiscount > 0 && payment.method_id === PaymentMethodEnum.PIX) {
+
+      const currentDiscount = (payment?.discount ?? 0);
+
+      const discount = +currentDiscount + +((payment.amount - currentDiscount) * (+pixDiscount / 100));
+
+      await this.paymentService.update({
+        id: paymentId,
+        data: {
+          discount,
+        },
+      });
+
+    }
+
   }
 
   private async checkApplyMethodDiscount(paymentId: number) {
@@ -984,6 +1010,8 @@ export class CheckoutService implements OnModuleInit {
           Number(payment.amount),
         );
 
+        await this.verifyPixDiscount(payment.id);
+
         return this.getPaymentDetails(payment.id);
       } else {
         throw new BadRequestException('Coupon not is valid.');
@@ -1029,10 +1057,18 @@ export class CheckoutService implements OnModuleInit {
   ) {
     switch (coupon.discount_type_id) {
       case DiscountTypeEnum.DISCOUNT_FIXED_VALUE:
-      case DiscountTypeEnum.PROMOTIONAL_PRICE:
         return this.paymentService.update({
           id: paymentId,
           data: { coupon_id: coupon.id, discount: Number(coupon.value) },
+        });
+
+      case DiscountTypeEnum.PROMOTIONAL_PRICE:
+        const valueToReducePromotionalPrice =
+          Number(paymentAmount) - Number(coupon.value);
+
+        return this.paymentService.update({
+          id: paymentId,
+          data: { coupon_id: coupon.id, discount: Number(valueToReducePromotionalPrice) },
         });
 
       case DiscountTypeEnum.DISCOUNT_PERCENTAGE_VALUE:
