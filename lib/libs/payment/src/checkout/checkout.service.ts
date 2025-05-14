@@ -365,6 +365,7 @@ export class CheckoutService implements OnModuleInit {
       'payment-method-pix-enabled',
       'payment-max-installments',
       'payment-method-pix-discount',
+      'payment-coupon-exact-items-quantity',
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
@@ -950,6 +951,25 @@ export class CheckoutService implements OnModuleInit {
         (Number(coupon.uses_qtd) ?? 0) >= (Number(coupon.uses_limit) ?? 0)
       ) {
         throw new BadRequestException('Consumption coupon or usage limit.');
+      }
+
+      if (String(this.setting['payment-coupon-exact-items-quantity'] === 'true') && payment?.payment_item?.length > 0 && coupon?.payment_coupon_item?.length > 0) {
+
+        const itemsFromCoupon = coupon.payment_coupon_item?.map((i) => i.item_id);
+        const itemsFromPayment = payment.payment_item?.map((i) => i.item_id);
+
+        if (Array.isArray(itemsFromCoupon) && Array.isArray(itemsFromPayment)) {
+
+          const missingItems = itemsFromCoupon.filter((itemId) => !itemsFromPayment.includes(itemId));
+
+          if (missingItems.length > 0) {
+
+            throw new BadRequestException('Coupon is not valid.');
+
+          }
+
+        }
+
       }
 
       const itemsFromPaymentAndCoupon = this.getItemsFromPaymentAndCoupon(
