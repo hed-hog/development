@@ -1,0 +1,11 @@
+{
+  "create": "Create payment gateway",
+  "createText": "Fill the payment gateway informations.",
+  "createTooltip": "Create new payment gateway",
+  "delete": "Delete payment gateway",
+  "deleteText": "Are you sure to delete these payment gateway?",
+  "deleteTooltip": "Delete the selected payment gateway",
+  "edit": "Edit payment gateway",
+  "editText": "View and edit payment gateway information.",
+  "editTooltip": "Edit the selected payment gateway"
+}

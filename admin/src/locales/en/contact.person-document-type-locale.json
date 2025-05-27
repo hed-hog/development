@@ -1,0 +1,11 @@
+{
+  "create": "Create person document type locale",
+  "createText": "Fill the person document type locale informations.",
+  "createTooltip": "Create new person document type locale",
+  "delete": "Delete person document type locale",
+  "deleteText": "Are you sure to delete these person document type locale?",
+  "deleteTooltip": "Delete the selected person document type locale",
+  "edit": "Edit person document type locale",
+  "editText": "View and edit person document type locale information.",
+  "editTooltip": "Edit the selected person document type locale"
+}

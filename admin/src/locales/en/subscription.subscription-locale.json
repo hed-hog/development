@@ -1,0 +1,11 @@
+{
+  "create": "Create subscription locale",
+  "createText": "Fill the subscription locale informations.",
+  "createTooltip": "Create new subscription locale",
+  "delete": "Delete subscription locale",
+  "deleteText": "Are you sure to delete these subscription locale?",
+  "deleteTooltip": "Delete the selected subscription locale",
+  "edit": "Edit subscription locale",
+  "editText": "View and edit subscription locale information.",
+  "editTooltip": "Edit the selected subscription locale"
+}

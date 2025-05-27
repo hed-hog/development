@@ -1,0 +1,11 @@
+{
+  "create": "Criar cupom de pagamento",
+  "createText": "Preencha as informações do cupom de pagamento.",
+  "createTooltip": "Criar novo cupom de pagamento",
+  "delete": "Deletar cupom de pagamento",
+  "deleteText": "Você tem certeza de que deseja deletar esses cupons de pagamento?",
+  "deleteTooltip": "Deletar o(s) cupom(ões) de pagamento selecionado(s)",
+  "edit": "Editar cupom de pagamento",
+  "editText": "Visualizar e editar informações do cupom de pagamento.",
+  "editTooltip": "Editar o cupom de pagamento selecionado"
+}

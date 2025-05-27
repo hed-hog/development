@@ -1,0 +1,11 @@
+{
+  "create": "Create subscription plan gateway",
+  "createText": "Fill the subscription plan gateway informations.",
+  "createTooltip": "Create new subscription plan gateway",
+  "delete": "Delete subscription plan gateway",
+  "deleteText": "Are you sure to delete these subscription plan gateway?",
+  "deleteTooltip": "Delete the selected subscription plan gateway",
+  "edit": "Edit subscription plan gateway",
+  "editText": "View and edit subscription plan gateway information.",
+  "editTooltip": "Edit the selected subscription plan gateway"
+}

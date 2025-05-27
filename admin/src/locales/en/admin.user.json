@@ -1,0 +1,11 @@
+{
+  "create": "Create user",
+  "createText": "Fill the user informations.",
+  "createTooltip": "Create new user",
+  "delete": "Delete user",
+  "deleteText": "Are you sure to delete these user?",
+  "deleteTooltip": "Delete the selected user",
+  "edit": "Edit user",
+  "editText": "View and edit user information.",
+  "editTooltip": "Edit the selected user"
+}
