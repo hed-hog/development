@@ -55,7 +55,7 @@ export class CheckoutService implements OnModuleInit {
     private readonly contactService: ContactService,
     @Inject(forwardRef(() => MailService))
     private readonly mailService: MailService,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     try {
@@ -145,17 +145,43 @@ export class CheckoutService implements OnModuleInit {
       },
       data: {
         method_id: methodId,
+        discount: "0",
       },
     });
 
     await this.checkApplyMethodDiscount(paymentId);
 
+    await this.verifyPixDiscount(paymentId);
+
     return this.getPaymentDetails(paymentId);
+  }
+
+  async verifyPixDiscount(paymentId: number) {
+
+    const payment = await this.getPaymentDetails(paymentId);
+
+    const pixDiscount = this.setting['payment-method-pix-discount'];
+
+    if (pixDiscount && !isNaN(+pixDiscount) && +pixDiscount > 0 && payment.method_id === PaymentMethodEnum.PIX) {
+
+      const currentDiscount = (payment?.discount ?? 0);
+
+      const discount = +currentDiscount + +((payment.amount - currentDiscount) * (+pixDiscount / 100));
+
+      await this.paymentService.update({
+        id: paymentId,
+        data: {
+          discount,
+        },
+      });
+
+    }
+
   }
 
   private async checkApplyMethodDiscount(paymentId: number) {
     const discountCumulative =
-      this.setting['payment-discount-cumulative'] === 'true';
+      String(this.setting['payment-discount-cumulative']) === 'true';
 
     const payment = await this.prismaService.payment.findUnique({
       where: { id: paymentId },
@@ -337,6 +363,7 @@ export class CheckoutService implements OnModuleInit {
           debitEnabled: this.setting['payment-method-debit-enabled'],
           pixEnabled: this.setting['payment-method-pix-enabled'],
           maxInstallments: this.setting['payment-max-installments'],
+          pixDiscount: this.setting['payment-method-pix-discount'],
         };
 
       default:
@@ -363,6 +390,8 @@ export class CheckoutService implements OnModuleInit {
       'payment-method-debit-enabled',
       'payment-method-pix-enabled',
       'payment-max-installments',
+      'payment-method-pix-discount',
+      'payment-coupon-exact-items-quantity',
     ]);
 
     if (this.providerId > 0 && this.provider?.id === this.providerId) {
@@ -925,7 +954,7 @@ export class CheckoutService implements OnModuleInit {
     const payment = await this.getPaymentWithItems(paymentSlug);
     const hasMethodDiscount = await this.hasMethodDiscount(payment.id);
     const discountCumulative =
-      this.setting['payment-discount-cumulative'] === 'true';
+      String(this.setting['payment-discount-cumulative']) === 'true';
 
     if (hasMethodDiscount && !discountCumulative) {
       throw new BadRequestException('Method discount not cumulative.');
@@ -950,6 +979,25 @@ export class CheckoutService implements OnModuleInit {
         throw new BadRequestException('Consumption coupon or usage limit.');
       }
 
+      if (String(this.setting['payment-coupon-exact-items-quantity'] === 'true') && payment?.payment_item?.length > 0 && coupon?.payment_coupon_item?.length > 0) {
+
+        const itemsFromCoupon = coupon.payment_coupon_item?.map((i) => i.item_id);
+        const itemsFromPayment = payment.payment_item?.map((i) => i.item_id);
+
+        if (Array.isArray(itemsFromCoupon) && Array.isArray(itemsFromPayment)) {
+
+          const missingItems = itemsFromCoupon.filter((itemId) => !itemsFromPayment.includes(itemId));
+
+          if (missingItems.length > 0) {
+
+            throw new BadRequestException('Coupon is not valid.');
+
+          }
+
+        }
+
+      }
+
       const itemsFromPaymentAndCoupon = this.getItemsFromPaymentAndCoupon(
         payment,
         coupon,
@@ -961,6 +1009,8 @@ export class CheckoutService implements OnModuleInit {
           coupon,
           Number(payment.amount),
         );
+
+        await this.verifyPixDiscount(payment.id);
 
         return this.getPaymentDetails(payment.id);
       } else {
@@ -1007,10 +1057,18 @@ export class CheckoutService implements OnModuleInit {
   ) {
     switch (coupon.discount_type_id) {
       case DiscountTypeEnum.DISCOUNT_FIXED_VALUE:
-      case DiscountTypeEnum.PROMOTIONAL_PRICE:
         return this.paymentService.update({
           id: paymentId,
           data: { coupon_id: coupon.id, discount: Number(coupon.value) },
+        });
+
+      case DiscountTypeEnum.PROMOTIONAL_PRICE:
+        const valueToReducePromotionalPrice =
+          Number(paymentAmount) - Number(coupon.value);
+
+        return this.paymentService.update({
+          id: paymentId,
+          data: { coupon_id: coupon.id, discount: Number(valueToReducePromotionalPrice) },
         });
 
       case DiscountTypeEnum.DISCOUNT_PERCENTAGE_VALUE:
