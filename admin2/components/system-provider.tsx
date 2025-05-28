@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import { createContext, useCallback, useContext, useState } from 'react';
 
 interface UserData {
@@ -13,6 +14,7 @@ interface SystemContextProps {
   forget: () => void;
   reset: () => void;
   loginWithMFA: (jwtToken: string) => void;
+  request: (...args: Parameters<typeof axios>) => Promise<any>;
 }
 
 const SystemContext = createContext<SystemContextProps | undefined>(undefined);
@@ -24,6 +26,7 @@ type SystemProviderProps = {
 export const SystemProvider = ({ children }: SystemProviderProps) => {
   const [token, setToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [language, setLanguage] = useState<string>('en');
 
   const decodeToken = (jwtToken: string): UserData | null => {
     try {
@@ -76,9 +79,46 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
     }
   }, []);
 
+  const request = async (...args: Parameters<typeof axios>) => {
+    const axiosInstance = axios.create();
+
+    axiosInstance.interceptors.request.use(
+      (config) => {
+        console.log('Intercepted request:', config);
+        config.headers = config.headers || {};
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        config.headers['language'] = language;
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
+
+    axiosInstance.interceptors.response.use(
+      (response) => {
+        console.log('Intercepted response:', response);
+        return response;
+      },
+      (error) => {
+        console.error('Response error intercepted:', error);
+        return Promise.reject(error);
+      },
+    );
+
+    try {
+      return await axiosInstance(...args);
+    } catch (error) {
+      console.error('Request error:', error);
+      throw error;
+    }
+  };
+
   return (
     <SystemContext.Provider
-      value={{ token, userData, login, forget, reset, loginWithMFA }}
+      value={{ token, userData, login, forget, reset, loginWithMFA, request }}
     >
       {children}
     </SystemContext.Provider>
