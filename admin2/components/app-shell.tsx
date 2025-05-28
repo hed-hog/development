@@ -55,7 +55,6 @@ import {
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
 
 type MenuItem = {
   icon: React.ElementType;
@@ -129,7 +128,7 @@ const user = {
 };
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const [expanded, setExpanded] = useLocalStorage('sidebar-expanded', false);
+  const [expanded, setExpanded] = useState<boolean | null>(null);
   const [settingsSheetOpen, setSettingsSheetOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState(`/`);
   const pathname = usePathname();
@@ -138,7 +137,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useTheme();
 
   const toggleExpanded = () => {
-    setExpanded(!expanded);
+    setExpanded((prev) => {
+      const newValue = !prev;
+      localStorage.setItem('sidebar-expanded', JSON.stringify(newValue));
+      return newValue;
+    });
   };
 
   const handleSettingsClick = () => {
@@ -151,12 +154,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    // Sincronizar com o localStorage no cliente
+    const stored = localStorage.getItem('sidebar-expanded');
+    setExpanded(stored ? JSON.parse(stored) : false);
+  }, []);
+
+  useEffect(() => {
     setActiveMenuItem(pathname); // Set active menu item on path change
   }, [pathname]);
 
-  useEffect(() => {
-    console.log({ theme });
-  }, [theme]);
+  // Evitar renderizar até que o estado seja inicializado
+  if (expanded === null) return null;
 
   return (
     <div className="flex h-screen">
