@@ -253,7 +253,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                           'px-4 py-2 flex w-full',
                           expanded ? ' justify-start' : 'justify-center',
                           item.href === activeMenuItem &&
-                            'bg-primary text-white hover:bg-foreground hover:text-black',
+                            'bg-primary text-white hover:bg-primary/90 hover:text-white',
                         )}
                         onClick={() =>
                           item.submenu ? handleSettingsClick() : null
