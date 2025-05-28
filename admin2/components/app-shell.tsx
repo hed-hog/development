@@ -2,16 +2,19 @@
 
 import type React from 'react';
 
-import { useTheme } from '@/components/theme-provider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
   SheetContent,
@@ -25,24 +28,27 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { IconLogout, IconMoon, IconShield, IconSparkles, IconSun, IconUser, IconX } from '@tabler/icons-react';
 import {
+  ChevronsUpDown,
   FileText,
   Globe,
   Home,
   LayoutDashboard,
-  LogOut,
   Menu,
-  Moon,
   Settings,
   Shield,
   ShoppingCart,
-  Sun,
   User,
-  Users2,
+  Users2
 } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
+
 
 type MenuItem = {
   icon: React.ElementType;
@@ -109,16 +115,21 @@ const settingsSubmenuItems = [
 ];
 
 // Dados simulados do usuário
-const currentUser = {
+const user = {
   name: 'João Silva',
   email: 'joao.silva@exemplo.com',
-  avatarUrl: '/placeholder.svg?height=40&width=40',
+  avatar: 'https://ui.shadcn.com/avatars/shadcn.jpg',
+
 };
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useLocalStorage('sidebar-expanded', false);
   const [settingsSheetOpen, setSettingsSheetOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState(`/`);
+  const pathname = usePathname();
+  const isMobile = useIsMobile();
+  const [language, setLanguage] = useState('pt-br');
+  const { theme, setTheme } = useTheme();
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -133,19 +144,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     console.log('Logout clicked');
   };
 
-  useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      setActiveMenuItem(url);
-    };
+ useEffect(() => {
+      setActiveMenuItem(pathname); // Set active menu item on path change
+}, [pathname]);
 
-    const router = useRouter();
-    setActiveMenuItem(router.pathname); // Set initial active menu item
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, []);
+useEffect(() => {
+    console.log({theme})
+}, [theme]);
 
   return (
     <div className="flex h-screen">
@@ -153,7 +158,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <aside
         className={cn(
           'h-full border-r flex flex-col transition-all duration-300',
-          expanded ? 'w-64' : 'w-16'
+          isMobile ? 'absolute -left-64 top-0 z-50 w-64 bg-primary-foreground' : 'relative',
+          isMobile ? expanded ? '-left-0' : '-left-64' : expanded ? 'w-64' : 'w-16'
         )}
       >
         {/* Logo */}
@@ -163,18 +169,54 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             expanded ? 'justify-between' : 'justify-center'
           )}
         >
-          <div className="flex items-center">
+          <div className="flex w-full items-center">
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500 text-white">
               X
             </div>
-            {expanded && <span className="ml-3 font-semibold">AppName</span>}
+            {expanded && <span className="ml-3 font-semibold flex-1">AppName</span>}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={toggleExpanded}
+            >
+              <IconX className="h-4 w-4" />
+            </Button>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="border-t py-4 transition-all duration-300 overflow-auto ">
+        <nav className="border-t py-4 transition-all duration-300 overflow-y-auto overflow-x-hidden flex-1">
+          
           <TooltipProvider delayDuration={300}>
             <ul className="space-y-1 px-3">
+              <li>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className={cn('px-4 py-2 flex w-full', expanded ? ' justify-start' : 'justify-center',)}
+                      onClick={toggleExpanded}
+                    >
+                      <Menu className={cn('h-5 w-5', expanded && 'mr-3')} />
+                      <span
+                          className={[
+                            'transition-all flex-1',
+                            expanded
+                              ? 'translate-x-0 opacity-100 flex'
+                              : 'translate-x-20 opacity-0 hidden',
+                          ].join(' ')}
+                        >
+                          Ocultar Menu
+                        </span>
+                    </Button>
+                  </TooltipTrigger>
+                  {!expanded && (
+                    <TooltipContent side="right">Expandir Menu</TooltipContent>
+                  )}
+                </Tooltip>
+              </li>
               {menuItems.map((item) => (
                 <li key={item.label}>
                   <Tooltip>
@@ -182,8 +224,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       <Button
                         variant={'ghost'}
                         className={cn(
-                          'justify-start w-10',
-                          !expanded && 'justify-center',
+                          'px-4 py-2 flex w-full', expanded ? ' justify-start' : 'justify-center',
                           item.href === activeMenuItem &&
                             'bg-sky-500 text-white hover:bg-sky-600 hover:text-white'
                         )}
@@ -196,7 +237,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         />
                         <span
                           className={[
-                            'transition-all',
+                            'transition-all flex-1',
+                            item.href === activeMenuItem &&
+                            'bg-sky-500 text-white hover:bg-sky-600 hover:text-white',
                             expanded
                               ? 'translate-x-0 opacity-100 flex'
                               : 'translate-x-20 opacity-0 hidden',
@@ -238,11 +281,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                           {expanded && <span>Idioma</span>}
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Português</DropdownMenuItem>
-                        <DropdownMenuItem>English</DropdownMenuItem>
-                        <DropdownMenuItem>Español</DropdownMenuItem>
-                        <DropdownMenuItem>Français</DropdownMenuItem>
+                      <DropdownMenuContent align={"start"} className="w-56">
+                         <DropdownMenuLabel>Idiomas</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuRadioGroup value={language} onValueChange={setLanguage}>
+                          <DropdownMenuRadioItem value='pt-br'  >Português</DropdownMenuRadioItem >
+                          <DropdownMenuRadioItem value='en' >English</DropdownMenuRadioItem >
+                          <DropdownMenuRadioItem value='es' >Español</DropdownMenuRadioItem >
+                        </DropdownMenuRadioGroup>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TooltipTrigger>
@@ -254,7 +300,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <li>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <ThemeToggle expanded={expanded} />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className={cn('px-4 py-2 flex w-full', expanded ? ' justify-start' : 'justify-center',)}
+                      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    >
+                      {theme === 'dark' ? (<IconMoon className={cn('h-5 w-5', expanded && 'mr-3')} />) : (<IconSun className={cn('h-5 w-5', expanded && 'mr-3')} />)}
+                      <span
+                          className={[
+                            'transition-all flex-1',
+                            expanded
+                              ? 'translate-x-0 opacity-100 flex'
+                              : 'translate-x-20 opacity-0 hidden',
+                          ].join(' ')}
+                        >
+                          Alternar tema
+                        </span>
+                    </Button>
                   </TooltipTrigger>
                   {!expanded && (
                     <TooltipContent side="right">Alternar tema</TooltipContent>
@@ -267,92 +330,76 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         {/* User Profile Section */}
         <div className="border-t py-3 px-3 transition-all duration-300">
-          <TooltipProvider delayDuration={300}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div
-                  className={cn(
-                    'flex items-center p-2 rounded-md hover:bg-muted relative group',
-                    expanded ? 'justify-between' : 'justify-center'
-                  )}
-                >
-                  <div className="flex items-center">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage
-                        src={currentUser.avatarUrl || '/placeholder.svg'}
-                        alt={currentUser.name}
-                      />
-                      <AvatarFallback>
-                        {currentUser.name.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-
-                    {expanded && (
-                      <div className="ml-3 overflow-hidden">
-                        <p className="text-sm font-medium truncate">
-                          {currentUser.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {currentUser.email}
-                        </p>
-                      </div>
-                    )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className={cn('p-0')}>
+              <Button
+                size={expanded ? "lg": "icon"}
+                variant="ghost"                
+                className={cn("w-full p-2 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground")}
+              >
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                </Avatar>
+                {expanded && <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">{user.name}</span>
+                  <span className="truncate text-xs">{user.email}</span>
+                </div>}
+                {expanded && <ChevronsUpDown className="ml-auto size-4 hidden md:flex" />}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+              side={isMobile ? "bottom" : "right"}
+              align="end"
+              sideOffset={4}
+            >
+              <DropdownMenuLabel className="p-0 font-normal">
+                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">{user.name}</span>
+                    <span className="truncate text-xs">{user.email}</span>
                   </div>
-
-                  {expanded && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 ml-2 opacity-70 hover:opacity-100"
-                      onClick={handleLogout}
-                    >
-                      <LogOut className="h-4 w-4" />
-                      <span className="sr-only">Sair</span>
-                    </Button>
-                  )}
-
-                  {!expanded && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-6 w-6 absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 bg-muted"
-                      onClick={handleLogout}
-                    >
-                      <LogOut className="h-3 w-3" />
-                      <span className="sr-only">Sair</span>
-                    </Button>
-                  )}
                 </div>
-              </TooltipTrigger>
-              {!expanded && (
-                <TooltipContent side="right" className="flex flex-col gap-1">
-                  <p className="font-medium">{currentUser.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {currentUser.email}
-                  </p>
-                  <Separator className="my-1" />
-                  <p className="text-xs">Clique para ver perfil</p>
-                </TooltipContent>
-              )}
-            </Tooltip>
-          </TooltipProvider>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className={cn('cursor-pointer')} onClick={handleSettingsClick}>
+                  <IconSparkles />
+                  Upgrade to Pro
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className={cn('cursor-pointr')}>
+                  <IconUser/>
+                  Minha Conta
+                </DropdownMenuItem><DropdownMenuItem className={cn('cursor-pointer')}>
+                  <IconShield />
+                  Segurança
+                </DropdownMenuItem>           
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className={cn('cursor-pointer')} onClick={handleLogout}>
+                <IconLogout />
+                Desconectar
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Toggle button (mobile and desktop) */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="m-3"
-          onClick={toggleExpanded}
-        >
-          <Menu className="h-4 w-4" />
-        </Button>
+        
       </aside>
 
       {/* Main content */}
       <main className="flex-1 overflow-auto transition-all duration-300">
         {/* Mobile menu toggle */}
-        <div className="lg:hidden flex items-center h-16 border-b px-4">
+        <div className="md:hidden flex items-center h-16 border-b px-4">
           <Button variant="ghost" size="icon" onClick={toggleExpanded}>
             <Menu className="h-5 w-5" />
           </Button>
@@ -397,22 +444,3 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Adicione este componente dentro do arquivo, antes do fechamento da função AppShell
-function ThemeToggle({ expanded }: { expanded: boolean }) {
-  const { theme, setTheme } = useTheme();
-
-  return (
-    <Button
-      variant="ghost"
-      className={cn('w-full justify-start', !expanded && 'justify-center')}
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-    >
-      {theme === 'dark' ? (
-        <Sun className={cn('h-5 w-5', expanded && 'mr-3')} />
-      ) : (
-        <Moon className={cn('h-5 w-5', expanded && 'mr-3')} />
-      )}
-      {expanded && <span>Tema {theme === 'dark' ? 'Claro' : 'Escuro'}</span>}
-    </Button>
-  );
-}
