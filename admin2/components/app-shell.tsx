@@ -13,7 +13,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
   Sheet,
@@ -30,7 +30,15 @@ import {
 } from '@/components/ui/tooltip';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { IconLogout, IconMoon, IconShield, IconSparkles, IconSun, IconUser, IconX } from '@tabler/icons-react';
+import {
+  IconLogout,
+  IconMoon,
+  IconShield,
+  IconSparkles,
+  IconSun,
+  IconUser,
+  IconX,
+} from '@tabler/icons-react';
 import {
   ChevronsUpDown,
   FileText,
@@ -42,13 +50,12 @@ import {
   Shield,
   ShoppingCart,
   User,
-  Users2
+  Users2,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
-
 
 type MenuItem = {
   icon: React.ElementType;
@@ -119,7 +126,6 @@ const user = {
   name: 'João Silva',
   email: 'joao.silva@exemplo.com',
   avatar: 'https://ui.shadcn.com/avatars/shadcn.jpg',
-
 };
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -144,13 +150,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     console.log('Logout clicked');
   };
 
- useEffect(() => {
-      setActiveMenuItem(pathname); // Set active menu item on path change
-}, [pathname]);
+  useEffect(() => {
+    setActiveMenuItem(pathname); // Set active menu item on path change
+  }, [pathname]);
 
-useEffect(() => {
-    console.log({theme})
-}, [theme]);
+  useEffect(() => {
+    console.log({ theme });
+  }, [theme]);
 
   return (
     <div className="flex h-screen">
@@ -158,22 +164,32 @@ useEffect(() => {
       <aside
         className={cn(
           'h-full border-r flex flex-col transition-all duration-300',
-          isMobile ? 'absolute -left-64 top-0 z-50 w-64 bg-primary-foreground' : 'relative',
-          isMobile ? expanded ? '-left-0' : '-left-64' : expanded ? 'w-64' : 'w-16'
+          isMobile
+            ? 'absolute -left-64 top-0 z-50 w-64 bg-primary-foreground'
+            : 'relative',
+          isMobile
+            ? expanded
+              ? '-left-0'
+              : '-left-64'
+            : expanded
+              ? 'w-64'
+              : 'w-16',
         )}
       >
         {/* Logo */}
         <div
           className={cn(
             'flex items-center h-16 border-b px-4 transition-all duration-300',
-            expanded ? 'justify-between' : 'justify-center'
+            expanded ? 'justify-between' : 'justify-center',
           )}
         >
           <div className="flex w-full items-center">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500 text-white">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
               X
             </div>
-            {expanded && <span className="ml-3 font-semibold flex-1">AppName</span>}
+            {expanded && (
+              <span className="ml-3 font-semibold flex-1">AppName</span>
+            )}
             <Button
               variant="ghost"
               size="icon"
@@ -187,7 +203,6 @@ useEffect(() => {
 
         {/* Navigation */}
         <nav className="border-t py-4 transition-all duration-300 overflow-y-auto overflow-x-hidden flex-1">
-          
           <TooltipProvider delayDuration={300}>
             <ul className="space-y-1 px-3">
               <li>
@@ -196,20 +211,23 @@ useEffect(() => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className={cn('px-4 py-2 flex w-full', expanded ? ' justify-start' : 'justify-center',)}
+                      className={cn(
+                        'px-4 py-2 flex w-full',
+                        expanded ? ' justify-start' : 'justify-center',
+                      )}
                       onClick={toggleExpanded}
                     >
                       <Menu className={cn('h-5 w-5', expanded && 'mr-3')} />
                       <span
-                          className={[
-                            'transition-all flex-1',
-                            expanded
-                              ? 'translate-x-0 opacity-100 flex'
-                              : 'translate-x-20 opacity-0 hidden',
-                          ].join(' ')}
-                        >
-                          Ocultar Menu
-                        </span>
+                        className={[
+                          'transition-all flex-1',
+                          expanded
+                            ? 'translate-x-0 opacity-100 flex'
+                            : 'translate-x-20 opacity-0 hidden',
+                        ].join(' ')}
+                      >
+                        Ocultar Menu
+                      </span>
                     </Button>
                   </TooltipTrigger>
                   {!expanded && (
@@ -224,9 +242,10 @@ useEffect(() => {
                       <Button
                         variant={'ghost'}
                         className={cn(
-                          'px-4 py-2 flex w-full', expanded ? ' justify-start' : 'justify-center',
+                          'px-4 py-2 flex w-full',
+                          expanded ? ' justify-start' : 'justify-center',
                           item.href === activeMenuItem &&
-                            'bg-sky-500 text-white hover:bg-sky-600 hover:text-white'
+                            'bg-primary text-white hover:bg-foreground hover:text-black',
                         )}
                         onClick={() =>
                           item.submenu ? handleSettingsClick() : null
@@ -238,8 +257,7 @@ useEffect(() => {
                         <span
                           className={[
                             'transition-all flex-1',
-                            item.href === activeMenuItem &&
-                            'bg-sky-500 text-white hover:bg-sky-600 hover:text-white',
+
                             expanded
                               ? 'translate-x-0 opacity-100 flex'
                               : 'translate-x-20 opacity-0 hidden',
@@ -272,7 +290,7 @@ useEffect(() => {
                           variant="ghost"
                           className={cn(
                             'w-full justify-start',
-                            !expanded && 'justify-center'
+                            !expanded && 'justify-center',
                           )}
                         >
                           <Globe
@@ -281,13 +299,22 @@ useEffect(() => {
                           {expanded && <span>Idioma</span>}
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align={"start"} className="w-56">
-                         <DropdownMenuLabel>Idiomas</DropdownMenuLabel>
+                      <DropdownMenuContent align={'start'} className="w-56">
+                        <DropdownMenuLabel>Idiomas</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuRadioGroup value={language} onValueChange={setLanguage}>
-                          <DropdownMenuRadioItem value='pt-br'  >Português</DropdownMenuRadioItem >
-                          <DropdownMenuRadioItem value='en' >English</DropdownMenuRadioItem >
-                          <DropdownMenuRadioItem value='es' >Español</DropdownMenuRadioItem >
+                        <DropdownMenuRadioGroup
+                          value={language}
+                          onValueChange={setLanguage}
+                        >
+                          <DropdownMenuRadioItem value="pt-br">
+                            Português
+                          </DropdownMenuRadioItem>
+                          <DropdownMenuRadioItem value="en">
+                            English
+                          </DropdownMenuRadioItem>
+                          <DropdownMenuRadioItem value="es">
+                            Español
+                          </DropdownMenuRadioItem>
                         </DropdownMenuRadioGroup>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -303,20 +330,33 @@ useEffect(() => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className={cn('px-4 py-2 flex w-full', expanded ? ' justify-start' : 'justify-center',)}
-                      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                      className={cn(
+                        'px-4 py-2 flex w-full',
+                        expanded ? ' justify-start' : 'justify-center',
+                      )}
+                      onClick={() =>
+                        setTheme(theme === 'dark' ? 'light' : 'dark')
+                      }
                     >
-                      {theme === 'dark' ? (<IconMoon className={cn('h-5 w-5', expanded && 'mr-3')} />) : (<IconSun className={cn('h-5 w-5', expanded && 'mr-3')} />)}
+                      {theme === 'dark' ? (
+                        <IconMoon
+                          className={cn('h-5 w-5', expanded && 'mr-3')}
+                        />
+                      ) : (
+                        <IconSun
+                          className={cn('h-5 w-5', expanded && 'mr-3')}
+                        />
+                      )}
                       <span
-                          className={[
-                            'transition-all flex-1',
-                            expanded
-                              ? 'translate-x-0 opacity-100 flex'
-                              : 'translate-x-20 opacity-0 hidden',
-                          ].join(' ')}
-                        >
-                          Alternar tema
-                        </span>
+                        className={[
+                          'transition-all flex-1',
+                          expanded
+                            ? 'translate-x-0 opacity-100 flex'
+                            : 'translate-x-20 opacity-0 hidden',
+                        ].join(' ')}
+                      >
+                        Alternar tema
+                      </span>
                     </Button>
                   </TooltipTrigger>
                   {!expanded && (
@@ -333,24 +373,30 @@ useEffect(() => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild className={cn('p-0')}>
               <Button
-                size={expanded ? "lg": "icon"}
-                variant="ghost"                
-                className={cn("w-full p-2 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground")}
+                size={expanded ? 'lg' : 'icon'}
+                variant="ghost"
+                className={cn(
+                  'w-full p-2 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground',
+                )}
               >
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
-                {expanded && <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>}
-                {expanded && <ChevronsUpDown className="ml-auto size-4 hidden md:flex" />}
+                {expanded && (
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">{user.name}</span>
+                    <span className="truncate text-xs">{user.email}</span>
+                  </div>
+                )}
+                {expanded && (
+                  <ChevronsUpDown className="ml-auto size-4 hidden md:flex" />
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-              side={isMobile ? "bottom" : "right"}
+              side={isMobile ? 'bottom' : 'right'}
               align="end"
               sideOffset={4}
             >
@@ -368,7 +414,10 @@ useEffect(() => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className={cn('cursor-pointer')} onClick={handleSettingsClick}>
+                <DropdownMenuItem
+                  className={cn('cursor-pointer')}
+                  onClick={handleSettingsClick}
+                >
                   <IconSparkles />
                   Upgrade to Pro
                 </DropdownMenuItem>
@@ -376,15 +425,19 @@ useEffect(() => {
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem className={cn('cursor-pointr')}>
-                  <IconUser/>
+                  <IconUser />
                   Minha Conta
-                </DropdownMenuItem><DropdownMenuItem className={cn('cursor-pointer')}>
+                </DropdownMenuItem>
+                <DropdownMenuItem className={cn('cursor-pointer')}>
                   <IconShield />
                   Segurança
-                </DropdownMenuItem>           
+                </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className={cn('cursor-pointer')} onClick={handleLogout}>
+              <DropdownMenuItem
+                className={cn('cursor-pointer')}
+                onClick={handleLogout}
+              >
                 <IconLogout />
                 Desconectar
               </DropdownMenuItem>
@@ -393,7 +446,6 @@ useEffect(() => {
         </div>
 
         {/* Toggle button (mobile and desktop) */}
-        
       </aside>
 
       {/* Main content */}
@@ -430,7 +482,7 @@ useEffect(() => {
                 className={cn(
                   'w-full justify-start rounded-none h-10 px-4',
                   item.active &&
-                    'bg-sky-500 text-white hover:bg-sky-600 hover:text-white'
+                    'bg-primary text-white hover:bg-sky-600 hover:text-white',
                 )}
                 asChild
               >
@@ -443,4 +495,3 @@ useEffect(() => {
     </div>
   );
 }
-
