@@ -1,7 +1,11 @@
 'use client';
 
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { createContext, useCallback, useContext, useState } from 'react';
+
+interface ResponseToken {
+  token: string;
+}
 
 interface UserData {
   [key: string]: any;
@@ -10,11 +14,15 @@ interface UserData {
 interface SystemContextProps {
   token: string | null;
   userData: UserData | null;
-  login: (jwtToken: string) => void;
-  forget: () => void;
-  reset: () => void;
-  loginWithMFA: (jwtToken: string) => void;
-  request: (...args: Parameters<typeof axios>) => Promise<any>;
+  login: (email: string, password: string) => Promise<ResponseToken>;
+  forget: (email: string) => Promise<void>;
+  reset: (
+    newPassword: string,
+    confirmNewPassword: string,
+    code: string,
+  ) => Promise<ResponseToken>;
+  loginWithMFA: (token: string, code: string) => Promise<ResponseToken>;
+  request: <T extends {}>(config?: AxiosRequestConfig) => Promise<T>;
 }
 
 const SystemContext = createContext<SystemContextProps | undefined>(undefined);
@@ -42,54 +50,86 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
           .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
           .join(''),
       );
-      return JSON.parse(jsonPayload);
+      return JSON.parse(jsonPayload)?.user;
     } catch (error) {
       console.error('Erro ao decodificar o token JWT:', error);
       return null;
     }
   };
 
-  const login = useCallback((jwtToken: string) => {
-    const decoded = decodeToken(jwtToken);
-    if (decoded) {
-      setToken(jwtToken);
-      setUserData(decoded);
-      // Você pode adicionar outras lógicas de login aqui
-    }
+  const login = useCallback((email: string, password: string) => {
+    return request<ResponseToken>({
+      method: 'POST',
+      url: '/auth/login',
+      data: { email, password },
+    }).then((data) => {
+      const jwtToken = data.token;
+      const decoded = decodeToken(jwtToken);
+
+      if (decoded) {
+        setToken(jwtToken);
+        setUserData(decoded);
+      } else {
+        console.error('Token inválido ou não decodificável');
+      }
+      return data;
+    });
   }, []);
 
-  const forget = useCallback(() => {
-    // Lógica para "esquecer" o login, limpando o state
-    setToken(null);
-    setUserData(null);
+  const forget = useCallback((email: string) => {
+    return request({
+      method: 'POST',
+      url: '/auth/forget',
+      data: { email },
+    }).then(() => {});
   }, []);
 
-  const reset = useCallback(() => {
-    // Lógica para resetar os dados do usuário sem remover o token (se necessário)
-    setUserData(null);
+  const reset = useCallback(
+    (newPassword: string, confirmNewPassword: string, code: string) => {
+      return request<ResponseToken>({
+        method: 'POST',
+        url: '/auth/reset',
+        data: { newPassword, confirmNewPassword, code },
+      }).then((data) => data);
+    },
+    [],
+  );
+
+  const loginWithMFA = useCallback((token: string, code: string) => {
+    return request<ResponseToken>({
+      method: 'POST',
+      url: '/auth/login-code',
+      data: { token, code },
+    }).then((data) => {
+      const jwtToken = data.token;
+      const decoded = decodeToken(jwtToken);
+
+      if (decoded) {
+        setToken(jwtToken);
+        setUserData(decoded);
+      } else {
+        console.error('Token inválido ou não decodificável');
+      }
+      return data;
+    });
   }, []);
 
-  const loginWithMFA = useCallback((jwtToken: string) => {
-    // Lógica específica para login com MFA, se necessário
-    const decoded = decodeToken(jwtToken);
-    if (decoded) {
-      setToken(jwtToken);
-      setUserData(decoded);
-      // Você pode adicionar passos adicionais para MFA aqui
-    }
-  }, []);
-
-  const request = async (...args: Parameters<typeof axios>) => {
-    const axiosInstance = axios.create();
+  const request = <T extends {}>(config?: AxiosRequestConfig) => {
+    const axiosInstance = axios.create({
+      baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     axiosInstance.interceptors.request.use(
       (config) => {
-        console.log('Intercepted request:', config);
         config.headers = config.headers || {};
         if (token) {
           config.headers['Authorization'] = `Bearer ${token}`;
         }
         config.headers['language'] = language;
+        console.log('Intercepted request:', config);
         return config;
       },
       (error) => {
@@ -108,12 +148,9 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
       },
     );
 
-    try {
-      return await axiosInstance(...args);
-    } catch (error) {
-      console.error('Request error:', error);
-      throw error;
-    }
+    return axiosInstance
+      .request<T>(config ?? {})
+      .then((response) => response.data);
   };
 
   return (
