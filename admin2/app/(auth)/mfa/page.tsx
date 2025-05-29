@@ -1,5 +1,7 @@
+import { useSystem } from '@/components/system-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Form } from '@/components/ui/form';
 import {
   InputOTP,
   InputOTPGroup,
@@ -7,8 +9,25 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp'; // Assuming this is the correct import path for Input OTP
 import { Label } from '@/components/ui/label';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
 
-export default function LoginPage() {
+export default function Page() {
+  const FormSchema = z.object({
+    code: z.string().length(6, 'O código deve ter 6 dígitos'),
+  });
+  const { login } = useSystem();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      code: '',
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof FormSchema>) {
+    console.log('onSubmit', values);
+  }
   return (
     <div className="flex min-h-screen bg-background text-foreground">
       {/* Imagem lateral visível somente em md+ */}
@@ -36,51 +55,56 @@ export default function LoginPage() {
               </p>
             </div>
 
-            <form className="space-y-4">
-              <div className="flex items-center space-x-4 bg-primary/5 p-4 rounded-lg">
-                <img
-                  src="https://ui.shadcn.com/avatars/shadcn.jpg"
-                  alt="Foto do Usuário"
-                  className="w-10 h-10 rounded-lg object-cover"
-                />
-                <div>
-                  <p className="text-lg font-bold">Nome do Usuário</p>
-                  <p className="text-sm text-muted-foreground">
-                    usuario@exemplo.com
-                  </p>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <div className="flex items-center space-x-4 bg-primary/5 p-4 rounded-lg">
+                  <img
+                    src="https://ui.shadcn.com/avatars/shadcn.jpg"
+                    alt="Foto do Usuário"
+                    className="w-10 h-10 rounded-lg object-cover"
+                  />
+                  <div>
+                    <p className="text-lg font-bold">Nome do Usuário</p>
+                    <p className="text-sm text-muted-foreground">
+                      usuario@exemplo.com
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-2 text-center">
-                <Label htmlFor="otp" className="font-bold">
-                  Código MFA
-                </Label>
-                <div className="flex items-center justify-center space-x-2">
-                  <InputOTP maxLength={6}>
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
-                    </InputOTPGroup>
-                  </InputOTP>
+                <div className="space-y-2 text-center">
+                  <Label htmlFor="otp" className="font-bold">
+                    Código MFA
+                  </Label>
+                  <div className="flex items-center justify-center space-x-2">
+                    <InputOTP maxLength={6}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
                 </div>
-              </div>
 
-              <Button type="submit" className="w-full">
-                Entrar
-              </Button>
+                <Button type="submit" className="w-full">
+                  Entrar
+                </Button>
 
-              <p className="text-xs text-center text-muted-foreground mt-4">
-                Ao continuar, você concorda com os Termos de Uso e a Política de
-                Privacidade.
-              </p>
-            </form>
+                <p className="text-xs text-center text-muted-foreground mt-4">
+                  Ao continuar, você concorda com os Termos de Uso e a Política
+                  de Privacidade.
+                </p>
+              </form>
+            </Form>
           </CardContent>
         </Card>
       </div>

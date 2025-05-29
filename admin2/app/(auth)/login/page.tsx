@@ -10,16 +10,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { FormProvider, useForm } from 'react-hook-form';
+import {  useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const FormSchema = z.object({
-  email: z.string().email('E-mail inválido'),
-  password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres'),
-  remember: z.boolean().optional(),
-});
-
-export default function LoginPage() {
+export default function Page() {
+  const FormSchema = z.object({
+    email: z.string().email('E-mail inválido'),
+    password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres'),
+    remember: z.boolean().optional(),
+  });
   const { login } = useSystem();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -70,7 +69,6 @@ export default function LoginPage() {
               </p>
             </div>
 
-            <FormProvider {...form}>
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
@@ -117,7 +115,6 @@ export default function LoginPage() {
                   </p>
                 </form>
               </Form>
-            </FormProvider>
           </CardContent>
         </Card>
       </div>
