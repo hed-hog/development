@@ -1,5 +1,5 @@
-import { SystemProvider } from '@/components/system-provider';
-import { ThemeProvider } from '@/components/theme-provider';
+import { SystemProvider } from '@/components/provider/system-provider';
+import { ThemeProvider } from '@/components/provider/theme-provider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import type React from 'react';

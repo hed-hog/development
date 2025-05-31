@@ -1,10 +1,19 @@
 'use client';
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { createContext, useCallback, useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 interface ResponseToken {
   token: string;
+  mfa: boolean;
 }
 
 interface UserData {
@@ -14,15 +23,19 @@ interface UserData {
 interface SystemContextProps {
   token: string | null;
   userData: UserData | null;
-  login: (email: string, password: string) => Promise<ResponseToken>;
+  login: (
+    email: string,
+    password: string,
+  ) => Promise<ResponseToken | undefined>;
   forget: (email: string) => Promise<void>;
   reset: (
     newPassword: string,
     confirmNewPassword: string,
     code: string,
   ) => Promise<ResponseToken>;
-  loginWithMFA: (token: string, code: string) => Promise<ResponseToken>;
+  loginWithMFA: (code: string) => Promise<ResponseToken>;
   request: <T extends {}>(config?: AxiosRequestConfig) => Promise<T>;
+  logout: () => void;
 }
 
 const SystemContext = createContext<SystemContextProps | undefined>(undefined);
@@ -32,9 +45,11 @@ type SystemProviderProps = {
 };
 
 export const SystemProvider = ({ children }: SystemProviderProps) => {
+  const [tempToken, setTempToken] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [language, setLanguage] = useState<string>('en');
+  const router = useRouter();
 
   const decodeToken = (jwtToken: string): UserData | null => {
     try {
@@ -57,22 +72,32 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
     }
   };
 
+  const setSuccessLogin = useCallback((data: ResponseToken) => {
+    const jwtToken = data.token;
+    const decoded = decodeToken(jwtToken);
+
+    if (decoded) {
+      setToken(jwtToken);
+      setUserData(decoded);
+    } else {
+      console.error('Token inválido ou não decodificável');
+    }
+    return data;
+  }, []);
+
   const login = useCallback((email: string, password: string) => {
     return request<ResponseToken>({
       method: 'POST',
       url: '/auth/login',
       data: { email, password },
     }).then((data) => {
-      const jwtToken = data.token;
-      const decoded = decodeToken(jwtToken);
-
-      if (decoded) {
-        setToken(jwtToken);
-        setUserData(decoded);
-      } else {
-        console.error('Token inválido ou não decodificável');
+      if (data.mfa) {
+        setTempToken(data.token);
+        router.push('/mfa');
+        return data;
+      } else if (data.token) {
+        return setSuccessLogin(data);
       }
-      return data;
     });
   }, []);
 
@@ -90,28 +115,31 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
         method: 'POST',
         url: '/auth/reset',
         data: { newPassword, confirmNewPassword, code },
-      }).then((data) => data);
+      }).then((data) => setSuccessLogin(data));
     },
     [],
   );
 
-  const loginWithMFA = useCallback((token: string, code: string) => {
-    return request<ResponseToken>({
-      method: 'POST',
-      url: '/auth/login-code',
-      data: { token, code },
-    }).then((data) => {
-      const jwtToken = data.token;
-      const decoded = decodeToken(jwtToken);
+  const loginWithMFA = useCallback(
+    (code: string) => {
+      return request<ResponseToken>({
+        method: 'POST',
+        url: '/auth/login-code',
+        data: { token: tempToken, code },
+      }).then((data) => setSuccessLogin(data));
+    },
+    [tempToken],
+  );
 
-      if (decoded) {
-        setToken(jwtToken);
-        setUserData(decoded);
-      } else {
-        console.error('Token inválido ou não decodificável');
-      }
-      return data;
-    });
+  const logout = useCallback(() => {
+    setToken(null);
+    setUserData(null);
+    setTempToken(null);
+    try {
+      localStorage.removeItem('authData');
+    } catch (error) {
+      console.error('Falha ao remover os dados de autenticação:', error);
+    }
   }, []);
 
   const request = <T extends {}>(config?: AxiosRequestConfig) => {
@@ -153,9 +181,46 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
       .then((response) => response.data);
   };
 
+  useEffect(() => {
+    if (token && userData) {
+      try {
+        localStorage.setItem('authData', JSON.stringify({ token, userData }));
+      } catch (error) {
+        console.error('Falha ao armazenar os dados de autenticação:', error);
+      }
+    }
+  }, [token, userData]);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('authData');
+    if (storedData) {
+      try {
+        const { token: storedToken, userData: storedUserData } =
+          JSON.parse(storedData);
+        if (storedToken) {
+          setToken(storedToken);
+        }
+        if (storedUserData) {
+          setUserData(storedUserData);
+        }
+      } catch (error) {
+        console.error('Falha ao recuperar os dados de autenticação:', error);
+      }
+    }
+  }, []);
+
   return (
     <SystemContext.Provider
-      value={{ token, userData, login, forget, reset, loginWithMFA, request }}
+      value={{
+        token,
+        userData,
+        login,
+        forget,
+        reset,
+        loginWithMFA,
+        request,
+        logout,
+      }}
     >
       {children}
     </SystemContext.Provider>

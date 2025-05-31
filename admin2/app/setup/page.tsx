@@ -1,6 +1,6 @@
 'use client';
 
-import PasswordField from '@/components/password-field';
+import PasswordField from '@/components/field/password-field';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';

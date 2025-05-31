@@ -55,6 +55,7 @@ import {
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useSystem } from './provider/system-provider';
 
 type MenuItem = {
   icon: React.ElementType;
@@ -135,6 +136,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
   const [language, setLanguage] = useState('pt-br');
   const { theme, setTheme } = useTheme();
+  const { userData, logout } = useSystem();
 
   const toggleExpanded = () => {
     setExpanded((prev) => {
@@ -387,14 +389,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   'w-full p-2 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground',
                 )}
               >
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
+                <TooltipProvider delayDuration={300}>
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage src={userData?.avatar} alt={userData?.name} />
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <AvatarFallback className="rounded-lg">
+                          {userData?.name.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </TooltipTrigger>
+                      <TooltipContent side="right">
+                        {userData?.name}
+                      </TooltipContent>
+                    </Tooltip>
+                  </Avatar>
+                </TooltipProvider>
                 {expanded && (
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{user.name}</span>
-                    <span className="truncate text-xs">{user.email}</span>
+                    <span className="truncate font-semibold">
+                      {userData?.name}
+                    </span>
+                    <span className="truncate text-xs">{userData?.email}</span>
                   </div>
                 )}
                 {expanded && (
@@ -411,12 +426,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                    <AvatarImage src={userData?.avatar} alt={userData?.name} />
+                    <AvatarFallback className="rounded-lg">
+                      {userData?.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{user.name}</span>
-                    <span className="truncate text-xs">{user.email}</span>
+                    <span className="truncate font-semibold">
+                      {userData?.name}
+                    </span>
+                    <span className="truncate text-xs">{userData?.email}</span>
                   </div>
                 </div>
               </DropdownMenuLabel>
@@ -444,7 +463,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className={cn('cursor-pointer')}
-                onClick={handleLogout}
+                onClick={() => logout()}
               >
                 <IconLogout />
                 Desconectar
