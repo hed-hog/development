@@ -1,0 +1,24 @@
+routes:
+  - &a1
+    path: pages
+    lazy:
+      component: ./pages/page/instance/index.tsx
+  - &a2
+    path: management
+    children:
+      - path: pages
+        children:
+          - path: component-type
+            lazy:
+              component: ./pages/page/component-type/index.tsx
+          - path: component
+            lazy:
+              component: ./pages/page/component/index.tsx
+          - path: component-prop-type
+            lazy:
+              component: ./pages/page/component-prop-type/index.tsx
+          - path: component-prop
+            lazy:
+              component: ./pages/page/component-prop/index.tsx
+  - *a1
+  - *a2

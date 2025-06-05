@@ -1,11 +1,6 @@
 import { DiscountType } from './DiscountType';
-<<<<<<< HEAD
 import { Payment } from './Payment';
 import { PaymentCouponItem } from './PaymentCouponItem';
-=======
-import { PaymentCouponItem } from './PaymentCouponItem';
-import { Payment } from './Payment';
->>>>>>> 58163a57f79790fdb391dfb493730dd7a648e651
 
 export type PaymentCoupon = {
   id?: number;
@@ -21,11 +16,6 @@ export type PaymentCoupon = {
   created_at?: string;
   updated_at?: string;
   discount_type?: DiscountType;
-<<<<<<< HEAD
   payment?: Payment[];
   payment_coupon_item?: PaymentCouponItem[];
-=======
-  payment_coupon_item?: PaymentCouponItem[];
-  payment?: Payment[];
->>>>>>> 58163a57f79790fdb391dfb493730dd7a648e651
 }

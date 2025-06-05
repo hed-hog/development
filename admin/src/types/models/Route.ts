@@ -1,6 +1,6 @@
 import { RouteMethodEnum } from './RouteMethodEnum';
-import { RoleRoute } from './RoleRoute';
 import { RouteScreen } from './RouteScreen';
+import { RoleRoute } from './RoleRoute';
 
 export type Route = {
   id?: number;
@@ -9,6 +9,6 @@ export type Route = {
   description?: string;
   created_at?: string;
   updated_at?: string;
-  role_route?: RoleRoute[];
   route_screen?: RouteScreen[];
+  role_route?: RoleRoute[];
 }

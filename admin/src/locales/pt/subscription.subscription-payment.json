@@ -1,0 +1,11 @@
+{
+  "create": "Criar pagamento de assinatura",
+  "createText": "Preencha as informações do pagamento de assinatura.",
+  "createTooltip": "Criar novo pagamento de assinatura",
+  "delete": "Excluir pagamento de assinatura",
+  "deleteText": "Você tem certeza de que deseja excluir estes pagamentos de assinatura?",
+  "deleteTooltip": "Excluir o pagamento de assinatura selecionado",
+  "edit": "Editar pagamento de assinatura",
+  "editText": "Ver e editar informações do pagamento de assinatura.",
+  "editTooltip": "Editar o pagamento de assinatura selecionado"
+}

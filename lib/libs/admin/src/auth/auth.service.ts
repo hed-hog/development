@@ -290,6 +290,7 @@ export class AuthService implements OnModuleInit {
 
     return {
       token: this.jwt.sign(payload),
+      mfa: false
     };
   }
 

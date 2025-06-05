@@ -1,0 +1,43 @@
+routes:
+  - &a1
+    path: management
+    children:
+      - path: payment
+        children:
+          - path: payment-gateway
+            lazy:
+              component: ./pages/management/payment/payment-gateway/index.tsx
+          - path: payment-status
+            lazy:
+              component: ./pages/management/payment/payment-status/index.tsx
+          - path: payment-method
+            lazy:
+              component: ./pages/management/payment/payment-method/index.tsx
+          - path: payment-card-brand
+            lazy:
+              component: ./pages/management/payment/payment-card-brand/index.tsx
+          - path: discount-type
+            lazy:
+              component: ./pages/management/payment/discount-type/index.tsx
+          - path: item
+            lazy:
+              component: ./pages/management/payment/item/index.tsx
+          - path: payment-notification
+            lazy:
+              component: ./pages/management/payment/payment-notification/index.tsx
+  - &a2
+    path: payment
+    lazy:
+      component: ./pages/payment/payment/index.tsx
+  - &a3
+    path: item
+    lazy:
+      component: ./pages/payment/item/index.tsx
+  - &a4
+    path: payment-coupon
+    lazy:
+      component: ./pages/payment-coupon/index.tsx
+  - *a1
+  - *a2
+  - *a3
+  - *a4
