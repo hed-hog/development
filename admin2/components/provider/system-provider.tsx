@@ -1,8 +1,9 @@
 'use client';
 
+import { MenuItem } from '@/types/menu-item';
+import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import { useRouter } from 'next/navigation';
-
 import {
   createContext,
   useCallback,
@@ -36,6 +37,13 @@ interface SystemContextProps {
   loginWithMFA: (code: string) => Promise<ResponseToken>;
   request: <T extends {}>(config?: AxiosRequestConfig) => Promise<T>;
   logout: () => void;
+  register: (
+    name: string,
+    email: string,
+    password: string,
+  ) => Promise<ResponseToken>;
+  menu: MenuItem[] | undefined;
+  error: Error | null;
 }
 
 const SystemContext = createContext<SystemContextProps | undefined>(undefined);
@@ -45,11 +53,21 @@ type SystemProviderProps = {
 };
 
 export const SystemProvider = ({ children }: SystemProviderProps) => {
+  const [error, setError] = useState<Error | null>(null);
   const [tempToken, setTempToken] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [language, setLanguage] = useState<string>('en');
   const router = useRouter();
+
+  const { data: menu } = useQuery<MenuItem[]>({
+    queryKey: ['menu-system', language],
+    queryFn: () =>
+      request({
+        url: `/menu/system`,
+      }),
+    enabled: token !== null,
+  });
 
   const decodeToken = (jwtToken: string): UserData | null => {
     try {
@@ -109,6 +127,21 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
     }).then(() => {});
   }, []);
 
+  const register = useCallback(
+    (name: string, email: string, password: string) => {
+      return request<ResponseToken>({
+        method: 'POST',
+        url: '/auth/register',
+        data: {
+          name,
+          email,
+          password,
+        },
+      }).then((data) => setSuccessLogin(data));
+    },
+    [],
+  );
+
   const reset = useCallback(
     (newPassword: string, confirmNewPassword: string, code: string) => {
       return request<ResponseToken>({
@@ -143,42 +176,52 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
   }, []);
 
   const request = <T extends {}>(config?: AxiosRequestConfig) => {
-    const axiosInstance = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    try {
+      const axiosInstance = axios.create({
+        baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    axiosInstance.interceptors.request.use(
-      (config) => {
-        config.headers = config.headers || {};
-        if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        config.headers['language'] = language;
-        console.log('Intercepted request:', config);
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      },
-    );
+      axiosInstance.interceptors.request.use(
+        (config) => {
+          config.headers = config.headers || {};
+          if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+          }
+          config.headers['language'] = language;
+          console.log('Intercepted request:', config);
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
+        },
+      );
 
-    axiosInstance.interceptors.response.use(
-      (response) => {
-        console.log('Intercepted response:', response);
-        return response;
-      },
-      (error) => {
-        console.error('Response error intercepted:', error);
-        return Promise.reject(error);
-      },
-    );
+      axiosInstance.interceptors.response.use(
+        (response) => {
+          console.log('Intercepted response:', response);
 
-    return axiosInstance
-      .request<T>(config ?? {})
-      .then((response) => response.data);
+          setError(null);
+
+          return response;
+        },
+        (error) => {
+          setError(error?.response?.data || error?.message || error);
+
+          console.error('Response error intercepted:', error);
+          return Promise.reject(error);
+        },
+      );
+
+      return axiosInstance
+        .request<T>(config ?? {})
+        .then((response) => response.data);
+    } catch (error: any) {
+      setError(error?.message || error);
+      return Promise.reject(error);
+    }
   };
 
   useEffect(() => {
@@ -209,6 +252,10 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log({ menu });
+  }, [menu]);
+
   return (
     <SystemContext.Provider
       value={{
@@ -220,6 +267,9 @@ export const SystemProvider = ({ children }: SystemProviderProps) => {
         loginWithMFA,
         request,
         logout,
+        register,
+        menu,
+        error,
       }}
     >
       {children}

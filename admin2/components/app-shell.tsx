@@ -1,7 +1,5 @@
 'use client';
 
-import type React from 'react';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,18 +8,16 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
 import {
   Tooltip,
   TooltipContent,
@@ -30,113 +26,126 @@ import {
 } from '@/components/ui/tooltip';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { MenuItem } from '@/types/menu-item';
 import {
+  IconCode,
   IconLogout,
   IconMoon,
+  IconSettings,
   IconShield,
   IconSparkles,
   IconSun,
   IconUser,
   IconX,
 } from '@tabler/icons-react';
-import {
-  ChevronsUpDown,
-  FileText,
-  Globe,
-  Home,
-  LayoutDashboard,
-  Menu,
-  Settings,
-  Shield,
-  ShoppingCart,
-  User,
-  Users2,
-} from 'lucide-react';
+import { ChevronsUpDown, Globe, Menu } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import type React from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useSystem } from './provider/system-provider';
+import Icon from './ui/icon';
 
-type MenuItem = {
-  icon: React.ElementType;
-  label: string;
-  href?: string;
-  submenu?: boolean;
-};
+function SubMenu({ children, menu }: { children: ReactNode; menu: MenuItem }) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56" align="start">
+        <DropdownMenuLabel>{menu.name}</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            Profile
+            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            Billing
+            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            Settings
+            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            Keyboard shortcuts
+            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>Team</DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem>Email</DropdownMenuItem>
+                <DropdownMenuItem>Message</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>More...</DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+          <DropdownMenuItem>
+            New Team
+            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>GitHub</DropdownMenuItem>
+        <DropdownMenuItem>Support</DropdownMenuItem>
+        <DropdownMenuItem disabled>API</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          Log out
+          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
-const menuItems: MenuItem[] = [
-  {
-    icon: Home,
-    label: 'Início',
-    href: '/',
-  },
-  {
-    icon: Shield,
-    label: 'Security',
-    href: '/security',
-  },
-  {
-    icon: Settings,
-    label: 'Settings',
-    submenu: true,
-  },
-  {
-    icon: LayoutDashboard,
-    label: 'Dashboard',
-    href: '/dashboard',
-  },
-  {
-    icon: FileText,
-    label: 'Releases',
-    href: '/releases',
-  },
-  {
-    icon: User,
-    label: 'Account',
-    href: '/account',
-  },
-  {
-    icon: ShoppingCart,
-    label: 'Orders',
-    href: '/orders',
-  },
-  {
-    icon: Users2,
-    label: 'Clients',
-    href: '/clients',
-  },
-];
+function MenuItemButton({
+  item,
+  expanded,
+  activeMenuItem,
+}: {
+  item: MenuItem;
+  expanded: boolean;
+  activeMenuItem: string;
+}) {
+  return (
+    <Button
+      variant={'ghost'}
+      className={cn(
+        'px-4 py-2 flex w-full',
+        expanded ? ' justify-start' : 'justify-center',
+        item.url === activeMenuItem &&
+          'bg-primary text-white hover:bg-primary/90 hover:text-white',
+      )}
+    >
+      <Icon icon={item.icon} className={cn('h-5 w-5', expanded && 'mr-3')} />
+      <span
+        className={[
+          'transition-all flex-1',
 
-const settingsSubmenuItems = [
-  { label: 'Security', href: '/settings/security' },
-  { label: 'Settings', href: '/settings', active: true },
-  { label: 'Dashboard', href: '/settings/dashboard' },
-  { label: 'Releases', href: '/settings/releases' },
-  { label: 'Account', href: '/settings/account' },
-  { label: 'Orders', href: '/settings/orders' },
-  { label: 'Clients', href: '/settings/clients' },
-  { label: 'Databases', href: '/settings/databases' },
-  { label: 'Pull Requests', href: '/settings/pull-requests' },
-  { label: 'Open Issues', href: '/settings/issues' },
-  { label: 'Wiki pages', href: '/settings/wiki' },
-];
-
-// Dados simulados do usuário
-const user = {
-  name: 'João Silva',
-  email: 'joao.silva@exemplo.com',
-  avatar: 'https://ui.shadcn.com/avatars/shadcn.jpg',
-};
+          expanded
+            ? 'translate-x-0 opacity-100 flex'
+            : 'translate-x-20 opacity-0 hidden',
+        ].join(' ')}
+      >
+        {item.name}
+      </span>
+    </Button>
+  );
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [expanded, setExpanded] = useState<boolean | null>(null);
-  const [settingsSheetOpen, setSettingsSheetOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState(`/`);
   const pathname = usePathname();
   const isMobile = useIsMobile();
   const [language, setLanguage] = useState('pt-br');
   const { theme, setTheme } = useTheme();
-  const { userData, logout } = useSystem();
+  const { userData, logout, menu, error } = useSystem();
 
   const toggleExpanded = () => {
     setExpanded((prev) => {
@@ -144,15 +153,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       localStorage.setItem('sidebar-expanded', JSON.stringify(newValue));
       return newValue;
     });
-  };
-
-  const handleSettingsClick = () => {
-    setSettingsSheetOpen(true);
-  };
-
-  const handleLogout = () => {
-    // Implementar lógica de logout aqui
-    console.log('Logout clicked');
   };
 
   useEffect(() => {
@@ -169,7 +169,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   if (expanded === null) return null;
 
   return (
-    <div className="flex h-screen">
+    <div
+      className={cn(
+        'flex h-screen transition-all',
+        error && 'border-4 border-red-500',
+      )}
+    >
       {/* Sidebar */}
       <aside
         className={cn(
@@ -198,7 +203,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               X
             </div>
             {expanded && (
-              <span className="ml-3 font-semibold flex-1">AppName</span>
+              <span className="ml-3 font-semibold flex-1">HedHog</span>
             )}
             <Button
               variant="ghost"
@@ -245,44 +250,40 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   )}
                 </Tooltip>
               </li>
-              {menuItems.map((item) => (
-                <li key={item.label}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant={'ghost'}
-                        className={cn(
-                          'px-4 py-2 flex w-full',
-                          expanded ? ' justify-start' : 'justify-center',
-                          item.href === activeMenuItem &&
-                            'bg-primary text-white hover:bg-primary/90 hover:text-white',
+              {menu instanceof Array &&
+                menu
+                  .filter(
+                    (item) => !['/management/setting'].includes(item.slug),
+                  )
+                  .map((item) => (
+                    <li key={String(item.id)}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          {item.menu instanceof Array &&
+                          item.menu.length > 0 ? (
+                            <SubMenu menu={item}>
+                              <MenuItemButton
+                                item={item}
+                                activeMenuItem={activeMenuItem}
+                                expanded={expanded}
+                              />
+                            </SubMenu>
+                          ) : (
+                            <MenuItemButton
+                              item={item}
+                              activeMenuItem={activeMenuItem}
+                              expanded={expanded}
+                            />
+                          )}
+                        </TooltipTrigger>
+                        {!expanded && (
+                          <TooltipContent side="right">
+                            {item.name}
+                          </TooltipContent>
                         )}
-                        onClick={() =>
-                          item.submenu ? handleSettingsClick() : null
-                        }
-                      >
-                        <item.icon
-                          className={cn('h-5 w-5', expanded && 'mr-3')}
-                        />
-                        <span
-                          className={[
-                            'transition-all flex-1',
-
-                            expanded
-                              ? 'translate-x-0 opacity-100 flex'
-                              : 'translate-x-20 opacity-0 hidden',
-                          ].join(' ')}
-                        >
-                          {item.label}
-                        </span>
-                      </Button>
-                    </TooltipTrigger>
-                    {!expanded && (
-                      <TooltipContent side="right">{item.label}</TooltipContent>
-                    )}
-                  </Tooltip>
-                </li>
-              ))}
+                      </Tooltip>
+                    </li>
+                  ))}
             </ul>
           </TooltipProvider>
         </nav>
@@ -374,6 +375,79 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   )}
                 </Tooltip>
               </li>
+              {menu instanceof Array &&
+                menu.find((item) => item.slug === '/management/setting') && (
+                  <li>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className={cn(
+                            'px-4 py-2 flex w-full',
+                            expanded ? ' justify-start' : 'justify-center',
+                          )}
+                          onClick={() => console.log('Settings clicked')}
+                        >
+                          <IconSettings
+                            className={cn('h-5 w-5', expanded && 'mr-3')}
+                          />
+                          <span
+                            className={[
+                              'transition-all flex-1',
+                              expanded
+                                ? 'translate-x-0 opacity-100 flex'
+                                : 'translate-x-20 opacity-0 hidden',
+                            ].join(' ')}
+                          >
+                            Configurações
+                          </span>
+                        </Button>
+                      </TooltipTrigger>
+                      {!expanded && (
+                        <TooltipContent side="right">
+                          Configurações
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </li>
+                )}
+              {process.env.NEXT_PUBLIC_DEVELOPMENT_MODE === 'true' && (
+                <li>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className={cn(
+                          'px-4 py-2 flex w-full',
+                          expanded ? ' justify-start' : 'justify-center',
+                        )}
+                        onClick={() => console.log('Develope clicked')}
+                      >
+                        <IconCode
+                          className={cn('h-5 w-5', expanded && 'mr-3')}
+                        />
+                        <span
+                          className={[
+                            'transition-all flex-1',
+                            expanded
+                              ? 'translate-x-0 opacity-100 flex'
+                              : 'translate-x-20 opacity-0 hidden',
+                          ].join(' ')}
+                        >
+                          Desenvolvedor
+                        </span>
+                      </Button>
+                    </TooltipTrigger>
+                    {!expanded && (
+                      <TooltipContent side="right">
+                        Desenvolvedor
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </li>
+              )}
             </ul>
           </TooltipProvider>
         </div>
@@ -441,10 +515,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem
-                  className={cn('cursor-pointer')}
-                  onClick={handleSettingsClick}
-                >
+                <DropdownMenuItem className={cn('cursor-pointer')}>
                   <IconSparkles />
                   Upgrade to Pro
                 </DropdownMenuItem>
@@ -485,40 +556,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Content */}
-        <div className="p-6">{children}</div>
+        <div>{children}</div>
       </main>
-
-      {/* Settings Sheet */}
-      <Sheet open={settingsSheetOpen} onOpenChange={setSettingsSheetOpen}>
-        <SheetContent
-          side="left"
-          className="w-[300px] p-0 border-l"
-          overlayClassName="bg-transparent"
-        >
-          <SheetHeader className="p-4 border-b">
-            <SheetTitle>Configurações</SheetTitle>
-            <SheetDescription>
-              Gerencie suas configurações e preferências
-            </SheetDescription>
-          </SheetHeader>
-          <div className="py-2">
-            {settingsSubmenuItems.map((item) => (
-              <Button
-                key={item.label}
-                variant="ghost"
-                className={cn(
-                  'w-full justify-start rounded-none h-10 px-4',
-                  item.active &&
-                    'bg-primary text-white hover:bg-sky-600 hover:text-white',
-                )}
-                asChild
-              >
-                <a href={item.href}>{item.label}</a>
-              </Button>
-            ))}
-          </div>
-        </SheetContent>
-      </Sheet>
     </div>
   );
 }

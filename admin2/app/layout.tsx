@@ -1,3 +1,4 @@
+import { QueryClientProvider } from '@/components/provider/query-client-provider';
 import { SystemProvider } from '@/components/provider/system-provider';
 import { ThemeProvider } from '@/components/provider/theme-provider';
 import type { Metadata } from 'next';
@@ -21,9 +22,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SystemProvider>{children}</SystemProvider>
-        </ThemeProvider>
+        <QueryClientProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <SystemProvider>{children}</SystemProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );

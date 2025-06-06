@@ -45,7 +45,7 @@ export const LoginPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="flex min-h-screen max-h-screen bg-background text-foreground">
       {/* Imagem lateral visível somente em md+ */}
       <div className="hidden md:flex md:w-1/2 bg-muted items-center justify-center relative">
         <img
