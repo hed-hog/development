@@ -124,6 +124,18 @@ export class ItemService {
       },
     });
 
+    await this.prismaService.payment_installment_item.deleteMany({
+      where: {
+        item_id: { in: ids },
+      },
+    });
+
+    await this.prismaService.payment_item.deleteMany({
+      where: {
+        item_id: { in: ids },
+      },
+    });
+
     return this.prismaService.item.deleteMany({
       where: {
         id: {

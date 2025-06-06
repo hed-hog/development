@@ -10,6 +10,7 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { includePaymentCoupon } from './payment-coupon.consts';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PaymentCouponService {
@@ -69,18 +70,24 @@ export class PaymentCouponService {
   }
 
   async create(data: CreateDTO) {
-    const { id } = await this.prismaService.payment_coupon.create({
-      data: {
-        code: data.code,
-        discount_type_id: data.discount_type_id,
-        description: data.description,
-        value: data.value,
-        active: data.active,
-        uses_limit: data.uses_limit,
-        uses_qtd: data.uses_qtd,
-        starts_at: data.starts_at,
-        ends_at: data.ends_at,
+
+    const createData: Prisma.payment_couponCreateInput = {
+      code: data.code,
+      // discount_type_id: data.discount_type_id,
+      description: data.description,
+      value: data.value,
+      active: data.active,
+      uses_limit: data.uses_limit,
+      uses_qtd: data.uses_qtd,
+      starts_at: data.starts_at,
+      ends_at: data.ends_at,
+      discount_type: {
+        connect: { id: data.discount_type_id },
       },
+    };
+
+    const { id } = await this.prismaService.payment_coupon.create({
+      data: createData,
     });
 
     await Promise.all(
@@ -133,6 +140,15 @@ export class PaymentCouponService {
         'You must select at least one item to delete.',
       );
     }
+
+    await this.prismaService.payment.updateMany({
+      data: {
+        coupon_id: null,
+      },
+      where: {
+        coupon_id: { in: ids },
+      },
+    });
 
     await this.prismaService.payment_coupon_item.deleteMany({
       where: {

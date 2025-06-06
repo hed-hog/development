@@ -18,7 +18,7 @@ export class SubscriptionService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async list(paginationParams: PaginationDTO, isActive: boolean) {
     const fields = [];
@@ -97,6 +97,24 @@ export class SubscriptionService {
         where: {
           subscription_id: { in: subscriptions.data.map((s) => s.id) },
         },
+        include: {
+          person: {
+            select: {
+              person_user: {
+                select: {
+                  user_id: true,
+                  user: {
+                    select: {
+                      id: true,
+                      name: true,
+                      email: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        }
       });
 
     const personIds = subscriptionPersons.map((sp) => sp.person_id);
