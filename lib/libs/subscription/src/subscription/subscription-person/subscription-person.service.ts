@@ -11,7 +11,7 @@ export class SubscriptionPersonService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async create(subscriptionId: number, data: CreateDTO) {
     return this.prismaService.subscription_person.create({
@@ -45,7 +45,23 @@ export class SubscriptionPersonService {
       {
         where,
         include: {
-          person: true,
+          person: {
+            include: {
+              person_user: {
+                select: {
+                  person_id: true,
+                  user_id: true,
+                  user: {
+                    select: {
+                      id: true,
+                      name: true,
+                      email: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     );

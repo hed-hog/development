@@ -151,8 +151,6 @@ export class CheckoutService implements OnModuleInit {
 
     await this.checkApplyMethodDiscount(paymentId);
 
-    await this.verifyPixDiscount(paymentId);
-
     return this.getPaymentDetails(paymentId);
   }
 
@@ -275,6 +273,8 @@ export class CheckoutService implements OnModuleInit {
         amount,
       },
     });
+
+    await this.verifyPixDiscount(paymentId);
 
     if (payment.coupon_id) {
       await this.setCoupon(payment.payment_coupon.code, payment.slug);
