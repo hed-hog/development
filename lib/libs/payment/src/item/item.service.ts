@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
+import { includeItem } from './item.consts';
 
 @Injectable()
 export class ItemService {
@@ -17,7 +18,7 @@ export class ItemService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async list(paginationParams: PaginationDTO) {
     const fields = ['slug', 'name', 'price'];
@@ -61,6 +62,7 @@ export class ItemService {
   async get(id: number) {
     return this.prismaService.item.findUnique({
       where: { id: id },
+      include: includeItem,
     });
   }
 

@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
+import { includePaymentCoupon } from './payment-coupon.consts';
 
 @Injectable()
 export class PaymentCouponService {
@@ -17,7 +18,7 @@ export class PaymentCouponService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async list(paginationParams: PaginationDTO) {
     const fields = [
@@ -63,6 +64,7 @@ export class PaymentCouponService {
   async get(id: number) {
     return this.prismaService.payment_coupon.findUnique({
       where: { id: id },
+      include: includePaymentCoupon,
     });
   }
 
