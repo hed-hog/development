@@ -13,6 +13,10 @@ export class AzureProvider extends AbstractProvider {
     this.initValidation();
   }
 
+  async getUrl(path: string): Promise<string> {
+    return `https://${this.setting['storage-abs-container']}.blob.core.windows.net/${path}`;
+  }
+
   async initValidation() {
     if (!this.setting['storage-abs-account']) {
       throw new BadRequestException(

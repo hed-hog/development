@@ -4,20 +4,21 @@ import {
   Body,
   Controller,
   Delete,
+  forwardRef,
   Get,
   Inject,
   Param,
   ParseIntPipe,
   Post,
   Put,
+  Res,
   UploadedFile,
   UseInterceptors,
-  forwardRef,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DeleteDTO } from './dto/delete.dto';
-import { FileService } from './file.service';
 import { UploadFileDTO } from './dto/upload.dto';
+import { FileService } from './file.service';
 
 @Role()
 @Controller('file')
@@ -30,6 +31,14 @@ export class FileController {
   @Get()
   async list(@Pagination() paginationParams) {
     return this.fileService.getFiles(paginationParams);
+  }
+
+  @Get('local/:path')
+  async getLocalFile(@Param('path') path: string, @Res() res) {
+    const { buffer, file } = await this.fileService.getBufferByPath(path);
+
+    res.setHeader('Content-Type', file.file_mimetype.name);
+    res.send(buffer);
   }
 
   @Get(':id')

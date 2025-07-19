@@ -10,6 +10,10 @@ export class S3Provider extends AbstractProvider {
     this.initValidation();
   }
 
+  async getUrl(path: string): Promise<string> {
+    return `https://${this.setting['storage-s3-bucket']}.s3.${this.setting['storage-s3-region']}.amazonaws.com/${path}`;
+  }
+
   async initValidation() {
     if (!this.setting['storage-s3-key']) {
       throw new BadRequestException(

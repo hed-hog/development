@@ -12,6 +12,10 @@ export class LocalProvider extends AbstractProvider {
     this.initValidation();
   }
 
+  async getUrl(path: string): Promise<string> {
+    return `${String(process.env.URL)}/file/local/${path}`;
+  }
+
   async initValidation() {
     if (!this.setting['storage-local-path']) {
       throw new BadRequestException(

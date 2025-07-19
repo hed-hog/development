@@ -10,6 +10,10 @@ export class GCSProvider extends AbstractProvider {
     this.initValidation();
   }
 
+  async getUrl(path: string): Promise<string> {
+    return `https://storage.googleapis.com/${this.setting['storage-gcs-bucket']}/${path}`;
+  }
+
   async initValidation() {
     if (!this.setting['storage-gcs-keyfile']) {
       throw new BadRequestException(

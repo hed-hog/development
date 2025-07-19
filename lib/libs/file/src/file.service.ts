@@ -6,6 +6,7 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -13,6 +14,7 @@ import { DeleteDTO } from './dto/delete.dto';
 import { AbstractProvider } from './provider/abstract,provider';
 import { EnumProvider } from './provider/provider.enum';
 import { ProviderFactory } from './provider/provider.factory';
+import { url } from 'inspector';
 
 @Injectable()
 export class FileService implements OnModuleInit {
@@ -37,6 +39,46 @@ export class FileService implements OnModuleInit {
 
   async getStorage() {
     return this.setting['storage'];
+  }
+
+  async getBufferByPath(path: string) {
+    const provider = await this.getProvider();
+
+    const basename = path.split('/').pop();
+
+    if (!basename) {
+      throw new NotFoundException(`File not found: ${path}`);
+    }
+
+    console.log({
+      path: path.split('/').slice(0, -1).join('/'),
+      filename: basename,
+    });
+
+    const file = await this.prismaService.file.findFirst({
+      where: {
+        path: path.split('/').slice(0, -1).join('/'),
+        filename: basename,
+      },
+      include: {
+        file_mimetype: true,
+      },
+    });
+
+    if (!file) {
+      throw new NotFoundException(`File not found: ${path}`);
+    }
+
+    return {
+      file,
+      buffer: provider.buffer(path),
+    };
+  }
+
+  async getUrl(fileId: number) {
+    const file = await this.get(fileId);
+    const provider = await this.getProvider();
+    return provider.getUrl(file.path);
   }
 
   async getProvider(): Promise<AbstractProvider> {
@@ -147,7 +189,7 @@ export class FileService implements OnModuleInit {
     const file = await this.prismaService.file.create({
       data: {
         filename,
-        path: url,
+        path: url.replace(/\\/g, '/').replace(/\/\//g, '/'),
         provider_id: this.providerId,
         location: destination,
         mimetype_id: await this.getMimeType(mimetype),
@@ -176,7 +218,7 @@ export class FileService implements OnModuleInit {
     const file = await this.prismaService.file.create({
       data: {
         filename: fileBuffer.originalname,
-        path: url,
+        path: url.replace(/\\/g, '/').replace(/\/\//g, '/'),
         provider_id: this.providerId,
         location: destination,
         mimetype_id: await this.getMimeType(fileBuffer.mimetype),

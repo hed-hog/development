@@ -30,6 +30,7 @@ export abstract class AbstractProvider implements IProvider {
   abstract buffer(filepath: string): Promise<any>;
   abstract tempURL(filepath: string, expires?: number): Promise<any>;
   abstract initValidation(): Promise<any>;
+  abstract getUrl(path: string): Promise<string>;
 
   getExtension(filename: string) {
     return filename.split('.').pop();
