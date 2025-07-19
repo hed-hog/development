@@ -1,3 +1,4 @@
+import { Role } from '@hedhog/core';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -13,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { DeleteDTO } from '../dto/delete.dto';
 import { UpdateIdsDTO } from '../dto/update-ids.dto';
-import { Role } from '@hedhog/core';
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { UserService } from './user.service';

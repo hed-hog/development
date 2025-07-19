@@ -82,6 +82,11 @@ export class AuthService implements OnModuleInit {
     return user;
   }
 
+  async getPasswordHashed(password: string): Promise<string> {
+    const salt = await genSalt();
+    return await hash(password, salt);
+  }
+
   async register({ email, name, password, code, multifactor_id }: RegisterDTO) {
     const user = await this.prisma.user.findFirst({
       where: {
@@ -93,14 +98,11 @@ export class AuthService implements OnModuleInit {
       throw new ConflictException('Already exists a user with this email');
     }
 
-    const salt = await genSalt();
-    password = await hash(password, salt);
-
     const newUser = await this.prisma.user.create({
       data: {
         email,
         name,
-        password,
+        password: await this.getPasswordHashed(password),
         multifactor_id,
         code,
       },
@@ -125,15 +127,13 @@ export class AuthService implements OnModuleInit {
   ) {
     try {
       const user = await this.createUserCheck(code);
-      const salt = await genSalt();
-      password = await hash(password, salt);
 
       await this.prisma.user.update({
         where: {
           id: user.id,
         },
         data: {
-          password,
+          password: await this.getPasswordHashed(password),
           code: null,
         },
       });
@@ -290,7 +290,7 @@ export class AuthService implements OnModuleInit {
 
     return {
       token: this.jwt.sign(payload),
-      mfa: false
+      mfa: false,
     };
   }
 
@@ -357,15 +357,12 @@ export class AuthService implements OnModuleInit {
       throw new NotFoundException('Não foi possível alterar a senha.');
     }
 
-    const salt = await genSalt();
-    const password = await hash(newPassword, salt);
-
     const newUser = await this.prisma.user.update({
       where: {
         id: user.id,
       },
       data: {
-        password,
+        password: await this.getPasswordHashed(newPassword),
       },
     });
 
@@ -459,15 +456,12 @@ export class AuthService implements OnModuleInit {
       });
 
       if (user) {
-        const salt = await genSalt();
-        const password = await hash(confirmNewPassword, salt);
-
         await this.prisma.user.update({
           where: {
             id: user.id,
           },
           data: {
-            password,
+            password: await this.getPasswordHashed(confirmNewPassword),
             code: null,
           },
         });
@@ -489,7 +483,7 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async checkCodeMfa(userId: number, code: number) {
+  async checkCodeMfa(userId: number, code: string) {
     const window = this.settings['mfa-window'] ?? 0;
     const step = this.settings['mfa-setp'] ?? 30;
 

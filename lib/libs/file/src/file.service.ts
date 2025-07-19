@@ -35,6 +35,10 @@ export class FileService implements OnModuleInit {
     await this.getProvider();
   }
 
+  async getStorage() {
+    return this.setting['storage'];
+  }
+
   async getProvider(): Promise<AbstractProvider> {
     this.setting = await this.settingService.getSettingValues([
       'storage',
