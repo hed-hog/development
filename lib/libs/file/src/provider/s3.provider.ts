@@ -90,6 +90,8 @@ export class S3Provider extends AbstractProvider {
         Bucket: this.setting['storage-s3-bucket'],
         Key: [destination, this.getFilename(file.originalname)].join('/'),
         Body: file.buffer,
+        ContentDisposition: `attachment; filename="${file.originalname}"`,
+        ContentType: file.mimetype,
       })
       .promise();
 
