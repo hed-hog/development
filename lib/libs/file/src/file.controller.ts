@@ -1,4 +1,4 @@
-import { Role } from '@hedhog/core';
+import { Public, Role } from '@hedhog/core';
 import { Pagination } from '@hedhog/pagination';
 import {
   Body,
@@ -33,11 +33,17 @@ export class FileController {
     return this.fileService.getFiles(paginationParams);
   }
 
-  @Get('local/:path')
-  async getLocalFile(@Param('path') path: string, @Res() res) {
-    const { buffer, file } = await this.fileService.getBufferByPath(path);
-
-    res.setHeader('Content-Type', file.file_mimetype.name);
+  @Public()
+  @Get('open/:fileId')
+  async getLocalFile(
+    @Param('fileId', ParseIntPipe) fileId: number,
+    @Res() res,
+  ) {
+    const { buffer, file } = await this.fileService.getBuffer(fileId);
+    res.set({
+      'Content-Type': file.file_mimetype,
+      'Content-Length': buffer.length,
+    });
     res.send(buffer);
   }
 

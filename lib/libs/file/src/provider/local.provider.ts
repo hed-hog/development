@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { createReadStream, existsSync } from 'fs';
-import { mkdir, unlink, writeFile } from 'fs/promises';
+import { mkdir, readFile, unlink, writeFile } from 'fs/promises';
 import * as jsonwebtoken from 'jsonwebtoken';
 import { join, sep } from 'path';
 import { Stream } from 'stream';
@@ -122,7 +122,7 @@ export class LocalProvider extends AbstractProvider {
       throw new BadRequestException(`File not found: ${filepath}`);
     }
 
-    return createReadStream(filepath).read();
+    return readFile(filepath);
   }
 
   async tempURL(filepath: string, expires = 3600): Promise<any> {

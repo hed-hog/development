@@ -14,7 +14,6 @@ import { DeleteDTO } from './dto/delete.dto';
 import { AbstractProvider } from './provider/abstract,provider';
 import { EnumProvider } from './provider/provider.enum';
 import { ProviderFactory } from './provider/provider.factory';
-import { url } from 'inspector';
 
 @Injectable()
 export class FileService implements OnModuleInit {
@@ -41,24 +40,12 @@ export class FileService implements OnModuleInit {
     return this.setting['storage'];
   }
 
-  async getBufferByPath(path: string) {
+  async getBuffer(fileId: number) {
     const provider = await this.getProvider();
 
-    const basename = path.split('/').pop();
-
-    if (!basename) {
-      throw new NotFoundException(`File not found: ${path}`);
-    }
-
-    console.log({
-      path: path.split('/').slice(0, -1).join('/'),
-      filename: basename,
-    });
-
-    const file = await this.prismaService.file.findFirst({
+    const file = await this.prismaService.file.findUnique({
       where: {
-        path: path.split('/').slice(0, -1).join('/'),
-        filename: basename,
+        id: fileId,
       },
       include: {
         file_mimetype: true,
@@ -66,12 +53,14 @@ export class FileService implements OnModuleInit {
     });
 
     if (!file) {
-      throw new NotFoundException(`File not found: ${path}`);
+      throw new NotFoundException(`File not found: ${fileId}`);
     }
+
+    const buffer = Buffer.from(await provider.buffer(file.path));
 
     return {
       file,
-      buffer: provider.buffer(path),
+      buffer,
     };
   }
 
