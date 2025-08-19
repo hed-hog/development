@@ -270,6 +270,7 @@ export class AuthService implements OnModuleInit {
               mfa: user.multifactor_id,
             }),
             mfa: true,
+            multifactor_id: user.multifactor_id,
           };
         case MultifactorType.APP:
           return {
@@ -278,6 +279,7 @@ export class AuthService implements OnModuleInit {
               mfa: user.multifactor_id,
             }),
             mfa: true,
+            multifactor_id: user.multifactor_id,
           };
       }
     }
