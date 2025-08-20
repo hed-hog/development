@@ -759,7 +759,7 @@ export class AuthService implements OnModuleInit {
       throw new BadRequestException('Código inválido');
     }
 
-    await this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: {
         id: userId,
       },
@@ -769,7 +769,7 @@ export class AuthService implements OnModuleInit {
     });
 
     const codes = await this.createMfaRecoveryCodes(userId);
-    const newToken = await this.getToken(user);
+    const newToken = await this.getToken(updatedUser);
 
     return { ...newToken, codes };
   }
