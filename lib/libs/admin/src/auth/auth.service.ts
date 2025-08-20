@@ -735,7 +735,11 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async verifyMfa(email: string, token: string, verifyMultifactor = true) {
+  async verifyMfa(
+    email: string,
+    token: string,
+    verifyMultifactor: boolean = true,
+  ) {
     const window = this.settings['mfa-window'] ?? 0;
     const step = this.settings['mfa-setp'] ?? 30;
 

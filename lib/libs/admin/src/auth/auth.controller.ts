@@ -149,7 +149,7 @@ export class AuthController {
   @Public()
   @Post('mfa-verify')
   async verifyMfa(@Body() { token, email }: { token: string; email: string }) {
-    return this.service.verifyMfa(email, token);
+    return this.service.verifyMfa(email, token, false);
   }
 
   @Public()
