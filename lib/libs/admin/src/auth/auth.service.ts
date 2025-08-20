@@ -711,9 +711,15 @@ export class AuthService implements OnModuleInit {
 
   async removeMfa(userId: number, token: string) {
     try {
-      await this.verifyMfa(userId, token, false);
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id: userId,
+        },
+      });
 
-      const user = await this.prisma.user.update({
+      await this.verifyMfa(user.email, token, false);
+
+      const updatedUser = await this.prisma.user.update({
         where: {
           id: userId,
         },
@@ -723,19 +729,19 @@ export class AuthService implements OnModuleInit {
         },
       });
 
-      return this.getToken(user);
+      return this.getToken(updatedUser);
     } catch (error: any) {
       throw new BadRequestException(`Invalid code: ${error?.message}`);
     }
   }
 
-  async verifyMfa(userId: number, token: string, verifyMultifactor = true) {
+  async verifyMfa(email: string, token: string, verifyMultifactor = true) {
     const window = this.settings['mfa-window'] ?? 0;
     const step = this.settings['mfa-setp'] ?? 30;
 
     const user = await this.prisma.user.findFirst({
       where: {
-        id: userId,
+        email,
       },
     });
 
@@ -761,14 +767,14 @@ export class AuthService implements OnModuleInit {
 
     const updatedUser = await this.prisma.user.update({
       where: {
-        id: userId,
+        email,
       },
       data: {
         multifactor_id: MultifactorType.APP,
       },
     });
 
-    const codes = await this.createMfaRecoveryCodes(userId);
+    const codes = await this.createMfaRecoveryCodes(updatedUser.id);
     const newToken = await this.getToken(updatedUser);
 
     return { ...newToken, codes };
