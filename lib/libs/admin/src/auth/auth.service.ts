@@ -769,8 +769,9 @@ export class AuthService implements OnModuleInit {
     });
 
     const codes = await this.createMfaRecoveryCodes(userId);
+    const newToken = await this.getToken(user);
 
-    return { ...this.getToken(user), codes };
+    return { ...newToken, codes };
   }
 
   async loginGoogle(res: any) {
