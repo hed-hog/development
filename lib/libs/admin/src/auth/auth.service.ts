@@ -794,6 +794,7 @@ export class AuthService implements OnModuleInit {
         ? this.settings['google_scopes'].join(' ')
         : String(this.settings['google_scopes']),
     });
+    console.log('loginGoogle', params)
     return res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
   }
 
@@ -805,7 +806,7 @@ export class AuthService implements OnModuleInit {
       url: tokenUrl,
       clientId: this.settings['google_client_id'],
       clientSecret: this.settings['google_client_secret'],
-      redirectUri: `${this.settings['url']}/google/callback`,
+      redirectUri: `${this.settings['url']}/callback/google`,
     });
     const profile = await this.fetchOAuthProfile(tokenResponse.access_token, profileUrl);
     const user = await this.findOrCreateUser(profile);
@@ -823,6 +824,7 @@ export class AuthService implements OnModuleInit {
         : String(this.settings['facebook_scopes'] ?? 'email'),
       auth_type: 'rerequest',
     });
+    console.log('loginFacebook', params);
     return res.redirect(`https://www.facebook.com/v17.0/dialog/oauth?${params.toString()}`);
   }
 
@@ -834,7 +836,7 @@ export class AuthService implements OnModuleInit {
       url: tokenUrl,
       clientId: this.settings['facebook_client_id'],
       clientSecret: this.settings['facebook_client_secret'],
-      redirectUri: `${this.settings['url']}/facebook/callback`,
+      redirectUri: `${this.settings['url']}/callback/facebook`,
     });
     const profile = await this.fetchOAuthProfile(tokenResponse.access_token, profileUrl);
     const user = await this.findOrCreateUser(profile);
