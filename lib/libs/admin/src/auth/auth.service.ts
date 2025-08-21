@@ -786,7 +786,7 @@ export class AuthService implements OnModuleInit {
 
   async loginGoogle(res: any) {
     const redirectURI = new URL(
-      '/auth/google/callback',
+      '/callback/google',
       this.settings['url'],
     ).toString();
 
@@ -868,7 +868,7 @@ export class AuthService implements OnModuleInit {
 
   async loginFacebook(res: any) {
     const redirectURI = new URL(
-      '/auth/facebook/callback',
+      '/callback/facebook',
       this.settings['url'],
     ).toString();
 
