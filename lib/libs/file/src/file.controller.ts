@@ -26,7 +26,7 @@ export class FileController {
   constructor(
     @Inject(forwardRef(() => FileService))
     private readonly fileService: FileService,
-  ) {}
+  ) { }
 
   @Get()
   async list(@Pagination() paginationParams) {
@@ -41,7 +41,7 @@ export class FileController {
   ) {
     const { buffer, file } = await this.fileService.getBuffer(fileId);
     res.set({
-      'Content-Type': file.file_mimetype,
+      'Content-Type': file.file_mimetype.name,
       'Content-Length': buffer.length,
     });
     res.send(buffer);

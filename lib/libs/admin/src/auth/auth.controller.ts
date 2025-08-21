@@ -27,7 +27,7 @@ export class AuthController {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly service: AuthService,
-  ) {}
+  ) { }
 
   @Public()
   @Get('create-user')
@@ -162,5 +162,17 @@ export class AuthController {
   @Get('google/callback')
   async callbackGoogle(@Query() { code }: { code: string }) {
     return this.service.callbackGoogle(code);
+  }
+
+  @Public()
+  @Get('facebook/login')
+  async loginFacebook(@Res() res) {
+    return this.service.loginFacebook(res);
+  }
+
+  @Public()
+  @Get('facebook/callback')
+  async callbackFacebook(@Query() { code }: { code: string }) {
+    return this.service.callbackFacebook(code);
   }
 }

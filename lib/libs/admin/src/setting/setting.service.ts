@@ -361,7 +361,7 @@ export class SettingService {
     const data: Record<string, any> = {};
 
     for (const s of setting) {
-      switch (s.type) {
+      switch (s.type as any) {
         case 'boolean':
           data[s.slug] = s.value === 'true';
           break;
@@ -373,10 +373,17 @@ export class SettingService {
           try {
             data[s.slug] = JSON.parse(s.value);
           } catch (err) {
-            console.error('Error parsing JSON', s.value, err);
+            console.warn('Error parsing JSON', s.value, err);
             data[s.slug] = s.value;
           }
           break;
+        case 'locale':
+          try {
+            data[s.slug] = JSON.parse(s.value);
+          } catch (err) {
+            console.warn('Error parsing locale JSON', s.value, err);
+            data[s.slug] = s.value;
+          }
         default:
           data[s.slug] = s.value;
       }
@@ -386,6 +393,18 @@ export class SettingService {
       data[slugUserOverride.find((s) => s.id === ss.setting_id).slug] =
         ss.value;
     });
+
+    for (const s of slug) {
+      const notFoundSlugs: string[] = [];
+      if (data[s] === undefined) {
+        notFoundSlugs.push(s);
+      }
+      if (notFoundSlugs.length > 0) {
+        throw new BadRequestException(
+          `Settings with slugs ${notFoundSlugs.join(', ')} not found.`,
+        );
+      }
+    }
 
     return data;
   }

@@ -42,7 +42,7 @@ export class AuthService implements OnModuleInit {
     private readonly mail: MailManagerService,
     @Inject(forwardRef(() => SettingService))
     private readonly setting: SettingService,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     this.settings = await this.setting.getSettingValues([
@@ -851,5 +851,69 @@ export class AuthService implements OnModuleInit {
     }
 
     return user;
+  }
+
+  async loginFacebook(res: any) {
+    const redirectURI = new URL(
+      '/auth/facebook/callback',
+      this.settings['url'],
+    ).toString();
+
+    const params = new URLSearchParams({
+      client_id: this.settings['facebook_client_id'],
+      redirect_uri: redirectURI,
+      response_type: 'code',
+      scope: (this.settings['facebook_scopes'] ?? ['email']).join(','),
+      auth_type: 'rerequest',
+    });
+
+    const url = `https://www.facebook.com/v17.0/dialog/oauth?${params.toString()}`;
+
+    return res.redirect(url);
+  }
+
+  async callbackFacebook(code: string) {
+    const tokenUrl = 'https://graph.facebook.com/v17.0/oauth/access_token';
+    const profileUrl = 'https://graph.facebook.com/me?fields=id,name,email';
+
+    const tokenResponse = await this.fetchFacebookToken(code, tokenUrl);
+    const profile = await this.fetchFacebookProfile(
+      tokenResponse.access_token,
+      profileUrl,
+    );
+
+    let user = await this.findOrCreateUser(profile);
+
+    return this.getToken(user);
+  }
+
+  private async fetchFacebookToken(code: string, url: string) {
+    const response = await lastValueFrom(
+      this.httpService.post(
+        url,
+        new URLSearchParams({
+          client_id: this.settings['facebook_client_id'],
+          client_secret: this.settings['facebook_client_secret'],
+          redirect_uri: `${this.settings['url']}/auth/facebook/callback`,
+          grant_type: 'authorization_code',
+          code,
+        }).toString(),
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        },
+      ),
+    );
+
+    return response.data;
+  }
+
+  private async fetchFacebookProfile(accessToken: string, url: string) {
+    const response = await lastValueFrom(
+      this.httpService.get(url, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }),
+    );
+
+    return response.data;
   }
 }

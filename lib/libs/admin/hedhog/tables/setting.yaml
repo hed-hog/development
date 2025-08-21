@@ -15,6 +15,7 @@ columns:
       - number
       - boolean
       - json
+      - locale
     default: string
   - name: value
     length: 1023
