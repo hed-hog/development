@@ -146,10 +146,10 @@ export class AuthController {
     return this.service.generateMfa(id);
   }
 
+  @Public()
   @Post('mfa-verify')
-  async verifyMfa(@User() { id }, @Body() { token }: { token: string }) {
-    console.log('mfa-verify');
-    return this.service.verifyMfa(id, token);
+  async verifyMfa(@Body() { token, email }: { token: string; email: string }) {
+    return this.service.verifyMfa(email, token, false);
   }
 
   @Public()
