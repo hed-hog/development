@@ -785,65 +785,97 @@ export class AuthService implements OnModuleInit {
   }
 
   async loginGoogle(res: any) {
-    const redirectURI = new URL(
-      '/callback/google',
-      this.settings['url'],
-    ).toString();
-
+    const redirectURI = new URL('/callback/google', this.settings['url']).toString();
     const params = new URLSearchParams({
       client_id: this.settings['google_client_id'],
       redirect_uri: redirectURI,
       response_type: 'code',
-      scope: this.settings['google_scopes'].join(' '),
+      scope: Array.isArray(this.settings['google_scopes'])
+        ? this.settings['google_scopes'].join(' ')
+        : String(this.settings['google_scopes']),
     });
-
-    const url = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-
-    return res.redirect(url);
+    return res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
   }
 
   async callbackGoogle(code: string) {
     const tokenUrl = 'https://oauth2.googleapis.com/token';
     const profileUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
-
-    const tokenResponse = await this.fetchGoogleToken(code, tokenUrl);
-    const profile = await this.fetchGoogleProfile(
-      tokenResponse.access_token,
-      profileUrl,
-    );
-
-    let user = await this.findOrCreateUser(profile);
-
+    const tokenResponse = await this.fetchOAuthToken({
+      code,
+      url: tokenUrl,
+      clientId: this.settings['google_client_id'],
+      clientSecret: this.settings['google_client_secret'],
+      redirectUri: `${this.settings['url']}/google/callback`,
+    });
+    const profile = await this.fetchOAuthProfile(tokenResponse.access_token, profileUrl);
+    const user = await this.findOrCreateUser(profile);
     return this.getToken(user);
   }
 
-  private async fetchGoogleToken(code: string, url: string) {
-    const response = await lastValueFrom(
-      this.httpService.post(
-        url,
-        {
-          client_id: this.settings['google_client_id'],
-          client_secret: this.settings['google_client_secret'],
-          redirect_uri: `${this.settings['url']}/google/callback`,
-          grant_type: 'authorization_code',
-          code,
-        },
-        {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        },
-      ),
-    );
+  async loginFacebook(res: any) {
+    const redirectURI = new URL('/callback/facebook', this.settings['url']).toString();
+    const params = new URLSearchParams({
+      client_id: this.settings['facebook_client_id'],
+      redirect_uri: redirectURI,
+      response_type: 'code',
+      scope: Array.isArray(this.settings['facebook_scopes'])
+        ? this.settings['facebook_scopes'].join(',')
+        : String(this.settings['facebook_scopes'] ?? 'email'),
+      auth_type: 'rerequest',
+    });
+    return res.redirect(`https://www.facebook.com/v17.0/dialog/oauth?${params.toString()}`);
+  }
 
+  async callbackFacebook(code: string) {
+    const tokenUrl = 'https://graph.facebook.com/v17.0/oauth/access_token';
+    const profileUrl = 'https://graph.facebook.com/me?fields=id,name,email';
+    const tokenResponse = await this.fetchOAuthToken({
+      code,
+      url: tokenUrl,
+      clientId: this.settings['facebook_client_id'],
+      clientSecret: this.settings['facebook_client_secret'],
+      redirectUri: `${this.settings['url']}/facebook/callback`,
+    });
+    const profile = await this.fetchOAuthProfile(tokenResponse.access_token, profileUrl);
+    const user = await this.findOrCreateUser(profile);
+    return this.getToken(user);
+  }
+
+  private async fetchOAuthToken({
+    code,
+    url,
+    clientId,
+    clientSecret,
+    redirectUri,
+  }: {
+    code: string;
+    url: string;
+    clientId: string;
+    clientSecret: string;
+    redirectUri: string;
+  }) {
+    const body = new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      redirect_uri: redirectUri,
+      grant_type: 'authorization_code',
+      code,
+    }).toString();
+
+    const response = await lastValueFrom(
+      this.httpService.post(url, body, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      }),
+    );
     return response.data;
   }
 
-  private async fetchGoogleProfile(accessToken: string, url: string) {
+  private async fetchOAuthProfile(accessToken: string, url: string) {
     const response = await lastValueFrom(
       this.httpService.get(url, {
         headers: { Authorization: `Bearer ${accessToken}` },
       }),
     );
-
     return response.data;
   }
 
@@ -851,7 +883,6 @@ export class AuthService implements OnModuleInit {
     let user = await this.prisma.user.findFirst({
       where: { email: profile.email },
     });
-
     if (!user) {
       user = await this.prisma.user.create({
         data: {
@@ -862,71 +893,6 @@ export class AuthService implements OnModuleInit {
         },
       });
     }
-
     return user;
-  }
-
-  async loginFacebook(res: any) {
-    const redirectURI = new URL(
-      '/callback/facebook',
-      this.settings['url'],
-    ).toString();
-
-    const params = new URLSearchParams({
-      client_id: this.settings['facebook_client_id'],
-      redirect_uri: redirectURI,
-      response_type: 'code',
-      scope: (this.settings['facebook_scopes'] ?? ['email']).join(','),
-      auth_type: 'rerequest',
-    });
-
-    const url = `https://www.facebook.com/v17.0/dialog/oauth?${params.toString()}`;
-
-    return res.redirect(url);
-  }
-
-  async callbackFacebook(code: string) {
-    const tokenUrl = 'https://graph.facebook.com/v17.0/oauth/access_token';
-    const profileUrl = 'https://graph.facebook.com/me?fields=id,name,email';
-
-    const tokenResponse = await this.fetchFacebookToken(code, tokenUrl);
-    const profile = await this.fetchFacebookProfile(
-      tokenResponse.access_token,
-      profileUrl,
-    );
-
-    let user = await this.findOrCreateUser(profile);
-
-    return this.getToken(user);
-  }
-
-  private async fetchFacebookToken(code: string, url: string) {
-    const response = await lastValueFrom(
-      this.httpService.post(
-        url,
-        new URLSearchParams({
-          client_id: this.settings['facebook_client_id'],
-          client_secret: this.settings['facebook_client_secret'],
-          redirect_uri: `${this.settings['url']}/facebook/callback`,
-          grant_type: 'authorization_code',
-          code,
-        }).toString(),
-        {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        },
-      ),
-    );
-
-    return response.data;
-  }
-
-  private async fetchFacebookProfile(accessToken: string, url: string) {
-    const response = await lastValueFrom(
-      this.httpService.get(url, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }),
-    );
-
-    return response.data;
   }
 }
