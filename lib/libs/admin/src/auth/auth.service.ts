@@ -824,7 +824,7 @@ export class AuthService implements OnModuleInit {
         {
           client_id: this.settings['google_client_id'],
           client_secret: this.settings['google_client_secret'],
-          redirect_uri: `${this.settings['url']}/auth/google/callback`,
+          redirect_uri: `${this.settings['url']}/google/callback`,
           grant_type: 'authorization_code',
           code,
         },
@@ -907,7 +907,7 @@ export class AuthService implements OnModuleInit {
         new URLSearchParams({
           client_id: this.settings['facebook_client_id'],
           client_secret: this.settings['facebook_client_secret'],
-          redirect_uri: `${this.settings['url']}/auth/facebook/callback`,
+          redirect_uri: `${this.settings['url']}/facebook/callback`,
           grant_type: 'authorization_code',
           code,
         }).toString(),
