@@ -143,7 +143,7 @@ export class MailService implements OnModuleInit {
       rejectUnauthorized,
     });
 
-    const transporter = nodemailer.createTransport({
+    const transportOptions: any = {
       host,
       port,
       secure,
@@ -151,10 +151,23 @@ export class MailService implements OnModuleInit {
         user,
         pass,
       },
-      tls: {
+      requireTLS: process.env.MAIL_REQUIRE_TLS || false,
+      tls: process.env.MAIL_TLS !== undefined ? JSON.parse(process.env.MAIL_TLS) : {
         rejectUnauthorized,
       },
-    });
+      envelope: { from: mail.from || process.env.MAIL_FROM || process.env.SMTP_FROM || process.env.SMTP_USER, to: mail.to }
+    }
+
+    if (process.env.MAIL_UNSUBSCRIBE) {
+      transportOptions.headers = {
+        'List-Unsubscribe': `<mailto:${process.env.MAIL_UNSUBSCRIBE_EMAIL}?subject=unsubscribe>, <${process.env.MAIL_UNSUBSCRIBE_URL}?u=__EMAIL__>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
+      };
+    }
+
+    this.log('transportOptions', transportOptions)
+
+    const transporter = nodemailer.createTransport(transportOptions);
 
     this.log('Email sendMail:', {
       from: mail.from || process.env.MAIL_FROM || process.env.SMTP_FROM || process.env.SMTP_USER,
