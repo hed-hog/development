@@ -68,6 +68,38 @@ export class S3Provider extends AbstractProvider {
     }));
   }
 
+  async uploadFromUrl(destination: string,
+    filename: string,
+    url: string) {
+
+    const s3 = await this.getClient();
+
+    // Faz o download do arquivo da URL informada
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new BadRequestException(`Failed to download file from URL: ${url}`);
+    }
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const mimetype = response.headers.get('content-type') || 'application/octet-stream';
+
+    const result = await s3
+      .upload({
+        Bucket: this.setting['storage-s3-bucket'],
+        Key: [destination, this.getFilename(filename)].join('/'),
+        Body: buffer,
+        ContentType: mimetype,
+      })
+      .promise();
+
+
+    return {
+      url: result['Location'],
+      size: buffer.length,
+      mimetype,
+    };
+
+  }
+
   async uploadFromString(
     destination: string,
     filename: string,

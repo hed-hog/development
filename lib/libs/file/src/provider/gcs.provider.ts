@@ -48,6 +48,34 @@ export class GCSProvider extends AbstractProvider {
     }));
   }
 
+  async uploadFromUrl(
+    destination: string,
+    filename: string,
+    url: string,
+  ): Promise<any> {
+    // Faz o download do arquivo da URL informada
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new BadRequestException(`Failed to download file from URL: ${url}`);
+    }
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const mimetype = response.headers.get('content-type') || 'application/octet-stream';
+
+    const storage = await this.getClient();
+    const bucket = storage.bucket(this.setting['storage-gcs-bucket']);
+    const file = bucket.file(destination + filename);
+
+    const finalUrl = await file.save(buffer, {
+      contentType: mimetype,
+    });
+
+    return {
+      url: finalUrl,
+      size: buffer.length,
+      mimetype,
+    };
+  }
+
   async uploadFromString(
     destination: string,
     filename: string,

@@ -61,6 +61,37 @@ export class AzureProvider extends AbstractProvider {
     return blobServiceClient;
   }
 
+  async uploadFromUrl(
+    destination: string,
+    filename: string,
+    url: string,
+  ): Promise<any> {
+    // Faz o download do arquivo da URL informada
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new BadRequestException(`Failed to download file from URL: ${url}`);
+    }
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const mimetype = response.headers.get('content-type') || 'application/octet-stream';
+
+    const blobServiceClient = await this.getClient();
+    const containerClient = blobServiceClient.getContainerClient(
+      this.setting['storage-abs-container'],
+    );
+    const filepath = [destination, this.getFilename(filename)].join('/');
+    const blobClient = containerClient.getBlockBlobClient(filepath);
+
+    await blobClient.uploadData(buffer, {
+      blobHTTPHeaders: { blobContentType: mimetype },
+    });
+
+    return {
+      url: `https://${this.setting['storage-abs-container']}.azureedge.net/${filepath}`,
+      size: buffer.length,
+      mimetype,
+    };
+  }
+
   async uploadFromString(
     destination: string,
     filename: string,

@@ -30,7 +30,7 @@ export class FileService implements OnModuleInit {
     private readonly settingService: SettingService,
     @Inject(forwardRef(() => JwtService))
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     await this.getProvider();
@@ -154,6 +154,33 @@ export class FileService implements OnModuleInit {
     const maxSize = this.setting['storage-max-size'];
 
     return size <= Number(maxSize);
+  }
+
+  async uploadFromUrl(destination: string,
+    filename: string,
+    url: string) {
+
+    const provider = await this.getProvider();
+
+    const urlUploaded = await provider.uploadFromUrl(
+      destination,
+      filename,
+      url
+    );
+
+    const file = await this.prismaService.file.create({
+      data: {
+        filename,
+        path: urlUploaded.url.replace(/\\/g, '/').replace(/\/\//g, '/'),
+        provider_id: this.providerId,
+        location: destination,
+        mimetype_id: await this.getMimeType(urlUploaded.mimetype),
+        size: urlUploaded.size,
+      },
+    });
+
+    return file;
+
   }
 
   async uploadFromString(

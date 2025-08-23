@@ -39,6 +39,49 @@ export class LocalProvider extends AbstractProvider {
     }
   }
 
+  async uploadFromUrl(destination: string,
+    filename: string,
+    url: string) {
+
+    const storagePath = join(this.setting['storage-local-path'], destination);
+
+    if (!storagePath) {
+      throw new BadRequestException(
+        `You must set the storage-local-path in the setting.`,
+      );
+    }
+
+    if (!existsSync(storagePath)) {
+      await this.createFolderRecursive(storagePath);
+    }
+
+    if (!existsSync(storagePath)) {
+      throw new BadRequestException(
+        `The storage path does not exist: ${storagePath}`,
+      );
+    }
+    const filePath = join(storagePath, this.getFilename(filename));
+
+    // Faz o download do arquivo da URL informada
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new BadRequestException(`Failed to download file from URL: ${url}`);
+    }
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const mimetype = response.headers.get('content-type') || 'application/octet-stream';
+
+    // Escreve o arquivo no caminho especificado
+    await writeFile(filePath, buffer);
+
+    // Retorna informações do arquivo salvo
+    return {
+      url: filePath,
+      size: buffer.length,
+      mimetype,
+    };
+
+  }
+
   async uploadFromString(
     destination: string,
     filename: string,

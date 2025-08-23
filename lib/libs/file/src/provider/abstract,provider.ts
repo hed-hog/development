@@ -17,6 +17,9 @@ interface IProvider {
 }
 
 export abstract class AbstractProvider implements IProvider {
+  abstract uploadFromUrl(destination: string,
+    filename: string,
+    url: string): Promise<{ url: string; size: number; mimetype: string }>;
   abstract uploadFromString(
     destination: string,
     filename: string,
