@@ -12,7 +12,9 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { compare, genSalt, hash } from 'bcrypt';
+import { randomBytes } from 'crypto';
 import * as qrcode from 'qrcode';
 import { lastValueFrom } from 'rxjs';
 import * as speakeasy from 'speakeasy';
@@ -26,6 +28,7 @@ import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
+import { UserType } from './enums/user-type.enum';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -222,6 +225,10 @@ export class AuthService implements OnModuleInit {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  generateRandomPassword(length = 12) {
+    return randomBytes(length).toString('base64').slice(0, length);
+  }
+
   async loginWithEmailAndPassword(
     locale: string,
     email: string,
@@ -242,6 +249,10 @@ export class AuthService implements OnModuleInit {
       throw new BadRequestException('Acesso negado');
     }
 
+    return this.userMfaSteps(user, locale);
+  }
+
+  async userMfaSteps(user, locale = 'pt') {
     if (!user.multifactor_id) {
       return this.getToken(user);
     } else {
@@ -785,7 +796,10 @@ export class AuthService implements OnModuleInit {
   }
 
   async loginGoogle(res: any) {
-    const redirectURI = new URL('/callback/google/login', this.settings['url']).toString();
+    const redirectURI = new URL(
+      '/callback/google',
+      this.settings['url'],
+    ).toString();
     const params = new URLSearchParams({
       client_id: this.settings['google_client_id'],
       redirect_uri: redirectURI,
@@ -794,27 +808,224 @@ export class AuthService implements OnModuleInit {
         ? this.settings['google_scopes'].join(' ')
         : String(this.settings['google_scopes']),
     });
-    console.log('loginGoogle', params)
-    return res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+    console.log('loginGoogle', params);
+    return res.redirect(
+      `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`,
+    );
   }
 
-  async callbackGoogle(code: string) {
+  private async handleGoogleOAuth(
+    code: string,
+    type: string,
+    afterProfile: (profile: any, code: any) => Promise<any>,
+  ): Promise<any> {
     const tokenUrl = 'https://oauth2.googleapis.com/token';
     const profileUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
+
     const tokenResponse = await this.fetchOAuthToken({
       code,
       url: tokenUrl,
       clientId: this.settings['google_client_id'],
       clientSecret: this.settings['google_client_secret'],
-      redirectUri: `${this.settings['url']}/callback/google`,
+      redirectUri: `${this.settings['url']}/callback/google/${type}`,
     });
-    const profile = await this.fetchOAuthProfile(tokenResponse.access_token, profileUrl);
-    const user = await this.findOrCreateUser(profile);
-    return this.getToken(user);
+
+    const profile = await this.fetchOAuthProfile(
+      tokenResponse.access_token,
+      profileUrl,
+    );
+
+    console.log('Google Profile:', profile);
+
+    return afterProfile(profile, code);
+  }
+
+  async handleGoogleLogin(profile, code) {
+    const googleUserFound = await this.prisma.user.findFirst({
+      where: {
+        email: profile.email,
+        type_id: UserType.GOOGLE,
+      },
+    });
+
+    if (!googleUserFound) {
+      const userFound = await this.prisma.user.findFirst({
+        where: {
+          email: profile.email,
+        },
+      });
+
+      if (userFound) {
+        throw new BadRequestException('Acesso negado.');
+      } else {
+        return this.handleGoogleRegister(profile, code);
+      }
+    } else {
+      // apply setting
+      return this.userMfaSteps(googleUserFound);
+    }
+  }
+
+  async handleGoogleRegister(profile, code) {
+    const userFound = await this.prisma.user.findFirst({
+      where: {
+        email: profile.email,
+      },
+    });
+
+    if (userFound) {
+      throw new ConflictException(
+        'Este email já está sendo usado. Entre em sua conta e utilize a opção "Conectar".',
+      );
+    }
+
+    const googleUser = await this.prisma.user.create({
+      data: {
+        code,
+        email: profile.email,
+        name: profile.name,
+        password: null,
+        type_id: UserType.GOOGLE,
+      },
+    });
+
+    const plainPassword = this.generateRandomPassword(10);
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+    const emailUser = await this.prisma.user.create({
+      data: {
+        email: profile.email,
+        name: profile.name,
+        password: hashedPassword,
+        type_id: UserType.EMAIL,
+      },
+    });
+
+    await this.mail.sendTemplatedMail('pt', {
+      email: profile.email,
+      slug: 'temp-password',
+      variables: { password: plainPassword },
+    });
+
+    let profilePhoto = null;
+
+    if (profile.picture) {
+      // TO-DO
+    }
+
+    await this.prisma.person.create({
+      data: {
+        name: profile.name,
+        ...(profilePhoto && { photo_id: profilePhoto.id }),
+        type_id: 1,
+        person_contact: {
+          create: { value: profile.email, type_id: 2 },
+        },
+        person_user: {
+          create: [{ user_id: emailUser.id }, { user_id: googleUser.id }],
+        },
+      },
+    });
+
+    return this.getToken(googleUser);
+  }
+
+  async handleGoogleConnect(profile, code, userId) {
+    const googleUserFound = await this.prisma.user.findFirst({
+      where: {
+        email: profile.email,
+        type_id: UserType.GOOGLE,
+      },
+    });
+
+    if (googleUserFound) {
+      throw new BadRequestException('Usuário já conectado com o Google.');
+    }
+
+    const googleUser = await this.prisma.user.create({
+      data: {
+        code,
+        email: profile.email,
+        name: profile.name,
+        password: null,
+        type_id: UserType.GOOGLE,
+      },
+    });
+
+    const emailUser = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+        type_id: UserType.EMAIL,
+      },
+      include: { person_user: true },
+    });
+
+    const personId = emailUser.person_user[0]?.person_id;
+
+    if (emailUser) {
+      await this.prisma.person.update({
+        where: { id: personId },
+        data: {
+          person_user: {
+            create: { user_id: googleUser.id },
+          },
+        },
+      });
+
+      const person = await this.prisma.person.findUnique({
+        where: { id: personId },
+      });
+
+      if (!person?.photo_id && profile.picture) {
+        // TO-DO
+      }
+    }
+
+    return this.getToken(googleUser);
+  }
+
+  async callbackGoogleLogin(code: string) {
+    return this.handleGoogleOAuth(code, 'login', async (profile) => {
+      return this.handleGoogleLogin(profile, code);
+    });
+  }
+
+  async callbackGoogleRegister(code: string) {
+    return this.handleGoogleOAuth(code, 'register', async (profile) => {
+      return this.handleGoogleRegister(profile, code);
+    });
+  }
+
+  async callbackGoogleConnect(code: string, userId: number) {
+    return this.handleGoogleOAuth(code, 'connect', async (profile) => {
+      return this.handleGoogleConnect(profile, code, userId);
+    });
+  }
+
+  async disconnectFromGoogle(email: string) {
+    const googleUser = await this.prisma.user.findFirst({
+      where: {
+        email,
+        type_id: UserType.GOOGLE,
+      },
+    });
+
+    if (!googleUser) {
+      throw new NotFoundException('Usuário do Google não encontrado.');
+    }
+
+    await this.prisma.user.delete({
+      where: { id: googleUser.id },
+    });
+
+    return { message: 'Usuário desconectado do Google com sucesso.' };
   }
 
   async loginFacebook(res: any) {
-    const redirectURI = new URL('/callback/facebook', this.settings['url']).toString();
+    const redirectURI = new URL(
+      '/callback/facebook',
+      this.settings['url'],
+    ).toString();
     const params = new URLSearchParams({
       client_id: this.settings['facebook_client_id'],
       redirect_uri: redirectURI,
@@ -825,7 +1036,9 @@ export class AuthService implements OnModuleInit {
       auth_type: 'rerequest',
     });
     console.log('loginFacebook', params);
-    return res.redirect(`https://www.facebook.com/v17.0/dialog/oauth?${params.toString()}`);
+    return res.redirect(
+      `https://www.facebook.com/v17.0/dialog/oauth?${params.toString()}`,
+    );
   }
 
   async callbackFacebook(code: string) {
@@ -838,7 +1051,10 @@ export class AuthService implements OnModuleInit {
       clientSecret: this.settings['facebook_client_secret'],
       redirectUri: `${this.settings['url']}/callback/facebook`,
     });
-    const profile = await this.fetchOAuthProfile(tokenResponse.access_token, profileUrl);
+    const profile = await this.fetchOAuthProfile(
+      tokenResponse.access_token,
+      profileUrl,
+    );
     const user = await this.findOrCreateUser(profile);
     return this.getToken(user);
   }

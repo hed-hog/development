@@ -27,7 +27,7 @@ export class AuthController {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly service: AuthService,
-  ) { }
+  ) {}
 
   @Public()
   @Get('create-user')
@@ -159,9 +159,28 @@ export class AuthController {
   }
 
   @Public()
-  @Get('google/callback')
-  async callbackGoogle(@Query() { code }: { code: string }) {
-    return this.service.callbackGoogle(code);
+  @Get('google/callback/login')
+  async callbackGoogleLogin(@Query() { code }: { code: string }) {
+    return this.service.callbackGoogleLogin(code);
+  }
+
+  @Public()
+  @Get('google/callback/register')
+  async callbackGoogleRegister(@Query() { code }: { code: string }) {
+    return this.service.callbackGoogleRegister(code);
+  }
+
+  @Get('google/callback/connect')
+  async callbackGoogleConnect(
+    @User() { id },
+    @Query() { code }: { code: string },
+  ) {
+    return this.service.callbackGoogleConnect(code, id);
+  }
+
+  @Delete('google')
+  async disconnectFromGoogle(@Body('email') email: string) {
+    return this.service.disconnectFromGoogle(email);
   }
 
   @Public()
