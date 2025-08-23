@@ -151,7 +151,7 @@ export class MailService implements OnModuleInit {
         user,
         pass,
       },
-      requireTLS: process.env.MAIL_REQUIRE_TLS || false,
+      requireTLS: process.env.MAIL_REQUIRE_TLS === "true",
       tls: process.env.MAIL_TLS !== undefined ? JSON.parse(process.env.MAIL_TLS) : {
         rejectUnauthorized,
       },
