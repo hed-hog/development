@@ -785,7 +785,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async loginGoogle(res: any) {
-    const redirectURI = new URL('/callback/google', this.settings['url']).toString();
+    const redirectURI = new URL('/callback/google/login', this.settings['url']).toString();
     const params = new URLSearchParams({
       client_id: this.settings['google_client_id'],
       redirect_uri: redirectURI,

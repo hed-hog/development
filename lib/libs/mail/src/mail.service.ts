@@ -15,7 +15,7 @@ export class MailService implements OnModuleInit {
     private readonly mailConfig: MailModuleOptions,
     @Inject(forwardRef(() => HttpService))
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     if (this.mailConfig.debug) {
@@ -156,8 +156,19 @@ export class MailService implements OnModuleInit {
       },
     });
 
+    this.log('Email sendMail:', {
+      from: mail.from || process.env.MAIL_FROM || process.env.SMTP_FROM || process.env.SMTP_USER,
+      to: mail.to,
+      subject: mail.subject,
+      html: mail.body,
+      cc: mail.cc,
+      bcc: mail.bcc,
+      replyTo: mail.replyTo,
+      priority: mail.priority,
+    });
+
     const result = await transporter.sendMail({
-      from: mail.from || process.env.SMTP_FROM || process.env.SMTP_USER,
+      from: mail.from || process.env.MAIL_FROM || process.env.SMTP_USER,
       to: mail.to,
       subject: mail.subject,
       html: mail.body,
