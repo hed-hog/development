@@ -1,6 +1,5 @@
 import { MailService as MailManagerService } from '@hedhog/mail-manager';
 import { PrismaService } from '@hedhog/prisma';
-import { HttpService } from '@nestjs/axios';
 import {
   BadRequestException,
   ConflictException,
@@ -12,11 +11,9 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { compare, genSalt, hash } from 'bcrypt';
 import { randomBytes } from 'crypto';
 import * as qrcode from 'qrcode';
-import { lastValueFrom } from 'rxjs';
 import * as speakeasy from 'speakeasy';
 import { SettingService } from '../setting/setting.service';
 import { ChangeDTO } from './dto/change.dto';
@@ -28,14 +25,12 @@ import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
 import { ResetDTO } from './dto/reset.dto';
 import { MultifactorType } from './enums/multifactor-type.enum';
-import { UserType } from './enums/user-type.enum';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
   public settings: Record<string, any> = {};
 
   constructor(
-    private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     @Inject(forwardRef(() => PrismaService))
     private readonly prisma: PrismaService,
@@ -45,7 +40,7 @@ export class AuthService implements OnModuleInit {
     private readonly mail: MailManagerService,
     @Inject(forwardRef(() => SettingService))
     private readonly setting: SettingService,
-  ) { }
+  ) {}
 
   async onModuleInit() {
     this.settings = await this.setting.getSettingValues([
@@ -793,324 +788,5 @@ export class AuthService implements OnModuleInit {
     const newToken = await this.getToken(updatedUser);
 
     return { ...newToken, codes };
-  }
-
-  async loginGoogle(res: any) {
-    const redirectURI = new URL(
-      '/callback/google',
-      this.settings['url'],
-    ).toString();
-    const params = new URLSearchParams({
-      client_id: this.settings['google_client_id'],
-      redirect_uri: redirectURI,
-      response_type: 'code',
-      scope: Array.isArray(this.settings['google_scopes'])
-        ? this.settings['google_scopes'].join(' ')
-        : String(this.settings['google_scopes']),
-    });
-    console.log('loginGoogle', params);
-    return res.redirect(
-      `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`,
-    );
-  }
-
-  private async handleGoogleOAuth(
-    code: string,
-    type: string,
-    afterProfile: (profile: any, code: any) => Promise<any>,
-  ): Promise<any> {
-    const tokenUrl = 'https://oauth2.googleapis.com/token';
-    const profileUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
-
-    const tokenResponse = await this.fetchOAuthToken({
-      code,
-      url: tokenUrl,
-      clientId: this.settings['google_client_id'],
-      clientSecret: this.settings['google_client_secret'],
-      redirectUri: `${this.settings['url']}/callback/google/${type}`,
-    });
-
-    const profile = await this.fetchOAuthProfile(
-      tokenResponse.access_token,
-      profileUrl,
-    );
-
-    console.log('Google Profile:', profile);
-
-    return afterProfile(profile, code);
-  }
-
-  async handleGoogleLogin(profile, code) {
-    const googleUserFound = await this.prisma.user.findFirst({
-      where: {
-        email: profile.email,
-        type_id: UserType.GOOGLE,
-      },
-    });
-
-    if (!googleUserFound) {
-      const userFound = await this.prisma.user.findFirst({
-        where: {
-          email: profile.email,
-        },
-      });
-
-      if (userFound) {
-        throw new BadRequestException('Acesso negado.');
-      } else {
-        return this.handleGoogleRegister(profile, code);
-      }
-    } else {
-      // apply setting
-      return this.userMfaSteps(googleUserFound);
-    }
-  }
-
-  async handleGoogleRegister(profile, code) {
-    const userFound = await this.prisma.user.findFirst({
-      where: {
-        email: profile.email,
-      },
-    });
-
-    if (userFound) {
-      throw new ConflictException(
-        'Este email já está sendo usado. Entre em sua conta e utilize a opção "Conectar".',
-      );
-    }
-
-    const googleUser = await this.prisma.user.create({
-      data: {
-        code,
-        email: profile.email,
-        name: profile.name,
-        password: null,
-        type_id: UserType.GOOGLE,
-      },
-    });
-
-    const plainPassword = this.generateRandomPassword(10);
-    const hashedPassword = await bcrypt.hash(plainPassword, 10);
-
-    const emailUser = await this.prisma.user.create({
-      data: {
-        email: profile.email,
-        name: profile.name,
-        password: hashedPassword,
-        type_id: UserType.EMAIL,
-      },
-    });
-
-    await this.mail.sendTemplatedMail('pt', {
-      email: profile.email,
-      slug: 'temp-password',
-      variables: { password: plainPassword },
-    });
-
-    let profilePhoto = null;
-
-    if (profile.picture) {
-      // TO-DO
-    }
-
-    await this.prisma.person.create({
-      data: {
-        name: profile.name,
-        ...(profilePhoto && { photo_id: profilePhoto.id }),
-        type_id: 1,
-        person_contact: {
-          create: { value: profile.email, type_id: 2 },
-        },
-        person_user: {
-          create: [{ user_id: emailUser.id }, { user_id: googleUser.id }],
-        },
-      },
-    });
-
-    return this.getToken(googleUser);
-  }
-
-  async handleGoogleConnect(profile, code, userId) {
-    const googleUserFound = await this.prisma.user.findFirst({
-      where: {
-        email: profile.email,
-        type_id: UserType.GOOGLE,
-      },
-    });
-
-    if (googleUserFound) {
-      throw new BadRequestException('Usuário já conectado com o Google.');
-    }
-
-    const googleUser = await this.prisma.user.create({
-      data: {
-        code,
-        email: profile.email,
-        name: profile.name,
-        password: null,
-        type_id: UserType.GOOGLE,
-      },
-    });
-
-    const emailUser = await this.prisma.user.findFirst({
-      where: {
-        id: userId,
-        type_id: UserType.EMAIL,
-      },
-      include: { person_user: true },
-    });
-
-    const personId = emailUser.person_user[0]?.person_id;
-
-    if (emailUser) {
-      await this.prisma.person.update({
-        where: { id: personId },
-        data: {
-          person_user: {
-            create: { user_id: googleUser.id },
-          },
-        },
-      });
-
-      const person = await this.prisma.person.findUnique({
-        where: { id: personId },
-      });
-
-      if (!person?.photo_id && profile.picture) {
-        // TO-DO
-      }
-    }
-
-    return this.getToken(googleUser);
-  }
-
-  async callbackGoogleLogin(code: string) {
-    return this.handleGoogleOAuth(code, 'login', async (profile) => {
-      return this.handleGoogleLogin(profile, code);
-    });
-  }
-
-  async callbackGoogleRegister(code: string) {
-    return this.handleGoogleOAuth(code, 'register', async (profile) => {
-      return this.handleGoogleRegister(profile, code);
-    });
-  }
-
-  async callbackGoogleConnect(code: string, userId: number) {
-    return this.handleGoogleOAuth(code, 'connect', async (profile) => {
-      return this.handleGoogleConnect(profile, code, userId);
-    });
-  }
-
-  async disconnectFromGoogle(email: string) {
-    const googleUser = await this.prisma.user.findFirst({
-      where: {
-        email,
-        type_id: UserType.GOOGLE,
-      },
-    });
-
-    if (!googleUser) {
-      throw new NotFoundException('Usuário do Google não encontrado.');
-    }
-
-    await this.prisma.user.delete({
-      where: { id: googleUser.id },
-    });
-
-    return { message: 'Usuário desconectado do Google com sucesso.' };
-  }
-
-  async loginFacebook(res: any) {
-    const redirectURI = new URL(
-      '/callback/facebook',
-      this.settings['url'],
-    ).toString();
-    const params = new URLSearchParams({
-      client_id: this.settings['facebook_client_id'],
-      redirect_uri: redirectURI,
-      response_type: 'code',
-      scope: Array.isArray(this.settings['facebook_scopes'])
-        ? this.settings['facebook_scopes'].join(',')
-        : String(this.settings['facebook_scopes'] ?? 'email'),
-      auth_type: 'rerequest',
-    });
-    console.log('loginFacebook', params);
-    return res.redirect(
-      `https://www.facebook.com/v17.0/dialog/oauth?${params.toString()}`,
-    );
-  }
-
-  async callbackFacebook(code: string) {
-    const tokenUrl = 'https://graph.facebook.com/v17.0/oauth/access_token';
-    const profileUrl = 'https://graph.facebook.com/me?fields=id,name,email';
-    const tokenResponse = await this.fetchOAuthToken({
-      code,
-      url: tokenUrl,
-      clientId: this.settings['facebook_client_id'],
-      clientSecret: this.settings['facebook_client_secret'],
-      redirectUri: `${this.settings['url']}/callback/facebook`,
-    });
-    const profile = await this.fetchOAuthProfile(
-      tokenResponse.access_token,
-      profileUrl,
-    );
-    const user = await this.findOrCreateUser(profile);
-    return this.getToken(user);
-  }
-
-  private async fetchOAuthToken({
-    code,
-    url,
-    clientId,
-    clientSecret,
-    redirectUri,
-  }: {
-    code: string;
-    url: string;
-    clientId: string;
-    clientSecret: string;
-    redirectUri: string;
-  }) {
-    const body = new URLSearchParams({
-      client_id: clientId,
-      client_secret: clientSecret,
-      redirect_uri: redirectUri,
-      grant_type: 'authorization_code',
-      code,
-    }).toString();
-
-    const response = await lastValueFrom(
-      this.httpService.post(url, body, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      }),
-    );
-    return response.data;
-  }
-
-  private async fetchOAuthProfile(accessToken: string, url: string) {
-    const response = await lastValueFrom(
-      this.httpService.get(url, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }),
-    );
-    return response.data;
-  }
-
-  private async findOrCreateUser(profile: any) {
-    let user = await this.prisma.user.findFirst({
-      where: { email: profile.email },
-    });
-    if (!user) {
-      user = await this.prisma.user.create({
-        data: {
-          email: profile.email,
-          name: profile.name,
-          password: '',
-          code: profile.id,
-        },
-      });
-    }
-    return user;
   }
 }

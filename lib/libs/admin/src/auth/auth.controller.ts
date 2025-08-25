@@ -9,7 +9,6 @@ import {
   Inject,
   Post,
   Query,
-  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ChangeDTO } from './dto/change.dto';
@@ -150,48 +149,5 @@ export class AuthController {
   @Post('mfa-verify')
   async verifyMfa(@Body() { token, email }: { token: string; email: string }) {
     return this.service.verifyMfa(email, token, false);
-  }
-
-  @Public()
-  @Get('google/login')
-  async loginGoogle(@Res() res) {
-    return this.service.loginGoogle(res);
-  }
-
-  @Public()
-  @Get('google/callback/login')
-  async callbackGoogleLogin(@Query() { code }: { code: string }) {
-    return this.service.callbackGoogleLogin(code);
-  }
-
-  @Public()
-  @Get('google/callback/register')
-  async callbackGoogleRegister(@Query() { code }: { code: string }) {
-    return this.service.callbackGoogleRegister(code);
-  }
-
-  @Get('google/callback/connect')
-  async callbackGoogleConnect(
-    @User() { id },
-    @Query() { code }: { code: string },
-  ) {
-    return this.service.callbackGoogleConnect(code, id);
-  }
-
-  @Delete('google')
-  async disconnectFromGoogle(@Body('email') email: string) {
-    return this.service.disconnectFromGoogle(email);
-  }
-
-  @Public()
-  @Get('facebook/login')
-  async loginFacebook(@Res() res) {
-    return this.service.loginFacebook(res);
-  }
-
-  @Public()
-  @Get('facebook/callback')
-  async callbackFacebook(@Query() { code }: { code: string }) {
-    return this.service.callbackFacebook(code);
   }
 }
