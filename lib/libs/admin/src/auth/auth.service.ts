@@ -232,6 +232,10 @@ export class AuthService implements OnModuleInit {
     const user = await this.prisma.user.findFirst({
       where: {
         email,
+        password: {
+          not: null,
+          notIn: [''],
+        },
       },
     });
 
