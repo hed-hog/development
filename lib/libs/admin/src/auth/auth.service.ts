@@ -233,7 +233,6 @@ export class AuthService implements OnModuleInit {
       where: {
         email,
         password: {
-          not: null,
           notIn: [''],
         },
       },
