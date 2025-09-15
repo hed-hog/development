@@ -780,7 +780,7 @@ export class AuthService implements OnModuleInit {
 
     const updatedUser = await this.prisma.user.update({
       where: {
-        email,
+        id: user.id,
       },
       data: {
         multifactor_id: MultifactorType.APP,
