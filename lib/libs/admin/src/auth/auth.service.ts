@@ -294,13 +294,42 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async getToken(user) {
-    delete user.password;
+  async getToken(user: any) {
+    const safeUser = { ...user };
+    delete safeUser.password;
 
-    const payload = { user };
+    const defaultPayload = { user: safeUser };
+
+    if (user.type_id && user.type_id !== 3) {
+      const personUser = await this.prisma.person_user.findFirst({
+        where: { user_id: user.id },
+        select: { person_id: true },
+      });
+
+      if (personUser) {
+        const emailPersonUser: any = await this.prisma.person_user.findFirst({
+          where: {
+            person_id: personUser.person_id,
+            user: { type_id: 3 },
+          },
+          select: {
+            user: true,
+          },
+        });
+
+        if (emailPersonUser?.user) {
+          const emailUser = { ...emailPersonUser.user };
+          delete emailUser.password;
+          return {
+            token: this.jwt.sign({ user: emailUser }),
+            mfa: false,
+          };
+        }
+      }
+    }
 
     return {
-      token: this.jwt.sign(payload),
+      token: this.jwt.sign(defaultPayload),
       mfa: false,
     };
   }
