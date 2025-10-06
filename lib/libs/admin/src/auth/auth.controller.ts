@@ -46,6 +46,11 @@ export class AuthController {
     return this.service.verify(id);
   }
 
+  @Get('refresh-token')
+  async refreshToken(@User() { id }) {
+    return this.refreshToken(id);
+  }
+
   @Public()
   @Post('login')
   async login(@Locale() locale: string, @Body() { email, password }: LoginDTO) {

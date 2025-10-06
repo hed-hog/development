@@ -250,6 +250,16 @@ export class AuthService implements OnModuleInit {
     return this.userMfaSteps(user, locale);
   }
 
+  async refreshToken(userId: number) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    return this.getToken(user);
+  }
+
   async userMfaSteps(user, locale = 'pt') {
     if (!user.multifactor_id) {
       return this.getToken(user);
