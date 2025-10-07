@@ -167,6 +167,11 @@ export class AzureProvider extends AbstractProvider {
     return properties;
   }
   async buffer(filepath: string): Promise<any> {
+
+    if (filepath.startsWith('/')) {
+      filepath = filepath.slice(1);
+    }
+
     const blobServiceClient = await this.getClient();
 
     const containerClient = blobServiceClient.getContainerClient(

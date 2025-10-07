@@ -56,7 +56,12 @@ export class FileService implements OnModuleInit {
       throw new NotFoundException(`File not found: ${fileId}`);
     }
 
-    const buffer = Buffer.from(await provider.buffer(file.path));
+    const storage = await this.getStorage();
+    const buffer = Buffer.from(
+      await provider.buffer(
+        storage === EnumProvider.LOCAL ? file.path : (new URL(file.path)).pathname
+      )
+    );
 
     return {
       file,
