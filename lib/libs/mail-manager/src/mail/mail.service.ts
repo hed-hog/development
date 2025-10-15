@@ -28,7 +28,7 @@ export class MailService {
     private readonly localeService: LocaleService,
     @Inject(forwardRef(() => MailSentService))
     private readonly mailSentService: MailSentService,
-  ) {}
+  ) { }
 
   async list(locale: string, paginationParams: PaginationDTO) {
     return this.localeService.listModelWithLocale(
@@ -79,6 +79,11 @@ export class MailService {
     locale: string,
     { email, slug, variables }: SendTemplatedMailDTO,
   ) {
+
+    if (!email) {
+      throw new BadRequestException('Email is required');
+    }
+
     const localeRecord = await this.getLocaleRecord(locale);
     const mail = await this.getMailTemplate(slug, localeRecord.id);
 

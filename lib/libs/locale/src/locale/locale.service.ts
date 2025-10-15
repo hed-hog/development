@@ -24,7 +24,7 @@ export class LocaleService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async setEnabled(codes: string[]) {
     if (!codes || codes.length < 1) {
