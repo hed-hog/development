@@ -13,6 +13,7 @@ import { RoleModule } from './role/role.module';
 import { RouteModule } from './route/route.module';
 import { ScreenModule } from './screen/screen.module';
 import { SettingModule } from './setting/setting.module';
+import { SettingService } from './setting/setting.service';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -34,6 +35,7 @@ import { UserModule } from './user/user.module';
     forwardRef(() => SettingModule),
   ],
   exports: [
+    SettingService,
     UserModule,
     AuthModule,
     MailModule,

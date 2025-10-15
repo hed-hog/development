@@ -20,24 +20,30 @@ export class PaymentService {
   ) {}
 
   async list(paginationParams: PaginationDTO, isPaid: boolean) {
-    const fields = [
-      'slug',
-      'amount',
-      'document',
-      'payment_at',
-      'currency',
-      'installments',
-      'delivered',
-      'discount',
-    ];
+    const OR: any[] = [];
 
-    const OR: any[] = this.prismaService.createInsensitiveSearch(
-      fields,
-      paginationParams,
-    );
+    if (paginationParams.search) {
+      const search = paginationParams.search;
 
-    if (paginationParams.search && !isNaN(+paginationParams.search)) {
-      OR.push({ id: { equals: +paginationParams.search } });
+      if (!isNaN(+search)) {
+        OR.push({ id: +search });
+      }
+
+      OR.push({
+        slug: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      });
+
+      OR.push({
+        person: {
+          name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        },
+      });
     }
 
     const payments = await this.paginationService.paginate(

@@ -10,7 +10,6 @@ import {
 import { CreateDTO } from './dto/create.dto';
 import { UpdateDTO } from './dto/update.dto';
 import { includePaymentCoupon } from './payment-coupon.consts';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PaymentCouponService {
@@ -19,7 +18,7 @@ export class PaymentCouponService {
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => PaginationService))
     private readonly paginationService: PaginationService,
-  ) { }
+  ) {}
 
   async list(paginationParams: PaginationDTO) {
     const fields = [
@@ -70,8 +69,7 @@ export class PaymentCouponService {
   }
 
   async create(data: CreateDTO) {
-
-    const createData: Prisma.payment_couponCreateInput = {
+    const createData: any = {
       code: data.code,
       // discount_type_id: data.discount_type_id,
       description: data.description,
