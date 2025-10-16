@@ -38,9 +38,24 @@ export class PersonService {
           OR,
         },
         include: {
+          bank_account: {
+            include: {
+              bank: true,
+            },
+          },
           person_file: {
             include: {
               file: true,
+            },
+          },
+          wallet_person: {
+            include: {
+              wallet: true,
+            },
+          },
+          person_user: {
+            include: {
+              user: true,
             },
           },
           person_address: true,
