@@ -38,6 +38,11 @@ export class PersonService {
           OR,
         },
         include: {
+          person_file: {
+            include: {
+              file: true,
+            },
+          },
           person_address: true,
           person_contact: true,
           person_document: true,
