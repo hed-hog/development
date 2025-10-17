@@ -50,7 +50,16 @@ export class PersonService {
           },
           wallet_person: {
             include: {
-              wallet: true,
+              wallet: {
+                include: {
+                  wallet_person: {
+                    include: {
+                      person: true,
+                    },
+                  },
+                  wallet_transaction: true,
+                },
+              },
             },
           },
           person_user: {
