@@ -88,6 +88,19 @@ export class PersonService {
   }
 
   async update({ id, data }: { id: number; data: UpdateDTO }) {
+    const personUsers = await this.prismaService.person_user.findMany({
+      where: { person_id: id },
+    });
+
+    if (personUsers && personUsers.length > 0 && data.name) {
+      for (const pu of personUsers) {
+        await this.prismaService.user.update({
+          where: { id: pu.user_id },
+          data: { name: data.name },
+        });
+      }
+    }
+
     return this.prismaService.person.update({
       where: { id: id },
       data,
